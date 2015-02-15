@@ -26,8 +26,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Globalization;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -35,14 +37,34 @@ namespace WmcSoft
     {
         #region Substring
 
+        public static string SubstringBefore(this string self, char find) {
+            if (String.IsNullOrEmpty(self))
+                return self;
+
+            int index = self.IndexOf(find);
+            if (index < 0)
+                return null;
+            return self.Substring(0, index);
+        }
+
         public static string SubstringBefore(this string self, string find) {
             if (String.IsNullOrEmpty(self) || String.IsNullOrEmpty(find))
                 return self;
 
             int index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
-                return self;
+                return null;
             return self.Substring(0, index);
+        }
+
+        public static string SubstringAfter(this string self, char find) {
+            if (String.IsNullOrEmpty(self))
+                return self;
+
+            int index = self.IndexOf(find);
+            if (index < 0)
+                return null;
+            return self.Substring(index + 1);
         }
 
         public static string SubstringAfter(this string self, string find) {
@@ -51,7 +73,7 @@ namespace WmcSoft
 
             int index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
-                return self;
+                return null;
             return self.Substring(index + find.Length);
         }
 
@@ -72,19 +94,29 @@ namespace WmcSoft
             return self.Substring(start, end - start);
         }
 
+        public static string Left(this string value, int length) {
+            return value.Substring(0, length);
+        }
+        public static string Mid(this string value, int start, int length) {
+            return value.Substring(start, length);
+        }
+        public static string Right(this string value, int length) {
+            return value.Substring(value.Length - length, length);
+        }
+
         #endregion
 
         #region Case operations
 
         public static string Capitalize(this string self, CultureInfo culture) {
             if (String.IsNullOrEmpty(self))
-                return String.Empty;
+                return self;
             return Char.ToUpper(self[0], culture) + self.Substring(1).ToLower(culture);
         }
 
         public static string Capitalize(this string self) {
             if (String.IsNullOrEmpty(self))
-                return String.Empty;
+                return self;
             return Char.ToUpper(self[0]) + self.Substring(1).ToLower();
         }
 
@@ -175,6 +207,17 @@ namespace WmcSoft
             return sb.ToString();
         }
 
+        public static string Join(this IEnumerable<string> self, char separator) {
+            var sb = new StringBuilder();
+            var enumerator = self.GetEnumerator();
+            if (enumerator.MoveNext()) {
+                sb.Append(enumerator.Current);
+                while (enumerator.MoveNext())
+                    sb.Append(separator).Append(enumerator.Current);
+            }
+            return sb.ToString();
+        }
+
         #endregion
 
         #region FormatWith
@@ -197,6 +240,156 @@ namespace WmcSoft
 
         public static string FormatWith(this string format, IFormatProvider provider, params object[] args) {
             return String.Format(format, provider, args);
+        }
+
+        #endregion
+
+        #region Remove
+
+        public static string Remove(this string self, params char[] args) {
+            StringBuilder sb = new StringBuilder(self);
+            foreach (var arg in args) {
+                sb.Replace(arg.ToString(), "");
+            }
+            return sb.ToString();
+        }
+
+        public static string Remove(this string self, params string[] args) {
+            StringBuilder sb = new StringBuilder(self);
+            foreach (var arg in args) {
+                sb.Replace(arg, "");
+            }
+            return sb.ToString();
+        }
+
+        #endregion
+
+        #region Translate
+
+        public static string Translate(this string self, string source, string target) {
+            var normalized = target;
+            if (target.Length < source.Length)
+                normalized += new String('\0', source.Length - target.Length);
+            var mapping = source.Zip(normalized, (s, t) => new KeyValuePair<char, char>(s, t))
+                .OrderBy((t) => t.Key)
+                .ToArray();
+
+            var comparer = new AnonymousComparer<KeyValuePair<char, char>>((x, y) => x.Key.CompareTo(y.Key));
+            var array = self.ToCharArray();
+            int j = 0;
+            for (int i = 0; i < array.Length; i++) {
+                int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(array[i], '\0'), comparer);
+                if (found < 0)
+                    array[j++] = array[i];
+                else if (mapping[found].Value != '\0')
+                    array[j++] = mapping[found].Value;
+            }
+            return new String(array, 0, j);
+        }
+
+        public static string ToSlug(this string self) {
+            if (String.IsNullOrEmpty(self))
+                return String.Empty;
+            var sb = new StringBuilder(self.Trim().ToLowerInvariant().Translate(
+                "àéèêëîïôùüçñ•+/ &|[](){}?!;:,.°",
+                "aeeeeiiouucn--____"));
+            sb.Replace("œ", "oe")
+                .Replace("æ", "ae")
+                .Replace("\"", "")
+                .Replace("l\'", "")
+                .Replace("l’", "")
+                .Replace("d\'", "")
+                .Replace("d’", "")
+                .Replace("'", "")
+                .Replace("’", "")
+                .Replace("_-_-_", "-")
+                .Replace("_-_", "-")
+                .Replace("___", "_")
+                .Replace("__", "_")
+                ;
+            return sb.ToString();
+        }
+
+        #endregion
+
+        #region AnyOf
+
+        /// <summary>
+        /// Check if the char is any of the candidates chars.
+        /// </summary>
+        /// <param name="self">The char to test</param>
+        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
+        public static bool AnyOf(this char self, params char[] candidates) {
+            for (int i = 0; i < candidates.Length; i++) {
+                if (self == candidates[i])
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool ContainsAnyOf(this string self, params char[] candidates) {
+            Array.Sort(candidates);
+            return BinaryContainsAnyOf(self, candidates);
+        }
+
+        public static bool BinaryContainsAnyOf(this string self, params char[] candidates) {
+            foreach (var c in self) {
+                if (Array.BinarySearch(candidates, c) >= 0)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool AnyOf(this string self, StringComparison comparisonType, params string[] candidates) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            for (int i = 0; i < candidates.Length; i++) {
+                if (self.Equals(candidates[i], comparisonType))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the char is any of the candidates chars.
+        /// </summary>
+        /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
+        /// <param name="self">The char to test</param>
+        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
+        public static bool BinaryAnyOf(this char self, char[] candidates) {
+            return Array.BinarySearch(candidates, self) >= 0;
+        }
+
+        #endregion
+
+        #region Nullify methods
+
+        public static string NullifyWhiteSpace(this string value) {
+            if (String.IsNullOrWhiteSpace(value))
+                return null;
+            return value;
+        }
+        public static string NullifyEmpty(this string value) {
+            if (String.IsNullOrEmpty(value))
+                return null;
+            return value;
+        }
+
+        #endregion
+
+        #region Truncate
+
+        public static string Truncate(this string self, int maxLength, string ellipsis = "…") {
+            if (ellipsis == null)
+                throw new ArgumentNullException("ellipsis");
+            if (maxLength < ellipsis.Length)
+                throw new ArgumentOutOfRangeException("maxLength");
+
+            if (!String.IsNullOrEmpty(self) && self.Length > maxLength)
+                return self.Substring(0, maxLength - ellipsis.Length) + ellipsis;
+            return self;
         }
 
         #endregion
