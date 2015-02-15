@@ -34,19 +34,17 @@ namespace WmcSoft.Collections.Generic
         private readonly Func<T, T, int> comparer;
 
         public AnonymousComparer(Func<T, T, int> comparer) {
-            if (comparer == null) {
+            if (comparer == null)
                 throw new ArgumentNullException("comparer");
-            }
+
             this.comparer = comparer;
         }
 
         public int Compare(T x, T y) {
-            if (x == null) {
-                throw new ArgumentNullException("x");
-            }
-            if (y == null) {
-                throw new ArgumentNullException("y");
-            }
+            if (x == null)
+                return y != null ? 1 : 0;
+            if (y == null)
+                return -1;
             return this.comparer(x, y);
         }
     }
