@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core.Tests", "..\WmcSoft.Core.Tests\WmcSoft.Core.Tests.csproj", "{FBD57B8C-27F2-4EB2-8F49-5483A0791854}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E5C5EA0-2911-4C9E-9179-391E66320761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E5C5EA0-2911-4C9E-9179-391E66320761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E5C5EA0-2911-4C9E-9179-391E66320761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E5C5EA0-2911-4C9E-9179-391E66320761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD57B8C-27F2-4EB2-8F49-5483A0791854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD57B8C-27F2-4EB2-8F49-5483A0791854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD57B8C-27F2-4EB2-8F49-5483A0791854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD57B8C-27F2-4EB2-8F49-5483A0791854}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
