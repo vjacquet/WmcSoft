@@ -33,10 +33,19 @@ using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Provides a set of static methods to extend the <see cref="String"/> class.
+    /// </summary>
     public static class StringExtension
     {
         #region Substring
 
+        /// <summary>
+        /// Extracts the substring that precedes the <paramref name="find"/> char.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
         public static string SubstringBefore(this string self, char find) {
             if (String.IsNullOrEmpty(self))
                 return self;
@@ -47,6 +56,12 @@ namespace WmcSoft
             return self.Substring(0, index);
         }
 
+        /// <summary>
+        /// Extracts the substring that precedes the <paramref name="find"/> string.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
         public static string SubstringBefore(this string self, string find) {
             if (String.IsNullOrEmpty(self) || String.IsNullOrEmpty(find))
                 return self;
@@ -57,6 +72,12 @@ namespace WmcSoft
             return self.Substring(0, index);
         }
 
+        /// <summary>
+        /// Extracts the substring that follows the <paramref name="find"/> char.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
         public static string SubstringAfter(this string self, char find) {
             if (String.IsNullOrEmpty(self))
                 return self;
@@ -67,6 +88,12 @@ namespace WmcSoft
             return self.Substring(index + 1);
         }
 
+        /// <summary>
+        /// Extracts the substring that follows the <paramref name="find"/> string.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
         public static string SubstringAfter(this string self, string find) {
             if (String.IsNullOrEmpty(self) || String.IsNullOrEmpty(find))
                 return self;
@@ -77,6 +104,13 @@ namespace WmcSoft
             return self.Substring(index + find.Length);
         }
 
+        /// <summary>
+        /// Extracts the substring between the prefix and the suffix.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="prefix">The prefix.</param>
+        /// <param name="suffix">The suffix.</param>
+        /// <returns>The substring between the prefix and the suffix.</returns>
         public static string SubstringBetween(this string self, string prefix, string suffix) {
             if (String.IsNullOrEmpty(self))
                 return self;
@@ -94,32 +128,58 @@ namespace WmcSoft
             return self.Substring(start, end - start);
         }
 
-        public static string Left(this string value, int length) {
-            return value.Substring(0, length);
+        /// <summary>
+        /// Extracts the <paramref name="length"/> chars at the left of the string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>The substring.</returns>
+        public static string Left(this string self, int length) {
+            return self.Substring(0, length);
         }
-        public static string Mid(this string value, int start, int length) {
-            return value.Substring(start, length);
-        }
-        public static string Right(this string value, int length) {
-            return value.Substring(value.Length - length, length);
+        /// <summary>
+        /// Extracts the <paramref name="length"/> chars at the right of the string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>The substring.</returns>
+        public static string Right(this string self, int length) {
+            return self.Substring(self.Length - length, length);
         }
 
         #endregion
 
         #region Case operations
 
+        /// <summary>
+        /// Capitalizes the specified string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The capitalized string</returns>
         public static string Capitalize(this string self, CultureInfo culture) {
             if (String.IsNullOrEmpty(self))
                 return self;
             return Char.ToUpper(self[0], culture) + self.Substring(1).ToLower(culture);
         }
 
+        /// <summary>
+        /// Capitalizes the specified string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <returns>The capitalized string</returns>
         public static string Capitalize(this string self) {
             if (String.IsNullOrEmpty(self))
                 return self;
             return Char.ToUpper(self[0]) + self.Substring(1).ToLower();
         }
 
+        /// <summary>
+        /// Capitalizes the specified array of strings.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] Capitalize(this string[] self, CultureInfo culture) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -128,6 +188,11 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Capitalizes the specified array of strings.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] Capitalize(this string[] self) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -136,6 +201,12 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Converts the string in the specified array to uppercase.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] ToUpper(this string[] self, CultureInfo culture) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -144,6 +215,11 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Converts the string in the specified array to uppercase.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] ToUpper(this string[] self) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -152,6 +228,11 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Converts the string in the specified array to uppercase.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] ToUpperInvariant(this string[] self) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -160,6 +241,12 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Converts the string in the specified array to lowercase.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] ToLower(this string[] self, CultureInfo culture) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -168,6 +255,11 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Converts the string in the specified array to lowercase.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] ToLower(this string[] self) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -176,6 +268,11 @@ namespace WmcSoft
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Converts the string in the specified array to lowercase.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <returns>The converted array of strings</returns>
         public static string[] ToLowerInvariant(this string[] self) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -188,6 +285,11 @@ namespace WmcSoft
 
         #region Join
 
+        /// <summary>
+        /// Joins the sequence of strings into a single string.
+        /// </summary>
+        /// <param name="self">The sequence of strings.</param>
+        /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self) {
             StringBuilder sb = new StringBuilder();
             foreach (string s in self) {
@@ -196,6 +298,12 @@ namespace WmcSoft
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Joins the sequence of strings into a single string, using the specified separator.
+        /// </summary>
+        /// <param name="self">The sequence of strings.</param>
+        /// <param name="separator">The separator.</param>
+        /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self, string separator) {
             var sb = new StringBuilder();
             var enumerator = self.GetEnumerator();
@@ -207,6 +315,12 @@ namespace WmcSoft
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Joins the sequence of strings into a single string, using the specified separator.
+        /// </summary>
+        /// <param name="self">The sequence of strings.</param>
+        /// <param name="separator">The separator.</param>
+        /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self, char separator) {
             var sb = new StringBuilder();
             var enumerator = self.GetEnumerator();
@@ -222,22 +336,57 @@ namespace WmcSoft
 
         #region FormatWith
 
+        /// <summary>
+        /// Replaces one or more format item in a specified string with the string representation of a corresponding object in a specified object.
+        /// </summary>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of the corresponding objects in <paramref name="args"/>.</returns>
         public static string FormatWith(this string format, params object[] args) {
             return String.Format(format, args);
         }
 
+        /// <summary>
+        /// Replaces one or more format item in a specified string with the string representation of a specified object.
+        /// </summary>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="arg0">The object to format.</param>
+        /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of <paramref name="arg0"/>.</returns>
         public static string FormatWith(this string format, object arg0) {
             return String.Format(format, arg0);
         }
 
+        /// <summary>
+        /// Replaces one or more format item in a specified string with the string representation of two specified objects.
+        /// </summary>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="arg0">The first object to format.</param>
+        /// <param name="arg1">The second object to format.</param>
+        /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of <paramref name="arg0"/> and <paramref name="arg1"/>.</returns>
         public static string FormatWith(this string format, object arg0, object arg1) {
             return String.Format(format, arg0, arg1);
         }
 
+        /// <summary>
+        /// Replaces one or more format item in a specified string with the string representation of three specified objects.
+        /// </summary>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="arg0">The first object to format.</param>
+        /// <param name="arg1">The second object to format.</param>
+        /// <param name="arg2">The third object to format.</param>
+        /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of <paramref name="arg0"/>, <paramref name="arg1"/> and <paramref name="arg2"/>.</returns>
         public static string FormatWith(this string format, object arg0, object arg1, object arg2) {
             return String.Format(format, arg0, arg1, arg2);
         }
 
+        /// <summary>
+        /// Replaces one or more format item in a specified string with the string representation of a corresponding object in a specified object.
+        /// A specified parameter supplies culture-specific formatting information.
+        /// </summary>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of the corresponding objects in <paramref name="args"/>.</returns>
         public static string FormatWith(this string format, IFormatProvider provider, params object[] args) {
             return String.Format(format, provider, args);
         }
@@ -246,6 +395,12 @@ namespace WmcSoft
 
         #region Remove
 
+        /// <summary>
+        /// Removes the specified chars from the string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="args">The chars to remove.</param>
+        /// <returns>The string without the specified chars.</returns>
         public static string Remove(this string self, params char[] args) {
             StringBuilder sb = new StringBuilder(self);
             foreach (var arg in args) {
@@ -254,6 +409,12 @@ namespace WmcSoft
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Removes the specified substrings from the string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="args">The substrings to remove.</param>
+        /// <returns>The string without the specified substrings.</returns>
         public static string Remove(this string self, params string[] args) {
             StringBuilder sb = new StringBuilder(self);
             foreach (var arg in args) {
@@ -266,6 +427,13 @@ namespace WmcSoft
 
         #region Translate
 
+        /// <summary>
+        /// Translates the chars of the <paramref name="source "/> into the corresponding chars in the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="source">The source chars.</param>
+        /// <param name="target">The target chars.</param>
+        /// <returns>The translated string.</returns>
         public static string Translate(this string self, string source, string target) {
             var normalized = target;
             if (target.Length < source.Length)
@@ -285,29 +453,6 @@ namespace WmcSoft
                     array[j++] = mapping[found].Value;
             }
             return new String(array, 0, j);
-        }
-
-        public static string ToSlug(this string self) {
-            if (String.IsNullOrEmpty(self))
-                return String.Empty;
-            var sb = new StringBuilder(self.Trim().ToLowerInvariant().Translate(
-                "àéèêëîïôùüçñ•+/ &|[](){}?!;:,.°",
-                "aeeeeiiouucn--____"));
-            sb.Replace("œ", "oe")
-                .Replace("æ", "ae")
-                .Replace("\"", "")
-                .Replace("l\'", "")
-                .Replace("l’", "")
-                .Replace("d\'", "")
-                .Replace("d’", "")
-                .Replace("'", "")
-                .Replace("’", "")
-                .Replace("_-_-_", "-")
-                .Replace("_-_", "-")
-                .Replace("___", "_")
-                .Replace("__", "_")
-                ;
-            return sb.ToString();
         }
 
         #endregion
@@ -341,6 +486,13 @@ namespace WmcSoft
             return false;
         }
 
+        /// <summary>
+        /// Check if the char is any of the candidates chars.
+        /// </summary>
+        /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
+        /// <param name="self">The char to test</param>
+        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
         public static bool AnyOf(this string self, StringComparison comparisonType, params string[] candidates) {
             if (String.IsNullOrEmpty(self))
                 return false;
