@@ -30,7 +30,7 @@ using System.Text;
 
 namespace WmcSoft
 {
-    public static class DateTimeExtension
+    public static class DateTimeExtensions
     {
         public static int WeekOfMonth(this DateTime self) {
             int day = self.Day;

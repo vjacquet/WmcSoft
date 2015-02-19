@@ -33,7 +33,7 @@ using System.ComponentModel;
 
 namespace WmcSoft
 {
-    public static class StreamExtension
+    public static class StreamExtensions
     {
         #region Constants
 

@@ -36,7 +36,7 @@ namespace WmcSoft
     /// <summary>
     /// Provides a set of static methods to extend the <see cref="String"/> class.
     /// </summary>
-    public static class StringExtension
+    public static class StringExtensions
     {
         #region Substring
 
