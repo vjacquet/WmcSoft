@@ -32,7 +32,7 @@ using System.Globalization;
 
 namespace WmcSoft
 {
-    public static class IntExtension
+    public static class IntExtensions
     {
         public static bool AllFlagsSet<T>(this T flags, T flagsToTest) where T : IConvertible {
             IFormatProvider provider = CultureInfo.CurrentCulture;
