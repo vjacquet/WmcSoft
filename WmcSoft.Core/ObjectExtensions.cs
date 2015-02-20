@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WmcSoft
 {
@@ -37,7 +36,7 @@ namespace WmcSoft
     {
         public static T Clone<T>(this T self) where T : class {
             using (MemoryStream ms = new MemoryStream()) {
-                BinaryFormatter f = new BinaryFormatter();
+                var f = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 f.Serialize(ms, self);
                 ms.Rewind();
                 return (T)f.Deserialize(ms);
