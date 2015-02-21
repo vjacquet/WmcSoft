@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WmcSoft.Collections
+namespace WmcSoft.Collections.Generic
 {
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace WmcSoft.Collections
         /// <param name="list">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList list) {
+        public static void Suffle<T>(this IList<T> list) {
             Suffle(list, new Random());
         }
 
@@ -57,7 +57,7 @@ namespace WmcSoft.Collections
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList list, Random random) {
+        public static void Suffle<T>(this IList<T> list, Random random) {
             if (list == null)
                 throw new ArgumentNullException("list");
             if (random == null)
@@ -76,20 +76,6 @@ namespace WmcSoft.Collections
         #endregion
 
         #region SwapItems methods
-
-        /// <summary>
-        /// Swaps two items.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="i">The item at the <paramref name="i"/> index.</param>
-        /// <param name="j">The item at the <paramref name="j"/> index.</param>
-        /// <returns></returns>
-        public static IList SwapItems(this IList list, int i, int j) {
-            object temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-            return list;
-        }
 
         /// <summary>
         /// Swaps two items.
@@ -135,28 +121,6 @@ namespace WmcSoft.Collections
             return self;
         }
 
-        /// <summary>
-        /// Add a range of items to a list. 
-        /// </summary>
-        /// <param name="self">The list to add items to.</param>
-        /// <param name="items">The items to add to the list.</param>
-        /// <returns>The list.</returns>
-        public static IList AddRange(this IList self, IEnumerable items) {
-            if (self.IsSynchronized) {
-                lock (self.SyncRoot) {
-                    foreach (var each in items) {
-                        self.Add(each);
-                    }
-                }
-            } else {
-                foreach (var each in items) {
-                    self.Add(each);
-                }
-            }
-
-            return self;
-        }
-
         #endregion
 
         #region RemoveRange methods
@@ -187,93 +151,6 @@ namespace WmcSoft.Collections
             }
 
             return count;
-        }
-
-        /// <summary>
-        /// Remove a range of items from a list. 
-        /// </summary>
-        /// <param name="self">The list to remove items from.</param>
-        /// <param name="items">The items to remove from the list.</param>
-        /// <returns>The list.</returns>
-        public static void RemoveRange(this IList self, IEnumerable items) {
-            if (self.IsSynchronized) {
-                lock (self.SyncRoot) {
-                    foreach (var each in items) {
-                        self.Remove(each);
-                    }
-                }
-            } else {
-                foreach (var each in items) {
-                    self.Remove(each);
-                }
-            }
-        }
-
-        #endregion
-
-        #region ToString
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="enumerable">The enumerable.</param>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public static string ToString(this IEnumerable enumerable) {
-            string separator = System.Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.ListSeparator;
-            StringBuilder sb = new StringBuilder("[");
-
-            IEnumerator it = enumerable.GetEnumerator();
-            if (it.MoveNext()) {
-                sb.Append(it.Current.ToString());
-
-                while (it.MoveNext()) {
-                    sb.Append(separator);
-                    sb.Append(it.Current.ToString());
-                }
-            }
-
-            sb.Append(']');
-
-            return sb.ToString();
-        }
-
-        #endregion
-
-        #region Array methods
-
-        /// <summary>
-        /// Sorts the elements in an entire Array using the <see cref="IComparable&lt;T&gt;"/> generic interface implementation of each element of the Array.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the array.</typeparam>
-        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <returns>The one-dimensional, zero-based sorted Array</returns>
-        public static T[] Sort<T>(this T[] array) {
-            Array.Sort(array);
-            return array;
-        }
-        /// <summary>
-        /// Sorts the elements in an Array using the specified <see cref="Comparison&lt;T&gt;"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the array.</typeparam>
-        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparison">The <see cref="Comparison&lt;T&gt;"/> to use when comparing elements.</param>
-        /// <returns>The one-dimensional, zero-based sorted Array</returns>
-        public static T[] Sort<T>(this T[] array, Comparison<T> comparison) {
-            Array.Sort(array, comparison);
-            return array;
-        }
-        /// <summary>
-        /// Sorts the elements in an Array using the specified <see cref="IComparer&lt;T&gt;"/> generic interface.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the array.</typeparam>
-        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparer">The <see cref="IComparer&lt;T&gt;"/> generic interface implementation to use when comparing elements, or null to use the IComparable<T> generic interface implementation of each element.</param>
-        /// <returns>The one-dimensional, zero-based sorted Array</returns>
-        public static T[] Sort<T>(this T[] array, IComparer<T> comparer) {
-            Array.Sort(array, comparer);
-            return array;
         }
 
         #endregion
