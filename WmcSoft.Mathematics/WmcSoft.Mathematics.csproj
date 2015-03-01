@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arithmetics\DecimalArithmetics.cs" />
     <Compile Include="Arithmetics\IArithmetics.cs" />
     <Compile Include="Arithmetics\DoubleArithmetics.cs" />
     <Compile Include="Arithmetics\Int32Arithmetics.cs" />
