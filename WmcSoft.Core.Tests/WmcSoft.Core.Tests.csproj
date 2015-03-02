@@ -54,6 +54,7 @@
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexExtensionsTests.cs" />
+    <Compile Include="StreamExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">

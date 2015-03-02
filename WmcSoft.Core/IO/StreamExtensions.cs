@@ -27,6 +27,9 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Security.Permissions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WmcSoft.IO
 {
@@ -67,153 +70,97 @@ namespace WmcSoft.IO
 
         #region Copy methods
 
-        public static void Copy(Stream source, Stream target) {
+        /// <summary>
+        /// Copy a stream to another one, using the provided buffer.
+        /// </summary>
+        /// <param name="source">The source stream</param>
+        /// <param name="destination">The target stream</param>
+        /// <param name="buffer">The buffer</param>
+        /// <returns>The number of bytes copied</returns>
+        public static void CopyTo(this Stream source, Stream destination, byte[] buffer) {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            byte[] buffer = new byte[DefaultBufferSize];
-            InternalCopy(source, target, buffer);
-        }
-
-        public static void CopyTo(this Stream source, Stream target) {
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            byte[] buffer = new byte[DefaultBufferSize];
-            InternalCopy(source, target, buffer);
-        }
-
-        public static void CopyTo(this Stream source, Stream target, out long length) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            const int bufSize = 0x1000;
-            byte[] buffer = new byte[bufSize];
-            InternalCopy(source, target, buffer, out length);
-        }
-
-        public static void CopyTo(this Stream source, Stream target, byte[] buffer) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (target == null)
-                throw new ArgumentNullException("target");
+            if (destination == null)
+                throw new ArgumentNullException("destination");
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
-            if (buffer.Length == 0)
-                throw new InsufficientMemoryException(); // the buffer is too small
 
-            InternalCopy(source, target, buffer);
-        }
-
-        public static void CopyTo(this Stream source, Stream target, object sender, ProgressChangedEventHandler handler) {
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            byte[] buffer = new byte[DefaultBufferSize];
-            if (source.CanSeek)
-                InternalCopy(source, target, buffer, sender, handler, source.Length);
-            else
-                InternalCopy(source, target, buffer, sender, handler);
-        }
-
-        public static void CopyTo(this Stream source, Stream target, object sender, ProgressChangedEventHandler handler, long size) {
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            byte[] buffer = new byte[DefaultBufferSize];
-            if (size > 0)
-                InternalCopy(source, target, buffer, sender, handler, size);
-            else if (source.CanSeek)
-                InternalCopy(source, target, buffer, sender, handler, source.Length);
-            else
-                InternalCopy(source, target, buffer, sender, handler);
-        }
-
-        public static void CopyTo(this Stream source, Stream target, byte[] buffer, object sender, ProgressChangedEventHandler handler) {
-            if (target == null)
-                throw new ArgumentNullException("target");
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
-            if (buffer.Length == 0)
-                throw new InsufficientMemoryException(); // the buffer is too small
-
-            if (source.CanSeek)
-                InternalCopy(source, target, buffer, sender, handler, source.Length);
-            else
-                InternalCopy(source, target, buffer, sender, handler);
-        }
-
-        public static void CopyTo(this Stream source, Stream target, byte[] buffer, object sender, ProgressChangedEventHandler handler, long size) {
-            if (target == null)
-                throw new ArgumentNullException("target");
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
-            if (buffer.Length == 0)
-                throw new InsufficientMemoryException(); // the buffer is too small
-
-            if (size > 0)
-                InternalCopy(source, target, buffer, sender, handler, size);
-            else if (source.CanSeek)
-                InternalCopy(source, target, buffer, sender, handler, source.Length);
-            else
-                InternalCopy(source, target, buffer, sender, handler);
-        }
-
-        private static void InternalCopy(Stream source, Stream target, byte[] buffer) {
             int bufferSize = buffer.Length;
-            int bytesRead = 0;
-            while ((bytesRead = source.Read(buffer, 0, bufferSize)) > 0)
-                target.Write(buffer, 0, bytesRead);
-        }
+            if (bufferSize == 0)
+                throw new InsufficientMemoryException(); // the buffer is too small
 
-        private static void InternalCopy(Stream source, Stream target, byte[] buffer, out long length) {
-            int bufferSize = buffer.Length;
             int bytesRead = 0;
-            length = 0;
             while ((bytesRead = source.Read(buffer, 0, bufferSize)) > 0) {
+                destination.Write(buffer, 0, bytesRead);
+            }
+        }
+
+        [HostProtection(ExternalThreading = true)]
+        public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress, CancellationToken cancellationToken) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (destination == null)
+                throw new ArgumentNullException("destination");
+            if (bufferSize <= 0)
+                throw new ArgumentOutOfRangeException("bufferSize");
+            if (progress == null)
+                throw new ArgumentNullException("progress");
+
+            byte[] buffer = new byte[bufferSize];
+            long length = 0;
+            int bytesRead;
+            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) != 0) {
                 length += bytesRead;
-                target.Write(buffer, 0, bytesRead);
+                await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
+                progress.Report(length);
             }
         }
 
-        private static void InternalCopy(Stream source, Stream target, byte[] buffer, object sender, ProgressChangedEventHandler handler, long size) {
-            int bufferSize = buffer.Length;
-            int bytesRead = 0;
-            long totalRead = 0;
-            while ((bytesRead = source.Read(buffer, 0, bufferSize)) > 0) {
-                target.Write(buffer, 0, bytesRead);
-                totalRead += bytesRead;
-                handler(sender, new ProgressChangedEventArgs(unchecked((int)((totalRead * 100) / size)), totalRead));
-            }
-            handler(sender, new ProgressChangedEventArgs(100, totalRead));
+        [HostProtection(ExternalThreading = true)]
+        public static Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress) {
+            return CopyToAsync(source, destination, bufferSize, progress, CancellationToken.None);
         }
 
-        private static void InternalCopy(Stream source, Stream target, byte[] buffer, object sender, ProgressChangedEventHandler handler) {
-            int bufferSize = buffer.Length;
-            int bytesRead = 0;
-            long totalRead = 0;
-            while ((bytesRead = source.Read(buffer, 0, bufferSize)) > 0) {
-                target.Write(buffer, 0, bytesRead);
-                totalRead += bytesRead;
-                handler(sender, new ProgressChangedEventArgs(0, totalRead));
-            }
-            handler(sender, new ProgressChangedEventArgs(100, totalRead));
+        [HostProtection(ExternalThreading = true)]
+        public static Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress) {
+            return CopyToAsync(source, destination, DefaultBufferSize, progress, CancellationToken.None);
+        }
+
+        [HostProtection(ExternalThreading = true)]
+        public static Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress, CancellationToken cancellationToken) {
+            return CopyToAsync(source, destination, DefaultBufferSize, progress, cancellationToken);
         }
 
         #endregion
 
         #region Consume
 
-        public static void ConsumeAll(this Stream source) {
-            const int bufSize = 0x1000;
-            byte[] buf = new byte[bufSize];
+        public static long ConsumeAll(this Stream source) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            byte[] buffer = new byte[DefaultBufferSize];
+            long length = 0;
             int bytesRead = 0;
-            while ((bytesRead = source.Read(buf, 0, bufSize)) > 0)
-                ;
+            while ((bytesRead = source.Read(buffer, 0, DefaultBufferSize)) > 0)
+                length += bytesRead;
+            return length;
+        }
+
+        public static async Task<long> ConsumeAllAsync(this Stream source, CancellationToken cancellationToken) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            byte[] buffer = new byte[DefaultBufferSize];
+            long length = 0;
+            int bytesRead = 0;
+            while ((bytesRead = await source.ReadAsync(buffer, 0, DefaultBufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+                length += bytesRead;
+            return length;
+        }
+
+        public static Task<long> ConsumeAllAsync(this Stream source) {
+            return ConsumeAllAsync(source, CancellationToken.None);
         }
 
         #endregion
