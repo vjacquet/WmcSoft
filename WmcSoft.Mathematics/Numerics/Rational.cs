@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Numerics
 {
@@ -121,6 +117,16 @@ namespace WmcSoft.Numerics
 
         public bool Equals(Rational other) {
             return CompareTo(other) == 0;
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            return Equals((Rational)this);
+        }
+
+        public override int GetHashCode() {
+            return _numerator ^ _denominator;
         }
 
         #endregion
