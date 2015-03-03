@@ -133,7 +133,6 @@ namespace WmcSoft.Numerics
                 result += x._data[i] * y._data[i];
             }
             return result;
-
         }
 
         #endregion
@@ -154,7 +153,7 @@ namespace WmcSoft.Numerics
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            return Equals((Vector)this);
+            return Equals((Vector)obj);
         }
 
         public override int GetHashCode() {

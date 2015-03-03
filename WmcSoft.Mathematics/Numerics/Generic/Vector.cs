@@ -162,7 +162,7 @@ namespace WmcSoft.Numerics.Generic
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            return Equals((Vector<T, C>)this);
+            return Equals((Vector<T, C>)obj);
         }
 
         public override int GetHashCode() {

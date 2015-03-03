@@ -122,7 +122,7 @@ namespace WmcSoft.Numerics
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            return Equals((Rational)this);
+            return CompareTo((Rational)obj) == 0;
         }
 
         public override int GetHashCode() {
