@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BinaryFormatterTests.cs" />
     <Compile Include="DateTimeTests.cs" />
+    <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexExtensionsTests.cs" />
     <Compile Include="StreamExtensionsTests.cs" />

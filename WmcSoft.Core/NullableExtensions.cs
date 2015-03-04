@@ -33,6 +33,8 @@ namespace WmcSoft
 {
     public static class NullableExtensions
     {
+        #region NullIf
+
         public static T? NullIf<T>(this T self, T value)
             where T : struct, IEquatable<T> {
             if (self.Equals(value))
@@ -46,5 +48,54 @@ namespace WmcSoft
                 return null;
             return self;
         }
+
+        #endregion
+
+        #region ToString
+
+        public static string ToString<T>(this T? formattable, string format, IFormatProvider formatProvider)
+            where T : struct, IFormattable {
+            if (formattable.HasValue) {
+                return formattable.GetValueOrDefault().ToString(format, formatProvider);
+            }
+            return String.Empty;
+        }
+        public static string ToString<T>(this T? formattable, IFormatProvider formatProvider)
+            where T : struct, IFormattable {
+            return formattable.ToString(null, formatProvider);
+        }
+        public static string ToString<T>(this T? formattable, string format)
+            where T : struct, IFormattable {
+            return formattable.ToString(format, null);
+        }
+
+        #endregion
+
+        #region Map & Bind
+
+        //public static R? Map<T, R>(this T? value, Func<T, R> fn)
+        //    where T : struct
+        //    where R : struct {
+        //    if (value.HasValue)
+        //        return fn(value.GetValueOrDefault());
+        //    return null;
+        //}
+
+        //public static R? Map<T, R>(this T? value, Func<T, R?> fn)
+        //    where T : struct
+        //    where R : struct {
+        //    if (value.HasValue)
+        //        return fn(value.GetValueOrDefault());
+        //    return null;
+        //}
+
+        //public static R Bind<T, R>(this T? value, Func<T, R> fn)
+        //    where T : struct {
+        //    if (value.HasValue)
+        //        return fn(value.GetValueOrDefault());
+        //    return default(R);
+        //}
+
+        #endregion
     }
 }
