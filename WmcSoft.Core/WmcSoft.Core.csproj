@@ -51,6 +51,7 @@
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="FormatProviderExtensions.cs" />
     <Compile Include="FormatProviderHelper.cs" />
+    <Compile Include="ICloneable.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="NullableExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />

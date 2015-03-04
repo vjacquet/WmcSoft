@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core.Tests", "..\Wm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics", "..\WmcSoft.Mathematics\WmcSoft.Mathematics.csproj", "{041E639D-20CD-454F-90D5-2852AA58E126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics.Tests", "WmcSoft.Mathematics.Tests\WmcSoft.Mathematics.Tests.csproj", "{DD347637-5EC5-45BA-A377-5B6A09605A7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics.Tests", "..\WmcSoft.Mathematics.Tests\WmcSoft.Mathematics.Tests.csproj", "{DD347637-5EC5-45BA-A377-5B6A09605A7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
