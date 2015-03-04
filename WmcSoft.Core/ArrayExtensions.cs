@@ -34,7 +34,6 @@ namespace WmcSoft
 {
     public static class ArrayExtensions
     {
-
         #region Sort methods
 
         /// <summary>
