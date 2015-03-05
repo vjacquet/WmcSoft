@@ -22,38 +22,34 @@ namespace WmcSoft.Xml.Linq
 
         #endregion
 
-        #region SetValue
+        #region Set(Element|Attribute)?Value
 
         public static void SetValue(this XAttribute attribute, IFormattable value, string format, IFormatProvider formatProvider = null) {
-            attribute.SetValue(value != null ? value.ToString(format, formatProvider) : null);
+            attribute.SetValue(value != null ? value.ToString(format, formatProvider) : "");
         }
-        public static void SetValue<T>(this XAttribute attribute, T? value, string format, IFormatProvider formatProvider = null)
-            where T : struct, IFormattable {
-            attribute.SetValue(value.HasValue ? value.GetValueOrDefault().ToString(format, formatProvider) : null);
+        public static void SetValue(this XAttribute attribute, IFormattable value, IFormatProvider formatProvider) {
+            attribute.SetValue(value, null, formatProvider);
         }
 
         public static void SetValue(this XElement element, IFormattable value, string format, IFormatProvider formatProvider = null) {
-            element.SetValue(value != null ? value.ToString(format, formatProvider) : null);
+            element.SetValue(value != null ? value.ToString(format, formatProvider) : "");
         }
-        public static void SetValue<T>(this XElement element, T? value, string format, IFormatProvider formatProvider = null)
-            where T : struct, IFormattable {
-            element.SetValue(value.HasValue ? value.GetValueOrDefault().ToString(format, formatProvider) : null);
+        public static void SetValue(this XElement element, IFormattable value, IFormatProvider formatProvider ) {
+            element.SetValue(value, null, formatProvider);
         }
 
         public static void SetAttributeValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null) {
             element.SetAttributeValue(name, value != null ? value.ToString(format, formatProvider) : null);
         }
-        public static void SetValue<T>(this XElement element, XName name, T? value, string format, IFormatProvider formatProvider = null)
-            where T : struct, IFormattable {
-                element.SetAttributeValue(name, value.HasValue ? value.GetValueOrDefault().ToString(format, formatProvider) : null);
+        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider) {
+            element.SetAttributeValue(name, value, null, formatProvider);
         }
 
-        public static void SetElementValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider) {
+        public static void SetElementValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null) {
             element.SetElementValue(name, value != null ? value.ToString(format, formatProvider) : null);
         }
-        public static void SetElementValue<T>(this XElement element, XName name, T? value, string format, IFormatProvider formatProvider)
-            where T : struct, IFormattable {
-                element.SetElementValue(name, value.HasValue ? value.GetValueOrDefault().ToString(format, formatProvider) : null);
+        public static void SetElementValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider) {
+            element.SetElementValue(name, value, null, formatProvider);
         }
 
         #endregion

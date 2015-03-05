@@ -29,11 +29,32 @@ namespace WmcSoft.Xml.Linq.Tests
         }
 
         [TestMethod]
-        public void CheckSetValue() {
+        public void CheckSetValueWithDateTime() {
             var element = new XElement("Root");
-            var date = new DateTime(1789, 7, 14);
-            element.SetValue(date, "yyyyMMdd");
+            DateTime? dt;
+
+            dt = null;
+            element.SetValue(dt, "yyyyMMdd");
+            Assert.AreEqual("", element.Value);
+
+            dt = new DateTime(1789, 7, 14);
+            element.SetValue(dt, "yyyyMMdd");
             Assert.AreEqual("17890714", element.Value);
         }
+
+        [TestMethod]
+        public void CheckSetValueWithInt() {
+            var element = new XElement("Root");
+            int? n;
+
+            n = null;
+            element.SetValue(n, "x");
+            Assert.AreEqual("", element.Value);
+
+            n = 42;
+            element.SetValue(n, "x");
+            Assert.AreEqual("2a", element.Value);
+        }
+
     }
 }
