@@ -54,7 +54,7 @@ namespace WmcSoft.Numerics.Tests
         public void CanCombineADimensionsWithAnEmptyDimensions() {
             var x = new Dimensions(2, 5, 4);
             var y = new Dimensions();
-            var expected = new Dimensions(2, 5, 6);
+            var expected = new Dimensions(2, 5, 4);
             Assert.AreEqual(expected, Dimensions.Combine(x, y));
         }
 

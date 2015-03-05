@@ -35,10 +35,50 @@ namespace WmcSoft.Numerics
     [Serializable]
     public sealed class Valarray : IEnumerable<double>, ICloneable<Valarray>, IEquatable<Valarray>
     {
-        class SegmentEnumerator
+        class Writer
+        {
+            int _i;
+            double[] _data;
+            Func<double, double, double> _op;
+
+            public Writer(double[] data, Func<double, double, double> op) {
+                _data = data;
+                _op = op;
+            }
+
+            public void Write(double value, IEnumerator<double> enumerator) {
+                while (enumerator.MoveNext()) {
+                    _data[_i++] = _op(value, enumerator.Current);
+                }
+            }
+
+            public void Write(IEnumerator<double> enumerator, double value) {
+                while (enumerator.MoveNext()) {
+                    _data[_i++] = _op(enumerator.Current, value);
+                }
+            }
+
+            public void Write(IEnumerator<double> x, IEnumerator<double> y) {
+                while (x.MoveNext()) {
+                    if (!y.MoveNext()) {
+                        do {
+                            _data[_i++] = _op(x.Current, 0d);
+                        }
+                        while (x.MoveNext());
+                        break;
+                    }
+
+                    _data[_i++] = _op(x.Current, y.Current);
+                }
+                Write(0d, y);
+            }
+        }
+
+        class SegmentEnumerator : IEnumerator<double>
         {
             int _length;
             double[] _data;
+
             int _begin;
             int _end;
 
@@ -50,9 +90,16 @@ namespace WmcSoft.Numerics
                 _data = data;
             }
 
+            public bool NextSegment() {
+                _begin = _end - 1;
+                _end += _length;
+                return _end <= _data.Length;
+            }
+
+            #region IEnumerator Membres
+
             public double Current {
                 get { return _data[_begin]; }
-                set { _data[_begin] = value; }
             }
 
             public bool MoveNext() {
@@ -60,11 +107,23 @@ namespace WmcSoft.Numerics
                 return _begin < _end;
             }
 
-            public bool NextSegment() {
-                _begin = _end - 1;
-                _end += _length;
-                return _end <= _data.Length;
+            object System.Collections.IEnumerator.Current {
+                get { return Current; }
             }
+
+            public void Reset() {
+                _begin = 0;
+                _end = 0;
+            }
+
+            #endregion
+
+            #region IDisposable Membres
+
+            public void Dispose() {
+            }
+
+            #endregion
         }
 
         #region Fields
@@ -188,58 +247,20 @@ namespace WmcSoft.Numerics
             return this;
         }
 
-        SegmentEnumerator GetSegmentEnumerator() {
-            return new SegmentEnumerator(_dimensions[_dimensions.Count - 1], _data);
-        }
-
-        static void CombineSegments(SegmentEnumerator x, SegmentEnumerator y, Func<double, double, double> op, SegmentEnumerator output) {
-            while (x.MoveNext()) {
-                if (!y.MoveNext()) {
-                    do {
-                        output.MoveNext();
-                        output.Current = op(x.Current, 0d);
-                    }
-                    while (x.MoveNext());
-                    break;
-                }
-
-                output.MoveNext();
-                output.Current = op(x.Current, y.Current);
-            }
-            CombineSegments(0d, y, op, output);
-        }
-
-        static void CombineSegments(double value, SegmentEnumerator y, Func<double, double, double> op, SegmentEnumerator output) {
-            while (y.MoveNext()) {
-                output.MoveNext();
-                output.Current = op(value, y.Current);
-            }
-        }
-
-        static void CombineSegments(SegmentEnumerator y, double value, Func<double, double, double> op, SegmentEnumerator output) {
-            while (y.MoveNext()) {
-                output.MoveNext();
-                output.Current = op(y.Current, value);
-            }
-        }
-
-        static void Combine(SegmentEnumerator x, SegmentEnumerator y, Func<double, double, double> op, SegmentEnumerator output) {
+        static void Combine(SegmentEnumerator x, SegmentEnumerator y, Writer writer) {
             while (x.NextSegment()) {
                 if (!y.NextSegment()) {
                     do {
-                        output.NextSegment();
-                        CombineSegments(x, 0d, op, output);
+                        writer.Write(x, 0d);
                     }
-                    while (x.MoveNext());
+                    while (x.NextSegment());
                     break;
                 }
 
-                output.NextSegment();
-                CombineSegments(x, y, op, output);
+                writer.Write(x, y);
             }
             while (y.NextSegment()) {
-                output.NextSegment();
-                CombineSegments(0d, y, op, output);
+                writer.Write(0d, y);
             }
         }
 
@@ -251,7 +272,8 @@ namespace WmcSoft.Numerics
 
             var dimensions = Dimensions.Combine(x._dimensions, y._dimensions);
             var result = new Valarray(dimensions);
-            Combine(new SegmentEnumerator(x), new SegmentEnumerator(y), op, new SegmentEnumerator(result));
+            var writer = new Writer(result._data, op);
+            Combine(new SegmentEnumerator(x), new SegmentEnumerator(y), writer);
             return result;
         }
 
@@ -264,6 +286,27 @@ namespace WmcSoft.Numerics
         }
         public static Valarray Add(Valarray x, Valarray y) {
             return x + y;
+        }
+
+        public static Valarray operator -(Valarray x, Valarray y) {
+            return Combine(x, y, (a, b) => a - b);
+        }
+        public static Valarray Subtract(Valarray x, Valarray y) {
+            return x - y;
+        }
+
+        public static Valarray operator *(Valarray x, Valarray y) {
+            return Combine(x, y, (a, b) => a * b);
+        }
+        public static Valarray Multiply(Valarray x, Valarray y) {
+            return x * y;
+        }
+
+        public static Valarray operator /(Valarray x, Valarray y) {
+            return Combine(x, y, (a, b) => a / b);
+        }
+        public static Valarray Multiply(Valarray x, Valarray y) {
+            return x / y;
         }
 
         #endregion
