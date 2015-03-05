@@ -53,7 +53,7 @@ namespace WmcSoft
 
         #region ToString
 
-        public static string ToString<T>(this T? formattable, string format, IFormatProvider formatProvider)
+        public static string ToString<T>(this T? formattable, string format, IFormatProvider formatProvider = null)
             where T : struct, IFormattable {
             if (formattable.HasValue) {
                 return formattable.GetValueOrDefault().ToString(format, formatProvider);
@@ -63,10 +63,6 @@ namespace WmcSoft
         public static string ToString<T>(this T? formattable, IFormatProvider formatProvider)
             where T : struct, IFormattable {
             return formattable.ToString(null, formatProvider);
-        }
-        public static string ToString<T>(this T? formattable, string format)
-            where T : struct, IFormattable {
-            return formattable.ToString(format, null);
         }
 
         #endregion
