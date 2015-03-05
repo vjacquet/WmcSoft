@@ -218,6 +218,7 @@ namespace WmcSoft.Numerics
                 _data[index] = value;
             }
         }
+
         #endregion
 
         #region Methods
@@ -265,16 +266,38 @@ namespace WmcSoft.Numerics
         }
 
         static Valarray Combine(Valarray x, Valarray y, Func<double, double, double> op) {
-            if (x._dimensions.Count == 0)
-                return (Valarray)y.Clone();
-            if (y._dimensions.Count == 0)
-                return (Valarray)x.Clone();
+            if (x.Rank == 0)
+                return y.Clone();
+            if (y.Rank == 0)
+                return x.Clone();
 
             var dimensions = Dimensions.Combine(x._dimensions, y._dimensions);
             var result = new Valarray(dimensions);
             var writer = new Writer(result._data, op);
             Combine(new SegmentEnumerator(x), new SegmentEnumerator(y), writer);
             return result;
+        }
+
+        public Valarray Map(Func<double, double> op) {
+            if (Rank == 0)
+                return Clone();
+
+            var result = new Valarray(_dimensions);
+            var length = result._data.Length;
+            for (int i = 0; i < length; i++) {
+                result._data[i] = op(_data[i]);
+            }
+            return result;
+        }
+
+        public Valarray Transform(Func<double, double> op) {
+            if (Rank > 0) {
+                var length = _data.Length;
+                for (int i = 0; i < length; i++) {
+                    _data[i] = op(_data[i]);
+                }
+            }
+            return this;
         }
 
         #endregion
@@ -305,8 +328,64 @@ namespace WmcSoft.Numerics
         public static Valarray operator /(Valarray x, Valarray y) {
             return Combine(x, y, (a, b) => a / b);
         }
-        public static Valarray Multiply(Valarray x, Valarray y) {
+        public static Valarray Divide(Valarray x, Valarray y) {
             return x / y;
+        }
+
+        public static Valarray operator +(double scalar, Valarray valarray) {
+            return valarray.Map(x => scalar + x);
+        }
+        public static Valarray Add(double scalar, Valarray valarray) {
+            return scalar + valarray;
+        }
+
+        public static Valarray operator +(Valarray valarray, double scalar) {
+            return valarray.Map(x => x + scalar);
+        }
+        public static Valarray Add(Valarray valarray, double scalar) {
+            return valarray + scalar;
+        }
+
+        public static Valarray operator -(double scalar, Valarray valarray) {
+            return valarray.Map(x => scalar - x);
+        }
+        public static Valarray Subtract(double scalar, Valarray valarray) {
+            return scalar - valarray;
+        }
+
+        public static Valarray operator -(Valarray valarray, double scalar) {
+            return valarray.Map(x => x - scalar);
+        }
+        public static Valarray Subtract(Valarray valarray, double scalar) {
+            return valarray - scalar;
+        }
+
+        public static Valarray operator *(double scalar, Valarray valarray) {
+            return valarray.Map(x => scalar * x);
+        }
+        public static Valarray Multiply(double scalar, Valarray valarray) {
+            return scalar * valarray;
+        }
+
+        public static Valarray operator *(Valarray valarray, double scalar) {
+            return valarray.Map(x => x * scalar);
+        }
+        public static Valarray Multiply(Valarray valarray, double scalar) {
+            return valarray * scalar;
+        }
+
+        public static Valarray operator /(double scalar, Valarray valarray) {
+            return valarray.Map(x => scalar / x);
+        }
+        public static Valarray Divide(double scalar, Valarray valarray) {
+            return scalar / valarray;
+        }
+
+        public static Valarray operator /(Valarray valarray, double scalar) {
+            return valarray.Map(x => x / scalar);
+        }
+        public static Valarray Divide(Valarray valarray, double scalar) {
+            return valarray / scalar;
         }
 
         #endregion
