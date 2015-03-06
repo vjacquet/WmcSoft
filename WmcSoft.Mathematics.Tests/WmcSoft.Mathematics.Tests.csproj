@@ -53,6 +53,7 @@
     <Compile Include="CalculatorTests.cs" />
     <Compile Include="Numerics\Generic\VectorTests.cs" />
     <Compile Include="Numerics\RationalTests.cs" />
+    <Compile Include="Numerics\MatrixTests.cs" />
     <Compile Include="Numerics\ValarrayTests.cs" />
     <Compile Include="Numerics\VectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

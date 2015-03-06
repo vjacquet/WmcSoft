@@ -89,13 +89,34 @@ namespace WmcSoft.Numerics
             }
         }
 
-        public static Matrix Identity(int n) {
-            var matrix = new Matrix(n);
-            var length = matrix._storage.data.Length;
-            for (int i = 0; i < length; i += n) {
-                matrix._storage.data[i] = 1d;
+        public Matrix(double[,] values)
+            : this(values.GetLength(0), values.GetLength(1)) {
+            var k = 0;
+            foreach (var value in values) {
+                _storage.data[k++] = value;
             }
-            return matrix;
+        }
+
+        public static Matrix Identity(int n) {
+            var result = new Matrix(n);
+            var length = result._storage.data.Length;
+            for (int i = 0; i < length; i += n) {
+                result._storage.data[i] = 1d;
+            }
+            return result;
+        }
+
+        public Matrix Transpose() {
+            var size = Size;
+            var result = new Matrix(size[1], size[0]);
+            var length = _storage.data.Length - _storage.m; // to avoid overflow for huge matrices
+            var k = 0;
+            for (var j = 0; j < _storage.m; j++, length++) {
+                for (var i = j; i <= length; i += _storage.m, k++) {
+                    result._storage.data[i] = _storage.data[k];
+                }
+            }
+            return result;
         }
 
         #endregion
@@ -178,7 +199,7 @@ namespace WmcSoft.Numerics
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            return Equals((Vector)obj);
+            return Equals((Matrix)obj);
         }
 
         public override int GetHashCode() {
