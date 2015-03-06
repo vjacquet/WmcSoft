@@ -206,8 +206,8 @@ namespace WmcSoft.Numerics
         #region Properties
 
         public int Rank { get { return _dimensions.Count; } }
-        public Dimensions Shape { get { return _dimensions; } }
-        public int Size { get { return _data == null ? 0 : _data.Length; } }
+        public Dimensions Size { get { return _dimensions; } }
+        public int Cardinality { get { return _data == null ? 0 : _data.Length; } }
         public double this[params int[] indices] {
             get {
                 var index = _dimensions.GetIndex(indices);
@@ -386,6 +386,20 @@ namespace WmcSoft.Numerics
         }
         public static Valarray Divide(Valarray valarray, double scalar) {
             return valarray / scalar;
+        }
+
+        public static Valarray operator -(Valarray x) {
+            return x.Map(v => -v);
+        }
+        public static Valarray Negate(Valarray x) {
+            return -x;
+        }
+
+        public static Valarray operator +(Valarray x) {
+            return x.Clone();
+        }
+        public static Valarray Plus(Valarray x) {
+            return x;
         }
 
         #endregion

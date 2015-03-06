@@ -61,11 +61,20 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Both vectors must have the same length..
+        ///   Recherche une chaîne localisée semblable à The matrices must have the same size..
         /// </summary>
-        internal static string BothVectorMustHaveSameLengthError {
+        internal static string MatricesMustHaveTheSameSizeError {
             get {
-                return ResourceManager.GetString("BothVectorMustHaveSameLengthError", resourceCulture);
+                return ResourceManager.GetString("MatricesMustHaveTheSameSizeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The vectors must have the same size..
+        /// </summary>
+        internal static string VectorsMustHaveSameSizeError {
+            get {
+                return ResourceManager.GetString("VectorsMustHaveSameSizeError", resourceCulture);
             }
         }
     }

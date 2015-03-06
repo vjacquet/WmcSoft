@@ -63,6 +63,7 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
+        public int Rank { get { return _data == null ? 0 : 1; } }
         public int Cardinality { get { return _data == null ? 0 : _data.Length; } }
         public double this[int index] { get { return _data[index]; } }
 
@@ -73,7 +74,7 @@ namespace WmcSoft.Numerics
         public static Vector operator +(Vector x, Vector y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)
-                throw new ArgumentException(Resources.BothVectorMustHaveSameLengthError);
+                throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
 
             var result = new Vector(length);
             for (int i = 0; i < length; i++) {
@@ -88,7 +89,7 @@ namespace WmcSoft.Numerics
         public static Vector operator -(Vector x, Vector y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)
-                throw new ArgumentException(Resources.BothVectorMustHaveSameLengthError);
+                throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
 
             var result = new Vector(length);
             for (int i = 0; i < length; i++) {
@@ -152,7 +153,7 @@ namespace WmcSoft.Numerics
         public static double DotProduct(Vector x, Vector y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)
-                throw new ArgumentException(Resources.BothVectorMustHaveSameLengthError);
+                throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
 
             var result = 0d;
             for (int i = 0; i < length; i++) {

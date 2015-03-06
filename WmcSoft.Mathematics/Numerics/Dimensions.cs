@@ -37,6 +37,8 @@ namespace WmcSoft.Numerics
     /// </summary>
     public struct Dimensions : IReadOnlyList<int>, IEquatable<Dimensions>
     {
+        public static readonly Dimensions Empty;
+
         private readonly int[] _dimensions;
 
         public Dimensions(params int[] dimensions) {
@@ -168,6 +170,13 @@ namespace WmcSoft.Numerics
             return hash;
         }
 
+        #endregion
+
+        #region Overrides
+
+        public override string ToString() {
+            return String.Join(" x ", _dimensions);
+        }
         #endregion
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="IntExtensions.cs" />
     <Compile Include="Numerics\Dimensions.cs" />
     <Compile Include="Numerics\Generic\Vector.cs" />
+    <Compile Include="Numerics\Matrix.cs" />
     <Compile Include="Numerics\Rational.cs" />
     <Compile Include="Numerics\Valarray.cs" />
     <Compile Include="Numerics\Vector.cs" />

@@ -49,7 +49,7 @@ namespace WmcSoft.Numerics.Generic
         public static Vector<T, C> operator +(Vector<T, C> x, Vector<T, C> y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)
-                throw new ArgumentException(Resources.BothVectorMustHaveSameLengthError);
+                throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
 
             var result = new Vector<T, C>(length);
             for (int i = 0; i < length; i++) {
@@ -64,7 +64,7 @@ namespace WmcSoft.Numerics.Generic
         public static Vector<T, C> operator -(Vector<T, C> x, Vector<T, C> y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)
-                throw new ArgumentException(Resources.BothVectorMustHaveSameLengthError);
+                throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
 
             var result = new Vector<T, C>(length);
             for (int i = 0; i < length; i++) {
@@ -134,7 +134,7 @@ namespace WmcSoft.Numerics.Generic
         public static T DotProduct(Vector<T, C> x, Vector<T, C> y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)
-                throw new ArgumentException(Resources.BothVectorMustHaveSameLengthError);
+                throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
 
             var result = default(T);
             for (int i = 0; i < length; i++) {
