@@ -43,6 +43,13 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
+        public void CanCastToInt() {
+            var q = new Rational(4, 2);
+
+            Assert.AreEqual(2, (int)q);
+        }
+
+        [TestMethod]
         public void CanSimplify() {
             var x = new Rational(2, 6);
             var y = new Rational(1, 6);

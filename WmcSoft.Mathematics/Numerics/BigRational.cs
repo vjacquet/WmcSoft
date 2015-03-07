@@ -56,6 +56,8 @@ namespace WmcSoft.Numerics
         public BigInteger Numerator { get { return _numerator; } }
         public BigInteger Denominator { get { return _denominator; } }
 
+        public bool IsInteger { get { return _denominator == 1 || _numerator % _denominator == 0; } }
+
         #endregion
 
         #region Operators
@@ -65,6 +67,25 @@ namespace WmcSoft.Numerics
         }
         public static BigRational FromInt32(int x) {
             return (BigRational)x;
+        }
+
+        public static implicit operator BigRational(BigInteger x) {
+            return new BigRational(x, 1);
+        }
+        public static BigRational FromBigInteger(BigInteger x) {
+            return (BigRational)x;
+        }
+
+        public static explicit operator BigInteger(BigRational q) {
+            if (q._denominator == 1)
+                return q._numerator;
+            if (q._numerator % q._denominator == 0)
+                return q._numerator / q._denominator;
+
+            throw new InvalidCastException();
+        }
+        public static BigInteger FromBigInteger(BigRational q) {
+            return (BigInteger)q;
         }
 
         public static BigRational operator +(BigRational x, BigRational y) {

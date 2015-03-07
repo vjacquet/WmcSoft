@@ -55,6 +55,8 @@ namespace WmcSoft.Numerics
         public int Numerator { get { return _numerator; } }
         public int Denominator { get { return _denominator; } }
 
+        public bool IsInteger { get { return _denominator == 1 || _numerator % _denominator == 0; } }
+
         #endregion
 
         #region Operators
@@ -64,6 +66,18 @@ namespace WmcSoft.Numerics
         }
         public static Rational FromInt32(int x) {
             return (Rational)x;
+        }
+
+        public static explicit operator int(Rational q) {
+            if (q._denominator == 1)
+                return q._numerator;
+            if (q._numerator % q._denominator == 0)
+                return q._numerator / q._denominator;
+
+            throw new InvalidCastException();
+        }
+        public static int FromInt32(Rational q) {
+            return (int)q;
         }
 
         public static Rational operator +(Rational x, Rational y) {
