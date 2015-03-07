@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,7 @@
     <Compile Include="Numerics\Dimensions.cs" />
     <Compile Include="Numerics\Generic\Vector.cs" />
     <Compile Include="Numerics\Matrix.cs" />
+    <Compile Include="Numerics\BigRational.cs" />
     <Compile Include="Numerics\Rational.cs" />
     <Compile Include="Numerics\Valarray.cs" />
     <Compile Include="Numerics\Vector.cs" />
