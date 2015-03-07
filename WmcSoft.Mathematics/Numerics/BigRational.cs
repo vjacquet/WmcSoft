@@ -68,6 +68,8 @@ namespace WmcSoft.Numerics
         }
 
         public static BigRational operator +(BigRational x, BigRational y) {
+            if (x._denominator == y._denominator)
+                return new BigRational(x._numerator + y._numerator, x._denominator);
             return new BigRational(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
         }
         public static BigRational Add(BigRational x, BigRational y) {
@@ -75,6 +77,8 @@ namespace WmcSoft.Numerics
         }
 
         public static BigRational operator -(BigRational x, BigRational y) {
+            if (x._denominator == y._denominator)
+                return new BigRational(x._numerator + y._numerator, x._denominator);
             return new BigRational(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
         }
         public static BigRational Subtract(BigRational x, BigRational y) {

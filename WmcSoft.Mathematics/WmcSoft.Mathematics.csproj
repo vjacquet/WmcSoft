@@ -40,6 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algebra\GroupLikeExtensions.cs" />
+    <Compile Include="Algebra\IGroupLike.cs" />
+    <Compile Include="Algebra\IGroupLikeTraits.cs" />
+    <Compile Include="Algebra\IRingLike.cs" />
+    <Compile Include="Algebra\RingLikeExtensions.cs" />
     <Compile Include="Arithmetics\DecimalArithmetics.cs" />
     <Compile Include="Arithmetics\IArithmetics.cs" />
     <Compile Include="Arithmetics\DoubleArithmetics.cs" />
@@ -71,6 +76,11 @@
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Algebra\AlgebraDiagram.cd" />
+    <Compile Include="Algebra\IRingLikeTraits.cs" />
+    <None Include="Numerics\NumericsDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -67,6 +67,8 @@ namespace WmcSoft.Numerics
         }
 
         public static Rational operator +(Rational x, Rational y) {
+            if (x._denominator == y._denominator)
+                return new Rational(x._numerator + y._numerator, x._denominator);
             return new Rational(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
         }
         public static Rational Add(Rational x, Rational y) {
@@ -74,6 +76,8 @@ namespace WmcSoft.Numerics
         }
 
         public static Rational operator -(Rational x, Rational y) {
+            if (x._denominator == y._denominator)
+                return new Rational(x._numerator - y._numerator, x._denominator);
             return new Rational(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
         }
         public static Rational Subtract(Rational x, Rational y) {

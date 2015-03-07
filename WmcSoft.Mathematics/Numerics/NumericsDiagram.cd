@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Numerics.Valarray" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIBAAAABRAAiBAI6AcDBAYAAQABAIIAACAFAAAAABA=</HashCode>
+      <FileName>Numerics\Valarray.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="WmcSoft.Numerics.BigRational" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQgAAAQE4AUDBAAAEAAAEIAAICAEAAAAACA=</HashCode>
+      <FileName>Numerics\BigRational.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Numerics.Dimensions" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAABQUiAIAAAQAAAQBAIAAAAABAAAAQiA=</HashCode>
+      <FileName>Numerics\Dimensions.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Numerics.Matrix" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAAQAAgAAA6AdDAAAAAAAAAoIAAGAEAAgAgAA=</HashCode>
+      <FileName>Numerics\Matrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Numerics.Rational" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQgAAAQE4AUDBAAIAAAAEIAAICAECAAAACA=</HashCode>
+      <FileName>Numerics\Rational.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Numerics.Vector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBQAAABQAAAAAA6AcDAAAAAAAAAIIAACAEAAAAAAA=</HashCode>
+      <FileName>Numerics\Vector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

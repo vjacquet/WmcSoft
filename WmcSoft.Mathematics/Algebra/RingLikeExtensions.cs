@@ -24,38 +24,28 @@
 
 #endregion
 
-namespace WmcSoft.Arithmetics
+namespace WmcSoft.Algebra
 {
-    /// <summary>
-    /// Interface to efficiently implement calculators
-    /// </summary>
-    /// <typeparam name="T">The type used in the operators</typeparam>
-    /// <remarks>See <http://www.codeproject.com/Articles/8531/Using-generics-for-calculations>.</remarks>
-    public interface IArithmetics<T>
+    public static class RingLikeExtensions
     {
-        // Binary operators
-        T Add(T x, T y);
-        T Subtract(T x, T y);
-        T Multiply(T x, T y);
-        T Divide(T x, T y);
-        T Remainder(T x, T y);
-        T DivideRemainder(T x, T y, out T remainder);
+        public static bool IsSemiRing<R>(this R r) where R : IRingLikeTraits {
+            return r.Addition.IsMonoid() && r.Multiplication.IsMonoid();
+        }
 
-        // Unary operators
-        T Negate(T x);
-        T Reciprocal(T x);
+        public static bool IsNearRing<R>(this R r) where R : IRingLikeTraits {
+            return r.Addition.IsGroup() && r.Multiplication.IsMonoid();
+        }
 
-        // Traits
-        T Zero { get; } // identity for addition
-        T One { get; } // identity for multiplication
+        public static bool IsRing<R>(this R r) where R : IRingLikeTraits {
+            return r.Addition.IsAbelianGroup() && r.Multiplication.IsMonoid();
+        }
 
-        bool SupportReciprocal { get; }
+        public static bool IsCommutativeRing<R>(this R r) where R : IRingLikeTraits {
+            return r.IsRing() && r.Multiplication.IsCommutative;
+        }
 
-        //public T MinValue { get; }
-        //public T MaxValue { get; }
-
-        //public bool SupportInfinity { get; }
-        //public bool IsPositiveInfinity(T x);
-        //public bool IsNegativeInfinity(T x);
+        public static bool IsBooleanRing<R>(this R r) where R : IRingLikeTraits {
+            return r.IsCommutativeRing() && r.Multiplication.IsIdempotent;
+        }
     }
 }
