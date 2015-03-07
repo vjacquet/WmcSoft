@@ -36,6 +36,8 @@ namespace WmcSoft.Numerics
     [Serializable]
     public struct Vector : IEquatable<Vector>
     {
+        public static Vector Empty;
+
         #region Fields
 
         private readonly double[] _data;

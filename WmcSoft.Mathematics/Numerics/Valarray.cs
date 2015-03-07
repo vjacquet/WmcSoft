@@ -35,6 +35,10 @@ namespace WmcSoft.Numerics
     [Serializable]
     public sealed class Valarray : IEnumerable<double>, ICloneable<Valarray>, IEquatable<Valarray>
     {
+        public static Valarray Empty;
+
+        #region Private utilities
+
         class Writer
         {
             int _i;
@@ -125,6 +129,8 @@ namespace WmcSoft.Numerics
 
             #endregion
         }
+
+        #endregion
 
         #region Fields
 

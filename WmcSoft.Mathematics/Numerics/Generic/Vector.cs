@@ -10,6 +10,8 @@ namespace WmcSoft.Numerics.Generic
 {
     public struct Vector<T, C> where C : IArithmetics<T>, new()
     {
+        public static Vector<T, C> Empty;
+
         #region Fields
 
         static C Calculator = new C();
