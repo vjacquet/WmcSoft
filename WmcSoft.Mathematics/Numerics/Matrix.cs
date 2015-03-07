@@ -102,7 +102,7 @@ namespace WmcSoft.Numerics
         public static Matrix Identity(int n) {
             var result = new Matrix(n);
             var length = result._storage.data.Length;
-            for (int i = 0; i < length; i += n) {
+            for (int i = 0; i < length; i += n + 1) {
                 result._storage.data[i] = 1d;
             }
             return result;
@@ -121,6 +121,10 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        public Matrix Inverse() {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Properties
@@ -131,6 +135,8 @@ namespace WmcSoft.Numerics
         public double this[int i, int j] { get { return _storage.data[i * _storage.n + j]; } }
 
         public IEnumerable<double> Row(int i) {
+            // TODO: Change IEnumerable to a IReadOnlyCollection
+
             if (_storage == null)
                 throw new InvalidOperationException();
 
@@ -141,6 +147,8 @@ namespace WmcSoft.Numerics
         }
 
         public IEnumerable<double> Column(int j) {
+            // TODO: Change IEnumerable to a IReadOnlyCollection
+
             if (_storage == null)
                 throw new InvalidOperationException();
 
@@ -184,6 +192,13 @@ namespace WmcSoft.Numerics
         }
         public static Matrix Subtract(Matrix x, Matrix y) {
             return x - y;
+        }
+
+        public static Matrix operator *(Matrix x, Matrix y) {
+            throw new NotImplementedException();
+        }
+        public static Matrix Multiply(Matrix x, Matrix y) {
+            return x * y;
         }
 
         public static Matrix operator -(Matrix x) {

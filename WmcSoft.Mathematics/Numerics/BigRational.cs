@@ -141,7 +141,7 @@ namespace WmcSoft.Numerics
         #region IComparable<BigRational> Membres
 
         public int CompareTo(BigRational other) {
-            // should be optimized
+            // TODO: Try to optimize. It is correct but certainly very slow.
             var result = (_numerator * other._denominator - _denominator * other._numerator);
             if (result < 0)
                 return -1;
