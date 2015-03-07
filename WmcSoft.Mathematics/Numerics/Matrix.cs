@@ -40,6 +40,8 @@ namespace WmcSoft.Numerics
     [Serializable]
     public struct Matrix : IEquatable<Matrix>
     {
+        public static Matrix Empty;
+
         class Storage
         {
             public readonly double[] data;
@@ -128,6 +130,28 @@ namespace WmcSoft.Numerics
         public Dimensions Size { get { return _storage.Size; } }
         public double this[int i, int j] { get { return _storage.data[i * _storage.n + j]; } }
 
+        public IEnumerable<double> Row(int i) {
+            if (_storage == null)
+                throw new InvalidOperationException();
+
+            var countdown = _storage.n;
+            var k = i * _storage.n;
+            while (countdown-- > 0)
+                yield return _storage.data[k++];
+        }
+
+        public IEnumerable<double> Column(int j) {
+            if (_storage == null)
+                throw new InvalidOperationException();
+
+            var countdown = _storage.m;
+            var k = j;
+            while (countdown-- > 0) {
+                yield return _storage.data[k];
+                k += _storage.n;
+            }
+        }
+
         #endregion
 
         #region Operators
@@ -179,6 +203,42 @@ namespace WmcSoft.Numerics
         }
         public static Matrix Plus(Matrix x) {
             return x;
+        }
+
+        public static Matrix operator *(double scalar, Matrix matrix) {
+            var length = matrix.Cardinality;
+            var result = new Matrix(length);
+            for (int i = 0; i < length; i++) {
+                result._storage.data[i] = scalar * matrix._storage.data[i];
+            }
+            return result;
+        }
+        public static Matrix Multiply(double scalar, Matrix matrix) {
+            return scalar * matrix;
+        }
+
+        public static Matrix operator *(Matrix matrix, double scalar) {
+            var length = matrix.Cardinality;
+            var result = new Matrix(length);
+            for (int i = 0; i < length; i++) {
+                result._storage.data[i] = scalar * matrix._storage.data[i];
+            }
+            return result;
+        }
+        public static Matrix Multiply(Matrix matrix, double scalar) {
+            return matrix * scalar;
+        }
+
+        public static Matrix operator /(Matrix matrix, double scalar) {
+            var length = matrix.Cardinality;
+            var result = new Matrix(length);
+            for (int i = 0; i < length; i++) {
+                result._storage.data[i] = matrix._storage.data[i] / scalar;
+            }
+            return result;
+        }
+        public static Matrix Divide(Matrix matrix, double scalar) {
+            return matrix / scalar;
         }
 
         #endregion
