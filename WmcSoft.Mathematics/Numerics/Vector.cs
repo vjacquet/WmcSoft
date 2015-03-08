@@ -34,7 +34,7 @@ using WmcSoft.Properties;
 namespace WmcSoft.Numerics
 {
     [Serializable]
-    public struct Vector : IEquatable<Vector>
+    public struct Vector : IEquatable<Vector>, IReadOnlyList<double>
     {
         public static Vector Empty;
 
@@ -58,7 +58,7 @@ namespace WmcSoft.Numerics
         }
 
         public Vector(params double[] values) {
-            _data = values;
+            _data = (double[])values.Clone();
         }
 
         #endregion
@@ -164,6 +164,20 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        internal static double DotProductNotEmpty(int length, IEnumerator<double> x, IEnumerator<double> y) {
+            x.MoveNext();
+            y.MoveNext();
+
+            var result = x.Current * y.Current;
+            length--;
+            while (length-- > 0) {
+                x.MoveNext();
+                y.MoveNext();
+                result += x.Current * y.Current;
+            }
+            return result;
+        }
+
         #endregion
 
         #region IEquatable<Vector> Membres
@@ -189,6 +203,33 @@ namespace WmcSoft.Numerics
             if (_data == null)
                 return 0;
             return _data.GetHashCode();
+        }
+
+        #endregion
+
+        #region IReadOnlyCollection<double> Members
+
+        int IReadOnlyCollection<double>.Count {
+            get { return Cardinality; }
+        }
+
+        #endregion
+
+        #region IEnumerable<double> Members
+
+        IEnumerator<double> IEnumerable<double>.GetEnumerator() {
+            var length = Cardinality;
+            for (int i = 0; i < length; i++) {
+                yield return _data[i];
+            }
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return _data.GetEnumerator();
         }
 
         #endregion

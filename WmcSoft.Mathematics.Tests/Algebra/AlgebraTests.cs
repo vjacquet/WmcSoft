@@ -31,7 +31,7 @@ namespace WmcSoft.Algebra.Tests
         }
     }
 
-    public class Addition : IGroupLike<int>
+    public struct Addition : IGroupLike<int>
     {
         public static Addition Operation;
 

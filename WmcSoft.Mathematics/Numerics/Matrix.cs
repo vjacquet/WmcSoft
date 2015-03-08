@@ -195,7 +195,19 @@ namespace WmcSoft.Numerics
         }
 
         public static Matrix operator *(Matrix x, Matrix y) {
-            throw new NotImplementedException();
+            if (x._storage.m != y._storage.n || x._storage.n != y._storage.m)
+                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError);
+
+            var m = x._storage.m;
+            var n = y._storage.n;
+            var k = 0;
+            var result = new Matrix(m, n);
+            for (int j = 0; j < n; j++) {
+                for (int i = 0; i < m; i++) {
+                    result._storage.data[k++] = Vector.DotProductNotEmpty(m, x.Row(i).GetEnumerator(), y.Column(j).GetEnumerator());
+                }
+            }
+            return result;
         }
         public static Matrix Multiply(Matrix x, Matrix y) {
             return x * y;

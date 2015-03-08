@@ -60,5 +60,77 @@ namespace WmcSoft.Numerics.Tests
             var actual = m.Row(1).ToArray(3);
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanAddSquareMatrices() {
+            var m = new Matrix(new double[,] {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+            });
+
+            var expected = new Matrix(new double[,] {
+                { 2,  4,  6},
+                { 8, 10, 12},
+                {14, 16, 18},
+            });
+            var actual = m + m;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanSubtractSquareMatrices() {
+            var m = new Matrix(new double[,] {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+            });
+
+            var expected = new Matrix(3);
+            var actual = m - m;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanMultiplySquareMatrices() {
+            var x = new Matrix(new double[,] {
+                {1, 2, 3},
+                {0, 1, 2},
+                {0, 0, 1},
+            });
+            var y = new Matrix(new double[,] {
+                {1, 0, 0},
+                {2, 1, 0},
+                {3, 2, 1},
+            });
+
+            var expected = new Matrix(new double[,] {
+                {14, 8, 3},
+                { 8, 5, 2},
+                { 3, 2, 1},
+            });
+            var actual = x * y;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanMultiplyMatrices() {
+            var x = new Matrix(new double[,] {
+                {1, 0, 0},
+                {2, 1, 0},
+            });
+            var y = new Matrix(new double[,] {
+                {1, 2},
+                {0, 1},
+                {0, 0},
+            });
+
+            var expected = new Matrix(new double[,] {
+                {1, 2},
+                {2, 5},
+            });
+            var actual = x * y;
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
