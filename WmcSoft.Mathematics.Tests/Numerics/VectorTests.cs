@@ -21,5 +21,13 @@ namespace WmcSoft.Numerics.Tests
             var expected = 14d;
             Assert.AreEqual(expected, Vector.DotProduct(u, v));
         }
+
+        [TestMethod]
+        public void CheckConvert() {
+            var v = new Vector(1, 2, 3);
+            var expected = new double[] { 1, 2, 3};
+            var actual = (double[])v;
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

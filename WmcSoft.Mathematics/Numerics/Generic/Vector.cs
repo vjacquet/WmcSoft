@@ -75,6 +75,15 @@ namespace WmcSoft.Numerics.Generic
 
         #region Operators
 
+        public static explicit operator T[](Vector<T, C> x) {
+            return x._data == null
+                ? new T[0]
+                : (T[])x._data.Clone();
+        }
+        public static T[] ToArray(Vector<T, C> x) {
+            return (T[])x;
+        }
+
         public static Vector<T, C> operator +(Vector<T, C> x, Vector<T, C> y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)

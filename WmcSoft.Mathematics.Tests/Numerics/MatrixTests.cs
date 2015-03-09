@@ -9,6 +9,18 @@ namespace WmcSoft.Numerics.Tests
     public class MatrixTests
     {
         [TestMethod]
+        public void CanConvert() {
+            var expected = new double[,] {
+                {1, 2},
+                {3, 4},
+                {5, 6},
+            };
+            var m = new Matrix(expected);
+            var actual = (double[,])m;
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void CheckIdentity() {
             var actual = Matrix.Identity(3);
             var expected = new Matrix(new double[,] {

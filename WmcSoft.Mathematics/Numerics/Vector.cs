@@ -73,6 +73,15 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
+        public static explicit operator double[](Vector x) {
+            return x._data == null
+                ? new double[0]
+                : (double[])x._data.Clone();
+        }
+        public static double[] ToArray(Vector x) {
+            return (double[])x;
+        }
+
         public static Vector operator +(Vector x, Vector y) {
             var length = x.Cardinality;
             if (y.Cardinality != length)

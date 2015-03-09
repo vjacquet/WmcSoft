@@ -164,6 +164,24 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
+        public static explicit operator double[,](Matrix x) {
+            if( x._storage == null)
+                return new double[0,0];
+            var result = new double[x._storage.m, x._storage.n];
+            var m = x._storage.m;
+            var n = x._storage.n;
+            var k = 0;
+            for (var i = 0; i < m; i++) {
+                for (var j = 0; j < n; j++) {
+                    result[i, j] = x._storage.data[k++];
+                }
+            }
+            return result;
+        }
+        public static double[,] ToArray(Matrix x) {
+            return (double[,])x;
+        }
+
         public static Matrix operator +(Matrix x, Matrix y) {
             if (x.Size != y.Size)
                 throw new ArgumentException(Resources.MatricesMustHaveTheSameSizeError);
