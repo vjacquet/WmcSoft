@@ -16,5 +16,4 @@ namespace WmcSoft.Tests
             Assert.AreEqual(1, calc.Add(1, 0));
         }
     }
-
 }

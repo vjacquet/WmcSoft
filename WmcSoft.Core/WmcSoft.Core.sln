@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics", "..\W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics.Tests", "..\WmcSoft.Mathematics.Tests\WmcSoft.Mathematics.Tests.csproj", "{DD347637-5EC5-45BA-A377-5B6A09605A7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Units", "..\WmcSoft.Units\WmcSoft.Units.csproj", "{FD4E34D4-7A77-4908-B135-268ABE7D2506}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Units.Tests", "..\WmcSoft.Units.Tests\WmcSoft.Units.Tests.csproj", "{D12A494F-C06E-4B0D-98CA-70460D819BC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{DD347637-5EC5-45BA-A377-5B6A09605A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD347637-5EC5-45BA-A377-5B6A09605A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD347637-5EC5-45BA-A377-5B6A09605A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4E34D4-7A77-4908-B135-268ABE7D2506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4E34D4-7A77-4908-B135-268ABE7D2506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4E34D4-7A77-4908-B135-268ABE7D2506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4E34D4-7A77-4908-B135-268ABE7D2506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
