@@ -179,8 +179,15 @@ namespace WmcSoft.Numerics
 
         #region IFormattable Membres
 
+        public override string ToString() {
+            return ToString(null, null);
+        }
         public string ToString(string format, IFormatProvider formatProvider) {
-            return String.Format("{0}/{1}", _numerator, _denominator);
+            if (_denominator == 1 || _numerator == 0)
+                return _numerator.ToString(format, formatProvider);
+            return _numerator.ToString(format, formatProvider)
+                + '/'
+                + _denominator.ToString(format, formatProvider);
         }
 
         #endregion
