@@ -248,7 +248,7 @@ namespace WmcSoft.Numerics
         public override string ToString() {
             return ToString(null, null);
         }
-        public override string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider) {
             return ToString(null, formatProvider);
         }
         public string ToString(string format, IFormatProvider formatProvider = null) {
