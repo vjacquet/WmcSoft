@@ -193,7 +193,10 @@ namespace WmcSoft.Numerics
         public override string ToString() {
             return ToString(null, null);
         }
-        public string ToString(string format, IFormatProvider formatProvider) {
+        public override string ToString(IFormatProvider formatProvider) {
+            return ToString(null, formatProvider);
+        }
+        public string ToString(string format, IFormatProvider formatProvider = null) {
             if (_denominator == 1 || _numerator == 0)
                 return _numerator.ToString(format, formatProvider);
             return _numerator.ToString(format, formatProvider)

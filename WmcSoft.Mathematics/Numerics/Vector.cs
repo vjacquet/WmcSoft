@@ -34,7 +34,7 @@ using WmcSoft.Properties;
 namespace WmcSoft.Numerics
 {
     [Serializable]
-    public struct Vector : IEquatable<Vector>, IReadOnlyList<double>
+    public struct Vector : IEquatable<Vector>, IReadOnlyList<double>, IFormattable
     {
         public static Vector Empty;
 
@@ -239,6 +239,33 @@ namespace WmcSoft.Numerics
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return _data.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IFormattable Membres
+
+        public override string ToString() {
+            return ToString(null, null);
+        }
+        public override string ToString(IFormatProvider formatProvider) {
+            return ToString(null, formatProvider);
+        }
+        public string ToString(string format, IFormatProvider formatProvider = null) {
+            if (_data == null)
+                return "[]";
+            var length = _data.Length;
+            var values = Array.ConvertAll(_data, x => x.ToString(format, formatProvider));
+            var capacity = values.Sum(x => x.Length + 2);
+            var sb = new StringBuilder(capacity);
+            sb.Append('[');
+            sb.Append(values[0]);
+            for (int i = 1; i < length; i++) {
+                sb.Append("  ");
+                sb.Append(values[i]);
+            }
+            sb.Append(']');
+            return sb.ToString();
         }
 
         #endregion
