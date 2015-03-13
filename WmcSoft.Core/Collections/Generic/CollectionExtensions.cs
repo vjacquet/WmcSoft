@@ -154,5 +154,47 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region ToArray methods
+
+        /// <summary>
+        /// Convert a collection to an array.
+        /// </summary>
+        /// <typeparam name="TInput">Type of the collection items</typeparam>
+        /// <typeparam name="TOutput">Type of the array items.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="convert">The converter from the input type to the output type.</param>
+        /// <returns>An array</returns>
+        /// <remarks>Uses the Count of items of the collection to avoid amortizing reallocations.</remarks>
+        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput,TOutput> convert) {
+            var output = new TOutput[collection.Count];
+            var i = 0;
+            var enumerator = collection.GetEnumerator();
+            while(enumerator.MoveNext()) {
+                output[i++] = convert(enumerator.Current);
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a list to an array.
+        /// </summary>
+        /// <typeparam name="TInput">Type of the list items</typeparam>
+        /// <typeparam name="TOutput">Type of the array items.</typeparam>
+        /// <param name="collection">The list</param>
+        /// <param name="convert">The converter from the input type to the output type.</param>
+        /// <returns>An array</returns>
+        /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
+        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
+            var length = list.Count;
+            var output = new TOutput[length];
+            // for List implementation, for loops is slightly faster than foreach loops.
+            for (int i = 0; i < length; i++) {
+                output[i] = convert(list[i]);
+            }
+            return output;
+        }
+
+        #endregion
     }
 }
