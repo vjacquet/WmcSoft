@@ -11,7 +11,7 @@ namespace WmcSoft.Units.Tests
             Quantity<Meter> m = 1m;
             Quantity<Second> s = 1m;
 
-            var speed = 2m * m / s;
+            var speed = 2 * m / s;
             Assert.AreEqual(typeof(Quantity), speed.GetType());
             var unit = speed.Metric as DerivedUnit;
             Assert.IsNotNull(unit);

@@ -29,13 +29,13 @@ using System;
 namespace WmcSoft.Units
 {
     /// <summary>
-    /// Description résumée de ScaledUnit.
+    /// Represents a unit with a different scale of the reference unit.
     /// </summary>
     public class ScaledUnit : Unit
     {
         #region Fields
 
-        decimal scaleFactor;
+        readonly decimal scaleFactor;
         readonly Unit reference;
         readonly internal protected string definition;
         readonly internal protected string name;
@@ -103,6 +103,5 @@ namespace WmcSoft.Units
         }
 
         #endregion
-
     }
 }
