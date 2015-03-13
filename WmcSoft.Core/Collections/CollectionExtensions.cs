@@ -82,7 +82,8 @@ namespace WmcSoft.Collections
         /// <param name="list">The list.</param>
         /// <param name="i">The item at the <paramref name="i"/> index.</param>
         /// <param name="j">The item at the <paramref name="j"/> index.</param>
-        /// <returns></returns>
+        /// <returns>The list</returns>
+        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
         public static IList SwapItems(this IList list, int i, int j) {
             object temp = list[i];
             list[i] = list[j];
@@ -100,7 +101,14 @@ namespace WmcSoft.Collections
         /// <param name="self">The list to add items to.</param>
         /// <param name="items">The items to add to the list.</param>
         /// <returns>The list.</returns>
+        /// <remarks>Does nothing if items is null.</remarks>
         public static IList AddRange(this IList self, IEnumerable items) {
+            if (self == null)
+                throw new ArgumentNullException("self");
+
+            if (items == null)
+                return self;
+
             if (self.IsSynchronized) {
                 lock (self.SyncRoot) {
                     foreach (var each in items) {
@@ -125,49 +133,30 @@ namespace WmcSoft.Collections
         /// </summary>
         /// <param name="self">The list to remove items from.</param>
         /// <param name="items">The items to remove from the list.</param>
-        /// <returns>The list.</returns>
-        public static void RemoveRange(this IList self, IEnumerable items) {
+        /// <returns>The count of items removed from the collection.</returns>
+        /// <remarks>Does nothing if items is null.</remarks>
+        public static int RemoveRange(this IList self, IEnumerable items) {
+            if (self == null)
+                throw new ArgumentNullException("self");
+
+            if (items == null)
+                return 0;
+
             if (self.IsSynchronized) {
                 lock (self.SyncRoot) {
+                    var count = self.Count;
                     foreach (var each in items) {
                         self.Remove(each);
                     }
+                    return count - self.Count;
                 }
             } else {
+                var count = self.Count;
                 foreach (var each in items) {
                     self.Remove(each);
                 }
+                return count - self.Count;
             }
-        }
-
-        #endregion
-
-        #region ToString
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="enumerable">The enumerable.</param>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public static string ToString(this IEnumerable enumerable) {
-            string separator = System.Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.ListSeparator;
-            StringBuilder sb = new StringBuilder("[");
-
-            IEnumerator it = enumerable.GetEnumerator();
-            if (it.MoveNext()) {
-                sb.Append(it.Current.ToString());
-
-                while (it.MoveNext()) {
-                    sb.Append(separator);
-                    sb.Append(it.Current.ToString());
-                }
-            }
-
-            sb.Append(']');
-
-            return sb.ToString();
         }
 
         #endregion
