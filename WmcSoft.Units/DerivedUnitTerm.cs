@@ -25,12 +25,15 @@
 #endregion
 
 using System;
+using System.Diagnostics;
+using System.Text;
 
 namespace WmcSoft.Units
 {
     /// <summary>
     /// Represents part of a derived unit comprising a single unit and its power.
     /// </summary>
+    [DebuggerDisplay("{Unit} ^ {_power}")]
     public class DerivedUnitTerm
     {
         #region Fiels
@@ -75,15 +78,15 @@ namespace WmcSoft.Units
 
         public string Symbol {
             get {
-                if ((_symbol == null) && (this._unit.Symbol != null)) {
-                    System.Text.StringBuilder builder = new System.Text.StringBuilder(this._unit.Symbol);
+                if ((_symbol == null) && (_unit.Symbol != null)) {
+                   var sb = new StringBuilder(_unit.Symbol);
                     string power = this._power.ToString();
-                    if (this._power != 1) {
+                    if (_power != 1) {
                         foreach (char c in power) {
-                            builder.Append(sub[c - '-']);
+                            sb.Append(sub[c - '-']);
                         }
                     }
-                    _symbol = builder.ToString();
+                    _symbol = sb.ToString();
                 }
                 return _symbol;
             }

@@ -56,6 +56,5 @@ namespace WmcSoft.Units
         }
 
         #endregion
-
     }
 }

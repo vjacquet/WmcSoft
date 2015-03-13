@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Text;
 
 namespace WmcSoft.Units
@@ -33,6 +34,7 @@ namespace WmcSoft.Units
     /// Represents the combination of one or more base units according to 
     /// a specific equation.
     /// </summary>
+    [DebuggerDisplay("{_name ?? Symbol}")]
     public class DerivedUnit : Unit
     {
         #region Fields
