@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BinaryFormatterTests.cs" />
+    <Compile Include="Collections\Generic\CollectionExtensionsTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +67,7 @@
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

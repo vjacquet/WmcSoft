@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -66,7 +67,6 @@ namespace WmcSoft.Collections.Generic
                 throw new ArgumentException();
 
             int j;
-
             for (int i = 0; i < list.Count; i++) {
                 j = random.Next(i, list.Count);
                 list.SwapItems(i, j);
@@ -84,7 +84,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <param name="i">The i.</param>
         /// <param name="j">The j.</param>
-        /// <returns></returns>
+        /// <returns>The list</returns>
+        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
         public static IList<T> SwapItems<T>(this IList<T> list, int i, int j) {
             T temp = list[i];
             list[i] = list[j];
@@ -103,9 +104,15 @@ namespace WmcSoft.Collections.Generic
         /// <param name="self">The collection to add items to.</param>
         /// <param name="items">The items to add to the collection.</param>
         /// <returns>The collection.</returns>
+        /// <remarks>Does nothing if items is null.</remarks>
         public static ICollection<T> AddRange<T>(this ICollection<T> self, IEnumerable<T> items) {
-            ICollection collection = self as ICollection;
+            if (self == null)
+                throw new ArgumentNullException("self");
 
+            if (items == null)
+                return self;
+
+            ICollection collection = self as ICollection;
             if (collection != null && collection.IsSynchronized) {
                 lock (collection.SyncRoot) {
                     foreach (var each in items) {
@@ -131,8 +138,15 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">Type of objects within the collection.</typeparam>
         /// <param name="self">The collection to remove items from.</param>
         /// <param name="items">The items to remove from the collection.</param>
-        /// <returns>The collection.</returns>
+        /// <returns>The count of items removed from the collection.</returns>
+        /// <remarks>Does nothing if items is null.</remarks>
         public static int RemoveRange<T>(this ICollection<T> self, IEnumerable<T> items) {
+            if (self == null)
+                throw new ArgumentNullException("self");
+
+            if (items == null)
+                return 0;
+
             ICollection collection = self as ICollection;
             int count = 0;
 
@@ -155,6 +169,61 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region ToString
+
+        static TextInfo GetTextInfo(IFormatProvider formatProvider) {
+            TextInfo info;
+            CultureInfo cultureProvider = formatProvider as CultureInfo;
+            if (cultureProvider != null) {
+                return cultureProvider.TextInfo;
+            }
+
+            info = formatProvider as TextInfo;
+            if (info != null) {
+                return info;
+            }
+
+            if (formatProvider != null) {
+                info = formatProvider.GetFormat(typeof(TextInfo)) as TextInfo;
+                if (info != null) {
+                    return info;
+                }
+            }
+
+            return CultureInfo.CurrentCulture.TextInfo;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public static string ToString<T>(this IEnumerable<T> enumerable, string format, IFormatProvider formatProvider = null)
+            where T : IFormattable {
+            if (enumerable == null)
+                throw new ArgumentNullException("enumerable");
+
+            TextInfo textInfo = GetTextInfo(formatProvider);
+            var separator = textInfo.ListSeparator;
+            var it = enumerable.GetEnumerator();
+            if (it.MoveNext()) {
+                var sb = new StringBuilder(it.Current.ToString(format, formatProvider));
+                while (it.MoveNext()) {
+                    sb.Append(separator);
+                    sb.Append(it.Current.ToString(format, formatProvider));
+                }
+                return sb.ToString();
+            }
+            return "";
+        }
+
+        public static string ToString<T>(this IEnumerable<T> enumerable, IFormatProvider formatProvider)
+            where T : IFormattable {
+            return enumerable.ToString(null, formatProvider);
+        }
+
+        #endregion
+
         #region ToArray methods
 
         /// <summary>
@@ -164,13 +233,18 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="TOutput">Type of the array items.</typeparam>
         /// <param name="collection">The collection</param>
         /// <param name="convert">The converter from the input type to the output type.</param>
-        /// <returns>An array</returns>
+        /// <returns>An array or null if collection is null</returns>
         /// <remarks>Uses the Count of items of the collection to avoid amortizing reallocations.</remarks>
-        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput,TOutput> convert) {
+        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> convert) {
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+            if (collection == null)
+                return null;
+
             var output = new TOutput[collection.Count];
             var i = 0;
             var enumerator = collection.GetEnumerator();
-            while(enumerator.MoveNext()) {
+            while (enumerator.MoveNext()) {
                 output[i++] = convert(enumerator.Current);
             }
             return output;
@@ -186,9 +260,14 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An array</returns>
         /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
         public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+            if (list == null)
+                return null;
+
             var length = list.Count;
             var output = new TOutput[length];
-            // for List implementation, for loops is slightly faster than foreach loops.
+            // for List implementation, for loops are slightly faster than foreach loops.
             for (int i = 0; i < length; i++) {
                 output[i] = convert(list[i]);
             }
