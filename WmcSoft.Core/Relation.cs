@@ -24,28 +24,7 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft
 {
-    public sealed class AnonymousComparer<T> : IComparer<T>
-    {
-        private readonly Func<T, T, int> _comparer;
-
-        public AnonymousComparer(Func<T, T, int> comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
-
-            _comparer = comparer;
-        }
-
-        public int Compare(T x, T y) {
-            if (x == null)
-                return y != null ? 1 : 0;
-            if (y == null)
-                return -1;
-            return _comparer(x, y);
-        }
-    }
+    public delegate bool Relation<in T>(T x, T y);
 }

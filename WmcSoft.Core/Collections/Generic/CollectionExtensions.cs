@@ -27,8 +27,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 
 namespace WmcSoft.Collections.Generic
@@ -272,6 +272,103 @@ namespace WmcSoft.Collections.Generic
                 output[i] = convert(list[i]);
             }
             return output;
+        }
+
+        #endregion
+
+        #region AsReadOnly
+
+        public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
+            return new ConvertingListAdapter<TInput, TOutput>(list, convert);
+        }
+
+        #endregion
+
+        #region Repeat
+
+        /// <summary>
+        /// Repeats the sequence count times.
+        /// </summary>
+        /// <typeparam name="T">The item type</typeparam>
+        /// <param name="self">The enumerator</param>
+        /// <param name="count">The number of time to repeat the sequence</param>
+        /// <returns>The list with the repeate sequence</returns>
+        public static IList<T> Repeat<T>(this IEnumerable<T> self, int count) {
+            var list = new List<T>(self);
+            var length = list.Count;
+            list.Capacity = length * count;
+            while (--count != 0) {
+                for (int i = 0; i < length; i++) {
+                    list.Add(list[i]);
+                }
+            }
+            return list;
+        }
+
+        #endregion
+
+        #region BinarySearch methods
+
+        private static int GetMedian(int lo, int hi) {
+            Debug.Assert(hi - lo >= 0);
+            return lo + (hi - lo) / 2; // reduce the chance of overflow
+        }
+
+        /// <summary>
+        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified comparer and returns the zero-based index of the element.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="comparer"></param>
+        /// <returns>The zero-based index of item in the sorted IReadOnlyList<T>, if item is found; 
+        /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
+        /// if there is no larger element, the bitwise complement of Count.</returns>
+        public static int BinarySearch<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> comparer) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (index < 0)
+                throw new ArgumentOutOfRangeException("index");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+            if ((list.Count - index) < count)
+                throw new ArgumentException("Invalid length");
+
+            try {
+                int lo = index;
+                int hi = lo + count - 1;
+                while (lo <= hi) {
+                    int i = GetMedian(lo, hi);
+                    int c = comparer(list[i]);
+                    if (c == 0)
+                        return i;
+                    if (c < 0) {
+                        lo = i + 1;
+                    } else {
+                        hi = i - 1;
+                    }
+                }
+                return ~lo;
+            }
+            catch (Exception e) {
+                throw new InvalidOperationException("The comparer threw an exception", e);
+            }
+        }
+
+        public static int BinarySearch<T>(this IReadOnlyList<T> list, Func<T, int> comparer) {
+            return list.BinarySearch(0, list.Count, comparer);
+        }
+
+        public static T BinaryFind<T>(this T[] array, int index, int length, Func<T, int> comparer) {
+            var found = array.BinarySearch(index, length, comparer);
+            if (found >= 0)
+                return array[found];
+            return default(T);
+        }
+        public static T BinaryFind<T>(this T[] array, Func<T, int> comparer) {
+            int lb = array.GetLowerBound(0);
+            return array.BinaryFind(lb, array.Length, comparer);
         }
 
         #endregion
