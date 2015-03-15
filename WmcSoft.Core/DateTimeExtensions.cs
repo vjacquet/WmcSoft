@@ -25,8 +25,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WmcSoft
 {
@@ -36,7 +34,7 @@ namespace WmcSoft
             int day = self.Day;
             int dayOfWeek = (int)(new DateTime(self.Year, self.Month, 1)).DayOfWeek;
             int reminder;
-            return System.Math.DivRem(6 + day + dayOfWeek, 7, out reminder);
+            return Math.DivRem(6 + day + dayOfWeek, 7, out reminder);
         }
     }
 }
