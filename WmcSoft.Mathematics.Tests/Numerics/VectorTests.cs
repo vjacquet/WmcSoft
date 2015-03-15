@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Numerics.Tests
@@ -36,6 +37,14 @@ namespace WmcSoft.Numerics.Tests
             var expected = "[1  2  3]";
             var actual = v.ToString("N0", null);
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanEnumerate() {
+            var v = new Vector(1, 2, 3);
+            var expected = new double[] { 1, 2, 3 };
+            var actual = v.ToArray();
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }

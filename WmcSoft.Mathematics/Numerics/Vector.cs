@@ -33,6 +33,9 @@ using WmcSoft.Properties;
 
 namespace WmcSoft.Numerics
 {
+    /// <summary>
+    /// Represents a vector.
+    /// </summary>
     [Serializable]
     public struct Vector : IEquatable<Vector>, IReadOnlyList<double>, IFormattable
     {
@@ -227,10 +230,9 @@ namespace WmcSoft.Numerics
         #region IEnumerable<double> Members
 
         IEnumerator<double> IEnumerable<double>.GetEnumerator() {
-            var length = Cardinality;
-            for (int i = 0; i < length; i++) {
-                yield return _data[i];
-            }
+            if (_data == null || _data.Length == 0)
+                return Enumerable.Empty<double>().GetEnumerator();
+            return new StrideEnumerator<double>(_data);
         }
 
         #endregion

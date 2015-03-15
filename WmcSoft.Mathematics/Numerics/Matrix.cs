@@ -34,7 +34,7 @@ using WmcSoft.Properties;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// 
+    /// Represents a matrix.
     /// </summary>
     /// <remarks>See [http://en.wikipedia.org/wiki/Matrix_(mathematics)]</remarks>
     [Serializable]
@@ -136,9 +136,8 @@ namespace WmcSoft.Numerics
 
         public IEnumerable<double> Row(int i) {
             // TODO: Change IEnumerable to a IReadOnlyCollection
-
             if (_storage == null)
-                throw new InvalidOperationException();
+                yield break;
 
             var countdown = _storage.n;
             var k = i * _storage.n;
@@ -148,9 +147,8 @@ namespace WmcSoft.Numerics
 
         public IEnumerable<double> Column(int j) {
             // TODO: Change IEnumerable to a IReadOnlyCollection
-
             if (_storage == null)
-                throw new InvalidOperationException();
+                yield break;
 
             var countdown = _storage.m;
             var k = j;

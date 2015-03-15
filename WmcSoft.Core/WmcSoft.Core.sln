@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Units", "..\WmcSoft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Units.Tests", "..\WmcSoft.Units.Tests\WmcSoft.Units.Tests.csproj", "{D12A494F-C06E-4B0D-98CA-70460D819BC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Benchmark", "..\WmcSoft.Benchmark\WmcSoft.Benchmark.csproj", "{0EB4ECD9-AA2B-4319-803F-1980A1F91E14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{F9354138-94D5-4622-8434-F8B9DD9FDD25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathematicsBench", "..\Benchmarks\MathematicsBench\MathematicsBench.csproj", "{D0383AA6-BFD4-4C85-9EEF-269F1886434A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,8 +51,19 @@ Global
 		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D12A494F-C06E-4B0D-98CA-70460D819BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EB4ECD9-AA2B-4319-803F-1980A1F91E14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EB4ECD9-AA2B-4319-803F-1980A1F91E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EB4ECD9-AA2B-4319-803F-1980A1F91E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EB4ECD9-AA2B-4319-803F-1980A1F91E14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D0383AA6-BFD4-4C85-9EEF-269F1886434A} = {F9354138-94D5-4622-8434-F8B9DD9FDD25}
 	EndGlobalSection
 EndGlobal

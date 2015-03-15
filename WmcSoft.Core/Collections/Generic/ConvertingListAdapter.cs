@@ -8,10 +8,17 @@ namespace WmcSoft.Collections.Generic
 {
     class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>
     {
-        private readonly Converter<TInput, TOutput> _convert;
         private readonly IReadOnlyList<TInput> _list;
+        private readonly Converter<TInput, TOutput> _convert;
 
         public ConvertingListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+
+            _list = list;
+            _convert = convert;
         }
 
         #region IReadOnlyList<TOutput> Membres
