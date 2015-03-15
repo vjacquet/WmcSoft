@@ -29,15 +29,22 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
-    public sealed class AnonymousComparer<T> : IComparer<T>
+    public sealed class RelationComparer<T> : IComparer<T>
     {
-        private readonly Func<T, T, int> _comparer;
+        private readonly Relation<T> _relation;
 
-        public AnonymousComparer(Func<T, T, int> comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+        public RelationComparer(Relation<T> relation) {
+            if (relation == null)
+                throw new ArgumentNullException("relation");
 
-            _comparer = comparer;
+            _relation = relation;
+        }
+
+        public RelationComparer(Func<T, T, bool> func) {
+            if (func == null)
+                throw new ArgumentNullException("func");
+
+            _relation = (x, y) => func(x, y);
         }
 
         public int Compare(T x, T y) {
@@ -45,7 +52,11 @@ namespace WmcSoft.Collections.Generic
                 return y != null ? 1 : 0;
             if (y == null)
                 return -1;
-            return _comparer(x, y);
+            if (_relation(x, y))
+                return -1;
+            if (_relation(y, x))
+                return 1;
+            return 0;
         }
     }
 }

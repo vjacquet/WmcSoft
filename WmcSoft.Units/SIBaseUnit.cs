@@ -83,9 +83,7 @@ namespace WmcSoft.Units
         string definition;
     }
 
-
     #region SIBaseUnit types
-
     public sealed class Meter : SIBaseUnit
     {
         public Meter() {
