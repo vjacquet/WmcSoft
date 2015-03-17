@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Security.Permissions;
 using System.Threading;
