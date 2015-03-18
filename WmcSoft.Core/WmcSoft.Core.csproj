@@ -60,7 +60,9 @@
     <Compile Include="IO\DecoratingStream.cs" />
     <Compile Include="IO\DumpingStream.cs" />
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
+    <Compile Include="IO\HeaderedTextWriter.cs" />
     <Compile Include="IO\MirroringStream.cs" />
+    <Compile Include="IO\TextReaderExtensions.cs" />
     <Compile Include="NullableExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
