@@ -72,5 +72,21 @@ namespace WmcSoft
         }
 
         #endregion
+
+        #region ConvertAll
+
+        /// <summary>
+        /// Converts an array of one type to an array of another type.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the elements of the source array.</typeparam>
+        /// <typeparam name="TOutput">The type of the elements of the target array.</typeparam>
+        /// <param name="array">The one-dimensional, zero-based Array to convert to a target type.</param>
+        /// <param name="converter">A Converter<TInput, TOutput> that converts each element from one type to another type.</param>
+        /// <returns>An array of the target type containing the converted elements from the source array.</returns>
+        public static TOutput[] ConvertAll<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter) {
+            return Array.ConvertAll(array, converter);
+        }
+
+        #endregion
     }
 }
