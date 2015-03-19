@@ -205,14 +205,15 @@ namespace WmcSoft.Collections.Generic
 
             TextInfo textInfo = GetTextInfo(formatProvider);
             var separator = textInfo.ListSeparator;
-            var it = enumerable.GetEnumerator();
-            if (it.MoveNext()) {
-                var sb = new StringBuilder(it.Current.ToString(format, formatProvider));
-                while (it.MoveNext()) {
-                    sb.Append(separator);
-                    sb.Append(it.Current.ToString(format, formatProvider));
+            using (var it = enumerable.GetEnumerator()) {
+                if (it.MoveNext()) {
+                    var sb = new StringBuilder(it.Current.ToString(format, formatProvider));
+                    while (it.MoveNext()) {
+                        sb.Append(separator);
+                        sb.Append(it.Current.ToString(format, formatProvider));
+                    }
+                    return sb.ToString();
                 }
-                return sb.ToString();
             }
             return "";
         }
@@ -243,9 +244,10 @@ namespace WmcSoft.Collections.Generic
 
             var output = new TOutput[collection.Count];
             var i = 0;
-            var enumerator = collection.GetEnumerator();
-            while (enumerator.MoveNext()) {
-                output[i++] = convert(enumerator.Current);
+            using (var enumerator = collection.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    output[i++] = convert(enumerator.Current);
+                }
             }
             return output;
         }
@@ -593,7 +595,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
         public static IEnumerable<T> Merge<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer) {
-            using(var enumerator1 = self.GetEnumerator())
+            using (var enumerator1 = self.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
                 var hasValue2 = enumerator2.MoveNext();
