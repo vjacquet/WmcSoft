@@ -580,5 +580,179 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Combine & Merge
+
+        /// <summary>
+        /// Merges two sorted enumerable in another enumerable sorted using the same comparer. When two items are equivalent, items from first come first.
+        /// </summary>
+        /// <typeparam name="T">The type of enumerated element</typeparam>
+        /// <param name="self">The first enumerable</param>
+        /// <param name="other">The second enumerable</param>
+        /// <param name="comparer">The comparer</param>
+        /// <returns>The sorted enumerable</returns>
+        /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
+        public static IEnumerable<T> Merge<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer) {
+            using(var enumerator1 = self.GetEnumerator())
+            using (var enumerator2 = other.GetEnumerator()) {
+                var hasValue1 = enumerator1.MoveNext();
+                var hasValue2 = enumerator2.MoveNext();
+
+                if (!hasValue1) {
+                    // first is empty, consume all second
+                    while (hasValue2) {
+                        yield return enumerator2.Current;
+                        hasValue2 = enumerator2.MoveNext();
+                    }
+                    yield break;
+                }
+                if (!hasValue2) {
+                    // second is empty, consume all first
+                    while (hasValue1) {
+                        yield return enumerator1.Current;
+                        hasValue1 = enumerator1.MoveNext();
+                    }
+                    yield break;
+                }
+                while (true) {
+                    if (comparer.Compare(enumerator2.Current, enumerator1.Current) < 0) {
+                        yield return enumerator2.Current;
+                        hasValue2 = enumerator2.MoveNext();
+                        if (!hasValue2) {
+                            // shortcut: second is now empty
+                            do {
+                                yield return enumerator1.Current;
+                            } while (enumerator1.MoveNext());
+                            yield break;
+                        }
+                    } else {
+                        yield return enumerator1.Current;
+                        hasValue1 = enumerator1.MoveNext();
+                        if (!hasValue1) {
+                            // shortcut: first is now empty
+                            do {
+                                yield return enumerator2.Current;
+                            } while (enumerator2.MoveNext());
+                            yield break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Merges two sorted enumerable in another enumerable sorted using the default comparer. When two items are equivalent, items from first come first.
+        /// </summary>
+        /// <typeparam name="T">The type of enumerated element</typeparam>
+        /// <param name="self">The first enumerable</param>
+        /// <param name="other">The second enumerable</param>
+        /// <param name="comparer">The comparer</param>
+        /// <returns>The sorted enumerable</returns>
+        /// <remarks>If the two enumerables are not sorted using the default comparer, the result is undefined.</remarks>
+        public static IEnumerable<T> Merge<T>(this IEnumerable<T> self, IEnumerable<T> other) {
+            return self.Merge(other, Comparer<T>.Default);
+        }
+
+        /// <summary>
+        /// Combines two sorted enumerable of unique element in another enumerable sorted using the same comparer. When two items are equivalent, they are combined with the combiner.
+        /// </summary>
+        /// <typeparam name="T">The type of enumerated element</typeparam>
+        /// <param name="self">The first enumerable</param>
+        /// <param name="other">The second enumerable</param>
+        /// <param name="comparer">The comparer</param>
+        /// <returns>The sorted enumerable</returns>
+        /// <remarks>If the tw enumerables are not sorted using the comparer, the result is undefined.</remarks>
+        public static IEnumerable<T> Combine<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer, Func<T, T, T> combiner) {
+            using (var enumerator1 = self.GetEnumerator())
+            using (var enumerator2 = other.GetEnumerator()) {
+                var hasValue1 = enumerator1.MoveNext();
+                var hasValue2 = enumerator2.MoveNext();
+
+                if (!hasValue1) {
+                    // first is empty, consume all second
+                    while (hasValue2) {
+                        yield return enumerator2.Current;
+                        hasValue2 = enumerator2.MoveNext();
+                    }
+                    yield break;
+                }
+                if (!hasValue2) {
+                    // second is empty, consume all first
+                    while (hasValue1) {
+                        yield return enumerator1.Current;
+                        hasValue1 = enumerator1.MoveNext();
+                    }
+                    yield break;
+                }
+                while (true) {
+                    int comparison = comparer.Compare(enumerator2.Current, enumerator1.Current);
+                    if (comparison < 0) {
+                        yield return enumerator2.Current;
+                        hasValue2 = enumerator2.MoveNext();
+                        if (!hasValue2) {
+                            // shortcut: second is now empty
+                            do {
+                                yield return enumerator1.Current;
+                            } while (enumerator1.MoveNext());
+                            yield break;
+                        }
+                    } else if (comparison > 0) {
+                        yield return enumerator1.Current;
+                        hasValue1 = enumerator1.MoveNext();
+                        if (!hasValue1) {
+                            // shortcut: first is now empty
+                            do {
+                                yield return enumerator2.Current;
+                            } while (enumerator2.MoveNext());
+                            yield break;
+                        }
+                    } else {
+                        yield return combiner(enumerator1.Current, enumerator2.Current);
+                        hasValue1 = enumerator1.MoveNext();
+                        hasValue2 = enumerator2.MoveNext();
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Traits
+
+        public static bool IsSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
+            using (var enumerator = enumerable.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var previous = enumerator.Current;
+                    while (enumerator.MoveNext()) {
+                        if (comparer.Compare(previous, enumerator.Current) > 0)
+                            return false;
+                        previous = enumerator.Current;
+                    }
+                }
+                return true;
+            }
+        }
+        public static bool IsSorted<T>(this IEnumerable<T> enumerable) {
+            return enumerable.IsSorted(Comparer<T>.Default);
+        }
+
+        public static bool IsSortedAndDistinct<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
+            using (var enumerator = enumerable.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var previous = enumerator.Current;
+                    while (enumerator.MoveNext()) {
+                        if (comparer.Compare(previous, enumerator.Current) >= 0)
+                            return false;
+                        previous = enumerator.Current;
+                    }
+                }
+                return true;
+            }
+        }
+        public static bool IsSortedAndDistinct<T>(this IEnumerable<T> enumerable) {
+            return enumerable.IsSortedAndDistinct(Comparer<T>.Default);
+        }
+
+        #endregion
     }
 }
