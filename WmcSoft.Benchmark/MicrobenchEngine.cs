@@ -25,7 +25,7 @@ namespace WmcSoft.Benchmark
             _trace.TraceInformation("Benchmarking {0}", benchmark.Name);
 
             var measures = benchmark.EnumerateMeasures()
-                .Repeat(benchmark.Iterations);
+                .Repeat(benchmark.Iterations).ToList();
             measures.Suffle(new Random(1789));
 
             try {

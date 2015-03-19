@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic.Tests
@@ -42,6 +43,35 @@ namespace WmcSoft.Collections.Generic.Tests
 
             Assert.AreEqual(1, list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 4)));
             Assert.AreEqual(2, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 5)));
+        }
+
+        [TestMethod]
+        public void CheckCollateRepeat() {
+            var array = new []{"a", "b", "c"};
+            var actual = array.Repeat(3).Join("");
+            var expected = "abcabcabc";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckGroupedRepeat() {
+            var array = new[] { "a", "b", "c" };
+            var actual = array.Repeat(3, collate: false).Join("");
+            var expected = "aaabbbccc";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckCollateRepeatToListOptimization() {
+            const int Repeat = 3;
+            var array = new[] { "a", "b", "c" };
+            var actual = array.Repeat(Repeat, collate: false).ToList();
+            var expected = new List<string>();
+            for (int i = 0; i < Repeat; i++) {
+                expected.AddRange(array);
+            }
+            Assert.AreNotEqual(expected.Capacity, actual.Capacity);
+            Assert.AreEqual(expected.Count, actual.Capacity);
         }
     }
 }

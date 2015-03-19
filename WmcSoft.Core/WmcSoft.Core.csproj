@@ -48,6 +48,8 @@
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\ConvertingListAdapter.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyCollection.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyCollectionToCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\RelationComparer.cs" />
     <Compile Include="Data\DbConnectionExtensions.cs" />
     <Compile Include="Data\DbCommandExtensions.cs" />

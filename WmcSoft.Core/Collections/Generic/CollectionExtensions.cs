@@ -276,7 +276,22 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region AsCollection
+
+        public static ICollection<T> AsCollection<T>(this IReadOnlyCollection<T> readOnlyCollection) {
+            var collection = readOnlyCollection as ICollection<T>;
+            if (collection != null)
+                return collection;
+            return new ReadOnlyCollectionToCollectionAdapter<T>(readOnlyCollection);
+        }
+
+        #endregion
+
         #region AsReadOnly
+
+        public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection) {
+            return new ReadOnlyCollection<T>(collection);
+        }
 
         public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
             return new ConvertingListAdapter<TInput, TOutput>(list, convert);
@@ -286,23 +301,216 @@ namespace WmcSoft.Collections.Generic
 
         #region Repeat
 
+        class CollateRepeat<T> : IReadOnlyCollection<T>
+        {
+            class Enumerator : IEnumerator<T>
+            {
+                readonly IList<T> _list;
+                readonly int _repeat;
+                int _offset;
+                int _countdown;
+
+                public Enumerator(IList<T> list, int repeat) {
+                    _list = list;
+                    _repeat = repeat;
+                    _offset = -1;
+                    _countdown = repeat;
+                }
+
+                #region IEnumerator<T> Membres
+
+                public T Current {
+                    get { return _list[_offset]; }
+                }
+
+                #endregion
+
+                #region IDisposable Membres
+
+                public void Dispose() {
+                }
+
+                #endregion
+
+                #region IEnumerator Membres
+
+                object IEnumerator.Current {
+                    get { return Current; }
+                }
+
+                public bool MoveNext() {
+                    _offset++;
+                    if (_offset >= _list.Count) {
+                        if (_countdown == 1) {
+                            _offset--; // to allow multiple call.
+                            return false;
+                        }
+                        _offset = 0;
+                        _countdown--;
+                        return true;
+                    }
+                    return true;
+                }
+
+                public void Reset() {
+                    _offset = -1;
+                    _countdown = _repeat;
+                }
+
+                #endregion
+            }
+
+            #region fields
+
+            IList<T> _list;
+            int _repeat;
+
+            #endregion
+
+            #region Lifecycle
+
+            public CollateRepeat(IEnumerable<T> enumerable, int repeat) {
+                _list = new List<T>(enumerable);
+                _repeat = repeat;
+            }
+
+            #endregion
+
+            #region IReadOnlyCollection<T> Membres
+
+            public int Count {
+                get { return _list.Count * _repeat; }
+            }
+
+            #endregion
+
+            #region IEnumerable<T> Membres
+
+            public IEnumerator<T> GetEnumerator() {
+                return new Enumerator(_list, _repeat);
+            }
+
+            #endregion
+
+            #region IEnumerable Membres
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+
+            #endregion
+        }
+
+        class GroupedRepeat<T> : IReadOnlyCollection<T>
+        {
+            class Enumerator : IEnumerator<T>
+            {
+                readonly IList<T> _list;
+                readonly int _repeat;
+                int _offset;
+                int _countdown;
+
+                public Enumerator(IList<T> list, int repeat) {
+                    _list = list;
+                    _repeat = repeat;
+                    _countdown = repeat + 1;
+                }
+
+                #region IEnumerator<T> Membres
+
+                public T Current {
+                    get { return _list[_offset]; }
+                }
+
+                #endregion
+
+                #region IDisposable Membres
+
+                public void Dispose() {
+                }
+
+                #endregion
+
+                #region IEnumerator Membres
+
+                object IEnumerator.Current {
+                    get { return Current; }
+                }
+
+                public bool MoveNext() {
+                    if (_offset == _list.Count)
+                        return false;
+                    _countdown--;
+                    if (_countdown == 0) {
+                        _countdown = _repeat;
+                        _offset++;
+                        if (_offset == _list.Count)
+                            return false;
+                    }
+                    return true;
+                }
+
+                public void Reset() {
+                    _offset = -1;
+                    _countdown = _repeat;
+                }
+
+                #endregion
+            }
+
+            #region fields
+
+            IList<T> _list;
+            int _repeat;
+
+            #endregion
+
+            #region Lifecycle
+
+            public GroupedRepeat(IEnumerable<T> enumerable, int repeat) {
+                _list = new List<T>(enumerable);
+                _repeat = repeat;
+            }
+
+            #endregion
+
+            #region IReadOnlyCollection<T> Membres
+
+            public int Count {
+                get { return _list.Count * _repeat; }
+            }
+
+            #endregion
+
+            #region IEnumerable<T> Membres
+
+            public IEnumerator<T> GetEnumerator() {
+                return new Enumerator(_list, _repeat);
+            }
+
+            #endregion
+
+            #region IEnumerable Membres
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+
+            #endregion
+        }
+
         /// <summary>
         /// Repeats the sequence count times.
         /// </summary>
         /// <typeparam name="T">The item type</typeparam>
         /// <param name="self">The enumerator</param>
         /// <param name="count">The number of time to repeat the sequence</param>
-        /// <returns>The list with the repeate sequence</returns>
-        public static IList<T> Repeat<T>(this IEnumerable<T> self, int count) {
-            var list = new List<T>(self);
-            var length = list.Count;
-            list.Capacity = length * count;
-            while (--count != 0) {
-                for (int i = 0; i < length; i++) {
-                    list.Add(list[i]);
-                }
-            }
-            return list;
+        /// <param name="collate">Collate the items</param>
+        /// <returns>The list with the repeated sequence</returns>
+        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> self, int count, bool collate = true) {
+            if (collate)
+                return new CollateRepeat<T>(self, count).AsCollection();
+            return new GroupedRepeat<T>(self, count).AsCollection();
         }
 
         #endregion
