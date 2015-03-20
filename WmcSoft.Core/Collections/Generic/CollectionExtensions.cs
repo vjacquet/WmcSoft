@@ -278,6 +278,31 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region AsEnumerable
+
+        /// <summary>
+        /// Lift the source element as en enumerable.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of source</typeparam>
+        /// <param name="source">the source element</param>
+        /// <returns>An enumerable on the source</returns>
+        public static IEnumerable<TSource> AsEnumerable<TSource>(TSource source) {
+            yield return source;
+        }
+
+        /// <summary>
+        /// Lift the source element as en enumerable.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of source</typeparam>
+        /// <param name="source">the source element</param>
+        /// <returns>An enumerable on the source, or an empty enumerable when the source is null</returns>
+        public static IEnumerable<TSource> AsEnumerable<TSource>(TSource? source) where TSource : struct {
+            if (source.HasValue)
+                yield return source.GetValueOrDefault();
+        }
+
+        #endregion
+
         #region AsCollection
 
         public static ICollection<T> AsCollection<T>(this IReadOnlyCollection<T> readOnlyCollection) {
