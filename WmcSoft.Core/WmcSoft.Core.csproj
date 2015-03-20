@@ -34,6 +34,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,9 @@
     <Compile Include="Collections\Generic\ReadOnlyCollectionToCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\RelationComparer.cs" />
     <Compile Include="Collections\Generic\Vouch.cs" />
+    <Compile Include="Data\DataReaderExtensions.cs" />
+    <Compile Include="Data\DataRecordExtensions.cs" />
+    <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />
     <Compile Include="DisposableStack.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
     <Compile Include="Data\DataReaderBase.cs" />
