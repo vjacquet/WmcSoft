@@ -52,6 +52,7 @@
     <Compile Include="Collections\Generic\ReadOnlyCollectionToCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\RelationComparer.cs" />
     <Compile Include="Collections\Generic\Vouch.cs" />
+    <Compile Include="DisposableStack.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
     <Compile Include="Data\DataReaderBase.cs" />
     <Compile Include="Data\DataReaderDecorator.cs" />
