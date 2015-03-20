@@ -583,7 +583,7 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region Combine & Merge
+        #region Merge, Combine, etc.
 
         /// <summary>
         /// Merges two sorted enumerable in another enumerable sorted using the same comparer. When two items are equivalent, items from first come first.
@@ -713,6 +713,36 @@ namespace WmcSoft.Collections.Generic
                         hasValue1 = enumerator1.MoveNext();
                         hasValue2 = enumerator2.MoveNext();
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Concatenates two sequences by alternating their items.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
+        /// <param name="first">The first sequence to concatenate</param>
+        /// <param name="second">The second sequence to concatenate</param>
+        /// <returns>An IEnumerable<T> that contains the alternated elements of the two input sequences.</returns>
+        public static IEnumerable<T> Interleave<T>(this IEnumerable<T> first, IEnumerable<T> second) {
+            using (var enumerator1 = first.GetEnumerator())
+            using (var enumerator2 = second.GetEnumerator()) {
+                while (true) {
+                    if (!enumerator1.MoveNext()) {
+                        // first is empty, consume all second
+                        while (enumerator2.MoveNext())
+                            yield return enumerator2.Current;
+                        yield break;
+                    }
+                    yield return enumerator1.Current;
+
+                    if (!enumerator2.MoveNext()) {
+                        // second is empty, consume all first
+                        while (enumerator1.MoveNext())
+                            yield return enumerator1.Current;
+                        yield break;
+                    }
+                    yield return enumerator2.Current;
                 }
             }
         }
