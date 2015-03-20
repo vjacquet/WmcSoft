@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Collections.Generic
 {
-    class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>
+    sealed class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>
     {
         private readonly IReadOnlyList<TInput> _list;
         private readonly Converter<TInput, TOutput> _convert;
 
-        public ConvertingListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
+        public ConvertingListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
             if (list == null)
                 throw new ArgumentNullException("list");
-            if (convert == null)
+            if (converter == null)
                 throw new ArgumentNullException("convert");
 
             _list = list;
-            _convert = convert;
+            _convert = converter;
         }
 
         #region IReadOnlyList<TOutput> Membres

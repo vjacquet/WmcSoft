@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace WmcSoft.Collections.Generic
@@ -323,8 +324,8 @@ namespace WmcSoft.Collections.Generic
             return new ReadOnlyCollection<T>(collection);
         }
 
-        public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
-            return new ConvertingListAdapter<TInput, TOutput>(list, convert);
+        public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
+            return new ConvertingListAdapter<TInput, TOutput>(list, converter);
         }
 
         #endregion
@@ -566,6 +567,22 @@ namespace WmcSoft.Collections.Generic
                     yield return item;
                 }
             }
+        }
+
+        #endregion
+
+        #region XxxIfXxx
+
+        public static IEnumerable<TSource> DefaultIfNullOrEmpty<TSource>(this IEnumerable<TSource> source) {
+            if (source == null)
+                return Enumerable.Empty<TSource>();
+            return source.DefaultIfEmpty();
+        }
+
+        public static IEnumerable<TSource> EmptyIfNull<TSource>(this IEnumerable<TSource> source) {
+            if (source == null)
+                return Enumerable.Empty<TSource>();
+            return source;
         }
 
         #endregion
