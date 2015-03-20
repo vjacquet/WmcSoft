@@ -545,6 +545,31 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Stride
+
+        /// <summary>
+        /// Returns every Nth element of the source, starting with the first one
+        /// </summary>
+        /// <typeparam name="T">The type of the element of the source</typeparam>
+        /// <param name="source">An IEnumerable&lt;T> to return the element from.</param>
+        /// <param name="step">The step</param>
+        /// <returns></returns>
+        public static IEnumerable<T> Stride<T>(this IEnumerable<T> source, int step) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (step < 1)
+                throw new ArgumentOutOfRangeException("step");
+            var i = step - 1;
+            foreach (var item in source) {
+                if (++i == step) {
+                    i = 0;
+                    yield return item;
+                }
+            }
+        }
+
+        #endregion
+
         #region BinarySearch methods
 
         private static int GetMedian(int lo, int hi) {
