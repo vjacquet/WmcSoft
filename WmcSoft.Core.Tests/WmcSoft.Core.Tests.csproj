@@ -55,6 +55,7 @@
     <Compile Include="BinaryFormatterTests.cs" />
     <Compile Include="Collections\Generic\CollectionExtensionsTests.cs" />
     <Compile Include="DateTimeTests.cs" />
+    <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexExtensionsTests.cs" />
