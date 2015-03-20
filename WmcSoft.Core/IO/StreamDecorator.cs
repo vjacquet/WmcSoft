@@ -32,60 +32,57 @@ namespace WmcSoft.IO
     /// <summary>
     /// Base class when creating streams decorating another one.
     /// </summary>
-    public class DecoratingStream : Stream
+    public abstract class StreamDecorator : Stream
     {
-        #region Lifecycle
+        #region Fields
 
-        private DecoratingStream() {
-        }
-
-        protected DecoratingStream(Stream stream) {
-            if (stream == null) {
-                throw new ArgumentNullException("decoratedStream");
-            }
-            this.decoratedStream = stream;
-        }
-
-        public override void Close() {
-            decoratedStream.Close();
-        }
+        private readonly Stream _underlying;
 
         #endregion
 
-        #region Class Properties
+        #region Lifecycle
 
-        protected Stream DecoratedStream {
-            get { return this.decoratedStream; }
+        private StreamDecorator() {
         }
-        private Stream decoratedStream;
+
+        protected StreamDecorator(Stream stream) {
+            if (stream == null) {
+                throw new ArgumentNullException("decoratedStream");
+            }
+            _underlying = stream;
+        }
+
+        public override void Close() {
+            _underlying.Close();
+        }
 
         #endregion
 
         #region Info class Methods & Properties
 
         public override bool CanRead {
-            get { return decoratedStream.CanRead; }
+            get { return _underlying.CanRead; }
         }
 
         public override bool CanSeek {
-            get { return decoratedStream.CanSeek; }
+            get { return _underlying.CanSeek; }
         }
 
         public override bool CanWrite {
-            get { return decoratedStream.CanWrite; }
+            get { return _underlying.CanWrite; }
         }
 
         public override long Length {
-            get { return decoratedStream.Length; }
+            get { return _underlying.Length; }
         }
 
         public override long Position {
-            get { return decoratedStream.Position; }
-            set { decoratedStream.Position = value; }
+            get { return _underlying.Position; }
+            set { _underlying.Position = value; }
         }
 
         public override bool CanTimeout {
-            get { return decoratedStream.CanTimeout; }
+            get { return _underlying.CanTimeout; }
         }
 
         #endregion
@@ -93,52 +90,52 @@ namespace WmcSoft.IO
         #region Read Methods & Properties
 
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
-            return decoratedStream.BeginRead(buffer, offset, count, callback, state);
+            return _underlying.BeginRead(buffer, offset, count, callback, state);
         }
 
         public override int EndRead(IAsyncResult asyncResult) {
-            return decoratedStream.EndRead(asyncResult);
+            return _underlying.EndRead(asyncResult);
         }
 
         public override int Read(byte[] buffer, int offset, int count) {
-            return decoratedStream.Read(buffer, offset, count);
+            return _underlying.Read(buffer, offset, count);
         }
 
         public override long Seek(long offset, SeekOrigin origin) {
-            return decoratedStream.Seek(offset, origin);
+            return _underlying.Seek(offset, origin);
         }
 
         public override int ReadTimeout {
-            get { return decoratedStream.ReadTimeout; }
-            set { decoratedStream.ReadTimeout = value; }
+            get { return _underlying.ReadTimeout; }
+            set { _underlying.ReadTimeout = value; }
         }
         #endregion
 
         #region Write Methods & Properties
 
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
-            return decoratedStream.BeginWrite(buffer, offset, count, callback, state);
+            return _underlying.BeginWrite(buffer, offset, count, callback, state);
         }
 
         public override void EndWrite(IAsyncResult asyncResult) {
-            decoratedStream.EndWrite(asyncResult);
+            _underlying.EndWrite(asyncResult);
         }
 
         public override void Write(byte[] buffer, int offset, int count) {
-            decoratedStream.Write(buffer, offset, count);
+            _underlying.Write(buffer, offset, count);
         }
 
         public override void Flush() {
-            decoratedStream.Flush();
+            _underlying.Flush();
         }
 
         public override void SetLength(long value) {
-            decoratedStream.SetLength(value);
+            _underlying.SetLength(value);
         }
 
         public override int WriteTimeout {
-            get { return decoratedStream.WriteTimeout; }
-            set { decoratedStream.WriteTimeout = value; }
+            get { return _underlying.WriteTimeout; }
+            set { _underlying.WriteTimeout = value; }
         }
         #endregion
     }
