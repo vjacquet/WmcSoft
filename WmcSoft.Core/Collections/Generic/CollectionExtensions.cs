@@ -112,8 +112,11 @@ namespace WmcSoft.Collections.Generic
             if (items == null)
                 return self;
 
-            ICollection collection = self as ICollection;
-            if (collection != null && collection.IsSynchronized) {
+            var list = self as List<T>;
+            var collection = self as ICollection;
+            if (list != null) {
+                list.AddRange(items);
+            } else if (collection != null && collection.IsSynchronized) {
                 lock (collection.SyncRoot) {
                     foreach (var each in items) {
                         self.Add(each);
