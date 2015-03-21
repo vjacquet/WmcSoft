@@ -29,7 +29,7 @@ namespace WmcSoft.Collections.Generic
                 HasCount = true;
                 IsSet = enumerable is ISet<T>;
                 if (IsSet) {
-                    var sortedCollectionSet = enumerable as SortedCollection<T>;
+                    var sortedCollectionSet = enumerable as SortedCollectionSet<T>;
                     if (sortedCollectionSet != null) {
                         IsSorted = comparer.Equals(sortedCollectionSet.Comparer);
                         return;

@@ -20,6 +20,18 @@ namespace WmcSoft.Collections.Generic.Tests
         }
 
         [TestMethod]
+        public void CheckIntersectWithCollectionWithDuplicates() {
+            var actual = new SortedCollectionSet<char>();
+            actual.AddRange('a', 'b', 'c');
+            var other = new SortedCollection<char>();
+            other.AddRange('b', 'b', 'd');
+            actual.IntersectWith(other);
+
+            var expected = new[] { 'b' };
+            CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
+
+        [TestMethod]
         public void CheckUnionWith() {
             var actual = new SortedCollectionSet<char>();
             actual.AddRange('a', 'b', 'c');

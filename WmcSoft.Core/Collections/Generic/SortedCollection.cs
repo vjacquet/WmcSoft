@@ -46,7 +46,7 @@ namespace WmcSoft.Collections.Generic
             if (index >= 0) {
                 do {
                     index++;
-                } while (_comparer.Compare(_storage[index], item) == 0);
+                } while (index < _storage.Count && _comparer.Compare(_storage[index], item) == 0);
                 _storage.Insert(index, item);
             } else {
                 _storage.Insert(~index, item);

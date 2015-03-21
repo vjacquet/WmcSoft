@@ -74,12 +74,39 @@ namespace WmcSoft.Collections.Generic
             // handle empty cases
             if (_storage.Count == 0)
                 return;
-            var collection = other as ICollection<T>;
-            if (collection != null && collection.Count == 0) {
+
+            var traits = new EnumerableTraits<T>(other, Comparer);
+            if (traits.HasCount && traits.Count == 0) {
                 Clear();
                 return;
             }
+            if (traits.IsSorted) {
+                var list = new List<T>(Math.Min(traits.Count, Count));
+                if (!traits.IsSet)
+                    other = other.SortedUnique(Comparer);
 
+                using (var enumerator1 = GetEnumerator())
+                using (var enumerator2 = other.GetEnumerator()) {
+                    var hasValue1 = enumerator1.MoveNext();
+                    var hasValue2 = enumerator2.MoveNext();
+                    while (hasValue1 && hasValue2) {
+                        var compared = Comparer.Compare(enumerator1.Current, enumerator2.Current);
+                        if (compared < 0)
+                            hasValue1 = enumerator1.MoveNext();
+                        else if (compared > 0)
+                            hasValue2 = enumerator2.MoveNext();
+                        else {
+                            list.Add(enumerator1.Current);
+                            hasValue1 = enumerator1.MoveNext();
+                            hasValue2 = enumerator2.MoveNext();
+                        }
+                    }
+                }
+                _storage = list;
+                return;
+            }
+
+            // do not know anything about the enumerable
             var tmp = new SortedCollectionSet<T>(Comparer);
             foreach (var item in other) {
                 if (Contains(item))

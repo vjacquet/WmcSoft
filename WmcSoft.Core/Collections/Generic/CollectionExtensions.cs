@@ -131,7 +131,7 @@ namespace WmcSoft.Collections.Generic
 
             return self;
         }
-        
+
         public static ICollection<T> AddRange<T>(this ICollection<T> self, params T[] items) {
             return AddRange(self, items.AsEnumerable());
         }
@@ -658,6 +658,25 @@ namespace WmcSoft.Collections.Generic
         #endregion
 
         #region Merge, Combine, etc.
+
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
+            using (var enumerator = self.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    yield return enumerator.Current;
+                    var last = enumerator.Current;
+
+                    while (enumerator.MoveNext()) {
+                        if (comparer.Compare(last, enumerator.Current) != 0) {
+                            yield return enumerator.Current;
+                            last = enumerator.Current;
+                        }
+                    }
+                }
+            }
+        }
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self) {
+            return self.SortedUnique(Comparer<T>.Default);
+        }
 
         /// <summary>
         /// Merges two sorted enumerable in another enumerable sorted using the same comparer. When two items are equivalent, items from first come first.
