@@ -49,9 +49,12 @@
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\ConvertingListAdapter.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
+    <Compile Include="Collections\Generic\EnumerableTraits.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollection.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionToCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\RelationComparer.cs" />
+    <Compile Include="Collections\Generic\SortedCollection.cs" />
+    <Compile Include="Collections\Generic\SortedCollectionSet.cs" />
     <Compile Include="Collections\Generic\Vouch.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />

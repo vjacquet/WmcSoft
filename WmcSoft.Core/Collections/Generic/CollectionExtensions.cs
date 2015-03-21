@@ -131,6 +131,10 @@ namespace WmcSoft.Collections.Generic
 
             return self;
         }
+        
+        public static ICollection<T> AddRange<T>(this ICollection<T> self, params T[] items) {
+            return AddRange(self, items.AsEnumerable());
+        }
 
         #endregion
 
@@ -838,7 +842,7 @@ namespace WmcSoft.Collections.Generic
             return enumerable.IsSorted(Comparer<T>.Default);
         }
 
-        public static bool IsSortedAndDistinct<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
+        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var previous = enumerator.Current;
@@ -851,8 +855,18 @@ namespace WmcSoft.Collections.Generic
                 return true;
             }
         }
-        public static bool IsSortedAndDistinct<T>(this IEnumerable<T> enumerable) {
-            return enumerable.IsSortedAndDistinct(Comparer<T>.Default);
+        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable) {
+            return enumerable.IsSortedSet(Comparer<T>.Default);
+        }
+
+        #endregion
+
+        #region Reserve
+
+        public static void Reserve<T>(this List<T> list, int extraSpace) {
+            var required = list.Count + extraSpace;
+            if (list.Capacity < required)
+                list.Capacity = required;
         }
 
         #endregion
