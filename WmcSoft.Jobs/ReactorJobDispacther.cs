@@ -25,13 +25,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace WmcSoft.Threading
 {
-    public sealed class ReactorJobDispatcher : JobDispatcher
+    public sealed class ReactorJobDispatcher : JobDispatcher, IWaitingJobDispatcher
     {
         #region JobDispatcher Membres
 
@@ -45,8 +43,15 @@ namespace WmcSoft.Threading
             }
 
             Interlocked.Increment(ref _workingJobs);
+            _onIdle.Reset();
             ThreadPool.QueueUserWorkItem(DoJob, job);
-            onIdle.Reset();
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when the <see cref="JobDispatcher"/> is busy.
+        /// </summary>
+        public bool IsBusy {
+            get { return _workingJobs > 0; }
         }
 
         /// <summary>
@@ -55,19 +60,12 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
         /// <returns><c>true</c> if the current instance receives a signal; otherwise, <c>false</c>.</returns>
-        public override bool WaitWhileBusy(int millisecondsTimeout) {
+        public bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout) {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
-                return onIdle.WaitOne(millisecondsTimeout, false);
+                return _onIdle.WaitOne(millisecondsTimeout, false);
             }
             return !isBusy;
-        }
-
-        /// <summary>
-        /// Returns <c>true</c> when the <see cref="JobDispatcher"/> is busy.
-        /// </summary>
-        public override bool IsBusy {
-            get { return _workingJobs > 0; }
         }
 
         #endregion
@@ -75,7 +73,7 @@ namespace WmcSoft.Threading
         #region Private
 
         private int _workingJobs;
-        private ManualResetEvent onIdle = new ManualResetEvent(false);
+        private readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
 
         private void DoJob(object obj) {
             IJob job = null;
@@ -85,7 +83,7 @@ namespace WmcSoft.Threading
             }
             finally {
                 if (0 == Interlocked.Decrement(ref _workingJobs))
-                    onIdle.Set();
+                    _onIdle.Set();
                 DisposeJob(job);
             }
         }

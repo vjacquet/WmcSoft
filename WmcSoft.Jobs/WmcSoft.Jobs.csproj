@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundWorkerDispatcher.cs" />
     <Compile Include="BatchJob.cs" />
     <Compile Include="DecoratingJobDispatcher.cs" />
     <Compile Include="IJob.cs" />
     <Compile Include="IJobQueue.cs" />
+    <Compile Include="IWaitingJobDispatcher.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="JobDispatcher.cs" />
+    <Compile Include="JobExtensions.cs" />
     <Compile Include="JobQueue.cs" />
     <Compile Include="LifecycleWrappingJob.cs" />
     <Compile Include="MonitoredJob.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="ReactorJobDispacther.cs" />
     <Compile Include="SequenceJob.cs" />
     <Compile Include="SynchronousJobDispatcher.cs" />
+    <Compile Include="WaitingJobDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="JobDispatcher.cd" />

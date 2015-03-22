@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -29,30 +29,19 @@ using System.Threading;
 
 namespace WmcSoft.Threading
 {
-    public sealed class SynchronousJobDispatcher : JobDispatcher
+    public interface IWaitingJobDispatcher
     {
-        #region Private fields
+        bool IsBusy { get; }
+        bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout);
+    }
 
-        int _refCount;
-
-        #endregion
-
-        #region Overrides
-
-        /// <summary>
-        /// Dispatches the specified job.
-        /// </summary>
-        /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
-        public override void Dispatch(IJob job) {
-            if (job == null) {
-                throw new ArgumentNullException("job");
-            }
-
-            Interlocked.Increment(ref _refCount);
-            job.Execute(this);
-            Interlocked.Decrement(ref _refCount);
+    public static class WaitingJobDispatcherExtensions
+    {
+        public static bool WaitUntilAllJobsAreExecuted(this IWaitingJobDispatcher jobDispatcher) {
+            return jobDispatcher.WaitUntilAllJobsAreExecuted(Timeout.Infinite);
         }
-
-        #endregion
+        public static bool WaitUntilAllJobsAreExecuted(this IWaitingJobDispatcher jobDispatcher, TimeSpan timeout) {
+            return jobDispatcher.WaitUntilAllJobsAreExecuted((int)timeout.TotalMilliseconds);
+        }
     }
 }

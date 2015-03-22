@@ -39,19 +39,11 @@ namespace WmcSoft.Threading
         {
             public override void Dispatch(IJob job) {
             }
-
-            public override bool IsBusy {
-                get { return false; }
-            }
-
-            public override bool WaitWhileBusy(int timeout) {
-                return true;
-            }
         }
 
         #endregion
 
-        #region ThreadStart Class
+        #region Internal job Classes
 
         sealed class ThreadStartJob : IJob
         {
@@ -157,43 +149,39 @@ namespace WmcSoft.Threading
             }
         }
 
-        /// <summary>
-        /// Blocks the current thread while the dispatcher is busy.
-        /// </summary>
-        /// <returns><c>true</c> if the current instance receives a signal; otherwise <see cref="WaitWhileBusy()"/> never returns.</returns>
-        public bool WaitWhileBusy() {
-            return WaitWhileBusy(-1);
-        }
+        ///// <summary>
+        ///// Blocks the current thread while the dispatcher is busy.
+        ///// </summary>
+        ///// <returns><c>true</c> if the current instance receives a signal; otherwise <see cref="WaitWhileBusy()"/> never returns.</returns>
+        //public bool WaitWhileBusy() {
+        //    return WaitWhileBusy(-1);
+        //}
 
-        /// <summary>
-        /// Blocks the current thread while the dispatcher is busy, using a 32-bit signed 
-        /// integer to measure the time interval.
-        /// </summary>
-        /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
-        /// <returns><c>true</c> if the current instance receives a signal; otherwise, <c>false</c>.</returns>
-        public abstract bool WaitWhileBusy(int millisecondsTimeout);
+        ///// <summary>
+        ///// Blocks the current thread while the dispatcher is busy, using a 32-bit signed 
+        ///// integer to measure the time interval.
+        ///// </summary>
+        ///// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+        ///// <returns><c>true</c> if the current instance receives a signal; otherwise, <c>false</c>.</returns>
+        //public abstract bool WaitWhileBusy(int millisecondsTimeout);
 
-        /// <summary>
-        /// Returns <c>true</c> when the <see cref="JobDispatcher"/> is busy.
-        /// </summary>
-        public abstract bool IsBusy { get; }
+        ///// <summary>
+        ///// Returns <c>true</c> when the <see cref="JobDispatcher"/> is busy.
+        ///// </summary>
+        //public abstract bool IsBusy { get; }
 
         /// <summary>
         /// Trait property to indicate if the JobDispatcher supports cancellation.
         /// </summary>
         public virtual bool SupportsCancellation {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         /// <summary>
         /// Returns <c>true</c> if the job dispatcher has been cancelled.
         /// </summary>
         public virtual bool CancellationPending {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         /// <summary>
@@ -250,16 +238,144 @@ namespace WmcSoft.Threading
         #endregion
     }
 
-    public static class ServiceProviderExtensions
-    {
-        /// <summary>
-        /// Generic version of GetService for wich the type is inferred
-        /// </summary>
-        /// <typeparam name="T">type of the service to get.</typeparam>
-        /// <param name="self">The service provider</param>
-        /// <returns>The service</returns>
-        public static T GetService<T>(this IServiceProvider self) where T : class {
-            return (T)self.GetService(typeof(T));
-        }
-    }
 }
+
+/*
+    public abstract class JobDispatcher : IServiceProvider, IDisposable
+    {
+        #region NullJobDispatcher Class
+
+        class NullJobDispatcher : JobDispatcher
+        {
+            public override void Dispatch(IJob job) {
+            }
+        }
+
+        #endregion
+
+        #region ThreadStart Class
+
+        class ThreadStartJob : IJob
+        {
+            ThreadStart start;
+
+            internal ThreadStartJob(ThreadStart start) {
+                if (start == null)
+                    throw new ArgumentNullException("start");
+
+                this.start = start;
+            }
+
+            #region IJob Membres
+
+            void IJob.Execute(IServiceProvider serviceProvider) {
+                start();
+            }
+
+            #endregion
+        }
+
+        class ActionJob<T> : IJob
+        {
+            Action<T> action;
+
+            internal ActionJob(Action<T> action) {
+                if (action == null)
+                    throw new ArgumentNullException("action");
+
+                this.action = action;
+            }
+
+            #region IJob Membres
+
+            void IJob.Execute(IServiceProvider serviceProvider) {
+                object service = serviceProvider.GetService(typeof(T));
+                if (service != null) {
+                    action((T)service);
+                } else {
+                    action(default(T));
+                }
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Lifecycle
+
+        protected JobDispatcher() {
+            serviceContainer = new ServiceContainer();
+        }
+
+        protected JobDispatcher(IServiceProvider parentProvider) {
+            serviceContainer = new ServiceContainer(parentProvider);
+        }
+
+        #endregion
+
+        #region Static Properties
+
+        public static readonly JobDispatcher Null = new NullJobDispatcher();
+
+        #endregion
+
+        #region Fields
+
+        IServiceProvider serviceContainer;
+
+        #endregion
+
+        #region Abstracts & overridables
+
+        public abstract void Dispatch(IJob job);
+
+        public void Dispatch(ThreadStart job) {
+            Dispatch(new ThreadStartJob(job));
+        }
+
+        public void Dispatch<T>(Action<T> job) {
+            Dispatch(new ActionJob<T>(job));
+        }
+
+        #endregion
+
+        #region Methods
+
+        //protected virtual void Execute(IJob job) {
+        //    job.Execute(this);
+        //}
+
+        #endregion
+
+        #region IServiceProvider Membres
+
+        object IServiceProvider.GetService(Type serviceType) {
+            if (serviceType == typeof(JobDispatcher))
+                return this;
+            else if (serviceType == typeof(IServiceProvider))
+                return this;
+            else
+                return serviceContainer.GetService(serviceType);
+        }
+
+        #endregion
+
+        #region IDisposable Membres
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+        }
+
+        ~JobDispatcher() {
+            Dispose(false);
+        }
+
+        #endregion
+
+    }
+*/
