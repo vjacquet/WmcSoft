@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,36 +18,75 @@ namespace WmcSoft.Collections.Generic
         public bool IsSorted;
         public bool IsSet;
 
+        public EnumerableTraits(IEnumerable<T> enumerable) {
+            IsSet = false;
+            IsSorted = false;
+
+            var count = GetCount(enumerable as ICollection<T>)
+                ?? GetCount(enumerable as IReadOnlyCollection<T>)
+                ?? GetCount(enumerable as ICollection);
+            if (!count.HasValue) {
+                Count = 0;
+                HasCount = false;
+                return;
+            }
+            Count = count.GetValueOrDefault();
+            HasCount = true;
+        }
+
         public EnumerableTraits(IEnumerable<T> enumerable, IComparer<T> comparer) {
-            var collection = enumerable as ICollection<T>;
-            if (collection == null) {
+            var count = GetCount(enumerable as ICollection<T>)
+                ?? GetCount(enumerable as IReadOnlyCollection<T>)
+                ?? GetCount(enumerable as ICollection);
+            if (!count.HasValue) {
                 Count = 0;
                 HasCount = false;
                 IsSet = false;
                 IsSorted = false;
-            } else {
-                Count = collection.Count;
-                HasCount = true;
-                IsSet = enumerable is ISet<T>;
-                if (IsSet) {
-                    var sortedCollectionSet = enumerable as SortedCollectionSet<T>;
-                    if (sortedCollectionSet != null) {
-                        IsSorted = comparer.Equals(sortedCollectionSet.Comparer);
-                        return;
-                    }
+                return;
+            }
 
-                    var sortedSet = enumerable as SortedSet<T>;
-                    if (sortedSet != null) {
-                        IsSorted = comparer.Equals(sortedSet.Comparer);
-                        return;
-                    }
-
-                    IsSorted = false;
-                } else {
-                    var sorted = enumerable as SortedCollection<T>;
-                    IsSorted = (sorted != null) && comparer.Equals(sorted.Comparer);
+            Count = count.GetValueOrDefault();
+            HasCount = true;
+            IsSet = enumerable is ISet<T>;
+            if (IsSet) {
+                var sortedCollectionSet = enumerable as SortedCollectionSet<T>;
+                if (sortedCollectionSet != null) {
+                    IsSorted = comparer.Equals(sortedCollectionSet.Comparer);
+                    return;
                 }
+
+                var sortedSet = enumerable as SortedSet<T>;
+                if (sortedSet != null) {
+                    IsSorted = comparer.Equals(sortedSet.Comparer);
+                    return;
+                }
+
+                IsSorted = false;
+            } else {
+                var sorted = enumerable as SortedCollection<T>;
+                IsSorted = (sorted != null) && comparer.Equals(sorted.Comparer);
             }
         }
+
+        #region Collection resolver
+
+        static int? GetCount(ICollection<T> collection) {
+            if (collection != null)
+                return collection.Count;
+            return null;
+        }
+        static int? GetCount(IReadOnlyCollection<T> collection) {
+            if (collection != null)
+                return collection.Count;
+            return null;
+        }
+        static int? GetCount(ICollection collection) {
+            if (collection != null)
+                return collection.Count;
+            return null;
+        }
+
+        #endregion
     }
 }

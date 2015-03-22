@@ -74,34 +74,17 @@ namespace WmcSoft.Collections.Generic
             // handle empty cases
             if (_storage.Count == 0)
                 return;
-
             var traits = new EnumerableTraits<T>(other, Comparer);
             if (traits.HasCount && traits.Count == 0) {
                 Clear();
                 return;
             }
             if (traits.IsSorted) {
-                var list = new List<T>(Math.Min(traits.Count, Count));
                 if (!traits.IsSet)
-                    other = other.SortedUnique(Comparer);
+                    other = SetUtilities.Unique(other, new EqualityComparerAdapter<T>(Comparer));
 
-                using (var enumerator1 = GetEnumerator())
-                using (var enumerator2 = other.GetEnumerator()) {
-                    var hasValue1 = enumerator1.MoveNext();
-                    var hasValue2 = enumerator2.MoveNext();
-                    while (hasValue1 && hasValue2) {
-                        var compared = Comparer.Compare(enumerator1.Current, enumerator2.Current);
-                        if (compared < 0)
-                            hasValue1 = enumerator1.MoveNext();
-                        else if (compared > 0)
-                            hasValue2 = enumerator2.MoveNext();
-                        else {
-                            list.Add(enumerator1.Current);
-                            hasValue1 = enumerator1.MoveNext();
-                            hasValue2 = enumerator2.MoveNext();
-                        }
-                    }
-                }
+                var list = new List<T>(Math.Min(traits.Count, Count));
+                list.AddRange(SetUtilities.Intersection(this, other));
                 _storage = list;
                 return;
             }
@@ -162,10 +145,10 @@ namespace WmcSoft.Collections.Generic
             // handle empty cases
             if (_storage.Count == 0)
                 return false;
+            var traits = new EnumerableTraits<T>(other);
             var collection = other as ICollection<T>;
-            if (collection != null && collection.Count == 0) {
+            if (traits.HasCount && traits.Count == 0)
                 return false;
-            }
 
             foreach (var item in other) {
                 if (Contains(item))
@@ -201,6 +184,20 @@ namespace WmcSoft.Collections.Generic
         public void UnionWith(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
+
+            var traits = new EnumerableTraits<T>(other, Comparer);
+            if (traits.HasCount && traits.Count == 0) {
+                return;
+            }
+            if (traits.IsSorted) {
+                if (!traits.IsSet)
+                    other = SetUtilities.Unique(other, new EqualityComparerAdapter<T>(Comparer));
+
+                var list = new List<T>(traits.Count + Count);
+                list.AddRange(SetUtilities.Union(this, other));
+                _storage = list;
+                return;
+            }
 
             foreach (var item in other)
                 Add(item);

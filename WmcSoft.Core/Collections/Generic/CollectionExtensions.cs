@@ -662,15 +662,14 @@ namespace WmcSoft.Collections.Generic
         public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
             using (var enumerator = self.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
-                    yield return enumerator.Current;
-                    var last = enumerator.Current;
-
+                    var current = enumerator.Current;
                     while (enumerator.MoveNext()) {
-                        if (comparer.Compare(last, enumerator.Current) != 0) {
-                            yield return enumerator.Current;
-                            last = enumerator.Current;
+                        if (comparer.Compare(current, enumerator.Current) != 0) {
+                            yield return current;
+                            current = enumerator.Current;
                         }
                     }
+                    yield return current;
                 }
             }
         }

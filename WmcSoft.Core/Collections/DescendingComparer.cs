@@ -25,13 +25,35 @@
 #endregion
 
 using System;
+using System.Collections;
 
-namespace WmcSoft
+namespace WmcSoft.Collections
 {
-    public static class FormatProviderExtensions
+    [Serializable]
+    public sealed class DescendingComparer : IComparer
     {
-        public static T GetFormat<T>(this IFormatProvider formatProvider) {
-            return (T)formatProvider.GetFormat(typeof(T));
+        #region Fields
+
+        IComparer comparer;
+
+        #endregion
+
+        #region Lifecycle
+
+        public DescendingComparer(IComparer comparer) {
+            if (comparer == null)
+                throw new ArgumentNullException("comparer");
+            this.comparer = comparer;
         }
+
+        #endregion
+
+        #region IComparer Members
+
+        public int Compare(object x, object y) {
+            return comparer.Compare(y, x);
+        }
+
+        #endregion
     }
 }

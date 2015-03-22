@@ -24,14 +24,36 @@
 
 #endregion
 
-using System;
+using System.Collections.Generic;
 
-namespace WmcSoft
+namespace WmcSoft.Collections.Generic
 {
-    public static class FormatProviderExtensions
+    public sealed class EqualityComparerAdapter<T> : IEqualityComparer<T>
     {
-        public static T GetFormat<T>(this IFormatProvider formatProvider) {
-            return (T)formatProvider.GetFormat(typeof(T));
+        #region Fields
+
+        private readonly IComparer<T> _comparer;
+
+        #endregion
+
+        #region Lifecycle
+
+        public EqualityComparerAdapter(IComparer<T> comparer) {
+            _comparer = comparer;
         }
+
+        #endregion
+
+        #region IEqualityComparer<T> Members
+
+        public bool Equals(T x, T y) {
+            return _comparer.Compare(x, y) == 0;
+        }
+
+        public int GetHashCode(T obj) {
+            return obj.GetHashCode();
+        }
+
+        #endregion
     }
 }
