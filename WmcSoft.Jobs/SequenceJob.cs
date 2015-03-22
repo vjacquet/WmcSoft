@@ -27,54 +27,59 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using WmcSoft;
+using WmcSoft.Threading;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Threading
 {
-    sealed class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>
+    public class SequenceJob : JobBase
     {
-        private readonly IReadOnlyList<TInput> _list;
-        private readonly Converter<TInput, TOutput> _convert;
+        #region Private Fields
 
-        public ConvertingListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (converter == null)
-                throw new ArgumentNullException("convert");
+        Queue<IJob> queue;
 
-            _list = list;
-            _convert = converter;
+        #endregion
+
+        #region Life cycle
+
+        public SequenceJob() {
+            queue = new Queue<IJob>();
         }
 
-        #region IReadOnlyList<TOutput> Membres
-
-        public TOutput this[int index] {
-            get { return _convert(_list[index]); }
+        public SequenceJob(params IJob[] jobs)
+            : this() {
+            for (int i = 0; i < jobs.Length; i++) {
+                queue.Enqueue(jobs[i]);
+            }
         }
 
         #endregion
 
-        #region IReadOnlyCollection<TOutput> Membres
+        #region Methods
 
-        public int Count {
-            get { return _list.Count; }
+        public SequenceJob ContinueWith(IJob job) {
+            queue.Enqueue(job);
+            return this;
         }
 
         #endregion
 
-        #region IEnumerable<TOutput> Membres
+        #region Overrides
 
-        public IEnumerator<TOutput> GetEnumerator() {
-            return _list.Select(i => _convert(i)).GetEnumerator();
+        protected override void DoExecute(IServiceProvider serviceProvider) {
+            if(queue.Count > 0) {
+                IJob job = queue.Dequeue();
+                job.Execute(serviceProvider);
+
+                if (queue.Count > 0) {
+                    JobDispatcher dispatcher = serviceProvider.GetService<JobDispatcher>();
+                    dispatcher.Dispatch(this);
+                }
+            }
         }
 
         #endregion
 
-        #region IEnumerable Membres
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
-
-        #endregion
     }
 }

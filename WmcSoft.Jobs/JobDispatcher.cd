@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Threading.MonitoredJob" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAEAAAAAAIACAAAAAQAAAQEAACgAQAAAAAA=</HashCode>
+      <FileName>Threading\MonitoredJob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Threading.JobBase" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Threading\JobBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Threading.JobDispatcher" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAACBAAAAACAAAgABAAAAAAAAQAQIAQAAAAEA=</HashCode>
+      <FileName>Threading\JobDispatcher.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Threading.ReactorJobDispatcher" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAQAAABAAAAAAAAAAADEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Threading\ReactorJobDispacther.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Threading.SynchronousJobDispatcher" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAggAAAAAABAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Threading\SynchronousJobDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Threading.QueuedJobDispatcher" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAgAABgAAiBAAAAAAAAAgADAAAAAAABQAAAAUAAAAAA=</HashCode>
+      <FileName>Threading\QueuedJobDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Threading.DecoratingJobDispatcher" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAEAAACBAAAAAAAAAgABAAAAAAAAQAAAAQAAAAEA=</HashCode>
+      <FileName>Threading\DecoratingJobDispatcher.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Inner" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Threading.BatchJob">
+    <Position X="6.5" Y="4.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="WmcSoft.Threading.BatchJob.BatchJobDispatcher" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Threading\BatchJob.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEACAAAAQAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Threading\BatchJob.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Threading.SequenceJob" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAABACAAAAAAAAA=</HashCode>
+      <FileName>Threading\SequenceJob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="WmcSoft.Threading.IJob" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Threading\IJob.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="WmcSoft.Threading.JobMonitoringHandler" Collapsed="true">
+    <Position X="10" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Threading\MonitoredJob.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

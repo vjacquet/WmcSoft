@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathematicsBench", "..\Benchmarks\MathematicsBench\MathematicsBench.csproj", "{D0383AA6-BFD4-4C85-9EEF-269F1886434A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Jobs", "..\WmcSoft.Jobs\WmcSoft.Jobs.csproj", "{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0383AA6-BFD4-4C85-9EEF-269F1886434A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

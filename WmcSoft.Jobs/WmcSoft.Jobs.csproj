@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{041E639D-20CD-454F-90D5-2852AA58E126}</ProjectGuid>
+    <ProjectGuid>{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft</RootNamespace>
-    <AssemblyName>WmcSoft.Mathematics</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>WmcSoft.Threading</RootNamespace>
+    <AssemblyName>WmcSoft.Jobs</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,59 +33,40 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algebra\GroupLikeExtensions.cs" />
-    <Compile Include="Algebra\IGroupLike.cs" />
-    <Compile Include="Algebra\IGroupLikeTraits.cs" />
-    <Compile Include="Algebra\IRingLike.cs" />
-    <Compile Include="Algebra\RingLikeExtensions.cs" />
-    <Compile Include="Arithmetics\DecimalArithmetics.cs" />
-    <Compile Include="Arithmetics\IArithmetics.cs" />
-    <Compile Include="Arithmetics\DoubleArithmetics.cs" />
-    <Compile Include="Arithmetics\Int32Arithmetics.cs" />
-    <Compile Include="DeterministicRandom.cs" />
-    <Compile Include="IntExtensions.cs" />
-    <Compile Include="Numerics\Dimensions.cs" />
-    <Compile Include="Numerics\Generic\Vector.cs" />
-    <Compile Include="Numerics\Matrix.cs" />
-    <Compile Include="Numerics\BigRational.cs" />
-    <Compile Include="Numerics\Rational.cs" />
-    <Compile Include="Numerics\StrideEnumerable.cs" />
-    <Compile Include="Numerics\StrideEnumerator.cs" />
-    <Compile Include="Numerics\Valarray.cs" />
-    <Compile Include="Numerics\Vector.cs" />
+    <Compile Include="BatchJob.cs" />
+    <Compile Include="DecoratingJobDispatcher.cs" />
+    <Compile Include="IJob.cs" />
+    <Compile Include="IJobQueue.cs" />
+    <Compile Include="JobBase.cs" />
+    <Compile Include="JobDispatcher.cs" />
+    <Compile Include="JobQueue.cs" />
+    <Compile Include="LifecycleWrappingJob.cs" />
+    <Compile Include="MonitoredJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Statistics\Accumulator.cs" />
-    <Compile Include="Statistics\Quantiles.cs" />
+    <Compile Include="QueuedJobDispatcher.cs" />
+    <Compile Include="ReactorJobDispacther.cs" />
+    <Compile Include="SequenceJob.cs" />
+    <Compile Include="SynchronousJobDispatcher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JobDispatcher.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
-      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
-      <Name>WmcSoft.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Algebra\AlgebraDiagram.cd" />
-    <Compile Include="Algebra\IRingLikeTraits.cs" />
-    <None Include="Numerics\NumericsDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
