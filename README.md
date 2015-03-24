@@ -9,3 +9,9 @@ This library regroup extensions and helpers.
 ## WmcSoft.Mathematics
 Library of mathematical objects, such as Rationals, Vectors and Matrices. The main goal is to have them easy to use.
 They are not aimed to be the fastest but I hope they will be fast enough.
+
+## WmcSoft.Units
+Library of units and quantities.
+
+## WmcSoft.Jobs
+Library to dispatch jobs. It predates the Task in .Net.
