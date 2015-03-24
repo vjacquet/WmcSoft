@@ -72,14 +72,6 @@ namespace WmcSoft.Threading
             _jobDispatcher.Dispatch(job);
         }
 
-        public override bool IsBusy {
-            get { return _jobDispatcher.IsBusy; }
-        }
-
-        public override bool WaitWhileBusy(int millisecondsTimeout) {
-            return _jobDispatcher.WaitWhileBusy(millisecondsTimeout);
-        }
-
         protected override void Dispose(bool disposing) {
             if (_jobDispatcher != null) {
                 _jobDispatcher.Dispose();
@@ -98,7 +90,5 @@ namespace WmcSoft.Threading
         }
 
         #endregion
-
     }
-
 }

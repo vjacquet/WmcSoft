@@ -35,10 +35,21 @@ namespace WmcSoft.Collections.Generic
     public static class Vouch
     {
         public static Voucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
-            return new Voucher<T>(enumerable, comparer);
+            return new Voucher<T>(false, enumerable, comparer);
         }
         public static Voucher<T> IsSorted<T>(IEnumerable<T> enumerable) {
             return IsSorted(enumerable, Comparer<T>.Default);
+        }
+
+        public static Voucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
+            return new Voucher<T>(true, enumerable, comparer);
+        }
+        public static Voucher<T> IsSortedSet<T>(IEnumerable<T> enumerable) {
+            return IsSortedSet(enumerable, Comparer<T>.Default);
+        }
+
+        public static Voucher<T> IsSet<T>(IEnumerable<T> enumerable) {
+            return new Voucher<T>(true, enumerable, null);
         }
     }
 
@@ -48,16 +59,22 @@ namespace WmcSoft.Collections.Generic
 
         readonly IEnumerable<T> _enumerable;
         readonly IComparer<T> _comparer;
+        readonly bool _isSet;
 
         #endregion
 
-        internal Voucher(IEnumerable<T> enumerable, IComparer<T> comparer) {
+        internal Voucher(bool isSet, IEnumerable<T> enumerable, IComparer<T> comparer) {
+            _isSet = isSet;
             _enumerable = enumerable;
             _comparer = comparer;
         }
 
         public IComparer<T> Comparer {
             get { return _comparer; }
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            return _enumerable.GetEnumerator();
         }
     }
 }

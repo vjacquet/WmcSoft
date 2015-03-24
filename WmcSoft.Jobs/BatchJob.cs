@@ -25,9 +25,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 
 namespace WmcSoft.Threading
 {
@@ -63,24 +61,24 @@ namespace WmcSoft.Threading
 
             #endregion
 
-            int jobCount;
-            readonly BatchJob batch;
+            int _jobCount;
+            readonly BatchJob _batch;
 
             public BatchJobDispatcher(BatchJob batch, JobDispatcher dispatcher)
                 : base(dispatcher) {
-                this.batch = batch;
-                this.jobCount = 0;
+                _batch = batch;
+                _jobCount = 0;
             }
 
             public override void Dispatch(IJob job) {
-                System.Threading.Interlocked.Increment(ref jobCount);
+                Interlocked.Increment(ref _jobCount);
                 Inner.Dispatch(new WrapJob(this, job));
             }
 
             protected void JobExecuted(IJob job) {
-                System.Threading.Interlocked.Decrement(ref jobCount);
-                if (jobCount == 0)
-                    batch.OnBatchComplete(EventArgs.Empty);
+                Interlocked.Decrement(ref _jobCount);
+                if (_jobCount == 0)
+                    _batch.OnBatchComplete(EventArgs.Empty);
             }
 
         }
@@ -94,8 +92,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
         public void Execute(IServiceProvider serviceProvider) {
-            JobDispatcher parent = serviceProvider.GetService<JobDispatcher>();
-            BatchJobDispatcher dispatcher = new BatchJobDispatcher(this, parent);
+            var parent = serviceProvider.GetService<JobDispatcher>();
+            var dispatcher = new BatchJobDispatcher(this, parent);
             DoExecute(dispatcher);
         }
 
