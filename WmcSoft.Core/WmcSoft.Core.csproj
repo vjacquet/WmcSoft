@@ -65,6 +65,7 @@
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />
+    <Compile Include="Diagnostics\TraceSession.cs" />
     <Compile Include="DisposableStack.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
     <Compile Include="Data\DataReaderBase.cs" />
