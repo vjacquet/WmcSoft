@@ -30,48 +30,21 @@ using System.Diagnostics;
 namespace WmcSoft.Diagnostics
 {
     /// <summary>
-    /// Traces the time ellapsed in a block when leaving it.
+    /// Creates an Indent/Unindent scope.
     /// </summary>
-    /// <exexample>
-    /// using(new TimingTrace("Description of the operation")) {
-    ///     // ...
-    /// }
-    /// </exexample>
-    public sealed class TimingTrace : IDisposable
+    public sealed class TraceIndent : IDisposable
     {
         #region Private fields
 
-        Stopwatch _stopwatch;
         Action _onDispose;
 
         #endregion
 
-        #region LifeCycle
+        #region Lifecycle
 
-        private TimingTrace() {
-            _stopwatch = Stopwatch.StartNew();
-        }
-
-        public TimingTrace(string message)
-            : this() {
-            _onDispose = () => Trace.WriteLine(Format(message));
-        }
-        public TimingTrace(string category, string message)
-            : this() {
-                _onDispose = () => Trace.WriteLine(category, Format(message));
-        }
-
-        public TimingTrace(TraceSource traceSource, string message)
-            : this() {
-            _onDispose = () => traceSource.TraceInformation(Format(message));
-        }
-
-        #endregion
-
-        #region Helpers
-
-        string Format(string message) {
-            return String.Format("{0}ms\t{1}", _stopwatch.ElapsedMilliseconds, message);
+        public TraceIndent() {
+            Trace.Indent();
+            _onDispose = () => Trace.Unindent();
         }
 
         #endregion

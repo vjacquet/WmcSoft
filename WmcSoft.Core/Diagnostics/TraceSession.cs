@@ -112,10 +112,12 @@ namespace WmcSoft.Diagnostics
 
         public void Dispose() {
             _onDispose();
-            _onDispose = Noop;
+            _onDispose = Disposer.Noop;
             _tracer = null;
+            GC.SuppressFinalize(this);
         }
 
         #endregion
     }
+
 }

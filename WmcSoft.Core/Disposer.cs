@@ -25,53 +25,31 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft
 {
     /// <summary>
-    /// Traces the time ellapsed in a block when leaving it.
+    /// Executes the Action on Dispose.
     /// </summary>
-    /// <exexample>
-    /// using(new TimingTrace("Description of the operation")) {
-    ///     // ...
-    /// }
-    /// </exexample>
-    public sealed class TimingTrace : IDisposable
+    public sealed class Disposer : IDisposable
     {
-        #region Private fields
+        #region Fields
 
-        Stopwatch _stopwatch;
-        Action _onDispose;
+        Action _action;
 
         #endregion
 
-        #region LifeCycle
+        #region Lifecycle
 
-        private TimingTrace() {
-            _stopwatch = Stopwatch.StartNew();
-        }
-
-        public TimingTrace(string message)
-            : this() {
-            _onDispose = () => Trace.WriteLine(Format(message));
-        }
-        public TimingTrace(string category, string message)
-            : this() {
-                _onDispose = () => Trace.WriteLine(category, Format(message));
-        }
-
-        public TimingTrace(TraceSource traceSource, string message)
-            : this() {
-            _onDispose = () => traceSource.TraceInformation(Format(message));
+        public Disposer(Action action) {
+            _action = action ?? Noop;
         }
 
         #endregion
 
         #region Helpers
 
-        string Format(string message) {
-            return String.Format("{0}ms\t{1}", _stopwatch.ElapsedMilliseconds, message);
+        public static void Noop() {
         }
 
         #endregion
@@ -79,11 +57,12 @@ namespace WmcSoft.Diagnostics
         #region IDisposable Membres
 
         public void Dispose() {
-            _onDispose();
-            _onDispose = Disposer.Noop;
+            _action();
+            _action = Noop;
             GC.SuppressFinalize(this);
         }
 
         #endregion
     }
+
 }
