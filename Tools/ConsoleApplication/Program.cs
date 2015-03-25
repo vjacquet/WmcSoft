@@ -6,18 +6,47 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WmcSoft;
 using WmcSoft.Diagnostics;
+using WmcSoft.IO;
 
 namespace ConsoleApplication
 {
     class Program
     {
+        #region Invariants
+
+        static readonly char[] OptionMarks = new char[] { '+', '-', '/' }; // /!\ must stay sorted
+
+        #endregion
+
         #region Entry point
 
         static void Main(string[] args) {
             var traceSource = new TraceSource("Program");
 
             using (new TraceSession(typeof(Program))) {
+                // reading arguments & inputs
+                var inputs = new List<string>();
+                for (int i = 0; i < args.Length; i++) {
+                    var arg = args[i];
+                    if (string.IsNullOrWhiteSpace(arg))
+                        continue;
+                    if (arg.FirstOrDefault().BinaryAnyOf(OptionMarks)) {
+                        switch (arg[1]) {
+                        case 'v':
+                            //program.Verbose = true;
+                            break;
+                        default:
+                            Console.Error.WriteLines(Properties.Resources.Usage.Split('\r', '\n'));
+                            return;
+                        }
+                    } else {
+                        // add input support here
+                        inputs.Add(arg);
+                    }
+                }
+
                 var waitHandle = new AutoResetEvent(false);
                 var backgroundWorker = new BackgroundWorker {
                     WorkerSupportsCancellation = true,
@@ -42,7 +71,6 @@ namespace ConsoleApplication
                 };
 
                 backgroundWorker.RunWorkerAsync();
-
 
                 waitHandle.WaitOne();
             }
