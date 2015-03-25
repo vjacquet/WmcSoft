@@ -36,6 +36,7 @@ namespace WmcSoft.Diagnostics
     public sealed class TraceSession : IDisposable
     {
         const string Preambule = @"Executing {0} version {1} ";
+        const string Conclusion = @"Executed in {0}ms.";
 
         readonly Stopwatch stopwatch = new Stopwatch();
 
@@ -63,7 +64,7 @@ namespace WmcSoft.Diagnostics
         }
 
         public void Dispose() {
-            Trace.TraceInformation("Executed in {0}ms.", stopwatch.ElapsedMilliseconds);
+            Trace.TraceInformation(Conclusion, stopwatch.ElapsedMilliseconds);
             Trace.CorrelationManager.StopLogicalOperation();
         }
     }
