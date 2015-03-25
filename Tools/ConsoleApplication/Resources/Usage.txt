@@ -1,0 +1,13 @@
+program.exe -
+    ...
+
+program.exe [...]
+
+     - OPTIONS - 
+
+/verbose
+    Affiche les informations complémentaires, comme la description des
+    éléments.
+    Forme abrégée : '/v'.
+
+     - ARGUMENTS - 
