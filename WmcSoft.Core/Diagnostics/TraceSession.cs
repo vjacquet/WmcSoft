@@ -35,37 +35,87 @@ namespace WmcSoft.Diagnostics
     /// </summary>
     public sealed class TraceSession : IDisposable
     {
-        const string Preambule = @"Executing {0} version {1} ";
+        #region Constants
+
+        const string Preambule = @"Executing {0} version {1}.";
         const string Conclusion = @"Executed in {0}ms.";
 
-        readonly Stopwatch stopwatch = new Stopwatch();
+        #endregion
 
-        public TraceSession(Assembly assembly) {
+        #region Private fields
+
+        readonly Stopwatch _stopwatch = new Stopwatch();
+        Action _onDispose;
+        Action<string> _tracer;
+
+        #endregion
+
+        #region LifeCycle
+
+        private void Initialize(string name, Version version, TraceSource traceSource) {
             Trace.CorrelationManager.ActivityId = Guid.NewGuid();
             Trace.CorrelationManager.StartLogicalOperation();
 
-            var name = assembly.GetName();
-            Trace.TraceInformation(String.Format(Preambule, name.Name, name.Version.ToString()).PadRight(120, '-'));
+            _onDispose = () => {
+                _tracer(String.Format(Conclusion, _stopwatch.ElapsedMilliseconds));
+                Trace.CorrelationManager.StopLogicalOperation();
+            };
 
-            stopwatch.Start();
+            if (traceSource == null)
+                _tracer = (s) => Trace.WriteLine(s);
+            else
+                _tracer = (s) => traceSource.TraceInformation(s);
+
+            _tracer(String.Format(Preambule, name, version));
+
+            _stopwatch.Start();
         }
-        public TraceSession()
-            : this(Assembly.GetExecutingAssembly()) {
-        }
 
-        public TraceSession(Type type) {
-            Trace.CorrelationManager.ActivityId = Guid.NewGuid();
-            Trace.CorrelationManager.StartLogicalOperation();
-
+        public TraceSession(TraceSource traceSource, Type type) {
             var name = type.Assembly.GetName();
             Trace.TraceInformation(Preambule, type.FullName, name.Version.ToString());
-
-            stopwatch.Start();
+            Initialize(type.FullName, name.Version, traceSource);
         }
+
+        public TraceSession(TraceSource traceSource, Assembly assembly) {
+            var name = assembly.GetName();
+            Initialize(name.Name, name.Version, traceSource);
+        }
+
+        public TraceSession(TraceSource traceSource)
+            : this(traceSource, Assembly.GetExecutingAssembly()) {
+        }
+
+        public TraceSession(Assembly assembly)
+            : this(null, assembly) {
+        }
+
+        public TraceSession()
+            : this(null, Assembly.GetExecutingAssembly()) {
+        }
+
+
+        public TraceSession(Type type)
+            : this(null, type) {
+        }
+
+        #endregion
+
+        #region Helpers
+
+        void Noop() {
+        }
+
+        #endregion
+
+        #region IDisposable Membres
 
         public void Dispose() {
-            Trace.TraceInformation(Conclusion, stopwatch.ElapsedMilliseconds);
-            Trace.CorrelationManager.StopLogicalOperation();
+            _onDispose();
+            _onDispose = Noop;
+            _tracer = null;
         }
+
+        #endregion
     }
 }

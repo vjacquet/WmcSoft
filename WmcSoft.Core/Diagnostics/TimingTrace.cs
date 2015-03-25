@@ -54,11 +54,11 @@ namespace WmcSoft.Diagnostics
 
         public TimingTrace(string message)
             : this() {
-            _onDispose = () => Trace.Write(Format(message));
+            _onDispose = () => Trace.WriteLine(Format(message));
         }
         public TimingTrace(string category, string message)
             : this() {
-            _onDispose = () => Trace.Write(category, Format(message));
+                _onDispose = () => Trace.WriteLine(category, Format(message));
         }
 
         public TimingTrace(TraceSource traceSource, string message)
@@ -80,10 +80,9 @@ namespace WmcSoft.Diagnostics
 
         #region IDisposable Membres
 
-        void IDisposable.Dispose() {
+        public void Dispose() {
             _onDispose();
             _onDispose = Noop;
-            _stopwatch = null;
         }
 
         #endregion
