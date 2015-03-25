@@ -65,8 +65,11 @@
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />
+    <Compile Include="Diagnostics\TimingTrace.cs" />
+    <Compile Include="Diagnostics\TraceIndent.cs" />
     <Compile Include="Diagnostics\TraceSession.cs" />
     <Compile Include="DisposableStack.cs" />
+    <Compile Include="Disposer.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
     <Compile Include="Data\DataReaderBase.cs" />
     <Compile Include="Data\DataReaderDecorator.cs" />
@@ -100,6 +103,13 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Text\RegularExpressions\RegexExtensions.cs" />
     <Compile Include="Text\StringBuilderExtensions.cs" />
+    <Compile Include="Threading\Barrier.cs" />
+    <Compile Include="Threading\BlockingQueue.cs" />
+    <Compile Include="Threading\BoundedBuffer.cs" />
+    <Compile Include="Threading\CountdownLatch.cs" />
+    <Compile Include="Threading\LockFreeStack.cs" />
+    <Compile Include="Threading\SpinWait.cs" />
+    <Compile Include="Threading\ThinEvent.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +121,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Threading\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
