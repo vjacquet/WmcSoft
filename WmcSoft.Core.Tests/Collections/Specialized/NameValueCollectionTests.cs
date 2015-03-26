@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Specialized.Tests
@@ -18,6 +19,9 @@ namespace WmcSoft.Collections.Specialized.Tests
             _collection.Add("date", "1973-05-02");
             _collection.Add("datetime", "1973-05-02T04:30");
             _collection.Add("timespan", "01:02:03.004");
+            _collection.Add("ints", "1");
+            _collection.Add("ints", "2");
+            _collection.Add("ints", "3");
         }
 
         [TestMethod]
@@ -42,6 +46,14 @@ namespace WmcSoft.Collections.Specialized.Tests
             var expected = new TimeSpan(0, 1, 2, 3, 4);
             Assert.AreEqual(expected, _collection.GetValue<TimeSpan?>("timespan"));
         }
+
+        [TestMethod]
+        public void CheckGetInts() {
+            var expected = new []{1, 2, 3};
+            var actual = _collection.GetValues<int>("ints").ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
     }
 
 

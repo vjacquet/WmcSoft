@@ -64,7 +64,7 @@
     <Compile Include="Collections\Specialized\NameValueCollectionExtensions.cs" />
     <Compile Include="Collections\Specialized\PriorityQueue.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
-    <Compile Include="Configuration\ConfigurationSectionExtensions.cs" />
+    <Compile Include="Configuration\AppConfig.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />

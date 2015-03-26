@@ -28,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Globalization;
 using WmcSoft.Collections.Specialized;
 
 namespace WmcSoft.Configuration
@@ -50,7 +49,19 @@ namespace WmcSoft.Configuration
         }
 
         public static T GetAppSetting<T>(string name, T defaultValue = default(T)) {
-            return ConfigurationManager.AppSettings.GetValue<T>(name);
+            return ConfigurationManager.AppSettings.GetValue<T>(name, defaultValue);
+        }
+
+        public static T GetAppSetting<T>(string name, TypeConverter converter, T defaultValue = default(T)) {
+            return ConfigurationManager.AppSettings.GetValue<T>(name, converter, defaultValue);
+        }
+
+        public static IEnumerable<T> GetAppSettings<T>(string name) {
+            return ConfigurationManager.AppSettings.GetValues<T>(name);
+        }
+
+        public static IEnumerable<T> GetAppSettings<T>(string name, TypeConverter converter) {
+            return ConfigurationManager.AppSettings.GetValues<T>(name, converter);
         }
     }
 }
