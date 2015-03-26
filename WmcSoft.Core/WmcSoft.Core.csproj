@@ -50,7 +50,7 @@
     <Compile Include="Collections\Generic\CascadingComparer.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\ConvertingListAdapter.cs" />
-    <Compile Include="Collections\Generic\DescendingComparer.cs" />
+    <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
     <Compile Include="Collections\Generic\EnumerableTraits.cs" />
     <Compile Include="Collections\Generic\EqualityComparerAdapter.cs" />

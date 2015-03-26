@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     [Serializable]
-    public sealed class DescendingComparer<T> : IComparer<T>
+    public sealed class ReverseComparer<T> : IComparer<T>
     {
         #region Fields
 
@@ -40,7 +40,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public DescendingComparer(IComparer<T> comparer) {
+        public ReverseComparer(IComparer<T> comparer) {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
             this.comparer = comparer;
