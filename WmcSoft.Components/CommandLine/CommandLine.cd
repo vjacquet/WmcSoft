@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.CommandLine.BooleanOption">
+    <Position X="10.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommandLine\BooleanOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.ChoiceOption">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="WmcSoft.CommandLine.ChoiceOption.Choice" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CommandLine\ChoiceOption.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIAAAQAAAEAEAABABAAAAAAAAAABAAAACAAAAAEAAAA=</HashCode>
+      <FileName>CommandLine\ChoiceOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.CommandLine" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CEAIAACAAAAAgAAAAAUoAAAEAAEAAABCAIAEBQFAAAA=</HashCode>
+      <FileName>CommandLine\CommandLine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Options" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.ListOption">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAQAAAEAAAABAAAAAAAAAAAABAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>CommandLine\ListOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.Option">
+    <Position X="14.75" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AJAAARAAEAAgBAADIEAQAAAgAAEFAgQAAAAgAAAAAAA=</HashCode>
+      <FileName>CommandLine\Option.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.OptionCollection">
+    <Position X="12.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAABIAAAABACAAAAAAAAAQAAAAAAEAAAAAAAEBAA=</HashCode>
+      <FileName>CommandLine\OptionCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.StringOption">
+    <Position X="19.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAQAAAEAAAABAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommandLine\StringOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CommandLine.SwitchOption">
+    <Position X="12.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommandLine\SwitchOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="WmcSoft.CommandLine.ParseResult">
+    <Position X="19.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAEAAAgAACAAAAAIEAAAAAAA=</HashCode>
+      <FileName>CommandLine\CommandLine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

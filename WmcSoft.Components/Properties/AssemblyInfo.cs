@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WmcSoft.Benchmark")]
+[assembly: AssemblyTitle("WmcSoft.Components")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WmcSoft")]
-[assembly: AssemblyProduct("WmcSoft.Benchmark")]
+[assembly: AssemblyProduct("WmcSoft.Components")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4f6def41-0a86-4cff-9841-f448f5ad3f2b")]
+[assembly: Guid("3fe4f988-9b26-4112-9190-f044ae313f09")]
 
 // Version information for an assembly consists of the following four values:
 //
