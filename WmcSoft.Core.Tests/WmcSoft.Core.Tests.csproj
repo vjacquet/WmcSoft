@@ -56,6 +56,7 @@
     <Compile Include="Collections\Generic\CollectionExtensionsTests.cs" />
     <Compile Include="Collections\Generic\SortedCollectionSetTests.cs" />
     <Compile Include="Collections\Generic\SortedCollectionTests.cs" />
+    <Compile Include="Collections\Generic\SingleItemListTests.cs" />
     <Compile Include="Collections\Specialized\PriorityQueueTests.cs" />
     <Compile Include="Collections\Specialized\NameValueCollectionTests.cs" />
     <Compile Include="DateTimeTests.cs" />
