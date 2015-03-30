@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathematicsBench", "..\Benc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Jobs", "..\WmcSoft.Jobs\WmcSoft.Jobs.csproj", "{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{55C1E273-4025-4D2E-9E13-21385C65C725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "..\Tools\ConsoleApplication\ConsoleApplication.csproj", "{00483AEA-308D-43F5-943B-D63EAE898109}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Components", "..\WmcSoft.Components\WmcSoft.Components.csproj", "{C55D60F6-41AF-4B26-AFF4-A869F006BA7F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Components.Tests", "..\WmcSoft.Components.Tests\WmcSoft.Components.Tests.csproj", "{8DCDAFE7-8D15-48E2-B328-17B6643BEFD4}"
@@ -69,6 +73,10 @@ Global
 		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00483AEA-308D-43F5-943B-D63EAE898109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00483AEA-308D-43F5-943B-D63EAE898109}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00483AEA-308D-43F5-943B-D63EAE898109}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00483AEA-308D-43F5-943B-D63EAE898109}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C55D60F6-41AF-4B26-AFF4-A869F006BA7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C55D60F6-41AF-4B26-AFF4-A869F006BA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C55D60F6-41AF-4B26-AFF4-A869F006BA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,5 +91,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D0383AA6-BFD4-4C85-9EEF-269F1886434A} = {F9354138-94D5-4622-8434-F8B9DD9FDD25}
+		{00483AEA-308D-43F5-943B-D63EAE898109} = {55C1E273-4025-4D2E-9E13-21385C65C725}
 	EndGlobalSection
 EndGlobal

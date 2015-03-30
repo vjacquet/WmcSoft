@@ -50,7 +50,7 @@
     <Compile Include="Collections\Generic\CascadingComparer.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\ConvertingListAdapter.cs" />
-    <Compile Include="Collections\Generic\DescendingComparer.cs" />
+    <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
     <Compile Include="Collections\Generic\EnumerableTraits.cs" />
     <Compile Include="Collections\Generic\EqualityComparerAdapter.cs" />
@@ -61,7 +61,10 @@
     <Compile Include="Collections\Generic\SortedCollection.cs" />
     <Compile Include="Collections\Generic\SortedCollectionSet.cs" />
     <Compile Include="Collections\Generic\Vouch.cs" />
+    <Compile Include="Collections\Specialized\NameValueCollectionExtensions.cs" />
     <Compile Include="Collections\Specialized\PriorityQueue.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\AppConfig.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="IO\HeaderedTextWriter.cs" />
     <Compile Include="IO\MirroringStream.cs" />
     <Compile Include="IO\TextReaderExtensions.cs" />
+    <Compile Include="IO\TextWriterExtensions.cs" />
     <Compile Include="NullableExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

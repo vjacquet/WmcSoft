@@ -24,36 +24,18 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.IO;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.IO
 {
-    [Serializable]
-    public sealed class DescendingComparer<T> : IComparer<T>
+    public static class TextWriterExtensions
     {
-        #region Fields
-
-        IComparer<T> comparer;
-
-        #endregion
-
-        #region Lifecycle
-
-        public DescendingComparer(IComparer<T> comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
-            this.comparer = comparer;
+        public static TextWriter WriteLines(this TextWriter writer, IEnumerable<string> lines) {
+            foreach (var line in lines) {
+                writer.WriteLine(line);
+            }
+            return writer;
         }
-
-        #endregion
-
-        #region IComparer Members
-
-        public int Compare(T x, T y) {
-            return comparer.Compare(y, x);
-        }
-
-        #endregion
     }
 }
