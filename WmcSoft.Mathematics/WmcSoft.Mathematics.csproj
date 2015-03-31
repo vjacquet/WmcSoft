@@ -55,6 +55,7 @@
     <Compile Include="Numerics\Generic\Vector.cs" />
     <Compile Include="Numerics\Matrix.cs" />
     <Compile Include="Numerics\BigRational.cs" />
+    <Compile Include="Numerics\Matrix3.cs" />
     <Compile Include="Numerics\Rational.cs" />
     <Compile Include="Numerics\StrideEnumerable.cs" />
     <Compile Include="Numerics\StrideEnumerator.cs" />
