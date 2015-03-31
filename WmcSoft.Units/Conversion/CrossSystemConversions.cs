@@ -35,14 +35,14 @@ namespace WmcSoft.Units.Conversion
     internal class CrossSystemConversions
     {
         internal static void RegisterImperialToSIConversions() {
-            if (!isImperialToSIConversionsRegistered && SI.IsInitialized && ImperialSystemOfUnit.IsInitialized) {
+            if (!_isImperialToSIConversionsRegistered && SI.IsInitialized && ImperialSystemOfUnit.IsInitialized) {
                 UnitConverter.RegisterConversion(new FahrenheitToCelsiusConversion());
                 UnitConverter.RegisterConversion(new FahrenheitToKelvinConversion());
 
-                isImperialToSIConversionsRegistered = true;
+                _isImperialToSIConversionsRegistered = true;
             }
         }
-        static bool isImperialToSIConversionsRegistered;
+        static bool _isImperialToSIConversionsRegistered;
 
         internal static void RegisterUSCustomaryToSIConversions() {
             if (!isUSCustomaryToSIRegistered && SI.IsInitialized && USCustomarySystemOfUnit.IsInitialized) {

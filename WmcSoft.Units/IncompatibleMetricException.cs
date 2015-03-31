@@ -53,12 +53,12 @@ namespace WmcSoft.Units
         #region DefaultMessage
         public static string DefaultMessage {
             get {
-                if (defaultMessage == null) {
-                    defaultMessage = RM.GetString(RM.IncompatibleMetricException);
+                if (_defaultMessage == null) {
+                    _defaultMessage = RM.GetString(RM.IncompatibleMetricException);
                 }
-                return defaultMessage;
+                return _defaultMessage;
             }
-        } static string defaultMessage;
+        } static string _defaultMessage;
         #endregion
     }
 }

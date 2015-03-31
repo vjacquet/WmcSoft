@@ -36,7 +36,7 @@ namespace WmcSoft.Units
         #region Fields
 
         readonly decimal scaleFactor;
-        readonly Unit reference;
+        readonly Unit _reference;
         readonly internal protected string definition;
         readonly internal protected string name;
         readonly internal protected string symbol;
@@ -67,9 +67,9 @@ namespace WmcSoft.Units
             if (scaleFactor <= Decimal.Zero)
                 throw new ArgumentException(RM.GetString(RM.InvalidScaleFactorException), "scaleFactor");
 
+            _reference = reference;
             this.symbol = symbol;
             this.name = name;
-            this.reference = reference;
             this.definition = definition;
             this.scaleFactor = scaleFactor;
         }
@@ -83,7 +83,7 @@ namespace WmcSoft.Units
         }
 
         public Unit Reference {
-            get { return reference; }
+            get { return _reference; }
         }
 
         public override string Definition {
@@ -95,11 +95,11 @@ namespace WmcSoft.Units
         }
 
         public override string Symbol {
-            get { return this.symbol; }
+            get { return symbol; }
         }
 
         public override SystemOfUnits SystemOfUnits {
-            get { return reference.SystemOfUnits; }
+            get { return _reference.SystemOfUnits; }
         }
 
         #endregion

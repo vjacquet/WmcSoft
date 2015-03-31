@@ -28,116 +28,87 @@ using System;
 
 namespace WmcSoft.Units
 {
-	/// <summary>
-	/// Description résumée de NaturalSystemOfUnit.
-	/// </summary>
-	[System.Diagnostics.DebuggerStepThrough]
-	public class NaturalSystemOfUnit : SystemOfUnits
-	{
-		static NaturalSystemOfUnit systemOfUnits;
+    /// <summary>
+    /// Description résumée de NaturalSystemOfUnit.
+    /// </summary>
+    [System.Diagnostics.DebuggerStepThrough]
+    public class NaturalSystemOfUnit : SystemOfUnits
+    {
+        static NaturalSystemOfUnit _systemOfUnits;
 
-		static NaturalSystemOfUnit()
-		{
-			systemOfUnits = new NaturalSystemOfUnit();
-		}
+        static NaturalSystemOfUnit() {
+            _systemOfUnits = new NaturalSystemOfUnit();
+        }
 
-		private NaturalSystemOfUnit(): base("Natural", null)
-		{
-		}
+        private NaturalSystemOfUnit()
+            : base("Natural", null) {
+        }
 
-		public static NaturalSystemOfUnit GetSystemOfUnit()
-		{
-			return systemOfUnits;
-		}
+        public static NaturalSystemOfUnit GetSystemOfUnit() {
+            return _systemOfUnits;
+        }
 
-		static Unit[] units;
-		static public Unit GetUnit(KnownNaturalUnits unit)
-		{
-			if(units == null)
-			{
-				InitializeKnownUnits();
-			}
-			return units[(int)unit];
-		}
+        static Unit[] _units;
+        static public Unit GetUnit(KnownNaturalUnits unit) {
+            if (_units == null) {
+                InitializeKnownUnits();
+            }
+            return _units[(int)unit];
+        }
 
-		internal static bool IsInitialized
-		{
-			get
-			{
-				return (units != null);
-			}
-		}
+        internal static bool IsInitialized {
+            get {
+                return (_units != null);
+            }
+        }
 
-		static void InitializeKnownUnits()
-		{
-			lock(systemOfUnits)
-			{
-				if(units == null)
-				{
-					units = new Unit[5];
-					units[(int)KnownNaturalUnits.PlanckTime] = new KnownDerivedUnit("PlanckTime", SystemOfUnits.Natural, SI.Second);
-					units[(int)KnownNaturalUnits.PlanckLength] = new KnownDerivedUnit("PlanckLength", SystemOfUnits.Natural, SI.Meter);
-					units[(int)KnownNaturalUnits.PlanckMass] = new KnownDerivedUnit("PlanckMass", SystemOfUnits.Natural, SI.Kilogram);
-					units[(int)KnownNaturalUnits.PlanckCharge] = new KnownDerivedUnit("PlanckCharge", SystemOfUnits.Natural, new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Ampere), new DerivedUnitTerm(SI.Second) });
-					units[(int)KnownNaturalUnits.PlanckTemperature] = new KnownDerivedUnit("PlanckTemperature", SystemOfUnits.Natural, SI.Kelvin);
+        static void InitializeKnownUnits() {
+            lock (_systemOfUnits) {
+                if (_units == null) {
+                    _units = new Unit[5];
+                    _units[(int)KnownNaturalUnits.PlanckTime] = new KnownDerivedUnit("PlanckTime", SystemOfUnits.Natural, SI.Second);
+                    _units[(int)KnownNaturalUnits.PlanckLength] = new KnownDerivedUnit("PlanckLength", SystemOfUnits.Natural, SI.Meter);
+                    _units[(int)KnownNaturalUnits.PlanckMass] = new KnownDerivedUnit("PlanckMass", SystemOfUnits.Natural, SI.Kilogram);
+                    _units[(int)KnownNaturalUnits.PlanckCharge] = new KnownDerivedUnit("PlanckCharge", SystemOfUnits.Natural, new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Ampere), new DerivedUnitTerm(SI.Second) });
+                    _units[(int)KnownNaturalUnits.PlanckTemperature] = new KnownDerivedUnit("PlanckTemperature", SystemOfUnits.Natural, SI.Kelvin);
 
-					Conversion.CrossSystemConversions.RegisterImperialToSIConversions();
-					Conversion.CrossSystemConversions.RegisterUSCustomaryToSIConversions();
-					Conversion.CrossSystemConversions.RegisterNaturalToSIConversions();
-				}
-			}
-		}
+                    Conversion.CrossSystemConversions.RegisterImperialToSIConversions();
+                    Conversion.CrossSystemConversions.RegisterUSCustomaryToSIConversions();
+                    Conversion.CrossSystemConversions.RegisterNaturalToSIConversions();
+                }
+            }
+        }
 
-		#region units
-		public static Unit PlanckTime
-		{
-			get
-			{
-				return GetUnit(KnownNaturalUnits.PlanckTime);
-			}
-		}
+        #region units
+        public static Unit PlanckTime {
+            get { return GetUnit(KnownNaturalUnits.PlanckTime); }
+        }
 
-		public static Unit PlanckLength
-		{
-			get
-			{
-				return GetUnit(KnownNaturalUnits.PlanckLength);
-			}
-		}
+        public static Unit PlanckLength {
+            get { return GetUnit(KnownNaturalUnits.PlanckLength); }
+        }
 
-		public static Unit PlanckMass
-		{
-			get
-			{
-				return GetUnit(KnownNaturalUnits.PlanckMass);
-			}
-		}
+        public static Unit PlanckMass {
+            get { return GetUnit(KnownNaturalUnits.PlanckMass); }
+        }
 
-		public static Unit PlanckCharge
-		{
-			get
-			{
-				return GetUnit(KnownNaturalUnits.PlanckCharge);
-			}
-		}
+        public static Unit PlanckCharge {
+            get { return GetUnit(KnownNaturalUnits.PlanckCharge); }
+        }
 
-		public static Unit PlanckTemperature
-		{
-			get
-			{
-				return GetUnit(KnownNaturalUnits.PlanckTemperature);
-			}
-		}
+        public static Unit PlanckTemperature {
+            get { return GetUnit(KnownNaturalUnits.PlanckTemperature); }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 
-	public enum KnownNaturalUnits
-	{
-		PlanckTime,
-		PlanckLength,
-		PlanckMass,
-		PlanckCharge,
-		PlanckTemperature,
-	}
+    public enum KnownNaturalUnits
+    {
+        PlanckTime,
+        PlanckLength,
+        PlanckMass,
+        PlanckCharge,
+        PlanckTemperature,
+    }
 }

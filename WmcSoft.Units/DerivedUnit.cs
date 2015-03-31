@@ -39,9 +39,9 @@ namespace WmcSoft.Units
     {
         #region Fields
 
-        readonly protected string _name;
-        readonly protected string _symbol;
-        readonly protected string _definition;
+        readonly protected string name;
+        readonly string _symbol;
+        readonly string _definition;
         readonly SystemOfUnits _systemOfUnits;
         readonly DerivedUnitTerm[] _terms;
 
@@ -76,11 +76,11 @@ namespace WmcSoft.Units
         public DerivedUnit(string name, string symbol, string definition, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms) {
             if (terms == null)
                 throw new ArgumentNullException("terms");
-            this._terms = terms;
-            this._definition = definition;
-            this._name = name;
-            this._symbol = symbol;
-            this._systemOfUnits = systemOfUnits;
+            this.name = name;
+            _terms = terms;
+            _definition = definition;
+            _symbol = symbol;
+            _systemOfUnits = systemOfUnits;
         }
 
         public DerivedUnit(string name, string symbol, Unit unit)
@@ -100,7 +100,7 @@ namespace WmcSoft.Units
         }
 
         public override string Name {
-            get { return _name; }
+            get { return name; }
         }
 
         public override string Symbol {

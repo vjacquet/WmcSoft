@@ -85,58 +85,42 @@ namespace WmcSoft.Units
 
         #region standard units
         public static Meter Meter {
-            get {
-                return meter;
-            }
+            get { return meter; }
         }
         static Meter meter = new Meter();
 
         public static Kilogram Kilogram {
-            get {
-                return kilogram;
-            }
+            get { return kilogram; }
         }
         static Kilogram kilogram = new Kilogram();
 
         public static Second Second {
-            get {
-                return second;
-            }
+            get { return second; }
         }
         static Second second = new Second();
 
         public static Ampere Ampere {
-            get {
-                return ampere;
-            }
+            get { return ampere; }
         }
         static Ampere ampere = new Ampere();
 
         public static Kelvin Kelvin {
-            get {
-                return kelvin;
-            }
+            get { return kelvin; }
         }
         static Kelvin kelvin = new Kelvin();
 
         public static Mole Mole {
-            get {
-                return mole;
-            }
+            get { return mole; }
         }
         static Mole mole = new Mole();
 
         public static Candela Candela {
-            get {
-                return candela;
-            }
+            get { return candela; }
         }
         static Candela candela = new Candela();
 
         public static Unit Celsius {
-            get {
-                return GetUnit(KnownSIUnits.Celsius);
-            }
+            get { return GetUnit(KnownSIUnits.Celsius); }
         }
         #endregion
     }

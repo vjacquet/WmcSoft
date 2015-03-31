@@ -43,33 +43,33 @@ namespace WmcSoft.Units
 
         public override string Name {
             get {
-                if (localizedName == null) {
-                    localizedName = RM.GetName(_name);
+                if (_localizedName == null) {
+                    _localizedName = RM.GetName(name);
                 }
-                return localizedName;
+                return _localizedName;
             }
         }
-        string localizedName;
+        string _localizedName;
 
         public override string Definition {
             get {
-                if (definition == null) {
-                    definition = RM.GetDefinition(_name);
+                if (_localizedDefinition == null) {
+                    _localizedDefinition = RM.GetDefinition(name);
                 }
-                return definition;
+                return _localizedDefinition;
             }
         }
-        string definition;
+        string _localizedDefinition;
 
         public override string Symbol {
             get {
-                if (symbol == null) {
-                    symbol = RM.GetSymbol(_name);
+                if (_localizedSymbol == null) {
+                    _localizedSymbol = RM.GetSymbol(name);
                 }
-                return symbol;
+                return _localizedSymbol;
             }
         }
-        string symbol;
+        string _localizedSymbol;
 
     }
 }

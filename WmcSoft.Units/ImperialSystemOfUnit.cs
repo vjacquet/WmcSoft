@@ -34,10 +34,10 @@ namespace WmcSoft.Units
     [System.Diagnostics.DebuggerStepThrough]
     public sealed class ImperialSystemOfUnit : SystemOfUnits
     {
-        static ImperialSystemOfUnit systemOfUnits;
+        static ImperialSystemOfUnit _systemOfUnits;
 
         static ImperialSystemOfUnit() {
-            systemOfUnits = new ImperialSystemOfUnit();
+            _systemOfUnits = new ImperialSystemOfUnit();
         }
 
         private ImperialSystemOfUnit()
@@ -45,7 +45,7 @@ namespace WmcSoft.Units
         }
 
         public static ImperialSystemOfUnit GetSystemOfUnit() {
-            return systemOfUnits;
+            return _systemOfUnits;
         }
 
         static Unit[] units;
@@ -63,7 +63,7 @@ namespace WmcSoft.Units
         }
 
         static private void InitializeKnownUnits() {
-            lock (systemOfUnits) {
+            lock (_systemOfUnits) {
                 if (units == null) {
                     units = new Unit[1];
                     units[(int)KnownImperialUnits.Fahrenheit] = new KnownDerivedUnit("Fahrenheit", SystemOfUnits.Imperial, SI.Kelvin);

@@ -44,7 +44,7 @@ namespace WmcSoft.Units
 
         public StandardConversion(Unit source, Unit target, decimal factor)
             : base(source, target) {
-            this._factor = factor;
+            _factor = factor;
         }
 
         #endregion

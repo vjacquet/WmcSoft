@@ -43,8 +43,8 @@ namespace WmcSoft.Units
         #region Lifecycle
 
         protected UnitConversion(Unit source, Unit target) {
-            this._source = source;
-            this._target = target;
+            _source = source;
+            _target = target;
         }
 
         #endregion

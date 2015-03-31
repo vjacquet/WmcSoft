@@ -55,10 +55,10 @@ namespace WmcSoft.Units
         }
 
         public RoundingPolicy(int numberOfDigit, int roundingDigit, RoundingStrategy roundingStrategy) {
-            this.numberOfDigit = numberOfDigit;
-            this.roundingDigit = roundingDigit;
-            this.roundingStrategy = roundingStrategy;
-            this.roundingStep = new Decimal(System.Math.Pow(0.1, numberOfDigit));
+            _numberOfDigit = numberOfDigit;
+            _roundingDigit = roundingDigit;
+            _roundingStrategy = roundingStrategy;
+            _roundingStep = new Decimal(System.Math.Pow(0.1, numberOfDigit));
         }
 
         public RoundingPolicy(decimal roundingStep)
@@ -71,13 +71,13 @@ namespace WmcSoft.Units
                 throw new ArgumentOutOfRangeException("roundingStrategy");
             if (roundingStep == Decimal.Zero)
                 throw new DivideByZeroException();
-            this.roundingStrategy = roundingStrategy;
-            this.roundingStep = roundingStep;
+            _roundingStrategy = roundingStrategy;
+            _roundingStep = roundingStep;
         }
 
         public decimal Round(decimal value) {
-            Decimal power = new Decimal(System.Math.Pow(10, this.numberOfDigit));
-            switch (roundingStrategy) {
+            Decimal power = new Decimal(System.Math.Pow(10, _numberOfDigit));
+            switch (_roundingStrategy) {
             case RoundingStrategy.RoundUp:
                 if (value >= 0)
                     return Decimal.Ceiling(power * value) / power;
@@ -89,7 +89,7 @@ namespace WmcSoft.Units
                 else
                     return Decimal.Ceiling(power * value) / power;
             case RoundingStrategy.Round:
-                if (roundingDigit == 5) {
+                if (_roundingDigit == 5) {
                     //return Math.Round(value, numberOfDigit);
                     if (value >= 0)
                         return Decimal.Floor(power * value + 0.5m) / power;
@@ -97,20 +97,20 @@ namespace WmcSoft.Units
                         return Decimal.Floor(power * value - 0.5m) / power;
                 } else {
                     if (value >= 0)
-                        return Decimal.Floor(power * value + (1.0m - 0.1m * roundingDigit)) / power;
+                        return Decimal.Floor(power * value + (1.0m - 0.1m * _roundingDigit)) / power;
                     else
-                        return Decimal.Floor(power * value + (0.1m * roundingDigit)) / power;
+                        return Decimal.Floor(power * value + (0.1m * _roundingDigit)) / power;
                 }
             case RoundingStrategy.RoundUpByStep:
                 if (value >= 0)
-                    return Decimal.Ceiling(value / roundingStep) * roundingStep;
+                    return Decimal.Ceiling(value / _roundingStep) * _roundingStep;
                 else
-                    return Decimal.Floor(value / roundingStep) * roundingStep;
+                    return Decimal.Floor(value / _roundingStep) * _roundingStep;
             case RoundingStrategy.RoundDownByStep:
                 if (value >= 0)
-                    return Decimal.Floor(value / roundingStep) * roundingStep;
+                    return Decimal.Floor(value / _roundingStep) * _roundingStep;
                 else
-                    return Decimal.Ceiling(value / roundingStep) * roundingStep;
+                    return Decimal.Ceiling(value / _roundingStep) * _roundingStep;
             case RoundingStrategy.RoundTowardsPositive:
                 return Decimal.Ceiling(power * value) / power;
             case RoundingStrategy.RoundTowardsNegative:
@@ -120,28 +120,24 @@ namespace WmcSoft.Units
         }
 
         public int NumberOfDigit {
-            get {
-                return this.numberOfDigit;
-            }
-        } int numberOfDigit;
+            get { return _numberOfDigit; }
+        }
+        readonly int _numberOfDigit;
 
         public int RoundingDigit {
-            get {
-                return this.roundingDigit;
-            }
-        } int roundingDigit;
+            get { return _roundingDigit; }
+        }
+        readonly int _roundingDigit;
 
         public decimal RoundingStep {
-            get {
-                return this.roundingStep;
-            }
-        } decimal roundingStep;
+            get { return _roundingStep; }
+        }
+        readonly decimal _roundingStep;
 
         public RoundingStrategy RoundingStrategy {
-            get {
-                return this.roundingStrategy;
-            }
-        } RoundingStrategy roundingStrategy;
+            get { return _roundingStrategy; }
+        }
+        readonly RoundingStrategy _roundingStrategy;
     }
 
     public enum RoundingStrategy

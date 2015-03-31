@@ -53,15 +53,11 @@ namespace WmcSoft.Units
         #region Properties
 
         public virtual string NameOfSystem {
-            get {
-                return _nameOfSystem;
-            }
+            get { return _nameOfSystem; }
         }
 
         public string NameOfStandardizationBody {
-            get {
-                return _nameOfStandardizationBody;
-            }
+            get { return _nameOfStandardizationBody; }
         }
 
         #endregion
@@ -79,9 +75,7 @@ namespace WmcSoft.Units
         }
 
         public static NaturalSystemOfUnit Natural {
-            get {
-                return NaturalSystemOfUnit.GetSystemOfUnit();
-            }
+            get { return NaturalSystemOfUnit.GetSystemOfUnit(); }
         }
 
         // SI

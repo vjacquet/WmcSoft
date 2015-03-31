@@ -36,7 +36,7 @@ namespace WmcSoft.Units
     [DebuggerDisplay("{Unit} ^ {_power}")]
     public class DerivedUnitTerm
     {
-        #region Fiels
+        #region Fields
 
         // "-  0123456789"
         const string sub = "\u207B  \u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
