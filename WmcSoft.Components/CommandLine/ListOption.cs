@@ -71,7 +71,7 @@ namespace WmcSoft.CommandLine
         }
 
         public override void WriteTemplate(TextWriter writer) {
-            writer.WriteLine("/{0}:{1}[,{1},{1},...]", base.SwitchName, _template);
+            writer.WriteLine("{0}:{1}[,{1},{1},...]", OptionDelimiter + OptionName, _template);
         }
 
         #endregion

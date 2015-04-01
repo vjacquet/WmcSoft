@@ -58,7 +58,7 @@ namespace WmcSoft.CommandLine
         }
 
         public override void WriteTemplate(TextWriter writer) {
-            writer.WriteLine("/{0}+|-", base.SwitchName);
+            writer.WriteLine("{0}+|-", OptionDelimiter + OptionName);
         }
 
         #endregion

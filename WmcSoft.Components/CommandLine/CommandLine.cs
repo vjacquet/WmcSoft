@@ -105,7 +105,7 @@ namespace WmcSoft.CommandLine
             foreach (Option option in this.options) {
                 option._processed = true;
                 if (!(!option.IsRequired || option.IsPresent)) {
-                    this.errors.Add(option.SwitchName, ParseResult.MissingOption);
+                    this.errors.Add(option.OptionName, ParseResult.MissingOption);
                 }
             }
         }
