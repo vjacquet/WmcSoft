@@ -73,8 +73,8 @@ namespace WmcSoft.CommandLine
             if (!ValidateName(name))
                 throw new ArgumentException("Names must consist of letters.", "name");
             this.name = name;
-            this.description = description;
-            this.required = required;
+            _description = description;
+            _required = required;
         }
 
         #endregion
@@ -82,14 +82,13 @@ namespace WmcSoft.CommandLine
         #region Properties
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string SwitchName {
+        public string OptionName {
             get {
                 return this.name;
             }
             set {
-                if (this._processed) {
+                if (_processed)
                     throw new InvalidOperationException();
-                }
                 if (this.name != value) {
                     if (String.IsNullOrEmpty(value))
                         throw new ArgumentNullException("value");
@@ -107,46 +106,44 @@ namespace WmcSoft.CommandLine
         [DefaultValue("")]
         public string Description {
             get {
-                return this.description;
+                return _description;
             }
             set {
-                if (this._processed) {
+                if (_processed) {
                     throw new InvalidOperationException();
                 }
-                this.description = value;
+                _description = value;
             }
         }
-        private string description;
+        private string _description;
 
         public bool IsPresent {
             get {
-                if (!this._processed) {
+                if (!_processed) {
                     throw new InvalidOperationException();
                 }
-                return this.present;
+                return _present;
             }
         }
-        protected bool present;
+        private bool _present;
 
         [DefaultValue(false)]
         public bool IsRequired {
             get {
-                return this.required;
+                return _required;
             }
             set {
-                if (this._processed) {
+                if (_processed)
                     throw new InvalidOperationException();
-                }
-                this.required = value;
+                _required = value;
             }
         }
-        private bool required;
+        private bool _required;
 
         public object Value {
             get {
-                if (!this._processed) {
+                if (!_processed)
                     throw new InvalidOperationException();
-                }
                 return _value;
             }
             protected set {
@@ -161,7 +158,7 @@ namespace WmcSoft.CommandLine
 
         internal void Reset() {
             _processed = false;
-            present = false;
+            _present = false;
             _value = null;
         }
 
@@ -169,9 +166,9 @@ namespace WmcSoft.CommandLine
             if (!ValidateArgument(argument))
                 return ParseResult.MalformedArgument;
 
-            if (present && !SupportMultipleOccurance)
+            if (_present && !SupportMultipleOccurance)
                 return ParseResult.MultipleOccurance;
-            present = true;
+            _present = true;
 
             DoParseArgument(argument);
             return ParseResult.Success;
@@ -183,6 +180,14 @@ namespace WmcSoft.CommandLine
 
         protected virtual bool SupportMultipleOccurance {
             get { return false; }
+        }
+
+        protected char OptionDelimiter {
+            get {
+                if (collection != null)
+                    return collection.commandLine.OptionDelimiter;
+                return '/';
+            }
         }
 
         protected abstract bool ValidateArgument(string argument);
@@ -278,7 +283,7 @@ namespace WmcSoft.CommandLine
                     continue;
 
                 if (cas != null && cas.Right is CodeObjectCreateExpression) {
-                    cace.Parameters.Add(new CodePrimitiveExpression(((Option)value).SwitchName));
+                    cace.Parameters.Add(new CodePrimitiveExpression(((Option)value).OptionName));
                 }
             }
 

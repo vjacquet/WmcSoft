@@ -39,7 +39,7 @@ namespace WmcSoft.CommandLine
     [ListBindable(false)]
     public class OptionCollection : KeyedCollection<string, Option>
     {
-        CommandLine commandLine;
+        internal CommandLine commandLine;
 
         public OptionCollection(CommandLine commandLine)
             : base() {
@@ -56,7 +56,7 @@ namespace WmcSoft.CommandLine
 
         protected override string GetKeyForItem(Option item) {
             // In this example, the key is the part number.
-            return item.SwitchName;
+            return item.OptionName;
         }
 
         protected override void InsertItem(int index, Option newItem) {
@@ -173,7 +173,7 @@ namespace WmcSoft.CommandLine
             if (instance == null) {
                 instance = TypeDescriptor.CreateInstance(host, itemType, null, new object[] { name });
             } else {
-                ((Option)instance).SwitchName = name;
+                ((Option)instance).OptionName = name;
             }
             return instance;
         }

@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -24,41 +24,58 @@
 
 #endregion
 
-using System.ComponentModel;
-using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WmcSoft.CommandLine
+namespace WmcSoft.Collections.Generic
 {
-    public class BooleanOption : Option
+    sealed class ReadOnlyList<T> : IReadOnlyList<T>
     {
+          #region fields
+
+        readonly IList<T> _list;
+
+        #endregion
+
         #region Lifecycle
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public BooleanOption() {
-        }
-
-        public BooleanOption(string name)
-            : base(name) {
-        }
-
-        public BooleanOption(string name, string description)
-            : base(name, description) {
+        public ReadOnlyList(IList<T> list) {
+            _list = list;
         }
 
         #endregion
 
-        #region Overrides
+        #region IReadOnlyList<T> Membres
 
-        protected override bool ValidateArgument(string argument) {
-            return !((argument != "+") && (argument != "-"));
+        public T this[int index] {
+            get { return _list[index]; }
         }
 
-        protected override void DoParseArgument(string argument) {
-            base.Value = (argument == "+");
+        #endregion
+
+        #region IReadOnlyCollection<T> Membres
+
+        public int Count {
+            get { return _list.Count; }
         }
 
-        public override void WriteTemplate(TextWriter writer) {
-            writer.WriteLine("{0}+|-", OptionDelimiter + OptionName);
+        #endregion
+
+        #region IEnumerable<T> Membres
+
+        public IEnumerator<T> GetEnumerator() {
+            return _list.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable Membres
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
         #endregion

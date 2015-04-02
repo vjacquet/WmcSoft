@@ -324,10 +324,35 @@ namespace WmcSoft.Collections.Generic
 
         #region AsReadOnly
 
+        /// <summary>
+        /// Shields a collection as a readonly collection
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <returns>A read only collection</returns>
         public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection) {
             return new ReadOnlyCollection<T>(collection);
         }
 
+        /// <summary>
+        /// Shield a list as a readonly list
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="list">The list</param>
+        /// <returns>A read only list</returns>
+        public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> list) {
+            return new ReadOnlyList<T>(list);
+        }
+
+        /// <summary>
+        /// Shield a listt as a readonly list of a different element type
+        /// </summary>
+        /// <typeparam name="TInput">The source element type</typeparam>
+        /// <typeparam name="TOutput">The target element type</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="converter">The converter</param>
+        /// <returns>A read only list</returns>
+        /// <remarks>Conversion are done "on demand" and are not cached.</remarks>
         public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
             return new ConvertingListAdapter<TInput, TOutput>(list, converter);
         }
@@ -595,21 +620,21 @@ namespace WmcSoft.Collections.Generic
 
         private static int GetMedian(int lo, int hi) {
             Debug.Assert(hi - lo >= 0);
-            return lo + (hi - lo) / 2; // reduce the chance of overflow
+            return lo + (hi - lo) / 2; // cannot overflow when (hi + lo) could
         }
 
         /// <summary>
-        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified comparer and returns the zero-based index of the element.
+        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="list">The list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
-        /// <param name="comparer"></param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The zero-based index of item in the sorted IReadOnlyList<T>, if item is found; 
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
-        public static int BinarySearch<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> comparer) {
+        public static int BinarySearch<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder) {
             if (list == null)
                 throw new ArgumentNullException("list");
             if (index < 0)
@@ -624,7 +649,7 @@ namespace WmcSoft.Collections.Generic
                 int hi = lo + count - 1;
                 while (lo <= hi) {
                     int i = GetMedian(lo, hi);
-                    int c = comparer(list[i]);
+                    int c = finder(list[i]);
                     if (c == 0)
                         return i;
                     if (c < 0) {
@@ -640,19 +665,46 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static int BinarySearch<T>(this IReadOnlyList<T> list, Func<T, int> comparer) {
-            return list.BinarySearch(0, list.Count, comparer);
+        /// <summary>
+        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the zero-based index of the element.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The zero-based index of item in the sorted IReadOnlyList<T>, if item is found; 
+        /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
+        /// if there is no larger element, the bitwise complement of Count.</returns>
+        public static int BinarySearch<T>(this IReadOnlyList<T> list, Func<T, int> finder) {
+            return list.BinarySearch(0, list.Count, finder);
         }
 
-        public static T BinaryFind<T>(this T[] array, int index, int length, Func<T, int> comparer) {
-            var found = array.BinarySearch(index, length, comparer);
+        /// <summary>
+        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the element.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the defaultValue when not found</returns>
+        public static T BinaryFind<T>(this IReadOnlyList<T> list, int index, int length, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = list.BinarySearch(index, length, finder);
             if (found >= 0)
-                return array[found];
-            return default(T);
+                return list[found];
+            return defaultValue;
         }
-        public static T BinaryFind<T>(this T[] array, Func<T, int> comparer) {
-            int lb = array.GetLowerBound(0);
-            return array.BinaryFind(lb, array.Length, comparer);
+
+        /// <summary>
+        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the element.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the defaultValue when not found</returns>
+        public static T BinaryFind<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
+            return list.BinaryFind(0, list.Count, finder, defaultValue);
         }
 
         #endregion

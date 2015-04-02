@@ -89,7 +89,7 @@ namespace WmcSoft.CommandLine
 
         public ChoiceOption(string name, string description, string template)
             : base(name, description) {
-            this.template = template;
+            _template = template;
         }
 
         #endregion
@@ -113,14 +113,14 @@ namespace WmcSoft.CommandLine
         }
 
         public override void WriteTemplate(TextWriter writer) {
-            writer.WriteLine("/{0}:{1}", base.SwitchName, this.template);
+            writer.WriteLine("{0}:{1}", OptionDelimiter + OptionName, _template);
             var enumerator = choices.GetEnumerator();
             if (enumerator.MoveNext()) {
-                writer.Write(this.template);
+                writer.Write(_template);
                 writer.Write("  ");
                 enumerator.Current.WriteTemplate(writer);
 
-                string indent = new string(' ', this.template.Length + 2);
+                string indent = new string(' ', _template.Length + 2);
                 while (enumerator.MoveNext()) {
                     writer.Write(indent);
                     enumerator.Current.WriteTemplate(writer);
@@ -160,13 +160,13 @@ namespace WmcSoft.CommandLine
 
         public string Template {
             get {
-                return this.template;
+                return _template;
             }
             set {
-                this.template = value;
+                _template = value;
             }
         }
-        private string template = "xxxx";
+        private string _template = "xxxx";
 
         #endregion
     }
