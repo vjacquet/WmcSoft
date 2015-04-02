@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BinaryFormatter.cs" />
+    <Compile Include="CodeDom\CodeDomExtensions.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DescendingComparer.cs" />
     <Compile Include="Collections\Generic\AnonymousComparer.cs" />
@@ -104,7 +105,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\CustomAttributeProviderExtensions.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="ServiceProviderExtensions.cs" />
     <Compile Include="IO\StreamExtensions.cs" />
