@@ -50,9 +50,9 @@ namespace WmcSoft.ComponentModel
         #region Lifecycle
 
         public TypeDescriptorContext(IServiceProvider serviceProvider, PropertyDescriptor descriptor, object instance) {
-            this._serviceProvider = serviceProvider;
-            this._descriptor = descriptor;
-            this._instance = instance;
+            _serviceProvider = serviceProvider;
+            _descriptor = descriptor;
+            _instance = instance;
         }
 
         #endregion

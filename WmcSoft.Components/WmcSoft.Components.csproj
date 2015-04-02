@@ -52,12 +52,18 @@
     <Compile Include="CommandLine\OptionCollection.cs" />
     <Compile Include="CommandLine\StringOption.cs" />
     <Compile Include="CommandLine\SwitchOption.cs" />
+    <Compile Include="ComponentModel\Design\Serialization\DesignerSerializationManagerExtensions.cs" />
+    <Compile Include="ComponentModel\Design\TypeResolutionService.cs" />
     <Compile Include="ComponentModel\TypeDescriptorContext.cs" />
+    <Compile Include="ComponentModel\TypeResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ComponentModel\Design\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
@@ -73,6 +79,13 @@
   <ItemGroup>
     <EmbeddedResource Include="CommandLine\CommandLine.resx">
       <DependentUpon>CommandLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

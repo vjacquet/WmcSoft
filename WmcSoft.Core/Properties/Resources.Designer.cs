@@ -79,15 +79,6 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find assembly {0}..
-        /// </summary>
-        internal static string AssemblyNotFound {
-            get {
-                return ResourceManager.GetString("AssemblyNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Type {0} is not assignable to type {1}..
         /// </summary>
         internal static string CantAssignTo {
