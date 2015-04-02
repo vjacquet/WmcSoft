@@ -50,6 +50,7 @@
     <Compile Include="Arithmetics\DoubleArithmetics.cs" />
     <Compile Include="Arithmetics\Int32Arithmetics.cs" />
     <Compile Include="DeterministicRandom.cs" />
+    <Compile Include="Generators.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="Numerics\Dimensions.cs" />
     <Compile Include="Numerics\Generic\Vector.cs" />
