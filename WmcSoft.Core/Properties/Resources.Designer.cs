@@ -203,5 +203,23 @@ namespace WmcSoft.Properties {
                 return ResourceManager.GetString("ServiceExists", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unrecognized attribute &quot;{0}&quot;..
+        /// </summary>
+        internal static string UnrecognizedAttributeFormat {
+            get {
+                return ResourceManager.GetString("UnrecognizedAttributeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unrecognized element &quot;{0}&quot;..
+        /// </summary>
+        internal static string UnrecognizedElementFormat {
+            get {
+                return ResourceManager.GetString("UnrecognizedElementFormat", resourceCulture);
+            }
+        }
     }
 }

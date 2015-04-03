@@ -31,7 +31,6 @@ using System.Text;
 
 namespace WmcSoft.Collections
 {
-
     /// <summary>
     /// Provides a set of static methods to extend collection related classes or interfaces.
     /// </summary>
@@ -96,32 +95,56 @@ namespace WmcSoft.Collections
         #region AddRange methods
 
         /// <summary>
+        /// Ensure the value is present by adding it when missing.
+        /// </summary>
+        /// <param name="list">The list to add items to.</param>
+        /// <param name="value">The value</param>
+        /// <returns>True if the value was added, false it was already in the list</returns>
+        public static bool Ensure(this IList list, object value) {
+            if (list.IsSynchronized) {
+                lock (list.SyncRoot) {
+                    if (!list.Contains(value)) {
+                        list.Add(value);
+                        return true;
+                    }
+                }
+            } else {
+                if (!list.Contains(value)) {
+                    list.Add(value);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Add a range of items to a list. 
         /// </summary>
-        /// <param name="self">The list to add items to.</param>
+        /// <typeparam name="TList">The type of list</typeparam>
+        /// <param name="list">The list to add items to.</param>
         /// <param name="items">The items to add to the list.</param>
         /// <returns>The list.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static IList AddRange(this IList self, IEnumerable items) {
-            if (self == null)
-                throw new ArgumentNullException("self");
+        public static IList AddRange(this IList list, IEnumerable items){
+            if (list == null)
+                throw new ArgumentNullException("list");
 
             if (items == null)
-                return self;
+                return list;
 
-            if (self.IsSynchronized) {
-                lock (self.SyncRoot) {
+            if (list.IsSynchronized) {
+                lock (list.SyncRoot) {
                     foreach (var each in items) {
-                        self.Add(each);
+                        list.Add(each);
                     }
                 }
             } else {
                 foreach (var each in items) {
-                    self.Add(each);
+                    list.Add(each);
                 }
             }
 
-            return self;
+            return list;
         }
 
         #endregion

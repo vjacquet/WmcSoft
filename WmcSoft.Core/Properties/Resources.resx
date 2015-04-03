@@ -165,4 +165,10 @@
   <data name="ServiceExists" xml:space="preserve">
     <value>Service {0} already exists in the container.</value>
   </data>
+  <data name="UnrecognizedAttributeFormat" xml:space="preserve">
+    <value>Unrecognized attribute "{0}".</value>
+  </data>
+  <data name="UnrecognizedElementFormat" xml:space="preserve">
+    <value>Unrecognized element "{0}".</value>
+  </data>
 </root>

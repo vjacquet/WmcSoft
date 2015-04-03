@@ -25,58 +25,28 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
-    sealed class ReadOnlyCollection<T> : IReadOnlyCollection<T>, ICollection<T>
+    sealed class ConvertingCollectionAdapter<TInput, TOutput> : IReadOnlyCollection<TOutput>, ICollection<TOutput>
     {
-        #region fields
+        private readonly IReadOnlyCollection<TInput> _collection;
+        private readonly Converter<TInput, TOutput> _convert;
 
-        readonly ICollection<T> _collection;
+        public ConvertingCollectionAdapter(IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter) {
+            if (collection == null)
+                throw new ArgumentNullException("collection");
+            if (converter == null)
+                throw new ArgumentNullException("convert");
 
-        #endregion
-
-        #region Lifecycle
-
-        public ReadOnlyCollection(ICollection<T> collection) {
             _collection = collection;
+            _convert = converter;
         }
 
-        #endregion
-
-        #region ICollection<T> Members
-
-        public void Add(T item) {
-            throw new NotSupportedException();
-        }
-
-        public void Clear() {
-            throw new NotSupportedException();
-        }
-
-        public bool Contains(T item) {
-            var comparer = EqualityComparer<T>.Default;
-            return _collection.Any(x => comparer.Equals(x, item));
-        }
-
-        public void CopyTo(T[] array, int arrayIndex) {
-            foreach (var item in _collection)
-                array[arrayIndex++] = item;
-        }
-
-        public bool IsReadOnly {
-            get { return true; }
-        }
-
-        public bool Remove(T item) {
-            throw new NotSupportedException();
-        }
-
-        #endregion
-
-        #region IReadOnlyCollection<T> Membres
+        #region IReadOnlyCollection<TOutput> Membres
 
         public int Count {
             get { return _collection.Count; }
@@ -84,10 +54,10 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region IEnumerable<T> Membres
+        #region IEnumerable<TOutput> Membres
 
-        public IEnumerator<T> GetEnumerator() {
-            return _collection.GetEnumerator();
+        public IEnumerator<TOutput> GetEnumerator() {
+            return _collection.Select(i => _convert(i)).GetEnumerator();
         }
 
         #endregion
@@ -96,6 +66,36 @@ namespace WmcSoft.Collections.Generic
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region ICollection<TOutput> Members
+
+        public void Add(TOutput item) {
+            throw new NotSupportedException();
+        }
+
+        public void Clear() {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(TOutput item) {
+            var comparer = EqualityComparer<TOutput>.Default;
+            return _collection.Any(x => comparer.Equals(_convert(x), item));
+        }
+
+        public void CopyTo(TOutput[] array, int arrayIndex) {
+            foreach (var item in _collection)
+                array[arrayIndex++] = _convert(item);
+        }
+
+        public bool IsReadOnly {
+            get { return true; }
+        }
+
+        public bool Remove(TOutput item) {
+            throw new NotSupportedException();
         }
 
         #endregion

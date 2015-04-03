@@ -25,12 +25,13 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
-    sealed class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>
+    sealed class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>, ICollection<TOutput>
     {
         private readonly IReadOnlyList<TInput> _list;
         private readonly Converter<TInput, TOutput> _convert;
@@ -73,6 +74,37 @@ namespace WmcSoft.Collections.Generic
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region ICollection<TOutput> Members
+
+        public void Add(TOutput item) {
+            throw new NotSupportedException();
+        }
+
+        public void Clear() {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(TOutput item) {
+            var comparer = EqualityComparer<TOutput>.Default;
+            return _list.Any(x => comparer.Equals(_convert(x), item));
+        }
+
+        public void CopyTo(TOutput[] array, int arrayIndex) {
+            var length = _list.Count;
+            for (int i = 0; i != length; i++)
+                array[arrayIndex + i] = _convert(_list[i]);
+        }
+
+        public bool IsReadOnly {
+            get { return true; }
+        }
+
+        public bool Remove(TOutput item) {
+            throw new NotSupportedException();
         }
 
         #endregion

@@ -34,7 +34,6 @@ using System.Text;
 
 namespace WmcSoft.Collections.Generic
 {
-
     /// <summary>
     /// Provides a set of static methods to extend collection related classes or interfaces.
     /// </summary>
@@ -99,14 +98,40 @@ namespace WmcSoft.Collections.Generic
         #region AddRange methods
 
         /// <summary>
+        /// Ensure the value is present by adding it when missing.
+        /// </summary>
+        /// <typeparam name="T">Type of objects within the collection.</typeparam>
+        /// <param name="self">The list to add items to.</param>
+        /// <param name="value">The value</param>
+        /// <returns>True if the value was added, false it was already in the collection.</returns>
+        public static bool Ensure<T>(this ICollection<T> self, T value) {
+            var collection = self as ICollection;
+            if (collection != null && collection.IsSynchronized) {
+                lock (collection.SyncRoot) {
+                    if (!self.Contains(value)) {
+                        self.Add(value);
+                        return true;
+                    }
+                }
+            } else {
+                if (!self.Contains(value)) {
+                    self.Add(value);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Add a range of items to a collection. 
         /// </summary>
         /// <typeparam name="T">Type of objects within the collection.</typeparam>
+        /// <typeparam name="TCollection">The type of collection</typeparam>
         /// <param name="self">The collection to add items to.</param>
         /// <param name="items">The items to add to the collection.</param>
         /// <returns>The collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static ICollection<T> AddRange<T>(this ICollection<T> self, IEnumerable<T> items) {
+        public static ICollection<T> AddRange<T>(this  ICollection<T> self, IEnumerable<T> items) {
             if (self == null)
                 throw new ArgumentNullException("self");
 
@@ -345,7 +370,20 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Shield a listt as a readonly list of a different element type
+        /// Shield a collection as a readonly collection of a different element type
+        /// </summary>
+        /// <typeparam name="TInput">The source element type</typeparam>
+        /// <typeparam name="TOutput">The target element type</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="converter">The converter</param>
+        /// <returns>A read only list</returns>
+        /// <remarks>Conversion are done "on demand" and are not cached.</remarks>
+        public static IReadOnlyCollection<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter) {
+            return new ConvertingCollectionAdapter<TInput, TOutput>(collection, converter);
+        }
+
+        /// <summary>
+        /// Shield a list as a readonly list of a different element type
         /// </summary>
         /// <typeparam name="TInput">The source element type</typeparam>
         /// <typeparam name="TOutput">The target element type</typeparam>
