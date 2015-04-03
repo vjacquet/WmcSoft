@@ -52,6 +52,7 @@
     <Compile Include="CommandLine\OptionCollection.cs" />
     <Compile Include="CommandLine\StringOption.cs" />
     <Compile Include="CommandLine\SwitchOption.cs" />
+    <Compile Include="ComponentModel\Design\AliasResolutionService.cs" />
     <Compile Include="ComponentModel\Design\Serialization\DesignerSerializationManagerExtensions.cs" />
     <Compile Include="ComponentModel\Design\TypeResolutionService.cs" />
     <Compile Include="ComponentModel\TypeDescriptorContext.cs" />
