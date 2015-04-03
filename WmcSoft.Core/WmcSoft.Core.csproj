@@ -103,6 +103,8 @@
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
     <Compile Include="IO\HeaderedTextWriter.cs" />
     <Compile Include="IO\MirroringStream.cs" />
+    <Compile Include="IO\TempDirectory.cs" />
+    <Compile Include="IO\TempFile.cs" />
     <Compile Include="IO\TextReaderExtensions.cs" />
     <Compile Include="IO\TextWriterExtensions.cs" />
     <Compile Include="NullableExtensions.cs" />
