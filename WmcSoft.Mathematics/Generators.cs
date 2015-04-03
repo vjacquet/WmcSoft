@@ -35,7 +35,7 @@ namespace WmcSoft
 {
     public static class Generators
     {
-        public IEnumerable<int> Iota(int value = 0) {
+        public static IEnumerable<int> Iota(int value = 0) {
             checked {
                 while (true) {
                     yield return value;
@@ -44,7 +44,7 @@ namespace WmcSoft
             }
         }
 
-        public IEnumerable<BigInteger> Fibonacci() {
+        public static IEnumerable<BigInteger> Fibonacci() {
             BigInteger Fn = 0;
             BigInteger Fn1 = 1;
 
