@@ -74,6 +74,7 @@
     <Compile Include="Configuration\AppConfig.cs" />
     <Compile Include="Configuration\FileSearchSectionHandler.cs" />
     <Compile Include="Configuration\ListSectionHandler.cs" />
+    <Compile Include="Diagnostics\TraceStream.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Diagnostics\TraceSession.cs" />
     <Compile Include="DisposableStack.cs" />
     <Compile Include="Disposer.cs" />
+    <Compile Include="IO\CloseBarrierStream.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
     <Compile Include="Data\DataReaderBase.cs" />
     <Compile Include="Data\DataReaderDecorator.cs" />
@@ -94,6 +96,8 @@
     <Compile Include="FormatProviderHelper.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="IntExtensions.cs" />
+    <Compile Include="IO\FlushingStream.cs" />
+    <Compile Include="IO\MockStream.cs" />
     <Compile Include="IO\StreamDecorator.cs" />
     <Compile Include="IO\DumpingStream.cs" />
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
