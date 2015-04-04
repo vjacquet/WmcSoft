@@ -102,6 +102,17 @@ namespace WmcSoft.Threading
             _queue.Enqueue(job);
         }
 
+        public override bool SupportsCancellation {
+            get { return _backgroundWorker.WorkerSupportsCancellation; }
+        }
+
+        public override void CancelAsync() {
+            _backgroundWorker.CancelAsync();
+        }
+
+        public override bool CancellationPending {
+            get { return _backgroundWorker.CancellationPending; }
+        }
         #endregion
     }
 }

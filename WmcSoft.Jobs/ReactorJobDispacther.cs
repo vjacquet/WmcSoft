@@ -29,7 +29,7 @@ using System.Threading;
 
 namespace WmcSoft.Threading
 {
-    public sealed class ReactorJobDispatcher : JobDispatcher, IWaitingJobDispatcher
+    public sealed class ReactorJobDispatcher : JobDispatcher, IWaitableJobDispatcher
     {
         #region JobDispatcher Membres
 
@@ -60,7 +60,7 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
         /// <returns><c>true</c> if the current instance receives a signal; otherwise, <c>false</c>.</returns>
-        public bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout) {
+        public bool WaitAll(int millisecondsTimeout) {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
                 return _onIdle.WaitOne(millisecondsTimeout, false);
@@ -84,7 +84,7 @@ namespace WmcSoft.Threading
             finally {
                 if (0 == Interlocked.Decrement(ref _workingJobs))
                     _onIdle.Set();
-                DisposeJob(job);
+                Dispose(job);
             }
         }
 

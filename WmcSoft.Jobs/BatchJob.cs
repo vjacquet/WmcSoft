@@ -35,7 +35,7 @@ namespace WmcSoft.Threading
 
         #region BatchJobDispatcher
 
-        class BatchJobDispatcher : DecoratingJobDispatcher
+        class BatchJobDispatcher : JobDispatcherDecorator
         {
             #region WrapJob class
 

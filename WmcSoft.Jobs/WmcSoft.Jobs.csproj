@@ -41,10 +41,10 @@
   <ItemGroup>
     <Compile Include="BackgroundWorkerDispatcher.cs" />
     <Compile Include="BatchJob.cs" />
-    <Compile Include="DecoratingJobDispatcher.cs" />
+    <Compile Include="JobDispatcherDecorator.cs" />
     <Compile Include="IJob.cs" />
     <Compile Include="IJobQueue.cs" />
-    <Compile Include="IWaitingJobDispatcher.cs" />
+    <Compile Include="IWaitableJobDispatcher.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="JobDispatcher.cs" />
     <Compile Include="JobExtensions.cs" />

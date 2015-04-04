@@ -30,7 +30,7 @@ using System.Threading;
 namespace WmcSoft.Threading
 {
 
-    public sealed class QueuedJobDispatcher : JobDispatcher, IWaitingJobDispatcher
+    public sealed class QueuedJobDispatcher : JobDispatcher, IWaitableJobDispatcher
     {
         #region Private fields
 
@@ -109,7 +109,7 @@ namespace WmcSoft.Threading
             if (!cancellationPending) {
                 base.CancelAsync();
                 cancellationPending = true;
-                _jobs.Clear(DisposeJob);
+                _jobs.Clear(Dispose);
             }
         }
 
@@ -125,7 +125,7 @@ namespace WmcSoft.Threading
             get { return _workingJobs != 0; }
         }
 
-        public bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout) {
+        public bool WaitAll(int millisecondsTimeout) {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
                 return _onIdle.WaitOne(millisecondsTimeout, false);
@@ -159,7 +159,7 @@ namespace WmcSoft.Threading
                         job.Execute(this);
                     }
                     finally {
-                        DisposeJob(job);
+                        Dispose(job);
 
                         if (0 == Interlocked.Decrement(ref _workingJobs))
                             _onIdle.Set();

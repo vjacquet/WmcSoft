@@ -29,19 +29,19 @@ using System.Threading;
 
 namespace WmcSoft.Threading
 {
-    public interface IWaitingJobDispatcher
+    public interface IWaitableJobDispatcher
     {
         bool IsBusy { get; }
-        bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout);
+        bool WaitAll(int millisecondsTimeout);
     }
 
-    public static class WaitingJobDispatcherExtensions
+    public static class WaitableJobDispatcherExtensions
     {
-        public static bool WaitUntilAllJobsAreExecuted(this IWaitingJobDispatcher jobDispatcher) {
-            return jobDispatcher.WaitUntilAllJobsAreExecuted(Timeout.Infinite);
+        public static bool WaitAll(this IWaitableJobDispatcher jobDispatcher) {
+            return jobDispatcher.WaitAll(Timeout.Infinite);
         }
-        public static bool WaitUntilAllJobsAreExecuted(this IWaitingJobDispatcher jobDispatcher, TimeSpan timeout) {
-            return jobDispatcher.WaitUntilAllJobsAreExecuted((int)timeout.TotalMilliseconds);
+        public static bool WaitUntilAllJobsAreExecuted(this IWaitableJobDispatcher jobDispatcher, TimeSpan timeout) {
+            return jobDispatcher.WaitAll((int)timeout.TotalMilliseconds);
         }
     }
 }

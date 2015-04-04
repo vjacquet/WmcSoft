@@ -47,19 +47,19 @@ namespace WmcSoft.Threading
 
         sealed class ThreadStartJob : IJob
         {
-            ThreadStart start;
+            ThreadStart _start;
 
             internal ThreadStartJob(ThreadStart start) {
                 if (start == null)
                     throw new ArgumentNullException("start");
 
-                this.start = start;
+                _start = start;
             }
 
             #region IJob Membres
 
             void IJob.Execute(IServiceProvider serviceProvider) {
-                start();
+                _start();
             }
 
             #endregion
@@ -67,13 +67,13 @@ namespace WmcSoft.Threading
 
         class ActionJob<T> : IJob
         {
-            Action<T> action;
+            Action<T> _action;
 
             internal ActionJob(Action<T> action) {
                 if (action == null)
                     throw new ArgumentNullException("action");
 
-                this.action = action;
+                _action = action;
             }
 
             #region IJob Membres
@@ -81,7 +81,7 @@ namespace WmcSoft.Threading
             void IJob.Execute(IServiceProvider serviceProvider) {
                 object service = serviceProvider.GetService(typeof(T));
                 T t = service == null ? default(T) : (T)service;
-                action(t);
+                _action(t);
             }
 
             #endregion
@@ -142,7 +142,7 @@ namespace WmcSoft.Threading
         /// Disposes the specified job if it implements the interface
         /// </summary>
         /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
-        protected virtual void DisposeJob(IJob job) {
+        protected virtual void Dispose(IJob job) {
             IDisposable disposable = job as IDisposable;
             if (disposable != null) {
                 disposable.Dispose();
@@ -204,8 +204,7 @@ namespace WmcSoft.Threading
             if ((serviceType == typeof(IServiceProvider))
                 || (serviceType == typeof(JobDispatcher)))
                 return this;
-            else
-                return _serviceContainer.GetService(serviceType);
+            return _serviceContainer.GetService(serviceType);
         }
 
         #endregion
@@ -237,7 +236,6 @@ namespace WmcSoft.Threading
 
         #endregion
     }
-
 }
 
 /*

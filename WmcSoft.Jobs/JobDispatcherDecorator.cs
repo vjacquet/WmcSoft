@@ -31,7 +31,7 @@ using System.Text;
 
 namespace WmcSoft.Threading
 {
-    public class DecoratingJobDispatcher : JobDispatcher
+    public class JobDispatcherDecorator : JobDispatcher
     {
         #region Private fields
 
@@ -44,7 +44,7 @@ namespace WmcSoft.Threading
 
         #region Lifecycle
 
-        protected DecoratingJobDispatcher(JobDispatcher jobDispatcher) {
+        protected JobDispatcherDecorator(JobDispatcher jobDispatcher) {
             _jobDispatcher = jobDispatcher;
         }
 

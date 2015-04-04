@@ -28,11 +28,11 @@ using System.Threading;
 
 namespace WmcSoft.Threading
 {
-    public class WaitingJobDispatcher : DecoratingJobDispatcher, IWaitingJobDispatcher
+    public class WaitingJobDispatcher : JobDispatcherDecorator, IWaitableJobDispatcher
     {
         #region WaitingDecorator
 
-        class WaitingDecorator : DecoratingJobDispatcher, IWaitingJobDispatcher
+        class WaitingDecorator : JobDispatcherDecorator, IWaitableJobDispatcher
         {
             private int _workingJobs;
             private readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
@@ -63,7 +63,7 @@ namespace WmcSoft.Threading
                 get { return _workingJobs > 0; }
             }
 
-            public bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout) {
+            public bool WaitAll(int millisecondsTimeout) {
                 bool isBusy = IsBusy;
                 if (isBusy && millisecondsTimeout != 0) {
                     return _onIdle.WaitOne(millisecondsTimeout, false);
@@ -76,12 +76,12 @@ namespace WmcSoft.Threading
 
         #endregion
 
-        IWaitingJobDispatcher _jobDispatcher;
+        IWaitableJobDispatcher _jobDispatcher;
 
         #region Lifecycle
 
         static JobDispatcher Decorate(JobDispatcher jobDispatcher) {
-            var waiting = jobDispatcher as IWaitingJobDispatcher;
+            var waiting = jobDispatcher as IWaitableJobDispatcher;
             if (waiting != null)
                 return jobDispatcher;
             return new WaitingDecorator(jobDispatcher);
@@ -89,15 +89,15 @@ namespace WmcSoft.Threading
 
         public WaitingJobDispatcher(JobDispatcher jobDispatcher)
             : base(Decorate(jobDispatcher)) {
-            _jobDispatcher = Inner as IWaitingJobDispatcher;
+            _jobDispatcher = Inner as IWaitableJobDispatcher;
         }
 
         #endregion
 
         #region IWaitingJobDispatcher Membres
 
-        public bool WaitUntilAllJobsAreExecuted(int millisecondsTimeout) {
-            return _jobDispatcher.WaitUntilAllJobsAreExecuted(millisecondsTimeout);
+        public bool WaitAll(int millisecondsTimeout) {
+            return _jobDispatcher.WaitAll(millisecondsTimeout);
         }
 
         public bool IsBusy {
