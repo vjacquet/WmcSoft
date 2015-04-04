@@ -66,6 +66,7 @@
     <Compile Include="RegexExtensionsTests.cs" />
     <Compile Include="StreamExtensionsTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
+    <Compile Include="Xml\XmlNodeWriterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
@@ -73,7 +74,9 @@
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

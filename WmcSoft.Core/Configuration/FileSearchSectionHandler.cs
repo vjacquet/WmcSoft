@@ -47,8 +47,6 @@ namespace WmcSoft.Configuration
         /// <returns>A <see cref="System.Collections.ArrayList"/> that 
         /// contains the section's configuration settings.</returns>
         public override object Create(object parent, object context, System.Xml.XmlNode section) {
-            var array = parent as ArrayList;
-
             var paths = section.Attributes.RemoveNamedItem("root").GetValueOrNull()
                 ?? AppDomain.CurrentDomain.SetupInformation.PrivateBinPath;
 
@@ -66,7 +64,10 @@ namespace WmcSoft.Configuration
             }
 
             var cache = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+            var array = parent as ArrayList;
             if (array != null) {
+                // this complex expression is to ensure the HashSet knows the count 
+                // of items without any array reallocation
                 var adapter = new ReadOnlyCollectionOfObjectAdapter(array).AsReadOnly(x => x.ToString());
                 cache.UnionWith(adapter);
             }

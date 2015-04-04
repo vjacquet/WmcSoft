@@ -50,9 +50,7 @@ namespace WmcSoft.Configuration
         }
 
         public override ConfigurationElementCollectionType CollectionType {
-            get {
-                return _collectionType;
-            }
+            get { return _collectionType; }
         }
 
         protected override ConfigurationElement CreateNewElement() {
