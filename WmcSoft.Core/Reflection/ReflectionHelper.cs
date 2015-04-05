@@ -34,6 +34,14 @@ namespace WmcSoft.Reflection
 {
     public static class ReflectionHelper
     {
+        public static T GetPropertyValue<T>(object self, string name) {
+            if (self == null)
+                return default(T);
+            return (T)self.GetType()
+                .GetProperty(name, BindingFlags.Instance | BindingFlags.Public, Type.DefaultBinder, typeof(T), Type.EmptyTypes, null)
+                .GetValue(self, null);
+        }
+
         public static string GetAssemblyName(Assembly assembly) {
             if (assembly == null) {
                 throw new ArgumentNullException("assembly");

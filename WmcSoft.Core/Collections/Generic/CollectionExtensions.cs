@@ -978,5 +978,19 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Stack & Queue
+
+        public static void Push<T>(this Stack<T> stack, IEnumerable<T> items) {
+            foreach (var item in items)
+                stack.Push(item);
+        }
+
+        public static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> items) {
+            foreach (var item in items)
+                queue.Enqueue(item);
+        }
+
+        #endregion
     }
 }
