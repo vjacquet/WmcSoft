@@ -63,11 +63,17 @@
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RegexExtensionsTests.cs" />
     <Compile Include="StreamExtensionsTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIteratorTests.cs" />
+    <Compile Include="Xml\XPath\XPathLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
@@ -77,6 +83,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XPathLocator.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

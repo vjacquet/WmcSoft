@@ -147,6 +147,7 @@
     <Compile Include="Xml\XPath\DuplicateOnlyXPathNodeIterator.cs" />
     <Compile Include="Xml\XPath\FilterXPathNodeIterator.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIterator.cs" />
+    <Compile Include="Xml\XPath\XPathLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.fr.resx">

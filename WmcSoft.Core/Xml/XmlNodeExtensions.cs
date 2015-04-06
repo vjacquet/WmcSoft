@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using WmcSoft.Xml.XPath;
 
 namespace WmcSoft.Xml
 {
@@ -128,6 +129,10 @@ namespace WmcSoft.Xml
         public static string GetInnerText(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
             var node = self.SelectSingleNode(xpath, nsmgr);
             return (node == null) ? "" : node.InnerText;
+        }
+
+        public static string GetXPath(this XmlNode self) {
+            return XPathLocator.GetXPathTo(self);
         }
     }
 }
