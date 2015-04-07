@@ -10,16 +10,21 @@ namespace WmcSoft.Text.Tests
         [TestMethod]
         public void CanTokenizeString() {
             var expected = new[] { "a", "b", "c" };
-            var tokenizer = new Tokenizer();
-            var actual = tokenizer.Tokenize("a b c").ToArray();
+            var actual = "a b c".Tokenize().ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void CanTokenizeStringWithEmptyTokens() {
             var expected = new[] { "a", "b", "c" };
-            var tokenizer = new Tokenizer();
-            var actual = tokenizer.Tokenize(" a  b c ").ToArray();
+            var actual = " a  b c ".Tokenize().ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanTokenizeOnChar() {
+            var expected = new[] { "a", "b", "c" };
+            var actual = " a  b c ".Tokenize(' ').ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
     }

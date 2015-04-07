@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Globalization;
 using WmcSoft.Collections.Generic;
+using WmcSoft.Text;
 
 namespace WmcSoft
 {
@@ -542,6 +543,35 @@ namespace WmcSoft
             if (!String.IsNullOrEmpty(self) && self.Length > maxLength)
                 return self.Substring(0, maxLength - ellipsis.Length) + ellipsis;
             return self;
+        }
+
+        #endregion
+
+        #region Tokenized
+
+        public static IEnumerable<string> Tokenize<TTokenizer>(this string self, TTokenizer tokenizer)
+            where TTokenizer : ITokenizer<string> {
+            return tokenizer.Tokenize(self);
+        }
+
+        public static IEnumerable<string> Tokenize(this string self, char separator) {
+            return self.Tokenize(new CharTokenizer(separator));
+        }
+
+        public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
+            if (separators == null || separators.Length == 0)
+                return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
+            if (separators.Length == 1)
+                return self.Tokenize(new CharTokenizer(separators[0]));
+            return self.Tokenize(new CharsTokenizer(separators));
+        }
+
+        public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
+            return self.Tokenize(new PredicateTokenizer(isSeparator));
+        }
+
+        public static IEnumerable<string> Tokenize(this string self) {
+            return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
         }
 
         #endregion

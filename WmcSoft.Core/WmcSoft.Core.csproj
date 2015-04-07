@@ -126,6 +126,10 @@
     <Compile Include="ServiceProviderExtensions.cs" />
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="Text\CharsTokenizer.cs" />
+    <Compile Include="Text\CharTokenizer.cs" />
+    <Compile Include="Text\ITokenizer.cs" />
+    <Compile Include="Text\PredicateTokenizer.cs" />
     <Compile Include="Text\RegularExpressions\RegexExtensions.cs" />
     <Compile Include="Text\StringBuilderExtensions.cs" />
     <Compile Include="Text\Tokenizer.cs" />

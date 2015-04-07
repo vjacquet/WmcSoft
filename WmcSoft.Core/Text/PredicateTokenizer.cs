@@ -26,41 +26,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Text
 {
-    public class Tokenizer : ITokenizer<string>
+    struct PredicateTokenizer : ITokenizer<string>
     {
         readonly Predicate<char> _isSeparator;
-        readonly bool _keepEmptyToken;
 
-        public Tokenizer(StringSplitOptions options, params char[] separators) {
-            _keepEmptyToken = options == StringSplitOptions.None;
-            if (separators == null || separators.Length == 0) {
-                _isSeparator = c => c == ' ';
-            } else if (separators.Length == 1) {
-                var separator = separators[0];
-                _isSeparator = c => c == separator;
-            } else {
-                Array.Sort(separators);
-                _isSeparator = c => c.BinaryAnyOf(separators);
-            }
-        }
-
-        public Tokenizer(params char[] separators)
-            : this(StringSplitOptions.RemoveEmptyEntries, separators) {
-        }
-
-        public Tokenizer(StringSplitOptions options, Predicate<char> isSeparator) {
-            _keepEmptyToken = options == StringSplitOptions.None;
+        public PredicateTokenizer(Predicate<char> isSeparator) {
             _isSeparator = isSeparator;
-        }
-
-        public Tokenizer(Predicate<char> isSeparator)
-            : this(StringSplitOptions.RemoveEmptyEntries, isSeparator) {
         }
 
         public IEnumerable<string> Tokenize(string value) {
@@ -68,7 +42,7 @@ namespace WmcSoft.Text
             var length = 0;
             foreach (var c in value) {
                 if (_isSeparator(c)) {
-                    if (_keepEmptyToken || length > 0)
+                    if (length > 0)
                         yield return value.Substring(start, length);
                     start += length + 1;
                     length = 0;
@@ -76,7 +50,7 @@ namespace WmcSoft.Text
                     length++;
                 }
             }
-            if (_keepEmptyToken || length > 0)
+            if (length > 0)
                 yield return value.Substring(start, length);
         }
     }
