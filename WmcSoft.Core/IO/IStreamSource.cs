@@ -24,60 +24,12 @@
 
 #endregion
 
-using System;
+using System.IO;
 
-namespace WmcSoft
+namespace WmcSoft.IO
 {
-    /// <summary>
-    /// Executes the Action on Dispose.
-    /// </summary>
-    public sealed class Disposer : IDisposable
+    public interface IStreamSource
     {
-        #region EmptyDisposable
-
-        class EmptyDisposable : IDisposable
-        {
-            #region IDisposable Membres
-
-            public void Dispose() {
-            }
-
-            #endregion
-        }
-        public static IDisposable Empty = new EmptyDisposable();
-
-        #endregion
-
-        #region Fields
-
-        Action _action;
-
-        #endregion
-
-        #region Lifecycle
-
-        public Disposer(Action action) {
-            _action = action ?? Noop;
-        }
-
-        #endregion
-
-        #region Helpers
-
-        public static void Noop() {
-        }
-
-        #endregion
-
-        #region IDisposable Membres
-
-        public void Dispose() {
-            _action();
-            _action = Noop;
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
+        Stream GetStream();
     }
-
 }
