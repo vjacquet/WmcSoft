@@ -35,20 +35,40 @@ using WmcSoft.IO;
 namespace WmcSoft.Net
 {
     /// <summary>
-    /// Implements a <see cref="Batch"/> to uploads files using <see cref="WebClient"/>.
+    /// Implements a <see cref="Batch"/> to download or upload files using <see cref="WebClient"/>.
     /// </summary>
-    public class WebClientBatch : Batch
+    public abstract class WebClientBatch : Batch<WebClientBatch.Scope>
     {
+        public class Scope : IDisposable
+        {
+            private readonly Uri _baseUri;
+            private readonly string _method;
+
+            public Scope(Uri baseUri, string method) {
+                _baseUri = baseUri;
+                _method = method;
+            }
+
+            public Uri BaseUri { get { return _baseUri; } }
+            public string Method { get { return _method; } }
+
+            #region IDisposable Membres
+
+            public void Dispose() {
+            }
+
+            #endregion
+        }
+        
         private readonly WebClient _webClient;
-        private Uri _baseUri;
-        private string _method;
+        private readonly string _method;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebClientBatch"/> class.
         /// </summary>
         /// <param name="webClient">The web client.</param>
         /// <param name="method">The method to use to upload.</param>
-        public WebClientBatch(WebClient webClient, string method) {
+        protected WebClientBatch(WebClient webClient, string method) {
             _webClient = webClient;
             _method = method;
         }
@@ -57,9 +77,15 @@ namespace WmcSoft.Net
         /// Initializes a new instance of the <see cref="WebClientBatch"/> class.
         /// </summary>
         /// <param name="webClient">The web client.</param>
-        public WebClientBatch(WebClient webClient) {
+        protected WebClientBatch(WebClient webClient) {
             _webClient = webClient;
         }
+
+        #region Properties
+
+        protected WebClient WebClient { get { return _webClient; } }
+
+        #endregion
 
         /// <summary>
         /// Impersonates the user
@@ -74,14 +100,7 @@ namespace WmcSoft.Net
                 _webClient.Credentials = new NetworkCredential(userName, password, domainName);
         }
 
-        protected virtual string GetMethod(Uri uri) {
-            if (_baseUri.Scheme == "ftp")
-                return WebRequestMethods.Ftp.UploadFile;
-            else if (_baseUri.Scheme == "file")
-                return  WebRequestMethods.File.UploadFile;
-            else
-                return WebRequestMethods.Http.Put;
-        }
+        protected abstract string GetMethod(Uri uri);
 
         /// <summary>
         /// Creates the commit scope.
@@ -89,30 +108,9 @@ namespace WmcSoft.Net
         /// <returns>
         /// An <see cref="IDisposable"/> instance to release resources once the commit is complete.
         /// </returns>
-        protected override IDisposable CreateCommitScope() {
-            _baseUri = new Uri(_webClient.BaseAddress);
-            _method = _method ?? GetMethod(_baseUri);
-            return base.CreateCommitScope();
+        protected override Scope CreateCommitScope() {
+            var uri = new Uri(_webClient.BaseAddress);
+            return new Scope(uri, _method ?? GetMethod(uri));
         }
-
-        /// <summary>
-        /// Uploads the file.
-        /// </summary>
-        /// <param name="name">Name of the entry.</param>
-        /// <param name="streamSource">The data source.</param>
-        protected override void Process(string name, IStreamSource streamSource) {
-            try {
-                using (var source = streamSource.GetStream())
-                using (var target = _webClient.OpenWrite(new Uri(_baseUri, name.Replace('\\', '/')), _method)) {
-                    source.CopyTo(target);
-                }
-            }
-            catch (Exception exception) {
-                if (exception.InnerException != null)
-                    throw exception.InnerException;
-                throw;
-            }
-        }
-
     }
 }

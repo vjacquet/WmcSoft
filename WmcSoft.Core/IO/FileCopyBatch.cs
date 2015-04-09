@@ -36,7 +36,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Implements a <see cref="Batch"/> to copy files to a target directory.
     /// </summary>
-    public class FileCopyBatch : Batch
+    public class FileCopyBatch : Batch<IDisposable>
     {
         private readonly string _path;
 
@@ -70,23 +70,23 @@ namespace WmcSoft.IO
             if (_impersonator!=null) {
                 return _impersonator();
             }
-            return base.CreateCommitScope();
+            return Disposer.Empty;
         }
 
         /// <summary>
         /// Copies the file.
         /// </summary>
         /// <param name="name">Name of the entry.</param>
-        /// <param name="streamSource">The data source.</param>
-        protected override void Process(string name, IStreamSource streamSource) {
+        /// <param name="source">The data source.</param>
+        protected override void Process(IDisposable scope, string name, IStreamSource source) {
             var fileName = Path.Combine(_path, name);
             var directoryName = Path.GetDirectoryName(fileName);
 
             Directory.CreateDirectory(directoryName);
 
             using (var target = File.Create(fileName))
-            using (var source = streamSource.GetStream()) {
-                source.CopyTo(target);
+            using (var stream = source.GetStream()) {
+                stream.CopyTo(target);
             }
         }
 

@@ -35,7 +35,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Registers files to be included in a batch but differs the actual processing to the commit phase.
     /// </summary>
-    public abstract class Batch : IDisposable
+    public abstract class Batch<TScope> : IDisposable where TScope : IDisposable
     {
         IList<KeyValuePair<string, IStreamSource>> entries;
 
@@ -56,9 +56,9 @@ namespace WmcSoft.IO
         /// </summary>
         public void Commit() {
             if (entries != null && entries.Count > 0) {
-                using (CreateCommitScope()) {
+                using (var scope = CreateCommitScope()) {
                     foreach (var entry in entries) {
-                        Process(entry.Key, entry.Value);
+                        Process(scope, entry.Key, entry.Value);
                     }
                 }
             }
@@ -69,16 +69,15 @@ namespace WmcSoft.IO
         /// Creates the commit scope.
         /// </summary>
         /// <returns>An <see cref="IDisposable"/> instance to release resources once the commit is complete.</returns>
-        protected virtual IDisposable CreateCommitScope() {
-            return Disposer.Empty;
-        }
+        protected abstract TScope CreateCommitScope();
 
         /// <summary>
         /// Override this method to actually process the specified entry name.
         /// </summary>
+        /// <param name="scope">The scope</param>
         /// <param name="name">Name of the entry.</param>
         /// <param name="source">The data source.</param>
-        protected abstract void Process(string name, IStreamSource dataSource);
+        protected abstract void Process(TScope scope, string name, IStreamSource source);
 
         /// <summary>
         /// Releases the unmanaged resources, and optionally releases the managed resources.

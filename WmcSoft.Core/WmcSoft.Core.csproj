@@ -87,6 +87,7 @@
     <Compile Include="DisposableStack.cs" />
     <Compile Include="Disposer.cs" />
     <Compile Include="ActionExtensions.cs" />
+    <Compile Include="IO\AnonymousStreamSource.cs" />
     <Compile Include="IO\Batch.cs" />
     <Compile Include="IO\CloseBarrierStream.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="FormatProviderHelper.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="IntExtensions.cs" />
+    <Compile Include="IO\FileStreamSource.cs" />
     <Compile Include="IO\FlushingStream.cs" />
     <Compile Include="IO\Impersonate.cs" />
     <Compile Include="IO\FileCopyBatch.cs" />
@@ -115,7 +117,12 @@
     <Compile Include="IO\TempFile.cs" />
     <Compile Include="IO\TextReaderExtensions.cs" />
     <Compile Include="IO\TextWriterExtensions.cs" />
+    <Compile Include="Net\DownloadBatch.cs" />
+    <Compile Include="Net\DownloadSource.cs" />
+    <Compile Include="Net\UploadBatch.cs" />
+    <Compile Include="Net\UploadSource.cs" />
     <Compile Include="Net\WebClientBatch.cs" />
+    <Compile Include="Net\WebClientHelper.cs" />
     <Compile Include="NullableExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
