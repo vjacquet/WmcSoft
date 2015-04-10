@@ -44,6 +44,9 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
+        public SingleItemList() {
+        }
+
         public SingleItemList(T item) {
             _hasValue = true;
             _item = item;
@@ -71,12 +74,12 @@ namespace WmcSoft.Collections.Generic
 
         public T this[int index] {
             get {
-                if (_hasValue | index != 0)
+                if (!_hasValue | index != 0)
                     throw new ArgumentOutOfRangeException("index");
                 return _item;
             }
             set {
-                if (_hasValue | index != 0)
+                if (!_hasValue | index != 0)
                     throw new ArgumentOutOfRangeException("index");
                 _item = value;
             }

@@ -25,12 +25,21 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace WmcSoft
 {
     public static class ArrayExtensions
     {
+        #region AsEnumerable
+
+        public static IEnumerable<T> AsEnumerable<T>(this Array array) {
+            return array.Cast<T>();
+        }
+
+        #endregion
+
         #region Sort methods
 
         /// <summary>
@@ -86,9 +95,19 @@ namespace WmcSoft
 
         #endregion
 
-        #region Twodimensional
+        #region Multidimensional
 
-        public static bool Equivalent<T>(this T[,] x, T[,] y) {
+        public static bool StructuralEqual<T>(this T[] x, T[] y, IEqualityComparer<T> comparer = null) {
+            if (x == null)
+                return y == null;
+
+            if (x.Length != y.Length)
+                return false;
+
+            return x.SequenceEqual(y, comparer ?? EqualityComparer<T>.Default);
+        }
+
+        public static bool StructuralEqual<T>(this T[,] x, T[,] y, IEqualityComparer<T> comparer = null) {
             if (x == null)
                 return y == null;
 
@@ -97,7 +116,7 @@ namespace WmcSoft
             if (rows != y.GetLength(0) || columns != y.GetLength(1))
                 return false;
 
-            var equalityComparer = EqualityComparer<T>.Default;
+            var equalityComparer = comparer ?? EqualityComparer<T>.Default;
 
             for (var j = 0; j < columns; j++) {
                 for (var i = 0; i < rows; i++) {
@@ -146,9 +165,15 @@ namespace WmcSoft
             }
         }
 
-        #endregion
+        public static IEnumerable<int> EnumerateDimensions(this Array array) {
+            if (array == null)
+                yield break;
 
-        #region Multidimensional
+            var rank = array.Rank;
+            for (int i = 0; i < rank; i++) {
+                yield return array.GetLength(i);
+            }
+        }
 
         public static int[] GetDimensions(this Array array) {
             var rank = array.Rank;

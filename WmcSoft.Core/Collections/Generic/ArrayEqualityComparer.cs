@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -60,21 +61,25 @@ namespace WmcSoft.Collections.Generic
             if (x == null)
                 return false;
 
-            var rank = x.Rank;
-            if (rank != y.Rank)
+            if (x.Rank != y.Rank)
                 return false;
-            var dimensions = new int[rank];
-            for (int i = 0; i < rank; i++) {
-                dimensions[i] = x.GetLength(i);
-                if (dimensions[i] != y.GetLength(i))
-                    return false;
-            }
-            var indices = new int[rank];
-            do {
-                if (!_comparer.Equals((T)x.GetValue(indices), (T)y.GetValue(indices)))
-                    return false;
-            } while (Increment(rank, dimensions, indices));
-            return true;
+            if (!x.GetDimensions().SequenceEqual(y.GetDimensions()))
+                return false;
+
+            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>());
+            //var rank = x.Rank;
+            //var dimensions = new int[rank];
+            //for (int i = 0; i < rank; i++) {
+            //    dimensions[i] = x.GetLength(i);
+            //    if (dimensions[i] != y.GetLength(i))
+            //        return false;
+            //}
+            //var indices = new int[rank];
+            //do {
+            //    if (!_comparer.Equals((T)x.GetValue(indices), (T)y.GetValue(indices)))
+            //        return false;
+            //} while (Increment(rank, dimensions, indices));
+            //return true;
         }
 
         public int GetHashCode(Array obj) {
