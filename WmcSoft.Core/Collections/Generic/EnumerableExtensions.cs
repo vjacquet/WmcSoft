@@ -95,6 +95,31 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Quorum
+
+        public static bool Quorum<T>(this IEnumerable<T> enumerable, int quorum, Predicate<T> predicate) {
+            if(quorum < 1)
+                throw new ArgumentOutOfRangeException("quorum");
+            if(predicate == null)
+                throw new ArgumentNullException("predicate");
+
+            if(enumerable == null)
+                return false;
+
+            using (var enumerator = enumerable.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (predicate(enumerator.Current)) {
+                        if (quorum == 1)
+                            return true;
+                        quorum--;
+                    }
+                }
+            }
+            return false;
+        }
+
+        #endregion
     }
 }
 
