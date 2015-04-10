@@ -91,9 +91,67 @@ namespace WmcSoft.Collections.Generic.Tests
                { 1, 2, 3},
                { 4, 5, 6},
             };
+
+            var comparer = new ArrayEqualityComparer<int>();
             var actual = list.ToTwoDimensionalArray(i => i.Item1, i => i.Item2, i => i.Item3);
 
-            Assert.IsTrue(expected.Equivalent(actual));
+            Assert.IsTrue(comparer.Equals(expected, actual));
+        }
+
+        [TestMethod]
+        public void CheckNotEqualsOnCell() {
+            var x = new[, ,] {
+               { {11, 12, 13}, {14, 15, 16} },
+               { {21, 22, 23}, {24, 25, 26} },
+               { {31, 32, 33}, {34, 35, 36} },
+               { {41, 42, 43}, {44, 45, 46} },
+            };
+            var y = new[, ,] {
+               { {11, 12, 13}, {14, 15, 16} },
+               { {21, 22, 23}, {24, 25, 26} },
+               { {31, 32, 33}, {99, 35, 36} },
+               { {41, 42, 43}, {44, 45, 46} },
+            };
+
+            var comparer = new ArrayEqualityComparer<int>();
+            Assert.IsFalse(comparer.Equals(x, y));
+        }
+
+        [TestMethod]
+        public void CheckNotEqualsOnRank() {
+            var x = new[, ,] {
+               { {11, 12, 13}, {14, 15, 16} },
+               { {21, 22, 23}, {24, 25, 26} },
+               { {31, 32, 33}, {34, 35, 36} },
+               { {41, 42, 43}, {44, 45, 46} },
+            };
+            var y = new[,] {
+                {11, 12, 13}, 
+                {21, 22, 23}, 
+                {31, 32, 33}, 
+                {41, 42, 43}, 
+            };
+
+            var comparer = new ArrayEqualityComparer<int>();
+            Assert.IsFalse(comparer.Equals(x, y));
+        }
+
+        [TestMethod]
+        public void CheckNotEqualsOnDimensions() {
+            var x = new[, ,] {
+               { {11, 12, 13}, {14, 15, 16} },
+               { {21, 22, 23}, {24, 25, 26} },
+               { {31, 32, 33}, {34, 35, 36} },
+               { {41, 42, 43}, {44, 45, 46} },
+            };
+            var y = new[, ,] {
+               { {11, 12, 13}, {14, 15, 16} },
+               { {21, 22, 23}, {24, 25, 26} },
+               { {31, 32, 33}, {34, 35, 36} },
+            };
+
+            var comparer = new ArrayEqualityComparer<int>();
+            Assert.IsFalse(comparer.Equals(x, y));
         }
     }
 }

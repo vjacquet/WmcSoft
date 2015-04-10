@@ -32,7 +32,7 @@ namespace WmcSoft.Collections.Generic
     [Serializable]
     public sealed class CascadingComparer<T> : IComparer<T>
     {
-        IComparer<T>[] comparers;
+        readonly IComparer<T>[] comparers;
 
         public CascadingComparer(params IComparer<T>[] comparers) {
             this.comparers = comparers;
