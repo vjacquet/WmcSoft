@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -27,11 +24,39 @@ using System.Collections.Generic;
 
 #endregion
 
+using System;
+using System.Collections.Generic;
+
 namespace WmcSoft.Collections.Generic
 {
     public static class EnumerableExtensions
     {
         #region ToArray
+
+        private static List<TSource> MakeList<TSource>(this IEnumerable<TSource> source) {
+            var collection = source as IReadOnlyCollection<TSource>;
+            if (collection != null) {
+                var list = new List<TSource>(collection.Count);
+                list.AddRange(source);
+                return list;
+            }
+            return new List<TSource>(source);
+        }
+
+        public static TOutput[,] ToTwoDimensionalArray<TInput, TOutput>(this IEnumerable<TInput> source, params Converter<TInput, TOutput>[] converters) {
+            var list = MakeList(source);
+
+            var columns = converters.Length;
+            var rows = list.Count;
+            var array = new TOutput[rows, columns];
+            for (int i = 0; i < rows; i++) {
+                var item = list[i];
+                for (int j = 0; j < columns; j++) {
+                    array[i, j] = converters[j](item);
+                }
+            }
+            return array;
+        }
 
         public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source, int length)
             where TSource : new() {

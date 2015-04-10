@@ -80,5 +80,20 @@ namespace WmcSoft.Collections.Generic.Tests
             var actual = String.Concat(letters.Interleave(numbers));
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckToTwoDimensionalArray() {
+            var list = new List<Tuple<int, int, int>>(2);
+            list.Add(Tuple.Create(1, 2, 3));
+            list.Add(Tuple.Create(4, 5, 6));
+
+            var expected = new[,] {
+               { 1, 2, 3},
+               { 4, 5, 6},
+            };
+            var actual = list.ToTwoDimensionalArray(i => i.Item1, i => i.Item2, i => i.Item3);
+
+            Assert.IsTrue(expected.Equivalent(actual));
+        }
     }
 }

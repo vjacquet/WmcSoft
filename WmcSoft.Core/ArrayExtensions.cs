@@ -85,5 +85,67 @@ namespace WmcSoft
         }
 
         #endregion
+
+        #region Twodimensional
+
+        public static bool Equivalent<T>(this T[,] x, T[,] y) {
+            if (x == null)
+                return y == null;
+
+            var rows = x.GetLength(0);
+            var columns = x.GetLength(1);
+            if (rows != y.GetLength(0) || columns != y.GetLength(1))
+                return false;
+
+            var equalityComparer = EqualityComparer<T>.Default;
+
+            for (var j = 0; j < columns; j++) {
+                for (var i = 0; i < rows; i++) {
+                    if (!equalityComparer.Equals(x[i, j], y[i, j]))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public static IEnumerable<T> GetColumn<T>(this T[,] array, int column) {
+            var rows = array.GetLength(0);
+            for (var i = 0; i < rows; i++) {
+                yield return array[i, column];
+            }
+        }
+
+        public static IEnumerable<T> GetRow<T>(this T[,] array, int row) {
+            var columns = array.GetLength(1);
+            for (var j = 0; j < columns; j++) {
+                yield return array[row, j];
+            }
+        }
+
+        public static IEnumerable<T[]> GetColumns<T>(this T[,] array) {
+            var rows = array.GetLength(0);
+            var columns = array.GetLength(1);
+            for (var j = 0; j < columns; j++) {
+                var column = new T[rows];
+                for (var i = 0; i < rows; i++) {
+                    column[i] = array[i, j];
+                }
+                yield return column;
+            }
+        }
+
+        public static IEnumerable<T[]> GetRows<T>(this T[,] array) {
+            var rows = array.GetLength(0);
+            var columns = array.GetLength(1);
+            for (var i = 0; i < rows; i++) {
+                var row = new T[columns];
+                for (var j = 0; j < columns; j++) {
+                    row[j] = array[i, j];
+                }
+                yield return row;
+            }
+        }
+
+        #endregion
     }
 }
