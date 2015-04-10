@@ -147,5 +147,18 @@ namespace WmcSoft
         }
 
         #endregion
+
+        #region Multidimensional
+
+        public static int[] GetDimensions(this Array array) {
+            var rank = array.Rank;
+            var dimensions = new int[rank];
+            for (int i = 0; i < rank; i++) {
+                dimensions[i] = array.GetLength(i);
+            }
+            return dimensions;
+        }
+
+        #endregion
     }
 }

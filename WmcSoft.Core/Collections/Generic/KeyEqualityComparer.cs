@@ -32,20 +32,25 @@ namespace WmcSoft.Collections.Generic
     public sealed class KeyEqualityComparer<T, K> : IEqualityComparer<T>
     {
         private readonly Func<T, K> _extractor;
+        private readonly IEqualityComparer<K> _comparer;
 
-        public KeyEqualityComparer(Func<T, K> extractor) {
+        public KeyEqualityComparer(Func<T, K> extractor, IEqualityComparer<K> comparer) {
             if (extractor == null)
                 throw new ArgumentNullException("extractor");
 
             _extractor = extractor;
+            _comparer = comparer ?? EqualityComparer<K>.Default;
+        }
+        public KeyEqualityComparer(Func<T, K> extractor)
+            : this(extractor, null) {
         }
 
         public bool Equals(T x, T y) {
-            return EqualityComparer<K>.Default.Equals(_extractor(x), _extractor(y));
+            return _comparer.Equals(_extractor(x), _extractor(y));
         }
 
         public int GetHashCode(T obj) {
-            return EqualityComparer<K>.Default.GetHashCode(_extractor(obj));
+            return _comparer.GetHashCode(_extractor(obj));
         }
     }
 }
