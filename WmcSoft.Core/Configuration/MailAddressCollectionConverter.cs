@@ -25,46 +25,32 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+using System.Configuration;
+using System.Globalization;
 using System.Linq;
-using System.Collections.Generic;
+using System.Net.Mail;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Configuration
 {
-    /// <summary>
-    /// Check equality on two arrays.
-    /// </summary>
-    /// <typeparam name="T">The type of values in the arrays.</typeparam>
-    public class ArrayEqualityComparer<T> : IEqualityComparer<Array>
+    public sealed class MailAddressCollectionConverter : ConfigurationConverterBase
     {
-        readonly IEqualityComparer<T> _comparer;
-
-        public ArrayEqualityComparer(IEqualityComparer<T> comparer) {
-            _comparer = comparer;
-        }
-        public ArrayEqualityComparer()
-            : this(EqualityComparer<T>.Default) {
-        }
-
-        #region IEqualityComparer<Array> Membres
-
-        public bool Equals(Array x, Array y) {
-            if (x == y)
-                return true;
-            if (x == null)
-                return false;
-
-            if (x.Rank != y.Rank)
-                return false;
-            if (!x.GetDimensions().SequenceEqual(y.GetDimensions()))
-                return false;
-
-            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>());
+        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data) {
+            var collection = new MailAddressCollection();
+            if (data != null) {
+                var addresses = data.ToString().Split(';');
+                foreach (var address in addresses) {
+                    collection.Add(new MailAddress(address));
+                }
+            }
+            return collection;
         }
 
-        public int GetHashCode(Array obj) {
-            return obj.GetHashCode();
+        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type) {
+            var collection = value as MailAddressCollection;
+            if (collection == null || collection.Count == 0)
+                return "";
+            return collection.Select(a => a.Address).Join(";");
         }
-
-        #endregion
     }
 }

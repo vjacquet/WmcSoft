@@ -25,46 +25,29 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Configuration;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Configuration
 {
-    /// <summary>
-    /// Check equality on two arrays.
-    /// </summary>
-    /// <typeparam name="T">The type of values in the arrays.</typeparam>
-    public class ArrayEqualityComparer<T> : IEqualityComparer<Array>
+    [ConfigurationCollection(typeof(MailPolicy), CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
+    public class MailPolicyCollection : ConfigurationElementCollection<MailPolicy>
     {
-        readonly IEqualityComparer<T> _comparer;
-
-        public ArrayEqualityComparer(IEqualityComparer<T> comparer) {
-            _comparer = comparer;
-        }
-        public ArrayEqualityComparer()
-            : this(EqualityComparer<T>.Default) {
+        public MailPolicyCollection() {
         }
 
-        #region IEqualityComparer<Array> Membres
 
-        public bool Equals(Array x, Array y) {
-            if (x == y)
-                return true;
-            if (x == null)
-                return false;
-
-            if (x.Rank != y.Rank)
-                return false;
-            if (!x.GetDimensions().SequenceEqual(y.GetDimensions()))
-                return false;
-
-            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>());
+        protected override ConfigurationElement CreateNewElement() {
+            return new MailPolicy();
         }
 
-        public int GetHashCode(Array obj) {
-            return obj.GetHashCode();
+        public new MailPolicy this[string name] {
+            get {
+                return this.OfType<MailPolicy>()
+                    .SingleOrDefault(t => t.Name == name);
+            }
         }
-
-        #endregion
     }
 }

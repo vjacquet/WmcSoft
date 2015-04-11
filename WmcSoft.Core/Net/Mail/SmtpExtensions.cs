@@ -25,46 +25,35 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Net.Mail
 {
-    /// <summary>
-    /// Check equality on two arrays.
-    /// </summary>
-    /// <typeparam name="T">The type of values in the arrays.</typeparam>
-    public class ArrayEqualityComparer<T> : IEqualityComparer<Array>
+    public static class SmtpExtensions
     {
-        readonly IEqualityComparer<T> _comparer;
+        class MailAddressEqualityComparer : IEqualityComparer<MailAddress>
+        {
+            #region IEqualityComparer<MailAddress> Membres
 
-        public ArrayEqualityComparer(IEqualityComparer<T> comparer) {
-            _comparer = comparer;
-        }
-        public ArrayEqualityComparer()
-            : this(EqualityComparer<T>.Default) {
-        }
+            public bool Equals(MailAddress x, MailAddress y) {
+                return String.Equals(x.Address, y.Address, StringComparison.InvariantCultureIgnoreCase);
+            }
 
-        #region IEqualityComparer<Array> Membres
+            public int GetHashCode(MailAddress obj) {
+                return obj.Address.ToLowerInvariant().GetHashCode();
+            }
 
-        public bool Equals(Array x, Array y) {
-            if (x == y)
-                return true;
-            if (x == null)
-                return false;
-
-            if (x.Rank != y.Rank)
-                return false;
-            if (!x.GetDimensions().SequenceEqual(y.GetDimensions()))
-                return false;
-
-            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>());
+            #endregion
         }
 
-        public int GetHashCode(Array obj) {
-            return obj.GetHashCode();
+        public static void AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses) {
+            var comparer = new MailAddressEqualityComparer();
+            foreach (var address in addresses) {
+                if (!self.Contains(address, comparer))
+                    self.Add(address);
+            }
         }
-
-        #endregion
     }
 }

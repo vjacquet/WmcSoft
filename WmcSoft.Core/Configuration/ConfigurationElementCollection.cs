@@ -59,8 +59,8 @@ namespace WmcSoft.Configuration
 
         protected virtual object GetElementKey(T element) {
             return element.ElementInformation.Properties.Cast<PropertyInformation>()
-            .Where(p => p.IsKey)
-            .Single();
+                .Where(p => p.IsKey)
+                .Single();
         }
         protected sealed override object GetElementKey(ConfigurationElement element) {
             return GetElementKey((T)element);

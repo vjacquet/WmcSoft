@@ -79,6 +79,9 @@
     <Compile Include="Configuration\AppConfig.cs" />
     <Compile Include="Configuration\FileSearchSectionHandler.cs" />
     <Compile Include="Configuration\ListSectionHandler.cs" />
+    <Compile Include="Configuration\MailAddressCollectionConverter.cs" />
+    <Compile Include="Configuration\MailPolicy.cs" />
+    <Compile Include="Configuration\MailPolicyCollection.cs" />
     <Compile Include="Diagnostics\TraceStream.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="DisposableStack.cs" />
     <Compile Include="Disposer.cs" />
     <Compile Include="ActionExtensions.cs" />
+    <Compile Include="Indices.cs" />
     <Compile Include="IO\AnonymousStreamSource.cs" />
     <Compile Include="IO\Batch.cs" />
     <Compile Include="IO\CloseBarrierStream.cs" />
@@ -121,6 +125,7 @@
     <Compile Include="IO\TextWriterExtensions.cs" />
     <Compile Include="Net\DownloadBatch.cs" />
     <Compile Include="Net\DownloadSource.cs" />
+    <Compile Include="Net\Mail\SmtpExtensions.cs" />
     <Compile Include="Net\UploadBatch.cs" />
     <Compile Include="Net\UploadSource.cs" />
     <Compile Include="Net\WebClientBatch.cs" />
