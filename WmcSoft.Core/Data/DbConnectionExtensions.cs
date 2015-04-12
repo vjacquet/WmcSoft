@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
@@ -32,12 +33,49 @@ namespace WmcSoft.Data.Common
 {
     public static class DbConnectionExtensions
     {
-        public static IDbConnection OpenConnection(this ConnectionStringSettings connectionStringSettings) {
+        public static DbConnection OpenConnection(this ConnectionStringSettings connectionStringSettings) {
             var factory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
             var connection = factory.CreateConnection();
             connection.ConnectionString = connectionStringSettings.ConnectionString;
             connection.Open();
             return connection;
+        }
+
+        public static IDbCommand CreateCommand(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+            var command = connection.CreateCommand();
+            command.CommandType = commandType;
+            command.CommandText = commandText;
+            command.Transaction = transaction;
+            command.AddReflectedParameters(parameters);
+            if (timeout != null) {
+                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
+            }
+            return command;
+        }
+
+        public static T ReadScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+            using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
+                var result = command.ExecuteScalar();
+                return (T)Convert.ChangeType(result, typeof(T));
+            }
+        }
+
+        public static T ReadScalarOrDefault<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+            using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
+                var result = command.ExecuteScalar();
+                if (result == null || DBNull.Value.Equals(result))
+                    return default(T);
+                return (T)Convert.ChangeType(result, typeof(T));
+            }
+        }
+
+        public static T? ReadNullableScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) where T : struct {
+            using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
+                var result = command.ExecuteScalar();
+                if (result == null || DBNull.Value.Equals(result))
+                    return null;
+                return (T)Convert.ChangeType(result, typeof(T));
+            }
         }
     }
 }
