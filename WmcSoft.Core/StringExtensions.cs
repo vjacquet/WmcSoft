@@ -158,6 +158,7 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="culture">The culture.</param>
         /// <returns>The capitalized string</returns>
+        [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
         public static string Capitalize(this string self, CultureInfo culture) {
             if (String.IsNullOrEmpty(self))
                 return self;
@@ -169,6 +170,7 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The string.</param>
         /// <returns>The capitalized string</returns>
+        [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
         public static string Capitalize(this string self) {
             if (String.IsNullOrEmpty(self))
                 return self;
@@ -181,6 +183,7 @@ namespace WmcSoft
         /// <param name="self">The array of strings.</param>
         /// <param name="culture">The culture.</param>
         /// <returns>The converted array of strings</returns>
+        [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
         public static string[] Capitalize(this string[] self, CultureInfo culture) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
@@ -194,12 +197,59 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
+        [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
         public static string[] Capitalize(this string[] self) {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(Capitalize(s));
             }
             return list.ToArray();
+        }
+
+        /// <summary>
+        /// Capitalizes the specified string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The capitalized string</returns>
+        public static string ToTitleCase(this string self, CultureInfo culture) {
+            if (String.IsNullOrEmpty(self))
+                return self;
+            culture = culture ?? CultureInfo.CurrentCulture;
+            return culture.TextInfo.ToTitleCase(self);
+        }
+
+        /// <summary>
+        /// Capitalizes the specified string.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <returns>The capitalized string</returns>
+        public static string ToTitleCase(this string self) {
+            if (String.IsNullOrEmpty(self))
+                return self;
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(self);
+        }
+
+        /// <summary>
+        /// Capitalizes the specified array of strings.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The converted array of strings</returns>
+        public static string[] ToTitleCase(this string[] self, CultureInfo culture) {
+            culture = culture ?? CultureInfo.CurrentCulture;
+            var textinfo = culture.TextInfo;
+            return self.ToArray(textinfo.ToTitleCase);
+        }
+
+        /// <summary>
+        /// Capitalizes the specified array of strings.
+        /// </summary>
+        /// <param name="self">The array of strings.</param>
+        /// <returns>The converted array of strings</returns>
+        public static string[] ToTitleCase(this string[] self) {
+            var textinfo = CultureInfo.CurrentCulture.TextInfo;
+            return self.ToArray(textinfo.ToTitleCase);
         }
 
         /// <summary>
@@ -528,6 +578,42 @@ namespace WmcSoft
             if (String.IsNullOrEmpty(value))
                 return null;
             return value;
+        }
+
+        #endregion
+
+        #region StartsWith & EndsWith
+
+        public static bool StartsWith(this string self, char c) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            return self.StartsWith(Char.ToString(c));
+        }
+        public static bool StartsWith(this string self, char c, StringComparison comparison) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            return self.StartsWith(Char.ToString(c), comparison);
+        }
+        public static bool StartsWith(this string self, char c, bool ignoreCase, CultureInfo culture) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            return self.StartsWith(Char.ToString(c), ignoreCase, culture);
+        }
+
+        public static bool EndsWith(this string self, char c) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            return self.EndsWith(Char.ToString(c));
+        }
+        public static bool EndsWith(this string self, char c, StringComparison comparison) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            return self.EndsWith(Char.ToString(c), comparison);
+        }
+        public static bool EndsWith(this string self, char c, bool ignoreCase, CultureInfo culture) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            return self.EndsWith(Char.ToString(c), ignoreCase, culture);
         }
 
         #endregion
