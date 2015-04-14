@@ -75,6 +75,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RegexExtensionsTests.cs" />
+    <Compile Include="Runtime\ObjectWalkerTests.cs" />
     <Compile Include="StreamExtensionsTests.cs" />
     <Compile Include="Text\TokenizerTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
