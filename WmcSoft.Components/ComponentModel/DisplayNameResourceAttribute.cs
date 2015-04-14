@@ -34,7 +34,7 @@ namespace WmcSoft.ComponentModel
     public class DisplayNameResourceAttribute : DisplayNameAttribute
     {
         public DisplayNameResourceAttribute(Type resourceBase, string resourceName)
-            : base(new ResourceManager(resourceBase).GetString(resourceName, CultureInfo.CurrentCulture)) {
+            : base(ResourceHelpers.GetString(resourceBase, resourceName)) {
         }
     }
 }

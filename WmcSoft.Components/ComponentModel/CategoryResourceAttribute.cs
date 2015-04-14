@@ -36,14 +36,13 @@ namespace WmcSoft.ComponentModel
     {
         private readonly Type _resourceBase;
 
-        // Methods
         public CategoryResourceAttribute(Type resourceBase, string resourceName)
             : base(resourceName) {
             _resourceBase = resourceBase;
         }
 
         protected override string GetLocalizedString(string value) {
-            return new ResourceManager(_resourceBase).GetString(value, CultureInfo.CurrentCulture);
+            return ResourceHelpers.GetString(_resourceBase, value);
         }
     }
 

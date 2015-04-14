@@ -34,7 +34,7 @@ namespace WmcSoft.ComponentModel
     public class DescriptionResourceAttribute : DescriptionAttribute
     {
         public DescriptionResourceAttribute(Type resourceBase, string resourceName)
-            : base(new ResourceManager(resourceBase).GetString(resourceName, CultureInfo.CurrentCulture)) {
+            : base(ResourceHelpers.GetString(resourceBase, resourceName)) {
         }
     }
 }

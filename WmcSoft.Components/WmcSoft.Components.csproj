@@ -59,6 +59,7 @@
     <Compile Include="ComponentModel\Design\TypeResolutionService.cs" />
     <Compile Include="ComponentModel\DisplayNameResourceAttribute.cs" />
     <Compile Include="ComponentModel\EventBarrier.cs" />
+    <Compile Include="ComponentModel\ResourceHelpers.cs" />
     <Compile Include="ComponentModel\TypeDescriptorContext.cs" />
     <Compile Include="ComponentModel\TypeResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
