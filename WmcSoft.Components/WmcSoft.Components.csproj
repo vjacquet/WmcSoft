@@ -52,9 +52,13 @@
     <Compile Include="CommandLine\OptionCollection.cs" />
     <Compile Include="CommandLine\StringOption.cs" />
     <Compile Include="CommandLine\SwitchOption.cs" />
+    <Compile Include="ComponentModel\CategoryResourceAttribute.cs" />
+    <Compile Include="ComponentModel\DescriptionResourceAttribute.cs" />
     <Compile Include="ComponentModel\Design\AliasResolutionService.cs" />
     <Compile Include="ComponentModel\Design\Serialization\DesignerSerializationManagerExtensions.cs" />
     <Compile Include="ComponentModel\Design\TypeResolutionService.cs" />
+    <Compile Include="ComponentModel\DisplayNameResourceAttribute.cs" />
+    <Compile Include="ComponentModel\EventBarrier.cs" />
     <Compile Include="ComponentModel\TypeDescriptorContext.cs" />
     <Compile Include="ComponentModel\TypeResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
