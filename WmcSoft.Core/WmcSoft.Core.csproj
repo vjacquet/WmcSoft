@@ -144,6 +144,7 @@
     <Compile Include="Reflection\CustomAttributeProviderExtensions.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Relation.cs" />
+    <Compile Include="Runtime\ObjectWalker.cs" />
     <Compile Include="ServiceProviderExtensions.cs" />
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
