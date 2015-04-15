@@ -25,12 +25,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using System.ComponentModel.Design;
 using System.Collections;
 using System.Collections.Specialized;
+using System.ComponentModel.Design;
+using System.Reflection;
 
 namespace WmcSoft.ComponentModel.Design
 {

@@ -25,12 +25,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace WmcSoft.ComponentModel
 {
     /// <summary>
-    /// Temporary excludes the specified target to be notified 
+    /// Cretes a scope in which the specified target wil not be notified of the givent events.
     /// </summary>
     public class EventBarrier : IDisposable
     {
@@ -41,14 +43,13 @@ namespace WmcSoft.ComponentModel
             this.sourceList = eventHandlerList;
 
             foreach (object @event in events) {
-                Delegate sentinel = sourceList[@event];
-                if (sentinel != null) {
-                    foreach (Delegate @delegate in sentinel.GetInvocationList()) {
-                        if (@delegate.Target == target) {
-                            sourceList.RemoveHandler(@event, @delegate);
-                            restorationList.AddHandler(@event, @delegate);
-                        }
-                    }
+                var sentinel = sourceList[@event];
+                if (sentinel == null)
+                    continue;
+
+                foreach (var handler in sentinel.GetInvocationList(d => d.Target == target)) {
+                    sourceList.RemoveHandler(@event, handler);
+                    restorationList.AddHandler(@event, handler);
                 }
             }
         }
