@@ -120,4 +120,7 @@
   <data name="AssemblyNotFound" xml:space="preserve">
     <value>Could not find assembly {0}.</value>
   </data>
+  <data name="InvalidNameArgumentException" xml:space="preserve">
+    <value>The name "{0}" is not a valid identifier.</value>
+  </data>
 </root>

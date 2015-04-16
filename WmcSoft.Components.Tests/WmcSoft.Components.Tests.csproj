@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -59,6 +60,13 @@
       <DependentUpon>BenchComponent.cs</DependentUpon>
     </Compile>
     <Compile Include="CommandLine\CommandLineTests.cs" />
+    <Compile Include="ComponentModel\ComponentWithServiceContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ComponentModel\ComponentWithServiceContainer.Designer.cs">
+      <DependentUpon>ComponentWithServiceContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Net\IPAdressTypeConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,10 +74,18 @@
       <Project>{C55D60F6-41AF-4B26-AFF4-A869F006BA7F}</Project>
       <Name>WmcSoft.Components</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
+      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
+      <Name>WmcSoft.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CommandLine\BenchComponent.resx">
       <DependentUpon>BenchComponent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ComponentModel\ComponentWithServiceContainer.resx">
+      <DependentUpon>ComponentWithServiceContainer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Choose>
