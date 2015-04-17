@@ -110,6 +110,7 @@
     <Compile Include="FormatProviderHelper.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="IntExtensions.cs" />
+    <Compile Include="IO\FileInfoExtensions.cs" />
     <Compile Include="IO\FileStreamSource.cs" />
     <Compile Include="IO\FlushingStream.cs" />
     <Compile Include="IO\Impersonate.cs" />
