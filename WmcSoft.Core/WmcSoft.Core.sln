@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Components", "..\Wm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Components.Tests", "..\WmcSoft.Components.Tests\WmcSoft.Components.Tests.csproj", "{8DCDAFE7-8D15-48E2-B328-17B6643BEFD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Windows.Forms", "..\WmcSoft.Windows.Forms\WmcSoft.Windows.Forms.csproj", "{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{8DCDAFE7-8D15-48E2-B328-17B6643BEFD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DCDAFE7-8D15-48E2-B328-17B6643BEFD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DCDAFE7-8D15-48E2-B328-17B6643BEFD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
