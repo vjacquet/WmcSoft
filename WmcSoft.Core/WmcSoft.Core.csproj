@@ -146,6 +146,8 @@
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="Runtime\ObjectWalker.cs" />
+    <Compile Include="Security\Cryptography\UUDecodeTransform.cs" />
+    <Compile Include="Security\Cryptography\UUEncodeTransform.cs" />
     <Compile Include="ServiceProviderExtensions.cs" />
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
