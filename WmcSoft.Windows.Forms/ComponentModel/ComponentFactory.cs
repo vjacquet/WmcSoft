@@ -59,8 +59,8 @@ namespace WmcSoft.ComponentModel
                     mapping = new Dictionary<string, Type>();
                     mapping.Add("System.Windows.Forms.SplitContainer", typeof(WmcSoft.Windows.Forms.SplitContainer));
                     mapping.Add("System.Windows.Forms.Splitter", typeof(WmcSoft.Windows.Forms.Splitter));
-                    //mapping.Add("System.Windows.Forms.ToolStrip", typeof(WmcSoft.Windows.Forms.ToolStrip));
-                    //mapping.Add("System.Windows.Forms.MenuStrip", typeof(WmcSoft.Windows.Forms.MenuStrip));
+                    mapping.Add("System.Windows.Forms.ToolStrip", typeof(WmcSoft.Windows.Forms.ToolStrip));
+                    mapping.Add("System.Windows.Forms.MenuStrip", typeof(WmcSoft.Windows.Forms.MenuStrip));
                 }
                 return mapping;
             }
@@ -88,34 +88,34 @@ namespace WmcSoft.ComponentModel
     {
         class TypeResolutionService : ITypeResolutionService
         {
-            ITypeResolutionService service;
-            ComponentFactory factory;
+            ITypeResolutionService _service;
+            ComponentFactory _factory;
 
             internal TypeResolutionService(ComponentFactory factory, ITypeResolutionService service) {
-                this.factory = factory;
-                this.service = service;
+                _factory = factory;
+                _service = service;
             }
 
             #region ITypeResolutionService Membres
 
             public System.Reflection.Assembly GetAssembly(System.Reflection.AssemblyName name, bool throwOnError) {
-                return service.GetAssembly(name, throwOnError);
+                return _service.GetAssembly(name, throwOnError);
             }
 
             public System.Reflection.Assembly GetAssembly(System.Reflection.AssemblyName name) {
-                return service.GetAssembly(name);
+                return _service.GetAssembly(name);
             }
 
             public string GetPathOfAssembly(System.Reflection.AssemblyName name) {
-                return service.GetPathOfAssembly(name);
+                return _service.GetPathOfAssembly(name);
             }
 
             public Type GetType(string name, bool throwOnError, bool ignoreCase) {
                 Type type;
-                if (factory.TryResolve(name, out type)) {
+                if (_factory.TryResolve(name, out type)) {
                     return type;
                 }
-                return service.GetType(name, throwOnError, ignoreCase);
+                return _service.GetType(name, throwOnError, ignoreCase);
             }
             public Type GetType(string name, bool throwOnError) {
                 return GetType(name, throwOnError, false);
@@ -126,46 +126,45 @@ namespace WmcSoft.ComponentModel
             }
 
             public void ReferenceAssembly(System.Reflection.AssemblyName name) {
-                service.ReferenceAssembly(name);
+                _service.ReferenceAssembly(name);
             }
 
             #endregion
         }
 
         public ComponentFactoryDesigner() {
-            typeResolutionService = null;
+            _typeResolutionService = null;
         }
-        IDictionary<string, Type> mapping;
 
         public override void Initialize(IComponent component) {
             var host = component.Site.GetService<IDesignerHost>();
             var itrs = host.GetService<ITypeResolutionService>();
             if (itrs != null) {
-                typeResolutionService = itrs;
+                _typeResolutionService = itrs;
                 host.RemoveService(typeof(ITypeResolutionService));
                 host.AddService(typeof(ITypeResolutionService), new TypeResolutionService((ComponentFactory)component, itrs));
-                this.host = host;
+                _host = host;
             }
 
             base.Initialize(component);
         }
 
         protected override void Dispose(bool disposing) {
-            if (host != null && typeResolutionService != null) {
-                var itrs = host.GetService<ITypeResolutionService>();
+            if (_host != null && _typeResolutionService != null) {
+                var itrs = _host.GetService<ITypeResolutionService>();
                 if (itrs != null) {
-                    host.RemoveService(typeof(ITypeResolutionService));
-                    host.AddService(typeof(ITypeResolutionService), typeResolutionService);
+                    _host.RemoveService(typeof(ITypeResolutionService));
+                    _host.AddService(typeof(ITypeResolutionService), _typeResolutionService);
                 }
-                typeResolutionService = null;
-                host = null;
+                _typeResolutionService = null;
+                _host = null;
             }
 
             base.Dispose(disposing);
         }
 
-        ITypeResolutionService typeResolutionService;
-        IDesignerHost host;
+        ITypeResolutionService _typeResolutionService;
+        IDesignerHost _host;
     }
 
     #endregion

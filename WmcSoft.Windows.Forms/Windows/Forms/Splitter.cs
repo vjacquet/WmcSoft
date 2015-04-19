@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace WmcSoft.Windows.Forms
 {
-    [ToolboxBitmap(typeof(System.Windows.Forms.Splitter), "Splitter.bmp")]
+    [ToolboxBitmap(typeof(System.Windows.Forms.Splitter))]
     public class Splitter : System.Windows.Forms.Splitter
     {
         #region Lifecycle

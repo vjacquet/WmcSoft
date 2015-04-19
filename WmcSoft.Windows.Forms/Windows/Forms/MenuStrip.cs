@@ -26,47 +26,46 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WmcSoft.Windows.Forms
 {
-    [ToolboxBitmap(typeof(System.Windows.Forms.SplitContainer))]
-    public class SplitContainer : System.Windows.Forms.SplitContainer
+    [ToolboxBitmap(typeof(System.Windows.Forms.MenuStrip))]
+    public class MenuStrip : System.Windows.Forms.MenuStrip
     {
-        #region Lifecycle
+        #region "ClickThrough" properties
 
-        public SplitContainer() {
-            ResetBackColor();
-        }
+        [Category("Behavior")]
+        public bool ClickThrough { get; set; }
+
+        [Category("Behavior")]
+        public bool SuppressHighlighting { get; set; }
 
         #endregion
 
-        #region Properties
+        #region Overridables
 
-        private bool ShouldSerializeBackColor() {
-            return BackColor != Color.Transparent;
-        }
+        protected override void WndProc(ref System.Windows.Forms.Message m) {
+            // If we don't want highlighting, throw away mousemove commands
+            // when the parent form or one of its children does not have the focus
+            if (m.Msg == NativeMethods.WM_MOUSEMOVE
+                && SuppressHighlighting
+                && !TopLevelControl.ContainsFocus)
+                return;
 
-        public override void ResetBackColor() {
-            BackColor = Color.Transparent;
-        }
+            base.WndProc(ref m);
 
-        public override bool Focused {
-            get {
-                if (_supportFocus)
-                    return base.Focused;
-                return false;
-            }
-        }
+            // If we want ClickThrough, replace "Activate and Eat" with
+            // "Activate" on WM_MOUSEACTIVATE messages
+            if (m.Msg == NativeMethods.WM_MOUSEACTIVATE
+                && ClickThrough && m.Result == (IntPtr)NativeMethods.MA_ACTIVATEANDEAT)
+                m.Result = (IntPtr)NativeMethods.MA_ACTIVATE;
 
-        [DefaultValue(false)]
-        public bool SupportFocus {
-            get { return _supportFocus; }
-            set { _supportFocus = value; }
         }
-        bool _supportFocus = false;
 
         #endregion
     }

@@ -252,6 +252,15 @@ namespace WmcSoft.Windows.Forms
 
         #endregion
 
+        #region MouseActivate types
+
+        public const uint MA_ACTIVATE = 1;
+        public const uint MA_ACTIVATEANDEAT = 2;
+        public const uint MA_NOACTIVATE = 3;
+        public const uint MA_NOACTIVATEANDEAT = 4;
+
+        #endregion
+
         #region Window style
 
         public const uint WS_OVERLAPPED = 0x00000000;

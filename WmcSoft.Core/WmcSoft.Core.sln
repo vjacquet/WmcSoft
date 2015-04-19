@@ -30,6 +30,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Components", "..\WmcSoft.Components\WmcSoft.Components.csproj", "{C55D60F6-41AF-4B26-AFF4-A869F006BA7F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Components.Tests", "..\WmcSoft.Components.Tests\WmcSoft.Components.Tests.csproj", "{8DCDAFE7-8D15-48E2-B328-17B6643BEFD4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34} = {9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Windows.Forms", "..\WmcSoft.Windows.Forms\WmcSoft.Windows.Forms.csproj", "{9F13A742-EC3F-4D79-B5F0-F5B09B27DD34}"
 EndProject

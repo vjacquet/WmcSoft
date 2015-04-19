@@ -49,11 +49,17 @@
       <DependentUpon>ComponentFactory.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\Forms\MenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\NativeMethods.cs" />
     <Compile Include="Windows\Forms\SplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\Splitter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\ToolStripExtensions.cs" />
