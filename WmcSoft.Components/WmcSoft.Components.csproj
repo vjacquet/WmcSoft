@@ -54,12 +54,6 @@
     <Compile Include="CommandLine\StringOption.cs" />
     <Compile Include="CommandLine\SwitchOption.cs" />
     <Compile Include="ComponentModel\CategoryResourceAttribute.cs" />
-    <Compile Include="ComponentModel\ComponentFactory.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ComponentModel\ComponentFactory.Designer.cs">
-      <DependentUpon>ComponentFactory.cs</DependentUpon>
-    </Compile>
     <Compile Include="ComponentModel\Design\ComponentDesignerBase.cs" />
     <Compile Include="ComponentModel\Design\ConverterOverrideTypeDescriptionProvider.cs" />
     <Compile Include="ComponentModel\CustomTypeDescriptorDecorator.cs" />
@@ -110,7 +104,6 @@
   <ItemGroup>
     <Content Include="CommandLine\CommandLine.bmp" />
     <EmbeddedResource Include="Net\WakeOnLan.bmp" />
-    <EmbeddedResource Include="ComponentModel\ComponentFactory.bmp" />
     <EmbeddedResource Include="ComponentModel\SelectionServiceComponent.bmp" />
     <EmbeddedResource Include="ComponentModel\ServiceContainerComponent.bmp" />
   </ItemGroup>

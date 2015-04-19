@@ -57,8 +57,8 @@ namespace WmcSoft.ComponentModel
             get {
                 if (mapping == null) {
                     mapping = new Dictionary<string, Type>();
-                    //mapping.Add("System.Windows.Forms.SplitContainer", typeof(WmcSoft.Windows.Forms.SplitContainer));
-                    //mapping.Add("System.Windows.Forms.Splitter", typeof(WmcSoft.Windows.Forms.Splitter));
+                    mapping.Add("System.Windows.Forms.SplitContainer", typeof(WmcSoft.Windows.Forms.SplitContainer));
+                    mapping.Add("System.Windows.Forms.Splitter", typeof(WmcSoft.Windows.Forms.Splitter));
                     //mapping.Add("System.Windows.Forms.ToolStrip", typeof(WmcSoft.Windows.Forms.ToolStrip));
                     //mapping.Add("System.Windows.Forms.MenuStrip", typeof(WmcSoft.Windows.Forms.MenuStrip));
                 }
@@ -166,7 +166,6 @@ namespace WmcSoft.ComponentModel
 
         ITypeResolutionService typeResolutionService;
         IDesignerHost host;
-
     }
 
     #endregion
