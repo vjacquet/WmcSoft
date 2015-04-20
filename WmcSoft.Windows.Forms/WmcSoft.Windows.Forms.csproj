@@ -54,6 +54,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\ControlExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\MenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
