@@ -49,6 +49,11 @@
       <DependentUpon>ComponentFactory.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\MenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -62,8 +67,14 @@
     <Compile Include="Windows\Forms\ToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\ToolStripExtensions.cs" />
     <Compile Include="Windows\Forms\ToolStripMonthCalendar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ToolStripNetworkAvailability.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\ToolStripRadioButton.cs">
@@ -81,15 +92,31 @@
     <Compile Include="Windows\Forms\ToolStripStatusKeyLockLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\ToolStripStatusText.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\error48.png" />
+    <Content Include="Resources\info48.png" />
+    <Content Include="Resources\LightBulb48.png" />
+    <Content Include="Resources\none48.png" />
+    <Content Include="Resources\question48.png" />
+    <Content Include="Resources\warning48.png" />
+    <Content Include="Windows\Forms\ToolStripStatusText.png" />
     <EmbeddedResource Include="ComponentModel\ComponentFactory.bmp" />
+    <EmbeddedResource Include="Properties\Resources.fr.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\ToolStripMonthCalendar.bmp" />
+    <EmbeddedResource Include="Windows\Forms\ToolStripNetworkAvailability.resx" />
     <EmbeddedResource Include="Windows\Forms\ToolStripRadioButton.bmp" />
     <EmbeddedResource Include="Windows\Forms\ToolStripSpringLabel.bmp" />
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusClockLabel.png" />
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusCultureLabel.bmp" />
+    <EmbeddedResource Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.bmp" />
+    <EmbeddedResource Include="Windows\Forms\ToolStripNetworkAvailability.png" />
     <Content Include="Windows\Forms\ToolStripStatusKeyLockLabel.bmp" />
   </ItemGroup>
   <ItemGroup>

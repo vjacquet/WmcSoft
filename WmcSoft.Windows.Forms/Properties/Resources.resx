@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="YesButton" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Info48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\info48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NoZonesInZoneWorkspace" xml:space="preserve">
+    <value>There are no zones in the workspace to display smart parts.</value>
+  </data>
+  <data name="QuestionCaption" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="NetworkNotAvailableToolTip" xml:space="preserve">
+    <value>The network is currently not available.</value>
+  </data>
+  <data name="RecurrenceDailyEveryWeekDays" xml:space="preserve">
+    <value>weekday</value>
+  </data>
+  <data name="None48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\none48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="NoButton" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="RetryButton" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="AbortButton" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="SmartPartNotControl" xml:space="preserve">
+    <value>Smart part is not a control.</value>
+  </data>
+  <data name="HelpButton" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Question48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\question48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExceptionFormExceptionSection" xml:space="preserve">
+    <value>Exception Text</value>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="InformationCaption" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="ExceptionFormMessageLoadedAssembliesSection" xml:space="preserve">
+    <value>Loaded Assemblies</value>
+  </data>
+  <data name="IgnoreButton" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
+  <data name="RecurrenceDailyEveryDay" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="DaysOfWeekSeparator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="NetworkAvailableToolTip" xml:space="preserve">
+    <value>The network is currently available.</value>
+  </data>
+  <data name="SmartPartNotInManager" xml:space="preserve">
+    <value>Smart part has not been shown previously by the current manager.</value>
+  </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="NoZoneWithName" xml:space="preserve">
+    <value>There is no zone named {0} to display the smart part in.</value>
+  </data>
+  <data name="RecurrenceDailyEveryNthDays" xml:space="preserve">
+    <value>{0} days</value>
+  </data>
+  <data name="RecurrenceMonthNthEveryMonth" xml:space="preserve">
+    <value>{0} {1} of every month</value>
+  </data>
+  <data name="RecurrenceWeeklyEveryNthWeek" xml:space="preserve">
+    <value>{1} on {0}</value>
+  </data>
+  <data name="RecurrenceFormat" xml:space="preserve">
+    <value>Occurs every {0} effective {1} from {2} to {3}</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="RecurrenceMonthlyEveryNthMonths" xml:space="preserve">
+    <value>day {0} of every {1} months</value>
+  </data>
+  <data name="RecurrenceYearNth" xml:space="preserve">
+    <value>{0} {1} of {2}</value>
+  </data>
+  <data name="ExceptionFormErrorMessage" xml:space="preserve">
+    <value>Unhandled exception has occurred in your application.
+If you click Continue, the application will ignore this error and attempt to continue.
+If you click Quit, the application will close immediately.
+
+{0}.</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="InvalidNameArgumentException" xml:space="preserve">
+    <value>The name "{0}" is not a valid identifier.</value>
+  </data>
+  <data name="ExceptionFormMessageSectionSeparator" xml:space="preserve">
+    <value>
+************** {0} **************
+</value>
+  </data>
+  <data name="RecurrenceMonthNthEveryNthMonths" xml:space="preserve">
+    <value>{0} {1} of every {2} months</value>
+  </data>
+  <data name="Warning48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\warning48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NetworkAvailableText" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="RecurrenceDailyEveryWeekendDays" xml:space="preserve">
+    <value>weekend day</value>
+  </data>
+  <data name="ExceptionFormMessageSeparator" xml:space="preserve">
+    <value>----------------------------------------
+</value>
+  </data>
+  <data name="Error48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\error48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExceptionFormContinueErrorMessage" xml:space="preserve">
+    <value>Unhandled exception has occurred in a component in your application.
+If you click Continue, the application will ignore this error and attempt to continue.
+
+{0}.</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="QuitButton" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="RecurrenceYearly" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="ExceptionFormSecurityErrorMessage" xml:space="preserve">
+    <value>Application attempted to perform an operation not allowed by the security policy. To grant this application the required permission, contact your system administrator, or use the Microsoft .NET Framework Configuration tool.
+
+If you click Continue, the application will ignore this error and attempt to continue.
+If you click Quit, the application will close immediately.
+
+{1}.</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="RecurrenceWeeklyEveryWeek" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="AddTab" xml:space="preserve">
+    <value>Add TabStrip page</value>
+  </data>
+  <data name="ExceptionFormSecurityContinueErrorMessage" xml:space="preserve">
+    <value>Application attempted to perform an operation not allowed by the security policy. To grant this application the required permission, contact your system administrator, or use the Microsoft .NET Framework Configuration tool.
+
+If you click Continue, the application will ignore this error and attempt to continue.
+
+{1}.</value>
+  </data>
+  <data name="WarningCaption" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="UnsupportedSmartPartType" xml:space="preserve">
+    <value>Workspace supports smart parts of type {0}.</value>
+  </data>
+  <data name="ExceptionFormMessageAssembliesEntry" xml:space="preserve">
+    <value>{0}
+    Assembly Version: {1}
+    Win32 Version: {2}
+    CodeBase: {3}
+</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="ContinueButton" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="ExceptionFormWarningMessage" xml:space="preserve">
+    <value>{0}.</value>
+  </data>
+  <data name="RecurrenceMonthlyEveryMonth" xml:space="preserve">
+    <value>day {0} of every month</value>
+  </data>
+  <data name="OKButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="LightBulb48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LightBulb48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CommandManagerEventsTabName" xml:space="preserve">
+    <value>Commands</value>
+  </data>
+  <data name="TipOfTheDayFormDefaultTitle" xml:space="preserve">
+    <value>Did You Know...</value>
+  </data>
+</root>
