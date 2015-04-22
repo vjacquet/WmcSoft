@@ -1,4 +1,30 @@
-﻿using System;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,11 +35,18 @@ namespace WmcSoft.Windows.Forms
     [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripStatusKeyLockLabel : ToolStripStatusLabel, IObserver<Keys>
     {
+        #region KeyLockMessageFilter class
+
         class KeyLockMessageFilter : IMessageFilter
             , IObservable<Keys>
         {
+            static readonly int[] _keys;
+            static KeyLockMessageFilter() {
+                _keys = new[] { (int)Keys.CapsLock, (int)Keys.NumLock, (int)Keys.Insert, (int)Keys.Scroll };
+                Array.Sort(_keys);
+            }
 
-            List<IObserver<Keys>> observers;
+            List<IObserver<Keys>> _observers;
 
             public KeyLockMessageFilter() {
             }
@@ -21,16 +54,11 @@ namespace WmcSoft.Windows.Forms
             #region IMessageFilter Membres
 
             public bool PreFilterMessage(ref Message m) {
-                if ((observers != null)
-                    && (m.Msg == NativeMethods.WM_KEYDOWN || m.Msg == NativeMethods.WM_KEYUP)) {
+                if ((_observers != null) && (m.Msg == NativeMethods.WM_KEYDOWN || m.Msg == NativeMethods.WM_KEYUP)) {
                     int w = m.WParam.ToInt32();
-                    if (w == (int)Keys.CapsLock
-                        || w == (int)Keys.NumLock
-                        || w == (int)Keys.Insert
-                        || w == (int)Keys.Scroll) {
+                    if (Array.BinarySearch(_keys, w) >= 0) {
                         Keys key = (Keys)w;
-
-                        foreach (var observer in observers) {
+                        foreach (var observer in _observers) {
                             observer.OnNext(key);
                         }
                     }
@@ -42,22 +70,30 @@ namespace WmcSoft.Windows.Forms
 
             #region IObservable<Keys> Membres
 
+            private void Unsubscribe(IObserver<Keys> observer) {
+                if (_observers.Remove(observer) && _observers.Count == 0)
+                    _observers = null;
+            }
+
             public IDisposable Subscribe(IObserver<Keys> observer) {
                 if (observer == null)
                     throw new ArgumentNullException();
 
-                if (observers == null)
-                    observers = new List<IObserver<Keys>>();
+                if (_observers == null)
+                    _observers = new List<IObserver<Keys>>();
 
-                observers.Add(observer);
-                return new Unsubscriber(() => observers.Remove(observer));
+                _observers.Add(observer);
+                return new Unsubscriber(() => Unsubscribe(observer));
             }
 
             #endregion
         }
+
+        #endregion
+
         static KeyLockMessageFilter messageFilter = new KeyLockMessageFilter();
         static int messageFilterRefCount = 0;
-        IDisposable unsubscriber;
+        IDisposable _unsubscriber;
 
         public ToolStripStatusKeyLockLabel() {
             AddFilter();
@@ -70,12 +106,8 @@ namespace WmcSoft.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [ReadOnly(true)]
         public override string Text {
-            get {
-                return base.Text;
-            }
-            set {
-                throw new InvalidOperationException();
-            }
+            get { return base.Text; }
+            set { throw new InvalidOperationException(); }
         }
 
         [DefaultValue(KeyLock.CapsLock)]
@@ -154,10 +186,9 @@ namespace WmcSoft.Windows.Forms
 
         #region Overridables
 
-        public override Size GetPreferredSize(System.Drawing.Size constrainingSize) {
-            Size size = base.GetPreferredSize(constrainingSize);
-            size.Width = TextRenderer.MeasureText(text, this.Font).Width + this.Padding.Left + this.Padding.Right;
-            size.Width = System.Math.Min(size.Width, 40);
+        public override Size GetPreferredSize(Size constrainingSize) {
+            var size = base.GetPreferredSize(constrainingSize);
+            size.Width = Math.Max(40, TextRenderer.MeasureText(text, Font).Width + Padding.Horizontal);
             return size;
         }
 
@@ -171,7 +202,7 @@ namespace WmcSoft.Windows.Forms
         #region Event filtering
 
         private void AddFilter() {
-            unsubscriber = messageFilter.Subscribe(this);
+            _unsubscriber = messageFilter.Subscribe(this);
             if (System.Threading.Interlocked.Increment(ref messageFilterRefCount) == 1) {
                 Application.AddMessageFilter(messageFilter);
             }
@@ -181,7 +212,7 @@ namespace WmcSoft.Windows.Forms
             if (System.Threading.Interlocked.Decrement(ref messageFilterRefCount) == 0) {
                 Application.RemoveMessageFilter(messageFilter);
             }
-            unsubscriber.Dispose();
+            _unsubscriber.Dispose();
         }
 
         #endregion
