@@ -57,6 +57,7 @@
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
     <Compile Include="Windows\Forms\NativeMethods.cs" />
     <Compile Include="Windows\Forms\SplitContainer.cs" />
@@ -65,7 +66,9 @@
     <Compile Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.cs" />
     <Compile Include="Windows\Forms\ToolStripExtensions.cs" />
     <Compile Include="Windows\Forms\ToolStripMonthCalendar.cs" />
-    <Compile Include="Windows\Forms\ToolStripNetworkAvailability.cs" />
+    <Compile Include="Windows\Forms\ToolStripNetworkAvailability.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\ToolStripRadioButton.cs" />
     <Compile Include="Windows\Forms\ToolStripSpringLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusClockLabel.cs" />

@@ -26,6 +26,7 @@
 
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
@@ -34,13 +35,12 @@ namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(ToolStripNetworkAvailability), "ToolStripNetworkAvailability.png")]
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.StatusStrip)]
-    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripNetworkAvailability : ToolStripStatusLabel
     {
         #region Private fields
 
-        private ImageList imageList;
         private IContainer components;
+        private ImageList imageList;
 
         bool _isNetworkAvailable;
 
@@ -81,10 +81,18 @@ namespace WmcSoft.Windows.Forms
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public override Image Image {
+            get { return base.Image; }
+            set { base.Image = value; }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string Text {
             get { return base.Text; }
             set { base.Text = value; }
         }
+
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -93,13 +101,55 @@ namespace WmcSoft.Windows.Forms
             set { base.ToolTipText = value; }
         }
 
+        [DefaultValue(2)]
+        [TypeConverterAttribute(typeof(MandatoryImageIndexConverter))]
+        [Editor("System.Windows.Forms.Design.ImageIndexEditor", typeof(UITypeEditor))]
+        [RefreshProperties(RefreshProperties.Repaint)]
+        [Category("Appearance")]
+        public int AvailableNetworkImageIndex {
+            get {
+                return _availableNetworkImageIndex;
+            }
+            set {
+                if (_availableNetworkImageIndex != value) {
+                    _availableNetworkImageIndex = value;
+                    UpdateNetworkAvailabilityCues();
+                    Invalidate();
+                }
+            }
+        }
+        int _availableNetworkImageIndex = 2;
+
+        [TypeConverterAttribute(typeof(MandatoryImageIndexConverter))]
+        [Editor("System.Windows.Forms.Design.ImageIndexEditor", typeof(UITypeEditor))]
+        [DefaultValue("")]
+        [RefreshProperties(RefreshProperties.Repaint)]
+        [Category("Appearance")]
+        public string AvailableNetworkImageKey {
+            get {
+                return imageList.Images.Keys[_availableNetworkImageIndex];
+            }
+            set {
+                if (imageList.Images.Keys[_availableNetworkImageIndex] != value) {
+                    _availableNetworkImageIndex = imageList.Images.IndexOfKey(value);
+                    if (_availableNetworkImageIndex == -1)
+                        _availableNetworkImageIndex = 2;
+                    UpdateNetworkAvailabilityCues();
+                    Invalidate();
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ImageList NetworkImageList { get { return imageList; } }
+
         #endregion
 
         #region Methods
 
         void UpdateNetworkAvailabilityCues() {
             if (_isNetworkAvailable) {
-                ImageIndex = 2;
+                ImageIndex = _availableNetworkImageIndex;
                 Text = Properties.Resources.NetworkAvailableText;
                 ToolTipText = Properties.Resources.NetworkAvailableToolTip;
             } else {
@@ -107,6 +157,7 @@ namespace WmcSoft.Windows.Forms
                 Text = Properties.Resources.NetworkNotAvailableText;
                 ToolTipText = Properties.Resources.NetworkNotAvailableToolTip;
             }
+            Image = imageList.Images[ImageIndex];
         }
 
         #endregion
@@ -143,5 +194,4 @@ namespace WmcSoft.Windows.Forms
 
         #endregion
     }
-
 }
