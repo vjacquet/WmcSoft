@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
-    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripStatusKeyLockLabel : ToolStripStatusLabel, IObserver<Keys>
     {
         class KeyLockMessageFilter : IMessageFilter
