@@ -34,6 +34,7 @@ namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(ToolStripBackgroundWorkerProgressBar), "ToolStripBackgroundWorkerProgressBar.bmp")]
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.StatusStrip)]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripBackgroundWorkerProgressBar : ToolStripProgressBar
     {
         #region Lifecycle

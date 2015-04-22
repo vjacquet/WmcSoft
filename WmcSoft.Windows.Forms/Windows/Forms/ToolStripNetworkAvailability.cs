@@ -34,6 +34,7 @@ namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(ToolStripNetworkAvailability), "ToolStripNetworkAvailability.png")]
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.StatusStrip)]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripNetworkAvailability : ToolStripStatusLabel
     {
         #region Private fields

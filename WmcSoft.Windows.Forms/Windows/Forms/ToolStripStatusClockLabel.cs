@@ -32,6 +32,7 @@ using System.Windows.Forms;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(ToolStripStatusClockLabel), "ToolStripStatusClockLabel.png")]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripStatusClockLabel : ToolStripStatusLabel
     {
         Timer timer;

@@ -32,6 +32,7 @@ using System.Windows.Forms;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(ToolStripSpringLabel), "ToolStripSpringLabel.bmp")]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripSpringLabel : ToolStripLabel
     {
         void Initialize() {

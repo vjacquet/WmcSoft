@@ -31,6 +31,7 @@ using System.Windows.Forms.Design;
 namespace WmcSoft.Windows.Forms
 {
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.ContextMenuStrip | ToolStripItemDesignerAvailability.MenuStrip | ToolStripItemDesignerAvailability.ToolStrip)]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripMonthCalendar : ToolStripControlHost
     {
         #region Lifecycle

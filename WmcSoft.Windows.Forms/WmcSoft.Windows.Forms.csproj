@@ -57,44 +57,20 @@
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\MenuStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Windows\Forms\MenuStrip.cs" />
     <Compile Include="Windows\Forms\NativeMethods.cs" />
-    <Compile Include="Windows\Forms\SplitContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\Splitter.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Windows\Forms\SplitContainer.cs" />
+    <Compile Include="Windows\Forms\Splitter.cs" />
+    <Compile Include="Windows\Forms\ToolStrip.cs" />
+    <Compile Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.cs" />
     <Compile Include="Windows\Forms\ToolStripExtensions.cs" />
-    <Compile Include="Windows\Forms\ToolStripMonthCalendar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripNetworkAvailability.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripRadioButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripSpringLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripStatusClockLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripStatusCultureLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ToolStripStatusKeyLockLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Windows\Forms\ToolStripMonthCalendar.cs" />
+    <Compile Include="Windows\Forms\ToolStripNetworkAvailability.cs" />
+    <Compile Include="Windows\Forms\ToolStripRadioButton.cs" />
+    <Compile Include="Windows\Forms\ToolStripSpringLabel.cs" />
+    <Compile Include="Windows\Forms\ToolStripStatusClockLabel.cs" />
+    <Compile Include="Windows\Forms\ToolStripStatusCultureLabel.cs" />
+    <Compile Include="Windows\Forms\ToolStripStatusKeyLockLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusText.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
@@ -105,7 +81,7 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
-    <Content Include="Windows\Forms\ToolStripStatusText.png" />
+    <EmbeddedResource Include="Windows\Forms\ToolStripStatusText.png" />
     <EmbeddedResource Include="ComponentModel\ComponentFactory.bmp" />
     <EmbeddedResource Include="Properties\Resources.fr.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -120,7 +96,7 @@
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusCultureLabel.bmp" />
     <EmbeddedResource Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.bmp" />
     <EmbeddedResource Include="Windows\Forms\ToolStripNetworkAvailability.png" />
-    <Content Include="Windows\Forms\ToolStripStatusKeyLockLabel.bmp" />
+    <EmbeddedResource Include="Windows\Forms\ToolStripStatusKeyLockLabel.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Components\WmcSoft.Components.csproj">

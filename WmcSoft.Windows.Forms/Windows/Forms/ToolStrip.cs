@@ -35,6 +35,7 @@ using System.Threading.Tasks;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(System.Windows.Forms.ToolStrip))]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStrip : System.Windows.Forms.ToolStrip
     {
         #region "ClickThrough" properties

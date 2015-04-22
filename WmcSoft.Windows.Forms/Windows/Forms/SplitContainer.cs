@@ -33,6 +33,7 @@ using System.Drawing;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(System.Windows.Forms.SplitContainer))]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class SplitContainer : System.Windows.Forms.SplitContainer
     {
         #region Lifecycle

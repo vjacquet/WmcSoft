@@ -35,7 +35,8 @@ using System.Windows.Forms;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(ToolStripStatusText), "ToolStripStatusText.png")]
-    [ProvideProperty("StatusText", typeof(Control)), System.ComponentModel.DesignerCategory("Code")]
+    [ProvideProperty("StatusText", typeof(Control))]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripStatusText : ToolStripStatusLabel
         , IExtenderProvider
     {

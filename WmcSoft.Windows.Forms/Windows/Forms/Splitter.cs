@@ -6,6 +6,7 @@ using System.Drawing;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(System.Windows.Forms.Splitter))]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class Splitter : System.Windows.Forms.Splitter
     {
         #region Lifecycle

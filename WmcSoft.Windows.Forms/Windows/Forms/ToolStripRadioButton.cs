@@ -35,6 +35,7 @@ using System.Windows.Forms.VisualStyles;
 namespace WmcSoft.Windows.Forms
 {
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.ContextMenuStrip | ToolStripItemDesignerAvailability.MenuStrip)]
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripRadioButton : ToolStripMenuItem
         , IBindableComponent
     {

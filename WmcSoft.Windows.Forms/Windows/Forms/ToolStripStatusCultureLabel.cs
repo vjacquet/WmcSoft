@@ -32,6 +32,7 @@ using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
+    [System.ComponentModel.DesignerCategory("Code")]
     public class ToolStripStatusCultureLabel : ToolStripStatusLabel
     {
         public ToolStripStatusCultureLabel()
