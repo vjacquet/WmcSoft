@@ -64,6 +64,7 @@
             this.toolStripStatusKeyLockLabel1 = new WmcSoft.Windows.Forms.ToolStripStatusKeyLockLabel();
             this.toolStripNetworkAvailability1 = new WmcSoft.Windows.Forms.ToolStripNetworkAvailability();
             this.toolStripStatusClockLabel1 = new WmcSoft.Windows.Forms.ToolStripStatusClockLabel();
+            this.headeredPanel1 = new WmcSoft.Windows.Forms.HeaderedPanel();
             this.toolStrip1 = new WmcSoft.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -75,12 +76,15 @@
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             componentFactory = new WmcSoft.ComponentModel.ComponentFactory(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.headeredPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -332,6 +336,7 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.headeredPanel1);
             this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(778, 457);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
@@ -342,8 +347,8 @@
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
             // 
             // statusStrip1
             // 
@@ -362,7 +367,7 @@
             // toolStripStatusText1
             // 
             this.toolStripStatusText1.Name = "toolStripStatusText1";
-            this.toolStripStatusText1.Size = new System.Drawing.Size(506, 25);
+            this.toolStripStatusText1.Size = new System.Drawing.Size(552, 25);
             this.toolStripStatusText1.Spring = true;
             this.toolStripStatusText1.Text = "Ready";
             this.toolStripStatusText1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -376,6 +381,7 @@
             // toolStripNetworkAvailability1
             // 
             this.toolStripNetworkAvailability1.AutoSize = false;
+            this.toolStripNetworkAvailability1.AvailableNetworkImageKey = "LAN";
             this.toolStripNetworkAvailability1.Name = "toolStripNetworkAvailability1";
             this.toolStripNetworkAvailability1.Size = new System.Drawing.Size(16, 25);
             // 
@@ -383,6 +389,33 @@
             // 
             this.toolStripStatusClockLabel1.Name = "toolStripStatusClockLabel1";
             this.toolStripStatusClockLabel1.Size = new System.Drawing.Size(155, 25);
+            // 
+            // headeredPanel1
+            // 
+            this.headeredPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.headeredPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            // 
+            // 
+            // 
+            this.headeredPanel1.HeaderStrip.ClickThrough = false;
+            this.headeredPanel1.HeaderStrip.Font = new System.Drawing.Font("Arial", 12.75F, System.Drawing.FontStyle.Bold);
+            this.headeredPanel1.HeaderStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.headeredPanel1.HeaderStrip.HeaderStyle = WmcSoft.Windows.Forms.HeaderAreaStyle.Large;
+            this.headeredPanel1.HeaderStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1});
+            this.headeredPanel1.HeaderStrip.Location = new System.Drawing.Point(0, 0);
+            this.headeredPanel1.HeaderStrip.Name = "headerStrip";
+            this.headeredPanel1.HeaderStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.headeredPanel1.HeaderStrip.Size = new System.Drawing.Size(213, 33);
+            this.headeredPanel1.HeaderStrip.Stretch = true;
+            this.headeredPanel1.HeaderStrip.SuppressHighlighting = false;
+            this.headeredPanel1.HeaderStrip.TabIndex = 0;
+            this.headeredPanel1.HeaderStrip.Text = "headerStrip";
+            this.headeredPanel1.Location = new System.Drawing.Point(0, 0);
+            this.headeredPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.headeredPanel1.Name = "headeredPanel1";
+            this.headeredPanel1.Size = new System.Drawing.Size(217, 457);
+            this.headeredPanel1.TabIndex = 0;
             // 
             // toolStrip1
             // 
@@ -487,6 +520,12 @@
             this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.helpToolStripButton.Text = "He&lp";
             // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(204, 30);
+            this.toolStripLabel1.Text = "toolStripLabel1";
+            // 
             // ToolStripForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -500,12 +539,15 @@
             this.menuStrip1.PerformLayout();
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.headeredPanel1.ResumeLayout(false);
+            this.headeredPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -561,6 +603,8 @@
         private WmcSoft.Windows.Forms.ToolStripStatusKeyLockLabel toolStripStatusKeyLockLabel1;
         private WmcSoft.Windows.Forms.ToolStripStatusClockLabel toolStripStatusClockLabel1;
         private WmcSoft.Windows.Forms.ToolStripNetworkAvailability toolStripNetworkAvailability1;
+        private WmcSoft.Windows.Forms.HeaderedPanel headeredPanel1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }
 
