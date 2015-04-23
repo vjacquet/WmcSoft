@@ -1,14 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Windows.Forms.Design.Behavior;
-using System.ComponentModel.Design;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -50,15 +70,6 @@ namespace WmcSoft.Windows.Forms
             _placeHolder = _headerPanel.PlaceHolder;
             base.EnableDesignMode(_headerPanel.PlaceHolder, "PlaceHolder");
             this.designerHost = (IDesignerHost)component.Site.GetService(typeof(IDesignerHost));
-            //if (this.selectedPanel == null) {
-            //    this.Selected = this.splitterPanel1;
-            //}
-            //this.splitContainer.MouseDown += new MouseEventHandler(this.OnSplitContainer);
-            //this.splitContainer.DoubleClick += new EventHandler(this.OnSplitContainerDoubleClick);
-            //ISelectionService service = (ISelectionService)this.GetService(typeof(ISelectionService));
-            //if (service != null) {
-            //    service.SelectionChanged += new EventHandler(this.OnSelectionChanged);
-            //}
         }
 
         public override bool CanParent(Control control) {

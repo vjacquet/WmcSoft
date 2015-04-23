@@ -1,11 +1,37 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Forms;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
+using System;
 using System.Collections;
-using System.Windows.Forms.Design;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -260,7 +286,6 @@ namespace WmcSoft.Windows.Forms.Design
         // Fields
         private IDesignerHost designerHost;
         private bool selected;
-        //private ControlDesigner splitContainerDesigner;
         private PlaceHolder placeHolder;
 
         protected virtual void DrawBorder(Graphics graphics) {
@@ -275,33 +300,31 @@ namespace WmcSoft.Windows.Forms.Design
             }
         }
 
-        // Properties
         protected Pen BorderPen {
             get {
-                Color color = (this.Control.BackColor.GetBrightness() < 0.5) ? ControlPaint.Light(this.Control.BackColor) : ControlPaint.Dark(this.Control.BackColor);
-                Pen pen = new Pen(color);
+                var color = (this.Control.BackColor.GetBrightness() < 0.5) ? ControlPaint.Light(this.Control.BackColor) : ControlPaint.Dark(this.Control.BackColor);
+                var pen = new Pen(color);
                 pen.DashStyle = DashStyle.Dash;
                 return pen;
             }
         }
 
-        // Methods
         public override bool CanBeParentedTo(IDesigner parentDesigner) {
             return (parentDesigner is ControlDesigner);
         }
 
         protected override void Dispose(bool disposing) {
-            IComponentChangeService service = (IComponentChangeService)this.GetService(typeof(IComponentChangeService));
+            var service = (IComponentChangeService)this.GetService(typeof(IComponentChangeService));
             if (service != null) {
-                service.ComponentChanged -= new ComponentChangedEventHandler(this.OnComponentChanged);
+                service.ComponentChanged -= OnComponentChanged;
             }
             base.Dispose(disposing);
         }
 
         internal void DrawSelectedBorder() {
-            Control control = this.Control;
-            Rectangle clientRectangle = control.ClientRectangle;
-            using (Graphics graphics = control.CreateGraphics()) {
+            var control = this.Control;
+            var clientRectangle = control.ClientRectangle;
+            using (var graphics = control.CreateGraphics()) {
                 Color color;
                 if (control.BackColor.GetBrightness() < 0.5) {
                     color = ControlPaint.Light(control.BackColor);
@@ -317,10 +340,10 @@ namespace WmcSoft.Windows.Forms.Design
         }
 
         internal void DrawWaterMark(Graphics g) {
-            Control control = this.Control;
-            Rectangle clientRectangle = control.ClientRectangle;
-            string name = control.Name;
-            using (Font font = new Font("Arial", 8f)) {
+            var control = this.Control;
+            var clientRectangle = control.ClientRectangle;
+            var name = control.Name;
+            using (var font = new Font("Arial", 8f)) {
                 int x = (clientRectangle.Width / 2) - (((int)g.MeasureString(name, font).Width) / 2);
                 int y = clientRectangle.Height / 2;
                 TextRenderer.DrawText(g, name, font, new Point(x, y), Color.Black, TextFormatFlags.GlyphOverhangPadding);
@@ -328,10 +351,10 @@ namespace WmcSoft.Windows.Forms.Design
         }
 
         internal void EraseBorder() {
-            Control control = this.Control;
-            Rectangle clientRectangle = control.ClientRectangle;
-            Graphics graphics = control.CreateGraphics();
-            Pen pen = new Pen(control.BackColor);
+            var control = this.Control;
+            var clientRectangle = control.ClientRectangle;
+            var graphics = control.CreateGraphics();
+            var pen = new Pen(control.BackColor);
             pen.DashStyle = DashStyle.Dash;
             clientRectangle.Inflate(-4, -4);
             graphics.DrawRectangle(pen, clientRectangle);
@@ -344,10 +367,9 @@ namespace WmcSoft.Windows.Forms.Design
             base.Initialize(component);
             this.placeHolder = (PlaceHolder)component;
             this.designerHost = (IDesignerHost)component.Site.GetService(typeof(IDesignerHost));
-            //this.splitContainerDesigner = (ControlDesigner)this.designerHost.GetDesigner(this.placeHolder.Parent);
             IComponentChangeService service = (IComponentChangeService)this.GetService(typeof(IComponentChangeService));
             if (service != null) {
-                service.ComponentChanged += new ComponentChangedEventHandler(this.OnComponentChanged);
+                service.ComponentChanged += OnComponentChanged;
             }
             PropertyDescriptor descriptor = TypeDescriptor.GetProperties(component)["Locked"];
             if ((descriptor != null) && (this.placeHolder.Parent is SplitContainer)) {

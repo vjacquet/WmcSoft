@@ -94,6 +94,7 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <Content Include="Windows\Forms\HeaderedPanel.png" />
     <EmbeddedResource Include="Windows\Forms\HeaderStrip.png" />
     <EmbeddedResource Include="Windows\Forms\HeaderedPanel.resx" />
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusText.png" />
