@@ -85,6 +85,7 @@
     <Compile Include="Windows\Forms\ToolStripStatusCultureLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusKeyLockLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusText.cs" />
+    <Compile Include="Windows\Forms\WaitCursor.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
