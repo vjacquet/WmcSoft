@@ -76,17 +76,17 @@ namespace WmcSoft.Windows.Forms
             return false;
         }
 
-        public override int NumberOfInternalControlDesigners() {
-            return 1;// return base.NumberOfInternalControlDesigners();
-        }
+        //public override int NumberOfInternalControlDesigners() {
+        //    return 1;// return base.NumberOfInternalControlDesigners();
+        //}
 
-        public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
-            switch (internalControlIndex) {
-            case 0:
-                return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
-            }
-            return base.InternalControlDesigner(internalControlIndex);
-        }
+        //public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
+        //    switch (internalControlIndex) {
+        //    case 0:
+        //        return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
+        //    }
+        //    return base.InternalControlDesigner(internalControlIndex);
+        //}
 
         protected override void OnDragEnter(DragEventArgs de) {
             de.Effect = DragDropEffects.None;

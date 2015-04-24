@@ -64,6 +64,7 @@
             this.toolStripStatusKeyLockLabel1 = new WmcSoft.Windows.Forms.ToolStripStatusKeyLockLabel();
             this.toolStripNetworkAvailability1 = new WmcSoft.Windows.Forms.ToolStripNetworkAvailability();
             this.toolStripStatusClockLabel1 = new WmcSoft.Windows.Forms.ToolStripStatusClockLabel();
+            this.splitContainer1 = new WmcSoft.Windows.Forms.SplitContainer();
             this.headeredPanel1 = new WmcSoft.Windows.Forms.HeaderedPanel();
             this.toolStrip1 = new WmcSoft.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -77,6 +78,11 @@
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.divider1 = new WmcSoft.Windows.Forms.Divider();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             componentFactory = new WmcSoft.ComponentModel.ComponentFactory(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -84,8 +90,13 @@
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.headeredPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -336,7 +347,7 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.toolStripContainer1.ContentPanel.Controls.Add(this.headeredPanel1);
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
             this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(778, 457);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
@@ -390,10 +401,29 @@
             this.toolStripStatusClockLabel1.Name = "toolStripStatusClockLabel1";
             this.toolStripStatusClockLabel1.Size = new System.Drawing.Size(155, 25);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.headeredPanel1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
+            this.splitContainer1.Size = new System.Drawing.Size(778, 457);
+            this.splitContainer1.SplitterDistance = 259;
+            this.splitContainer1.TabIndex = 1;
+            // 
             // headeredPanel1
             // 
             this.headeredPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.headeredPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.headeredPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // 
             // 
@@ -406,7 +436,7 @@
             this.headeredPanel1.HeaderStrip.Location = new System.Drawing.Point(0, 0);
             this.headeredPanel1.HeaderStrip.Name = "headerStrip";
             this.headeredPanel1.HeaderStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.headeredPanel1.HeaderStrip.Size = new System.Drawing.Size(213, 33);
+            this.headeredPanel1.HeaderStrip.Size = new System.Drawing.Size(255, 33);
             this.headeredPanel1.HeaderStrip.Stretch = true;
             this.headeredPanel1.HeaderStrip.SuppressHighlighting = false;
             this.headeredPanel1.HeaderStrip.TabIndex = 0;
@@ -414,8 +444,8 @@
             this.headeredPanel1.Location = new System.Drawing.Point(0, 0);
             this.headeredPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.headeredPanel1.Name = "headeredPanel1";
-            this.headeredPanel1.Size = new System.Drawing.Size(217, 457);
-            this.headeredPanel1.TabIndex = 0;
+            this.headeredPanel1.Size = new System.Drawing.Size(259, 457);
+            this.headeredPanel1.TabIndex = 1;
             // 
             // toolStrip1
             // 
@@ -523,8 +553,54 @@
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(204, 30);
-            this.toolStripLabel1.Text = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(148, 30);
+            this.toolStripLabel1.Text = "Navigation";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Info;
+            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flowLayoutPanel1.Controls.Add(this.textBox1);
+            this.flowLayoutPanel1.Controls.Add(this.textBox2);
+            this.flowLayoutPanel1.Controls.Add(this.divider1);
+            this.flowLayoutPanel1.Controls.Add(this.textBox3);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(515, 457);
+            this.flowLayoutPanel1.TabIndex = 0;
+            this.flowLayoutPanel1.WrapContents = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(3, 3);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(254, 26);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(3, 35);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(254, 26);
+            this.textBox2.TabIndex = 1;
+            // 
+            // divider1
+            // 
+            this.divider1.Location = new System.Drawing.Point(3, 67);
+            this.divider1.Name = "divider1";
+            this.divider1.Size = new System.Drawing.Size(254, 20);
+            this.divider1.TabIndex = 2;
+            this.divider1.Text = "divider1";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(3, 93);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(254, 26);
+            this.textBox3.TabIndex = 3;
             // 
             // ToolStripForm
             // 
@@ -546,10 +622,16 @@
             this.toolStripContainer1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.headeredPanel1.ResumeLayout(false);
             this.headeredPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -603,8 +685,14 @@
         private WmcSoft.Windows.Forms.ToolStripStatusKeyLockLabel toolStripStatusKeyLockLabel1;
         private WmcSoft.Windows.Forms.ToolStripStatusClockLabel toolStripStatusClockLabel1;
         private WmcSoft.Windows.Forms.ToolStripNetworkAvailability toolStripNetworkAvailability1;
+        private WmcSoft.Windows.Forms.SplitContainer splitContainer1;
         private WmcSoft.Windows.Forms.HeaderedPanel headeredPanel1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private WmcSoft.Windows.Forms.Divider divider1;
+        private System.Windows.Forms.TextBox textBox3;
     }
 }
 

@@ -15,5 +15,9 @@ namespace WindowsFormsGallery
         public ToolStripForm() {
             InitializeComponent();
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e) {
+
+        }
     }
 }

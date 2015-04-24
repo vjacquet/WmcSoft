@@ -94,6 +94,7 @@
     <Compile Include="DisposableStack.cs" />
     <Compile Include="Disposer.cs" />
     <Compile Include="ActionExtensions.cs" />
+    <Compile Include="EnumExtensions.cs" />
     <Compile Include="Indices.cs" />
     <Compile Include="IO\AnonymousStreamSource.cs" />
     <Compile Include="IO\Batch.cs" />
