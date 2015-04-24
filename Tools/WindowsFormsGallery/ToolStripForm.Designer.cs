@@ -28,6 +28,14 @@
             this.components = new System.ComponentModel.Container();
             WmcSoft.ComponentModel.ComponentFactory componentFactory;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToolStripForm));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Nœud0");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Nœud2");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Nœud3");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Nœud4");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Nœud1", new System.Windows.Forms.TreeNode[] {
+            treeNode2,
+            treeNode3,
+            treeNode4});
             this.menuStrip1 = new WmcSoft.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +74,12 @@
             this.toolStripStatusClockLabel1 = new WmcSoft.Windows.Forms.ToolStripStatusClockLabel();
             this.splitContainer1 = new WmcSoft.Windows.Forms.SplitContainer();
             this.headeredPanel1 = new WmcSoft.Windows.Forms.HeaderedPanel();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.divider1 = new WmcSoft.Windows.Forms.Divider();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.toolStrip1 = new WmcSoft.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -77,12 +91,7 @@
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.divider1 = new WmcSoft.Windows.Forms.Divider();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             componentFactory = new WmcSoft.ComponentModel.ComponentFactory(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -94,9 +103,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.headeredPanel1.PlaceHolder.SuspendLayout();
             this.headeredPanel1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -425,7 +435,7 @@
             this.headeredPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.headeredPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
-            // 
+            // headeredPanel1.HeaderStrip
             // 
             this.headeredPanel1.HeaderStrip.ClickThrough = false;
             this.headeredPanel1.HeaderStrip.Font = new System.Drawing.Font("Arial", 12.75F, System.Drawing.FontStyle.Bold);
@@ -434,7 +444,7 @@
             this.headeredPanel1.HeaderStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1});
             this.headeredPanel1.HeaderStrip.Location = new System.Drawing.Point(0, 0);
-            this.headeredPanel1.HeaderStrip.Name = "headerStrip";
+            this.headeredPanel1.HeaderStrip.Name = "HeaderStrip";
             this.headeredPanel1.HeaderStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.headeredPanel1.HeaderStrip.Size = new System.Drawing.Size(255, 33);
             this.headeredPanel1.HeaderStrip.Stretch = true;
@@ -444,8 +454,67 @@
             this.headeredPanel1.Location = new System.Drawing.Point(0, 0);
             this.headeredPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.headeredPanel1.Name = "headeredPanel1";
+            // 
+            // headeredPanel1.PlaceHolder
+            // 
+            this.headeredPanel1.PlaceHolder.Controls.Add(this.treeView1);
             this.headeredPanel1.Size = new System.Drawing.Size(259, 457);
             this.headeredPanel1.TabIndex = 1;
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(148, 30);
+            this.toolStripLabel1.Text = "Navigation";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Info;
+            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flowLayoutPanel1.Controls.Add(this.textBox1);
+            this.flowLayoutPanel1.Controls.Add(this.textBox2);
+            this.flowLayoutPanel1.Controls.Add(this.divider1);
+            this.flowLayoutPanel1.Controls.Add(this.textBox3);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(515, 457);
+            this.flowLayoutPanel1.TabIndex = 0;
+            this.flowLayoutPanel1.WrapContents = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(3, 3);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 26);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.Location = new System.Drawing.Point(3, 35);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 26);
+            this.textBox2.TabIndex = 1;
+            // 
+            // divider1
+            // 
+            this.divider1.Location = new System.Drawing.Point(3, 67);
+            this.divider1.Name = "divider1";
+            this.divider1.Size = new System.Drawing.Size(100, 2);
+            this.divider1.TabIndex = 2;
+            this.divider1.Text = "divider1";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(3, 75);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 26);
+            this.textBox3.TabIndex = 3;
             // 
             // toolStrip1
             // 
@@ -550,57 +619,26 @@
             this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.helpToolStripButton.Text = "He&lp";
             // 
-            // toolStripLabel1
+            // treeView1
             // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(148, 30);
-            this.toolStripLabel1.Text = "Navigation";
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Info;
-            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowLayoutPanel1.Controls.Add(this.textBox1);
-            this.flowLayoutPanel1.Controls.Add(this.textBox2);
-            this.flowLayoutPanel1.Controls.Add(this.divider1);
-            this.flowLayoutPanel1.Controls.Add(this.textBox3);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(515, 457);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(254, 26);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(3, 35);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(254, 26);
-            this.textBox2.TabIndex = 1;
-            // 
-            // divider1
-            // 
-            this.divider1.Location = new System.Drawing.Point(3, 67);
-            this.divider1.Name = "divider1";
-            this.divider1.Size = new System.Drawing.Size(254, 20);
-            this.divider1.TabIndex = 2;
-            this.divider1.Text = "divider1";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(3, 93);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(254, 26);
-            this.textBox3.TabIndex = 3;
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Name = "Nœud0";
+            treeNode1.Text = "Nœud0";
+            treeNode2.Name = "Nœud2";
+            treeNode2.Text = "Nœud2";
+            treeNode3.Name = "Nœud3";
+            treeNode3.Text = "Nœud3";
+            treeNode4.Name = "Nœud4";
+            treeNode4.Text = "Nœud4";
+            treeNode5.Name = "Nœud1";
+            treeNode5.Text = "Nœud1";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode5});
+            this.treeView1.Size = new System.Drawing.Size(255, 420);
+            this.treeView1.TabIndex = 0;
             // 
             // ToolStripForm
             // 
@@ -626,12 +664,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.headeredPanel1.PlaceHolder.ResumeLayout(false);
             this.headeredPanel1.ResumeLayout(false);
             this.headeredPanel1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -693,6 +732,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private WmcSoft.Windows.Forms.Divider divider1;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 

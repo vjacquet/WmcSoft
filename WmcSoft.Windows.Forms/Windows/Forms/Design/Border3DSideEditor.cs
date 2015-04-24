@@ -26,11 +26,10 @@
 
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Resources;
 using System.Drawing.Design;
+using System.Resources;
+using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms.Design
 {

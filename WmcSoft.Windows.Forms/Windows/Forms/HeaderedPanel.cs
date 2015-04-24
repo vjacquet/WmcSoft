@@ -33,7 +33,7 @@ using System.Windows.Forms.Design;
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(HeaderedPanel), "HeaderedPanel.png")]
-    [Designer(typeof(HeaderedPanelDesigner))]
+    [Designer(typeof(Design.HeaderedPanelDesigner))]
     public partial class HeaderedPanel : UserControl
     {
         PlaceHolder placeHolder;
@@ -56,10 +56,14 @@ namespace WmcSoft.Windows.Forms
             get { return this.headerStrip; }
         }
     }
+}
 
+namespace WmcSoft.Windows.Forms.Design
+{
     public class HeaderedPanelDesigner : ParentControlDesigner
     {
         HeaderedPanel _headerPanel;
+        HeaderStrip _headerStrip;
         PlaceHolder _placeHolder;
         IDesignerHost designerHost;
 
@@ -67,8 +71,10 @@ namespace WmcSoft.Windows.Forms
             base.Initialize(component);
             base.AutoResizeHandles = true;
             _headerPanel = component as HeaderedPanel;
+            _headerStrip = _headerPanel.HeaderStrip;
             _placeHolder = _headerPanel.PlaceHolder;
             base.EnableDesignMode(_headerPanel.PlaceHolder, "PlaceHolder");
+            base.EnableDesignMode(_headerPanel.HeaderStrip, "HeaderStrip");
             this.designerHost = (IDesignerHost)component.Site.GetService(typeof(IDesignerHost));
         }
 
@@ -77,13 +83,15 @@ namespace WmcSoft.Windows.Forms
         }
 
         //public override int NumberOfInternalControlDesigners() {
-        //    return 1;// return base.NumberOfInternalControlDesigners();
+        //    return 2;// return base.NumberOfInternalControlDesigners();
         //}
 
         //public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
         //    switch (internalControlIndex) {
         //    case 0:
         //        return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
+        //    case 1:
+        //        return (ControlDesigner)designerHost.GetDesigner(_headerStrip);
         //    }
         //    return base.InternalControlDesigner(internalControlIndex);
         //}
