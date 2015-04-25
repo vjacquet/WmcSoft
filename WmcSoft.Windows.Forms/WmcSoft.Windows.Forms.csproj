@@ -57,6 +57,8 @@
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
+    <Compile Include="Windows\Forms\FormSettings.cs" />
     <Compile Include="Windows\Forms\HeaderedPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -67,6 +69,9 @@
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
     <Compile Include="Windows\Forms\NativeMethods.cs" />
+    <Compile Include="Windows\Forms\PersistFormSettings.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\PlaceHolder.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -95,6 +100,7 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\PersistFormSettings.png" />
     <EmbeddedResource Include="Windows\Forms\HeaderStrip.png" />
     <EmbeddedResource Include="Windows\Forms\HeaderedPanel.resx" />
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusText.png" />
