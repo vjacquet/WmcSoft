@@ -1,19 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Windows.Forms.Design.Behavior;
-using System.ComponentModel.Design;
 
 namespace WmcSoft.Windows.Forms
 {
     [ToolboxBitmap(typeof(HeaderedPanel), "HeaderedPanel.png")]
-    [Designer(typeof(HeaderedPanelDesigner))]
+    [Designer(typeof(Design.HeaderedPanelDesigner))]
     public partial class HeaderedPanel : UserControl
     {
         PlaceHolder placeHolder;
@@ -36,10 +56,14 @@ namespace WmcSoft.Windows.Forms
             get { return this.headerStrip; }
         }
     }
+}
 
+namespace WmcSoft.Windows.Forms.Design
+{
     public class HeaderedPanelDesigner : ParentControlDesigner
     {
         HeaderedPanel _headerPanel;
+        HeaderStrip _headerStrip;
         PlaceHolder _placeHolder;
         IDesignerHost designerHost;
 
@@ -47,35 +71,30 @@ namespace WmcSoft.Windows.Forms
             base.Initialize(component);
             base.AutoResizeHandles = true;
             _headerPanel = component as HeaderedPanel;
+            _headerStrip = _headerPanel.HeaderStrip;
             _placeHolder = _headerPanel.PlaceHolder;
             base.EnableDesignMode(_headerPanel.PlaceHolder, "PlaceHolder");
+            base.EnableDesignMode(_headerPanel.HeaderStrip, "HeaderStrip");
             this.designerHost = (IDesignerHost)component.Site.GetService(typeof(IDesignerHost));
-            //if (this.selectedPanel == null) {
-            //    this.Selected = this.splitterPanel1;
-            //}
-            //this.splitContainer.MouseDown += new MouseEventHandler(this.OnSplitContainer);
-            //this.splitContainer.DoubleClick += new EventHandler(this.OnSplitContainerDoubleClick);
-            //ISelectionService service = (ISelectionService)this.GetService(typeof(ISelectionService));
-            //if (service != null) {
-            //    service.SelectionChanged += new EventHandler(this.OnSelectionChanged);
-            //}
         }
 
         public override bool CanParent(Control control) {
             return false;
         }
 
-        public override int NumberOfInternalControlDesigners() {
-            return 1;// return base.NumberOfInternalControlDesigners();
-        }
+        //public override int NumberOfInternalControlDesigners() {
+        //    return 2;// return base.NumberOfInternalControlDesigners();
+        //}
 
-        public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
-            switch (internalControlIndex) {
-            case 0:
-                return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
-            }
-            return base.InternalControlDesigner(internalControlIndex);
-        }
+        //public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
+        //    switch (internalControlIndex) {
+        //    case 0:
+        //        return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
+        //    case 1:
+        //        return (ControlDesigner)designerHost.GetDesigner(_headerStrip);
+        //    }
+        //    return base.InternalControlDesigner(internalControlIndex);
+        //}
 
         protected override void OnDragEnter(DragEventArgs de) {
             de.Effect = DragDropEffects.None;

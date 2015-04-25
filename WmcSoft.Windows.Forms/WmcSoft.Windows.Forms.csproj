@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -54,9 +55,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\BorderPainter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\BorderPainter.Designer.cs" />
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
+    <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
     <Compile Include="Windows\Forms\FormSettings.cs" />
     <Compile Include="Windows\Forms\HeaderedPanel.cs">
@@ -100,6 +107,10 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\BorderPainter.png" />
+    <Content Include="Windows\Forms\HeaderedPanel.png" />
+    <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.fr.resx" />
+    <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.resx" />
     <EmbeddedResource Include="Windows\Forms\PersistFormSettings.png" />
     <EmbeddedResource Include="Windows\Forms\HeaderStrip.png" />
     <EmbeddedResource Include="Windows\Forms\HeaderedPanel.resx" />
