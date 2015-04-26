@@ -125,7 +125,7 @@ namespace WmcSoft.Collections
         /// <param name="items">The items to add to the list.</param>
         /// <returns>The list.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static IList AddRange(this IList list, IEnumerable items){
+        public static IList AddRange(this IList list, IEnumerable items) {
             if (list == null)
                 throw new ArgumentNullException("list");
 
@@ -179,6 +179,43 @@ namespace WmcSoft.Collections
                     self.Remove(each);
                 }
                 return count - self.Count;
+            }
+        }
+
+        #endregion
+
+        #region ToArray
+
+        public static object[] ToArray(this IList collection) {
+            var items = new object[collection.Count];
+            collection.CopyTo(items, 0);
+            return items;
+        }
+
+        #endregion
+
+        #region ReplaceAll
+
+        public static void ReplaceAll(this IList list, IEnumerable items) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+
+            if (list.IsSynchronized) {
+                lock (list.SyncRoot) {
+                    list.Clear();
+                    if (items == null)
+                        return;
+                    foreach (var each in items) {
+                        list.Add(each);
+                    }
+                }
+            } else {
+                list.Clear();
+                if (items == null)
+                    return;
+                foreach (var each in items) {
+                    list.Add(each);
+                }
             }
         }
 

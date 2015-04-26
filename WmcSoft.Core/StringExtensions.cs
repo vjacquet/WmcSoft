@@ -537,6 +537,16 @@ namespace WmcSoft
             return false;
         }
 
+        public static bool EqualsAnyOf(this char self, params string[] candidates) {
+            var length = candidates.Length;
+            for (int i = 0; i < length; i++) {
+                var candidate = candidates[i];
+                if (candidate != null && candidate.Length == 1 && self == candidate[0])
+                    return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Check if the char is any of the candidates chars.
         /// </summary>

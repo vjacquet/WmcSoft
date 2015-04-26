@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -69,6 +70,17 @@ namespace WmcSoft.Collections.Generic
             return array;
         }
 
+        public static T[] AsArray<T>(this IEnumerable<T> values) {
+            if (values == null)
+                return null;
+
+            var array = values as T[];
+            if (array != null)
+                return array;
+
+            return values.ToArray();
+        }
+
         #endregion
 
         #region ZipAll methods
@@ -99,12 +111,12 @@ namespace WmcSoft.Collections.Generic
         #region Quorum
 
         public static bool Quorum<T>(this IEnumerable<T> enumerable, int quorum, Predicate<T> predicate) {
-            if(quorum < 1)
+            if (quorum < 1)
                 throw new ArgumentOutOfRangeException("quorum");
-            if(predicate == null)
+            if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            if(enumerable == null)
+            if (enumerable == null)
                 return false;
 
             using (var enumerator = enumerable.GetEnumerator()) {

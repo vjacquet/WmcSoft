@@ -119,5 +119,22 @@ namespace WmcSoft.Windows.Forms
                     stack.Push(child);
             }
         }
+
+        #region Control specific extensions
+
+        public static TextBox GetTextBox(this NumericUpDown numericUpDown) {
+            return numericUpDown.Controls[1] as TextBox;
+        }
+
+        public static void ApplyOnText(this NumericUpDown numericUpDown, Action<TextBoxBase> action) {
+            if(numericUpDown == null)
+                return;
+            var textBox = numericUpDown.Controls[1] as TextBoxBase;
+            if (textBox == null)
+                return;
+            action(textBox);
+        }
+
+        #endregion
     }
 }

@@ -47,6 +47,9 @@ namespace WmcSoft.Windows.Forms
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern bool DeleteObject(HandleRef hObject);
 
+        [DllImport("USER32.DLL", EntryPoint = "VkKeyScan", CharSet = CharSet.Auto)]
+        static extern short _VkKeyScan(char key);
+
         #region Message constants
 
         public const int WM_NULL = 0x0000;
@@ -337,6 +340,10 @@ namespace WmcSoft.Windows.Forms
 
         public static bool IsWindowVisible(this Control self) {
             return IsWindowVisible(self);
+        }
+
+        public static Keys VkKeyScan(char key) {
+            return (Keys)_VkKeyScan(key);
         }
     }
 }
