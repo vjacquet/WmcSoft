@@ -89,9 +89,14 @@ namespace WmcSoft.Windows.Forms
         }
 
         void form_Load(object sender, EventArgs e) {
-            form.Size = Settings.Size;
-            form.Location = Settings.Location;
-            form.WindowState = Settings.WindowState;
+            try {
+                form.Size = Settings.Size;
+                form.Location = Settings.Location;
+                form.WindowState = Settings.WindowState;
+            }
+            catch (NullReferenceException) {
+                // the settings are missing
+            }
         }
 
         void form_FormClosing(object sender, FormClosingEventArgs e) {
