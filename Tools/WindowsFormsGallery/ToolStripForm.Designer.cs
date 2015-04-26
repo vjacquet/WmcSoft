@@ -75,11 +75,11 @@
             this.splitContainer1 = new WmcSoft.Windows.Forms.SplitContainer();
             this.headeredPanel1 = new WmcSoft.Windows.Forms.HeaderedPanel();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.divider1 = new WmcSoft.Windows.Forms.Divider();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new WmcSoft.Windows.Forms.DataGridViewNumericUpDownColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new WmcSoft.Windows.Forms.DataGridViewRadioButtonColumn();
             this.toolStrip1 = new WmcSoft.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -91,7 +91,7 @@
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             componentFactory = new WmcSoft.ComponentModel.ComponentFactory(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -105,7 +105,7 @@
             this.splitContainer1.SuspendLayout();
             this.headeredPanel1.PlaceHolder.SuspendLayout();
             this.headeredPanel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,7 +118,7 @@
             this.editToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 25);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(778, 33);
             this.menuStrip1.SuppressHighlighting = false;
@@ -368,8 +368,8 @@
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
             // 
             // statusStrip1
             // 
@@ -425,7 +425,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
+            this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
             this.splitContainer1.Size = new System.Drawing.Size(778, 457);
             this.splitContainer1.SplitterDistance = 259;
             this.splitContainer1.TabIndex = 1;
@@ -467,54 +467,60 @@
             this.toolStripLabel1.Size = new System.Drawing.Size(148, 30);
             this.toolStripLabel1.Text = "Navigation";
             // 
-            // flowLayoutPanel1
+            // treeView1
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Info;
-            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowLayoutPanel1.Controls.Add(this.textBox1);
-            this.flowLayoutPanel1.Controls.Add(this.textBox2);
-            this.flowLayoutPanel1.Controls.Add(this.divider1);
-            this.flowLayoutPanel1.Controls.Add(this.textBox3);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(515, 457);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Name = "Nœud0";
+            treeNode1.Text = "Nœud0";
+            treeNode2.Name = "Nœud2";
+            treeNode2.Text = "Nœud2";
+            treeNode3.Name = "Nœud3";
+            treeNode3.Text = "Nœud3";
+            treeNode4.Name = "Nœud4";
+            treeNode4.Text = "Nœud4";
+            treeNode5.Name = "Nœud1";
+            treeNode5.Text = "Nœud1";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode5});
+            this.treeView1.Size = new System.Drawing.Size(255, 420);
+            this.treeView1.TabIndex = 0;
             // 
-            // textBox1
+            // dataGridView1
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 26);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 28;
+            this.dataGridView1.Size = new System.Drawing.Size(515, 457);
+            this.dataGridView1.TabIndex = 0;
             // 
-            // textBox2
+            // Column1
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(3, 35);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 26);
-            this.textBox2.TabIndex = 1;
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
             // 
-            // divider1
+            // Column2
             // 
-            this.divider1.Location = new System.Drawing.Point(3, 67);
-            this.divider1.Name = "divider1";
-            this.divider1.Size = new System.Drawing.Size(100, 2);
-            this.divider1.TabIndex = 2;
-            this.divider1.Text = "divider1";
+            this.Column2.HeaderText = "Column2";
+            this.Column2.Name = "Column2";
             // 
-            // textBox3
+            // Column3
             // 
-            this.textBox3.Location = new System.Drawing.Point(3, 75);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 26);
-            this.textBox3.TabIndex = 3;
+            this.Column3.HeaderText = "Column3";
+            this.Column3.Items.AddRange(new object[] {
+            "red",
+            "green",
+            "blue"});
+            this.Column3.Name = "Column3";
             // 
             // toolStrip1
             // 
@@ -531,7 +537,7 @@
             this.pasteToolStripButton,
             this.toolStripSeparator7,
             this.helpToolStripButton});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 0);
+            this.toolStrip1.Location = new System.Drawing.Point(3, 33);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(208, 25);
             this.toolStrip1.SuppressHighlighting = false;
@@ -619,26 +625,10 @@
             this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.helpToolStripButton.Text = "He&lp";
             // 
-            // treeView1
+            // Column4
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Nœud0";
-            treeNode1.Text = "Nœud0";
-            treeNode2.Name = "Nœud2";
-            treeNode2.Text = "Nœud2";
-            treeNode3.Name = "Nœud3";
-            treeNode3.Text = "Nœud3";
-            treeNode4.Name = "Nœud4";
-            treeNode4.Text = "Nœud4";
-            treeNode5.Name = "Nœud1";
-            treeNode5.Text = "Nœud1";
-            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode5});
-            this.treeView1.Size = new System.Drawing.Size(255, 420);
-            this.treeView1.TabIndex = 0;
+            this.Column4.HeaderText = "Column4";
+            this.Column4.Name = "Column4";
             // 
             // ToolStripForm
             // 
@@ -667,8 +657,7 @@
             this.headeredPanel1.PlaceHolder.ResumeLayout(false);
             this.headeredPanel1.ResumeLayout(false);
             this.headeredPanel1.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -727,12 +716,12 @@
         private WmcSoft.Windows.Forms.SplitContainer splitContainer1;
         private WmcSoft.Windows.Forms.HeaderedPanel headeredPanel1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private WmcSoft.Windows.Forms.Divider divider1;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private WmcSoft.Windows.Forms.DataGridViewNumericUpDownColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private WmcSoft.Windows.Forms.DataGridViewRadioButtonColumn Column3;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column4;
     }
 }
 

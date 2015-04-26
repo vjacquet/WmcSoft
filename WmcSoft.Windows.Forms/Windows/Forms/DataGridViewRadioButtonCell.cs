@@ -1,4 +1,6 @@
+// DataGridViewNumericUpDownXXX have been taken from
 // http://msdn.microsoft.com/en-us/library/aa730881(VS.80).aspx
+// and then adapted.
 using System;
 using System.Drawing;
 using System.Globalization;
@@ -6,6 +8,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Diagnostics;
+using WmcSoft.ComponentModel;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -21,57 +24,50 @@ namespace WmcSoft.Windows.Forms
             Width
         }
 
-        // 4 pixels of margin on the left and right of error icons
-        private const byte DATAGRIDVIEWRADIOBUTTONCELL_iconMarginWidth = 4;
-        // 4 pixels of margin on the top and bottom of error icons
-        private const byte DATAGRIDVIEWRADIOBUTTONCELL_iconMarginHeight = 4;
-        // all icons are 12 pixels wide by default
-        private const byte DATAGRIDVIEWRADIOBUTTONCELL_iconsWidth = 12;
-        // all icons are 11 pixels tall by default
-        private const byte DATAGRIDVIEWRADIOBUTTONCELL_iconsHeight = 11;
+        private const byte IconMarginWidth = 4;
+        private const byte IconMarginHeight = 4;
+        private const byte IconsWidth = 12;
+        private const byte IconsHeight = 11;
 
-        // default value of MaxDisplayedItems property
-        internal const int DATAGRIDVIEWRADIOBUTTONCELL_defaultMaxDisplayedItems = 3;
-        // blank pixels around each radio button entry
-        private const byte DATAGRIDVIEWRADIOBUTTONCELL_margin = 2;
+        internal const int DefaultMaxDisplayedItems = 3;
+        private const byte Margin = 2;
 
         // codes used for the mouseLocationCode static variable:
-        private const int DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric = -3;
-        private const int DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton = -2; // mouse is over bottom scroll button
-        private const int DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton = -1;    // mouse is over top scroll button
+        private const int MouseLocationGeneric = -3;
+        private const int MouseLocationBottomScrollButton = -2; // mouse is over bottom scroll button
+        private const int MouseLocationTopScrollButton = -1;    // mouse is over top scroll button
 
-        private DataGridViewRadioButtonCellLayout layout;   // represents the current layout information of the cell
-
-        private static int mouseLocationCode = DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric;
+        private static int mouseLocationCode = MouseLocationGeneric;
         // -3 no particular location
         // -2 mouse over bottom scroll button
         // -1 mouse over top scroll button
         // 0-N mouse over radio button glyph
 
-        private PropertyDescriptor displayMemberProperty;   // Property descriptor for the DisplayMember property
-        private PropertyDescriptor valueMemberProperty;     // Property descriptor for the ValueMember property
-        private CurrencyManager dataManager;                // Currency manager for the cell's DataSource
-        private int maxDisplayedItems;                      // Maximum number of radio buttons displayed by the cell
-        private int selectedItemIndex;                      // Index of the currently selected radio button entry
-        private int focusedItemIndex;                       // Index of the focused radio button entry
-        private int pressedItemIndex;                       // Index of the currently pressed radio button entry
-        private bool dataSourceInitializedHookedUp;         // Indicates whether the DataSource's Initialized event is listened to
-        private bool valueChanged;                          // Stores whether the cell's value was changed since it became the current cell
-        private bool handledKeyDown;                        // Indicates whether the cell handled the key down notification
-        private bool mouseUpHooked;                         // Indicates whether the cell listens to the grid's MouseUp event
+        private DataGridViewRadioButtonCellLayout _layout;   // represents the current layout information of the cell
+        private PropertyDescriptor _displayMemberProperty;   // Property descriptor for the DisplayMember property
+        private PropertyDescriptor _valueMemberProperty;     // Property descriptor for the ValueMember property
+        private CurrencyManager _dataManager;                // Currency manager for the cell's DataSource
+        private int _maxDisplayedItems;                      // Maximum number of radio buttons displayed by the cell
+        private int _selectedItemIndex;                      // Index of the currently selected radio button entry
+        private int _focusedItemIndex;                       // Index of the focused radio button entry
+        private int _pressedItemIndex;                       // Index of the currently pressed radio button entry
+        private bool _dataSourceInitializedHookedUp;         // Indicates whether the DataSource's Initialized event is listened to
+        private bool _valueChanged;                          // Stores whether the cell's value was changed since it became the current cell
+        private bool _handledKeyDown;                        // Indicates whether the cell handled the key down notification
+        private bool _mouseUpHooked;                         // Indicates whether the cell listens to the grid's MouseUp event
 
         /// <summary>
         /// DataGridViewRadioButtonCell class constructor.
         /// </summary>
         public DataGridViewRadioButtonCell() {
-            this.maxDisplayedItems = DATAGRIDVIEWRADIOBUTTONCELL_defaultMaxDisplayedItems;
-            this.layout = new DataGridViewRadioButtonCellLayout();
-            this.selectedItemIndex = -1;
-            this.focusedItemIndex = -1;
-            this.pressedItemIndex = -1;
+            _maxDisplayedItems = DefaultMaxDisplayedItems;
+            _layout = new DataGridViewRadioButtonCellLayout();
+            _selectedItemIndex = -1;
+            _focusedItemIndex = -1;
+            _pressedItemIndex = -1;
         }
 
-        // Implementation of the IDataGridViewEditingCell interface starts here.
+        #region IDataGridViewEditingCell implentation
 
         /// <summary>
         /// Represents the cell's formatted value
@@ -96,7 +92,7 @@ namespace WmcSoft.Windows.Forms
                     object displayValue = GetItemDisplayValue(item);
                     if (value.Equals(displayValue)) {
                         // 'value' was found. It becomes the new selected item.
-                        this.selectedItemIndex = itemIndex;
+                        _selectedItemIndex = itemIndex;
                         return;
                     }
                 }
@@ -104,7 +100,7 @@ namespace WmcSoft.Windows.Forms
                 string strValue = value as string;
                 if (strValue == string.Empty) {
                     // Special case the empty string situation - reset the selected item
-                    this.selectedItemIndex = -1;
+                    _selectedItemIndex = -1;
                     return;
                 }
 
@@ -117,28 +113,24 @@ namespace WmcSoft.Windows.Forms
         /// Keeps track of whether the cell's value has changed or not.
         /// </summary>
         public virtual bool EditingCellValueChanged {
-            get {
-                return this.valueChanged;
-            }
-            set {
-                this.valueChanged = value;
-            }
+            get { return _valueChanged; }
+            set { _valueChanged = value; }
         }
 
         /// <summary>
         /// Returns the current formatted value of the cell
         /// </summary>
         public virtual object GetEditingCellFormattedValue(DataGridViewDataErrorContexts context) {
-            if (this.FormattedValueType == null) {
+            if (FormattedValueType == null) {
                 throw new InvalidOperationException("FormattedValueType property of a cell cannot be null.");
             }
-            if (this.selectedItemIndex == -1) {
+            if (_selectedItemIndex == -1) {
                 return null;
             }
-            object item = this.Items[this.selectedItemIndex];
+            object item = Items[_selectedItemIndex];
             object displayValue = GetItemDisplayValue(item);
             // Making sure the returned value has an acceptable type
-            if (this.FormattedValueType.IsAssignableFrom(displayValue.GetType())) {
+            if (FormattedValueType.IsAssignableFrom(displayValue.GetType())) {
                 return displayValue;
             } else {
                 return null;
@@ -152,33 +144,32 @@ namespace WmcSoft.Windows.Forms
             // This cell type has nothing to do here.
         }
 
-        // Implementation of the IDataGridViewEditingCell interface stops here.
+        #endregion
 
         /// <summary>
         /// Stores the CurrencyManager associated to the cell's DataSource
         /// </summary>
         private CurrencyManager DataManager {
             get {
-                CurrencyManager cm = this.dataManager;
-                if (cm == null && this.DataSource != null && this.DataGridView != null &&
-                    this.DataGridView.BindingContext != null && !(this.DataSource == Convert.DBNull)) {
-                    ISupportInitializeNotification dsInit = this.DataSource as ISupportInitializeNotification;
+                CurrencyManager cm = _dataManager;
+                if (cm == null && DataSource != null && DataGridView != null && DataGridView.BindingContext != null && !(DataSource == Convert.DBNull)) {
+                    var dsInit = DataSource as ISupportInitializeNotification;
                     if (dsInit != null && !dsInit.IsInitialized) {
                         // The datasource is not ready yet. Attaching to its Initialized event to be notified
                         // when it's finally ready
-                        if (!this.dataSourceInitializedHookedUp) {
-                            dsInit.Initialized += new EventHandler(DataSource_Initialized);
-                            this.dataSourceInitializedHookedUp = true;
+                        if (!_dataSourceInitializedHookedUp) {
+                            dsInit.Initialized += DataSource_Initialized;
+                            _dataSourceInitializedHookedUp = true;
                         }
                     } else {
-                        cm = (CurrencyManager)this.DataGridView.BindingContext[this.DataSource];
-                        this.DataManager = cm;
+                        cm = (CurrencyManager)DataGridView.BindingContext[this.DataSource];
+                        DataManager = cm;
                     }
                 }
                 return cm;
             }
             set {
-                this.dataManager = value;
+                _dataManager = value;
             }
         }
 
@@ -191,35 +182,35 @@ namespace WmcSoft.Windows.Forms
                 return base.DataSource;
             }
             set {
-                if (this.DataSource != value) {
+                if (DataSource != value) {
                     // Invalidate the currency manager
                     this.DataManager = null;
 
-                    ISupportInitializeNotification dsInit = this.DataSource as ISupportInitializeNotification;
-                    if (dsInit != null && this.dataSourceInitializedHookedUp) {
+                    var dsInit = DataSource as ISupportInitializeNotification;
+                    if (dsInit != null && _dataSourceInitializedHookedUp) {
                         // If we previously hooked the datasource's ISupportInitializeNotification
                         // Initialized event, then unhook it now (we don't always hook this event,
                         // only if we needed to because the datasource was previously uninitialized)
-                        dsInit.Initialized -= new EventHandler(DataSource_Initialized);
-                        this.dataSourceInitializedHookedUp = false;
+                        dsInit.Initialized -= DataSource_Initialized;
+                        _dataSourceInitializedHookedUp = false;
                     }
 
                     base.DataSource = value;
 
                     // Update the displayMemberProperty and valueMemberProperty members.
                     try {
-                        InitializeDisplayMemberPropertyDescriptor(this.DisplayMember);
+                        InitializeDisplayMemberPropertyDescriptor(DisplayMember);
                     }
                     catch {
-                        Debug.Assert(this.DisplayMember != null && this.DisplayMember.Length > 0);
+                        Debug.Assert(DisplayMember != null && DisplayMember.Length > 0);
                         InitializeDisplayMemberPropertyDescriptor(null);
                     }
 
                     try {
-                        InitializeValueMemberPropertyDescriptor(this.ValueMember);
+                        InitializeValueMemberPropertyDescriptor(ValueMember);
                     }
                     catch {
-                        Debug.Assert(this.ValueMember != null && this.ValueMember.Length > 0);
+                        Debug.Assert(ValueMember != null && ValueMember.Length > 0);
                         InitializeValueMemberPropertyDescriptor(null);
                     }
 
@@ -259,23 +250,21 @@ namespace WmcSoft.Windows.Forms
         /// <summary>
         /// Custom property that represents the maximum number of radio buttons shown by the cell.
         /// </summary>
-        [
-            DefaultValue(DATAGRIDVIEWRADIOBUTTONCELL_defaultMaxDisplayedItems)
-        ]
+        [DefaultValue(DefaultMaxDisplayedItems)]
         public int MaxDisplayedItems {
             get {
-                return this.maxDisplayedItems;
+                return _maxDisplayedItems;
             }
             set {
                 if (value < 1 || value > 100) {
                     throw new ArgumentOutOfRangeException("MaxDisplayedItems");
                 }
-                this.maxDisplayedItems = value;
+                _maxDisplayedItems = value;
 
-                if (this.DataGridView != null && !this.DataGridView.IsDisposed && !this.DataGridView.Disposing) {
-                    if (this.RowIndex == -1) {
+                if (DataGridView != null && !DataGridView.IsDisposed && !DataGridView.Disposing) {
+                    if (RowIndex == -1) {
                         // Invalidate and autosize column
-                        this.DataGridView.InvalidateColumn(this.ColumnIndex);
+                        DataGridView.InvalidateColumn(ColumnIndex);
 
                         // TODO: Add code to autosize the cell's column, the rows, the column headers 
                         // and the row headers depending on their autosize settings.
@@ -285,21 +274,19 @@ namespace WmcSoft.Windows.Forms
                         // that invalidates the cell so that it gets repainted and also triggers all
                         // the necessary autosizing: the cell's column and/or row, the column headers
                         // and the row headers are autosized depending on their autosize settings.
-                        this.DataGridView.UpdateCellValue(this.ColumnIndex, this.RowIndex);
+                        DataGridView.UpdateCellValue(ColumnIndex, RowIndex);
                     }
                 }
             }
         }
 
-        /// <summary>
+        /// <remarks>
         /// Called internally by the DataGridViewRadioButtonColumn class to avoid the invalidation
         /// done by the MaxDisplayedItems setter above (for performance reasons).
-        /// </summary>
-        internal int MaxDisplayedItemsInternal {
-            set {
-                Debug.Assert(value >= 1 && value <= 100);
-                this.maxDisplayedItems = value;
-            }
+        /// </remarks>
+        internal void SetMaxDisplayedItemsInternal(int value) {
+            Debug.Assert(value >= 1 && value <= 100);
+            _maxDisplayedItems = value;
         }
 
         /// <summary>
@@ -307,14 +294,14 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         private Rectangle StandardBorderWidths {
             get {
-                if (this.DataGridView != null) {
-                    DataGridViewAdvancedBorderStyle dataGridViewAdvancedBorderStylePlaceholder = new DataGridViewAdvancedBorderStyle(), dgvabsEffective;
-                    dgvabsEffective = AdjustCellBorderStyle(this.DataGridView.AdvancedCellBorderStyle,
-                        dataGridViewAdvancedBorderStylePlaceholder,
-                        false /*singleVerticalBorderAdded*/,
-                        false /*singleHorizontalBorderAdded*/,
-                        false /*isFirstDisplayedColumn*/,
-                        false /*isFirstDisplayedRow*/);
+                if (DataGridView != null) {
+                    var dataGridViewAdvancedBorderStylePlaceholder = new DataGridViewAdvancedBorderStyle();
+                    var dgvabsEffective = AdjustCellBorderStyle(DataGridView.AdvancedCellBorderStyle,
+                          dataGridViewAdvancedBorderStylePlaceholder,
+                          singleVerticalBorderAdded: false,
+                          singleHorizontalBorderAdded: false,
+                          isFirstDisplayedColumn: false,
+                          isFirstDisplayedRow: false);
                     return BorderWidths(dgvabsEffective);
                 } else {
                     return Rectangle.Empty;
@@ -340,13 +327,13 @@ namespace WmcSoft.Windows.Forms
         /// Utility function that returns the cell state inherited from the owning row and column.
         /// </summary>
         private DataGridViewElementStates CellStateFromColumnRowStates(DataGridViewElementStates rowState) {
-            Debug.Assert(this.DataGridView != null);
-            Debug.Assert(this.ColumnIndex >= 0);
-            DataGridViewElementStates orFlags = DataGridViewElementStates.ReadOnly | DataGridViewElementStates.Resizable | DataGridViewElementStates.Selected;
-            DataGridViewElementStates andFlags = DataGridViewElementStates.Displayed | DataGridViewElementStates.Frozen | DataGridViewElementStates.Visible;
-            DataGridViewElementStates cellState = (this.OwningColumn.State & orFlags);
-            cellState |= (rowState & orFlags);
-            cellState |= ((this.OwningColumn.State & andFlags) & (rowState & andFlags));
+            Debug.Assert(DataGridView != null);
+            Debug.Assert(ColumnIndex >= 0);
+            var orFlags = DataGridViewElementStates.ReadOnly | DataGridViewElementStates.Resizable | DataGridViewElementStates.Selected;
+            var andFlags = DataGridViewElementStates.Displayed | DataGridViewElementStates.Frozen | DataGridViewElementStates.Visible;
+            var cellState = (OwningColumn.State & orFlags)
+                | (rowState & orFlags)
+                | ((OwningColumn.State & andFlags) & (rowState & andFlags));
             return cellState;
         }
 
@@ -356,7 +343,7 @@ namespace WmcSoft.Windows.Forms
         public override object Clone() {
             DataGridViewRadioButtonCell dataGridViewCell = base.Clone() as DataGridViewRadioButtonCell;
             if (dataGridViewCell != null) {
-                dataGridViewCell.MaxDisplayedItems = this.MaxDisplayedItems;
+                dataGridViewCell.MaxDisplayedItems = MaxDisplayedItems;
             }
             return dataGridViewCell;
         }
@@ -381,8 +368,8 @@ namespace WmcSoft.Windows.Forms
             }
 
             // Discard the space taken up by the borders.
-            Rectangle borderWidths = BorderWidths(advancedBorderStyle);
-            Rectangle valBounds = cellBounds;
+            var borderWidths = BorderWidths(advancedBorderStyle);
+            var valBounds = cellBounds;
             valBounds.Offset(borderWidths.X, borderWidths.Y);
             valBounds.Width -= borderWidths.Right;
             valBounds.Height -= borderWidths.Bottom;
@@ -416,27 +403,27 @@ namespace WmcSoft.Windows.Forms
                 Rectangle errorBounds = valBounds;
                 Rectangle scrollBounds = valBounds;
 
-                this.layout.ScrollingNeeded = GetScrollingNeeded(graphics, rowIndex, cellStyle, valBounds.Size);
+                _layout.ScrollingNeeded = GetScrollingNeeded(graphics, rowIndex, cellStyle, valBounds.Size);
 
-                if (this.layout.ScrollingNeeded) {
-                    this.layout.ScrollButtonsSize = ScrollBarRenderer.GetSizeBoxSize(graphics, ScrollBarState.Normal);
+                if (_layout.ScrollingNeeded) {
+                    _layout.ScrollButtonsSize = ScrollBarRenderer.GetSizeBoxSize(graphics, ScrollBarState.Normal);
                     // Discard the space required for displaying the 2 scroll buttons
-                    valBounds.Width -= this.layout.ScrollButtonsSize.Width;
+                    valBounds.Width -= _layout.ScrollButtonsSize.Width;
                 }
 
-                valBounds.Inflate(-DATAGRIDVIEWRADIOBUTTONCELL_margin, -DATAGRIDVIEWRADIOBUTTONCELL_margin);
+                valBounds.Inflate(-Margin, -Margin);
 
                 // Layout / paint the radio buttons themselves
-                this.layout.RadioButtonsSize = RadioButtonRenderer.GetGlyphSize(graphics, RadioButtonState.CheckedNormal);
-                this.layout.DisplayedItemsCount = 0;
-                this.layout.TotallyDisplayedItemsCount = 0;
+                _layout.RadioButtonsSize = RadioButtonRenderer.GetGlyphSize(graphics, RadioButtonState.CheckedNormal);
+                _layout.DisplayedItemsCount = 0;
+                _layout.TotallyDisplayedItemsCount = 0;
                 if (valBounds.Width > 0 && valBounds.Height > 0) {
-                    this.layout.FirstDisplayedItemLocation = new Point(valBounds.Left + DATAGRIDVIEWRADIOBUTTONCELL_margin, valBounds.Top + DATAGRIDVIEWRADIOBUTTONCELL_margin);
+                    _layout.FirstDisplayedItemLocation = new Point(valBounds.Left + Margin, valBounds.Top + Margin);
                     int textHeight = cellStyle.Font.Height;
-                    int itemIndex = this.layout.FirstDisplayedItemIndex;
+                    int itemIndex = _layout.FirstDisplayedItemIndex;
                     Rectangle radiosBounds = valBounds;
                     while (itemIndex < this.Items.Count &&
-                           itemIndex < this.layout.FirstDisplayedItemIndex + this.maxDisplayedItems &&
+                           itemIndex < _layout.FirstDisplayedItemIndex + _maxDisplayedItems &&
                            radiosBounds.Height > 0) {
                         if (paint && DataGridViewRadioButtonCell.PartPainted(paintParts, DataGridViewPaintParts.ContentBackground)) {
                             Rectangle itemRect = radiosBounds;
@@ -454,41 +441,42 @@ namespace WmcSoft.Windows.Forms
                                           radiosBounds,
                                           rowIndex,
                                           itemIndex,
+                                          cellState,
                                           cellStyle,
                                           itemReadOnly,
                                           itemSelected,
                                           mouseOverCell,
-                                          cellCurrent && this.focusedItemIndex == itemIndex && DataGridViewRadioButtonCell.PartPainted(paintParts, DataGridViewPaintParts.Focus));
+                                          cellCurrent && _focusedItemIndex == itemIndex && DataGridViewRadioButtonCell.PartPainted(paintParts, DataGridViewPaintParts.Focus));
                             }
                         }
                         itemIndex++;
-                        radiosBounds.Y += textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin;
-                        radiosBounds.Height -= (textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin);
+                        radiosBounds.Y += textHeight + Margin;
+                        radiosBounds.Height -= (textHeight + Margin);
                         if (radiosBounds.Height >= 0) {
-                            this.layout.TotallyDisplayedItemsCount++;
+                            _layout.TotallyDisplayedItemsCount++;
                         }
-                        this.layout.DisplayedItemsCount++;
+                        _layout.DisplayedItemsCount++;
                     }
-                    this.layout.ContentBounds = new Rectangle(this.layout.FirstDisplayedItemLocation, new Size(this.layout.RadioButtonsSize.Width, this.layout.DisplayedItemsCount * (textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin)));
+                    _layout.ContentBounds = new Rectangle(_layout.FirstDisplayedItemLocation, new Size(_layout.RadioButtonsSize.Width, _layout.DisplayedItemsCount * (textHeight + Margin)));
                 } else {
-                    this.layout.FirstDisplayedItemLocation = new Point(-1, -1);
-                    this.layout.ContentBounds = Rectangle.Empty;
+                    _layout.FirstDisplayedItemLocation = new Point(-1, -1);
+                    _layout.ContentBounds = Rectangle.Empty;
                 }
 
-                if (this.layout.ScrollingNeeded) {
+                if (_layout.ScrollingNeeded) {
                     // Layout / paint the 2 scroll buttons
-                    Rectangle rectArrow = new Rectangle(scrollBounds.Right - this.layout.ScrollButtonsSize.Width,
-                                                        scrollBounds.Top,
-                                                        this.layout.ScrollButtonsSize.Width,
-                                                        this.layout.ScrollButtonsSize.Height);
-                    this.layout.UpButtonLocation = rectArrow.Location;
+                    var rectArrow = new Rectangle(scrollBounds.Right - _layout.ScrollButtonsSize.Width,
+                                                  scrollBounds.Top,
+                                                  _layout.ScrollButtonsSize.Width,
+                                                  _layout.ScrollButtonsSize.Height);
+                    _layout.UpButtonLocation = rectArrow.Location;
                     if (paint && DataGridViewRadioButtonCell.PartPainted(paintParts, DataGridViewPaintParts.ContentBackground)) {
-                        ScrollBarRenderer.DrawArrowButton(graphics, rectArrow, GetScrollBarArrowButtonState(true, mouseOverCell ? mouseLocationCode : DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric, this.layout.FirstDisplayedItemIndex > 0 /*enabled*/));
+                        ScrollBarRenderer.DrawArrowButton(graphics, rectArrow, GetScrollBarUpArrowButtonState(mouseOverCell ? mouseLocationCode : MouseLocationGeneric, enabled: _layout.FirstDisplayedItemIndex > 0));
                     }
-                    rectArrow.Y = scrollBounds.Bottom - this.layout.ScrollButtonsSize.Height;
-                    this.layout.DownButtonLocation = rectArrow.Location;
+                    rectArrow.Y = scrollBounds.Bottom - _layout.ScrollButtonsSize.Height;
+                    _layout.DownButtonLocation = rectArrow.Location;
                     if (paint && DataGridViewRadioButtonCell.PartPainted(paintParts, DataGridViewPaintParts.ContentBackground)) {
-                        ScrollBarRenderer.DrawArrowButton(graphics, rectArrow, GetScrollBarArrowButtonState(false, mouseOverCell ? mouseLocationCode : DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric, this.layout.FirstDisplayedItemIndex + this.layout.TotallyDisplayedItemsCount < this.Items.Count /*enabled*/));
+                        ScrollBarRenderer.DrawArrowButton(graphics, rectArrow, GetScrollBarDownArrowButtonState(mouseOverCell ? mouseLocationCode : MouseLocationGeneric, enabled: _layout.FirstDisplayedItemIndex + _layout.TotallyDisplayedItemsCount < this.Items.Count));
                     }
                 }
 
@@ -511,10 +499,10 @@ namespace WmcSoft.Windows.Forms
         /// Returns whether calling the OnContentClick method would force the owning row to be unshared.
         /// </summary>
         protected override bool ContentClickUnsharesRow(DataGridViewCellEventArgs e) {
-            Point ptCurrentCell = this.DataGridView.CurrentCellAddress;
-            return ptCurrentCell.X == this.ColumnIndex &&
-                   ptCurrentCell.Y == e.RowIndex &&
-                   this.DataGridView.IsCurrentCellInEditMode;
+            var ptCurrentCell = DataGridView.CurrentCellAddress;
+            return ptCurrentCell.X == ColumnIndex
+                && ptCurrentCell.Y == e.RowIndex
+                && DataGridView.IsCurrentCellInEditMode;
         }
 
         /// <summary>
@@ -522,10 +510,10 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         private void DataGridView_MouseUp(object sender, MouseEventArgs e) {
             // Unhook the event handler
-            this.DataGridView.MouseUp -= new MouseEventHandler(DataGridView_MouseUp);
-            this.mouseUpHooked = false;
+            DataGridView.MouseUp -= DataGridView_MouseUp;
+            _mouseUpHooked = false;
             // Reset the pressed item index. Since the mouse was released, no item can be pressed anymore.
-            this.pressedItemIndex = -1;
+            _pressedItemIndex = -1;
         }
 
         /// <summary>
@@ -533,74 +521,73 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         private void DataSource_Initialized(object sender, EventArgs e) {
             Debug.Assert(sender == this.DataSource);
-            Debug.Assert(this.DataSource is ISupportInitializeNotification);
-            Debug.Assert(this.dataSourceInitializedHookedUp);
+            Debug.Assert(DataSource is ISupportInitializeNotification);
+            Debug.Assert(_dataSourceInitializedHookedUp);
 
-            ISupportInitializeNotification dsInit = this.DataSource as ISupportInitializeNotification;
+            var dsInit = this.DataSource as ISupportInitializeNotification;
             // Unhook the Initialized event.
             if (dsInit != null) {
-                dsInit.Initialized -= new EventHandler(DataSource_Initialized);
+                dsInit.Initialized -= DataSource_Initialized;
             }
 
             // The wait is over: the DataSource is initialized.
-            this.dataSourceInitializedHookedUp = false;
+            _dataSourceInitializedHookedUp = false;
 
             // Check the DisplayMember and ValueMember values - will throw if values don't match existing fields.
-            InitializeDisplayMemberPropertyDescriptor(this.DisplayMember);
-            InitializeValueMemberPropertyDescriptor(this.ValueMember);
+            InitializeDisplayMemberPropertyDescriptor(DisplayMember);
+            InitializeValueMemberPropertyDescriptor(ValueMember);
         }
 
         /// <summary>
         /// Returns whether calling the OnEnter method would force the owning row to be unshared.
         /// </summary>
         protected override bool EnterUnsharesRow(int rowIndex, bool throughMouseClick) {
-            return this.focusedItemIndex == -1;
+            return _focusedItemIndex == -1;
         }
 
         /// <summary>
         /// Custom implementation of the GetContentBounds method which delegates most of the work to the ComputeLayout function.
         /// </summary>
         protected override Rectangle GetContentBounds(Graphics graphics, DataGridViewCellStyle cellStyle, int rowIndex) {
-            if (this.DataGridView == null || rowIndex < 0 || this.OwningColumn == null) {
+            if (DataGridView == null || rowIndex < 0 || OwningColumn == null)
                 return Rectangle.Empty;
-            }
 
             // First determine the effective border style of this cell.
-            bool singleVerticalBorderAdded = !this.DataGridView.RowHeadersVisible && this.DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
-            bool singleHorizontalBorderAdded = !this.DataGridView.ColumnHeadersVisible && this.DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
-            DataGridViewAdvancedBorderStyle dataGridViewAdvancedBorderStylePlaceholder = new DataGridViewAdvancedBorderStyle();
+            bool singleVerticalBorderAdded = !DataGridView.RowHeadersVisible && DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
+            bool singleHorizontalBorderAdded = !DataGridView.ColumnHeadersVisible && DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
+            var dataGridViewAdvancedBorderStylePlaceholder = new DataGridViewAdvancedBorderStyle();
 
             Debug.Assert(rowIndex > -1 && this.OwningColumn != null);
 
-            DataGridViewAdvancedBorderStyle dgvabsEffective = AdjustCellBorderStyle(this.DataGridView.AdvancedCellBorderStyle,
-                dataGridViewAdvancedBorderStylePlaceholder,
-                singleVerticalBorderAdded,
-                singleHorizontalBorderAdded,
-                rowIndex == this.DataGridView.Rows.GetFirstRow(DataGridViewElementStates.Displayed) /*isFirstDisplayedRow*/,
-                this.ColumnIndex == this.DataGridView.Columns.GetFirstColumn(DataGridViewElementStates.Displayed).Index /*isFirstDisplayedColumn*/);
+            var dgvabsEffective = AdjustCellBorderStyle(DataGridView.AdvancedCellBorderStyle,
+                                                        dataGridViewAdvancedBorderStylePlaceholder,
+                                                        singleVerticalBorderAdded,
+                                                        singleHorizontalBorderAdded,
+                                                        isFirstDisplayedRow: rowIndex == DataGridView.Rows.GetFirstRow(DataGridViewElementStates.Displayed),
+                                                        isFirstDisplayedColumn: ColumnIndex == DataGridView.Columns.GetFirstColumn(DataGridViewElementStates.Displayed).Index);
 
             // Next determine the state of this cell.
-            DataGridViewElementStates rowState = this.DataGridView.Rows.GetRowState(rowIndex);
-            DataGridViewElementStates cellState = CellStateFromColumnRowStates(rowState);
-            cellState |= this.State;
+            var rowState = DataGridView.Rows.GetRowState(rowIndex);
+            var cellState = CellStateFromColumnRowStates(rowState);
+            cellState |= State;
 
             // Then the bounds of this cell.
-            Rectangle cellBounds = new Rectangle(new Point(0, 0), GetSize(rowIndex));
+            var cellBounds = new Rectangle(new Point(0, 0), GetSize(rowIndex));
 
             // Finally compute the layout of the cell and return the resulting content bounds.
             ComputeLayout(graphics,
-                cellBounds,
-                cellBounds,
-                rowIndex,
-                cellState,
-                null /*formattedValue*/,            // contentBounds is independent of formattedValue
-                null /*errorText*/,                 // contentBounds is independent of errorText
-                cellStyle,
-                dgvabsEffective,
-                DataGridViewPaintParts.ContentForeground,
-                false /*paint*/);
+                          cellBounds,
+                          cellBounds,
+                          rowIndex,
+                          cellState,
+                          null /*formattedValue*/,            // contentBounds is independent of formattedValue
+                          null /*errorText*/,                 // contentBounds is independent of errorText
+                          cellStyle,
+                          dgvabsEffective,
+                          DataGridViewPaintParts.ContentForeground,
+                          false /*paint*/);
 
-            return this.layout.ContentBounds;
+            return _layout.ContentBounds;
         }
 
         /// <summary>
@@ -608,22 +595,17 @@ namespace WmcSoft.Windows.Forms
         /// DataGridViewRadioButtonFreeDimension enum value.
         /// </summary>
         private static DataGridViewRadioButtonFreeDimension GetFreeDimensionFromConstraint(Size constraintSize) {
-            if (constraintSize.Width < 0 || constraintSize.Height < 0) {
-                throw new ArgumentException("InvalidArgument=Value of '" + constraintSize.ToString() + "' is not valid for 'constraintSize'.");
-            }
-            if (constraintSize.Width == 0) {
-                if (constraintSize.Height == 0) {
-                    return DataGridViewRadioButtonFreeDimension.Both;
-                } else {
-                    return DataGridViewRadioButtonFreeDimension.Width;
-                }
-            } else {
-                if (constraintSize.Height == 0) {
-                    return DataGridViewRadioButtonFreeDimension.Height;
-                } else {
-                    throw new ArgumentException("InvalidArgument=Value of '" + constraintSize.ToString() + "' is not valid for 'constraintSize'.");
-                }
-            }
+            if (constraintSize.Width < 0 || constraintSize.Height < 0)
+                throw new ArgumentOutOfRangeException("constraintSize");
+
+            if (constraintSize.Width == 0)
+                return (constraintSize.Height == 0)
+                    ? DataGridViewRadioButtonFreeDimension.Both
+                    : DataGridViewRadioButtonFreeDimension.Width;
+            if (constraintSize.Height == 0)
+                return DataGridViewRadioButtonFreeDimension.Height;
+
+            throw new ArgumentOutOfRangeException("constraintSize");
         }
 
         /// <summary>
@@ -634,24 +616,18 @@ namespace WmcSoft.Windows.Forms
             Debug.Assert(item != null);
             bool displayValueSet = false;
             object displayValue = null;
-            if (this.displayMemberProperty != null) {
-                displayValue = this.displayMemberProperty.GetValue(item);
+            if (_displayMemberProperty != null) {
+                displayValue = _displayMemberProperty.GetValue(item);
                 displayValueSet = true;
-            } else if (this.valueMemberProperty != null) {
-                displayValue = this.valueMemberProperty.GetValue(item);
+            } else if (_valueMemberProperty != null) {
+                displayValue = _valueMemberProperty.GetValue(item);
                 displayValueSet = true;
-            } else if (!string.IsNullOrEmpty(this.DisplayMember)) {
-                PropertyDescriptor propDesc = TypeDescriptor.GetProperties(item).Find(this.DisplayMember, true /*caseInsensitive*/);
-                if (propDesc != null) {
-                    displayValue = propDesc.GetValue(item);
-                    displayValueSet = true;
-                }
-            } else if (!string.IsNullOrEmpty(this.ValueMember)) {
-                PropertyDescriptor propDesc = TypeDescriptor.GetProperties(item).Find(this.ValueMember, true /*caseInsensitive*/);
-                if (propDesc != null) {
-                    displayValue = propDesc.GetValue(item);
-                    displayValueSet = true;
-                }
+            } else if (!String.IsNullOrEmpty(DisplayMember)) {
+                var propDesc = TypeDescriptor.GetProperties(item).Find(DisplayMember, ignoreCase: true);
+                displayValueSet = propDesc.TryGetValue(item, out displayValue);
+            } else if (!String.IsNullOrEmpty(ValueMember)) {
+                var propDesc = TypeDescriptor.GetProperties(item).Find(ValueMember, ignoreCase: true);
+                displayValueSet = propDesc.TryGetValue(item, out displayValue);
             }
             if (!displayValueSet) {
                 displayValue = item;
@@ -666,25 +642,19 @@ namespace WmcSoft.Windows.Forms
         private object GetItemValue(object item) {
             bool valueSet = false;
             object value = null;
-            if (this.valueMemberProperty != null) {
-                value = this.valueMemberProperty.GetValue(item);
+            if (_valueMemberProperty != null) {
+                value = _valueMemberProperty.GetValue(item);
                 valueSet = true;
-            } else if (this.displayMemberProperty != null) {
-                value = this.displayMemberProperty.GetValue(item);
+            } else if (_displayMemberProperty != null) {
+                value = _displayMemberProperty.GetValue(item);
                 valueSet = true;
-            } else if (!string.IsNullOrEmpty(this.ValueMember)) {
-                PropertyDescriptor propDesc = TypeDescriptor.GetProperties(item).Find(this.ValueMember, true /*caseInsensitive*/);
-                if (propDesc != null) {
-                    value = propDesc.GetValue(item);
-                    valueSet = true;
-                }
+            } else if (!String.IsNullOrEmpty(ValueMember)) {
+                var propDesc = TypeDescriptor.GetProperties(item).Find(ValueMember, ignoreCase: true);
+                valueSet = propDesc.TryGetValue(item, out value);
             }
-            if (!valueSet && !string.IsNullOrEmpty(this.DisplayMember)) {
-                PropertyDescriptor propDesc = TypeDescriptor.GetProperties(item).Find(this.DisplayMember, true /*caseInsensitive*/);
-                if (propDesc != null) {
-                    value = propDesc.GetValue(item);
-                    valueSet = true;
-                }
+            if (!valueSet && !String.IsNullOrEmpty(DisplayMember)) {
+                var propDesc = TypeDescriptor.GetProperties(item).Find(DisplayMember, ignoreCase: true);
+                valueSet = propDesc.TryGetValue(item, out value);
             }
             if (!valueSet) {
                 value = item;
@@ -697,19 +667,19 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         private int GetMouseLocationCode(Graphics graphics, int rowIndex, DataGridViewCellStyle cellStyle, int mouseX, int mouseY) {
             // First determine this cell's effective border style.
-            bool singleVerticalBorderAdded = !this.DataGridView.RowHeadersVisible && this.DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
-            bool singleHorizontalBorderAdded = !this.DataGridView.ColumnHeadersVisible && this.DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
-            bool isFirstDisplayedColumn = this.ColumnIndex == this.DataGridView.Columns.GetFirstColumn(DataGridViewElementStates.Displayed).Index;
-            bool isFirstDisplayedRow = rowIndex == this.DataGridView.Rows.GetFirstRow(DataGridViewElementStates.Displayed);
-            DataGridViewAdvancedBorderStyle dataGridViewAdvancedBorderStylePlaceholder = new DataGridViewAdvancedBorderStyle(), dataGridViewAdvancedBorderStyleEffective;
-            dataGridViewAdvancedBorderStyleEffective = AdjustCellBorderStyle(this.DataGridView.AdvancedCellBorderStyle,
-                                                                             dataGridViewAdvancedBorderStylePlaceholder,
-                                                                             singleVerticalBorderAdded,
-                                                                             singleHorizontalBorderAdded,
-                                                                             isFirstDisplayedColumn,
-                                                                             isFirstDisplayedRow);
+            bool singleVerticalBorderAdded = !DataGridView.RowHeadersVisible && DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
+            bool singleHorizontalBorderAdded = !DataGridView.ColumnHeadersVisible && DataGridView.AdvancedCellBorderStyle.All == DataGridViewAdvancedCellBorderStyle.Single;
+            bool isFirstDisplayedColumn = ColumnIndex == DataGridView.Columns.GetFirstColumn(DataGridViewElementStates.Displayed).Index;
+            bool isFirstDisplayedRow = rowIndex == DataGridView.Rows.GetFirstRow(DataGridViewElementStates.Displayed);
+            var dataGridViewAdvancedBorderStylePlaceholder = new DataGridViewAdvancedBorderStyle();
+            var dataGridViewAdvancedBorderStyleEffective = AdjustCellBorderStyle(DataGridView.AdvancedCellBorderStyle,
+                                                                                 dataGridViewAdvancedBorderStylePlaceholder,
+                                                                                 singleVerticalBorderAdded,
+                                                                                 singleHorizontalBorderAdded,
+                                                                                 isFirstDisplayedColumn,
+                                                                                 isFirstDisplayedRow);
             // Then its size.
-            Rectangle cellBounds = this.DataGridView.GetCellDisplayRectangle(this.ColumnIndex, rowIndex, false /*cutOverflow*/);
+            var cellBounds = this.DataGridView.GetCellDisplayRectangle(ColumnIndex, rowIndex, cutOverflow: false);
             Debug.Assert(GetSize(rowIndex) == cellBounds.Size);
 
             // Recompute the layout of the cell.
@@ -726,85 +696,57 @@ namespace WmcSoft.Windows.Forms
                           false /*paint*/);
 
             // Deduce the cell part beneath the mouse pointer.
-            Point mousePosition = this.DataGridView.PointToClient(Control.MousePosition);
+            var mousePosition = DataGridView.PointToClient(Control.MousePosition);
             Rectangle rect;
-            if (this.layout.ScrollingNeeded) {
+            if (_layout.ScrollingNeeded) {
                 // Is the mouse over the bottom scroll button?
-                rect = new Rectangle(this.layout.DownButtonLocation, this.layout.ScrollButtonsSize);
+                rect = new Rectangle(_layout.DownButtonLocation, _layout.ScrollButtonsSize);
                 if (rect.Contains(mousePosition)) {
-                    return DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton;
+                    return MouseLocationBottomScrollButton;
                 }
                 // Is the mouse over the upper scroll button?
-                rect = new Rectangle(this.layout.UpButtonLocation, this.layout.ScrollButtonsSize);
+                rect = new Rectangle(_layout.UpButtonLocation, _layout.ScrollButtonsSize);
                 if (rect.Contains(mousePosition)) {
-                    return DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton;
+                    return MouseLocationTopScrollButton;
                 }
             }
-            if (this.layout.DisplayedItemsCount > 0) {
-                Point radioButtonLocation = this.layout.FirstDisplayedItemLocation;
+            if (_layout.DisplayedItemsCount > 0) {
+                Point radioButtonLocation = _layout.FirstDisplayedItemLocation;
                 int textHeight = cellStyle.Font.Height;
-                int itemIndex = this.layout.FirstDisplayedItemIndex;
-                Rectangle radioButtonBounds = new Rectangle(radioButtonLocation, this.layout.RadioButtonsSize);
-                while (itemIndex < this.Items.Count &&
-                       itemIndex < this.layout.FirstDisplayedItemIndex + this.maxDisplayedItems &&
-                       itemIndex - this.layout.FirstDisplayedItemIndex < this.layout.DisplayedItemsCount) {
+                int itemIndex = _layout.FirstDisplayedItemIndex;
+                Rectangle radioButtonBounds = new Rectangle(radioButtonLocation, _layout.RadioButtonsSize);
+                while (itemIndex < Items.Count &&
+                       itemIndex < _layout.FirstDisplayedItemIndex + _maxDisplayedItems &&
+                       itemIndex - _layout.FirstDisplayedItemIndex < _layout.DisplayedItemsCount) {
                     if (radioButtonBounds.Contains(mousePosition)) {
                         // The mouse is over a radio button
-                        return itemIndex - this.layout.FirstDisplayedItemIndex;
+                        return itemIndex - _layout.FirstDisplayedItemIndex;
                     }
                     itemIndex++;
-                    radioButtonBounds.Y += textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin;
+                    radioButtonBounds.Y += textHeight + Margin;
                 }
             }
-            return DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric;
+            return MouseLocationGeneric;
         }
 
-        /// <summary>
-        /// Returns a ScrollBarArrowButtonState state given the current mouse location.
-        /// </summary>
-        private ScrollBarArrowButtonState GetScrollBarArrowButtonState(bool upButton, int mouseLocationCode, bool enabled) {
-            if (!enabled) {
-                if (upButton) {
-                    return ScrollBarArrowButtonState.UpDisabled;
-                } else {
-                    return ScrollBarArrowButtonState.DownDisabled;
-                }
-            }
-            if (mouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton) {
-                // Mouse is over upper button
-                if (Control.MouseButtons == MouseButtons.Left) {
-                    if (upButton) {
-                        return ScrollBarArrowButtonState.UpPressed;
-                    } else {
-                        return ScrollBarArrowButtonState.DownNormal;
-                    }
-                } else {
-                    if (upButton) {
-                        return ScrollBarArrowButtonState.UpHot;
-                    } else {
-                        return ScrollBarArrowButtonState.DownNormal;
-                    }
-                }
-            } else if (mouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton) {
-                // Mouse is over bottom button
-                if (Control.MouseButtons == MouseButtons.Left) {
-                    if (upButton) {
-                        return ScrollBarArrowButtonState.UpNormal;
-                    } else {
-                        return ScrollBarArrowButtonState.DownPressed;
-                    }
-                } else {
-                    if (upButton) {
-                        return ScrollBarArrowButtonState.UpNormal;
-                    } else {
-                        return ScrollBarArrowButtonState.DownHot;
-                    }
-                }
-            } else if (upButton) {
-                return ScrollBarArrowButtonState.UpNormal;
-            } else {
-                return ScrollBarArrowButtonState.DownNormal;
-            }
+        private ScrollBarArrowButtonState GetScrollBarUpArrowButtonState(int mouseLocationCode, bool enabled) {
+            if (!enabled)
+                return ScrollBarArrowButtonState.UpDisabled;
+            if (mouseLocationCode == MouseLocationTopScrollButton)
+                return (Control.MouseButtons == MouseButtons.Left)
+                    ? ScrollBarArrowButtonState.UpPressed
+                    : ScrollBarArrowButtonState.UpHot;
+            return ScrollBarArrowButtonState.UpNormal;
+        }
+
+        private ScrollBarArrowButtonState GetScrollBarDownArrowButtonState(int mouseLocationCode, bool enabled) {
+            if (!enabled)
+                return ScrollBarArrowButtonState.DownDisabled;
+            if (mouseLocationCode == MouseLocationBottomScrollButton)
+                return (Control.MouseButtons == MouseButtons.Left)
+                    ? ScrollBarArrowButtonState.DownPressed
+                    : ScrollBarArrowButtonState.DownHot;
+            return ScrollBarArrowButtonState.DownNormal;
         }
 
         /// <summary>
@@ -823,8 +765,8 @@ namespace WmcSoft.Windows.Forms
             Size radioButtonGlyphSize = RadioButtonRenderer.GetGlyphSize(graphics, RadioButtonState.CheckedNormal);
 
             if (freeDimension != DataGridViewRadioButtonFreeDimension.Width) {
-                preferredHeight = System.Math.Min(this.Items.Count, this.MaxDisplayedItems) * (System.Math.Max(cellStyle.Font.Height, radioButtonGlyphSize.Height) + DATAGRIDVIEWRADIOBUTTONCELL_margin) + DATAGRIDVIEWRADIOBUTTONCELL_margin;
-                preferredHeight += 2 * DATAGRIDVIEWRADIOBUTTONCELL_margin + borderAndPaddingHeights;
+                preferredHeight = System.Math.Min(this.Items.Count, this.MaxDisplayedItems) * (System.Math.Max(cellStyle.Font.Height, radioButtonGlyphSize.Height) + Margin) + Margin;
+                preferredHeight += 2 * Margin + borderAndPaddingHeights;
             }
 
             if (freeDimension != DataGridViewRadioButtonFreeDimension.Height) {
@@ -855,18 +797,16 @@ namespace WmcSoft.Windows.Forms
                     }
                 }
 
-                preferredWidth += radioButtonGlyphSize.Width + 5 * DATAGRIDVIEWRADIOBUTTONCELL_margin + borderAndPaddingWidths;
+                preferredWidth += radioButtonGlyphSize.Width + 5 * Margin + borderAndPaddingWidths;
             }
 
-            if (this.DataGridView.ShowCellErrors) {
+            if (DataGridView.ShowCellErrors) {
                 // Making sure that there is enough room for the potential error icon
                 if (freeDimension != DataGridViewRadioButtonFreeDimension.Height) {
-                    preferredWidth = System.Math.Max(preferredWidth,
-                                              borderAndPaddingWidths + DATAGRIDVIEWRADIOBUTTONCELL_iconMarginWidth * 2 + DATAGRIDVIEWRADIOBUTTONCELL_iconsWidth);
+                    preferredWidth = Math.Max(preferredWidth, borderAndPaddingWidths + IconMarginWidth * 2 + IconsWidth);
                 }
                 if (freeDimension != DataGridViewRadioButtonFreeDimension.Width) {
-                    preferredHeight = System.Math.Max(preferredHeight,
-                                               borderAndPaddingHeights + DATAGRIDVIEWRADIOBUTTONCELL_iconMarginHeight * 2 + DATAGRIDVIEWRADIOBUTTONCELL_iconsHeight);
+                    preferredHeight = Math.Max(preferredHeight, borderAndPaddingHeights + IconMarginHeight * 2 + IconsHeight);
                 }
             }
 
@@ -877,20 +817,19 @@ namespace WmcSoft.Windows.Forms
         /// Helper function that determines if scrolling buttons should be displayed
         /// </summary>
         private bool GetScrollingNeeded(Graphics graphics, int rowIndex, DataGridViewCellStyle cellStyle, Size contentSize) {
-            if (this.Items.Count <= 1) {
+            if (Items.Count <= 1) {
                 return false;
             }
 
-            if (this.MaxDisplayedItems >= this.Items.Count &&
-                this.Items.Count * (cellStyle.Font.Height + DATAGRIDVIEWRADIOBUTTONCELL_margin) + DATAGRIDVIEWRADIOBUTTONCELL_margin <= contentSize.Height /*- borderAndPaddingHeights*/) {
+            if (MaxDisplayedItems >= Items.Count &&
+                Items.Count * (cellStyle.Font.Height + Margin) + Margin <= contentSize.Height /*- borderAndPaddingHeights*/) {
                 // There is enough vertical room to display all the radio buttons
                 return false;
             }
 
             // Is there enough room to display the scroll buttons?
             Size sizeBoxSize = ScrollBarRenderer.GetSizeBoxSize(graphics, ScrollBarState.Normal);
-            if (2 * DATAGRIDVIEWRADIOBUTTONCELL_margin + sizeBoxSize.Width > contentSize.Width ||
-                2 * sizeBoxSize.Height > contentSize.Height) {
+            if (2 * Margin + sizeBoxSize.Width > contentSize.Width || 2 * sizeBoxSize.Height > contentSize.Height) {
                 // There isn't enough room to show the scroll buttons.
                 return false;
             }
@@ -900,48 +839,42 @@ namespace WmcSoft.Windows.Forms
         }
 
         /// <summary>
-        /// Helper function that sets the displayMemberProperty member based on the DataSource and the provided displayMember field name
+        /// Helper function that sets the displayMemberProperty member based on the DataSource and the provided displayMember member name
         /// </summary>
         private void InitializeDisplayMemberPropertyDescriptor(string displayMember) {
-            if (this.DataManager != null) {
-                if (String.IsNullOrEmpty(displayMember)) {
-                    this.displayMemberProperty = null;
-                } else {
-                    BindingMemberInfo displayBindingMember = new BindingMemberInfo(displayMember);
-                    // make the DataManager point to the sublist inside this.DataSource
-                    this.DataManager = this.DataGridView.BindingContext[this.DataSource, displayBindingMember.BindingPath] as CurrencyManager;
+            if (DataManager == null)
+                return;
 
-                    PropertyDescriptorCollection props = this.DataManager.GetItemProperties();
-                    PropertyDescriptor displayMemberProperty = props.Find(displayBindingMember.BindingField, true);
-                    if (displayMemberProperty == null) {
-                        throw new ArgumentException("Field called '" + displayMember + "' does not exist.");
-                    } else {
-                        this.displayMemberProperty = displayMemberProperty;
-                    }
-                }
+            if (String.IsNullOrEmpty(displayMember)) {
+                _displayMemberProperty = null;
+            } else {
+                var displayBindingMember = new BindingMemberInfo(displayMember);
+                // make the DataManager point to the sublist inside this.DataSource
+                DataManager = DataGridView.BindingContext[DataSource, displayBindingMember.BindingPath] as CurrencyManager;
+                var displayMemberProperty = DataManager.GetItemProperty(displayBindingMember.BindingField, ignoreCase: true);
+                if (displayMemberProperty == null)
+                    throw new ArgumentOutOfRangeException("displayMember");
+                _displayMemberProperty = displayMemberProperty;
             }
         }
 
         /// <summary>
-        /// Helper function that sets the valueMemberProperty member based on the DataSource and the provided valueMember field name
+        /// Helper function that sets the valueMemberProperty member based on the DataSource and the provided valueMember member name
         /// </summary>
         private void InitializeValueMemberPropertyDescriptor(string valueMember) {
-            if (this.DataManager != null) {
-                if (String.IsNullOrEmpty(valueMember)) {
-                    this.valueMemberProperty = null;
-                } else {
-                    BindingMemberInfo valueBindingMember = new BindingMemberInfo(valueMember);
-                    // make the DataManager point to the sublist inside this.DataSource
-                    this.DataManager = this.DataGridView.BindingContext[this.DataSource, valueBindingMember.BindingPath] as CurrencyManager;
+            if (DataManager == null)
+                return;
 
-                    PropertyDescriptorCollection props = this.DataManager.GetItemProperties();
-                    PropertyDescriptor valueMemberProperty = props.Find(valueBindingMember.BindingField, true);
-                    if (valueMemberProperty == null) {
-                        throw new ArgumentException("Field called '" + valueMember + "' does not exist.");
-                    } else {
-                        this.valueMemberProperty = valueMemberProperty;
-                    }
-                }
+            if (String.IsNullOrEmpty(valueMember)) {
+                _valueMemberProperty = null;
+            } else {
+                BindingMemberInfo valueBindingMember = new BindingMemberInfo(valueMember);
+                // make the DataManager point to the sublist inside this.DataSource
+                DataManager = DataGridView.BindingContext[DataSource, valueBindingMember.BindingPath] as CurrencyManager;
+                PropertyDescriptor valueMemberProperty = DataManager.GetItemProperty(valueBindingMember.BindingField, ignoreCase: true);
+                if (valueMemberProperty == null)
+                    throw new ArgumentOutOfRangeException("valueMember");
+                _valueMemberProperty = valueMemberProperty;
             }
         }
 
@@ -949,14 +882,13 @@ namespace WmcSoft.Windows.Forms
         /// Helper function that invalidates the entire area of an entry
         /// </summary>
         private void InvalidateItem(int itemIndex, int rowIndex) {
-            if (itemIndex >= this.layout.FirstDisplayedItemIndex &&
-                itemIndex < this.layout.FirstDisplayedItemIndex + this.layout.DisplayedItemsCount) {
-                DataGridViewCellStyle cellStyle = GetInheritedStyle(null, rowIndex, false /* includeColors */);
-                Point radioButtonLocation = this.layout.FirstDisplayedItemLocation;
+            if (_layout.IsItemDisplayed(itemIndex)) {
+                var cellStyle = GetInheritedStyle(null, rowIndex, includeColors: false);
+                var radioButtonLocation = _layout.FirstDisplayedItemLocation;
                 int textHeight = cellStyle.Font.Height;
-                radioButtonLocation.Y += (textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin) * (itemIndex - this.layout.FirstDisplayedItemIndex);
-                Size cellSize = GetSize(rowIndex);
-                this.DataGridView.Invalidate(new Rectangle(radioButtonLocation.X, radioButtonLocation.Y, cellSize.Width, System.Math.Max(textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin, this.layout.RadioButtonsSize.Height)));
+                radioButtonLocation.Y += (textHeight + Margin) * (itemIndex - _layout.FirstDisplayedItemIndex);
+                var cellSize = GetSize(rowIndex);
+                DataGridView.Invalidate(new Rectangle(radioButtonLocation.X, radioButtonLocation.Y, cellSize.Width, Math.Max(textHeight + Margin, _layout.RadioButtonsSize.Height)));
             }
         }
 
@@ -964,12 +896,11 @@ namespace WmcSoft.Windows.Forms
         /// Helper function that invalidates the glyph section of an entry
         /// </summary>
         private void InvalidateRadioGlyph(int itemIndex, DataGridViewCellStyle cellStyle) {
-            if (itemIndex >= this.layout.FirstDisplayedItemIndex &&
-                itemIndex < this.layout.FirstDisplayedItemIndex + this.layout.DisplayedItemsCount) {
-                Point radioButtonLocation = this.layout.FirstDisplayedItemLocation;
+            if (_layout.IsItemDisplayed(itemIndex)) {
+                Point radioButtonLocation = _layout.FirstDisplayedItemLocation;
                 int textHeight = cellStyle.Font.Height;
-                radioButtonLocation.Y += (textHeight + DATAGRIDVIEWRADIOBUTTONCELL_margin) * (itemIndex - this.layout.FirstDisplayedItemIndex);
-                this.DataGridView.Invalidate(new Rectangle(radioButtonLocation, this.layout.RadioButtonsSize));
+                radioButtonLocation.Y += (textHeight + Margin) * (itemIndex - _layout.FirstDisplayedItemIndex);
+                DataGridView.Invalidate(new Rectangle(radioButtonLocation, _layout.RadioButtonsSize));
             }
         }
 
@@ -978,14 +909,12 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         protected override bool KeyDownUnsharesRow(KeyEventArgs e, int rowIndex) {
             if (!e.Alt && !e.Control && !e.Shift) {
-                if (this.handledKeyDown) {
+                if (_handledKeyDown)
                     return true;
-                }
-                if (e.KeyCode == Keys.Down && this.focusedItemIndex < this.Items.Count - 1) {
+                if (e.KeyCode == Keys.Down && _focusedItemIndex < this.Items.Count - 1)
                     return true;
-                } else if (e.KeyCode == Keys.Up && this.focusedItemIndex > 0) {
+                if (e.KeyCode == Keys.Up && _focusedItemIndex > 0)
                     return true;
-                }
             }
             return false;
         }
@@ -995,13 +924,12 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         protected override bool KeyUpUnsharesRow(KeyEventArgs e, int rowIndex) {
             if (!e.Alt && !e.Control && !e.Shift) {
-                if (e.KeyCode == Keys.Down && this.focusedItemIndex < this.Items.Count - 1 && this.handledKeyDown) {
+                if (e.KeyCode == Keys.Down && _focusedItemIndex < this.Items.Count - 1 && _handledKeyDown)
                     return true;
-                } else if (e.KeyCode == Keys.Up && this.focusedItemIndex > 0 && this.handledKeyDown) {
+                if (e.KeyCode == Keys.Up && _focusedItemIndex > 0 && _handledKeyDown)
                     return true;
-                }
             }
-            if (this.handledKeyDown) {
+            if (_handledKeyDown) {
                 return true;
             }
             return false;
@@ -1011,32 +939,26 @@ namespace WmcSoft.Windows.Forms
         /// Returns whether calling the OnMouseDown method would force the owning row to be unshared.
         /// </summary>
         protected override bool MouseDownUnsharesRow(DataGridViewCellMouseEventArgs e) {
-            if (this.DataGridView == null) {
+            if (this.DataGridView == null)
                 return false;
-            }
+
             if (e.Button == MouseButtons.Left) {
-                int mouseLocationCode = GetMouseLocationCode(this.DataGridView.CreateGraphics(),
-                                                             e.RowIndex,
-                                                             GetInheritedStyle(null, e.RowIndex, false /* includeColors */),
-                                                             e.X,
-                                                             e.Y);
-                switch (mouseLocationCode) {
-                case DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric:
+                var cellStyle = GetInheritedStyle(null, e.RowIndex, includeColors: false);
+                int hit = GetMouseLocationCode(DataGridView.CreateGraphics(), e.RowIndex, cellStyle, e.X, e.Y);
+                switch (hit) {
+                case MouseLocationGeneric:
                     break;
-                case DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton:
-                    if (this.layout.FirstDisplayedItemIndex + this.layout.DisplayedItemsCount < this.Items.Count) {
+                case MouseLocationBottomScrollButton:
+                    if (_layout.FirstDisplayedItemIndex + _layout.DisplayedItemsCount < this.Items.Count)
                         return true;
-                    }
                     break;
-                case DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton:
-                    if (this.layout.FirstDisplayedItemIndex > 0) {
+                case MouseLocationTopScrollButton:
+                    if (_layout.FirstDisplayedItemIndex > 0)
                         return true;
-                    }
                     break;
                 default:
-                    if (this.pressedItemIndex != mouseLocationCode + this.layout.FirstDisplayedItemIndex) {
+                    if (_pressedItemIndex != hit + _layout.FirstDisplayedItemIndex)
                         return true;
-                    }
                     break;
                 }
             }
@@ -1047,22 +969,22 @@ namespace WmcSoft.Windows.Forms
         /// Returns whether calling the OnMouseLeave method would force the owning row to be unshared.
         /// </summary>
         protected override bool MouseLeaveUnsharesRow(int rowIndex) {
-            return this.pressedItemIndex != -1 && !this.mouseUpHooked;
+            return _pressedItemIndex != -1 && !_mouseUpHooked;
         }
 
         /// <summary>
         /// Returns whether calling the OnMouseUp method would force the owning row to be unshared.
         /// </summary>
         protected override bool MouseUpUnsharesRow(DataGridViewCellMouseEventArgs e) {
-            return e.Button == MouseButtons.Left && this.pressedItemIndex != -1;
+            return e.Button == MouseButtons.Left && _pressedItemIndex != -1;
         }
 
         /// <summary>
         /// Method that declares the cell dirty and notifies the grid of the value change.
         /// </summary>
         private void NotifyDataGridViewOfValueChange() {
-            this.valueChanged = true;
-            Debug.Assert(this.DataGridView != null);
+            _valueChanged = true;
+            Debug.Assert(DataGridView != null);
             this.DataGridView.NotifyCurrentCellDirty(true);
         }
 
@@ -1070,15 +992,12 @@ namespace WmcSoft.Windows.Forms
         /// Potentially updates the selected item and notifies the grid of the change.
         /// </summary>
         protected override void OnContentClick(DataGridViewCellEventArgs e) {
-            if (this.DataGridView == null) {
+            if (DataGridView == null) {
                 return;
             }
-            Point ptCurrentCell = this.DataGridView.CurrentCellAddress;
-            if (ptCurrentCell.X == this.ColumnIndex &&
-                ptCurrentCell.Y == e.RowIndex &&
-                this.DataGridView.IsCurrentCellInEditMode) {
-                if (mouseLocationCode >= 0 &&
-                    UpdateFormattedValue(this.layout.FirstDisplayedItemIndex + mouseLocationCode, e.RowIndex)) {
+            Point ptCurrentCell = DataGridView.CurrentCellAddress;
+            if (ptCurrentCell.X == ColumnIndex && ptCurrentCell.Y == e.RowIndex && DataGridView.IsCurrentCellInEditMode) {
+                if (mouseLocationCode >= 0 && UpdateFormattedValue(_layout.FirstDisplayedItemIndex + mouseLocationCode, e.RowIndex)) {
                     NotifyDataGridViewOfValueChange();
                 }
             }
@@ -1100,8 +1019,8 @@ namespace WmcSoft.Windows.Forms
         /// Makes sure that there is a focused item when the cell becomes the current one.
         /// </summary>
         protected override void OnEnter(int rowIndex, bool throughMouseClick) {
-            if (this.focusedItemIndex == -1) {
-                this.focusedItemIndex = this.layout.FirstDisplayedItemIndex;
+            if (_focusedItemIndex == -1) {
+                _focusedItemIndex = _layout.FirstDisplayedItemIndex;
             }
             base.OnEnter(rowIndex, throughMouseClick);
         }
@@ -1114,14 +1033,14 @@ namespace WmcSoft.Windows.Forms
                 return;
             }
             if (!e.Alt && !e.Control && !e.Shift) {
-                if (this.handledKeyDown) {
-                    this.handledKeyDown = false;
+                if (_handledKeyDown) {
+                    _handledKeyDown = false;
                 }
-                if (e.KeyCode == Keys.Down && this.focusedItemIndex < this.Items.Count - 1) {
-                    this.handledKeyDown = true;
+                if (e.KeyCode == Keys.Down && _focusedItemIndex < this.Items.Count - 1) {
+                    _handledKeyDown = true;
                     e.Handled = true;
-                } else if (e.KeyCode == Keys.Up && this.focusedItemIndex > 0) {
-                    this.handledKeyDown = true;
+                } else if (e.KeyCode == Keys.Up && _focusedItemIndex > 0) {
+                    _handledKeyDown = true;
                     e.Handled = true;
                 }
             }
@@ -1134,42 +1053,42 @@ namespace WmcSoft.Windows.Forms
             if (this.DataGridView == null) {
                 return;
             }
-            if (!e.Alt && !e.Control && !e.Shift && this.handledKeyDown) {
-                if (e.KeyCode == Keys.Down && this.focusedItemIndex < this.Items.Count - 1) {
+            if (!e.Alt && !e.Control && !e.Shift && _handledKeyDown) {
+                if (e.KeyCode == Keys.Down && _focusedItemIndex < this.Items.Count - 1) {
                     // Handle the Down Arrow key
-                    if (UpdateFormattedValue(this.focusedItemIndex + 1, rowIndex)) {
+                    if (UpdateFormattedValue(_focusedItemIndex + 1, rowIndex)) {
                         NotifyDataGridViewOfValueChange();
-                    } else if (this.selectedItemIndex == this.focusedItemIndex + 1) {
-                        this.focusedItemIndex++;
+                    } else if (_selectedItemIndex == _focusedItemIndex + 1) {
+                        _focusedItemIndex++;
                     }
-                    if (this.focusedItemIndex >= this.layout.FirstDisplayedItemIndex + this.layout.TotallyDisplayedItemsCount) {
-                        this.layout.FirstDisplayedItemIndex++;
+                    if (_focusedItemIndex >= _layout.FirstDisplayedItemIndex + _layout.TotallyDisplayedItemsCount) {
+                        _layout.FirstDisplayedItemIndex++;
                     }
-                    while (this.focusedItemIndex < this.layout.FirstDisplayedItemIndex) {
-                        this.layout.FirstDisplayedItemIndex--;
+                    while (_focusedItemIndex < _layout.FirstDisplayedItemIndex) {
+                        _layout.FirstDisplayedItemIndex--;
                     }
                     this.DataGridView.InvalidateCell(this.ColumnIndex, rowIndex);
                     e.Handled = true;
-                } else if (e.KeyCode == Keys.Up && this.focusedItemIndex > 0) {
+                } else if (e.KeyCode == Keys.Up && _focusedItemIndex > 0) {
                     // Handle the Up Arrow key
-                    if (UpdateFormattedValue(this.focusedItemIndex - 1, rowIndex)) {
+                    if (UpdateFormattedValue(_focusedItemIndex - 1, rowIndex)) {
                         NotifyDataGridViewOfValueChange();
-                    } else if (this.selectedItemIndex == this.focusedItemIndex - 1) {
-                        this.focusedItemIndex--;
+                    } else if (_selectedItemIndex == _focusedItemIndex - 1) {
+                        _focusedItemIndex--;
                     }
-                    if (this.focusedItemIndex < this.layout.FirstDisplayedItemIndex) {
-                        this.layout.FirstDisplayedItemIndex--;
+                    if (_focusedItemIndex < _layout.FirstDisplayedItemIndex) {
+                        _layout.FirstDisplayedItemIndex--;
                     }
-                    while (this.focusedItemIndex >= this.layout.FirstDisplayedItemIndex + this.layout.TotallyDisplayedItemsCount) {
-                        this.layout.FirstDisplayedItemIndex++;
+                    while (_focusedItemIndex >= _layout.FirstDisplayedItemIndex + _layout.TotallyDisplayedItemsCount) {
+                        _layout.FirstDisplayedItemIndex++;
                     }
                     this.DataGridView.InvalidateCell(this.ColumnIndex, rowIndex);
                     e.Handled = true;
                 }
             }
             // Always reset the flag that indicates if the KeyDown was handled.
-            if (this.handledKeyDown) {
-                this.handledKeyDown = false;
+            if (_handledKeyDown) {
+                _handledKeyDown = false;
             }
         }
 
@@ -1177,38 +1096,35 @@ namespace WmcSoft.Windows.Forms
         /// Custom implementation of the MouseDown notification to update the cell's value or scroll the entries.
         /// </summary>
         protected override void OnMouseDown(DataGridViewCellMouseEventArgs e) {
-            if (this.DataGridView == null) {
+            if (this.DataGridView == null)
                 return;
-            }
+
             if (e.Button == MouseButtons.Left) {
-                int mouseLocationCode = GetMouseLocationCode(this.DataGridView.CreateGraphics(),
-                                                             e.RowIndex,
-                                                             GetInheritedStyle(null, e.RowIndex, false /* includeColors */),
-                                                             e.X,
-                                                             e.Y);
-                switch (mouseLocationCode) {
-                case DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric:
+                var cellStyle = GetInheritedStyle(null, e.RowIndex, includeColors: false);
+                int hit = GetMouseLocationCode(DataGridView.CreateGraphics(), e.RowIndex, cellStyle, e.X, e.Y);
+                switch (hit) {
+                case MouseLocationGeneric:
                     break;
-                case DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton:
-                    if (this.layout.FirstDisplayedItemIndex + this.layout.TotallyDisplayedItemsCount < this.Items.Count) {
+                case MouseLocationBottomScrollButton:
+                    if (_layout.FirstDisplayedItemIndex + _layout.TotallyDisplayedItemsCount < this.Items.Count) {
                         // Scroll the entries down.
-                        this.layout.FirstDisplayedItemIndex++;
-                        this.DataGridView.Invalidate(new Rectangle(this.layout.DownButtonLocation, this.layout.ScrollButtonsSize));
+                        _layout.FirstDisplayedItemIndex++;
+                        DataGridView.Invalidate(new Rectangle(_layout.DownButtonLocation, _layout.ScrollButtonsSize));
                     }
                     break;
-                case DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton:
-                    if (this.layout.FirstDisplayedItemIndex > 0) {
+                case MouseLocationTopScrollButton:
+                    if (_layout.FirstDisplayedItemIndex > 0) {
                         // Scroll the entries up.
-                        this.layout.FirstDisplayedItemIndex--;
-                        this.DataGridView.Invalidate(new Rectangle(this.layout.UpButtonLocation, this.layout.ScrollButtonsSize));
+                        _layout.FirstDisplayedItemIndex--;
+                        DataGridView.Invalidate(new Rectangle(_layout.UpButtonLocation, _layout.ScrollButtonsSize));
                     }
                     break;
                 default:
-                    if (this.pressedItemIndex != mouseLocationCode + this.layout.FirstDisplayedItemIndex) {
+                    if (_pressedItemIndex != hit + _layout.FirstDisplayedItemIndex) {
                         // Update the value of the cell.
-                        InvalidateItem(this.pressedItemIndex, e.RowIndex);
-                        this.pressedItemIndex = mouseLocationCode + this.layout.FirstDisplayedItemIndex;
-                        InvalidateItem(this.pressedItemIndex, e.RowIndex);
+                        InvalidateItem(_pressedItemIndex, e.RowIndex);
+                        _pressedItemIndex = hit + _layout.FirstDisplayedItemIndex;
+                        InvalidateItem(_pressedItemIndex, e.RowIndex);
                     }
                     break;
                 }
@@ -1223,8 +1139,8 @@ namespace WmcSoft.Windows.Forms
                 return;
             }
 
-            if (this.pressedItemIndex != -1) {
-                InvalidateRadioGlyph(this.pressedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
+            if (_pressedItemIndex != -1) {
+                InvalidateRadioGlyph(_pressedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
             }
         }
 
@@ -1237,24 +1153,24 @@ namespace WmcSoft.Windows.Forms
             }
 
             int oldMouseLocationCode = mouseLocationCode;
-            if (oldMouseLocationCode != DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric) {
-                mouseLocationCode = DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric;
-                if (oldMouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton && this.layout.FirstDisplayedItemIndex > 0) {
-                    this.DataGridView.Invalidate(new Rectangle(this.layout.UpButtonLocation, this.layout.ScrollButtonsSize));
-                } else if (oldMouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton && this.layout.FirstDisplayedItemIndex + this.layout.DisplayedItemsCount < this.Items.Count) {
-                    this.DataGridView.Invalidate(new Rectangle(this.layout.DownButtonLocation, this.layout.ScrollButtonsSize));
+            if (oldMouseLocationCode != MouseLocationGeneric) {
+                mouseLocationCode = MouseLocationGeneric;
+                if (oldMouseLocationCode == MouseLocationTopScrollButton && _layout.FirstDisplayedItemIndex > 0) {
+                    DataGridView.Invalidate(new Rectangle(_layout.UpButtonLocation, _layout.ScrollButtonsSize));
+                } else if (oldMouseLocationCode == MouseLocationBottomScrollButton && _layout.FirstDisplayedItemIndex + _layout.DisplayedItemsCount < this.Items.Count) {
+                    DataGridView.Invalidate(new Rectangle(_layout.DownButtonLocation, _layout.ScrollButtonsSize));
                 } else if (oldMouseLocationCode >= 0) {
-                    InvalidateRadioGlyph(oldMouseLocationCode + this.layout.FirstDisplayedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
+                    InvalidateRadioGlyph(oldMouseLocationCode + _layout.FirstDisplayedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
                 }
             }
 
-            if (this.pressedItemIndex != -1) {
-                if (!this.mouseUpHooked) {
+            if (_pressedItemIndex != -1) {
+                if (!_mouseUpHooked) {
                     // Hookup the grid's MouseUp event so that this.pressedItemIndex can be reset when the user releases the mouse button.
-                    this.DataGridView.MouseUp += new MouseEventHandler(DataGridView_MouseUp);
-                    this.mouseUpHooked = true;
+                    DataGridView.MouseUp += DataGridView_MouseUp;
+                    _mouseUpHooked = true;
                 }
-                InvalidateRadioGlyph(this.pressedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
+                InvalidateRadioGlyph(_pressedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
             }
         }
 
@@ -1266,27 +1182,23 @@ namespace WmcSoft.Windows.Forms
                 return;
             }
 
-            DataGridViewCellStyle cellStyle = GetInheritedStyle(null, e.RowIndex, false /* includeColors */);
+            var cellStyle = GetInheritedStyle(null, e.RowIndex, false /* includeColors */);
             int oldMouseLocationCode = mouseLocationCode;
-            mouseLocationCode = GetMouseLocationCode(this.DataGridView.CreateGraphics(),
-                                                     e.RowIndex,
-                                                     cellStyle,
-                                                     e.X,
-                                                     e.Y);
+            mouseLocationCode = GetMouseLocationCode(DataGridView.CreateGraphics(), e.RowIndex, cellStyle, e.X, e.Y);
             if (oldMouseLocationCode != mouseLocationCode) {
-                if ((oldMouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton || mouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationTopScrollButton) && this.layout.FirstDisplayedItemIndex > 0) {
-                    this.DataGridView.Invalidate(new Rectangle(this.layout.UpButtonLocation, this.layout.ScrollButtonsSize));
-                } else if ((oldMouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton || mouseLocationCode == DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationBottomScrollButton) && this.layout.FirstDisplayedItemIndex + this.layout.DisplayedItemsCount < this.Items.Count) {
-                    this.DataGridView.Invalidate(new Rectangle(this.layout.DownButtonLocation, this.layout.ScrollButtonsSize));
+                if ((oldMouseLocationCode == MouseLocationTopScrollButton || mouseLocationCode == MouseLocationTopScrollButton) && _layout.FirstDisplayedItemIndex > 0) {
+                    DataGridView.Invalidate(new Rectangle(_layout.UpButtonLocation, _layout.ScrollButtonsSize));
+                } else if ((oldMouseLocationCode == MouseLocationBottomScrollButton || mouseLocationCode == MouseLocationBottomScrollButton) && _layout.FirstDisplayedItemIndex + _layout.DisplayedItemsCount < this.Items.Count) {
+                    DataGridView.Invalidate(new Rectangle(_layout.DownButtonLocation, _layout.ScrollButtonsSize));
                 } else {
-                    if ((this.DataGridView.Rows.SharedRow(e.RowIndex).Cells[e.ColumnIndex].GetInheritedState(e.RowIndex) & DataGridViewElementStates.ReadOnly) != 0) {
+                    if ((DataGridView.GetInheritedState(e.ColumnIndex, e.RowIndex) & DataGridViewElementStates.ReadOnly) != 0) {
                         return;
                     }
                     if (oldMouseLocationCode >= 0) {
-                        InvalidateRadioGlyph(oldMouseLocationCode + this.layout.FirstDisplayedItemIndex, cellStyle);
+                        InvalidateRadioGlyph(oldMouseLocationCode + _layout.FirstDisplayedItemIndex, cellStyle);
                     }
                     if (mouseLocationCode >= 0) {
-                        InvalidateRadioGlyph(mouseLocationCode + this.layout.FirstDisplayedItemIndex, cellStyle);
+                        InvalidateRadioGlyph(mouseLocationCode + _layout.FirstDisplayedItemIndex, cellStyle);
                     }
                 }
             }
@@ -1296,12 +1208,12 @@ namespace WmcSoft.Windows.Forms
         /// Invalidates the potential pressed radio button. 
         /// </summary>
         protected override void OnMouseUp(DataGridViewCellMouseEventArgs e) {
-            if (this.DataGridView == null) {
+            if (DataGridView == null) {
                 return;
             }
-            if (e.Button == MouseButtons.Left && this.pressedItemIndex != -1) {
-                InvalidateItem(this.pressedItemIndex, e.RowIndex);
-                this.pressedItemIndex = -1;
+            if (e.Button == MouseButtons.Left && _pressedItemIndex != -1) {
+                InvalidateItem(_pressedItemIndex, e.RowIndex);
+                _pressedItemIndex = -1;
             }
         }
 
@@ -1309,16 +1221,16 @@ namespace WmcSoft.Windows.Forms
         /// Paints the entire cell.
         /// </summary>
         protected override void Paint(Graphics graphics,
-            Rectangle clipBounds,
-            Rectangle cellBounds,
-            int rowIndex,
-            DataGridViewElementStates cellState,
-            object value,
-            object formattedValue,
-            string errorText,
-            DataGridViewCellStyle cellStyle,
-            DataGridViewAdvancedBorderStyle advancedBorderStyle,
-            DataGridViewPaintParts paintParts) {
+                                      Rectangle clipBounds,
+                                      Rectangle cellBounds,
+                                      int rowIndex,
+                                      DataGridViewElementStates cellState,
+                                      object value,
+                                      object formattedValue,
+                                      string errorText,
+                                      DataGridViewCellStyle cellStyle,
+                                      DataGridViewAdvancedBorderStyle advancedBorderStyle,
+                                      DataGridViewPaintParts paintParts) {
             ComputeLayout(graphics,
                           clipBounds,
                           cellBounds,
@@ -1329,7 +1241,7 @@ namespace WmcSoft.Windows.Forms
                           cellStyle,
                           advancedBorderStyle,
                           paintParts,
-                          true  /*paint*/);
+                          paint: true);
         }
 
         /// <summary>
@@ -1339,78 +1251,61 @@ namespace WmcSoft.Windows.Forms
                                Rectangle radiosBounds,
                                int rowIndex,
                                int itemIndex,
+                               DataGridViewElementStates cellState,
                                DataGridViewCellStyle cellStyle,
                                bool itemReadOnly,
                                bool itemSelected,
                                bool mouseOverCell,
                                bool paintFocus) {
-            object itemFormattedValue = GetFormattedValue(GetItemValue(this.Items[itemIndex]),
-                                                    rowIndex,
-                                                    ref cellStyle,
-                                                    null /*valueTypeConverter*/,
-                                                    null /*formattedValueTypeConverter*/,
-                                                    DataGridViewDataErrorContexts.Display);
+            object itemFormattedValue = GetFormattedValue(GetItemValue(Items[itemIndex]),
+                                                          rowIndex,
+                                                          ref cellStyle,
+                                                          null /*valueTypeConverter*/,
+                                                          null /*formattedValueTypeConverter*/,
+                                                          DataGridViewDataErrorContexts.Display);
             string itemFormattedText = itemFormattedValue as string;
-            if (string.IsNullOrEmpty(itemFormattedText)) {
+            if (String.IsNullOrEmpty(itemFormattedText))
                 return;
-            } else {
-                //Paint the glyph & caption
-                Point glyphLocation = new Point(radiosBounds.Left + DATAGRIDVIEWRADIOBUTTONCELL_margin, radiosBounds.Top + DATAGRIDVIEWRADIOBUTTONCELL_margin);
-                TextFormatFlags flags = TextFormatFlags.Top | TextFormatFlags.Left | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.NoPrefix;
-                Rectangle textBounds = new Rectangle(radiosBounds.Left + 2 * DATAGRIDVIEWRADIOBUTTONCELL_margin + this.layout.RadioButtonsSize.Width, radiosBounds.Top + DATAGRIDVIEWRADIOBUTTONCELL_margin, radiosBounds.Width - (2 * DATAGRIDVIEWRADIOBUTTONCELL_margin + this.layout.RadioButtonsSize.Width), cellStyle.Font.Height + 1 /*radiosBounds.Height - 2 * DATAGRIDVIEWRADIOBUTTONCELL_margin*/);
-                int localMouseLocationCode = mouseOverCell ? mouseLocationCode : DATAGRIDVIEWRADIOBUTTONCELL_mouseLocationGeneric;
-                using (Region clipRegion = graphics.Clip) {
-                    graphics.SetClip(radiosBounds);
-                    RadioButtonState radioButtonState;
-                    if (itemSelected) {
-                        if (itemReadOnly) {
-                            radioButtonState = RadioButtonState.CheckedDisabled;
-                        } else {
-                            if (mouseOverCell && this.pressedItemIndex == itemIndex) {
-                                if (localMouseLocationCode + this.layout.FirstDisplayedItemIndex == this.pressedItemIndex) {
-                                    radioButtonState = RadioButtonState.CheckedPressed;
-                                } else {
-                                    radioButtonState = RadioButtonState.CheckedHot;
-                                }
-                            } else {
-                                if (localMouseLocationCode + this.layout.FirstDisplayedItemIndex == itemIndex && this.pressedItemIndex == -1) {
-                                    radioButtonState = RadioButtonState.CheckedHot;
-                                } else {
-                                    radioButtonState = RadioButtonState.CheckedNormal;
-                                }
-                            }
-                        }
-                    } else {
-                        if (itemReadOnly) {
-                            radioButtonState = RadioButtonState.UncheckedDisabled;
-                        } else {
-                            if (mouseOverCell && this.pressedItemIndex == itemIndex) {
-                                if (localMouseLocationCode + this.layout.FirstDisplayedItemIndex == this.pressedItemIndex) {
-                                    radioButtonState = RadioButtonState.UncheckedPressed;
-                                } else {
-                                    radioButtonState = RadioButtonState.UncheckedHot;
-                                }
-                            } else {
-                                if (localMouseLocationCode + this.layout.FirstDisplayedItemIndex == itemIndex && this.pressedItemIndex == -1) {
-                                    radioButtonState = RadioButtonState.UncheckedHot;
-                                } else {
-                                    radioButtonState = RadioButtonState.UncheckedNormal;
-                                }
-                            }
-                        }
-                    }
-                    // Note: The cell should only show the focus rectangle when this.DataGridView.ShowFocusCues is true. However that property is
-                    // protected and can't be accessed directly. A custom grid derived from DataGridView could expose this notion publicly.
-                    RadioButtonRenderer.DrawRadioButton(graphics,
-                                                        glyphLocation,
-                                                        textBounds,
-                                                        itemFormattedText,
-                                                        cellStyle.Font,
-                                                        flags,
-                                                        paintFocus && /* this.DataGridView.ShowFocusCues && */ this.DataGridView.Focused,
-                                                        radioButtonState);
-                    graphics.Clip = clipRegion;
+
+            //Paint the glyph & caption
+            Point glyphLocation = new Point(radiosBounds.Left + Margin, radiosBounds.Top + Margin);
+            var flags = TextFormatFlags.Top | TextFormatFlags.Left | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.NoPrefix;
+            Rectangle textBounds = new Rectangle(radiosBounds.Left + 2 * Margin + _layout.RadioButtonsSize.Width, radiosBounds.Top + Margin, radiosBounds.Width - (2 * Margin + _layout.RadioButtonsSize.Width), cellStyle.Font.Height + 1 /*radiosBounds.Height - 2 * DATAGRIDVIEWRADIOBUTTONCELL_margin*/);
+            int hit = mouseOverCell ? mouseLocationCode : MouseLocationGeneric;
+            using (var clipRegion = graphics.Clip) {
+                graphics.SetClip(radiosBounds);
+                RadioButtonState radioButtonState;
+                if (itemReadOnly) {
+                    radioButtonState = RadioButtonState.UncheckedDisabled;
+                } else if (mouseOverCell && _pressedItemIndex == itemIndex) {
+                    radioButtonState = (hit + _layout.FirstDisplayedItemIndex == _pressedItemIndex)
+                        ? RadioButtonState.UncheckedPressed
+                        : RadioButtonState.UncheckedHot;
+                } else if (hit + _layout.FirstDisplayedItemIndex == itemIndex && _pressedItemIndex == -1) {
+                    radioButtonState = RadioButtonState.UncheckedHot;
+                } else {
+                    radioButtonState = RadioButtonState.UncheckedNormal;
                 }
+                if (itemSelected) {
+                    // HACK: the status are in the same order, but with a offset of 4.
+                    radioButtonState += 4;
+                }
+
+                // Note: The cell should only show the focus rectangle when this.DataGridView.ShowFocusCues is true. However that property is
+                // protected and can't be accessed directly. A custom grid derived from DataGridView could expose this notion publicly.
+                RadioButtonRenderer.DrawRadioButton(graphics,
+                                                    glyphLocation,
+                                                    textBounds,
+                                                    "",
+                                                    cellStyle.Font,
+                                                    flags,
+                                                    paintFocus && /* DataGridView.ShowFocusCues && */ DataGridView.Focused,
+                                                    radioButtonState);
+
+                var foreColor = (cellState & DataGridViewElementStates.Selected)!=0 ? cellStyle.SelectionForeColor : cellStyle.ForeColor;
+                TextRenderer.DrawText(graphics, itemFormattedText, cellStyle.Font, textBounds, foreColor, flags);
+
+                graphics.Clip = clipRegion;
             }
         }
 
@@ -1425,25 +1320,25 @@ namespace WmcSoft.Windows.Forms
         /// Custom implementation that follows the standard representation of cell types.
         /// </summary>
         public override string ToString() {
-            return "DataGridViewRadioButtonCell { ColumnIndex=" + this.ColumnIndex.ToString(CultureInfo.CurrentCulture) + ", RowIndex=" + this.RowIndex.ToString(CultureInfo.CurrentCulture) + " }";
+            return "DataGridViewRadioButtonCell { ColumnIndex=" + ColumnIndex + ", RowIndex=" + RowIndex + " }";
         }
 
         /// <summary>
         /// Returns true if the provided item successfully became the selected item.
         /// </summary>
         private bool UpdateFormattedValue(int newSelectedItemIndex, int rowIndex) {
-            if (this.FormattedValueType == null || newSelectedItemIndex == this.selectedItemIndex) {
+            if (FormattedValueType == null || newSelectedItemIndex == _selectedItemIndex)
                 return false;
-            }
-            IDataGridViewEditingCell editingCell = (IDataGridViewEditingCell)this;
+
+            var editingCell = (IDataGridViewEditingCell)this;
             Debug.Assert(newSelectedItemIndex >= 0);
             Debug.Assert(newSelectedItemIndex < this.Items.Count);
             object item = this.Items[newSelectedItemIndex];
             object displayValue = GetItemDisplayValue(item);
-            if (this.FormattedValueType.IsAssignableFrom(displayValue.GetType())) {
+            if (FormattedValueType.IsAssignableFrom(displayValue.GetType())) {
                 editingCell.EditingCellFormattedValue = displayValue;
-                this.focusedItemIndex = this.selectedItemIndex;
-                this.DataGridView.InvalidateCell(this.ColumnIndex, rowIndex);
+                _focusedItemIndex = _selectedItemIndex;
+                DataGridView.InvalidateCell(this.ColumnIndex, rowIndex);
             }
             return true;
         }

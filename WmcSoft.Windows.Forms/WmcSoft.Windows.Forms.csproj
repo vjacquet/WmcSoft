@@ -63,6 +63,8 @@
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\DataGridViewColumn.cs" />
+    <Compile Include="Windows\Forms\DataGridViewExtensions.cs" />
     <Compile Include="Windows\Forms\DataGridViewNumericUpDownCell.cs" />
     <Compile Include="Windows\Forms\DataGridViewNumericUpDownColumn.cs" />
     <Compile Include="Windows\Forms\DataGridViewNumericUpDownEditingControl.cs">

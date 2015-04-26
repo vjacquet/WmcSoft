@@ -62,10 +62,8 @@ namespace WmcSoft.Windows.Forms
 
             // If we want ClickThrough, replace "Activate and Eat" with
             // "Activate" on WM_MOUSEACTIVATE messages
-            if (m.Msg == NativeMethods.WM_MOUSEACTIVATE
-                && ClickThrough && m.Result == (IntPtr)NativeMethods.MA_ACTIVATEANDEAT)
+            if (ClickThrough && m.Msg == NativeMethods.WM_MOUSEACTIVATE && m.Result == (IntPtr)NativeMethods.MA_ACTIVATEANDEAT)
                 m.Result = (IntPtr)NativeMethods.MA_ACTIVATE;
-
         }
 
         #endregion

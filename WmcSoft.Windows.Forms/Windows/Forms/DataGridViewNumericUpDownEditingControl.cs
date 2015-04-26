@@ -1,10 +1,13 @@
-﻿// http://msdn.microsoft.com/en-us/library/aa730881(VS.80).aspx
+﻿// DataGridViewNumericUpDownXXX have been taken from
+// http://msdn.microsoft.com/en-us/library/aa730881(VS.80).aspx
+// and then adapted.
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Globalization;
+using WmcSoft.Drawing;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -14,12 +17,9 @@ namespace WmcSoft.Windows.Forms
 
         #region Private fields
 
-        // The grid that owns this editing control
-        private DataGridView dataGridView;
-        // Stores whether the editing control's value has changed or not
-        private bool valueChanged;
-        // Stores the row index in which the editing control resides
-        private int rowIndex;
+        private DataGridView _dataGridView;
+        private bool _valueChanged;
+        private int _rowIndex;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         public DataGridViewNumericUpDownEditingControl() {
             // The editing control must not be part of the tabbing loop
-            this.TabStop = false;
+            TabStop = false;
         }
 
         #endregion
@@ -40,9 +40,9 @@ namespace WmcSoft.Windows.Forms
         /// notifies the grid of the value change.
         /// </summary>
         private void NotifyDataGridViewOfValueChange() {
-            if (!this.valueChanged) {
-                this.valueChanged = true;
-                this.dataGridView.NotifyCurrentCellDirty(true);
+            if (!_valueChanged) {
+                _valueChanged = true;
+                _dataGridView.NotifyCurrentCellDirty(true);
             }
         }
 
@@ -58,26 +58,14 @@ namespace WmcSoft.Windows.Forms
             // The value changes when a digit, the decimal separator, the group separator or
             // the negative sign is pressed.
             bool notifyValueChange = false;
-            if (char.IsDigit(e.KeyChar)) {
+            if (Char.IsDigit(e.KeyChar)) {
                 notifyValueChange = true;
             } else {
-                NumberFormatInfo numberFormatInfo = CultureInfo.CurrentCulture.NumberFormat;
-                string decimalSeparator = numberFormatInfo.NumberDecimalSeparator;
-                string groupSeparator = numberFormatInfo.NumberGroupSeparator;
-                string negativeSign = numberFormatInfo.NegativeSign;
-                if (!String.IsNullOrEmpty(decimalSeparator) && decimalSeparator.Length == 1) {
-                    notifyValueChange = (decimalSeparator[0] == e.KeyChar);
-                }
-                if (!notifyValueChange && !String.IsNullOrEmpty(groupSeparator) && groupSeparator.Length == 1) {
-                    notifyValueChange = (groupSeparator[0] == e.KeyChar);
-                }
-                if (!notifyValueChange && !String.IsNullOrEmpty(negativeSign) && negativeSign.Length == 1) {
-                    notifyValueChange = (negativeSign[0] == e.KeyChar);
-                }
+                var nfi = CultureInfo.CurrentCulture.NumberFormat;
+                notifyValueChange = e.KeyChar.EqualsAnyOf(nfi.NumberDecimalSeparator, nfi.NumberGroupSeparator, nfi.NegativeSign);
             }
 
             if (notifyValueChange) {
-                // Let the DataGridView know about the value change
                 NotifyDataGridViewOfValueChange();
             }
         }
@@ -87,8 +75,7 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         protected override void OnValueChanged(EventArgs e) {
             base.OnValueChanged(e);
-            if (this.Focused) {
-                // Let the DataGridView know about the value change
+            if (Focused) {
                 NotifyDataGridViewOfValueChange();
             }
         }
@@ -98,7 +85,7 @@ namespace WmcSoft.Windows.Forms
         /// NumericUpDown control so that the first character pressed appears in it.
         /// </summary>
         protected override bool ProcessKeyEventArgs(ref Message m) {
-            TextBox textBox = this.Controls[1] as TextBox;
+            var textBox = this.GetTextBox();
             if (textBox != null) {
                 textBox.SendMessage(ref m);
                 return true;
@@ -112,140 +99,118 @@ namespace WmcSoft.Windows.Forms
         #region IDataGridViewEditingControl Membres
 
         /// <summary>
-        /// Method called by the grid before the editing control is shown so it can adapt to the 
-        /// provided cell style.
+        /// Changes the control's user interface (UI) to be consistent with the specified cell style.
         /// </summary>
         public virtual void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle) {
-            this.Font = dataGridViewCellStyle.Font;
+            Font = dataGridViewCellStyle.Font;
             if (dataGridViewCellStyle.BackColor.A < 255) {
                 // The NumericUpDown control does not support transparent back colors
-                Color opaqueBackColor = Color.FromArgb(255, dataGridViewCellStyle.BackColor);
-                this.BackColor = opaqueBackColor;
-                this.dataGridView.EditingPanel.BackColor = opaqueBackColor;
+                var opaqueBackColor = dataGridViewCellStyle.BackColor.MakeOpaque();
+                BackColor = opaqueBackColor;
+                //_dataGridView.EditingPanel.BackColor = opaqueBackColor;
             } else {
-                this.BackColor = dataGridViewCellStyle.BackColor;
+                BackColor = dataGridViewCellStyle.BackColor;
             }
-            this.ForeColor = dataGridViewCellStyle.ForeColor;
-            this.TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(dataGridViewCellStyle.Alignment);
+            ForeColor = dataGridViewCellStyle.ForeColor;
+            TextAlign = DataGridViewNumericUpDownCell.TranslateAlignment(dataGridViewCellStyle.Alignment);
         }
 
         /// <summary>
-        /// Property which caches the grid that uses this editing control
+        /// Gets or sets the DataGridView that contains the cell.
         /// </summary>
         public virtual DataGridView EditingControlDataGridView {
-            get {
-                return this.dataGridView;
-            }
-            set {
-                this.dataGridView = value;
-            }
+            get { return _dataGridView; }
+            set { _dataGridView = value; }
         }
 
         /// <summary>
-        /// Property which represents the current formatted value of the editing control
+        /// Gets or sets the formatted value of the cell being modified by the editor.
         /// </summary>
         public virtual object EditingControlFormattedValue {
-            get {
-                return GetEditingControlFormattedValue(DataGridViewDataErrorContexts.Formatting);
-            }
-            set {
-                this.Text = (string)value;
-            }
+            get { return GetEditingControlFormattedValue(DataGridViewDataErrorContexts.Formatting); }
+            set { Text = (string)value; }
         }
 
         /// <summary>
-        /// Property which represents the row in which the editing control resides
+        /// Gets or sets the index of the hosting cell's parent row.
         /// </summary>
         public virtual int EditingControlRowIndex {
-            get {
-                return this.rowIndex;
-            }
-            set {
-                this.rowIndex = value;
-            }
+            get { return _rowIndex; }
+            set { _rowIndex = value; }
         }
 
         /// <summary>
-        /// Property which indicates whether the value of the editing control has changed or not
+        /// Gets or sets a value indicating whether the value of the editing control 
+        /// differs from the value of the hosting cell.
         /// </summary>
         public virtual bool EditingControlValueChanged {
-            get {
-                return this.valueChanged;
-            }
-            set {
-                this.valueChanged = value;
-            }
+            get { return _valueChanged; }
+            set { _valueChanged = value; }
         }
 
         /// <summary>
-        /// Method called by the grid on keystrokes to determine if the editing control is
-        /// interested in the key or not.
+        /// Determines whether the specified key is a regular input key that the editing control should process
+        /// or a special key that the DataGridView should process.
         /// </summary>
+        /// <param name="keyData">A Keys that represents the key that was pressed.</param>
+        /// <param name="dataGridViewWantsInputKey">true when the DataGridView wants to process the Keys in keyData; otherwise, false.</param>
+        /// <returns>true if the specified key is a regular input key that should be handled by the editing control;
+        /// otherwise, false.</returns>
         public virtual bool EditingControlWantsInputKey(Keys keyData, bool dataGridViewWantsInputKey) {
             switch (keyData & Keys.KeyCode) {
+            case Keys.Down:
+                // If the current value hasn't reached its minimum yet, handle the key. Otherwise let
+                // the grid handle it.
+                if (Value > Minimum)
+                    return true;
+                break;
+            case Keys.Up:
+                // If the current value hasn't reached its maximum yet, handle the key. Otherwise let
+                // the grid handle it.
+                if (Value < Maximum)
+                    return true;
+                break;
             case Keys.Right: {
-                    TextBox textBox = this.Controls[1] as TextBox;
+                    var textBox = Controls[1] as TextBox;
                     if (textBox != null) {
                         // If the end of the selection is at the end of the string,
                         // let the DataGridView treat the key message
-                        if ((this.RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.Text.Length)) ||
-                            (this.RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0))) {
+                        if ((RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.TextLength))
+                            || (RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0))) {
                             return true;
                         }
                     }
                     break;
                 }
-
             case Keys.Left: {
-                    TextBox textBox = this.Controls[1] as TextBox;
+                    var textBox = Controls[1] as TextBox;
                     if (textBox != null) {
                         // If the end of the selection is at the begining of the string
                         // or if the entire text is selected and we did not start editing,
                         // send this character to the dataGridView, else process the key message
-                        if ((this.RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0)) ||
-                            (this.RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.Text.Length))) {
+                        if ((RightToLeft == RightToLeft.No && !(textBox.SelectionLength == 0 && textBox.SelectionStart == 0))
+                            || (RightToLeft == RightToLeft.Yes && !(textBox.SelectionLength == 0 && textBox.SelectionStart == textBox.TextLength))) {
                             return true;
                         }
                     }
                     break;
                 }
-
-            case Keys.Down:
-                // If the current value hasn't reached its minimum yet, handle the key. Otherwise let
-                // the grid handle it.
-                if (this.Value > this.Minimum) {
-                    return true;
-                }
-                break;
-
-            case Keys.Up:
-                // If the current value hasn't reached its maximum yet, handle the key. Otherwise let
-                // the grid handle it.
-                if (this.Value < this.Maximum) {
-                    return true;
-                }
-                break;
-
             case Keys.Home:
             case Keys.End: {
                     // Let the grid handle the key if the entire text is selected.
-                    TextBox textBox = this.Controls[1] as TextBox;
+                    var textBox = Controls[1] as TextBox;
                     if (textBox != null) {
-                        if (textBox.SelectionLength != textBox.Text.Length) {
+                        if (textBox.SelectionLength != textBox.TextLength)
                             return true;
-                        }
                     }
                     break;
                 }
-
             case Keys.Delete: {
                     // Let the grid handle the key if the carret is at the end of the text.
-                    TextBox textBox = this.Controls[1] as TextBox;
+                    var textBox = Controls[1] as TextBox;
                     if (textBox != null) {
-                        if (textBox.SelectionLength > 0 ||
-                            textBox.SelectionStart < textBox.Text.Length) {
+                        if (textBox.SelectionLength > 0 || textBox.SelectionStart < textBox.TextLength)
                             return true;
-                        }
                     }
                     break;
                 }
@@ -254,55 +219,49 @@ namespace WmcSoft.Windows.Forms
         }
 
         /// <summary>
-        /// Property which determines which cursor must be used for the editing panel,
-        /// i.e. the parent of the editing control.
+        /// Gets the cursor used when the mouse pointer is over the DataGridView.EditingPanel but not over the editing control.
         /// </summary>
         public virtual Cursor EditingPanelCursor {
-            get {
-                return Cursors.Default;
-            }
+            get { return Cursors.Default; }
         }
 
         /// <summary>
-        /// Returns the current value of the editing control.
+        /// Retrieves the formatted value of the cell.
         /// </summary>
         public virtual object GetEditingControlFormattedValue(DataGridViewDataErrorContexts context) {
-            bool userEdit = this.UserEdit;
+            bool userEdit = UserEdit;
             try {
                 // Prevent the Value from being set to Maximum or Minimum when the cell is being painted.
-                this.UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
-                return this.Value.ToString((this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString());
+                UserEdit = (context & DataGridViewDataErrorContexts.Display) == 0;
+                return Value.ToString((ThousandsSeparator ? "N" : "F") + DecimalPlaces.ToString());
             }
             finally {
-                this.UserEdit = userEdit;
+                UserEdit = userEdit;
             }
         }
 
         /// <summary>
-        /// Called by the grid to give the editing control a chance to prepare itself for
-        /// the editing session.
+        /// Prepares the currently selected cell for editing.
         /// </summary>
         public virtual void PrepareEditingControlForEdit(bool selectAll) {
-            TextBox textBox = this.Controls[1] as TextBox;
-            if (textBox != null) {
-                if (selectAll) {
-                    textBox.SelectAll();
-                } else {
-                    // Do not select all the text, but
-                    // position the caret at the end of the text
-                    textBox.SelectionStart = textBox.Text.Length;
-                }
+            var textBox = Controls[1] as TextBox;
+            if (textBox == null)
+                return;
+
+            if (selectAll) {
+                textBox.SelectAll();
+            } else {
+                // Do not select all the text, but
+                // position the caret at the end of the text
+                textBox.SelectionStart = textBox.TextLength;
             }
         }
 
         /// <summary>
-        /// Property which indicates whether the editing control needs to be repositioned 
-        /// when its value changes.
+        /// Gets or sets a value indicating whether the cell contents need to be repositioned whenever the value changes.
         /// </summary>
         public virtual bool RepositionEditingControlOnValueChange {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         #endregion
