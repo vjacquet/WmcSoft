@@ -88,6 +88,9 @@
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
     <Compile Include="Windows\Forms\NativeMethods.cs" />
+    <Compile Include="Windows\Forms\NumericBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\PersistFormSettings.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -119,6 +122,7 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\NumericBox.png" />
     <EmbeddedResource Include="Windows\Forms\BorderPainter.png" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewNumericUpDownColumn.bmp" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewRadioButtonColumn.bmp" />

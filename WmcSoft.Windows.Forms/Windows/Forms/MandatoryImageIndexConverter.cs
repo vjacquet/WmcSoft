@@ -28,6 +28,9 @@ using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
+    /// <summary>
+    /// An image index converter that excludes "None" as possible value.
+    /// </summary>
     public class MandatoryImageIndexConverter : ImageIndexConverter
     {
         protected override bool IncludeNoneAsStandardValue {
