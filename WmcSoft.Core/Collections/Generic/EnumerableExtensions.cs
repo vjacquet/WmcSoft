@@ -131,6 +131,102 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
+        public static T Elected<T>(this IEnumerable<T> source) where T : IEquatable<T> {
+            var enumerator = source.GetEnumerator();
+            if (!enumerator.MoveNext())
+                throw new InvalidOperationException();
+
+            const long offset = 1L << 32;
+            var aggregator = new Dictionary<T, long>();
+            do {
+                long record;
+                if (aggregator.TryGetValue(enumerator.Current, out record)) {
+                    record += offset;
+                } else {
+                    record = offset - aggregator.Count;
+                }
+                aggregator[enumerator.Current] = record;
+            } while (enumerator.MoveNext());
+            return aggregator.OrderByDescending(p => p.Value).First().Key;
+        }
+
+        public static T Elected<T>(this IEnumerable<T> source, Predicate<T> eligible) where T : IEquatable<T> {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (eligible == null)
+                throw new ArgumentNullException("eligible");
+
+            var enumerator = source.GetEnumerator();
+            if (!enumerator.MoveNext())
+                throw new InvalidOperationException();
+
+            const long offset = 1L << 32;
+            var aggregator = new Dictionary<T, long>();
+            do {
+                if (!eligible(enumerator.Current))
+                    continue;
+                long record;
+                if (aggregator.TryGetValue(enumerator.Current, out record)) {
+                    record += offset;
+                } else {
+                    record = offset - aggregator.Count;
+                }
+                aggregator[enumerator.Current] = record;
+            } while (enumerator.MoveNext());
+            if (aggregator.Count == 0)
+                throw new InvalidOperationException();
+            return aggregator.OrderByDescending(p => p.Value).First().Key;
+        }
+
+        public static T ElectedOrDefault<T>(this IEnumerable<T> source) where T : IEquatable<T> {
+            if (source == null)
+                return default(T);
+            var enumerator = source.GetEnumerator();
+            if (!enumerator.MoveNext())
+                return default(T);
+
+            const long offset = 1L << 32;
+            var aggregator = new Dictionary<T, long>();
+            do {
+                long record;
+                if (aggregator.TryGetValue(enumerator.Current, out record)) {
+                    record += offset;
+                } else {
+                    record = offset - aggregator.Count;
+                }
+                aggregator[enumerator.Current] = record;
+            } while (enumerator.MoveNext());
+            return aggregator.OrderByDescending(p => p.Value).First().Key;
+        }
+
+        public static T ElectedOrDefault<T>(this IEnumerable<T> source, Predicate<T> eligible) where T : IEquatable<T> {
+            if (eligible == null)
+                throw new ArgumentNullException("eligible");
+
+            if (source == null)
+                return default(T);
+            var enumerator = source.GetEnumerator();
+            if (!enumerator.MoveNext())
+                return default(T);
+
+            const long offset = 1L << 32;
+            var aggregator = new Dictionary<T, long>();
+            do {
+                if (!eligible(enumerator.Current))
+                    continue;
+                long record;
+                if (aggregator.TryGetValue(enumerator.Current, out record)) {
+                    record += offset;
+                } else {
+                    record = offset - aggregator.Count;
+                }
+                aggregator[enumerator.Current] = record;
+            } while (enumerator.MoveNext());
+            if (aggregator.Count == 0)
+                return default(T);
+            return aggregator.OrderByDescending(p => p.Value).First().Key;
+        }
+
         #endregion
     }
 }
