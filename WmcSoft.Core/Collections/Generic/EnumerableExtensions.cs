@@ -108,18 +108,26 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region Quorum
+        #region Quorum & Elected
 
-        public static bool Quorum<T>(this IEnumerable<T> enumerable, int quorum, Predicate<T> predicate) {
+        /// <summary>
+        /// Determines whether at least 'n' of the sequence satisfy a condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="quorum">The expected minimal number of occurences.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns>true if the quorum is reached; otherwise, false.</returns>
+        public static bool Quorum<TSource>(this IEnumerable<TSource> source, int quorum, Predicate<TSource> predicate) {
             if (quorum < 1)
                 throw new ArgumentOutOfRangeException("quorum");
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
-            if (enumerable == null)
+            if (source == null)
                 return false;
 
-            using (var enumerator = enumerable.GetEnumerator()) {
+            using (var enumerator = source.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
                     if (predicate(enumerator.Current)) {
                         if (quorum == 1)
@@ -131,26 +139,63 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
-        public static T Elected<T>(this IEnumerable<T> source) where T : IEquatable<T> {
+        #region Occurences
+
+        class Votes : IComparable<Votes>
+        {
+            public int Rank;
+            public int Count;
+
+            #region IComparable<Votes> Membres
+
+            public int CompareTo(Votes other) {
+                if (Count == other.Count)
+                    return other.Rank - Rank;
+                return Count - other.Count;
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns the element with the most occurences.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements.</param>
+        /// <param name="equalityComparer">The equality comparer.</param>
+        /// <returns>The element with the most occurences.</returns>
+        /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
+        public static TSource Elected<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
+            where TSource : IEquatable<TSource> {
             var enumerator = source.GetEnumerator();
             if (!enumerator.MoveNext())
                 throw new InvalidOperationException();
 
-            const long offset = 1L << 32;
-            var aggregator = new Dictionary<T, long>();
+            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
             do {
-                long record;
-                if (aggregator.TryGetValue(enumerator.Current, out record)) {
-                    record += offset;
+                Votes votes;
+                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
+                    votes.Count++;
                 } else {
-                    record = offset - aggregator.Count;
+                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
                 }
-                aggregator[enumerator.Current] = record;
             } while (enumerator.MoveNext());
             return aggregator.OrderByDescending(p => p.Value).First().Key;
         }
 
-        public static T Elected<T>(this IEnumerable<T> source, Predicate<T> eligible) where T : IEquatable<T> {
+        /// <summary>
+        /// Returns the element with the most occurences. Elements that are not eligible are discarded.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements.</param>
+        /// <param name="eligible">The predicate to indicate whether an element is eligible or not.</param>
+        /// <param name="equalityComparer">The equality comparer.</param>
+        /// <returns>The element with the most occurences.</returns>
+        /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
+        public static TSource Elected<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
+            where TSource : IEquatable<TSource> {
             if (source == null)
                 throw new ArgumentNullException("source");
             if (eligible == null)
@@ -160,70 +205,83 @@ namespace WmcSoft.Collections.Generic
             if (!enumerator.MoveNext())
                 throw new InvalidOperationException();
 
-            const long offset = 1L << 32;
-            var aggregator = new Dictionary<T, long>();
+            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
             do {
                 if (!eligible(enumerator.Current))
                     continue;
-                long record;
-                if (aggregator.TryGetValue(enumerator.Current, out record)) {
-                    record += offset;
+                Votes votes;
+                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
+                    votes.Count++;
                 } else {
-                    record = offset - aggregator.Count;
+                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
                 }
-                aggregator[enumerator.Current] = record;
             } while (enumerator.MoveNext());
             if (aggregator.Count == 0)
                 throw new InvalidOperationException();
             return aggregator.OrderByDescending(p => p.Value).First().Key;
         }
 
-        public static T ElectedOrDefault<T>(this IEnumerable<T> source) where T : IEquatable<T> {
+        /// <summary>
+        /// Returns the element with the most occurences, or a default value if the sequence is empty.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements.</param>
+        /// <param name="equalityComparer">The equality comparer.</param>
+        /// <returns>default(TSource) if the source is empty; otherwise the element with the most occurences.</returns>
+        /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
+        public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
+            where TSource : IEquatable<TSource> {
             if (source == null)
-                return default(T);
+                return default(TSource);
             var enumerator = source.GetEnumerator();
             if (!enumerator.MoveNext())
-                return default(T);
+                return default(TSource);
 
-            const long offset = 1L << 32;
-            var aggregator = new Dictionary<T, long>();
+            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
             do {
-                long record;
-                if (aggregator.TryGetValue(enumerator.Current, out record)) {
-                    record += offset;
+                Votes votes;
+                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
+                    votes.Count++;
                 } else {
-                    record = offset - aggregator.Count;
+                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
                 }
-                aggregator[enumerator.Current] = record;
             } while (enumerator.MoveNext());
             return aggregator.OrderByDescending(p => p.Value).First().Key;
         }
 
-        public static T ElectedOrDefault<T>(this IEnumerable<T> source, Predicate<T> eligible) where T : IEquatable<T> {
+        /// <summary>
+        /// Returns the element with the most occurences, or a default value if the sequence contains no eligible elements.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements.</param>
+        /// <param name="eligible">The predicate to indicate whether an element is eligible or not.</param>
+        /// <param name="equalityComparer">The equality comparer.</param>
+        /// <returns>default(TSource) if the source has no eligible elements; otherwise the element with the most occurences.</returns>
+        /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
+        public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
+            where TSource : IEquatable<TSource> {
             if (eligible == null)
                 throw new ArgumentNullException("eligible");
 
             if (source == null)
-                return default(T);
+                return default(TSource);
             var enumerator = source.GetEnumerator();
             if (!enumerator.MoveNext())
-                return default(T);
+                return default(TSource);
 
-            const long offset = 1L << 32;
-            var aggregator = new Dictionary<T, long>();
+            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
             do {
                 if (!eligible(enumerator.Current))
                     continue;
-                long record;
-                if (aggregator.TryGetValue(enumerator.Current, out record)) {
-                    record += offset;
+                Votes votes;
+                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
+                    votes.Count++;
                 } else {
-                    record = offset - aggregator.Count;
+                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
                 }
-                aggregator[enumerator.Current] = record;
             } while (enumerator.MoveNext());
             if (aggregator.Count == 0)
-                return default(T);
+                return default(TSource);
             return aggregator.OrderByDescending(p => p.Value).First().Key;
         }
 
