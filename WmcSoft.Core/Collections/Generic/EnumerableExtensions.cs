@@ -27,6 +27,8 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -139,25 +141,6 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
-        #region Occurences
-
-        class Votes : IComparable<Votes>
-        {
-            public int Rank;
-            public int Count;
-
-            #region IComparable<Votes> Membres
-
-            public int CompareTo(Votes other) {
-                if (Count == other.Count)
-                    return other.Rank - Rank;
-                return Count - other.Count;
-            }
-
-            #endregion
-        }
-
-        #endregion
 
         /// <summary>
         /// Returns the element with the most occurences.
@@ -173,16 +156,11 @@ namespace WmcSoft.Collections.Generic
             if (!enumerator.MoveNext())
                 throw new InvalidOperationException();
 
-            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
+            var ballot = new Ballot<TSource>(equalityComparer);
             do {
-                Votes votes;
-                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
-                    votes.Count++;
-                } else {
-                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
-                }
+                ballot.Vote(enumerator.Current);
             } while (enumerator.MoveNext());
-            return aggregator.OrderByDescending(p => p.Value).First().Key;
+            return ballot.First().Key;
         }
 
         /// <summary>
@@ -205,20 +183,13 @@ namespace WmcSoft.Collections.Generic
             if (!enumerator.MoveNext())
                 throw new InvalidOperationException();
 
-            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
+            var ballot = new Ballot<TSource>(equalityComparer);
             do {
                 if (!eligible(enumerator.Current))
                     continue;
-                Votes votes;
-                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
-                    votes.Count++;
-                } else {
-                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
-                }
+                ballot.Vote(enumerator.Current);
             } while (enumerator.MoveNext());
-            if (aggregator.Count == 0)
-                throw new InvalidOperationException();
-            return aggregator.OrderByDescending(p => p.Value).First().Key;
+            return ballot.First().Key;
         }
 
         /// <summary>
@@ -237,16 +208,13 @@ namespace WmcSoft.Collections.Generic
             if (!enumerator.MoveNext())
                 return default(TSource);
 
-            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
+            var ballot = new Ballot<TSource>(equalityComparer);
             do {
-                Votes votes;
-                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
-                    votes.Count++;
-                } else {
-                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
-                }
+                ballot.Vote(enumerator.Current);
             } while (enumerator.MoveNext());
-            return aggregator.OrderByDescending(p => p.Value).First().Key;
+            if (!ballot.HasVotes)
+                return default(TSource);
+            return ballot.First().Key;
         }
 
         /// <summary>
@@ -269,20 +237,15 @@ namespace WmcSoft.Collections.Generic
             if (!enumerator.MoveNext())
                 return default(TSource);
 
-            var aggregator = new Dictionary<TSource, Votes>(equalityComparer);
+            var ballot = new Ballot<TSource>(equalityComparer);
             do {
                 if (!eligible(enumerator.Current))
                     continue;
-                Votes votes;
-                if (aggregator.TryGetValue(enumerator.Current, out votes)) {
-                    votes.Count++;
-                } else {
-                    aggregator.Add(enumerator.Current, new Votes { Rank = aggregator.Count, Count = 1 });
-                }
+                ballot.Vote(enumerator.Current);
             } while (enumerator.MoveNext());
-            if (aggregator.Count == 0)
+            if (!ballot.HasVotes)
                 return default(TSource);
-            return aggregator.OrderByDescending(p => p.Value).First().Key;
+            return ballot.First().Key;
         }
 
         #endregion

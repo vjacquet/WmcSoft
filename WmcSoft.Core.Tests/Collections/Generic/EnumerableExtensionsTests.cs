@@ -13,7 +13,7 @@ namespace WmcSoft.Collections.Generic.Tests
         }
 
         [TestMethod]
-        public void CheckElectedOrDefault() {
+        public void CheckElectedOrDefaultWithPredicate() {
             string[] array;
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
@@ -25,5 +25,20 @@ namespace WmcSoft.Collections.Generic.Tests
             array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
             Assert.AreEqual("A", array.ElectedOrDefault(s => !String.IsNullOrEmpty(s)));
         }
+
+        [TestMethod]
+        public void CheckElectedOrDefaultWithoutPredicate() {
+            string[] array;
+
+            array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
+            Assert.AreEqual("A", array.ElectedOrDefault());
+
+            array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" };
+            Assert.AreEqual("B", array.ElectedOrDefault());
+
+            array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
+            Assert.AreEqual("A", array.ElectedOrDefault());
+        }
+
     }
 }
