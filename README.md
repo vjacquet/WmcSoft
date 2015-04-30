@@ -19,13 +19,16 @@ _Library of units and quantities._
 _Library to dispatch jobs. It predates the Task in .Net._
 
 ## WmcSoft.Components & WmcSoft.Windows.Forms
-_Libraries with component and windows forms controls._
+_Libraries of component and windows forms controls._
 
 These are pretty much useless now, as the component model and the windows form are kind of deprecated.
 
 I liked the whole component/designer concept, the idea that we can have different view of the code
-and how it helped building other component. 
+and how it helped building other component.
 
-Yet, the main drawback I see is that it requires to shape the code in a specific way, 
+Yet, the first drawback I see is that it requires to shape the code in a specific way, 
 especially mutating the component through properties. It made the component sometimes harder 
-to implement.
+to implement.  
+The second drawback is related to forms, user controls and inheritance because there is a conflict 
+between access control and visual representation. How do you hide what is visible. How can you see 
+controls and yet be unable to move them inside the form? 
