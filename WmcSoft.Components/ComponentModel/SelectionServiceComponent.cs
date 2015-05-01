@@ -57,7 +57,6 @@ namespace WmcSoft.ComponentModel
 
         #region Private Fields
 
-        object rootComponent;
         ISelectionService selectionService;
 
         #endregion
@@ -160,13 +159,13 @@ namespace WmcSoft.ComponentModel
         protected ISelectionService SelectionService {
             get {
                 if (selectionService == null) {
-                    if (!standalone) {
+                    if (!Standalone) {
                         selectionService = GetService(typeof(ISelectionService)) as ISelectionService;
                     }
 
                     if (selectionService == null) {
                         var serviceProvider = (IServiceProvider)this.GetService(typeof(IServiceProvider));
-                        selectionService = new Design.SelectionService(serviceProvider, rootComponent);
+                        selectionService = new Design.SelectionService(serviceProvider, RootComponent);
                     }
 
                     selectionService.SelectionChanging += new EventHandler(selectionService_SelectionChanging);
@@ -204,38 +203,15 @@ namespace WmcSoft.ComponentModel
         bool isSelectionDirty;
 
         [DefaultValue(false)]
-        public bool Standalone {
-            get {
-                return standalone;
-            }
-            set {
-                if (standalone != value) {
-                    standalone = value;
-                }
-            }
-        }
-        bool standalone;
+        public bool Standalone { get; set; }
 
         [DefaultValue(null)]
         [TypeConverter(typeof(ObjectReferenceConverter))]
-        public object RootComponent {
-            get {
-                return rootComponent;
-            }
-            set {
-                if (rootComponent != value) {
-                    rootComponent = value;
-                }
-            }
-        }
+        public object RootComponent { get; set; }
 
         public event EventHandler PrimarySelectionChanged {
-            add {
-                this.Events.AddHandler(PrimarySelectionChangedEvent, value);
-            }
-            remove {
-                this.Events.RemoveHandler(PrimarySelectionChangedEvent, value);
-            }
+            add { Events.AddHandler(PrimarySelectionChangedEvent, value); }
+            remove { Events.RemoveHandler(PrimarySelectionChangedEvent, value); }
         }
         private static readonly object PrimarySelectionChangedEvent = new Object();
 

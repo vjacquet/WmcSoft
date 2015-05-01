@@ -80,6 +80,7 @@
             this.Column1 = new WmcSoft.Windows.Forms.DataGridViewNumericUpDownColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new WmcSoft.Windows.Forms.DataGridViewRadioButtonColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolStrip1 = new WmcSoft.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -91,7 +92,6 @@
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             componentFactory = new WmcSoft.ComponentModel.ComponentFactory(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -432,7 +432,7 @@
             // 
             // headeredPanel1
             // 
-            this.headeredPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.headeredPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.headeredPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // headeredPanel1.HeaderStrip
@@ -446,7 +446,7 @@
             this.headeredPanel1.HeaderStrip.Location = new System.Drawing.Point(0, 0);
             this.headeredPanel1.HeaderStrip.Name = "HeaderStrip";
             this.headeredPanel1.HeaderStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.headeredPanel1.HeaderStrip.Size = new System.Drawing.Size(255, 33);
+            this.headeredPanel1.HeaderStrip.Size = new System.Drawing.Size(257, 33);
             this.headeredPanel1.HeaderStrip.Stretch = true;
             this.headeredPanel1.HeaderStrip.SuppressHighlighting = false;
             this.headeredPanel1.HeaderStrip.TabIndex = 0;
@@ -469,6 +469,7 @@
             // 
             // treeView1
             // 
+            this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
@@ -485,7 +486,7 @@
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode5});
-            this.treeView1.Size = new System.Drawing.Size(255, 420);
+            this.treeView1.Size = new System.Drawing.Size(257, 422);
             this.treeView1.TabIndex = 0;
             // 
             // dataGridView1
@@ -521,6 +522,11 @@
             "green",
             "blue"});
             this.Column3.Name = "Column3";
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Column4";
+            this.Column4.Name = "Column4";
             // 
             // toolStrip1
             // 
@@ -624,11 +630,6 @@
             this.helpToolStripButton.Name = "helpToolStripButton";
             this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.helpToolStripButton.Text = "He&lp";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Column4";
-            this.Column4.Name = "Column4";
             // 
             // ToolStripForm
             // 

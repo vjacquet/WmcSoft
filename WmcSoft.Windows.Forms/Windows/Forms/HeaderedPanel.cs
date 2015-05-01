@@ -82,19 +82,33 @@ namespace WmcSoft.Windows.Forms.Design
             return false;
         }
 
+        protected override InheritanceAttribute InheritanceAttribute {
+            get {
+                if (base.InheritanceAttribute == InheritanceAttribute.Inherited || base.InheritanceAttribute == InheritanceAttribute.InheritedReadOnly) {
+                    return InheritanceAttribute.InheritedReadOnly;
+                }
+                return base.InheritanceAttribute;
+            }
+        }
+
         //public override int NumberOfInternalControlDesigners() {
         //    return 2;// return base.NumberOfInternalControlDesigners();
         //}
 
-        //public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
-        //    switch (internalControlIndex) {
-        //    case 0:
-        //        return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
-        //    case 1:
-        //        return (ControlDesigner)designerHost.GetDesigner(_headerStrip);
-        //    }
-        //    return base.InternalControlDesigner(internalControlIndex);
-        //}
+        public override ControlDesigner InternalControlDesigner(int internalControlIndex) {
+            //switch (internalControlIndex) {
+            //case 0:
+            //    return (ControlDesigner)designerHost.GetDesigner(_placeHolder);
+            //case 1:
+            //    return (ControlDesigner)designerHost.GetDesigner(_headerStrip);
+            //}
+            var designer = base.InternalControlDesigner(internalControlIndex);
+            var placeHolder = designer as PlaceHolderDesigner;
+            if (placeHolder != null) {
+                placeHolder.OverrideInheritanceAttribute(InheritanceAttribute);
+            }
+            return designer;
+        }
 
         protected override void OnDragEnter(DragEventArgs de) {
             de.Effect = DragDropEffects.None;

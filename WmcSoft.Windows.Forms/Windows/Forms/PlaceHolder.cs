@@ -32,14 +32,34 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using WmcSoft.Windows.Forms.Design;
 
 namespace WmcSoft.Windows.Forms
 {
-    [Designer(typeof(Design.PlaceHolderDesigner)), ToolboxItem(false), Docking(DockingBehavior.Never)]
+    [ToolboxBitmap(typeof(PlaceHolder), "PlaceHolder.bmp")]
+    [Designer(typeof(Design.PlaceHolderDesigner))]
+    [ToolboxItem(false)]
+    [Docking(DockingBehavior.Never)]
     public sealed class PlaceHolder : Panel
     {
-        private bool collapsed;
-        private Control owner;
+        #region Private fields
+
+        private Control _owner;
+
+        #endregion
+
+        #region Lifecycle
+
+        public PlaceHolder(Control owner) {
+            base.Dock = DockStyle.Fill;
+            _owner = owner;
+            _owner.Controls.Add(this);
+            base.SetStyle(ControlStyles.ResizeRedraw, true);
+        }
+
+        #endregion
+
+        #region Events
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         public new event EventHandler AutoSizeChanged {
@@ -83,15 +103,10 @@ namespace WmcSoft.Windows.Forms
             remove { base.VisibleChanged -= value; }
         }
 
-        // Methods
-        public PlaceHolder(Control owner) {
-            this.owner = owner;
-            this.Dock = DockStyle.Fill;
-            owner.Controls.Add(this);
-            base.SetStyle(ControlStyles.ResizeRedraw, true);
-        }
+        #endregion
 
-        // Properties
+        #region Properties
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -105,18 +120,15 @@ namespace WmcSoft.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override bool AutoSize {
             get { return base.AutoSize; }
-            set { base.AutoSize = value; }
+            set { throw new NotSupportedException(); }
         }
 
         [Browsable(false), Localizable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override AutoSizeMode AutoSizeMode {
-            get {
-                return AutoSizeMode.GrowOnly;
-            }
-            set {
-            }
+            get { return AutoSizeMode.GrowOnly; }
+            set { throw new NotSupportedException(); }
         }
 
         [Browsable(false)]
@@ -124,12 +136,7 @@ namespace WmcSoft.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new BorderStyle BorderStyle {
             get { return base.BorderStyle; }
-            set { base.BorderStyle = value; }
-        }
-
-        internal bool Collapsed {
-            get { return this.collapsed; }
-            set { this.collapsed = value; }
+            set { throw new NotSupportedException(); }
         }
 
         protected override Padding DefaultMargin {
@@ -141,7 +148,7 @@ namespace WmcSoft.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override DockStyle Dock {
             get { return base.Dock; }
-            set { base.Dock = value; }
+            set { throw new NotSupportedException(); }
         }
 
         [Browsable(false)]
@@ -151,60 +158,12 @@ namespace WmcSoft.Windows.Forms
             get { return base.DockPadding; }
         }
 
-        [Category("Layout")]
-        [EditorBrowsable(EditorBrowsableState.Always), Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int Height {
-            get {
-                if (this.Collapsed) {
-                    return 0;
-                }
-                return base.Height;
-            }
-            set {
-                throw new NotSupportedException();//SR.GetString("SplitContainerPanelHeight"));
-            }
-        }
-
-        internal int HeightInternal {
-            get { return base.Height; }
-            set { base.Height = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new Point Location {
-            get { return base.Location; }
-            set { base.Location = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override Size MaximumSize {
-            get { return base.MaximumSize; }
-            set { base.MaximumSize = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override Size MinimumSize {
-            get { return base.MinimumSize; }
-            set { base.MinimumSize = value; }
-        }
-
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Name {
             get { return base.Name; }
             set { base.Name = value; }
-        }
-
-        internal Control Owner {
-            get { return this.owner; }
         }
 
         [Browsable(false)]
@@ -218,24 +177,9 @@ namespace WmcSoft.Windows.Forms
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new Size Size {
-            get {
-                if (this.Collapsed) {
-                    return Size.Empty;
-                }
-                return base.Size;
-            }
-            set {
-                base.Size = value;
-            }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex {
             get { return base.TabIndex; }
-            set { base.TabIndex = value; }
+            set { throw new NotSupportedException(); }
         }
 
         [Browsable(false)]
@@ -243,7 +187,7 @@ namespace WmcSoft.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new bool TabStop {
             get { return base.TabStop; }
-            set { base.TabStop = value; }
+            set { throw new NotSupportedException(); }
         }
 
         [Browsable(false)]
@@ -251,31 +195,15 @@ namespace WmcSoft.Windows.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new bool Visible {
             get { return base.Visible; }
-            set { base.Visible = value; }
+            set { throw new NotSupportedException(); }
         }
 
-        [Category("Layout")]
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int Width {
-            get {
-                if (this.Collapsed) {
-                    return 0;
-                }
-                return base.Width;
-            }
-            set {
-                throw new NotSupportedException();//SR.GetString("SplitContainerPanelWidth"));
-            }
+        internal Control Owner {
+            get { return _owner; }
         }
 
-        internal int WidthInternal {
-            get { return base.Width; }
-            set { base.Width = value; }
-        }
+        #endregion
     }
-
 
 }
 
@@ -283,35 +211,30 @@ namespace WmcSoft.Windows.Forms.Design
 {
     public class PlaceHolderDesigner : ScrollableControlDesigner
     {
-        // Fields
-        private IDesignerHost designerHost;
-        private bool selected;
-        private PlaceHolder placeHolder;
+        #region Fields
+
+        private IDesignerHost _designerHost;
+        private bool _selected;
+        private PlaceHolder _placeHolder;
+
+        #endregion
+
+        #region Methods
 
         protected virtual void DrawBorder(Graphics graphics) {
             Panel component = (Panel)base.Component;
             if ((component != null) && component.Visible) {
-                Pen borderPen = this.BorderPen;
-                Rectangle clientRectangle = this.Control.ClientRectangle;
-                clientRectangle.Width--;
-                clientRectangle.Height--;
-                graphics.DrawRectangle(borderPen, clientRectangle);
-                borderPen.Dispose();
+                var clientRectangle = Control.ClientRectangle;
+                clientRectangle.Inflate(-1, -1);
+                using (var pen = CreateBorderPen()) {
+                    graphics.DrawRectangle(pen, clientRectangle);
+                }
             }
         }
 
-        protected Pen BorderPen {
-            get {
-                var color = (this.Control.BackColor.GetBrightness() < 0.5) ? ControlPaint.Light(this.Control.BackColor) : ControlPaint.Dark(this.Control.BackColor);
-                var pen = new Pen(color);
-                pen.DashStyle = DashStyle.Dash;
-                return pen;
-            }
-        }
-
-        public override bool CanBeParentedTo(IDesigner parentDesigner) {
-            return (parentDesigner is ControlDesigner);
-        }
+        //public override bool CanBeParentedTo(IDesigner parentDesigner) {
+        //    return (parentDesigner is ControlDesigner);
+        //}
 
         protected override void Dispose(bool disposing) {
             var service = (IComponentChangeService)this.GetService(typeof(IComponentChangeService));
@@ -321,25 +244,17 @@ namespace WmcSoft.Windows.Forms.Design
             base.Dispose(disposing);
         }
 
-        internal void DrawSelectedBorder() {
+        protected internal void DrawSelectedBorder() {
             var control = this.Control;
             var clientRectangle = control.ClientRectangle;
-            using (var graphics = control.CreateGraphics()) {
-                Color color;
-                if (control.BackColor.GetBrightness() < 0.5) {
-                    color = ControlPaint.Light(control.BackColor);
-                } else {
-                    color = ControlPaint.Dark(control.BackColor);
-                }
-                using (Pen pen = new Pen(color)) {
-                    pen.DashStyle = DashStyle.Dash;
-                    clientRectangle.Inflate(-4, -4);
-                    graphics.DrawRectangle(pen, clientRectangle);
-                }
+            clientRectangle.Inflate(-4, -4);
+            using (var graphics = control.CreateGraphics())
+            using (var pen = CreateBorderPen()) {
+                graphics.DrawRectangle(pen, clientRectangle);
             }
         }
 
-        internal void DrawWaterMark(Graphics g) {
+        protected internal void DrawWaterMark(Graphics g) {
             var control = this.Control;
             var clientRectangle = control.ClientRectangle;
             var name = control.Name;
@@ -350,7 +265,7 @@ namespace WmcSoft.Windows.Forms.Design
             }
         }
 
-        internal void EraseBorder() {
+        protected internal void EraseBorder() {
             var control = this.Control;
             var clientRectangle = control.ClientRectangle;
             var graphics = control.CreateGraphics();
@@ -363,77 +278,52 @@ namespace WmcSoft.Windows.Forms.Design
             control.Invalidate();
         }
 
+        protected override InheritanceAttribute InheritanceAttribute {
+            get {
+                return _inheritanceAttribute ?? base.InheritanceAttribute;
+            }
+        }
+        InheritanceAttribute _inheritanceAttribute;
+
+        internal void OverrideInheritanceAttribute(InheritanceAttribute inheritanceAttribute) {
+            _inheritanceAttribute = inheritanceAttribute;
+        }
+
         public override void Initialize(IComponent component) {
             base.Initialize(component);
-            this.placeHolder = (PlaceHolder)component;
-            this.designerHost = (IDesignerHost)component.Site.GetService(typeof(IDesignerHost));
-            IComponentChangeService service = (IComponentChangeService)this.GetService(typeof(IComponentChangeService));
+            _placeHolder = (PlaceHolder)component;
+            _designerHost = (IDesignerHost)component.Site.GetService(typeof(IDesignerHost));
+            var service = (IComponentChangeService)this.GetService(typeof(IComponentChangeService));
             if (service != null) {
                 service.ComponentChanged += OnComponentChanged;
             }
-            PropertyDescriptor descriptor = TypeDescriptor.GetProperties(component)["Locked"];
-            if ((descriptor != null) && (this.placeHolder.Parent is SplitContainer)) {
+            var descriptor = TypeDescriptor.GetProperties(component)["Locked"];
+            if (descriptor != null) {
                 descriptor.SetValue(component, true);
             }
         }
 
         private void OnComponentChanged(object sender, ComponentChangedEventArgs e) {
-            if (this.placeHolder.Parent != null) {
-                if (this.placeHolder.Controls.Count == 0) {
-                    Graphics g = this.placeHolder.CreateGraphics();
+            if (_placeHolder.Parent != null) {
+                if (_placeHolder.Controls.Count == 0) {
+                    Graphics g = _placeHolder.CreateGraphics();
                     this.DrawWaterMark(g);
                     g.Dispose();
                 } else {
-                    this.placeHolder.Invalidate();
+                    _placeHolder.Invalidate();
                 }
             }
         }
 
-        protected override void OnDragDrop(DragEventArgs de) {
-            if (this.InheritanceAttribute == InheritanceAttribute.InheritedReadOnly) {
-                de.Effect = DragDropEffects.None;
-            } else {
-                base.OnDragDrop(de);
-            }
-        }
-
-        protected override void OnDragEnter(DragEventArgs de) {
-            if (this.InheritanceAttribute == InheritanceAttribute.InheritedReadOnly) {
-                de.Effect = DragDropEffects.None;
-            } else {
-                base.OnDragEnter(de);
-            }
-        }
-
-        protected override void OnDragLeave(EventArgs e) {
-            if (this.InheritanceAttribute != InheritanceAttribute.InheritedReadOnly) {
-                base.OnDragLeave(e);
-            }
-        }
-
-        protected override void OnDragOver(DragEventArgs de) {
-            if (this.InheritanceAttribute == InheritanceAttribute.InheritedReadOnly) {
-                de.Effect = DragDropEffects.None;
-            } else {
-                base.OnDragOver(de);
-            }
-        }
-
-        //protected override void OnMouseHover() {
-        //    if (this.splitContainerDesigner != null) {
-        //        this.splitContainerDesigner.OnMouseHover();
-        //    }
-        //}
-
         protected override void OnPaintAdornments(PaintEventArgs pe) {
-            if (this.placeHolder.BorderStyle == BorderStyle.None) {
-                this.DrawBorder(pe.Graphics);
+            if (_placeHolder.BorderStyle == BorderStyle.None) {
+                DrawBorder(pe.Graphics);
             }
-            if (this.Selected) {
-                this.DrawSelectedBorder();
+            if (Selected) {
+                DrawSelectedBorder();
             }
-            if (this.placeHolder.Controls.Count == 0) {
-                this.DrawWaterMark(pe.Graphics);
+            if (_placeHolder.Controls.Count == 0) {
+                DrawWaterMark(pe.Graphics);
             }
         }
 
@@ -442,6 +332,11 @@ namespace WmcSoft.Windows.Forms.Design
             properties.Remove("Modifiers");
             properties.Remove("Locked");
             properties.Remove("GenerateMember");
+            properties.Remove("MinimumSize");
+            properties.Remove("MaximumSize");
+            properties.Remove("Location");
+            properties.Remove("Size");
+            properties.Remove("Dock");
             foreach (DictionaryEntry entry in properties) {
                 PropertyDescriptor oldPropertyDescriptor = (PropertyDescriptor)entry.Value;
                 if (oldPropertyDescriptor.Name.Equals("Name") && oldPropertyDescriptor.DesignTimeOnly) {
@@ -451,38 +346,36 @@ namespace WmcSoft.Windows.Forms.Design
             }
         }
 
-        // Properties
-        protected override InheritanceAttribute InheritanceAttribute {
-            get {
-                if ((this.placeHolder != null) && (this.placeHolder.Parent != null)) {
-                    return (InheritanceAttribute)TypeDescriptor.GetAttributes(this.placeHolder.Parent)[typeof(InheritanceAttribute)];
-                }
-                return base.InheritanceAttribute;
-            }
+        #endregion
+
+        #region Properties
+
+        Pen CreateBorderPen(Color backColor) {
+            var color = (backColor.GetBrightness() < 0.5) ? ControlPaint.Light(backColor) : ControlPaint.Dark(backColor);
+            var pen = new Pen(color);
+            pen.DashStyle = DashStyle.Dash;
+            return pen;
+        }
+        Pen CreateBorderPen() {
+            return CreateBorderPen(Control.BackColor);
         }
 
-        internal bool Selected {
+        protected internal bool Selected {
             get {
-                return this.selected;
+                return _selected;
             }
             set {
-                this.selected = value;
-                if (this.selected) {
-                    this.DrawSelectedBorder();
+                _selected = value;
+                if (_selected) {
+                    DrawSelectedBorder();
                 } else {
-                    this.EraseBorder();
+                    EraseBorder();
                 }
             }
         }
 
         public override SelectionRules SelectionRules {
-            get {
-                SelectionRules none = SelectionRules.None;
-                if (this.Control.Parent is SplitContainer) {
-                    none = SelectionRules.None | SelectionRules.Locked;
-                }
-                return none;
-            }
+            get { return SelectionRules.None | SelectionRules.Locked; }
         }
 
         public override IList SnapLines {
@@ -492,5 +385,9 @@ namespace WmcSoft.Windows.Forms.Design
                 return snapLines;
             }
         }
+
+        #endregion
+
     }
+
 }

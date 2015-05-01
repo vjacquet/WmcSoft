@@ -74,6 +74,9 @@
     <Compile Include="Windows\Forms\DataGridViewRadioButtonCellLayout.cs" />
     <Compile Include="Windows\Forms\DataGridViewRadioButtonColumn.cs" />
     <Compile Include="Windows\Forms\BindingManagerBaseExtensions.cs" />
+    <Compile Include="Windows\Forms\DeckLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
     <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
@@ -122,10 +125,12 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\PlaceHolder.bmp" />
     <EmbeddedResource Include="Windows\Forms\NumericBox.png" />
     <EmbeddedResource Include="Windows\Forms\BorderPainter.png" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewNumericUpDownColumn.bmp" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewRadioButtonColumn.bmp" />
+    <EmbeddedResource Include="Windows\Forms\DeckLayoutPanel.bmp" />
     <Content Include="Windows\Forms\HeaderedPanel.png" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.fr.resx" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.resx" />

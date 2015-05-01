@@ -59,6 +59,7 @@
     <Compile Include="ComponentModel\CustomTypeDescriptorDecorator.cs" />
     <Compile Include="ComponentModel\DescriptionResourceAttribute.cs" />
     <Compile Include="ComponentModel\Design\AliasResolutionService.cs" />
+    <Compile Include="ComponentModel\Design\DesignerHostExtensions.cs" />
     <Compile Include="ComponentModel\Design\Serialization\InstanceDescriptorExtensions.cs" />
     <Compile Include="ComponentModel\Design\NameCreationService.cs" />
     <Compile Include="ComponentModel\Design\SelectionService.cs" />
