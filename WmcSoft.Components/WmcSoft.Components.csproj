@@ -66,6 +66,7 @@
     <Compile Include="ComponentModel\Design\Serialization\DesignerSerializationManagerExtensions.cs" />
     <Compile Include="ComponentModel\Design\ServiceableTypesConverter.cs" />
     <Compile Include="ComponentModel\Design\ServiceableTypesEditor.cs" />
+    <Compile Include="ComponentModel\Design\TracingComponentDesigner.cs" />
     <Compile Include="ComponentModel\Design\TypeResolutionService.cs" />
     <Compile Include="ComponentModel\DisplayNameResourceAttribute.cs" />
     <Compile Include="ComponentModel\EventBarrier.cs" />
@@ -84,6 +85,12 @@
     </Compile>
     <Compile Include="ComponentModel\ServiceDependencyAttribute.cs" />
     <Compile Include="ComponentModel\ServingNestedContainer.cs" />
+    <Compile Include="ComponentModel\TracingComponent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ComponentModel\TracingComponent.Designer.cs">
+      <DependentUpon>TracingComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="ComponentModel\TypeDescriptorContext.cs" />
     <Compile Include="ComponentModel\TypeDescriptorScope.cs" />
     <Compile Include="ComponentModel\TypeResolver.cs" />
@@ -104,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CommandLine\CommandLine.bmp" />
+    <EmbeddedResource Include="ComponentModel\TracingComponent.png" />
     <EmbeddedResource Include="Net\WakeOnLan.bmp" />
     <EmbeddedResource Include="ComponentModel\SelectionServiceComponent.bmp" />
     <EmbeddedResource Include="ComponentModel\ServiceContainerComponent.bmp" />

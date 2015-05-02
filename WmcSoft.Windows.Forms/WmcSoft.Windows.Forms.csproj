@@ -59,7 +59,9 @@
     <Compile Include="Windows\Forms\BorderPainter.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\BorderPainter.Designer.cs" />
+    <Compile Include="Windows\Forms\BorderPainter.Designer.cs">
+      <DependentUpon>BorderPainter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -78,6 +80,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
+    <Compile Include="Windows\Forms\Design\ChildControlConverter.cs" />
+    <Compile Include="Windows\Forms\Design\DeckLayoutPanelDesigner.cs" />
     <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
     <Compile Include="Windows\Forms\FormSettings.cs" />
@@ -88,6 +92,7 @@
       <DependentUpon>HeaderedPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\HeaderStrip.cs" />
+    <Compile Include="Windows\Forms\Layout\DeckLayoutEngine.cs" />
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
     <Compile Include="Windows\Forms\NativeMethods.cs" />

@@ -24,23 +24,33 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WmcSoft.Windows.Forms
+namespace WmcSoft.Windows.Forms.Design
 {
-    public static class BindingManagerBaseExtensions
+    public class ChildControlConverter : ReferenceConverter
     {
-        public static PropertyDescriptor GetItemProperty(this BindingManagerBase cm, string name, bool ignoreCase) {
-            if (cm == null)
-                return null;
-            var props = cm.GetItemProperties();
-            return props.Find(name, ignoreCase);
+        public ChildControlConverter()
+            : base(typeof(Control)) {
+
+        }
+
+        public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
+            var arrayList = new ArrayList();
+            var control = context.Instance as Control;
+            if (control == null) {
+                var action = context.Instance as DesignerActionList;
+                if (action != null)
+                    control = action.Component as Control;
+            }
+            if (control != null) {
+                arrayList.AddRange(control.Controls.OfType<IComponent>().ToArray());
+            }
+            return new TypeConverter.StandardValuesCollection(arrayList);
         }
     }
 }
