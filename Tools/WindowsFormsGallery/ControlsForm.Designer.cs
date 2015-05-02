@@ -75,9 +75,10 @@
             // 
             // button1
             // 
+            this.button1.AutoSize = true;
             this.button1.Location = new System.Drawing.Point(615, 149);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(105, 52);
+            this.button1.Size = new System.Drawing.Size(75, 30);
             this.button1.TabIndex = 2;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
@@ -97,6 +98,7 @@
             this.deckLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tracingComponent1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

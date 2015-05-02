@@ -39,6 +39,8 @@ namespace WmcSoft.ComponentModel
     [ToolboxBitmap(typeof(TracingComponent), "TracingComponent.png")]
     public partial class TracingComponent : Component, ISupportInitialize
     {
+        TraceSource _traceSource;
+
         #region Lifecycle
 
         public TracingComponent() {
@@ -71,10 +73,35 @@ namespace WmcSoft.ComponentModel
         #region Properties
 
         [DefaultValue("")]
-        public string TraceSource { get; set; }
+        public string TraceSource {
+            get {
+                if (_traceSource == null)
+                    return "";
+                return _traceSource.Name;
+            }
+            set {
+                if (value == null) {
+                    _traceSource = null;
+                } else {
+                    _traceSource = new TraceSource(value);
+                }
+            }
+        }
 
         [DefaultValue(false)]
         public bool LaunchDebugger { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public void TraceMessage(string category, string message) {
+            if (_traceSource != null) {
+                _traceSource.TraceInformation(category + ": " + message);
+            } else {
+                Debugger.Log(0, category, message);
+            }
+        }
 
         #endregion
 
