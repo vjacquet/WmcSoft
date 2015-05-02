@@ -25,13 +25,16 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.deckLayoutPanel1 = new WmcSoft.Windows.Forms.DeckLayoutPanel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.tracingComponent1 = new WmcSoft.ComponentModel.TracingComponent(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.deckLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tracingComponent1)).BeginInit();
             this.SuspendLayout();
             // 
             // numericUpDown1
@@ -92,6 +95,7 @@
             this.Text = "ControlsForm";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.deckLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tracingComponent1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -103,5 +107,6 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
+        private WmcSoft.ComponentModel.TracingComponent tracingComponent1;
     }
 }

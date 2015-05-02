@@ -71,6 +71,20 @@ namespace WmcSoft.ComponentModel.Design
             }
         }
 
+        public override DesignerVerbCollection Verbs {
+            get {
+                var dvc = new DesignerVerbCollection();
+                dvc.Add(new DesignerVerb("List Components", new EventHandler(OnListComponents)));
+                return dvc;
+            }
+        }
+
+        private void OnListComponents(object sender, EventArgs e) {
+            using (var listform = new DesignerHostListForm()) {
+                listform.ShowDialog(_designerHost);
+            }
+        }
+
         protected override void Dispose(bool disposing) {
             if (_manager != null && _provider != null)
                 _manager.RemoveSerializationProvider(_provider);
