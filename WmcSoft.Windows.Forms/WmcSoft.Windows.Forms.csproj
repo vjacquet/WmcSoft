@@ -84,6 +84,12 @@
     <Compile Include="Windows\Forms\Design\DeckLayoutPanelDesigner.cs" />
     <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
+    <Compile Include="Windows\Forms\ExceptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ExceptionForm.Designer.cs">
+      <DependentUpon>ExceptionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\FormSettings.cs" />
     <Compile Include="Windows\Forms\HeaderedPanel.cs">
       <SubType>UserControl</SubType>
@@ -95,6 +101,12 @@
     <Compile Include="Windows\Forms\Layout\DeckLayoutEngine.cs" />
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
+    <Compile Include="Windows\Forms\MessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\MessageForm.designer.cs">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\NativeMethods.cs" />
     <Compile Include="Windows\Forms\NumericBox.cs">
       <SubType>Component</SubType>
@@ -104,6 +116,9 @@
     </Compile>
     <Compile Include="Windows\Forms\PlaceHolder.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\SplashForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\Forms\SplitContainer.cs" />
     <Compile Include="Windows\Forms\Splitter.cs" />
@@ -130,6 +145,8 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\ExceptionForm.resx" />
+    <EmbeddedResource Include="Windows\Forms\MessageForm.resx" />
     <EmbeddedResource Include="Windows\Forms\PlaceHolder.bmp" />
     <EmbeddedResource Include="Windows\Forms\NumericBox.png" />
     <EmbeddedResource Include="Windows\Forms\BorderPainter.png" />
