@@ -82,6 +82,7 @@
     <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
     <Compile Include="Windows\Forms\Design\ChildControlConverter.cs" />
     <Compile Include="Windows\Forms\Design\DeckLayoutPanelDesigner.cs" />
+    <Compile Include="Windows\Forms\Design\UIServiceDesigner.cs" />
     <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
     <Compile Include="Windows\Forms\ExceptionForm.cs">
@@ -135,6 +136,12 @@
     <Compile Include="Windows\Forms\ToolStripStatusCultureLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusKeyLockLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusText.cs" />
+    <Compile Include="Windows\Forms\UIService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\UIService.Designer.cs">
+      <DependentUpon>UIService.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\WaitCursor.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
@@ -145,6 +152,7 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\UIService.bmp" />
     <EmbeddedResource Include="Windows\Forms\ExceptionForm.resx" />
     <EmbeddedResource Include="Windows\Forms\MessageForm.resx" />
     <EmbeddedResource Include="Windows\Forms\PlaceHolder.bmp" />

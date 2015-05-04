@@ -32,6 +32,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tracingComponent1 = new WmcSoft.ComponentModel.TracingComponent(this.components);
+            this.uiService1 = new WmcSoft.Windows.Forms.UIService(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.deckLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tracingComponent1)).BeginInit();
@@ -84,6 +85,10 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // uiService1
+            // 
+            this.uiService1.ContainerControl = this;
+            // 
             // ControlsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -110,5 +115,6 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
         private WmcSoft.ComponentModel.TracingComponent tracingComponent1;
+        private WmcSoft.Windows.Forms.UIService uiService1;
     }
 }
