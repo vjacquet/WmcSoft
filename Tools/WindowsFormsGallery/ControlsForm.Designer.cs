@@ -33,6 +33,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tracingComponent1 = new WmcSoft.ComponentModel.TracingComponent(this.components);
             this.uiService1 = new WmcSoft.Windows.Forms.UIService(this.components);
+            this.uiTextEditor1 = new WmcSoft.Windows.Forms.UITextEditor(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.deckLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tracingComponent1)).BeginInit();
@@ -89,11 +90,23 @@
             // 
             this.uiService1.ContainerControl = this;
             // 
+            // uiTextEditor1
+            // 
+            this.uiTextEditor1.AutoSize = true;
+            this.uiTextEditor1.BackColor = System.Drawing.SystemColors.Window;
+            this.uiTextEditor1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.uiTextEditor1.Location = new System.Drawing.Point(298, 386);
+            this.uiTextEditor1.Name = "uiTextEditor1";
+            this.uiTextEditor1.Padding = new System.Windows.Forms.Padding(2);
+            this.uiTextEditor1.Size = new System.Drawing.Size(228, 24);
+            this.uiTextEditor1.TabIndex = 3;
+            // 
             // ControlsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 544);
+            this.Controls.Add(this.uiTextEditor1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.deckLayoutPanel1);
             this.Controls.Add(this.numericUpDown1);
@@ -116,5 +129,6 @@
         private System.Windows.Forms.Button button1;
         private WmcSoft.ComponentModel.TracingComponent tracingComponent1;
         private WmcSoft.Windows.Forms.UIService uiService1;
+        private WmcSoft.Windows.Forms.UITextEditor uiTextEditor1;
     }
 }

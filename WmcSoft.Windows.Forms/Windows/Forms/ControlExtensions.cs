@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -34,6 +35,8 @@ namespace WmcSoft.Windows.Forms
 {
     public static class ControlExtensions
     {
+        #region Navigation
+
         public static T AddNew<T>(this Control control)
             where T : Control, new() {
             T t = new T();
@@ -121,6 +124,10 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
+        #endregion
+
+        #region Control extensions
+
         public const ContentAlignment AnyTopAlignment = ContentAlignment.TopRight | ContentAlignment.TopCenter | ContentAlignment.TopLeft;
         public const ContentAlignment AnyMiddleAlignment = ContentAlignment.MiddleRight | ContentAlignment.MiddleCenter | ContentAlignment.MiddleLeft;
         public const ContentAlignment AnyBottomAlignment = ContentAlignment.BottomRight | ContentAlignment.BottomCenter | ContentAlignment.BottomLeft;
@@ -138,6 +145,30 @@ namespace WmcSoft.Windows.Forms
             return ((clientRectangle.Bottom - tmHeight) + num);
         }
 
+        /// <summary>
+        ///   Given a control, figure out if it should be drawn Right To Left,
+        ///   which might involve going up the parent chain.
+        /// </summary>
+        /// <param name="control">Control whose RTL value we want to explore.</param>
+        /// <returns>True means we should be drawing RTL.</returns>
+        public static bool GetRightToLeftValue(this Control control) {
+            while (control != null) {
+                switch (control.RightToLeft) {
+                case RightToLeft.Yes:
+                    return true;
+                case RightToLeft.No:
+                    return false;
+                case RightToLeft.Inherit:
+                    // Keep going up the parent chain...
+                    break;
+                }
+                control = control.Parent;
+            }
+            return CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+        }
+
+        #endregion
+
         #region Control specific extensions
 
         public static TextBox GetTextBox(this NumericUpDown numericUpDown) {
@@ -145,7 +176,7 @@ namespace WmcSoft.Windows.Forms
         }
 
         public static void ApplyOnText(this NumericUpDown numericUpDown, Action<TextBoxBase> action) {
-            if(numericUpDown == null)
+            if (numericUpDown == null)
                 return;
             var textBox = numericUpDown.Controls[1] as TextBoxBase;
             if (textBox == null)

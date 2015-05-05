@@ -42,14 +42,14 @@ using System.Windows.Forms.VisualStyles;
 namespace WmcSoft.Windows.Forms
 {
     [DefaultBindingProperty("Text")]
-    [ToolboxBitmap(typeof(WmcSoft.Windows.Forms.UITextEditor), "UITextEditor.bmp")]
+    [ToolboxBitmap(typeof(UITextEditor), "UITextEditor.bmp")]
     [Designer(typeof(WmcSoft.Windows.Forms.Design.UITextEditorDesigner))]
     public partial class UITextEditor : UserControl, IWindowsFormsEditorService
     {
-
         #region Lifecycle
 
         public UITextEditor() {
+            PreInitializeComponent();
             InitializeComponent();
         }
 
@@ -61,8 +61,8 @@ namespace WmcSoft.Windows.Forms
 
         private void PreInitializeComponent() {
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
-            this.DataBindings.CollectionChanged += new CollectionChangeEventHandler(DataBindings_CollectionChanged);
-            this.BindingContextChanged += new EventHandler(UITextEditor_BindingContextChanged);
+            DataBindings.CollectionChanged += new CollectionChangeEventHandler(DataBindings_CollectionChanged);
+            BindingContextChanged += new EventHandler(UITextEditor_BindingContextChanged);
         }
 
         #endregion
@@ -70,25 +70,25 @@ namespace WmcSoft.Windows.Forms
         #region IWindowsFormsEditorService Members
 
         public void CloseDropDown() {
-            this.dropDownHolder.SetControl(null);
-            this.dropDownHolder.Visible = false;
-            this.button.Focus();
+            dropDownHolder.SetControl(null);
+            dropDownHolder.Visible = false;
+            button.Focus();
         }
 
         public void DropDownControl(Control control) {
-            if (this.dropDownHolder == null) {
-                this.dropDownHolder = new DropDownHolder(this);
+            if (dropDownHolder == null) {
+                dropDownHolder = new DropDownHolder(this);
             }
-            this.dropDownHolder.SetControl(control);
-            this.dropDownHolder.Location = button.PointToScreen(new Point(0, button.Height));
+            dropDownHolder.SetControl(control);
+            dropDownHolder.Location = button.PointToScreen(new Point(0, button.Height));
             try {
-                this.dropDownHolder.Visible = true;
-                this.dropDownHolder.Lock();
-                this.dropDownHolder.FocusControl();
-                this.dropDownHolder.DoModalLoop();
+                dropDownHolder.Visible = true;
+                dropDownHolder.Lock();
+                dropDownHolder.FocusControl();
+                dropDownHolder.DoModalLoop();
             }
             finally {
-                this.dropDownHolder.Unlock();
+                dropDownHolder.Unlock();
             }
         }
 
@@ -111,12 +111,8 @@ namespace WmcSoft.Windows.Forms
         [Bindable(BindableSupport.Yes)]
         [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
         public override string Text {
-            get {
-                return textBox.Text;
-            }
-            set {
-                textBox.Text = value;
-            }
+            get { return textBox.Text; }
+            set { textBox.Text = value; }
         }
 
         private void textBox_TextChanged(object sender, EventArgs e) {
@@ -133,23 +129,23 @@ namespace WmcSoft.Windows.Forms
             if (binding != null && binding.PropertyName == "Text") {
                 switch (e.Action) {
                 case CollectionChangeAction.Add:
-                    textBinding = binding;
-                    textBinding.DataSourceUpdateMode = DataSourceUpdateMode.OnValidation;
-                    textBinding.Format += new ConvertEventHandler(textBinding_Format);
-                    textBinding.Parse += new ConvertEventHandler(textBinding_Parse);
+                    _textBinding = binding;
+                    _textBinding.DataSourceUpdateMode = DataSourceUpdateMode.OnValidation;
+                    _textBinding.Format += textBinding_Format;
+                    _textBinding.Parse += textBinding_Parse;
                     break;
                 case CollectionChangeAction.Refresh:
                     break;
                 case CollectionChangeAction.Remove:
-                    if (bindingManagerBase != null)
-                        bindingManagerBase.CurrentChanged += new EventHandler(BindingManagerBase_CurrentChanged);
-                    textBinding.Format -= new ConvertEventHandler(textBinding_Format);
-                    textBinding.Parse -= new ConvertEventHandler(textBinding_Parse);
-                    textBinding = null;
-                    editor = null;
+                    if (_bindingManagerBase != null)
+                        _bindingManagerBase.CurrentChanged += BindingManagerBase_CurrentChanged;
+                    _textBinding.Format -= textBinding_Format;
+                    _textBinding.Parse -= textBinding_Parse;
+                    _textBinding = null;
+                    _editor = null;
                     canvas.Visible = false;
                     button.Visible = false;
-                    typeDescriptorContext = null;
+                    _typeDescriptorContext = null;
                     break;
                 default:
                     break;
@@ -158,38 +154,31 @@ namespace WmcSoft.Windows.Forms
         }
 
         void UITextEditor_BindingContextChanged(object sender, EventArgs e) {
-            if (textBinding != null && textBinding.BindingManagerBase != bindingManagerBase) {
+            if (_textBinding != null && _textBinding.BindingManagerBase != _bindingManagerBase) {
                 // Wire the current changed event on the textBinding' binding manager.
-                if (bindingManagerBase != null)
-                    bindingManagerBase.CurrentChanged -= new EventHandler(BindingManagerBase_CurrentChanged);
-                bindingManagerBase = textBinding.BindingManagerBase;
-                if (bindingManagerBase != null)
-                    bindingManagerBase.CurrentChanged += new EventHandler(BindingManagerBase_CurrentChanged);
+                if (_bindingManagerBase != null)
+                    _bindingManagerBase.CurrentChanged -= BindingManagerBase_CurrentChanged;
+                _bindingManagerBase = _textBinding.BindingManagerBase;
+                if (_bindingManagerBase != null)
+                    _bindingManagerBase.CurrentChanged += BindingManagerBase_CurrentChanged;
             }
         }
 
         void BindingManagerBase_CurrentChanged(object sender, EventArgs e) {
-            BindingManagerBase bindingManagerBase = textBinding.BindingManagerBase;
+            BindingManagerBase bindingManagerBase = _textBinding.BindingManagerBase;
             if (bindingManagerBase != null && bindingManagerBase.Count > 0) {
-
-                object current = bindingManagerBase.Current;
-                editor = TypeDescriptor.GetEditor(current, typeof(UITypeEditor)) as UITypeEditor;
-                propertyDescriptor = bindingManagerBase
-                    .GetItemProperties()
-                    .Find(textBinding.BindingMemberInfo.BindingField, true);
-                if (editor == null && propertyDescriptor != null)
-                    editor = propertyDescriptor.GetEditor(typeof(UITypeEditor)) as UITypeEditor;
-                if (editor != null) {
-                    propertyDescriptor = bindingManagerBase
-                        .GetItemProperties()
-                        .Find(textBinding.BindingMemberInfo.BindingField, true);
-
-                    IServiceProvider parentProvider = this.GetService(typeof(IServiceProvider)) as IServiceProvider;
-                    ServiceContainer serviceContainer = new ServiceContainer(parentProvider);
+                var current = bindingManagerBase.Current;
+                _editor = TypeDescriptor.GetEditor(current, typeof(UITypeEditor)) as UITypeEditor;
+                _propertyDescriptor = bindingManagerBase.GetItemProperty(_textBinding.BindingMemberInfo.BindingField, true);
+                if (_editor == null && _propertyDescriptor != null)
+                    _editor = _propertyDescriptor.GetEditor(typeof(UITypeEditor)) as UITypeEditor;
+                if (_editor != null) {
+                    var parentProvider = this.GetService(typeof(IServiceProvider)) as IServiceProvider;
+                    var serviceContainer = new ServiceContainer(parentProvider);
                     serviceContainer.AddService(typeof(IWindowsFormsEditorService), this);
-                    typeDescriptorContext = new TypeDescriptorContext(serviceContainer, propertyDescriptor, current);
-                    canvas.Visible = editor.GetPaintValueSupported(typeDescriptorContext);
-                    switch (editor.GetEditStyle(typeDescriptorContext)) {
+                    _typeDescriptorContext = new TypeDescriptorContext(serviceContainer, _propertyDescriptor, current);
+                    canvas.Visible = _editor.GetPaintValueSupported(_typeDescriptorContext);
+                    switch (_editor.GetEditStyle(_typeDescriptorContext)) {
                     case UITypeEditorEditStyle.DropDown:
                         button.Visible = true;
                         break;
@@ -204,7 +193,7 @@ namespace WmcSoft.Windows.Forms
                 } else {
                     canvas.Visible = false;
                     button.Visible = false;
-                    typeDescriptorContext = null;
+                    _typeDescriptorContext = null;
                 }
             }
         }
@@ -213,15 +202,13 @@ namespace WmcSoft.Windows.Forms
             if (e.Value == null) {
                 if (e.DesiredType == typeof(string))
                     e.Value = "";
+            } else if (_propertyDescriptor != null) {
+                e.Value = _propertyDescriptor
+                    .Converter
+                    .ConvertFrom(_typeDescriptorContext, CultureInfo.CurrentUICulture, e.Value);
             } else {
-                if (propertyDescriptor != null) {
-                    e.Value = propertyDescriptor
-                        .Converter
-                        .ConvertFrom(typeDescriptorContext, CultureInfo.CurrentUICulture, e.Value);
-                } else {
-                    TypeConverter converter = TypeDescriptor.GetConverter(e.Value);
-                    e.Value = converter.ConvertTo(e.Value, e.DesiredType);
-                }
+                TypeConverter converter = TypeDescriptor.GetConverter(e.Value);
+                e.Value = converter.ConvertTo(e.Value, e.DesiredType);
             }
         }
 
@@ -229,33 +216,29 @@ namespace WmcSoft.Windows.Forms
             if (e.Value == null) {
                 if (e.DesiredType == typeof(string))
                     e.Value = "";
+            } else if (_propertyDescriptor != null) {
+                e.Value = _propertyDescriptor
+                    .Converter
+                    .ConvertTo(_typeDescriptorContext, CultureInfo.CurrentUICulture, e.Value, e.DesiredType);
             } else {
-                if (propertyDescriptor != null) {
-                    e.Value = propertyDescriptor
-                        .Converter
-                        .ConvertTo(typeDescriptorContext, CultureInfo.CurrentUICulture, e.Value, e.DesiredType);
-                } else {
-                    TypeConverter converter = TypeDescriptor.GetConverter(e.Value);
-                    e.Value = converter.ConvertTo(e.Value, e.DesiredType);
-                }
+                var converter = TypeDescriptor.GetConverter(e.Value);
+                e.Value = converter.ConvertTo(e.Value, e.DesiredType);
             }
         }
 
-        Binding textBinding;
-        BindingManagerBase bindingManagerBase;
-        ITypeDescriptorContext typeDescriptorContext;
-        UITypeEditor editor;
-        PropertyDescriptor propertyDescriptor;
+        Binding _textBinding;
+        BindingManagerBase _bindingManagerBase;
+        ITypeDescriptorContext _typeDescriptorContext;
+        UITypeEditor _editor;
+        PropertyDescriptor _propertyDescriptor;
 
         private void button_Click(object sender, EventArgs e) {
-            if (editor != null) {
-                if (propertyDescriptor != null) {
-                    textBinding.WriteValue();
-                    object value = propertyDescriptor.GetValue(bindingManagerBase.Current);
-                    value = editor.EditValue(typeDescriptorContext, value);
-                    propertyDescriptor.SetValue(bindingManagerBase.Current, value);
-                    textBinding.ReadValue();
-                }
+            if (_editor != null && _propertyDescriptor != null) {
+                _textBinding.WriteValue();
+                var value = _propertyDescriptor.GetValue(_bindingManagerBase.Current);
+                value = _editor.EditValue(_typeDescriptorContext, value);
+                _propertyDescriptor.SetValue(_bindingManagerBase.Current, value);
+                _textBinding.ReadValue();
             }
         }
 
@@ -265,7 +248,7 @@ namespace WmcSoft.Windows.Forms
 
         protected override CreateParams CreateParams {
             get {
-                CreateParams createParams = base.CreateParams;
+                var createParams = base.CreateParams;
                 createParams.Style &= unchecked((int)~NativeMethods.WS_BORDER);
                 createParams.ExStyle &= unchecked((int)~NativeMethods.WS_EX_CLIENTEDGE);
                 return createParams;
@@ -273,8 +256,8 @@ namespace WmcSoft.Windows.Forms
         }
 
         public override Size GetPreferredSize(Size proposedSize) {
-            Size preferredSize = textBox.GetPreferredSize(proposedSize);
-            switch (this.BorderStyle) {
+            var preferredSize = textBox.GetPreferredSize(proposedSize);
+            switch (BorderStyle) {
             case BorderStyle.Fixed3D:
                 preferredSize.Width += 2 * SystemInformation.Border3DSize.Width;
                 preferredSize.Height += 2 * SystemInformation.Border3DSize.Height;
@@ -293,7 +276,7 @@ namespace WmcSoft.Windows.Forms
         protected override void OnLayout(LayoutEventArgs e) {
             int width = 0;
             int height = 0;
-            switch (this.BorderStyle) {
+            switch (BorderStyle) {
             case BorderStyle.Fixed3D:
                 width = SystemInformation.Border3DSize.Width;
                 height = SystemInformation.Border3DSize.Height;
@@ -314,7 +297,7 @@ namespace WmcSoft.Windows.Forms
         protected override void OnPaintBackground(PaintEventArgs e) {
             base.OnPaintBackground(e);
 
-            Rectangle bounds = new Rectangle(Point.Empty, this.Size);
+            var bounds = new Rectangle(Point.Empty, this.Size);
             if (TextBoxRenderer.IsSupported) {
                 TextBoxRenderer.DrawTextBox(e.Graphics, bounds, TextBoxState.Normal);
             } else {
@@ -333,13 +316,12 @@ namespace WmcSoft.Windows.Forms
         }
 
         private void canvas_Paint(object sender, PaintEventArgs e) {
-            if (editor != null && editor.GetPaintValueSupported(typeDescriptorContext)) {
-                object value = propertyDescriptor.GetValue(bindingManagerBase.Current);
-                editor.PaintValue(value, e.Graphics, canvas.ClientRectangle);
+            if (_editor != null && _editor.GetPaintValueSupported(_typeDescriptorContext)) {
+                var value = _propertyDescriptor.GetValue(_bindingManagerBase.Current);
+                _editor.PaintValue(value, e.Graphics, canvas.ClientRectangle);
             }
         }
 
         #endregion
-
     }
 }
