@@ -171,11 +171,11 @@ namespace WmcSoft.Windows.Forms
         public override object Clone() {
             DataGridViewNumericUpDownCell dataGridViewCell = base.Clone() as DataGridViewNumericUpDownCell;
             if (dataGridViewCell != null) {
-                dataGridViewCell.DecimalPlaces = this.DecimalPlaces;
-                dataGridViewCell.Increment = this.Increment;
-                dataGridViewCell.Maximum = this.Maximum;
-                dataGridViewCell.Minimum = this.Minimum;
-                dataGridViewCell.ThousandsSeparator = this.ThousandsSeparator;
+                dataGridViewCell.DecimalPlaces = DecimalPlaces;
+                dataGridViewCell.Increment = Increment;
+                dataGridViewCell.Maximum = Maximum;
+                dataGridViewCell.Minimum = Minimum;
+                dataGridViewCell.ThousandsSeparator = ThousandsSeparator;
             }
             return dataGridViewCell;
         }

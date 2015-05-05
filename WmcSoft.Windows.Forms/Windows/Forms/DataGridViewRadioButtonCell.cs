@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Diagnostics;
 using WmcSoft.ComponentModel;
+using WmcSoft.Collections;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -184,7 +185,7 @@ namespace WmcSoft.Windows.Forms
             set {
                 if (DataSource != value) {
                     // Invalidate the currency manager
-                    this.DataManager = null;
+                    DataManager = null;
 
                     var dsInit = DataSource as ISupportInitializeNotification;
                     if (dsInit != null && _dataSourceInitializedHookedUp) {
@@ -422,7 +423,11 @@ namespace WmcSoft.Windows.Forms
                     int textHeight = cellStyle.Font.Height;
                     int itemIndex = _layout.FirstDisplayedItemIndex;
                     Rectangle radiosBounds = valBounds;
-                    while (itemIndex < this.Items.Count &&
+                    if(Items.Count == 0) {
+                        var owner = OwningColumn as DataGridViewRadioButtonColumn;
+                        Items.ReplaceAll(owner.Items.ToArray());
+                    }
+                    while (itemIndex < Items.Count &&
                            itemIndex < _layout.FirstDisplayedItemIndex + _maxDisplayedItems &&
                            radiosBounds.Height > 0) {
                         if (paint && DataGridViewRadioButtonCell.PartPainted(paintParts, DataGridViewPaintParts.ContentBackground)) {
@@ -1007,7 +1012,7 @@ namespace WmcSoft.Windows.Forms
         /// Updates the property descriptors when the cell gets attached to the grid.
         /// </summary>
         protected override void OnDataGridViewChanged() {
-            if (this.DataGridView != null) {
+            if (DataGridView != null) {
                 // Will throw an error if DataGridView is set and a member is invalid
                 InitializeDisplayMemberPropertyDescriptor(this.DisplayMember);
                 InitializeValueMemberPropertyDescriptor(this.ValueMember);
@@ -1106,7 +1111,7 @@ namespace WmcSoft.Windows.Forms
                 case MouseLocationGeneric:
                     break;
                 case MouseLocationBottomScrollButton:
-                    if (_layout.FirstDisplayedItemIndex + _layout.TotallyDisplayedItemsCount < this.Items.Count) {
+                    if (_layout.FirstDisplayedItemIndex + _layout.TotallyDisplayedItemsCount < Items.Count) {
                         // Scroll the entries down.
                         _layout.FirstDisplayedItemIndex++;
                         DataGridView.Invalidate(new Rectangle(_layout.DownButtonLocation, _layout.ScrollButtonsSize));
@@ -1135,9 +1140,8 @@ namespace WmcSoft.Windows.Forms
         /// Makes sure the radio button gets hot when the mouse gets over it
         /// </summary>
         protected override void OnMouseEnter(int rowIndex) {
-            if (this.DataGridView == null) {
+            if (DataGridView == null)
                 return;
-            }
 
             if (_pressedItemIndex != -1) {
                 InvalidateRadioGlyph(_pressedItemIndex, GetInheritedStyle(null, rowIndex, false /* includeColors */));
@@ -1148,9 +1152,8 @@ namespace WmcSoft.Windows.Forms
         /// Invalidates part of the cell as needed
         /// </summary>
         protected override void OnMouseLeave(int rowIndex) {
-            if (this.DataGridView == null) {
+            if (DataGridView == null)
                 return;
-            }
 
             int oldMouseLocationCode = mouseLocationCode;
             if (oldMouseLocationCode != MouseLocationGeneric) {
@@ -1178,9 +1181,8 @@ namespace WmcSoft.Windows.Forms
         /// Invalidates part of the cell as needed
         /// </summary>
         protected override void OnMouseMove(DataGridViewCellMouseEventArgs e) {
-            if (this.DataGridView == null) {
+            if (DataGridView == null)
                 return;
-            }
 
             var cellStyle = GetInheritedStyle(null, e.RowIndex, false /* includeColors */);
             int oldMouseLocationCode = mouseLocationCode;
@@ -1208,9 +1210,9 @@ namespace WmcSoft.Windows.Forms
         /// Invalidates the potential pressed radio button. 
         /// </summary>
         protected override void OnMouseUp(DataGridViewCellMouseEventArgs e) {
-            if (DataGridView == null) {
+            if (DataGridView == null)
                 return;
-            }
+
             if (e.Button == MouseButtons.Left && _pressedItemIndex != -1) {
                 InvalidateItem(_pressedItemIndex, e.RowIndex);
                 _pressedItemIndex = -1;
