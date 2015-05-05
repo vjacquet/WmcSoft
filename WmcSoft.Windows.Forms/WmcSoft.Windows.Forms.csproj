@@ -59,7 +59,9 @@
     <Compile Include="Windows\Forms\BorderPainter.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Windows\Forms\BorderPainter.Designer.cs" />
+    <Compile Include="Windows\Forms\BorderPainter.Designer.cs">
+      <DependentUpon>BorderPainter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -74,9 +76,25 @@
     <Compile Include="Windows\Forms\DataGridViewRadioButtonCellLayout.cs" />
     <Compile Include="Windows\Forms\DataGridViewRadioButtonColumn.cs" />
     <Compile Include="Windows\Forms\BindingManagerBaseExtensions.cs" />
+    <Compile Include="Windows\Forms\DeckLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
+    <Compile Include="Windows\Forms\Design\ChildControlConverter.cs" />
+    <Compile Include="Windows\Forms\Design\DeckLayoutPanelDesigner.cs" />
+    <Compile Include="Windows\Forms\Design\UIServiceDesigner.cs" />
+    <Compile Include="Windows\Forms\Design\UITextEditorDesigner.cs" />
     <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
+    <Compile Include="Windows\Forms\DropDownHolder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ExceptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\ExceptionForm.Designer.cs">
+      <DependentUpon>ExceptionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\FormSettings.cs" />
     <Compile Include="Windows\Forms\HeaderedPanel.cs">
       <SubType>UserControl</SubType>
@@ -85,14 +103,27 @@
       <DependentUpon>HeaderedPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\HeaderStrip.cs" />
+    <Compile Include="Windows\Forms\Layout\DeckLayoutEngine.cs" />
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
+    <Compile Include="Windows\Forms\MessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\MessageForm.designer.cs">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\NativeMethods.cs" />
+    <Compile Include="Windows\Forms\NumericBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\PersistFormSettings.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\PlaceHolder.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\SplashForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\Forms\SplitContainer.cs" />
     <Compile Include="Windows\Forms\Splitter.cs" />
@@ -109,6 +140,18 @@
     <Compile Include="Windows\Forms\ToolStripStatusCultureLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusKeyLockLabel.cs" />
     <Compile Include="Windows\Forms\ToolStripStatusText.cs" />
+    <Compile Include="Windows\Forms\UIService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\UIService.Designer.cs">
+      <DependentUpon>UIService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Forms\UITextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\UITextEditor.Designer.cs">
+      <DependentUpon>UITextEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\WaitCursor.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
@@ -119,9 +162,16 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\UITextEditor.bmp" />
+    <EmbeddedResource Include="Windows\Forms\UIService.bmp" />
+    <EmbeddedResource Include="Windows\Forms\ExceptionForm.resx" />
+    <EmbeddedResource Include="Windows\Forms\MessageForm.resx" />
+    <EmbeddedResource Include="Windows\Forms\PlaceHolder.bmp" />
+    <EmbeddedResource Include="Windows\Forms\NumericBox.png" />
     <EmbeddedResource Include="Windows\Forms\BorderPainter.png" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewNumericUpDownColumn.bmp" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewRadioButtonColumn.bmp" />
+    <EmbeddedResource Include="Windows\Forms\DeckLayoutPanel.bmp" />
     <Content Include="Windows\Forms\HeaderedPanel.png" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.fr.resx" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.resx" />
@@ -144,6 +194,7 @@
     <EmbeddedResource Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.bmp" />
     <EmbeddedResource Include="Windows\Forms\ToolStripNetworkAvailability.png" />
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusKeyLockLabel.bmp" />
+    <EmbeddedResource Include="Windows\Forms\UITextEditor.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Components\WmcSoft.Components.csproj">

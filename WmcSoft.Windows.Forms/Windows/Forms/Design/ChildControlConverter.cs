@@ -24,18 +24,33 @@
 
 #endregion
 
+using System.Collections;
+using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.Linq;
 using System.Windows.Forms;
 
-namespace WmcSoft.Windows.Forms
+namespace WmcSoft.Windows.Forms.Design
 {
-    /// <summary>
-    /// An image index converter that excludes "None" as possible value.
-    /// </summary>
-    public class MandatoryImageIndexConverter : ImageIndexConverter
+    public class ChildControlConverter : ReferenceConverter
     {
-        protected override bool IncludeNoneAsStandardValue {
-            get { return false; }
+        public ChildControlConverter()
+            : base(typeof(Control)) {
+
+        }
+
+        public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
+            var arrayList = new ArrayList();
+            var control = context.Instance as Control;
+            if (control == null) {
+                var action = context.Instance as DesignerActionList;
+                if (action != null)
+                    control = action.Component as Control;
+            }
+            if (control != null) {
+                arrayList.AddRange(control.Controls.OfType<IComponent>().ToArray());
+            }
+            return new TypeConverter.StandardValuesCollection(arrayList);
         }
     }
-
 }

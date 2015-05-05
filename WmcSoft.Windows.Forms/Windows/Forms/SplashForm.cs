@@ -25,22 +25,40 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
-    public static class BindingManagerBaseExtensions
+    public class SplashForm : Form
     {
-        public static PropertyDescriptor GetItemProperty(this BindingManagerBase cm, string name, bool ignoreCase) {
-            if (cm == null)
-                return null;
-            var props = cm.GetItemProperties();
-            return props.Find(name, ignoreCase);
+        #region Lifecycle
+
+        /// <summary>
+        /// Creates a Form for the splash image.
+        /// </summary>
+        /// <param name="splashImage">The Image to show as splash screen.</param>
+        /// <param name="transparentColor">The color used for transparent areas.</param>
+        public SplashForm(Image splashImage, Color transparentColor) {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            BackColor = transparentColor;
+            BackgroundImage = splashImage;
+            BackgroundImageLayout = ImageLayout.None;
+            ClientSize = splashImage.Size;
+            FormBorderStyle = FormBorderStyle.None;
+            StartPosition = FormStartPosition.CenterScreen;
+            ShowInTaskbar = false;
+            TransparencyKey = transparentColor;
         }
+
+        public SplashForm(Image splashImage)
+            : this(splashImage, Color.Transparent) {
+        }
+
+        public SplashForm(Type type, string resource)
+            : this(new Bitmap(type, resource), Color.Transparent) {
+        }
+
+        #endregion
     }
 }

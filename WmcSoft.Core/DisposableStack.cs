@@ -59,4 +59,11 @@ namespace WmcSoft
             }
         }
     }
+
+    public static class DisposableStackExtensions
+    {
+        public static void Push(this DisposableStack disposables, Action action) {
+            disposables.Push(new Disposer(action));
+        }
+    }
 }

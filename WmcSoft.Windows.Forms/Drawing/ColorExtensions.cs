@@ -36,5 +36,47 @@ namespace WmcSoft.Drawing
                 return Color.FromArgb(255, color);
             return color;
         }
+
+        /// <summary>
+        ///  Takes a color and returns a new one with all the values inverted 
+        ///  inside of 255.
+        /// </summary>
+        /// <param name="color">Color to invert.</param>
+        /// <returns>Inverted color</returns>
+        public static Color Flip(this Color color) {
+            return Color.FromArgb(color.A, 255 - color.R, 255 - color.G, 255 - color.B);
+        }
+
+        /// <summary>
+        ///   A function for scaling a color down assembly certain percentage
+        /// </summary>
+        /// <param name="color">Color to be scaled.</param>
+        /// <param name="percentage">Percentage to scale it, between 0 and 1.</param>
+        /// <returns>New color object.</returns>
+        public static Color Scale(this Color color, double d) {
+            var r = Clamp(color.R * d);
+            var g = Clamp(color.G * d);
+            var b = Clamp(color.B * d);
+            return Color.FromArgb(color.A, r, g, b);
+        }
+
+        static int Clamp(double value) {
+            int r = (int)value;
+            if (r > 255)
+                return 255;
+            if (r < 0)
+                return 0;
+            return r;
+        }
+
+        /// <summary>
+        ///   A function for scaling a color down assembly certain percentage
+        /// </summary>
+        /// <param name="color">Color to be scaled.</param>
+        /// <param name="percentage">Percentage to scale it, between 0 and 100.</param>
+        /// <returns>New color object.</returns>
+        public static Color Scale(this Color color, int percentage) {
+            return color.Scale(percentage / 100d);
+        }
     }
 }
