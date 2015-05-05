@@ -83,8 +83,12 @@
     <Compile Include="Windows\Forms\Design\ChildControlConverter.cs" />
     <Compile Include="Windows\Forms\Design\DeckLayoutPanelDesigner.cs" />
     <Compile Include="Windows\Forms\Design\UIServiceDesigner.cs" />
+    <Compile Include="Windows\Forms\Design\UITextEditorDesigner.cs" />
     <Compile Include="Windows\Forms\Divider.cs" />
     <Compile Include="Windows\Forms\Design\PersistFormSettingsDesigner.cs" />
+    <Compile Include="Windows\Forms\DropDownHolder.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\ExceptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +146,12 @@
     <Compile Include="Windows\Forms\UIService.Designer.cs">
       <DependentUpon>UIService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\UITextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\UITextEditor.Designer.cs">
+      <DependentUpon>UITextEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\WaitCursor.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
@@ -152,6 +162,7 @@
     <Content Include="Resources\none48.png" />
     <Content Include="Resources\question48.png" />
     <Content Include="Resources\warning48.png" />
+    <EmbeddedResource Include="Windows\Forms\UITextEditor.bmp" />
     <EmbeddedResource Include="Windows\Forms\UIService.bmp" />
     <EmbeddedResource Include="Windows\Forms\ExceptionForm.resx" />
     <EmbeddedResource Include="Windows\Forms\MessageForm.resx" />
@@ -183,6 +194,7 @@
     <EmbeddedResource Include="Windows\Forms\ToolStripBackgroundWorkerProgressBar.bmp" />
     <EmbeddedResource Include="Windows\Forms\ToolStripNetworkAvailability.png" />
     <EmbeddedResource Include="Windows\Forms\ToolStripStatusKeyLockLabel.bmp" />
+    <EmbeddedResource Include="Windows\Forms\UITextEditor.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Components\WmcSoft.Components.csproj">
