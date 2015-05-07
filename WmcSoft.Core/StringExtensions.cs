@@ -417,7 +417,6 @@ namespace WmcSoft
 
         #endregion
 
-
         #region FormatWith
 
         /// <summary>
@@ -617,8 +616,15 @@ namespace WmcSoft
                 return null;
             return value;
         }
+
         public static string NullifyEmpty(this string value) {
             if (String.IsNullOrEmpty(value))
+                return null;
+            return value;
+        }
+
+        public static string Nullify(this string value, Predicate<string> predicate) {
+            if (value == null || predicate(value))
                 return null;
             return value;
         }
