@@ -34,8 +34,9 @@ namespace WmcSoft.Windows.Forms
             // 
             // canvas
             // 
+            this.canvas.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.canvas.BackColor = System.Drawing.Color.Red;
-            this.canvas.Location = new System.Drawing.Point(0, 0);
+            this.canvas.Location = new System.Drawing.Point(0, 2);
             this.canvas.Margin = new System.Windows.Forms.Padding(0);
             this.canvas.Name = "canvas";
             this.canvas.Size = new System.Drawing.Size(16, 16);
@@ -52,7 +53,7 @@ namespace WmcSoft.Windows.Forms
             this.textBox.Location = new System.Drawing.Point(17, 1);
             this.textBox.Margin = new System.Windows.Forms.Padding(1);
             this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(114, 13);
+            this.textBox.Size = new System.Drawing.Size(114, 19);
             this.textBox.TabIndex = 1;
             this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             // 
@@ -64,7 +65,7 @@ namespace WmcSoft.Windows.Forms
             this.button.Location = new System.Drawing.Point(132, 0);
             this.button.Margin = new System.Windows.Forms.Padding(0);
             this.button.Name = "button";
-            this.button.Size = new System.Drawing.Size(18, 17);
+            this.button.Size = new System.Drawing.Size(18, 21);
             this.button.TabIndex = 2;
             this.button.Text = "…";
             this.button.UseVisualStyleBackColor = false;
@@ -86,7 +87,7 @@ namespace WmcSoft.Windows.Forms
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 1;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(150, 17);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(150, 21);
             this.tableLayoutPanel.TabIndex = 3;
             // 
             // UITextEditor

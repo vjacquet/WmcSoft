@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="tracingComponent1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="uiService1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>234, 17</value>
-  </metadata>
-  <metadata name="backgroundUpdater1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>370, 17</value>
-  </metadata>
+  <data name="CurrentVersion.Description" xml:space="preserve">
+    <value>Returns the version number of the currently running application</value>
+  </data>
+  <data name="NotNetworkDeployedMessage" xml:space="preserve">
+    <value>This application is not network-deployed via ClickOnce.  Background updates cannot be performed.</value>
+  </data>
+  <data name="ThrowIfNotNetworkDeployed.Description" xml:space="preserve">
+    <value>Controls whether we should  throw an Exception if the programmer calls Start and the  application is not deployed via the ClickOnce framework.</value>
+  </data>
+  <data name="UpdateCompleted.Description" xml:space="preserve">
+    <value>This event is raised whenever a background update is completed.  It is not raised, however, if a background check determined that no update is necessary.</value>
+  </data>
+  <data name="UpdateInterval.Description" xml:space="preserve">
+    <value>The interval in milliseconds, between update checks. The default value is fifteen minutes.</value>
+  </data>
+  <data name="UpdateProgressChanged.Description" xml:space="preserve">
+    <value>This event is raised whenever a background update is progressing.</value>
+  </data>
 </root>

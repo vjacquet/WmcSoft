@@ -30,7 +30,10 @@ using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
-    [System.ComponentModel.DesignerCategory("code")]
+    /// <summary>
+    ///   Control that draws a divider.
+    /// </summary>
+    [DesignerCategory("code")]
     public partial class Divider : Control
     {
         public Divider() {
