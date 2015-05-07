@@ -686,11 +686,13 @@ namespace WmcSoft
 
         public static IEnumerable<string> Tokenize<TTokenizer>(this string self, TTokenizer tokenizer)
             where TTokenizer : ITokenizer<string> {
+            if (self == null)
+                return null;
             return tokenizer.Tokenize(self);
         }
 
         public static IEnumerable<string> Tokenize(this string self, char separator) {
-            return self.Tokenize(new CharTokenizer(separator));
+            return self.Tokenize(new CharTokenizer(separator)); 
         }
 
         public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
