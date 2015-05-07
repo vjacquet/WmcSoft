@@ -400,7 +400,7 @@ namespace WmcSoft
 
         #endregion
 
-        #region SurroundWith 
+        #region SurroundWith
 
         /// <summary>
         /// Concatenates the prefix, the string and the suffix.
@@ -408,11 +408,26 @@ namespace WmcSoft
         /// <param name="self">The string</param>
         /// <param name="prefix">The prefix</param>
         /// <param name="suffix">The suffix</param>
-        /// <returns>null if any argument is null; otherwise, the concatenated string.</returns>
-        public static string SurroundWith(this string self, string prefix = "", string suffix = "") {
-            if (self == null || prefix == null || suffix == null)
+        /// <returns>null if the string is null; otherwise, the concatenated string.</returns>
+        public static string SurroundWith(this string self, string prefix = null, string suffix = null) {
+            if (self == null)
                 return null;
             return prefix + self + suffix;
+        }
+
+        /// <summary>
+        /// Concatenates the prefix, the string and the suffix.
+        /// </summary>
+        /// <param name="self">The string</param>
+        /// <param name="prefix">The prefix</param>
+        /// <param name="suffix">The suffix</param>
+        /// <returns>null if the string is null; otherwise, the concatenated string.</returns>
+        public static StringBuilder SurroundWith(this StringBuilder self, string prefix = null, string suffix = null) {
+            if (self == null)
+                return null;
+            self.Prepend(prefix);
+            self.Append(suffix);
+            return self;
         }
 
         #endregion
@@ -692,7 +707,7 @@ namespace WmcSoft
         }
 
         public static IEnumerable<string> Tokenize(this string self, char separator) {
-            return self.Tokenize(new CharTokenizer(separator)); 
+            return self.Tokenize(new CharTokenizer(separator));
         }
 
         public static IEnumerable<string> Tokenize(this string self, params char[] separators) {

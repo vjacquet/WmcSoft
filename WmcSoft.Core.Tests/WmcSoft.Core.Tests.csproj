@@ -78,6 +78,7 @@
     <Compile Include="Runtime\ObjectWalkerTests.cs" />
     <Compile Include="StreamExtensionsTests.cs" />
     <Compile Include="Text\TokenizerTests.cs" />
+    <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIteratorTests.cs" />
