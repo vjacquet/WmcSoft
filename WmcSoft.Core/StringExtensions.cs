@@ -341,12 +341,19 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
+        /// <remarks>The separator is CultureInfo.CurrentCulture.TextInfo.ListSeparator.</remarks>
         public static string Join(this IEnumerable<string> self) {
-            StringBuilder sb = new StringBuilder();
-            foreach (string s in self) {
-                sb.Append(s);
-            }
-            return sb.ToString();
+            return Join(self, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
+
+        /// <summary>
+        /// Joins the sequence of strings into a single string.
+        /// </summary>
+        /// <param name="self">The sequence of strings.</param>
+        /// <returns>The joined string.</returns>
+        /// <remarks>The separator is currentCulture.TextInfo.ListSeparator.</remarks>
+        public static string Join(this IEnumerable<string> self, CultureInfo cultureInfo) {
+            return Join(self, cultureInfo.TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -356,6 +363,9 @@ namespace WmcSoft
         /// <param name="separator">The separator.</param>
         /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self, string separator) {
+            if (self == null)
+                return null;
+
             var sb = new StringBuilder();
             using (var enumerator = self.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
@@ -374,6 +384,9 @@ namespace WmcSoft
         /// <param name="separator">The separator.</param>
         /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self, char separator) {
+            if (self == null)
+                return null;
+
             var sb = new StringBuilder();
             using (var enumerator = self.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
@@ -386,6 +399,24 @@ namespace WmcSoft
         }
 
         #endregion
+
+        #region SurroundWith 
+
+        /// <summary>
+        /// Concatenates the prefix, the string and the suffix.
+        /// </summary>
+        /// <param name="self">The string</param>
+        /// <param name="prefix">The prefix</param>
+        /// <param name="suffix">The suffix</param>
+        /// <returns>null if any argument is null; otherwise, the concatenated string.</returns>
+        public static string SurroundWith(this string self, string prefix = "", string suffix = "") {
+            if (self == null || prefix == null || suffix == null)
+                return null;
+            return prefix + self + suffix;
+        }
+
+        #endregion
+
 
         #region FormatWith
 

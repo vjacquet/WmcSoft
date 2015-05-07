@@ -149,7 +149,8 @@ namespace WmcSoft.ComponentModel.Design
                     }
                 }
             } else if (primary) {
-                using (var enumerator = components.GetEnumerator()) {
+                var enumerator = components.GetEnumerator();
+                try {
                     if (enumerator.MoveNext()) {
                         object component = enumerator.Current;
                         int index = _selectedComponents.IndexOf(component);
@@ -162,6 +163,11 @@ namespace WmcSoft.ComponentModel.Design
                             _selectedComponents.Add(component);
                         }
                     }
+                }
+                finally {
+                    var disposable = enumerator as IDisposable;
+                    if (disposable != null)
+                        disposable.Dispose();
                 }
             } else {
                 // Add or remove each component to or from the selection
