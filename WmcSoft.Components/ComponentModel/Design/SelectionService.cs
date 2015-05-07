@@ -149,17 +149,18 @@ namespace WmcSoft.ComponentModel.Design
                     }
                 }
             } else if (primary) {
-                var enumerator = components.GetEnumerator();
-                if (enumerator.MoveNext()) {
-                    object component = enumerator.Current;
-                    int index = _selectedComponents.IndexOf(component);
-                    if (index >= 0) {
-                        object temp = _selectedComponents[0];
-                        _selectedComponents[0] = _selectedComponents[index];
-                        _selectedComponents[index] = temp;
-                    } else {
-                        _selectedComponents.Clear();
-                        _selectedComponents.Add(component);
+                using (var enumerator = components.GetEnumerator()) {
+                    if (enumerator.MoveNext()) {
+                        object component = enumerator.Current;
+                        int index = _selectedComponents.IndexOf(component);
+                        if (index >= 0) {
+                            object temp = _selectedComponents[0];
+                            _selectedComponents[0] = _selectedComponents[index];
+                            _selectedComponents[index] = temp;
+                        } else {
+                            _selectedComponents.Clear();
+                            _selectedComponents.Add(component);
+                        }
                     }
                 }
             } else {

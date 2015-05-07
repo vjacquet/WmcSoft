@@ -12,16 +12,17 @@ namespace WmcSoft.Collections.Generic
     static class SetUtilities
     {
         internal static IEnumerable<T> Unique<T>(IEnumerable<T> enumerable, IEqualityComparer<T> comparer) {
-            IEnumerator<T> enumerator = enumerable.GetEnumerator();
-            if (enumerator.MoveNext()) {
-                T current = enumerator.Current;
-                while (enumerator.MoveNext()) {
-                    if (!comparer.Equals(current, enumerator.Current)) {
-                        yield return current;
-                        current = enumerator.Current;
+            using (IEnumerator<T> enumerator = enumerable.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    T current = enumerator.Current;
+                    while (enumerator.MoveNext()) {
+                        if (!comparer.Equals(current, enumerator.Current)) {
+                            yield return current;
+                            current = enumerator.Current;
+                        }
                     }
+                    yield return current;
                 }
-                yield return current;
             }
         }
 

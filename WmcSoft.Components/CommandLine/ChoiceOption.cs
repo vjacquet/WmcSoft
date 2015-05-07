@@ -114,16 +114,17 @@ namespace WmcSoft.CommandLine
 
         public override void WriteTemplate(TextWriter writer) {
             writer.WriteLine("{0}:{1}", OptionDelimiter + OptionName, _template);
-            var enumerator = choices.GetEnumerator();
-            if (enumerator.MoveNext()) {
-                writer.Write(_template);
-                writer.Write("  ");
-                enumerator.Current.WriteTemplate(writer);
-
-                string indent = new string(' ', _template.Length + 2);
-                while (enumerator.MoveNext()) {
-                    writer.Write(indent);
+            using (var enumerator = choices.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    writer.Write(_template);
+                    writer.Write("  ");
                     enumerator.Current.WriteTemplate(writer);
+
+                    string indent = new string(' ', _template.Length + 2);
+                    while (enumerator.MoveNext()) {
+                        writer.Write(indent);
+                        enumerator.Current.WriteTemplate(writer);
+                    }
                 }
             }
         }

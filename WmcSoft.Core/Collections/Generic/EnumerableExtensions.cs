@@ -65,9 +65,10 @@ namespace WmcSoft.Collections.Generic
             where TSource : new() {
             var array = new TSource[length];
             var i = 0;
-            var enumerator = source.GetEnumerator();
-            while (enumerator.MoveNext() && i < length) {
-                array[i++] = enumerator.Current;
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext() && i < length) {
+                    array[i++] = enumerator.Current;
+                }
             }
             return array;
         }
@@ -152,15 +153,16 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource Elected<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
             where TSource : IEquatable<TSource> {
-            var enumerator = source.GetEnumerator();
-            if (!enumerator.MoveNext())
-                throw new InvalidOperationException();
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
 
-            var ballot = new Ballot<TSource>(equalityComparer);
-            do {
-                ballot.Vote(enumerator.Current);
-            } while (enumerator.MoveNext());
-            return ballot.First().Key;
+                var ballot = new Ballot<TSource>(equalityComparer);
+                do {
+                    ballot.Vote(enumerator.Current);
+                } while (enumerator.MoveNext());
+                return ballot.First().Key;
+            }
         }
 
         /// <summary>
@@ -179,17 +181,18 @@ namespace WmcSoft.Collections.Generic
             if (eligible == null)
                 throw new ArgumentNullException("eligible");
 
-            var enumerator = source.GetEnumerator();
-            if (!enumerator.MoveNext())
-                throw new InvalidOperationException();
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
 
-            var ballot = new Ballot<TSource>(equalityComparer);
-            do {
-                if (!eligible(enumerator.Current))
-                    continue;
-                ballot.Vote(enumerator.Current);
-            } while (enumerator.MoveNext());
-            return ballot.First().Key;
+                var ballot = new Ballot<TSource>(equalityComparer);
+                do {
+                    if (!eligible(enumerator.Current))
+                        continue;
+                    ballot.Vote(enumerator.Current);
+                } while (enumerator.MoveNext());
+                return ballot.First().Key;
+            }
         }
 
         /// <summary>
@@ -204,17 +207,18 @@ namespace WmcSoft.Collections.Generic
             where TSource : IEquatable<TSource> {
             if (source == null)
                 return default(TSource);
-            var enumerator = source.GetEnumerator();
-            if (!enumerator.MoveNext())
-                return default(TSource);
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    return default(TSource);
 
-            var ballot = new Ballot<TSource>(equalityComparer);
-            do {
-                ballot.Vote(enumerator.Current);
-            } while (enumerator.MoveNext());
-            if (!ballot.HasVotes)
-                return default(TSource);
-            return ballot.First().Key;
+                var ballot = new Ballot<TSource>(equalityComparer);
+                do {
+                    ballot.Vote(enumerator.Current);
+                } while (enumerator.MoveNext());
+                if (!ballot.HasVotes)
+                    return default(TSource);
+                return ballot.First().Key;
+            }
         }
 
         /// <summary>
@@ -230,22 +234,23 @@ namespace WmcSoft.Collections.Generic
             where TSource : IEquatable<TSource> {
             if (eligible == null)
                 throw new ArgumentNullException("eligible");
-
             if (source == null)
                 return default(TSource);
-            var enumerator = source.GetEnumerator();
-            if (!enumerator.MoveNext())
-                return default(TSource);
 
-            var ballot = new Ballot<TSource>(equalityComparer);
-            do {
-                if (!eligible(enumerator.Current))
-                    continue;
-                ballot.Vote(enumerator.Current);
-            } while (enumerator.MoveNext());
-            if (!ballot.HasVotes)
-                return default(TSource);
-            return ballot.First().Key;
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    return default(TSource);
+
+                var ballot = new Ballot<TSource>(equalityComparer);
+                do {
+                    if (!eligible(enumerator.Current))
+                        continue;
+                    ballot.Vote(enumerator.Current);
+                } while (enumerator.MoveNext());
+                if (!ballot.HasVotes)
+                    return default(TSource);
+                return ballot.First().Key;
+            }
         }
 
         #endregion

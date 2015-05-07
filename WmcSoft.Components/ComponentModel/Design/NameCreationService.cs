@@ -92,7 +92,7 @@ namespace WmcSoft.ComponentModel.Design
         /// </summary>
         /// <param name="name">The name to validate. </param>
         public void ValidateName(string name) {
-            Exception exception = DoValidateName(name);
+            var exception = DoValidateName(name);
             if (exception != null)
                 throw exception;
         }

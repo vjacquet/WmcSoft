@@ -357,11 +357,12 @@ namespace WmcSoft
         /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self, string separator) {
             var sb = new StringBuilder();
-            var enumerator = self.GetEnumerator();
-            if (enumerator.MoveNext()) {
-                sb.Append(enumerator.Current);
-                while (enumerator.MoveNext())
-                    sb.Append(separator).Append(enumerator.Current);
+            using (var enumerator = self.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    sb.Append(enumerator.Current);
+                    while (enumerator.MoveNext())
+                        sb.Append(separator).Append(enumerator.Current);
+                }
             }
             return sb.ToString();
         }
@@ -374,11 +375,12 @@ namespace WmcSoft
         /// <returns>The joined string.</returns>
         public static string Join(this IEnumerable<string> self, char separator) {
             var sb = new StringBuilder();
-            var enumerator = self.GetEnumerator();
-            if (enumerator.MoveNext()) {
-                sb.Append(enumerator.Current);
-                while (enumerator.MoveNext())
-                    sb.Append(separator).Append(enumerator.Current);
+            using (var enumerator = self.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    sb.Append(enumerator.Current);
+                    while (enumerator.MoveNext())
+                        sb.Append(separator).Append(enumerator.Current);
+                }
             }
             return sb.ToString();
         }
