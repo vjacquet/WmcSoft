@@ -254,6 +254,38 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region ElementAt
+
+        public static TResult ElementAt<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
+            var result = source.ElementAt(index);
+            return selector(result);
+        }
+
+        public static TResult ElementAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
+            if (source == null) {
+                // I would normally return default(TResult) but here I should be consistent with the framework.
+                throw new ArgumentNullException("source");
+            }
+
+            if (index >= 0) {
+                var list = source as IList<TSource>;
+                if (list == null) {
+                    using (IEnumerator<TSource> enumerator = source.GetEnumerator()) {
+                        while (enumerator.MoveNext()) {
+                            if (index == 0)
+                                return selector(enumerator.Current);
+                            index--;
+                        }
+                    }
+                } else if (index < list.Count) {
+                    return selector(list[index]);
+                }
+            }
+            return default(TResult);
+        }
+
+        #endregion
     }
 }
 

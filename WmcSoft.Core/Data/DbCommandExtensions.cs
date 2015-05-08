@@ -38,11 +38,9 @@ namespace WmcSoft.Data
                 return;
 
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(parameters)) {
-                var name = descriptor.Name;
-                var value = descriptor.GetValue(parameters);
                 var parameter = command.CreateParameter();
-                parameter.ParameterName = name;
-                parameter.Value = value;
+                parameter.ParameterName = descriptor.Name;
+                parameter.Value = descriptor.GetValue(parameters);
                 command.Parameters.Add(parameter);
             }
         }
