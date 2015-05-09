@@ -289,69 +289,6 @@ namespace WmcSoft.Collections.Generic
 
         #region Extract
 
-        class CountingEnumerator<T> : IEnumerator<T>
-        {
-            readonly IEnumerator<T> _base;
-            int _count;
-            bool _atEnd;
-
-            #region Lifecycle
-
-            public CountingEnumerator(IEnumerable<T> enumerable)
-                : this(enumerable.GetEnumerator()) {
-            }
-            public CountingEnumerator(IEnumerator<T> enumerator) {
-                _base = enumerator;
-            }
-
-            #endregion
-
-            #region Properties
-
-            public int Count { 
-                get { return _count; } }
-
-            #endregion
-
-            #region IEnumerator<T> Membres
-
-            public T Current {
-                get { return _base.Current; } }
-
-            #endregion
-
-            #region IDisposable Membres
-
-            public void Dispose() {
-                _base.Dispose();
-            }
-
-            #endregion
-
-            #region IEnumerator Membres
-
-            object System.Collections.IEnumerator.Current {
-                get { return Current; }
-            }
-
-            public bool MoveNext() {
-                if (_atEnd)
-                    return false;
-                if (_base.MoveNext()) {
-                    _count++;
-                    return true;
-                }
-                _atEnd = true;
-                return false;
-            }
-
-            public void Reset() {
-                throw new NotImplementedException();
-            }
-
-            #endregion
-        }
-
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
             using (var enumerator = new CountingEnumerator<TSource>(source)) {
                 value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);

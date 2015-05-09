@@ -53,6 +53,7 @@
     <Compile Include="Collections\Generic\CascadingComparer.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerExtensions.cs" />
+    <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
     <Compile Include="Collections\ReadOnlyCollectionOfObjectAdapter.cs" />
