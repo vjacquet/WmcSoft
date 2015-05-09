@@ -642,7 +642,7 @@ namespace WmcSoft.Collections.Generic
 
         public static IEnumerable<TSource> DefaultIfNullOrEmpty<TSource>(this IEnumerable<TSource> source) {
             if (source == null)
-                return Enumerable.Empty<TSource>();
+                return new SingleItemReadOnlyList<TSource>(default(TSource));
             return source.DefaultIfEmpty();
         }
 
