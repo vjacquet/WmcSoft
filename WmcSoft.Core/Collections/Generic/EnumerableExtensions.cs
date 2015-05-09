@@ -286,6 +286,110 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Extract
+
+        class CountingEnumerator<T> : IEnumerator<T>
+        {
+            readonly IEnumerator<T> _base;
+            int _count;
+            bool _atEnd;
+
+            #region Lifecycle
+
+            public CountingEnumerator(IEnumerable<T> enumerable)
+                : this(enumerable.GetEnumerator()) {
+            }
+            public CountingEnumerator(IEnumerator<T> enumerator) {
+                _base = enumerator;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public int Count { 
+                get { return _count; } }
+
+            #endregion
+
+            #region IEnumerator<T> Membres
+
+            public T Current {
+                get { return _base.Current; } }
+
+            #endregion
+
+            #region IDisposable Membres
+
+            public void Dispose() {
+                _base.Dispose();
+            }
+
+            #endregion
+
+            #region IEnumerator Membres
+
+            object System.Collections.IEnumerator.Current {
+                get { return Current; }
+            }
+
+            public bool MoveNext() {
+                if (_atEnd)
+                    return false;
+                if (_base.MoveNext()) {
+                    _count++;
+                    return true;
+                }
+                _atEnd = true;
+                return false;
+            }
+
+            public void Reset() {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+        }
+
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3, out TSource value4) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value4 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+
+        #endregion
     }
 }
 
