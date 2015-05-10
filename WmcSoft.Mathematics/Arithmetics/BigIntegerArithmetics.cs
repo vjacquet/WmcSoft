@@ -25,50 +25,55 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WmcSoft.Arithmetics
 {
-    public struct Int32Arithmetics : IArithmetics<int>
+    public struct BigIntegerArithmetics : IArithmetics<BigInteger>
     {
-        #region IArithmetics<int> Membres
+        #region IArithmetics<BigInteger> Membres
 
-        public int Add(int x, int y) {
+        public BigInteger Add(BigInteger x, BigInteger y) {
             return x + y;
         }
 
-        public int Subtract(int x, int y) {
+        public BigInteger Subtract(BigInteger x, BigInteger y) {
             return x - y;
         }
 
-        public int Multiply(int x, int y) {
+        public BigInteger Multiply(BigInteger x, BigInteger y) {
             return x * y;
         }
 
-        public int Divide(int x, int y) {
+        public BigInteger Divide(BigInteger x, BigInteger y) {
             return x / y;
         }
 
-        public int Remainder(int x, int y) {
+        public BigInteger Remainder(BigInteger x, BigInteger y) {
             return x % y;
         }
 
-        public int DivideRemainder(int x, int y, out int remainder) {
-            return Math.DivRem(x, y, out remainder);
+        public BigInteger DivideRemainder(BigInteger x, BigInteger y, out BigInteger remainder) {
+            return BigInteger.DivRem(x, y, out remainder);
         }
 
-        public int Negate(int x) {
+        public BigInteger Negate(BigInteger x) {
             return -x;
         }
 
-        public int Reciprocal(int x) {
+        public BigInteger Reciprocal(BigInteger x) {
             throw new NotSupportedException();
         }
 
-        public int Zero {
+        public BigInteger Zero {
             get { return 0; }
         }
 
-        public int One {
+        public BigInteger One {
             get { return 1; }
         }
 

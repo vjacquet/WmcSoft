@@ -48,6 +48,7 @@
     <Compile Include="Arithmetics\DecimalArithmetics.cs" />
     <Compile Include="Arithmetics\IArithmetics.cs" />
     <Compile Include="Arithmetics\DoubleArithmetics.cs" />
+    <Compile Include="Arithmetics\BigIntegerArithmetics.cs" />
     <Compile Include="Arithmetics\Int32Arithmetics.cs" />
     <Compile Include="DeterministicRandom.cs" />
     <Compile Include="Generators.cs" />
