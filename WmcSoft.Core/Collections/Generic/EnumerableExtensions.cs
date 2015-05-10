@@ -295,12 +295,6 @@ namespace WmcSoft.Collections.Generic
                 return enumerator.Count;
             }
         }
-        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
-            using (var enumerator = new CountingEnumerator<TSource>(source)) {
-                value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                return enumerator.Count;
-            }
-        }
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2) {
             using (var enumerator = new CountingEnumerator<TSource>(source)) {
                 value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
