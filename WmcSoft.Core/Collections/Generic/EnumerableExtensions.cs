@@ -321,6 +321,37 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region ForEach
+
+        public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
+            if (source == null)
+                return;
+            foreach (var item in source)
+                action(item);
+        }
+
+        public static bool TrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
+            if (source == null)
+                return false;
+
+            bool b = true;
+            foreach (var item in source)
+                b &= predicate(item);
+            return b;
+        }
+
+        public static bool SometimesTrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
+            if (source == null)
+                return false;
+
+            bool b = false;
+            foreach (var item in source)
+                b |= predicate(item);
+            return b;
+        }
+
+        #endregion
     }
 }
 
