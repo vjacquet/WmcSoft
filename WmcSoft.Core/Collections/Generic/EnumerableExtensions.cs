@@ -61,6 +61,15 @@ namespace WmcSoft.Collections.Generic
             return array;
         }
 
+        /// <summary>
+        /// Creates an array of the specified length from an IEnumerable.
+        /// </summary>
+        /// <typeparam name="TSource">The type of element of the source.</typeparam>
+        /// <param name="source">An IEnumerable to create an array from.</param>
+        /// <param name="length">The required length of the array</param>
+        /// <returns>An array of size length that contains the elements from the input sequence.</returns>
+        /// <remarks>If the input sequence as less than length elements, the array is padded with default(TSource) values. 
+        /// If the input sequence contains more elements, only the first length items are copied in the array.</remarks>
         public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source, int length)
             where TSource : new() {
             var array = new TSource[length];
@@ -324,6 +333,12 @@ namespace WmcSoft.Collections.Generic
 
         #region ForEach
 
+        /// <summary>
+        /// Performs the specified action on each element of the sequence.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="action">A function to apply on each element.</param>
         public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
             if (source == null)
                 return;
@@ -331,9 +346,18 @@ namespace WmcSoft.Collections.Generic
                 action(item);
         }
 
+        /// <summary>
+        /// Determines whether each element matches the condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="predicate">The delegate that defines the conditions to check against the elements.</param>
+        /// <returns>true if every element in the sequence matches the conditions defined by the specified predicate; 
+        /// otherwise, false. If there are no elements, the return value is true.</returns>
+        /// <remarks>The predicate is applied on each element of the sequence.</remarks>
         public static bool TrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
             if (source == null)
-                return false;
+                return true;
 
             bool b = true;
             foreach (var item in source)
@@ -341,7 +365,16 @@ namespace WmcSoft.Collections.Generic
             return b;
         }
 
-        public static bool SometimesTrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
+        /// <summary>
+        /// Determines whether some element matches the condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="predicate">The delegate that defines the conditions to check against the elements.</param>
+        /// <returns>true if some element in the sequence matches the conditions defined by the specified predicate; 
+        /// otherwise, false. If there are no elements, the return value is true.</returns>
+        /// <remarks>The predicate is applied on each element of the sequence.</remarks>
+        public static bool TrueForSome<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
             if (source == null)
                 return false;
 
