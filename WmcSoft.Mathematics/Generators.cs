@@ -110,5 +110,28 @@ namespace WmcSoft
                 yield return random.Next();
             }
         }
+
+        public static IEnumerable<T> Series<T>(Func<T, T> func, T v0 = default(T)) {
+            yield return v0;
+
+            var vn = v0;
+            while (true) {
+                vn = func(vn);
+                yield return vn;
+            }
+        }
+
+        public static IEnumerable<T> Series<T>(Func<T, T, T> func, T v0 = default(T), T v1 = default(T)) {
+            yield return v0;
+            yield return v1;
+
+            var v = new[] { v0, v1 };
+            var i = 0;
+            while (true) {
+                v[i] = func(v[i], v[1 - i]);
+                yield return v[i];
+                i = 1 - i;
+            }
+        }
     }
 }
