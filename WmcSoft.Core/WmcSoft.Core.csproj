@@ -56,6 +56,7 @@
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\SourceComparer.cs" />
     <Compile Include="Collections\ReadOnlyCollectionOfObjectAdapter.cs" />
     <Compile Include="Collections\Generic\ConvertingCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\ConvertingListAdapter.cs" />

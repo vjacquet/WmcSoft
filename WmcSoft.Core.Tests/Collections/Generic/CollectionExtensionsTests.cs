@@ -153,5 +153,15 @@ namespace WmcSoft.Collections.Generic.Tests
             var comparer = new ArrayEqualityComparer<int>();
             Assert.IsFalse(comparer.Equals(x, y));
         }
+
+        [TestMethod]
+        public void CheckSortOnIndexedCollection() {
+            var array = new[] { "a", "c", "e", "d", "f", "b" };
+            var comparer = new SourceComparer<string>(array, StringComparer.InvariantCulture);
+            var actual = new[] { 0, 1, 2, 3, 4, 5 };
+            Array.Sort(actual, comparer);
+            var expected = new[] { 0, 5, 1, 3, 2, 4 };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
