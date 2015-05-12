@@ -34,7 +34,7 @@ namespace WmcSoft.Collections.Generic
 {
     sealed class ReadOnlyList<T> : IReadOnlyList<T>
     {
-          #region fields
+        #region fields
 
         readonly IList<T> _list;
 

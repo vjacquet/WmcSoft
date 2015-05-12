@@ -19,7 +19,6 @@ namespace WmcSoft.Tests
 
         [TestMethod]
         public void CheckSurroundWithOnStringBuilder() {
-            string n = null;
             Assert.AreEqual("abc", new StringBuilder("b").SurroundWith("a", "c").ToString());
             Assert.AreEqual("bc", new StringBuilder("b").SurroundWith(null, "c").ToString());
             Assert.AreEqual("ab", new StringBuilder("b").SurroundWith("a", null).ToString());
