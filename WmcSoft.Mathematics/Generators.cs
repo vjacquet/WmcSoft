@@ -35,6 +35,8 @@ namespace WmcSoft
 {
     public static class Generators
     {
+        #region Iota
+
         public static IEnumerable<int> Iota(int value = 0) {
             checked {
                 while (true) {
@@ -43,6 +45,10 @@ namespace WmcSoft
                 }
             }
         }
+
+        #endregion
+
+        #region Fibonacci
 
         public static IEnumerable<BigInteger> Fibonacci() {
             BigInteger Fn = 0;
@@ -59,6 +65,37 @@ namespace WmcSoft
                 Fn1 = Fn2;
             }
         }
+
+        #endregion
+
+        #region Series
+
+        public static IEnumerable<T> Series<T>(Func<T, T> func, T v0 = default(T)) {
+            yield return v0;
+
+            var vn = v0;
+            while (true) {
+                vn = func(vn);
+                yield return vn;
+            }
+        }
+
+        public static IEnumerable<T> Series<T>(Func<T, T, T> func, T v0 = default(T), T v1 = default(T)) {
+            yield return v0;
+            yield return v1;
+
+            var v = new[] { v0, v1 };
+            var i = 0;
+            while (true) {
+                v[i] = func(v[i], v[1 - i]);
+                yield return v[i];
+                i = 1 - i;
+            }
+        }
+
+        #endregion
+
+        #region Random
 
         public static IEnumerable<int> Random(Random random) {
             if (random == null)
@@ -111,27 +148,6 @@ namespace WmcSoft
             }
         }
 
-        public static IEnumerable<T> Series<T>(Func<T, T> func, T v0 = default(T)) {
-            yield return v0;
-
-            var vn = v0;
-            while (true) {
-                vn = func(vn);
-                yield return vn;
-            }
-        }
-
-        public static IEnumerable<T> Series<T>(Func<T, T, T> func, T v0 = default(T), T v1 = default(T)) {
-            yield return v0;
-            yield return v1;
-
-            var v = new[] { v0, v1 };
-            var i = 0;
-            while (true) {
-                v[i] = func(v[i], v[1 - i]);
-                yield return v[i];
-                i = 1 - i;
-            }
-        }
+        #endregion
     }
 }
