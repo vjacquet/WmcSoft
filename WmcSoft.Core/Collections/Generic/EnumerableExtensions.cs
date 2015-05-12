@@ -385,6 +385,36 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Read
+
+        [DebuggerStepThrough]
+        public static bool Read<T>(this IEnumerator<T> enumerator, out T value) {
+            if (enumerator.MoveNext()) {
+                value = enumerator.Current;
+                return true;
+            }
+            value = default(T);
+            return false;
+        }
+
+        [DebuggerStepThrough]
+        public static T Read<T>(this IEnumerator<T> enumerator) {
+            if (enumerator.MoveNext()) {
+                return enumerator.Current;
+            }
+            throw new InvalidOperationException();
+        }
+
+        [DebuggerStepThrough]
+        public static T ReadOrDefault<T>(this IEnumerator<T> enumerator) {
+            if (enumerator.MoveNext()) {
+                return enumerator.Current;
+            }
+            return default(T);
+        }
+
+        #endregion
     }
 }
 
