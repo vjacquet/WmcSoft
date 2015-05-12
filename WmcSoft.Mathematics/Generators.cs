@@ -35,6 +35,8 @@ namespace WmcSoft
 {
     public static class Generators
     {
+        #region Iota
+
         public static IEnumerable<int> Iota(int value = 0) {
             checked {
                 while (true) {
@@ -43,6 +45,10 @@ namespace WmcSoft
                 }
             }
         }
+
+        #endregion
+
+        #region Fibonacci
 
         public static IEnumerable<BigInteger> Fibonacci() {
             BigInteger Fn = 0;
@@ -59,6 +65,10 @@ namespace WmcSoft
                 Fn1 = Fn2;
             }
         }
+
+        #endregion
+
+        #region Random
 
         public static IEnumerable<int> Random(Random random) {
             if (random == null)
@@ -110,5 +120,7 @@ namespace WmcSoft
                 yield return random.Next();
             }
         }
+
+        #endregion
     }
 }
