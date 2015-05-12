@@ -147,6 +147,7 @@
     <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\CustomAttributeProviderExtensions.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="Runtime\ObjectWalker.cs" />
     <Compile Include="Security\Cryptography\UUDecodeTransform.cs" />
