@@ -41,5 +41,30 @@ namespace WmcSoft
                 return Int32.MaxValue;
             return (int)x;
         }
+
+        static int CheckDigit(int value) {
+            if (value < 0 || value > 9)
+                throw new ArgumentOutOfRangeException("value");
+            return value;
+        }
+
+        /// <summary>
+        /// Read a sequence of digits as an Int32.
+        /// </summary>
+        /// <param name="digits">The digits, from left to right.</param>
+        /// <returns>The Int32.</returns>
+        public static int ToInt32(this IEnumerable<int> digits) {
+            if (digits == null)
+                return 0;
+            using (var enumerator = digits.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    return 0;
+                var r = CheckDigit(enumerator.Current);
+                while (enumerator.MoveNext()) {
+                    r = 10 * r + CheckDigit(enumerator.Current);
+                }
+                return r;
+            }
+        }
     }
 }

@@ -60,6 +60,8 @@
     <Compile Include="Numerics\VectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistics\QuantilesTests.cs" />
+    <Compile Include="GeneratorsTests.cs" />
+    <Compile Include="Int32Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
