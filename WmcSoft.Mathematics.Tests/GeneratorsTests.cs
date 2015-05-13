@@ -48,5 +48,29 @@ namespace WmcSoft.Tests
             var f = factorial(sequence.First().Length);
             Assert.AreEqual(f, expected.Count);
         }
+
+        int ToInt32(IReadOnlyList<int> code, params int[] indices) {
+            return indices.Select(i => code[i]).ToInt32();
+        }
+
+        [TestMethod]
+        public void SolveSendMoreMoney() {
+            int S = 0, E = 1, N = 2, D = 3, M = 4, O = 5, R = 6, Y = 7;
+            var permutations = Generators.Permutations(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+            var solutions = new HashSet<string>();
+            foreach (var p in permutations) {
+                if (p[S] == 0 || p[M] == 0)
+                    continue;
+
+                var send = ToInt32(p, S, E, N, D);
+                var more = ToInt32(p, M, O, R, E);
+                var money = ToInt32(p, M, O, N, E, Y);
+                if (send + more == money) {
+                    solutions.Add(send + "+" + more + "=" + money);
+                }
+            }
+            Assert.IsTrue(solutions.Count == 1);
+            Assert.AreEqual("9567+1085=10652", solutions.Single());
+        }
     }
 }
