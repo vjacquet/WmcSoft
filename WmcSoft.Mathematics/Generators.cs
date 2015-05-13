@@ -149,5 +149,92 @@ namespace WmcSoft
         }
 
         #endregion
+
+        #region Permutations
+
+        class SourceReadOnlyList<T> : IReadOnlyList<T>
+        {
+            readonly T[] _list;
+            readonly int[] _indices;
+
+            public SourceReadOnlyList(T[] list, int[] indices) {
+                _list = list;
+                _indices = indices;
+            }
+
+            #region IReadOnlyList<T> Members
+
+            public T this[int index] {
+                get { return _list[_indices[index]]; }
+            }
+
+            #endregion
+
+            #region IReadOnlyCollection<T> Members
+
+            public int Count {
+                get { return _indices.Length; }
+            }
+
+            #endregion
+
+            #region IEnumerable<T> Members
+
+            public IEnumerator<T> GetEnumerator() {
+                var length = _indices.Length;
+                for (int i = 0; i < length; i++) {
+                    yield return _list[_indices[i]];
+                }
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+
+            #endregion
+        }
+
+        static bool IsOdd(int i) {
+            return (i & 1) == 0;
+        }
+
+        public static IEnumerable<IReadOnlyList<T>> Permutations<T>(params T[] values) {
+            // Adapted from Knuth, Vol 4A, Page 329, Algorithm G
+            var n = values.Length;
+            var a = new int[n];
+
+            var list = new SourceReadOnlyList<T>(values, a);
+
+            for (int i = 1; i < n; i++)
+                a[i] = i;
+            var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
+
+            int k;
+        Visit:
+            yield return list;
+
+            k = 1;
+            while (c[k] == k) {
+                c[k] = 0;
+                k++;
+                if (k == n)
+                    yield break;
+            }
+            c[k] = c[k] + 1;
+
+            if (IsOdd(k))
+                a.SwapItems(k, 0);
+            else
+                a.SwapItems(k, c[k] - 1);
+
+            goto Visit;
+        }
+
+        #endregion
+
     }
 }

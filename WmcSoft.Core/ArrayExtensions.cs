@@ -185,5 +185,15 @@ namespace WmcSoft
         }
 
         #endregion
+
+        #region SwapItems
+
+        public static void SwapItems<T>(this T[] array, int i, int j) {
+            var t = array[i];
+            array[i] = array[j];
+            array[j] = t;
+        }
+
+        #endregion
     }
 }
