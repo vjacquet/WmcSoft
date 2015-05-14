@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{76382268-17DD-4D92-B3CF-D9C5F8915DBD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WmcSoft</RootNamespace>
+    <AssemblyName>WmcSoft.VisualStudio</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Fichiers communs\Microsoft Shared\MSEnv\PublicAssemblies\envdte.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.VisualStudio.Designer.Interfaces, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.Shell, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Design, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Fichiers communs\Microsoft Shared\MSEnv\PublicAssemblies\VSLangProj.dll</HintPath>
+    </Reference>
+    <Reference Include="VSLangProj2, Version=7.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Fichiers communs\Microsoft Shared\MSEnv\PublicAssemblies\VSLangProj2.dll</HintPath>
+    </Reference>
+    <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Fichiers communs\Microsoft Shared\MSEnv\PublicAssemblies\VSLangProj80.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeBuilders\AssemblyBuilder.cs" />
+    <Compile Include="CodeBuilders\ClassBuilder.cs" />
+    <Compile Include="CodeBuilders\CodeBuilder.cs" />
+    <Compile Include="CodeBuilders\CodeBuilderContext.cs" />
+    <Compile Include="CodeBuilders\CodeBuilderException.cs" />
+    <Compile Include="CodeBuilders\CodeGeneratorBuilder.cs" />
+    <Compile Include="CodeBuilders\CodePolicyRule.cs" />
+    <Compile Include="CodeBuilders\CompileUnitBuilder.cs" />
+    <Compile Include="CodeBuilders\FieldBuilder.cs" />
+    <Compile Include="CodeBuilders\FieldsBuilder.cs" />
+    <Compile Include="CodeBuilders\ImplementsBuilder.cs" />
+    <Compile Include="CodeBuilders\ImportBuilder.cs" />
+    <Compile Include="CodeBuilders\ExtendsBuilder.cs" />
+    <Compile Include="CodeBuilders\MembersBuilder.cs" />
+    <Compile Include="CodeBuilders\NamespaceBuilder.cs" />
+    <Compile Include="CodeBuilders\NonTerminalCodeBuilder.cs" />
+    <Compile Include="CodeBuilders\PoliciesBuilder.cs" />
+    <Compile Include="CodeBuilders\Policies\AddPropertySetterRule.cs" />
+    <Compile Include="CodeBuilders\Policies\InjectDefaultValueSupportRule.cs" />
+    <Compile Include="CodeBuilders\Policies\ImplementThroughDelegationRule.cs" />
+    <Compile Include="CodeBuilders\Policies\ImplementPropertyThroughMethodsRule.cs" />
+    <Compile Include="CodeBuilders\Policies\FlowGroupEntityPropertyRule.cs" />
+    <Compile Include="CodeBuilders\Policies\RemoveOverrideRule.cs" />
+    <Compile Include="CodeBuilders\PolicyBuilder.cs" />
+    <Compile Include="CodeBuilders\PolicyDrivenCodeBuilder.cs" />
+    <Compile Include="CodeBuilders\PropertiesBuilder.cs" />
+    <Compile Include="CodeBuilders\PropertyBuilder.cs" />
+    <Compile Include="CodeBuilders\ReferencesBuilder.cs" />
+    <Compile Include="CodeBuilders\ReflectBuilder.cs" />
+    <Compile Include="CodeBuilders\TerminalCodeBuilder.cs" />
+    <Compile Include="CustomTools\CodeGenerator.cs" />
+    <Compile Include="CustomTools\Design\CustomToolAttribute.cs" />
+    <Compile Include="CustomTools\Design\CustomToolBase.cs" />
+    <Compile Include="CustomTools\Design\SupportedCategoryAttribute.cs" />
+    <Compile Include="CustomTools\Design\SupportedVersionAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="VisualStudio\BaseCodeGenerator.cs" />
+    <Compile Include="VisualStudio\BaseCodeGeneratorWithSite.cs" />
+    <Compile Include="VisualStudio\IVsGeneratorProgress.cs" />
+    <Compile Include="VisualStudio\IVsSingleFileGenerator.cs" />
+    <Compile Include="VisualStudio\VsHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodeBuilders\CodeBuilder.cd" />
+    <EmbeddedResource Include="CodeBuilders\CodeGenerator.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="CodeBuilders\CodeGenerator.xsx">
+      <DependentUpon>CodeGenerator.xsd</DependentUpon>
+    </None>
+    <None Include="VisualStudio\VisualStudio.cd" />
+    <Content Include="WmcSoft.CodeGenerator.reg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WmcSoft.Core\WmcSoft.Core.csproj">
+      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
+      <Name>WmcSoft.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WmcSoft.Interop\WmcSoft.Interop.csproj">
+      <Project>{0fb15097-b0e2-4940-8eeb-54bce3ca6828}</Project>
+      <Name>WmcSoft.Interop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WmcSoft.CodeGenerator.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

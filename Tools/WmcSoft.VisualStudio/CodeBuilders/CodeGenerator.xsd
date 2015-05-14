@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CodeGenerator" targetNamespace="http://www.WmcSoft.com/Schemas/CodeGenerator.xsd" elementFormDefault="qualified" xmlns="http://www.WmcSoft.com/Schemas/CodeGenerator.xsd" xmlns:mstns="http://www.WmcSoft.com/Schemas/CodeGenerator.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="codeGenerator">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="policies" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="policy" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="rule" minOccurs="1" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="type" type="xs:string" use="required" />
+                        <xs:anyAttribute processContents="skip" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:ID" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="compileUnit" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+              <xs:element name="references" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="assembly">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="namespace">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="import" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:choice maxOccurs="unbounded">
+                      <xs:element type="ClassOrStruct" name="class" />
+                      <xs:element type="ClassOrStruct" name="struct" />
+                    </xs:choice>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:key name="PolicyKeys">
+      <xs:selector xpath=".//mstns:policy" />
+      <xs:field xpath="@name" />
+    </xs:key>
+  </xs:element>
+  <xs:complexType name="ClassOrStruct">
+    <xs:sequence>
+      <xs:element name="extends" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:attribute name="type" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="implements" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="interface" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="members" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="reflect" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="CollectionBuilder">
+                      <xs:attribute name="type" type="xs:string" use="required" />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="policy" use="optional" type="PropertyPolicyType" />
+          </xs:complexType>
+          <xs:keyref name="MemberPolicy" refer="PolicyKeys">
+            <xs:selector xpath="." />
+            <xs:field xpath="@policy" />
+          </xs:keyref>
+        </xs:element>
+        <xs:element name="properties" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="type" type="xs:string" use="required" />
+                  <xs:attribute name="default" type="xs:string" use="optional" />
+                  <xs:attribute name="readOnly" type="xs:boolean" use="optional" default="false" />
+                  <xs:attribute name="access" use="optional" type="AccessType" default="public" />
+                  <xs:attribute name="modifier" use="optional" type="ModifierType" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="policy" use="optional" type="PropertyPolicyType" />
+          </xs:complexType>
+          <xs:keyref name="PropertyPolicy" refer="PolicyKeys">
+            <xs:selector xpath="." />
+            <xs:field xpath="@policy" />
+          </xs:keyref>
+        </xs:element>
+        <xs:element name="fields" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="field" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="type" type="xs:string" use="required" />
+                  <xs:attribute name="access" use="optional" type="AccessType" default="private" />
+                  <xs:attribute name="modifier" use="optional" type="ModifierType" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="policy" use="optional" type="PropertyPolicyType" />
+          </xs:complexType>
+          <xs:keyref name="FieldPolicy" refer="PolicyKeys">
+            <xs:selector xpath="." />
+            <xs:field xpath="@policy" />
+          </xs:keyref>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="abstract" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="public" type="xs:boolean" use="optional" default="true" />
+  </xs:complexType>
+  <xs:complexType name="CollectionBuilder">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="add" type="CollectionBuilderVerb" />
+      <xs:element name="remove" type="CollectionBuilderVerb" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="CollectionBuilderVerb">
+    <xs:attribute name="match" use="required" type="xs:string" />
+  </xs:complexType>
+  <xs:simpleType name="AccessType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="private" />
+      <xs:enumeration value="public" />
+      <xs:enumeration value="protected" />
+      <xs:enumeration value="internal" />
+      <xs:enumeration value="protected internal" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ModifierType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="static" />
+      <xs:enumeration value="virtual" />
+      <xs:enumeration value="abstract" />
+      <xs:enumeration value="overriden" />
+      <xs:enumeration value="new" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PropertyPolicyType">
+    <xs:restriction base="xs:IDREFS" />
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Drawing.Quantizer" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAIAAAAAAAAAAAAIAAQIAAAAAQAAAA=</HashCode>
+      <FileName>Drawing\Quantizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Drawing.PaletteQuantizer">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAQAAAIAAAAAQAAAA=</HashCode>
+      <FileName>Drawing\PaletteQuantizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Drawing.OctreeQuantizer">
+    <Position X="3.5" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="WmcSoft.Drawing.OctreeQuantizer.Octree">
+        <NestedTypes>
+          <Class Name="WmcSoft.Drawing.OctreeQuantizer.Octree.OctreeNode">
+            <TypeIdentifier>
+              <NewMemberFileName>Drawing\OctreeQuantizer.cs</NewMemberFileName>
+            </TypeIdentifier>
+          </Class>
+        </NestedTypes>
+        <TypeIdentifier>
+          <NewMemberFileName>Drawing\OctreeQuantizer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAIAAAIAAAAAQAAgA=</HashCode>
+      <FileName>Drawing\OctreeQuantizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

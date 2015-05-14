@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Interface Name="WmcSoft.VisualStudio.IVsGeneratorProgress">
+    <Position X="9.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>VisualStudio\IVsGeneratorProgress.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.VisualStudio.IVsSingleFileGenerator">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>VisualStudio\IVsSingleFileGenerator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

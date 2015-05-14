@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="WmcSoft.Xml.XPath.ReflectNavigator" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\ReflectNavigator.cs</FileName>
+      <HashCode>AAAAACAACIAAATEAAAAiBAQDAAALAQAQBAAgAAAAABQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="adapter" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.NavigationAdapter" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\NavigationAdapter.cs</FileName>
+      <HashCode>AAAAACAgIAAAAiBwgAIgAACQAAAKAIAAAAAgQAQAABA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.835" />
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.ElementNavigationAdapter" Collapsed="true">
+    <Position X="4.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ElementNavigatorAdapter.cs</FileName>
+      <NewMemberFileName>Xml\XPath\Internal\RootNavigatorAdapter.cs</NewMemberFileName>
+      <HashCode>AAAAAAAgAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.TypeAdapter" Collapsed="true">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAgAgAAAAAAAAAAABAACAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.InterfaceAdapter" Collapsed="true">
+    <Position X="4.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.StructAdapter" Collapsed="true">
+    <Position X="3.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.ClassAdapter" Collapsed="true">
+    <Position X="5.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>AAAAAAAAIAAAAgAgAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.RootNavigationAdapter" Collapsed="true">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\RootNavigatorAdapter.cs</FileName>
+      <HashCode>AAAAACAgIAAAAAAgAAIgAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.EnumAdapter" Collapsed="true">
+    <Position X="1" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>AAAAAAAgAAAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.FieldAdapter" Collapsed="true">
+    <Position X="12.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>gAAAAAAgIAAAAgAgAAAgAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Xml.XPath.Internal.PropertyAdapter" Collapsed="true">
+    <Position X="7.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Xml\XPath\Internal\ReflectNavigatorAdapters.cs</FileName>
+      <HashCode>AAAAAAEAIAAAAgAgAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>

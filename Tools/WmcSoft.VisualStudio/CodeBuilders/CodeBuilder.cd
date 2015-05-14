@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="WmcSoft.CodeBuilders.CodeBuilder" Collapsed="true">
+    <Position X="18.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\CodeBuilder.cs</FileName>
+      <HashCode>AAAgAAAACAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.CodeGeneratorBuilder" Collapsed="true">
+    <Position X="7" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\CodeGeneratorBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.NonTerminalCodeBuilder" Collapsed="true">
+    <Position X="12.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\NonTerminalCodeBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAgAAAAAAIAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.ReferencesBuilder" Collapsed="true">
+    <Position X="14.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\ReferencesBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.TerminalCodeBuilder" Collapsed="true">
+    <Position X="24.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\TerminalCodeBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.AssemblyBuilder" Collapsed="true">
+    <Position X="23.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\AssemblyBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.CompileUnitBuilder" Collapsed="true">
+    <Position X="8.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\CompileUnitBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.ClassBuilder" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\ClassBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.NamespaceBuilder" Collapsed="true">
+    <Position X="11.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\NamespaceBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.ImportBuilder" Collapsed="true">
+    <Position X="21" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\ImportBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.ImplementBuilder" Collapsed="true">
+    <Position X="25.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\ImplementBuilder.cs</FileName>
+      <NewMemberFileName>Builders\CodeBuilder.cs</NewMemberFileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.InheritBuilder" Collapsed="true">
+    <Position X="27.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\InheritBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.FieldsBuilder" Collapsed="true">
+    <Position X="14.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\FieldsBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.PoliciesBuilder" Collapsed="true">
+    <Position X="12.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\PoliciesBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.PolicyDrivenCodeBuilder" Collapsed="true">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\PolicyDrivenCodeBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.PropertiesBuilder" Collapsed="true">
+    <Position X="17" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\PropertiesBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.MembersBuilder" Collapsed="true">
+    <Position X="19.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\MembersBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.FieldBuilder" Collapsed="true">
+    <Position X="22.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\FieldBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.CodeBuilders.PolicyBuilder" Collapsed="true">
+    <Position X="18.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CodeBuilders\PolicyBuilder.cs</FileName>
+      <HashCode>AAAgAAJAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <InheritanceLine Type="WmcSoft.CodeBuilders.CodeBuilder" FixedFromPoint="true">
+      <Path>
+        <Point X="19.5" Y="2.259" />
+        <Point X="19.5" Y="3" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+</ClassDiagram>

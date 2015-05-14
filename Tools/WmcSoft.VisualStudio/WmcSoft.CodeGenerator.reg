@@ -1,0 +1,59 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.codegen]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_CLASSES_ROOT\WmcSoft.CodeGenerator]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_CLASSES_ROOT\WmcSoft.CodeGenerator\CLSID]
+@="{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}"
+
+[HKEY_CLASSES_ROOT\WmcSoft.CodeGenerator\DefaultIcon]
+@="C:\\Documents and Settings\\vincent\\Mes documents\\Visual Studio 2010\\Projects\\WmcSoft\\Framework\\WmcSoft.VisualStudio\\WmcSoft.CodeGenerator.ico"
+
+[HKEY_CLASSES_ROOT\CLSID\{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_CLASSES_ROOT\CLSID\{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="WmcSoft.CustomTools.CodeGenerator"
+"Assembly"="WmcSoft.VisualStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+"CodeBase"="file:///C:/Documents and Settings/Vincent/Mes documents/Visual Studio 2010/Projects/WmcSoft/Framework/WmcSoft.VisualStudio/bin/Release/WmcSoft.VisualStudio.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}\InprocServer32\1.0.0.0]
+"Class"="WmcSoft.CustomTools.CodeGenerator"
+"Assembly"="WmcSoft.VisualStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+"CodeBase"="file:///C:/Documents and Settings/Vincent/Mes documents/Visual Studio 2010/Projects/WmcSoft/Framework/WmcSoft.VisualStudio/bin/Release/WmcSoft.VisualStudio.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}\ProgId]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_CLASSES_ROOT\CLSID\{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\.codegen]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\WmcSoft.CodeGenerator]
+"GeneratesDesignTimeSource"=dword:00000001
+"CLSID"="{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}"
+@="Declarative code generator"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\9.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\.codegen]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\9.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\WmcSoft.CodeGenerator]
+"GeneratesDesignTimeSource"=dword:00000001
+"CLSID"="{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}"
+@="Declarative code generator"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\.codegen]
+@="WmcSoft.CodeGenerator"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\WmcSoft.CodeGenerator]
+"GeneratesDesignTimeSource"=dword:00000001
+"CLSID"="{ddd7d995-7b4f-4ff6-9173-bb66ddd4ab77}"
+@="Declarative code generator"

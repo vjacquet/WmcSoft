@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CustomTool_GeneralError" xml:space="preserve">
+    <value>#error Couldn't generate code.
+/*
+{0}
+*/</value>
+  </data>
+  <data name="CustomTool_ToolRequiredAttributeMissing" xml:space="preserve">
+    <value>Tool {0} does not contain the required {1} attribute.</value>
+  </data>
+  <data name="Tool_AttributeMissing" xml:space="preserve">
+    <value>Type '{0}' must have the '{1}' attribute.</value>
+  </data>
+  <data name="Tool_NoCodeDomSupport" xml:space="preserve">
+    <value>Current project type can't have code elements, or can't compile to a .NET language. Supported project types are C# and VB.NET.</value>
+  </data>
+  <data name="Tool_NoDTEProjectItem" xml:space="preserve">
+    <value>Can't get current project item.</value>
+  </data>
+  <data name="Tool_Success" xml:space="preserve">
+    <value>Success.</value>
+  </data>
+  <data name="Tool_UnsupportedCodeDomOutput" xml:space="preserve">
+    <value>Output of type CodeDom must be either a CodeNamespace or a CodeCompileUnit.</value>
+  </data>
+  <data name="Tool_UnsupportedProjectType" xml:space="preserve">
+    <value>Current project type is unsupported for this tool.</value>
+  </data>
+  <data name="AssemblyNotFound" xml:space="preserve">
+    <value>Unable to find assembly {0}. Make sure it is installed in the guidance package Lib folder.</value>
+  </data>
+  <data name="ConfigurationServiceGuidancePackageNotFound" xml:space="preserve">
+    <value>Unable to locate guidance package install folder.</value>
+  </data>
+  <data name="HiveRootNotFound" xml:space="preserve">
+    <value>Unable to find Visual Studio registry hive root.</value>
+  </data>
+  <data name="InvalidTypeFilter" xml:space="preserve">
+    <value>Filter type {0} does not implement the required interface {1}.</value>
+  </data>
+  <data name="InvalidTypeError" xml:space="preserve">
+    <value>Invalid Type.</value>
+  </data>
+  <data name="MappingFileContent" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;ProjectMappingInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+													 xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+													 FileName="ProjectMapping.xml" 
+													 xmlns="http://schemas.microsoft.com/pag/project-mapping"&gt;
+	&lt;ProjectMappingTables&gt;
+	&lt;/ProjectMappingTables&gt;
+&lt;/ProjectMappingInformation&gt;</value>
+  </data>
+  <data name="ProjectMappingAlreadyExists" xml:space="preserve">
+    <value>Project mapping already exists.</value>
+  </data>
+  <data name="ProjectMappingFileNotFound" xml:space="preserve">
+    <value>The folder where the Project mapping resides must be named '{0}'.</value>
+  </data>
+  <data name="ProjectMappingTableAlreadyExists" xml:space="preserve">
+    <value>Project mapping table already exists.</value>
+  </data>
+  <data name="ProjectMappingTableNotFound" xml:space="preserve">
+    <value>Project mapping table not found.</value>
+  </data>
+  <data name="ProjectNotFound" xml:space="preserve">
+    <value>Project not found.</value>
+  </data>
+  <data name="PublicNonSystemTypeFilter_Description" xml:space="preserve">
+    <value>solution types</value>
+  </data>
+  <data name="PublicPrivateTypesFilter_Description" xml:space="preserve">
+    <value>public and primitive types.</value>
+  </data>
+  <data name="PublicTypesFilter_Description" xml:space="preserve">
+    <value>public types</value>
+  </data>
+  <data name="PublicTypesFilter_Error" xml:space="preserve">
+    <value>Type {0} is not public.</value>
+  </data>
+  <data name="RegistryKeyAccessorClosedKey" xml:space="preserve">
+    <value>Cannot access closed registry key.</value>
+  </data>
+  <data name="RegistryKeyAccessorFailed" xml:space="preserve">
+    <value>Failed to read name {0} in registry key {1}.</value>
+  </data>
+  <data name="ServiceProviderIsNull" xml:space="preserve">
+    <value>ServiceProvider is null.</value>
+  </data>
+  <data name="StringCannotBeEmpty" xml:space="preserve">
+    <value>Argument {0} value cannot be an empty string.</value>
+  </data>
+</root>

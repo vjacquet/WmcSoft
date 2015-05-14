@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Struct Name="WmcSoft.Interop.TextObjectModel.ChangeNotify" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="WmcSoft.Interop.TextObjectModel.ITextServices">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEQBAAhBAAQoIAAAAEBAAAIAAAEAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Interop.TextObjectModel.ITextHost">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BFAMCUAgoALCAgBPAAIAAAAiQgFAAAJYAAAIMAAEAAE=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.TextObjectModel.ITextDocument" Collapsed="true">
+    <Position X="7.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAIAAAQAALKgAAAAIAAQBACAAAAAAAAAIAAAAQAo=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.TextObjectModel.ITextFont" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICAWQAAAAAAhCAgk4EAAAQAACAANAIABAAAAAAVAEE=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.TextObjectModel.ITextPara" Collapsed="true">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAAAIAAAMEDAEAASMgAABCBARAIABEhAQAAAgAgGA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.TextObjectModel.ITextRange" Collapsed="true">
+    <Position X="6.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwYA9KAAAqAAAQAQAYEACIAQAgkIIKACAAiASCAKKQA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Microsoft.TextObjectModel.ITextSelection" Collapsed="true">
+    <Position X="5.5" Y="5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AwcA9KAAAqAAAQAQAYECCIARAgkIIKAKQQyASCAKKQA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.TextObjectModel.ITextStoryRanges" Collapsed="true">
+    <Position X="10.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAQEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="WmcSoft.Interop.TextObjectModel.HitResult" Collapsed="true">
+    <Position X="4" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEABAAAAAAAAAAIAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Interop.TextObjectModel.NaturalSize" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Interop.TextObjectModel.View" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Interop.TextObjectModel.ChangeType" Collapsed="true">
+    <Position X="2.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAIAAQAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Interop.TextObjectModel.PropertyBits" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAwAAAIACAFAAABIBMQIAgAEgACIAAIAAIAQAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Interop.TextObjectModel.BackStyle" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\TextObjectModel\TextServ.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.TextObjectModel.Constants" Collapsed="true">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EhOgZLCUQODhDzVgBBzub0yHjKASA7HCgIjYyJXlGSo=</HashCode>
+      <FileName>Interop\TextObjectModel\TextObjectModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

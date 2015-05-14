@@ -44,7 +44,12 @@
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BinaryFormatter.cs" />
+    <Compile Include="CodeDom\CodeAssertArgumentNotNulllStatement.cs" />
     <Compile Include="CodeDom\CodeDomExtensions.cs" />
+    <Compile Include="CodeDom\CodeDomTypeBuilder.cs" />
+    <Compile Include="CodeDom\CodeNullEqualityExpression.cs" />
+    <Compile Include="CodeDom\CodeNullInequalityExpression.cs" />
+    <Compile Include="CodeDom\CodeThrowNewExceptionStatement.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DescendingComparer.cs" />
     <Compile Include="Collections\Generic\AnonymousComparer.cs" />
@@ -147,8 +152,14 @@
     </Compile>
     <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\CustomAttributeProviderExtensions.cs" />
+    <Compile Include="Reflection\DocumentationLoader.cs" />
+    <Compile Include="Reflection\IReflectVisitor.cs" />
+    <Compile Include="Reflection\ReflectExhibition.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="Reflection\ReflectionVisitor.cs" />
+    <Compile Include="Reflection\ReflexionExhibition.cs" />
+    <Compile Include="Reflection\XmlDocumentation.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="Runtime\ObjectWalker.cs" />
     <Compile Include="Security\Cryptography\UUDecodeTransform.cs" />
@@ -181,7 +192,14 @@
     <Compile Include="Xml\XmlWriterExtensions.cs" />
     <Compile Include="Xml\XPath\DistinctXPathNodeIterator.cs" />
     <Compile Include="Xml\XPath\DuplicateOnlyXPathNodeIterator.cs" />
+    <Compile Include="Xml\XPath\FileSystemNavigator.cs" />
     <Compile Include="Xml\XPath\FilterXPathNodeIterator.cs" />
+    <Compile Include="Xml\XPath\Internal\ElementNavigatorAdapter.cs" />
+    <Compile Include="Xml\XPath\Internal\NavigationAdapter.cs" />
+    <Compile Include="Xml\XPath\Internal\ReflectNavigatorAdapters.cs" />
+    <Compile Include="Xml\XPath\Internal\RootNavigatorAdapter.cs" />
+    <Compile Include="Xml\XPath\ObjectXPathNavigator.cs" />
+    <Compile Include="Xml\XPath\ReflectNavigator.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIterator.cs" />
     <Compile Include="Xml\XPath\XPathLocator.cs" />
   </ItemGroup>
@@ -194,7 +212,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Xml\XPath\ReflectNavigator.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
