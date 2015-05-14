@@ -30,6 +30,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -205,33 +206,27 @@ namespace WmcSoft
         public static IEnumerable<IReadOnlyList<T>> Permutations<T>(params T[] values) {
             // Adapted from Knuth, Vol 4A, Page 329, Algorithm G
             var n = values.Length;
-            var a = new int[n];
-
-            var list = new SourceReadOnlyList<T>(values, a);
-
-            for (int i = 1; i < n; i++)
-                a[i] = i;
             var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
-
+            var a = Generators.Iota().ToArray(n);
+            var list = new SourceReadOnlyList<T>(values, a);
             int k;
-        Visit:
-            yield return list;
+            while (true) {
+                yield return list;
 
-            k = 1;
-            while (c[k] == k) {
-                c[k] = 0;
-                k++;
-                if (k == n)
-                    yield break;
+                k = 1;
+                while (c[k] == k) {
+                    c[k] = 0;
+                    k++;
+                    if (k == n)
+                        yield break;
+                }
+                c[k] = c[k] + 1;
+
+                if (IsOdd(k))
+                    a.SwapItems(k, 0);
+                else
+                    a.SwapItems(k, c[k] - 1);
             }
-            c[k] = c[k] + 1;
-
-            if (IsOdd(k))
-                a.SwapItems(k, 0);
-            else
-                a.SwapItems(k, c[k] - 1);
-
-            goto Visit;
         }
 
         #endregion
