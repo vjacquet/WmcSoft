@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codeGenerator xmlns="http://www.WmcSoft.com/Schemas/CodeGenerator.xsd">
+  <policies>
+    <policy name="implement-through-embeded">
+      <rule delegate="embeded" type="WmcSoft.CodeBuilders.Policies.ImplementThroughDelegationRule, WmcSoft.VisualStudio" />
+    </policy>
+  </policies>
+  <compileUnit>
+    <references>
+      <assembly name="System" />
+      <assembly name="Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7"/>
+    </references>
+    <namespace name="FlowGroup.ServerModules">
+      <import name="System" />
+      <class name="ContactAbstract">
+        <members>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Item, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Contact, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+        </members>
+      </class>
+      <class name="ContactWrapper">
+        <extends type="ContactAbstract" />
+        <fields>
+          <field name="embeded" type="Independentsoft.Webdav.Exchange.ContentClass.Contact" />
+        </fields>
+        <members policy="implement-through-embeded">
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Item, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Contact, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+        </members>
+      </class>
+      <class name="AppointmentAbstract">
+        <members>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Item, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Appointment, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+        </members>
+      </class>
+      <class name="AppointmentWrapper">
+        <extends type="AppointmentAbstract" />
+        <fields>
+          <field name="embeded" type="Independentsoft.Webdav.Exchange.ContentClass.Appointment" />
+        </fields>
+        <members policy="implement-through-embeded">
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Item, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Appointment, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+        </members>
+      </class>
+      <class name="TaskAbstract">
+        <members>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Item, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Task, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+        </members>
+      </class>
+      <class name="TaskWrapper">
+        <extends type="TaskAbstract" />
+        <fields>
+          <field name="embeded" type="Independentsoft.Webdav.Exchange.ContentClass.Task" />
+        </fields>
+        <members policy="implement-through-embeded">
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Item, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+          <reflect type="Independentsoft.Webdav.Exchange.ContentClass.Task, Independentsoft.Webdav.Exchange, Version=1.3.3221.24799, Culture=neutral, PublicKeyToken=76be97fe952f1ec7">
+            <add match="property[get/@access='public']" />
+          </reflect>
+        </members>
+      </class>
+    </namespace>
+  </compileUnit>
+</codeGenerator>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codeGenerator xmlns="http://www.WmcSoft.com/Schemas/CodeGenerator.xsd">
+  <policies>
+    <policy name="implement-through-embeded">
+      <rule delegate="embeded" type="WmcSoft.CodeBuilders.Policies.ImplementThroughDelegationRule, WmcSoft.VisualStudio" />
+    </policy>
+  </policies>
+  <compileUnit>
+    <references>
+      <assembly name="System" />
+      <assembly name="System.Web" />
+    </references>
+    <namespace name="WmcSoft.Services">
+      <import name="System" />
+      <import name="System.Collections.Generic" />
+      <import name="System.Text" />
+      <import name="System.Web.Security" />
+      <class name="MembershipService" abstract="true">
+        <extends type="RemoteServiceBase" />
+        <members>
+          <reflect type="System.Web.Security.MembershipProvider, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+            <add match="method[@isAbstract='true']" />
+            <add match="property[*/@isAbstract='true']" />
+          </reflect>
+        </members>
+      </class>
+    </namespace>
+  </compileUnit>
+</codeGenerator>
