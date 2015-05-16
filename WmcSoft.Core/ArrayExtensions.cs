@@ -165,6 +165,31 @@ namespace WmcSoft
             }
         }
 
+        public static T[,] Transpose<T>(this T[,] array) {
+            var rows = array.GetLength(1);
+            var columns = array.GetLength(0);
+            var result = new T[rows, columns];
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    result[i, j] = array[j, i];
+                }
+            }
+            return result;
+        }
+
+        public static T[,] ToMultiDimensional<T>(this T[][] array) {
+            var rows = array.Length;
+            var columns = array.Max(i => i.Length);
+            var result = new T[rows, columns];
+            for (int i = 0; i < rows; i++) {
+                var row = array[i];
+                for (int j = 0; j < row.Length; j++) {
+                    result[i, j] = row[j];
+                }
+            }
+            return result;
+        }
+
         public static IEnumerable<int> EnumerateDimensions(this Array array) {
             if (array == null)
                 yield break;

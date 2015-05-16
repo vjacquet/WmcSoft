@@ -37,5 +37,21 @@ namespace WmcSoft.Tests
             var actual = new[] { 1, 2, 3 };
             Assert.IsTrue(expected.SequenceEqual(actual));
         }
+
+        [TestMethod]
+        public void CheckTranspose() {
+            var expected = new[,] { { 1, 3 }, { 2, 4 } };
+            var array = new[,] { { 1, 2 }, { 3, 4 } };
+            var actual = array.Transpose();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckToMultiDimensional() {
+            var expected = new[,] { { 1, 2 }, { 3, 4 } };
+            var array = new int[][] { new []{ 1, 2 }, new []{ 3, 4 } };
+            var actual = array.ToMultiDimensional();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
