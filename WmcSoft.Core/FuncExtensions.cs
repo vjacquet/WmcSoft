@@ -34,6 +34,16 @@ namespace WmcSoft
 {
     public static class FuncExtensions
     {
+        #region Shield
+
+        /// <summary>
+        /// A function adaptor to transform exception thrown into another one.
+        /// </summary>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <param name="func">The function to adapt.</param>
+        /// <param name="rethrow">The transformation function for the exception</param>
+        /// <returns>The result of the function.</returns>
         public static Func<TResult> Shield<TResult, TException>(this Func<TResult> func, Func<Exception, TException> rethrow) where TException : Exception {
             return () => {
                 try {
@@ -45,6 +55,14 @@ namespace WmcSoft
             };
         }
 
+        /// <summary>
+        /// A function adaptor to transform exception thrown into another one.
+        /// </summary>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <param name="func">The function to adapt.</param>
+        /// <param name="rethrow">The transformation function for the exception</param>
+        /// <returns>The result of the function.</returns>
         public static Func<T, TResult> Shield<T, TResult, TException>(this Func<T, TResult> func, Func<Exception, TException> rethrow) where TException : Exception {
             return (T t) => {
                 try {
@@ -55,5 +73,80 @@ namespace WmcSoft
                 }
             };
         }
+
+        /// <summary>
+        /// A function adaptor to transform exception thrown into another one.
+        /// </summary>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <param name="func">The function to adapt.</param>
+        /// <param name="rethrow">The transformation function for the exception</param>
+        /// <returns>The result of the function.</returns>
+        public static Func<T, TResult> Shield<T, TResult, TException>(this Func<T, TResult> func, Func<T, Exception, TException> rethrow) where TException : Exception {
+            return (T t) => {
+                try {
+                    return func(t);
+                }
+                catch (Exception e) {
+                    throw rethrow(t, e);
+                }
+            };
+        }
+
+        /// <summary>
+        /// A function adaptor to transform exception thrown into another one.
+        /// </summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <param name="action">The function to adapt.</param>
+        /// <param name="rethrow">The transformation function for the exception</param>
+        /// <returns>The result of the function.</returns>
+        public static Action Shield<TResult, TException>(this Action action, Func<Exception, TException> rethrow) where TException : Exception {
+            return () => {
+                try {
+                    action();
+                }
+                catch (Exception e) {
+                    throw rethrow(e);
+                }
+            };
+        }
+
+        /// <summary>
+        /// A function adaptor to transform exception thrown into another one.
+        /// </summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <param name="action">The function to adapt.</param>
+        /// <param name="rethrow">The transformation function for the exception</param>
+        public static Action<T> Shield<T, TException>(this Action<T> action, Func<Exception, TException> rethrow) where TException : Exception {
+            return (T t) => {
+                try {
+                    action(t);
+                }
+                catch (Exception e) {
+                    throw rethrow(e);
+                }
+            };
+        }
+
+        /// <summary>
+        /// A function adaptor to transform exception thrown into another one.
+        /// </summary>
+        /// <typeparam name="TResult">The return type.</typeparam>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <param name="action">The function to adapt.</param>
+        /// <param name="rethrow">The transformation function for the exception</param>
+        /// <returns>The result of the function.</returns>
+        public static Action<T> Shield<T, TException>(this Action<T> action, Func<T, Exception, TException> rethrow) where TException : Exception {
+            return (T t) => {
+                try {
+                    action(t);
+                }
+                catch (Exception e) {
+                    throw rethrow(t, e);
+                }
+            };
+        }
+
+        #endregion
     }
 }
