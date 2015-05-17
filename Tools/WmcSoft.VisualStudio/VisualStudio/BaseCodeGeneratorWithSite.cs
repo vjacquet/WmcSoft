@@ -7,8 +7,6 @@ using System.Runtime.InteropServices;
 using EnvDTE;
 using VSLangProj;
 using Microsoft.VisualStudio.Designer.Interfaces;
-using Microsoft.VisualStudio.Shell.Design;
-
 using WmcSoft.ComponentModel;
 using WmcSoft.Interop;
 
@@ -17,6 +15,7 @@ using IOleServiceProvider = WmcSoft.Interop.IServiceProvider;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.ComponentModel.Design;
+using Microsoft.VisualStudio.Shell.Design;
 
 namespace WmcSoft.VisualStudio
 {
