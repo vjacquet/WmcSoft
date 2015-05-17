@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<codeGenerator xmlns="http://www.WmcSoft.com/Schemas/CodeGenerator.xsd">
+  <policies>
+    <policy name="implement-through-methods">
+      <rule type="WmcSoft.CodeBuilders.Policies.AddPropertySetterRule, WmcSoft.VisualStudio"/>
+      <rule getter="GetColor" setter="SetColor" reset="ResetColor" shouldSerialize="ShouldSerializeColor" type="WmcSoft.CodeBuilders.Policies.ImplementPropertyThroughMethodsRule, WmcSoft.VisualStudio" />
+      <rule typeName="System.Windows.Forms.ProfessionalColors" type="WmcSoft.CodeBuilders.Policies.InjectDefaultValueSupportRule, WmcSoft.VisualStudio" />
+      <rule type="WmcSoft.CodeBuilders.Policies.RemoveOverrideRule, WmcSoft.VisualStudio" />
+    </policy>
+    <policy name="implement-through-embeded">
+      <rule fieldName="professionalColors" type="WmcSoft.CodeBuilders.Policies.ImplementThroughDelegationRule, WmcSoft.VisualStudio" />
+    </policy>
+  </policies>
+  <compileUnit>
+    <references>
+      <assembly name="System" />
+      <assembly name="System.Drawing" />
+      <assembly name="System.Windows.Forms" />
+    </references>
+    <namespace name="WmcSoft.Windows.Forms">
+      <import name="System" />
+      <import name="System.Windows.Forms" />
+      <class name="CustomProfessionalColors">
+        <members policy="implement-through-methods">
+          <reflect type="System.Windows.Forms.ProfessionalColorTable, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+            <add match="property[@type='System.Drawing.Color']" />
+          </reflect>
+        </members>
+        <properties policy="implement-through-methods">
+          <property name="ButtonCheckedText" default="System.Drawing.SystemColors.ControlText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="ButtonPressedText" default="System.Drawing.SystemColors.ControlText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="ButtonSelectedText" default="System.Drawing.SystemColors.ControlText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="MenuItemText" default="System.Drawing.SystemColors.MenuText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="ToolStripDropDownText" default="System.Drawing.SystemColors.MenuText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="MenuItemPressedText" default="System.Drawing.SystemColors.HighlightText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="MenuItemSelectedText" default="System.Drawing.SystemColors.HighlightText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+          <property name="StatusStripText" default="System.Drawing.SystemColors.ControlText" type="System.Drawing.Color, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+        </properties>
+      </class>
+      <class name="CustomProfessionalColorTable" public="false">
+        <extends type="ProfessionalColorTable" />
+        <members policy="implement-through-embeded">
+          <reflect type="System.Windows.Forms.ProfessionalColorTable, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+            <add match="property[@type='System.Drawing.Color']" />
+          </reflect>
+        </members>
+      </class>
+    </namespace>
+  </compileUnit>
+</codeGenerator>
