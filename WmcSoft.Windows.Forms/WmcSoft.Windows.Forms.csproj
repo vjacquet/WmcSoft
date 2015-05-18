@@ -60,6 +60,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\BindableListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\BorderPainter.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -198,6 +201,7 @@
     <EmbeddedResource Include="Windows\Forms\DeckLayoutPanel.bmp" />
     <EmbeddedResource Include="Windows\Forms\CustomProfessionalColors.bmp" />
     <EmbeddedResource Include="Windows\Forms\Design\ProfessionalColorsTab.bmp" />
+    <EmbeddedResource Include="Windows\Forms\BindableListView.bmp" />
     <Content Include="Windows\Forms\HeaderedPanel.png" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.fr.resx" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.resx" />
