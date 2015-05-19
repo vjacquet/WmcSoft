@@ -49,6 +49,23 @@ namespace WmcSoft
 
         #endregion
 
+        #region Factorial
+
+        public static IEnumerable<BigInteger> Factorial() {
+            yield return BigInteger.One;
+            yield return BigInteger.One;
+
+            var i = 2;
+            var result = BigInteger.One;
+            while (true) {
+                result *= i;
+                yield return result;
+                i++;
+            }
+        }
+
+        #endregion
+
         #region Fibonacci
 
         public static IEnumerable<BigInteger> Fibonacci() {

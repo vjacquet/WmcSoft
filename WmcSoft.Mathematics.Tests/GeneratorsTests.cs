@@ -10,6 +10,12 @@ namespace WmcSoft.Tests
     public class GeneratorsTests
     {
         [TestMethod]
+        public void CheckFactorial() {
+            var actual = Generators.Factorial().ElementAt(5);
+            Assert.AreEqual(120, actual);
+        }
+
+        [TestMethod]
         public void CheckUnarySeries() {
             var series = Generators.Series(x => x + 2, 0).GetEnumerator();
             Assert.AreEqual(0, series.Read());
