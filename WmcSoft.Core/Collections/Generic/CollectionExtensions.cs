@@ -852,50 +852,50 @@ namespace WmcSoft.Collections.Generic
                 var hasValue1 = enumerator1.MoveNext();
                 var hasValue2 = enumerator2.MoveNext();
 
-                if (!hasValue1) {
-                    // first is empty, consume all second
-                    while (hasValue2) {
-                        yield return enumerator2.Current;
-                        hasValue2 = enumerator2.MoveNext();
-                    }
-                    yield break;
-                }
-                if (!hasValue2) {
-                    // second is empty, consume all first
-                    while (hasValue1) {
-                        yield return enumerator1.Current;
-                        hasValue1 = enumerator1.MoveNext();
-                    }
-                    yield break;
-                }
+                if (!hasValue1)
+                    goto NoMoreValue1;
+
+                if (!hasValue2)
+                    goto NoMoreValue2;
+
                 while (true) {
                     int comparison = comparer.Compare(enumerator2.Current, enumerator1.Current);
                     if (comparison < 0) {
                         yield return enumerator2.Current;
                         hasValue2 = enumerator2.MoveNext();
-                        if (!hasValue2) {
-                            // shortcut: second is now empty
-                            do {
-                                yield return enumerator1.Current;
-                            } while (enumerator1.MoveNext());
-                            yield break;
-                        }
+                        if (!hasValue2)
+                            goto NoMoreValue2;
                     } else if (comparison > 0) {
                         yield return enumerator1.Current;
                         hasValue1 = enumerator1.MoveNext();
-                        if (!hasValue1) {
-                            // shortcut: first is now empty
-                            do {
-                                yield return enumerator2.Current;
-                            } while (enumerator2.MoveNext());
-                            yield break;
-                        }
+                        if (!hasValue1)
+                            goto NoMoreValue1;
                     } else {
                         yield return combiner(enumerator1.Current, enumerator2.Current);
                         hasValue1 = enumerator1.MoveNext();
+                        if (!hasValue1)
+                            goto NoMoreValue1;
                         hasValue2 = enumerator2.MoveNext();
+                        if (!hasValue2)
+                            goto NoMoreValue2;
                     }
                 }
+
+            NoMoreValue1:
+                // first is empty, consume all second
+                while (hasValue2) {
+                    yield return enumerator2.Current;
+                    hasValue2 = enumerator2.MoveNext();
+                }
+                yield break;
+
+            NoMoreValue2:
+                // second is empty, consume all first
+                while (hasValue1) {
+                    yield return enumerator1.Current;
+                    hasValue1 = enumerator1.MoveNext();
+                }
+                yield break;
             }
         }
 
