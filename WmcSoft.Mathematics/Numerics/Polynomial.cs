@@ -98,15 +98,8 @@ namespace WmcSoft.Numerics
                 return ToString(null, formatProvider);
             }
             public string ToString(string format, IFormatProvider formatProvider = null) {
-                var coefficient = Coef.ToString(format, formatProvider);
-                if (Exp == 0)
-                    return coefficient;
                 var one = 1d.ToString(format, formatProvider);
-                if (coefficient == one)
-                    coefficient = "";
-                if (Exp == 1)
-                    return coefficient + "x";
-                return coefficient + "x^" + Exp;
+                return Format(Exp, Coef, format, formatProvider, one);
             }
 
             #endregion
@@ -166,7 +159,8 @@ namespace WmcSoft.Numerics
             if (y._nodes == null)
                 return x;
             var comparer = new ExponentComparer();
-            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Node(a.Exp, a.Coef + b.Coef));
+            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Node(a.Exp, a.Coef + b.Coef))
+                .Where(n => n.Coef != 0);
             return new Polynomial(nodes.ToArray());
         }
         public static Polynomial Add(Polynomial x, Polynomial y) {
@@ -179,10 +173,11 @@ namespace WmcSoft.Numerics
             if (y._nodes == null)
                 return x;
             var comparer = new ExponentComparer();
-            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Node(a.Exp, a.Coef - b.Coef));
+            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Node(a.Exp, a.Coef - b.Coef))
+                .Where(n => n.Coef != 0);
             return new Polynomial(nodes.ToArray());
         }
-        public static Polynomial Negate(Polynomial x, Polynomial y) {
+        public static Polynomial Subtract(Polynomial x, Polynomial y) {
             return x - y;
         }
 
@@ -201,6 +196,55 @@ namespace WmcSoft.Numerics
         }
         public static Polynomial Plus(Polynomial x) {
             return x;
+        }
+
+        public static Polynomial operator *(double alpha, Polynomial x) {
+            if (x._nodes == null)
+                return x;
+            var nodes = x._nodes.ToArray(n => new Node(n.Exp, alpha * n.Coef));
+            return new Polynomial(nodes);
+        }
+        public static Polynomial Multiply(double alpha, Polynomial x) {
+            return alpha * x;
+        }
+        public static Polynomial operator *(Polynomial x, double alpha) {
+            return alpha * x;
+        }
+        public static Polynomial Multiply(Polynomial x, double alpha) {
+            return alpha * x;
+        }
+
+        public static Polynomial operator *(Polynomial x, Polynomial y) {
+            if (x._nodes == null || y._nodes == null)
+                return y;
+
+            var m = x._nodes;
+            var p = y._nodes;
+            var max = m[0].Exp + p[0].Exp;
+            var min = m[m.Length - 1].Exp + p[p.Length - 1].Exp;
+            var length = max - min + 1;
+            var coefficients = new double[length];
+
+            for (int i = 0; i < m.Length; i++) {
+                for (int j = 0; j < p.Length; j++) {
+                    coefficients[max - m[i].Exp - p[j].Exp] += m[i].Coef * p[j].Coef;
+                }
+            }
+
+            var degree = max;
+            var list = new List<Node>(length);
+            for (int i = 0; i < length; i++, degree--) {
+                if (coefficients[i] != 0d) {
+                    list.Add(new Node(degree, coefficients[i]));
+                }
+            }
+            if (list.Count == 0)
+                return Zero;
+            var nodes = list.ToArray();
+            return new Polynomial(nodes);
+        }
+        public static Polynomial Multiply(Polynomial x, Polynomial y) {
+            return x * y;
         }
 
         #endregion
@@ -249,7 +293,29 @@ namespace WmcSoft.Numerics
             if (_nodes == null)
                 return 0d.ToString(format, formatProvider);
 
-            return String.Join(" + ", Array.ConvertAll(_nodes, x => x.ToString(format, formatProvider)));
+            var one = 1d.ToString(format, formatProvider);
+            var sb = new StringBuilder(_nodes[0].ToString(format, formatProvider));
+            var length = _nodes.Length;
+            for (int i = 1; i < length; i++) {
+                var n = _nodes[i];
+                if (n.Coef > 0d) {
+                    sb.Append(" + ").Append(Format(n.Exp, n.Coef, format, formatProvider, one));
+                } else if (n.Coef < 0d) {
+                    sb.Append(" - ").Append(Format(n.Exp, -n.Coef, format, formatProvider, one));
+                }
+            }
+            return sb.ToString();
+        }
+
+        static string Format(int exp, double coef, string format, IFormatProvider formatProvider, string one) {
+            var coefficient = coef.ToString(format, formatProvider);
+            if (exp == 0)
+                return coefficient;
+            if (coefficient == one)
+                coefficient = "";
+            if (exp == 1)
+                return coefficient + "x";
+            return coefficient + "x^" + exp;
         }
 
         #endregion

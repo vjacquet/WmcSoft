@@ -28,5 +28,15 @@ namespace WmcSoft.Numerics.Tests
             var expected = "x^3 + 4x + 4";
             Assert.AreEqual(expected, actual.ToString());
         }
+
+        [TestMethod]
+        public void CanMultiplyPolynomials() {
+            var x = new Polynomial(1, 2, 3, 4, 5);
+            var y = new Polynomial(1, -2, 1);
+            var actual = x * y;
+            var expected = "x^6 - 6x + 5";
+            Assert.AreEqual(expected, actual.ToString());
+        }
+
     }
 }
