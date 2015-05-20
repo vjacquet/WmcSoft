@@ -57,6 +57,7 @@
     <Compile Include="Numerics\Matrix3Tests.cs" />
     <Compile Include="Numerics\RationalTests.cs" />
     <Compile Include="Numerics\MatrixTests.cs" />
+    <Compile Include="Numerics\PolynomialTests.cs" />
     <Compile Include="Numerics\ValarrayTests.cs" />
     <Compile Include="Numerics\VectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

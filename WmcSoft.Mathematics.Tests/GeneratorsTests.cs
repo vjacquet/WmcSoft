@@ -40,11 +40,11 @@ namespace WmcSoft.Tests
 
         [TestMethod]
         public void CheckPermutations() {
-            var permutations = Generators.Permutations("a", "b", "c", "d", "e", "f");
+            var permutations = Generators.Permutations('a', 'b', 'c', 'd', 'e', 'f');
             var expected = new HashSet<string>();
             var sequence = new List<string>();
             foreach (var p in permutations) {
-                var s = p.Join("");
+                var s = new String(p.ToArray());
                 Assert.IsTrue(expected.Add(s));
                 sequence.Add(s);
             }
@@ -61,6 +61,7 @@ namespace WmcSoft.Tests
 
         [TestMethod]
         public void SolveSendMoreMoney() {
+            // solve SEND + MORE = MONEY
             int S = 0, E = 1, N = 2, D = 3, M = 4, O = 5, R = 6, Y = 7;
             var permutations = Generators.Permutations(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
             var solutions = new HashSet<string>();
