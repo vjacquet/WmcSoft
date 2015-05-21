@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic.Tests
@@ -39,6 +40,5 @@ namespace WmcSoft.Collections.Generic.Tests
             array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
             Assert.AreEqual("A", array.ElectedOrDefault());
         }
-
     }
 }

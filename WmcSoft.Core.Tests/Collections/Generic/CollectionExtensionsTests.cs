@@ -163,5 +163,13 @@ namespace WmcSoft.Collections.Generic.Tests
             var expected = new[] { 0, 5, 1, 3, 2, 4 };
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckSortedCombine() {
+            var array = "aabbbc";
+            var expected = "abc";
+            var actual = new String(array.SortedCombine((char c, char g) => c).ToArray());
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

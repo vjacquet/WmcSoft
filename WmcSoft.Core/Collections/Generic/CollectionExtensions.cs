@@ -749,12 +749,12 @@ namespace WmcSoft.Collections.Generic
 
         #region Merge, Combine, etc.
 
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IEqualityComparer<T> comparer) {
             using (var enumerator = self.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var current = enumerator.Current;
                     while (enumerator.MoveNext()) {
-                        if (comparer.Compare(current, enumerator.Current) != 0) {
+                        if (!comparer.Equals(current, enumerator.Current)) {
                             yield return current;
                             current = enumerator.Current;
                         }
@@ -763,10 +763,39 @@ namespace WmcSoft.Collections.Generic
                 }
             }
         }
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
+            return self.SortedUnique(new EqualityComparerAdapter<T>(comparer));
+        }
         public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self) {
-            return self.SortedUnique(Comparer<T>.Default);
+            return self.SortedUnique(EqualityComparer<T>.Default);
         }
 
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator, Func<T, TGroup> factory) {
+            using (var enumerator = self.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    T current = enumerator.Current;
+                    var group = factory(current);
+                    while (enumerator.MoveNext()) {
+                        if (!comparer.Equals(current, enumerator.Current)) {
+                            yield return group;
+                            current = enumerator.Current;
+                            group = factory(current);
+                        } else {
+                            group = accumulator(current, group);
+                        }
+                    }
+                    yield return group;
+                }
+            }
+        }
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator)
+            where TGroup : new() {
+            return self.SortedCombine(comparer, accumulator, t => accumulator(t, new TGroup()));
+        }
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, Func<T, TGroup, TGroup> accumulator)
+            where TGroup : new() {
+            return self.SortedCombine(EqualityComparer<T>.Default, accumulator, t => accumulator(t, new TGroup()));
+        }
         /// <summary>
         /// Merges two sorted enumerable in another enumerable sorted using the same comparer. When two items are equivalent, items from first come first.
         /// </summary>
@@ -845,7 +874,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The second enumerable</param>
         /// <param name="comparer">The comparer</param>
         /// <returns>The sorted enumerable</returns>
-        /// <remarks>If the tw enumerables are not sorted using the comparer, the result is undefined.</remarks>
+        /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
         public static IEnumerable<T> Combine<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer, Func<T, T, T> combiner) {
             using (var enumerator1 = self.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
