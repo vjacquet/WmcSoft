@@ -13,10 +13,10 @@ namespace WmcSoft.Numerics
     /// <remarks>This class is private because it has some undefined behavior in release mode.</remarks>
     sealed class StrideEnumerable<T> : IEnumerable<T>
     {
-        T[] _data;
-        int _start;
-        int _count;
-        int _stride;
+        readonly T[] _data;
+        readonly int _start;
+        readonly int _count;
+        readonly int _stride;
 
         public StrideEnumerable(T[] data, int start, int count, int stride = 1) {
 #if DEBUG
