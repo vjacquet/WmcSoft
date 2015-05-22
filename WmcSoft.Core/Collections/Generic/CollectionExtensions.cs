@@ -998,6 +998,36 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region ElementsAt
+
+        public static IEnumerable<TSource> ElementsAt<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+            return indices.Select(i => source[i]);
+        }
+        public static IEnumerable<TSource> ElementsAt<TSource>(this IList<TSource> source, params int[] indices) {
+            return indices.Select(i => source[i]);
+        }
+
+        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TSource);
+                else
+                    yield return source[indice];
+            }
+        }
+        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IList<TSource> source, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TSource);
+                else
+                    yield return source[indice];
+            }
+        }
+
+        #endregion
+
         #region Reserve
 
         public static void Reserve<T>(this List<T> list, int extraSpace) {

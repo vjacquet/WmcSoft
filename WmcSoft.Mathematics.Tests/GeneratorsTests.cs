@@ -55,10 +55,6 @@ namespace WmcSoft.Tests
             Assert.AreEqual(f, expected.Count);
         }
 
-        int ToInt32(IReadOnlyList<int> code, params int[] indices) {
-            return indices.Select(i => code[i]).ToInt32();
-        }
-
         [TestMethod]
         public void SolveSendMoreMoney() {
             // solve SEND + MORE = MONEY
@@ -69,9 +65,9 @@ namespace WmcSoft.Tests
                 if (p[S] == 0 || p[M] == 0)
                     continue;
 
-                var send = ToInt32(p, S, E, N, D);
-                var more = ToInt32(p, M, O, R, E);
-                var money = ToInt32(p, M, O, N, E, Y);
+                var send = p.ElementsAt(S, E, N, D).ToInt32();
+                var more = p.ElementsAt(M, O, R, E).ToInt32();
+                var money = p.ElementsAt(M, O, N, E, Y).ToInt32();
                 if (send + more == money) {
                     solutions.Add(send + "+" + more + "=" + money);
                 }
