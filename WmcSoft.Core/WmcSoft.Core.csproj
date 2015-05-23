@@ -94,6 +94,9 @@
     <Compile Include="Configuration\MailPolicy.cs" />
     <Compile Include="Configuration\MailPolicyCollection.cs" />
     <Compile Include="DelegateExtensions.cs" />
+    <Compile Include="Diagnostics\ExceptionExtensions.cs" />
+    <Compile Include="Diagnostics\IDataKeyConverter.cs" />
+    <Compile Include="Diagnostics\DataKeyConverter.cs" />
     <Compile Include="Diagnostics\TraceStream.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
@@ -106,6 +109,7 @@
     <Compile Include="Disposer.cs" />
     <Compile Include="ActionExtensions.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Expected.cs" />
     <Compile Include="FuncExtensions.cs" />
     <Compile Include="Indices.cs" />
     <Compile Include="IO\AnonymousStreamSource.cs" />
