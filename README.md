@@ -1,6 +1,16 @@
 # WmcSoft
 This project contains classes and functions I found useful.
 
+I try to respect the following laws, from "From Mathematics to Generic Programming", by Alexander A. STEPANOV and Daniel E. ROSE.
+
+- The Law of Useful Return: _A procedure should return all the potentially useful information it compute._
+
+- The Law of Separating Types: _Do not assume that two types are the same when they may be different._
+
+- The Law of Completeness: _When designing an interface, consider providing all the related procedures._
+
+- The Law of Interface Refinement: _Designing interfaces, like designing programs, is a multi-pass activity._
+
 For now, all this code is a **work in progress**. Comments and questions are welcome.
 
 ## WmcSoft.Core

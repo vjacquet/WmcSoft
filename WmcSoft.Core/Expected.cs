@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Contains a value or an exception explaining why the value is missing.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
     public struct Expected<T>
     {
         #region Fields
@@ -56,7 +60,7 @@ namespace WmcSoft
         public static implicit operator Expected<T>(T value) {
             return new Expected<T>(value);
         }
-        public static implicit operator T(Expected<T> expected) {
+        public static explicit operator T(Expected<T> expected) {
             return expected.Value;
         }
 
@@ -68,13 +72,23 @@ namespace WmcSoft
 
         #region Properties
 
+        /// <summary>
+        /// True is the Expected contains a value; otherwise, false.
+        /// </summary>
         public bool HasValue {
             get { return _exception == null; }
         }
+        /// <summary>
+        /// True is the Expected does not contain a value; otherwise, false.
+        /// </summary>
         public bool IsFaulted {
             get { return _exception != null; }
         }
 
+        /// <summary>
+        /// The value.
+        /// </summary>
+        /// <exception cref="System.Exception">Throws the stored exception when the value is missing.</exception>
         public T Value {
             get {
                 if (_exception != null)
@@ -90,6 +104,9 @@ namespace WmcSoft
             return HasValue ? _value : defaultValue;
         }
 
+        /// <summary>
+        /// The exception or null.
+        /// </summary>
         public Exception Exception {
             get { return _exception; }
         }
