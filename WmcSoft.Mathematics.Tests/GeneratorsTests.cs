@@ -10,6 +10,12 @@ namespace WmcSoft.Tests
     public class GeneratorsTests
     {
         [TestMethod]
+        public void CheckFactorial() {
+            var actual = Generators.Factorial().ElementAt(5);
+            Assert.AreEqual(120, actual);
+        }
+
+        [TestMethod]
         public void CheckUnarySeries() {
             var series = Generators.Series(x => x + 2, 0).GetEnumerator();
             Assert.AreEqual(0, series.Read());
@@ -34,11 +40,11 @@ namespace WmcSoft.Tests
 
         [TestMethod]
         public void CheckPermutations() {
-            var permutations = Generators.Permutations("a", "b", "c", "d", "e", "f");
+            var permutations = Generators.Permutations('a', 'b', 'c', 'd', 'e', 'f');
             var expected = new HashSet<string>();
             var sequence = new List<string>();
             foreach (var p in permutations) {
-                var s = p.Join("");
+                var s = new String(p.ToArray());
                 Assert.IsTrue(expected.Add(s));
                 sequence.Add(s);
             }
@@ -49,12 +55,9 @@ namespace WmcSoft.Tests
             Assert.AreEqual(f, expected.Count);
         }
 
-        int ToInt32(IReadOnlyList<int> code, params int[] indices) {
-            return indices.Select(i => code[i]).ToInt32();
-        }
-
         [TestMethod]
         public void SolveSendMoreMoney() {
+            // solve SEND + MORE = MONEY
             int S = 0, E = 1, N = 2, D = 3, M = 4, O = 5, R = 6, Y = 7;
             var permutations = Generators.Permutations(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
             var solutions = new HashSet<string>();
@@ -62,9 +65,9 @@ namespace WmcSoft.Tests
                 if (p[S] == 0 || p[M] == 0)
                     continue;
 
-                var send = ToInt32(p, S, E, N, D);
-                var more = ToInt32(p, M, O, R, E);
-                var money = ToInt32(p, M, O, N, E, Y);
+                var send = p.ElementsAt(S, E, N, D).ToInt32();
+                var more = p.ElementsAt(M, O, R, E).ToInt32();
+                var money = p.ElementsAt(M, O, N, E, Y).ToInt32();
                 if (send + more == money) {
                     solutions.Add(send + "+" + more + "=" + money);
                 }

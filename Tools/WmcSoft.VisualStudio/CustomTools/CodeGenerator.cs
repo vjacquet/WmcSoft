@@ -45,6 +45,7 @@ using System.ComponentModel;
 
 using WmcSoft.CodeBuilders;
 using System.Resources;
+using Microsoft.VisualStudio.Shell;
 
 namespace WmcSoft.CustomTools
 {
@@ -55,6 +56,8 @@ namespace WmcSoft.CustomTools
     [SupportedVersion("8.0")]
     [SupportedVersion("9.0")]
     [SupportedVersion("10.0")]
+    [SupportedVersion("11.0")]
+    [SupportedVersion("12.0")]
     [ComVisible(true)]
     public class CodeGenerator : CustomToolBase
     {

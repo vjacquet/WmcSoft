@@ -749,12 +749,12 @@ namespace WmcSoft.Collections.Generic
 
         #region Merge, Combine, etc.
 
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IEqualityComparer<T> comparer) {
             using (var enumerator = self.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var current = enumerator.Current;
                     while (enumerator.MoveNext()) {
-                        if (comparer.Compare(current, enumerator.Current) != 0) {
+                        if (!comparer.Equals(current, enumerator.Current)) {
                             yield return current;
                             current = enumerator.Current;
                         }
@@ -763,10 +763,39 @@ namespace WmcSoft.Collections.Generic
                 }
             }
         }
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
+            return self.SortedUnique(new EqualityComparerAdapter<T>(comparer));
+        }
         public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self) {
-            return self.SortedUnique(Comparer<T>.Default);
+            return self.SortedUnique(EqualityComparer<T>.Default);
         }
 
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator, Func<T, TGroup> factory) {
+            using (var enumerator = self.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    T current = enumerator.Current;
+                    var group = factory(current);
+                    while (enumerator.MoveNext()) {
+                        if (!comparer.Equals(current, enumerator.Current)) {
+                            yield return group;
+                            current = enumerator.Current;
+                            group = factory(current);
+                        } else {
+                            group = accumulator(current, group);
+                        }
+                    }
+                    yield return group;
+                }
+            }
+        }
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator)
+            where TGroup : new() {
+            return self.SortedCombine(comparer, accumulator, t => accumulator(t, new TGroup()));
+        }
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, Func<T, TGroup, TGroup> accumulator)
+            where TGroup : new() {
+            return self.SortedCombine(EqualityComparer<T>.Default, accumulator, t => accumulator(t, new TGroup()));
+        }
         /// <summary>
         /// Merges two sorted enumerable in another enumerable sorted using the same comparer. When two items are equivalent, items from first come first.
         /// </summary>
@@ -845,57 +874,57 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The second enumerable</param>
         /// <param name="comparer">The comparer</param>
         /// <returns>The sorted enumerable</returns>
-        /// <remarks>If the tw enumerables are not sorted using the comparer, the result is undefined.</remarks>
+        /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
         public static IEnumerable<T> Combine<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer, Func<T, T, T> combiner) {
             using (var enumerator1 = self.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
                 var hasValue2 = enumerator2.MoveNext();
 
-                if (!hasValue1) {
-                    // first is empty, consume all second
-                    while (hasValue2) {
-                        yield return enumerator2.Current;
-                        hasValue2 = enumerator2.MoveNext();
-                    }
-                    yield break;
-                }
-                if (!hasValue2) {
-                    // second is empty, consume all first
-                    while (hasValue1) {
-                        yield return enumerator1.Current;
-                        hasValue1 = enumerator1.MoveNext();
-                    }
-                    yield break;
-                }
+                if (!hasValue1)
+                    goto NoMoreValue1;
+
+                if (!hasValue2)
+                    goto NoMoreValue2;
+
                 while (true) {
                     int comparison = comparer.Compare(enumerator2.Current, enumerator1.Current);
                     if (comparison < 0) {
                         yield return enumerator2.Current;
                         hasValue2 = enumerator2.MoveNext();
-                        if (!hasValue2) {
-                            // shortcut: second is now empty
-                            do {
-                                yield return enumerator1.Current;
-                            } while (enumerator1.MoveNext());
-                            yield break;
-                        }
+                        if (!hasValue2)
+                            goto NoMoreValue2;
                     } else if (comparison > 0) {
                         yield return enumerator1.Current;
                         hasValue1 = enumerator1.MoveNext();
-                        if (!hasValue1) {
-                            // shortcut: first is now empty
-                            do {
-                                yield return enumerator2.Current;
-                            } while (enumerator2.MoveNext());
-                            yield break;
-                        }
+                        if (!hasValue1)
+                            goto NoMoreValue1;
                     } else {
                         yield return combiner(enumerator1.Current, enumerator2.Current);
                         hasValue1 = enumerator1.MoveNext();
+                        if (!hasValue1)
+                            goto NoMoreValue1;
                         hasValue2 = enumerator2.MoveNext();
+                        if (!hasValue2)
+                            goto NoMoreValue2;
                     }
                 }
+
+            NoMoreValue1:
+                // first is empty, consume all second
+                while (hasValue2) {
+                    yield return enumerator2.Current;
+                    hasValue2 = enumerator2.MoveNext();
+                }
+                yield break;
+
+            NoMoreValue2:
+                // second is empty, consume all first
+                while (hasValue1) {
+                    yield return enumerator1.Current;
+                    hasValue1 = enumerator1.MoveNext();
+                }
+                yield break;
             }
         }
 
@@ -965,6 +994,36 @@ namespace WmcSoft.Collections.Generic
         }
         public static bool IsSortedSet<T>(this IEnumerable<T> enumerable) {
             return enumerable.IsSortedSet(Comparer<T>.Default);
+        }
+
+        #endregion
+
+        #region ElementsAt
+
+        public static IEnumerable<TSource> ElementsAt<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+            return indices.Select(i => source[i]);
+        }
+        public static IEnumerable<TSource> ElementsAt<TSource>(this IList<TSource> source, params int[] indices) {
+            return indices.Select(i => source[i]);
+        }
+
+        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TSource);
+                else
+                    yield return source[indice];
+            }
+        }
+        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IList<TSource> source, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TSource);
+                else
+                    yield return source[indice];
+            }
         }
 
         #endregion

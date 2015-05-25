@@ -60,6 +60,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\BindableListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Windows\Forms\BorderPainter.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -69,6 +72,18 @@
     <Compile Include="Windows\Forms\ControlExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Windows\Forms\CustomProfessionalColors.codegen">
+      <SubType>Designer</SubType>
+      <Generator>WmcSoft.CodeGenerator</Generator>
+      <LastGenOutput>CustomProfessionalColors.CodeGen.cs</LastGenOutput>
+    </None>
+    <Compile Include="Windows\Forms\CustomProfessionalColors.CodeGen.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomProfessionalColors.codegen</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\CustomProfessionalColors.cs" />
     <Compile Include="Windows\Forms\DataGridViewColumn.cs" />
     <Compile Include="Windows\Forms\DataGridViewExtensions.cs" />
     <Compile Include="Windows\Forms\DataGridViewNumericUpDownCell.cs" />
@@ -85,7 +100,9 @@
     </Compile>
     <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
     <Compile Include="Windows\Forms\Design\ChildControlConverter.cs" />
+    <Compile Include="Windows\Forms\Design\CustomProfessionalColorsDesigner.cs" />
     <Compile Include="Windows\Forms\Design\DeckLayoutPanelDesigner.cs" />
+    <Compile Include="Windows\Forms\Design\ProfessionalColorsTab.cs" />
     <Compile Include="Windows\Forms\Design\UIServiceDesigner.cs" />
     <Compile Include="Windows\Forms\Design\UITextEditorDesigner.cs" />
     <Compile Include="Windows\Forms\Divider.cs">
@@ -182,6 +199,9 @@
     <EmbeddedResource Include="Windows\Forms\DataGridViewNumericUpDownColumn.bmp" />
     <EmbeddedResource Include="Windows\Forms\DataGridViewRadioButtonColumn.bmp" />
     <EmbeddedResource Include="Windows\Forms\DeckLayoutPanel.bmp" />
+    <EmbeddedResource Include="Windows\Forms\CustomProfessionalColors.bmp" />
+    <EmbeddedResource Include="Windows\Forms\Design\ProfessionalColorsTab.bmp" />
+    <EmbeddedResource Include="Windows\Forms\BindableListView.bmp" />
     <Content Include="Windows\Forms\HeaderedPanel.png" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.fr.resx" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.resx" />
@@ -216,7 +236,9 @@
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Windows\Forms\CustomProfessionalColors.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

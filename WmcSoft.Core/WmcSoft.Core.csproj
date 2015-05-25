@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +60,7 @@
     <Compile Include="Collections\Generic\CollectionExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerExtensions.cs" />
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
+    <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
     <Compile Include="Collections\Generic\SourceComparer.cs" />
@@ -92,6 +94,9 @@
     <Compile Include="Configuration\MailPolicy.cs" />
     <Compile Include="Configuration\MailPolicyCollection.cs" />
     <Compile Include="DelegateExtensions.cs" />
+    <Compile Include="Diagnostics\ExceptionExtensions.cs" />
+    <Compile Include="Diagnostics\IDataKeyConverter.cs" />
+    <Compile Include="Diagnostics\DataKeyConverter.cs" />
     <Compile Include="Diagnostics\TraceStream.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRecordExtensions.cs" />
@@ -99,10 +104,13 @@
     <Compile Include="Diagnostics\TimingTrace.cs" />
     <Compile Include="Diagnostics\TraceIndent.cs" />
     <Compile Include="Diagnostics\TraceSession.cs" />
+    <Compile Include="DirectoryServices\DirectoryServicesExtensions.cs" />
     <Compile Include="DisposableStack.cs" />
     <Compile Include="Disposer.cs" />
     <Compile Include="ActionExtensions.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Expected.cs" />
+    <Compile Include="FuncExtensions.cs" />
     <Compile Include="Indices.cs" />
     <Compile Include="IO\AnonymousStreamSource.cs" />
     <Compile Include="IO\Batch.cs" />

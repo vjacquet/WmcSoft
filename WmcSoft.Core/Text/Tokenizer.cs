@@ -63,18 +63,31 @@ namespace WmcSoft.Text
         public IEnumerable<string> Tokenize(string value) {
             var start = 0;
             var length = 0;
-            foreach (var c in value) {
-                if (_isSeparator(c)) {
-                    if (_keepEmptyToken || length > 0)
+            if (_keepEmptyToken) {
+                foreach (var c in value) {
+                    if (_isSeparator(c)) {
                         yield return value.Substring(start, length);
-                    start += length + 1;
-                    length = 0;
-                } else {
-                    length++;
+                        start += length + 1;
+                        length = 0;
+                    } else {
+                        length++;
+                    }
                 }
-            }
-            if (_keepEmptyToken || length > 0)
                 yield return value.Substring(start, length);
+            } else {
+                foreach (var c in value) {
+                    if (_isSeparator(c)) {
+                        if (length > 0)
+                            yield return value.Substring(start, length);
+                        start += length + 1;
+                        length = 0;
+                    } else {
+                        length++;
+                    }
+                }
+                if (length > 0)
+                    yield return value.Substring(start, length);
+            }
         }
     }
 }
