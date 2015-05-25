@@ -4,7 +4,7 @@ This project contains classes and functions I found useful.
 For now, all this code is a **work in progress**. Comments and questions are welcome.
 
 ## WmcSoft.Core
-_This library regroup extensions and helpers._
+_Library of extensions and helpers._
 
 ## WmcSoft.Mathematics
 _Library of mathematical objects, such as Rationals, Vectors and Matrices._
@@ -32,3 +32,12 @@ to implement.
 The second drawback is related to forms, user controls and inheritance because there is a conflict 
 between access control and visual representation. How do you hide what is visible. How can you see 
 controls and yet be unable to move them inside the form? 
+
+## WmcSoft.Interop
+_Library of classes or functions encapsulating native functions._
+
+## WmcSoft.VisualStudio
+_Library to build custom tools._
+
+This library also provide a declarative, policy based, code generator. 
+The classes are defined in an XML file and then generated in CSharp.
