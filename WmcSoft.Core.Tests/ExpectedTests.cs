@@ -22,14 +22,14 @@ namespace WmcSoft.Tests
         [TestMethod]
         public void CheckSuccessOperation() {
             var result = Success(5);
-            Assert.AreEqual(6, result + 1);
+            Assert.AreEqual(6, (int)result + 1);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CheckFailedOperation() {
             var result = Failed<int>(new ArgumentOutOfRangeException());
-            Assert.AreEqual(6, result + 1);
+            Assert.AreEqual(6, (int)result + 1);
         }
 
         Expected<int> MethodWithParameters(string s, int n) {
