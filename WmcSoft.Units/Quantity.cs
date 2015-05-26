@@ -84,57 +84,57 @@ namespace WmcSoft.Units
             return that._amount;
         }
 
-        public static Quantity operator +(Quantity value, Quantity quantity) {
-            if (value.Metric != quantity.Metric)
+        public static Quantity operator +(Quantity x, Quantity y) {
+            if (x.Metric != y.Metric)
                 throw new IncompatibleMetricException();
-            return new Quantity(value._amount + quantity._amount, value.Metric);
+            return new Quantity(x._amount + y._amount, x.Metric);
         }
 
-        public static Quantity Add(Quantity value, Quantity quantity) {
-            return value + quantity;
+        public static Quantity Add(Quantity x, Quantity y) {
+            return x + y;
         }
 
-        public static Quantity operator -(Quantity value, Quantity quantity) {
-            if (value.Metric != quantity.Metric)
+        public static Quantity operator -(Quantity x, Quantity y) {
+            if (x.Metric != y.Metric)
                 throw new IncompatibleMetricException();
-            return new Quantity(value._amount - quantity._amount, value.Metric);
+            return new Quantity(x._amount - y._amount, x.Metric);
         }
 
-        public static Quantity Subtract(Quantity value, Quantity quantity) {
-            return value - quantity;
+        public static Quantity Subtract(Quantity x, Quantity y) {
+            return x - y;
         }
 
-        public static Quantity operator *(Quantity value, Quantity quantity) {
+        public static Quantity operator *(Quantity x, Quantity y) {
             int count = 0;
             int index = 0;
-            if (value.Metric is DerivedUnit) {
-                count += ((DerivedUnit)value.Metric).Terms.Length;
+            if (x.Metric is DerivedUnit) {
+                count += ((DerivedUnit)x.Metric).Terms.Length;
             } else {
                 count += 1;
             }
-            if (quantity.Metric is DerivedUnit) {
-                count += ((DerivedUnit)quantity.Metric).Terms.Length;
+            if (y.Metric is DerivedUnit) {
+                count += ((DerivedUnit)y.Metric).Terms.Length;
             } else {
                 count += 1;
             }
             DerivedUnitTerm[] terms = new DerivedUnitTerm[count];
-            if (value.Metric is DerivedUnit) {
-                ((DerivedUnit)value.Metric).Terms.CopyTo(terms, index);
-                index += ((DerivedUnit)value.Metric).Terms.Length;
+            if (x.Metric is DerivedUnit) {
+                ((DerivedUnit)x.Metric).Terms.CopyTo(terms, index);
+                index += ((DerivedUnit)x.Metric).Terms.Length;
             } else {
-                terms[index++] = new DerivedUnitTerm((Unit)value.Metric, 1);
+                terms[index++] = new DerivedUnitTerm((Unit)x.Metric, 1);
             }
-            if (quantity.Metric is DerivedUnit) {
-                ((DerivedUnit)value.Metric).Terms.CopyTo(terms, index);
+            if (y.Metric is DerivedUnit) {
+                ((DerivedUnit)x.Metric).Terms.CopyTo(terms, index);
             } else {
-                terms[index++] = new DerivedUnitTerm((Unit)quantity.Metric, 1);
+                terms[index++] = new DerivedUnitTerm((Unit)y.Metric, 1);
             }
 
-            return new Quantity(value._amount * quantity._amount, new DerivedUnit(terms));
+            return new Quantity(x._amount * y._amount, new DerivedUnit(terms));
         }
 
-        public static Quantity Multiply(Quantity value, Quantity quantity) {
-            return value * quantity;
+        public static Quantity Multiply(Quantity x, Quantity y) {
+            return x * y;
         }
 
         public static Quantity operator *(Quantity value, decimal multiplier) {
@@ -145,42 +145,42 @@ namespace WmcSoft.Units
             return value * multiplier;
         }
 
-        public static Quantity operator /(Quantity value, Quantity quantity) {
+        public static Quantity operator /(Quantity x, Quantity y) {
             int count = 0;
             int index = 0;
-            if (value.Metric is DerivedUnit) {
-                count += ((DerivedUnit)value.Metric).Terms.Length;
+            if (x.Metric is DerivedUnit) {
+                count += ((DerivedUnit)x.Metric).Terms.Length;
             } else {
                 count += 1;
             }
-            if (quantity.Metric is DerivedUnit) {
-                count += ((DerivedUnit)quantity.Metric).Terms.Length;
+            if (y.Metric is DerivedUnit) {
+                count += ((DerivedUnit)y.Metric).Terms.Length;
             } else {
                 count += 1;
             }
             DerivedUnitTerm[] terms = new DerivedUnitTerm[count];
-            if (value.Metric is DerivedUnit) {
-                ((DerivedUnit)value.Metric).Terms.CopyTo(terms, index);
-                index += ((DerivedUnit)value.Metric).Terms.Length;
+            if (x.Metric is DerivedUnit) {
+                ((DerivedUnit)x.Metric).Terms.CopyTo(terms, index);
+                index += ((DerivedUnit)x.Metric).Terms.Length;
             } else {
-                terms[index++] = new DerivedUnitTerm((Unit)value.Metric, 1);
+                terms[index++] = new DerivedUnitTerm((Unit)x.Metric, 1);
             }
-            if (quantity.Metric is DerivedUnit) {
+            if (y.Metric is DerivedUnit) {
                 DerivedUnitTerm term;
-                for (int i = 0; i < ((DerivedUnit)value.Metric).Terms.Length; i++) {
-                    term = ((DerivedUnit)value.Metric).Terms[i];
+                for (int i = 0; i < ((DerivedUnit)x.Metric).Terms.Length; i++) {
+                    term = ((DerivedUnit)x.Metric).Terms[i];
                     terms[index++] = new DerivedUnitTerm(term.Unit, -term.Power);
                 }
-                ((DerivedUnit)value.Metric).Terms.CopyTo(terms, index);
+                ((DerivedUnit)x.Metric).Terms.CopyTo(terms, index);
             } else {
-                terms[index++] = new DerivedUnitTerm((Unit)quantity.Metric, -1);
+                terms[index++] = new DerivedUnitTerm((Unit)y.Metric, -1);
             }
 
-            return new Quantity(value._amount * quantity._amount, new DerivedUnit(terms));
+            return new Quantity(x._amount * y._amount, new DerivedUnit(terms));
         }
 
-        public static Quantity Divide(Quantity value, Quantity quantity) {
-            return value / quantity;
+        public static Quantity Divide(Quantity x, Quantity y) {
+            return x / y;
         }
 
         public static Quantity operator /(Quantity value, decimal divider) {
@@ -191,44 +191,44 @@ namespace WmcSoft.Units
             return value / divider;
         }
 
-        public static bool operator >=(Quantity left, Quantity right) {
-            if (((object)left) != null)
-                return left.CompareTo(right) >= 0;
-            else if (right == null)
+        public static bool operator >=(Quantity x, Quantity y) {
+            if (((object)x) != null)
+                return x.CompareTo(y) >= 0;
+            else if (y == null)
                 return true;
             return false;
         }
 
-        public static bool operator >(Quantity left, Quantity right) {
-            if (((object)left) != null)
-                return left.CompareTo(right) > 0;
+        public static bool operator >(Quantity x, Quantity y) {
+            if (((object)x) != null)
+                return x.CompareTo(y) > 0;
             return false;
         }
 
-        public static bool operator <=(Quantity left, Quantity right) {
-            if (((object)left) != null)
-                return left.CompareTo(right) <= 0;
+        public static bool operator <=(Quantity x, Quantity y) {
+            if (((object)x) != null)
+                return x.CompareTo(y) <= 0;
             return false;
         }
 
-        public static bool operator <(Quantity left, Quantity right) {
-            if (((object)left) != null)
-                return left.CompareTo(right) < 0;
-            else if (right != null)
+        public static bool operator <(Quantity x, Quantity y) {
+            if (((object)x) != null)
+                return x.CompareTo(y) < 0;
+            else if (y != null)
                 return true;
             return false;
         }
 
-        public static bool operator ==(Quantity left, Quantity right) {
-            if (((object)left) != null)
-                return ((IComparable)left).CompareTo(right) == 0;
-            return (((object)right) == null);
+        public static bool operator ==(Quantity x, Quantity y) {
+            if (((object)x) != null)
+                return ((IComparable)x).CompareTo(y) == 0;
+            return (((object)y) == null);
         }
 
-        public static bool operator !=(Quantity left, Quantity right) {
-            if (((object)left) != null)
-                return left.CompareTo(right) != 0;
-            return (((object)right) != null);
+        public static bool operator !=(Quantity x, Quantity y) {
+            if (((object)x) != null)
+                return x.CompareTo(y) != 0;
+            return (((object)y) != null);
         }
 
         public override bool Equals(object obj) {
@@ -314,20 +314,20 @@ namespace WmcSoft.Units
             return that._amount;
         }
 
-        public static Quantity<M> operator +(Quantity<M> value, Quantity<M> quantity) {
-            return new Quantity<M>(value._amount + quantity._amount);
+        public static Quantity<M> operator +(Quantity<M> x, Quantity<M> y) {
+            return new Quantity<M>(x._amount + y._amount);
         }
 
-        public static Quantity<M> Add(Quantity<M> value, Quantity<M> quantity) {
-            return value + quantity;
+        public static Quantity<M> Add(Quantity<M> x, Quantity<M> y) {
+            return x + y;
         }
 
-        public static Quantity<M> operator -(Quantity<M> value, Quantity<M> quantity) {
-            return new Quantity<M>(value._amount - quantity._amount);
+        public static Quantity<M> operator -(Quantity<M> x, Quantity<M> y) {
+            return new Quantity<M>(x._amount - y._amount);
         }
 
-        public static Quantity<M> Subtract(Quantity<M> value, Quantity<M> quantity) {
-            return value - quantity;
+        public static Quantity<M> Subtract(Quantity<M> x, Quantity<M> y) {
+            return x - y;
         }
 
         public static Quantity<M> operator *(decimal multiplier, Quantity<M> value) {
@@ -346,12 +346,12 @@ namespace WmcSoft.Units
             return value * multiplier;
         }
 
-        public static Quantity operator *(Quantity<M> lhs, Quantity rhs) {
-            return ((Quantity)lhs) * rhs;
+        public static Quantity operator *(Quantity<M> x, Quantity y) {
+            return ((Quantity)x) * y;
         }
 
-        public static Quantity Multiply(Quantity<M> lhs, Quantity rhs) {
-            return lhs * rhs;
+        public static Quantity Multiply(Quantity<M> x, Quantity y) {
+            return x * y;
         }
 
         public static Quantity<M> operator /(Quantity<M> value, decimal divider) {
@@ -370,36 +370,36 @@ namespace WmcSoft.Units
             return divider / value;
         }
 
-        public static Quantity operator /(Quantity<M> lhs, Quantity rhs) {
-            return ((Quantity)lhs) / rhs;
+        public static Quantity operator /(Quantity<M> x, Quantity y) {
+            return ((Quantity)x) / y;
         }
 
-        public static Quantity Divide(Quantity<M> lhs, Quantity rhs) {
-            return lhs / rhs;
+        public static Quantity Divide(Quantity<M> x, Quantity y) {
+            return x / y;
         }
 
-        public static bool operator >=(Quantity<M> left, Quantity<M> right) {
-            return left.CompareTo(right) >= 0;
+        public static bool operator >=(Quantity<M> x, Quantity<M> y) {
+            return x.CompareTo(y) >= 0;
         }
 
-        public static bool operator >(Quantity<M> left, Quantity<M> right) {
-            return left.CompareTo(right) > 0;
+        public static bool operator >(Quantity<M> x, Quantity<M> y) {
+            return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(Quantity<M> left, Quantity<M> right) {
-            return left.CompareTo(right) <= 0;
+        public static bool operator <=(Quantity<M> x, Quantity<M> y) {
+            return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator <(Quantity<M> left, Quantity<M> right) {
-            return left.CompareTo(right) < 0;
+        public static bool operator <(Quantity<M> x, Quantity<M> y) {
+            return x.CompareTo(y) < 0;
         }
 
-        public static bool operator ==(Quantity<M> left, Quantity<M> right) {
-            return left.CompareTo(right) == 0;
+        public static bool operator ==(Quantity<M> x, Quantity<M> y) {
+            return x.CompareTo(y) == 0;
         }
 
-        public static bool operator !=(Quantity<M> left, Quantity<M> right) {
-            return left.CompareTo(right) != 0;
+        public static bool operator !=(Quantity<M> x, Quantity<M> y) {
+            return x.CompareTo(y) != 0;
         }
 
         #endregion
@@ -423,6 +423,8 @@ namespace WmcSoft.Units
         #region IComparable Members
 
         public int CompareTo(object obj) {
+            if (obj == null || GetType() != obj.GetType())
+                return 1;
             var other = (Quantity<M>)obj;
             return _amount.CompareTo(other._amount);
         }
@@ -430,6 +432,8 @@ namespace WmcSoft.Units
         #endregion
 
         public override bool Equals(object obj) {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
             var that = (Quantity<M>)obj;
             return (that == this);
         }

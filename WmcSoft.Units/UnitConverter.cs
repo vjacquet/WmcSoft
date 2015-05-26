@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace WmcSoft.Units
@@ -38,7 +39,7 @@ namespace WmcSoft.Units
         #region Fields
 
         static object syncRoot = new Object();
-        static Hashtable unitConversions;
+        static IDictionary<Unit, Hashtable> unitConversions;
 
         #endregion
 
@@ -48,24 +49,23 @@ namespace WmcSoft.Units
             RegisterConversion(conversion, true);
         }
 
-        static void Register(Unit source, Unit target, ConvertCallback convert, bool throwOnDuplicate) {
-            var table = unitConversions[source] as Hashtable;
-            if (table == null) {
+        static void Register(Unit source, Unit target, ConvertCallback convert, bool throwOnDuplicates) {
+            Hashtable table;
+            if (!unitConversions.TryGetValue(source, out table)) {
                 table = new Hashtable();
                 table[target] = convert;
                 unitConversions[source] = table;
-            } else
-                if (!table.Contains(target)) {
-                    table[target] = convert;
-                } else if (throwOnDuplicate) {
-                    throw new ArgumentException(RM.Format(RM.DuplicateConversionException, source, target));
-                }
+            } else if (!table.ContainsKey(target)) {
+                table[target] = convert;
+            } else if (throwOnDuplicates) {
+                throw new ArgumentException(RM.Format(RM.DuplicateConversionException, source, target));
+            }
         }
 
         static void RegisterConversion(UnitConversion conversion, bool throwOnDuplicate) {
             lock (syncRoot) {
                 if (unitConversions == null) {
-                    unitConversions = new Hashtable();
+                    unitConversions = new Dictionary<Unit, Hashtable>();
                 }
 
                 Register(conversion.Source, conversion.Target, new ConvertCallback(conversion.Convert), throwOnDuplicate);
@@ -77,17 +77,17 @@ namespace WmcSoft.Units
             if (unitConversions == null) {
                 lock (syncRoot) {
                     if (unitConversions == null) {
-                        unitConversions = new Hashtable();
+                        unitConversions = new Dictionary<Unit, Hashtable>();
                     }
                 }
             }
-            if (unitConversions[unit] == null) {
-                ScaledUnit scaledUnit = unit as ScaledUnit;
+            if (!unitConversions.ContainsKey(unit)) {
+                var scaledUnit = unit as ScaledUnit;
                 if (scaledUnit != null) {
                     RegisterConversion(new ExtrapolatedConversion(scaledUnit), false);
                 }
                 foreach (object attribute in unit.GetType().GetCustomAttributes(true)) {
-                    UnitConversionAttribute conversion = attribute as UnitConversionAttribute;
+                    var conversion = attribute as UnitConversionAttribute;
                     if (conversion != null) {
                         RegisterConversion(conversion.UnitConversion);
                     }
@@ -99,15 +99,15 @@ namespace WmcSoft.Units
             if (quantity.Metric == (Metric)target)
                 return quantity;
 
-            Unit source = quantity.Metric as Unit;
+            var source = quantity.Metric as Unit;
             if (source == null)
                 throw new ArgumentException(RM.GetString(RM.NotAUnitException), "quantity");
 
             RegisterUnit(source);
             RegisterUnit(target);
 
-            Hashtable table = unitConversions[source] as Hashtable;
-            if (table != null) {
+            Hashtable table;
+            if (unitConversions.TryGetValue(source, out table)) {
                 ConvertCallback callback = table[target] as ConvertCallback;
                 if (callback != null) {
                     return new Quantity(callback(quantity.Amount), target);

@@ -30,7 +30,7 @@ using System.Globalization;
 namespace WmcSoft.Units
 {
     /// <summary>
-    /// Description résumée de RoundingPolicy.
+    /// Policy describing how to round decimal numbers.
     /// </summary>
     public class RoundingPolicy
     {

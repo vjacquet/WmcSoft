@@ -39,28 +39,22 @@ namespace WmcSoft.Units
 
         public override SystemOfUnits SystemOfUnits {
             get {
-                // TODO: why returning null ? is it because it is strange to create a unit system for a single unit?
+                // TODO: why returning null ? Is it because it is strange to create a unit system for a single unit?
                 //       Shouldn't we just also add ManMonth, as it is also an average value to plan projects?
                 return null;
             }
         }
 
         public override string Definition {
-            get {
-                return RM.GetDefinition("ManHour");
-            }
+            get { return RM.GetDefinition("ManHour"); }
         }
 
         public override string Name {
-            get {
-                return RM.GetDefinition("Name");
-            }
+            get { return RM.GetDefinition("Name"); }
         }
 
         public override string Symbol {
-            get {
-                return null;
-            }
+            get { return null; }
         }
     }
 }

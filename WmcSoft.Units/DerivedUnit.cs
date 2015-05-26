@@ -105,9 +105,9 @@ namespace WmcSoft.Units
 
         public override string Symbol {
             get {
-                if (this._symbol == null) {
+                if (_symbol == null) {
                     var builder = new StringBuilder();
-                    foreach (DerivedUnitTerm term in this._terms) {
+                    foreach (DerivedUnitTerm term in _terms) {
                         string symbol = term.Symbol;
                         if (symbol == null)
                             return null;
@@ -115,7 +115,7 @@ namespace WmcSoft.Units
                     }
                     return builder.ToString();
                 }
-                return this._symbol;
+                return _symbol;
             }
         }
 

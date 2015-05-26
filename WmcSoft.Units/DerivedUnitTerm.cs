@@ -52,8 +52,8 @@ namespace WmcSoft.Units
         public DerivedUnitTerm(Unit unit, int power) {
             if (unit == null)
                 throw new ArgumentNullException("unit");
-            this._unit = unit;
-            this._power = power;
+            _unit = unit;
+            _power = power;
         }
 
         public DerivedUnitTerm(Unit unit)
@@ -78,9 +78,9 @@ namespace WmcSoft.Units
 
         public string Symbol {
             get {
-                if ((_symbol == null) && (_unit.Symbol != null)) {
+                if (_symbol == null && _unit.Symbol != null) {
                    var sb = new StringBuilder(_unit.Symbol);
-                    string power = this._power.ToString();
+                    string power = _power.ToString();
                     if (_power != 1) {
                         foreach (char c in power) {
                             sb.Append(sub[c - '-']);
@@ -102,18 +102,16 @@ namespace WmcSoft.Units
 
         #endregion
 
-        //		public override bool Equals(object obj)
-        //		{
-        //			if((obj == null) || (GetType() != obj.GetType()))
-        //				return false;
-        //			DerivedUnitTerm that = (DerivedUnitTerm)obj;
-        //			return (power == that.power) && unit.Equals(that.unit);
-        //		}
-        //
-        //		public override int GetHashCode()
-        //		{
-        //			return unit.GetHashCode() ^ power;
-        //		}
+        public override bool Equals(object obj) {
+            if ((obj == null) || (GetType() != obj.GetType()))
+                return false;
+            DerivedUnitTerm that = (DerivedUnitTerm)obj;
+            return (_power == that._power) && _unit.Equals(that._unit);
+        }
+
+        public override int GetHashCode() {
+            return (_unit.GetHashCode() * 397) ^ _power;
+        }
     }
 
 
