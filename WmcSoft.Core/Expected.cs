@@ -187,6 +187,49 @@ namespace WmcSoft
 
     public static class Expected
     {
+        public static Expected<TResult> Apply<T1, T2, TResult>(Expected<T1> first, Expected<T2> second, Func<T1, T2, TResult> func) {
+            if (first.IsFaulted)
+                return first.Exception;
+            if (second.IsFaulted)
+                return second.Exception;
+            try {
+                return func(first.GetValueOrDefault(), second.GetValueOrDefault());
+            }
+            catch (Exception exception) {
+                return exception;
+            }
+        }
 
+        public static Expected<TResult> Apply<T1, T2, T3, TResult>(Expected<T1> first, Expected<T2> second, Expected<T3> third, Func<T1, T2, T3, TResult> func) {
+            if (first.IsFaulted)
+                return first.Exception;
+            if (second.IsFaulted)
+                return second.Exception;
+            if (third.IsFaulted)
+                return third.Exception;
+            try {
+                return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault());
+            }
+            catch (Exception exception) {
+                return exception;
+            }
+        }
+
+        public static Expected<TResult> Apply<T1, T2, T3, T4, TResult>(Expected<T1> first, Expected<T2> second, Expected<T3> third, Expected<T4> fourth, Func<T1, T2, T3, T4, TResult> func) {
+            if (first.IsFaulted)
+                return first.Exception;
+            if (second.IsFaulted)
+                return second.Exception;
+            if (third.IsFaulted)
+                return third.Exception;
+            if (fourth.IsFaulted)
+                return fourth.Exception;
+            try {
+                return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault(), fourth.GetValueOrDefault());
+            }
+            catch (Exception exception) {
+                return exception;
+            }
+        }
     }
 }
