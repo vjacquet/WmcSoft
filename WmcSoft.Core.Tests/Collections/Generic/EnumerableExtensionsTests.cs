@@ -40,5 +40,25 @@ namespace WmcSoft.Collections.Generic.Tests
             array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
             Assert.AreEqual("A", array.ElectedOrDefault());
         }
+
+        [TestMethod]
+        public void CheckInterleavesWithIdenticalCount() {
+            char[] s1 = { 'a', 'b', 'c'};
+            char[] s2 = { 'M', 'N', 'P' };
+            char[] s3 = { '1', '2', '3' };
+            char[][] s = { s1, s2, s3 };
+            var actual = new String(s.Interleave().ToArray(s.Sum(i=>i.Length)));
+            Assert.AreEqual("aM1bN2cP3", actual);
+        }
+
+        [TestMethod]
+        public void CheckInterleaves() {
+            char[] s1 = { 'a', 'b', 'c', 'd', 'e' };
+            char[] s2 = { 'M', 'N', 'P' };
+            char[] s3 = { '1', '2', '3', '4' };
+            char[][] s = { s1, s2, s3 };
+            var actual = new String(s.Interleave().ToArray(s.Sum(i => i.Length)));
+            Assert.AreEqual("aM1bN2cP3d4e", actual);
+        }
     }
 }

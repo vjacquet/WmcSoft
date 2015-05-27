@@ -28,6 +28,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Enumerator counting the number of times MoveNext returned true.
+    /// </summary>
+    /// <typeparam name="T">The type of element being enumeraated.</typeparam>
    public sealed class CountingEnumerator<T> : IEnumerator<T>
     {
         readonly IEnumerator<T> _base;

@@ -958,10 +958,38 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        /// <summary>
+        /// Concatenates sequences by alternating their items.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
+        /// <param name="enumerables">The sequence of sequences</param>
+        /// <returns>An IEnumerable<T> that contains the alternated elements of the input sequences.</returns>
+        public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> enumerables) {
+            var list = new List<IEnumerator<T>>(enumerables.Select(e => e.GetEnumerator()));
+            var i = 0;
+            while (list.Count != 0) {
+                i = i % list.Count;
+                
+                if (list[i].MoveNext()) {
+                    yield return list[i].Current;
+                    i++;
+                } else {
+                    list.RemoveAt(i);
+                }
+            }
+        }
+
         #endregion
 
         #region Traits
 
+        /// <summary>
+        /// Check if a sequence of elements is sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="enumerable">The sequence.</param>
+        /// <param name="comparer">The comparer</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
         public static bool IsSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
@@ -975,10 +1003,24 @@ namespace WmcSoft.Collections.Generic
                 return true;
             }
         }
+
+        /// <summary>
+        /// Check if a sequence of elements is sorted, using the default comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="enumerable">The sequence.</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
         public static bool IsSorted<T>(this IEnumerable<T> enumerable) {
             return enumerable.IsSorted(Comparer<T>.Default);
         }
 
+        /// <summary>
+        /// Check if a sequence of elements is sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="enumerable">The sequence.</param>
+        /// <returns>Returns true if each element in the sequence is less than to its successors; otherwise, false.</returns>
+        /// <remarks>If true, then the elements are unique in the sequence.</remarks>
         public static bool IsSortedSet<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
@@ -992,6 +1034,14 @@ namespace WmcSoft.Collections.Generic
                 return true;
             }
         }
+        /// <summary>
+        /// Check if a sequence of elements is sorted, using the default comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="enumerable">The sequence.</param>
+        /// <param name="comparer">The comparer</param>
+        /// <returns>Returns true if each element in the sequence is less than to its successors; otherwise, false.</returns>
+        /// <remarks>If true, then the elements are unique in the sequence.</remarks>
         public static bool IsSortedSet<T>(this IEnumerable<T> enumerable) {
             return enumerable.IsSortedSet(Comparer<T>.Default);
         }
