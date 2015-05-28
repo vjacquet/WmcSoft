@@ -74,6 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reflection\ReflectionExtensionsTests.cs" />
     <Compile Include="Reflection\TypeExtensionsTests.cs" />
     <Compile Include="RegexExtensionsTests.cs" />
     <Compile Include="Runtime\ObjectWalkerTests.cs" />

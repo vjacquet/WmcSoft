@@ -19,5 +19,29 @@ namespace WmcSoft.Reflection
             }
             yield return baseDefinition;
         }
+
+        public static T GetValue<T>(this PropertyInfo property, object obj) {
+            var value = property.GetValue(obj);
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+        public static T GetValue<T>(this PropertyInfo property, object obj, IFormatProvider provider) {
+            var value = property.GetValue(obj);
+            return (T)Convert.ChangeType(value, typeof(T), provider);
+        }
+
+        public static T GetPropertyValue<T>(this Type type, object obj, string propertyName) {
+            var property = type.GetProperty(propertyName);
+            if (property == null)
+                throw new ArgumentOutOfRangeException("propertyName");
+            return property.GetValue<T>(obj);
+        }
+
+        public static T GetPropertyValue<T>(this Type type, object obj, string propertyName, IFormatProvider provider) {
+            var property = type.GetProperty(propertyName);
+            if (property == null)
+                throw new ArgumentOutOfRangeException("propertyName");
+            return property.GetValue<T>(obj, provider);
+        }
     }
 }
