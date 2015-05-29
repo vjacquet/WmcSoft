@@ -32,7 +32,7 @@ namespace ConsoleApplication
                     var arg = args[i];
                     if (string.IsNullOrWhiteSpace(arg))
                         continue;
-                    if (arg.FirstOrDefault().BinaryAnyOf(OptionMarks)) {
+                    if (arg.FirstOrDefault().BinaryAny(OptionMarks)) {
                         switch (arg[1]) {
                         case 'v':
                             //program.Verbose = true;

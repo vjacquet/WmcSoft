@@ -62,7 +62,7 @@ namespace WmcSoft.Windows.Forms
                 notifyValueChange = true;
             } else {
                 var nfi = CultureInfo.CurrentCulture.NumberFormat;
-                notifyValueChange = e.KeyChar.EqualsAnyOf(nfi.NumberDecimalSeparator, nfi.NumberGroupSeparator, nfi.NegativeSign);
+                notifyValueChange = e.KeyChar.EqualsAny(nfi.NumberDecimalSeparator, nfi.NumberGroupSeparator, nfi.NegativeSign);
             }
 
             if (notifyValueChange) {

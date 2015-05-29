@@ -39,7 +39,7 @@ namespace WmcSoft
     /// </summary>
     public static class StringExtensions
     {
-        #region AnyOf
+        #region Any
 
         /// <summary>
         /// Check if the char is any of the candidates chars.
@@ -47,32 +47,9 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool AnyOf(this char self, params char[] candidates) {
+        public static bool Any(this char self, params char[] candidates) {
             for (int i = 0; i < candidates.Length; i++) {
                 if (self == candidates[i])
-                    return true;
-            }
-            return false;
-        }
-
-        public static bool ContainsAnyOf(this string self, params char[] candidates) {
-            Array.Sort(candidates);
-            return BinaryContainsAnyOf(self, candidates);
-        }
-
-        public static bool BinaryContainsAnyOf(this string self, params char[] candidates) {
-            foreach (var c in self) {
-                if (Array.BinarySearch(candidates, c) >= 0)
-                    return true;
-            }
-            return false;
-        }
-
-        public static bool EqualsAnyOf(this char self, params string[] candidates) {
-            var length = candidates.Length;
-            for (int i = 0; i < length; i++) {
-                var candidate = candidates[i];
-                if (candidate != null && candidate.Length == 1 && self == candidate[0])
                     return true;
             }
             return false;
@@ -85,7 +62,40 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool AnyOf(this string self, StringComparison comparisonType, params string[] candidates) {
+        public static bool BinaryAny(this char self, char[] candidates) {
+            return Array.BinarySearch(candidates, self) >= 0;
+        }
+
+        public static bool ContainsAny(this string self, params char[] candidates) {
+            return self.IndexOfAny(candidates) >= 0;
+        }
+
+        public static bool BinaryContainsAny(this string self, params char[] candidates) {
+            foreach (var c in self) {
+                if (Array.BinarySearch(candidates, c) >= 0)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool EqualsAny(this char self, params string[] candidates) {
+            var length = candidates.Length;
+            for (int i = 0; i < length; i++) {
+                var candidate = candidates[i];
+                if (candidate != null && candidate.Length == 1 && self == candidate[0])
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the string is any of the candidates chars.
+        /// </summary>
+        /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
+        /// <param name="self">The char to test</param>
+        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
+        public static bool EqualsAny(this string self, StringComparison comparisonType, params string[] candidates) {
             if (String.IsNullOrEmpty(self))
                 return false;
             for (int i = 0; i < candidates.Length; i++) {
@@ -102,7 +112,7 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryAnyOf(this char self, char[] candidates) {
+        public static bool BinaryAny(this char self, char[] candidates) {
             return Array.BinarySearch(candidates, self) >= 0;
         }
 
@@ -370,7 +380,7 @@ namespace WmcSoft
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is currentCulture.TextInfo.ListSeparator.</remarks>
         public static string Join(this IEnumerable<string> self, CultureInfo cultureInfo) {
-            return Join(self, cultureInfo.TextInfo.ListSeparator);
+            return Join(self, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -432,6 +442,8 @@ namespace WmcSoft
         }
 
         public static string Nullify(this string value, Predicate<string> predicate) {
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
             if (value == null || predicate(value))
                 return null;
             return value;

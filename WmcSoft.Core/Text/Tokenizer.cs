@@ -43,7 +43,7 @@ namespace WmcSoft.Text
                 _isSeparator = c => c == separator;
             } else {
                 Array.Sort(separators);
-                _isSeparator = c => c.BinaryAnyOf(separators);
+                _isSeparator = c => c.BinaryAny(separators);
             }
         }
 
