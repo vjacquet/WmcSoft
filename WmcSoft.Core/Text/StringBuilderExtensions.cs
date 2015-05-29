@@ -30,6 +30,8 @@ namespace WmcSoft.Text
 {
     public static class StringBuilderExtensions
     {
+        #region Prepend 
+
         public static StringBuilder Prepend(this StringBuilder sb, bool value) {
             return sb.Insert(0, value);
         }
@@ -97,5 +99,26 @@ namespace WmcSoft.Text
         public static StringBuilder Prepend(this StringBuilder sb, string value, int count) {
             return sb.Insert(0, value, count);
         }
+
+        #endregion
+
+        #region SurroundWith
+
+        /// <summary>
+        /// Concatenates the prefix, the string and the suffix.
+        /// </summary>
+        /// <param name="self">The string builder</param>
+        /// <param name="prefix">The prefix</param>
+        /// <param name="suffix">The suffix</param>
+        /// <returns>null if the string is null; otherwise, the concatenated string.</returns>
+        public static StringBuilder SurroundWith(this StringBuilder self, string prefix = null, string suffix = null) {
+            if (self == null)
+                return null;
+            self.Prepend(prefix);
+            self.Append(suffix);
+            return self;
+        }
+
+        #endregion
     }
 }
