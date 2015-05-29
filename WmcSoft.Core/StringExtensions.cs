@@ -105,17 +105,6 @@ namespace WmcSoft
             return false;
         }
 
-        /// <summary>
-        /// Check if the char is any of the candidates chars.
-        /// </summary>
-        /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
-        /// <param name="self">The char to test</param>
-        /// <param name="candidates">Candidates char to test against the char</param>
-        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryAny(this char self, char[] candidates) {
-            return Array.BinarySearch(candidates, self) >= 0;
-        }
-
         #endregion
 
         #region Case operations
