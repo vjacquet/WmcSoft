@@ -442,9 +442,24 @@ namespace WmcSoft
 
         #region PadEnds
 
+        /// <summary>
+        /// Returns a new string that centers the characters in this instance
+        /// by padding them with a specified Unicode character, for a specified total length.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="totalWidth">The number of characters in the resulting string, 
+        /// equal to the number of original characters plus any additional padding characters.</param>
+        /// <param name="paddingChar">A Unicode padding character.</param>
+        /// <returns>A new string that is equivalent to this instance, but center and padded on both ends with as many paddingChar characters as needed to create a length of totalWidth.
+        /// However, if totalWidth is less than the length of this instance, the method returns a reference to the existing instance.
+        /// If totalWidth is equal to the length of this instance, the method returns a new string that is identical to this instance.</returns>
+        /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
         public static string PadEnds(this string self, int totalWidth, char paddingChar) {
             if (self == null)
                 throw new NullReferenceException();
+            if (totalWidth < 0)
+                throw new ArgumentOutOfRangeException("totalWith");
+
             var width = totalWidth - self.Length;
             if (width < 0)
                 return self;
@@ -457,6 +472,18 @@ namespace WmcSoft
                 return pad + self + pad + paddingChar;
             }
         }
+
+        /// <summary>
+        /// Returns a new string that centers the characters in this instance
+        /// by padding them with spaces, for a specified total length.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="totalWidth">The number of characters in the resulting string, 
+        /// equal to the number of original characters plus any additional padding characters.</param>
+        /// <returns>A new string that is equivalent to this instance, but center and padded on both ends with as many spaces as needed to create a length of totalWidth.
+        /// However, if totalWidth is less than the length of this instance, the method returns a reference to the existing instance.
+        /// If totalWidth is equal to the length of this instance, the method returns a new string that is identical to this instance.</returns>
+        /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
         public static string PadEnds(this string self, int totalWidth) {
             return self.PadEnds(totalWidth, ' ');
         }
