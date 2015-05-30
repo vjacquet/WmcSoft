@@ -70,6 +70,13 @@ namespace WmcSoft
             return self.IndexOfAny(candidates) >= 0;
         }
 
+        /// <summary>
+        /// Check if the string contains any of the candidates chars.
+        /// </summary>
+        /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
+        /// <param name="self">The char to test</param>
+        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
         public static bool BinaryContainsAny(this string self, params char[] candidates) {
             foreach (var c in self) {
                 if (Array.BinarySearch(candidates, c) >= 0)
@@ -88,13 +95,6 @@ namespace WmcSoft
             return false;
         }
 
-        /// <summary>
-        /// Check if the string is any of the candidates chars.
-        /// </summary>
-        /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
-        /// <param name="self">The char to test</param>
-        /// <param name="candidates">Candidates char to test against the char</param>
-        /// <returns>true if the char is any of the candidates, otherwise false.</returns>
         public static bool EqualsAny(this string self, StringComparison comparisonType, params string[] candidates) {
             if (String.IsNullOrEmpty(self))
                 return false;
