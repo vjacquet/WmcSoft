@@ -49,6 +49,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.VisualStudio", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Interop", "..\WmcSoft.Interop\WmcSoft.Interop.csproj", "{0FB15097-B0E2-4940-8EEB-54BCE3CA6828}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.AI", "..\WmcSoft.AI\WmcSoft.AI.csproj", "{0786C83A-3CDB-4963-A309-357B392738A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.AI.Tests", "..\WmcSoft.AI.Tests\WmcSoft.AI.Tests.csproj", "{5978F2DA-93AC-484F-9524-ED0D4FDD432B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,14 @@ Global
 		{0FB15097-B0E2-4940-8EEB-54BCE3CA6828}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FB15097-B0E2-4940-8EEB-54BCE3CA6828}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FB15097-B0E2-4940-8EEB-54BCE3CA6828}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0786C83A-3CDB-4963-A309-357B392738A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0786C83A-3CDB-4963-A309-357B392738A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0786C83A-3CDB-4963-A309-357B392738A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0786C83A-3CDB-4963-A309-357B392738A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
