@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoassociativeFilter.cs" />
     <Compile Include="FuzzyLogic\Fuzzifier.cs">
       <SubType>Component</SubType>
     </Compile>
