@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="WmcSoft.AI.FuzzyLogic.FuzzyCategory" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AI\FuzzyLogic\FuzzyCategory.cs</FileName>
+      <HashCode>AAAAEAAAABAAABgGAAAYAAAAAQAAAAAAAAAAAAAAAQA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.AI.FuzzyLogic.Fuzzifier">
+    <Position X="3.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AI\FuzzyLogic\Fuzzifier.cs</FileName>
+      <HashCode>AAAAAgAAACAAAAAAgACAAAACAAAAEAAAAAQAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Categories" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Struct Name="WmcSoft.AI.FuzzyLogic.FuzzyVar" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AI\FuzzyLogic\FuzzyVar.cs</FileName>
+      <HashCode>AAAgBGKAAIAAFwwEoBCCAgIAAAwQAKBKAEAgAAAAMiA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Interface Name="WmcSoft.AI.FuzzyLogic.IFuzzyCategory">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AI\FuzzyLogic\IFuzzyCategory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>
