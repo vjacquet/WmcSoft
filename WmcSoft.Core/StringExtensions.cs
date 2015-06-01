@@ -105,6 +105,10 @@ namespace WmcSoft
             return false;
         }
 
+        public static bool EqualsAny(this string self, params string[] candidates) {
+            return self.EqualsAny(StringComparison.CurrentCulture, candidates);
+        }
+
         #endregion
 
         #region Case operations
