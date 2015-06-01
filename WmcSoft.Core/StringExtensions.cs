@@ -565,7 +565,7 @@ namespace WmcSoft
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
         public static string SubstringBefore(this string self, char find) {
             if (String.IsNullOrEmpty(self))
-                return self;
+                return null;
 
             int index = self.IndexOf(find);
             if (index < 0)
@@ -580,7 +580,9 @@ namespace WmcSoft
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
         public static string SubstringBefore(this string self, string find) {
-            if (String.IsNullOrEmpty(self) || String.IsNullOrEmpty(find))
+            if (String.IsNullOrEmpty(self))
+                return null;
+            if (String.IsNullOrEmpty(find))
                 return self;
 
             int index = self.IndexOf(find, StringComparison.Ordinal);
@@ -597,7 +599,7 @@ namespace WmcSoft
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
         public static string SubstringAfter(this string self, char find) {
             if (String.IsNullOrEmpty(self))
-                return self;
+                return null;
 
             int index = self.IndexOf(find);
             if (index < 0)
@@ -612,7 +614,9 @@ namespace WmcSoft
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
         public static string SubstringAfter(this string self, string find) {
-            if (String.IsNullOrEmpty(self) || String.IsNullOrEmpty(find))
+            if (String.IsNullOrEmpty(self))
+                return null;
+            if (String.IsNullOrEmpty(find))
                 return self;
 
             int index = self.IndexOf(find, StringComparison.Ordinal);
@@ -629,9 +633,7 @@ namespace WmcSoft
         /// <param name="suffix">The suffix.</param>
         /// <returns>The substring between the prefix and the suffix.</returns>
         public static string SubstringBetween(this string self, string prefix, string suffix) {
-            if (String.IsNullOrEmpty(self))
-                return self;
-            else if (String.IsNullOrEmpty(prefix))
+            if (String.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
             else if (String.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
@@ -652,8 +654,11 @@ namespace WmcSoft
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
         public static string Left(this string self, int length) {
+            if (self == null || length > self.Length)
+                return self;
             return self.Substring(0, length);
         }
+
         /// <summary>
         /// Extracts the <paramref name="length"/> chars at the right of the string.
         /// </summary>
@@ -661,6 +666,8 @@ namespace WmcSoft
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
         public static string Right(this string self, int length) {
+            if (self == null || length > self.Length)
+                return self;
             return self.Substring(self.Length - length, length);
         }
 

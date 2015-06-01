@@ -53,6 +53,40 @@ namespace WmcSoft.Tests
         }
 
         [TestMethod]
+        public void CheckSubstringAfter() {
+            Assert.AreEqual(null, "".SubstringAfter("q"));
+            Assert.AreEqual("aa-bb", "aa-bb".SubstringAfter(""));
+            Assert.AreEqual("bb", "aa-bb".SubstringAfter("-"));
+            Assert.AreEqual("a-bb", "aa-bb".SubstringAfter("a"));
+            Assert.AreEqual("b", "aa-bb".SubstringAfter("b"));
+            Assert.AreEqual(null, "aa-bb".SubstringAfter("q"));
+            Assert.AreEqual("z", "aa-bb".SubstringAfter("q") ?? "z");
+        }
+
+        [TestMethod]
+        public void CheckSubstringBefore() {
+            Assert.AreEqual(null, "".SubstringBefore("q"));
+            Assert.AreEqual("aa-bb", "aa-bb".SubstringBefore(""));
+            Assert.AreEqual("aa", "aa-bb".SubstringBefore("-"));
+            Assert.AreEqual("", "aa-bb".SubstringBefore("a"));
+            Assert.AreEqual("aa-", "aa-bb".SubstringBefore("b"));
+            Assert.AreEqual(null, "aa-bb".SubstringBefore("q"));
+        }
+
+        [TestMethod]
+        public void CheckLeft() {
+            Assert.AreEqual("abc", "abcdef".Left(3));
+            Assert.AreEqual("abc", "abc".Left(5));
+        }
+
+        [TestMethod]
+        public void CheckRight() {
+            Assert.AreEqual("def", "abcdef".Right(3));
+            Assert.AreEqual("abc", "abc".Right(5));
+        }
+
+
+        [TestMethod]
         public void CheckSurroundWith() {
             string n = null;
             Assert.AreEqual("abc", "b".SurroundWith("a", "c"));
