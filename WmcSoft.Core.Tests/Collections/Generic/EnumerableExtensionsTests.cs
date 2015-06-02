@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,6 +8,15 @@ namespace WmcSoft.Collections.Generic.Tests
     [TestClass]
     public class EnumerableExtensionsTests
     {
+        [TestMethod]
+        public void CheckToString() {
+            var list = new List<int> { 1, 2, 3, };
+
+            var actual = list.ToString("g");
+            var expected = "1;2;3";
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestMethod]
         public void CheckQuorum() {
             var list = new[] { 1, 2, 3, 4, 5, 6, 7 };
@@ -39,6 +49,35 @@ namespace WmcSoft.Collections.Generic.Tests
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
             Assert.AreEqual("A", array.ElectedOrDefault());
+        }
+
+        [TestMethod]
+        public void CheckCollateRepeat() {
+            var array = new[] { "a", "b", "c" };
+            var actual = String.Concat(array.Repeat(3));
+            var expected = "abcabcabc";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckGroupedRepeat() {
+            var array = new[] { "a", "b", "c" };
+            var actual = String.Concat(array.Repeat(3, collate: false));
+            var expected = "aaabbbccc";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckCollateRepeatToListOptimization() {
+            const int Repeat = 3;
+            var array = new[] { "a", "b", "c" };
+            var actual = array.Repeat(Repeat, collate: false).ToList();
+            var expected = new List<string>();
+            for (int i = 0; i < Repeat; i++) {
+                expected.AddRange(array);
+            }
+            Assert.AreNotEqual(expected.Capacity, actual.Capacity);
+            Assert.AreEqual(expected.Count, actual.Capacity);
         }
 
         [TestMethod]
