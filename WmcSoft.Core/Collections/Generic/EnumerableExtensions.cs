@@ -34,88 +34,124 @@ namespace WmcSoft.Collections.Generic
 {
     public static class EnumerableExtensions
     {
-        #region ToArray
+        #region ElementAt
 
-        private static List<TSource> MakeList<TSource>(this IEnumerable<TSource> source) {
-            var collection = source as IReadOnlyCollection<TSource>;
-            if (collection != null) {
-                var list = new List<TSource>(collection.Count);
-                list.AddRange(source);
-                return list;
-            }
-            return new List<TSource>(source);
+        public static TResult ElementAt<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
+            var result = source.ElementAt(index);
+            return selector(result);
         }
 
-        public static TOutput[,] ToTwoDimensionalArray<TInput, TOutput>(this IEnumerable<TInput> source, params Converter<TInput, TOutput>[] converters) {
-            var list = MakeList(source);
+        public static TResult ElementAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
+            if (source == null) {
+                // I would normally return default(TResult) but here I should be consistent with the framework.
+                throw new ArgumentNullException("source");
+            }
 
-            var columns = converters.Length;
-            var rows = list.Count;
-            var array = new TOutput[rows, columns];
-            for (int i = 0; i < rows; i++) {
-                var item = list[i];
-                for (int j = 0; j < columns; j++) {
-                    array[i, j] = converters[j](item);
+            if (index >= 0) {
+                var list = source as IList<TSource>;
+                if (list == null) {
+                    using (IEnumerator<TSource> enumerator = source.GetEnumerator()) {
+                        while (enumerator.MoveNext()) {
+                            if (index == 0)
+                                return selector(enumerator.Current);
+                            index--;
+                        }
+                    }
+                } else if (index < list.Count) {
+                    return selector(list[index]);
                 }
             }
-            return array;
-        }
-
-        /// <summary>
-        /// Creates an array of the specified length from an IEnumerable.
-        /// </summary>
-        /// <typeparam name="TSource">The type of element of the source.</typeparam>
-        /// <param name="source">An IEnumerable to create an array from.</param>
-        /// <param name="length">The required length of the array</param>
-        /// <returns>An array of size length that contains the elements from the input sequence.</returns>
-        /// <remarks>If the input sequence as less than length elements, the array is padded with default(TSource) values. 
-        /// If the input sequence contains more elements, only the first length items are copied in the array.</remarks>
-        public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source, int length)
-            where TSource : new() {
-            var array = new TSource[length];
-            var i = 0;
-            using (var enumerator = source.GetEnumerator()) {
-                while (enumerator.MoveNext() && i < length) {
-                    array[i++] = enumerator.Current;
-                }
-            }
-            return array;
-        }
-
-        public static T[] AsArray<T>(this IEnumerable<T> values) {
-            if (values == null)
-                return null;
-
-            var array = values as T[];
-            if (array != null)
-                return array;
-
-            return values.ToArray();
+            return default(TResult);
         }
 
         #endregion
 
-        #region ZipAll methods
+        #region Extract
 
-        public static IEnumerable<TResult> ZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector) {
-            using (var enumerator1 = first.GetEnumerator())
-            using (var enumerator2 = second.GetEnumerator()) {
-                while (true) {
-                    if (!enumerator1.MoveNext()) {
-                        while (enumerator2.MoveNext()) {
-                            yield return resultSelector(default(TFirst), enumerator2.Current);
-                        }
-                        yield break;
-                    }
-                    if (!enumerator2.MoveNext()) {
-                        do {
-                            yield return resultSelector(enumerator1.Current, default(TSecond));
-                        } while (enumerator1.MoveNext());
-                        yield break;
-                    }
-                    yield return resultSelector(enumerator1.Current, enumerator2.Current);
-                }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
             }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3, out TSource value4) {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
+                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                value4 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
+                return enumerator.Count;
+            }
+        }
+
+        #endregion
+
+        #region ForEach
+
+        /// <summary>
+        /// Performs the specified action on each element of the sequence.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="action">A function to apply on each element.</param>
+        public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
+            if (source == null)
+                return;
+            foreach (var item in source)
+                action(item);
+        }
+
+        /// <summary>
+        /// Determines whether each element matches the condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="predicate">The delegate that defines the conditions to check against the elements.</param>
+        /// <returns>true if every element in the sequence matches the conditions defined by the specified predicate; 
+        /// otherwise, false. If there are no elements, the return value is true.</returns>
+        /// <remarks>The predicate is applied on each element of the sequence.</remarks>
+        public static bool TrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
+            if (source == null)
+                return true;
+
+            bool b = true;
+            foreach (var item in source)
+                b &= predicate(item);
+            return b;
+        }
+
+        /// <summary>
+        /// Determines whether some element matches the condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="predicate">The delegate that defines the conditions to check against the elements.</param>
+        /// <returns>true if some element in the sequence matches the conditions defined by the specified predicate; 
+        /// otherwise, false. If there are no elements, the return value is true.</returns>
+        /// <remarks>The predicate is applied on each element of the sequence.</remarks>
+        public static bool TrueForSome<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
+            if (source == null)
+                return false;
+
+            bool b = false;
+            foreach (var item in source)
+                b |= predicate(item);
+            return b;
         }
 
         #endregion
@@ -264,128 +300,6 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region ElementAt
-
-        public static TResult ElementAt<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
-            var result = source.ElementAt(index);
-            return selector(result);
-        }
-
-        public static TResult ElementAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
-            if (source == null) {
-                // I would normally return default(TResult) but here I should be consistent with the framework.
-                throw new ArgumentNullException("source");
-            }
-
-            if (index >= 0) {
-                var list = source as IList<TSource>;
-                if (list == null) {
-                    using (IEnumerator<TSource> enumerator = source.GetEnumerator()) {
-                        while (enumerator.MoveNext()) {
-                            if (index == 0)
-                                return selector(enumerator.Current);
-                            index--;
-                        }
-                    }
-                } else if (index < list.Count) {
-                    return selector(list[index]);
-                }
-            }
-            return default(TResult);
-        }
-
-        #endregion
-
-        #region Extract
-
-        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
-            using (var enumerator = new CountingEnumerator<TSource>(source)) {
-                value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                return enumerator.Count;
-            }
-        }
-        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2) {
-            using (var enumerator = new CountingEnumerator<TSource>(source)) {
-                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                return enumerator.Count;
-            }
-        }
-        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3) {
-            using (var enumerator = new CountingEnumerator<TSource>(source)) {
-                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                return enumerator.Count;
-            }
-        }
-        public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3, out TSource value4) {
-            using (var enumerator = new CountingEnumerator<TSource>(source)) {
-                value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                value4 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
-                return enumerator.Count;
-            }
-        }
-
-        #endregion
-
-        #region ForEach
-
-        /// <summary>
-        /// Performs the specified action on each element of the sequence.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
-        /// <param name="source">The elements to apply the predicate to.</param>
-        /// <param name="action">A function to apply on each element.</param>
-        public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
-            if (source == null)
-                return;
-            foreach (var item in source)
-                action(item);
-        }
-
-        /// <summary>
-        /// Determines whether each element matches the condition.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
-        /// <param name="source">The elements to apply the predicate to.</param>
-        /// <param name="predicate">The delegate that defines the conditions to check against the elements.</param>
-        /// <returns>true if every element in the sequence matches the conditions defined by the specified predicate; 
-        /// otherwise, false. If there are no elements, the return value is true.</returns>
-        /// <remarks>The predicate is applied on each element of the sequence.</remarks>
-        public static bool TrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
-            if (source == null)
-                return true;
-
-            bool b = true;
-            foreach (var item in source)
-                b &= predicate(item);
-            return b;
-        }
-
-        /// <summary>
-        /// Determines whether some element matches the condition.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
-        /// <param name="source">The elements to apply the predicate to.</param>
-        /// <param name="predicate">The delegate that defines the conditions to check against the elements.</param>
-        /// <returns>true if some element in the sequence matches the conditions defined by the specified predicate; 
-        /// otherwise, false. If there are no elements, the return value is true.</returns>
-        /// <remarks>The predicate is applied on each element of the sequence.</remarks>
-        public static bool TrueForSome<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
-            if (source == null)
-                return false;
-
-            bool b = false;
-            foreach (var item in source)
-                b |= predicate(item);
-            return b;
-        }
-
-        #endregion
-
         #region Read
 
         [DebuggerStepThrough]
@@ -412,6 +326,92 @@ namespace WmcSoft.Collections.Generic
                 return enumerator.Current;
             }
             return default(T);
+        }
+
+        #endregion
+
+        #region ToArray
+
+        private static List<TSource> MakeList<TSource>(this IEnumerable<TSource> source) {
+            var collection = source as IReadOnlyCollection<TSource>;
+            if (collection != null) {
+                var list = new List<TSource>(collection.Count);
+                list.AddRange(source);
+                return list;
+            }
+            return new List<TSource>(source);
+        }
+
+        public static TOutput[,] ToTwoDimensionalArray<TInput, TOutput>(this IEnumerable<TInput> source, params Converter<TInput, TOutput>[] converters) {
+            var list = MakeList(source);
+
+            var columns = converters.Length;
+            var rows = list.Count;
+            var array = new TOutput[rows, columns];
+            for (int i = 0; i < rows; i++) {
+                var item = list[i];
+                for (int j = 0; j < columns; j++) {
+                    array[i, j] = converters[j](item);
+                }
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// Creates an array of the specified length from an IEnumerable.
+        /// </summary>
+        /// <typeparam name="TSource">The type of element of the source.</typeparam>
+        /// <param name="source">An IEnumerable to create an array from.</param>
+        /// <param name="length">The required length of the array</param>
+        /// <returns>An array of size length that contains the elements from the input sequence.</returns>
+        /// <remarks>If the input sequence as less than length elements, the array is padded with default(TSource) values. 
+        /// If the input sequence contains more elements, only the first length items are copied in the array.</remarks>
+        public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source, int length)
+            where TSource : new() {
+            var array = new TSource[length];
+            var i = 0;
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext() && i < length) {
+                    array[i++] = enumerator.Current;
+                }
+            }
+            return array;
+        }
+
+        public static T[] AsArray<T>(this IEnumerable<T> values) {
+            if (values == null)
+                return null;
+
+            var array = values as T[];
+            if (array != null)
+                return array;
+
+            return values.ToArray();
+        }
+
+        #endregion
+
+        #region ZipAll methods
+
+        public static IEnumerable<TResult> ZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector) {
+            using (var enumerator1 = first.GetEnumerator())
+            using (var enumerator2 = second.GetEnumerator()) {
+                while (true) {
+                    if (!enumerator1.MoveNext()) {
+                        while (enumerator2.MoveNext()) {
+                            yield return resultSelector(default(TFirst), enumerator2.Current);
+                        }
+                        yield break;
+                    }
+                    if (!enumerator2.MoveNext()) {
+                        do {
+                            yield return resultSelector(enumerator1.Current, default(TSecond));
+                        } while (enumerator1.MoveNext());
+                        yield break;
+                    }
+                    yield return resultSelector(enumerator1.Current, enumerator2.Current);
+                }
+            }
         }
 
         #endregion
