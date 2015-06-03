@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Tests.Properties;
+using WmcSoft.Properties;
 using WmcSoft.Xml;
 
 namespace WmcSoft.Tests.Xml.XPath

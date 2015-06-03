@@ -6,7 +6,7 @@
     <ProjectGuid>{FBD57B8C-27F2-4EB2-8F49-5483A0791854}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.Tests</RootNamespace>
+    <RootNamespace>WmcSoft</RootNamespace>
     <AssemblyName>WmcSoft.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -62,6 +62,7 @@
     <Compile Include="Collections\Generic\SingleItemListTests.cs" />
     <Compile Include="Collections\Specialized\PriorityQueueTests.cs" />
     <Compile Include="Collections\Specialized\NameValueCollectionTests.cs" />
+    <Compile Include="ComponentModel\TypeDescriptorExtensionsTests.cs" />
     <Compile Include="Configuration\MailPolicyTests.cs" />
     <Compile Include="Configuration\TestSection.cs" />
     <Compile Include="DateTimeTests.cs" />

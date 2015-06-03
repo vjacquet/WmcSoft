@@ -6,7 +6,7 @@
     <ProjectGuid>{D12A494F-C06E-4B0D-98CA-70460D819BC7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.Units.Tests</RootNamespace>
+    <RootNamespace>WmcSoft.Units</RootNamespace>
     <AssemblyName>WmcSoft.Units.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

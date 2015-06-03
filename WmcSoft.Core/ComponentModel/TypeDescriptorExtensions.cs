@@ -24,6 +24,15 @@ namespace WmcSoft.ComponentModel
             }
         }
 
+        public static void GetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values) {
+            foreach (var key in values.Keys.ToList()) {
+                var property = properties[key];
+                if (property != null) {
+                    values[key] = property.GetValue(component);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the current value of the property on a component.
         /// </summary>

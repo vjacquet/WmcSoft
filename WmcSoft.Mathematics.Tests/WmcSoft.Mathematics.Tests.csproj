@@ -6,7 +6,7 @@
     <ProjectGuid>{DD347637-5EC5-45BA-A377-5B6A09605A7C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.Tests</RootNamespace>
+    <RootNamespace>WmcSoft</RootNamespace>
     <AssemblyName>WmcSoft.Mathematics.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

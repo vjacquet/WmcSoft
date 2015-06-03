@@ -33,6 +33,11 @@ namespace WmcSoft.Data.Common
 {
     public static class DbConnectionExtensions
     {
+        /// <summary>
+        /// Opens a database connection.
+        /// </summary>
+        /// <param name="connectionStringSettings">Connection string from the connection strings configuration section.</param>
+        /// <returns>An open instance of the connection.</returns>
         public static DbConnection OpenConnection(this ConnectionStringSettings connectionStringSettings) {
             var factory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
             var connection = factory.CreateConnection();
