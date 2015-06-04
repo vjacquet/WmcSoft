@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Collections.Generic.Tests
+namespace WmcSoft.Collections.Generic
 {
     [TestClass]
     public class SortedCollectionTests

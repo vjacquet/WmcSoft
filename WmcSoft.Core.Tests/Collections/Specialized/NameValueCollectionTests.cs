@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Collections.Specialized.Tests
+namespace WmcSoft.Collections.Specialized
 {
     [TestClass]
     public class NameValueCollectionTests

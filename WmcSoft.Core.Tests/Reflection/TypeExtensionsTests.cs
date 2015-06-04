@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Reflection.Tests
+namespace WmcSoft.Reflection
 {
     [TestClass]
     public class TypeExtensionsTests

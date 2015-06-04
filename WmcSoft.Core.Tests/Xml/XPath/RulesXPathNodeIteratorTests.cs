@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.XPath;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Xml.XPath.Tests
+namespace WmcSoft.Xml.XPath
 {
     [TestClass]
     public class RulesXPathNodeIteratorTests

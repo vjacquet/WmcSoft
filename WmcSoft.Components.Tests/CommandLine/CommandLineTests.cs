@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.CommandLine.Tests
+namespace WmcSoft.CommandLine
 {
     [TestClass]
     public class CommandLineTests

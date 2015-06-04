@@ -5,7 +5,7 @@ using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.ComponentModel;
 
-namespace WmcSoft.Net.Tests
+namespace WmcSoft.Net
 {
     [TestClass]
     public class IPAdressTypeConverterTests

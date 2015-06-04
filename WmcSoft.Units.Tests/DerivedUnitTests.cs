@@ -1,7 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Units.Tests
+namespace WmcSoft.Units
 {
     [TestClass]
     public class DerivedUnitTests

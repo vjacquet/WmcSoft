@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Collections.Generic.Tests
+namespace WmcSoft.Collections.Generic
 {
     [TestClass]
     public class SingleItemListTests

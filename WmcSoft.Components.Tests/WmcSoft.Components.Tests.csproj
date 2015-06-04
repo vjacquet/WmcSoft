@@ -62,11 +62,8 @@
       <DependentUpon>BenchComponent.cs</DependentUpon>
     </Compile>
     <Compile Include="CommandLine\CommandLineTests.cs" />
-    <Compile Include="ComponentModel\ComponentWithServiceContainer.cs">
+    <Compile Include="ComponentModel\EventBarrierTests.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ComponentModel\ComponentWithServiceContainer.Designer.cs">
-      <DependentUpon>ComponentWithServiceContainer.cs</DependentUpon>
     </Compile>
     <Compile Include="Net\IPAdressTypeConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,14 +92,11 @@
     <EmbeddedResource Include="CommandLine\BenchComponent.resx">
       <DependentUpon>BenchComponent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ComponentModel\ComponentWithServiceContainer.resx">
-      <DependentUpon>ComponentWithServiceContainer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\ToolStripForm.resx">
       <DependentUpon>ToolStripForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

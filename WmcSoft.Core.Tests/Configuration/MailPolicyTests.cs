@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Net.Mail;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Configuration.Tests
+namespace WmcSoft.Configuration
 {
     [TestClass]
     public class MailPolicyTests

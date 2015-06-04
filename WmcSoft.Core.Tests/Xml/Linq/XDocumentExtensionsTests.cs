@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Xml.Linq.Tests
+namespace WmcSoft.Xml.Linq
 {
     [TestClass]
     public class XDocumentExtensionsTests

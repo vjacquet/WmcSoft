@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     [TestClass]
     public class NullableExtensionsTests

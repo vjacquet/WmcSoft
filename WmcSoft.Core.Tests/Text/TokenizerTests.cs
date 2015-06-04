@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Text.Tests
+namespace WmcSoft.Text
 {
     [TestClass]
     public class TokenizerTests
