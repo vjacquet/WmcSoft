@@ -34,22 +34,23 @@ namespace WmcSoft.ComponentModel
     /// <summary>
     /// Cretes a scope in which the specified target wil not be notified of the givent events.
     /// </summary>
+    /// <remarks>The calling sequence of the delegate is changed.</remarks>
     public class EventBarrier : IDisposable
     {
-        EventHandlerList sourceList;
-        EventHandlerList restorationList = new EventHandlerList();
+        EventHandlerList _sourceList;
+        EventHandlerList _restorationList = new EventHandlerList();
 
         public EventBarrier(EventHandlerList eventHandlerList, object target, params object[] events) {
-            this.sourceList = eventHandlerList;
+            _sourceList = eventHandlerList;
 
             foreach (object @event in events) {
-                var sentinel = sourceList[@event];
+                var sentinel = _sourceList[@event];
                 if (sentinel == null)
                     continue;
 
                 foreach (var handler in sentinel.GetInvocationList(d => d.Target == target)) {
-                    sourceList.RemoveHandler(@event, handler);
-                    restorationList.AddHandler(@event, handler);
+                    _sourceList.RemoveHandler(@event, handler);
+                    _restorationList.AddHandler(@event, handler);
                 }
             }
         }
@@ -57,7 +58,7 @@ namespace WmcSoft.ComponentModel
         #region IDisposable Membres
 
         public void Dispose() {
-            sourceList.AddHandlers(restorationList);
+            _sourceList.AddHandlers(_restorationList);
         }
 
         #endregion

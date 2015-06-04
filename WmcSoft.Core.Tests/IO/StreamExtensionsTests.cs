@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.IO;
 
-namespace WmcSoft.Tests
+namespace WmcSoft.IO
 {
     [TestClass]
     public class StreamExtensionsTests

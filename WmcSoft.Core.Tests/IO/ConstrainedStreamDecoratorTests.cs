@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.IO.Tests
+namespace WmcSoft.IO
 {
     [TestClass]
     public class ConstrainedStreamDecoratorTests

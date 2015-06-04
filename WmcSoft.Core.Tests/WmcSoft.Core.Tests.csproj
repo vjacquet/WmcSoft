@@ -79,7 +79,7 @@
     <Compile Include="Reflection\TypeExtensionsTests.cs" />
     <Compile Include="RegexExtensionsTests.cs" />
     <Compile Include="Runtime\ObjectWalkerTests.cs" />
-    <Compile Include="StreamExtensionsTests.cs" />
+    <Compile Include="IO\StreamExtensionsTests.cs" />
     <Compile Include="Text\TokenizerTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="ExpectedTests.cs" />

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     [TestClass]
     public class BinaryFormatterTests

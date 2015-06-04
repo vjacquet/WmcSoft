@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WmcSoft.Configuration.Tests
+namespace WmcSoft.Configuration
 {
     public class TestSection : ConfigurationSection
     {

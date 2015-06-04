@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Collections.Specialized.Tests
+namespace WmcSoft.Collections.Specialized
 {
     [TestClass]
     public class PriorityQueueTests

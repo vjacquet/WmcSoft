@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Properties;
 using WmcSoft.Xml;
 
-namespace WmcSoft.Tests.Xml.XPath
+namespace WmcSoft.Xml.XPath
 {
     [TestClass]
     public class XPathLocatorTests

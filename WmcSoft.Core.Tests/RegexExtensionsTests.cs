@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Text.RegularExpressions;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     [TestClass]
     public class RegexExtensionsTests

@@ -5,7 +5,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Text;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     [TestClass]
     public class StringExtensionsTests

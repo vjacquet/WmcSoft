@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Collections.Generic;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     [TestClass]
     public class ArrayExtensionsTests

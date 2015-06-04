@@ -7,7 +7,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Diagnostics;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     [TestClass]
     public class ExpectedTests

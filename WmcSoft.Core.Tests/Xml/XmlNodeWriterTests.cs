@@ -2,7 +2,7 @@
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Xml.Tests
+namespace WmcSoft.Xml
 {
     [TestClass]
     public class XmlNodeWriterTests

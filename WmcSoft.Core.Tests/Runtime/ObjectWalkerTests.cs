@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Runtime.Tests
+namespace WmcSoft.Runtime
 {
     [TestClass]
     public class ObjectWalkerTests
