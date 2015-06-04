@@ -33,6 +33,33 @@ namespace WmcSoft
 {
     public static class NullableExtensions
     {
+        #region Map & Bind
+
+        public static R? Map<T, R>(this T? value, Func<T, R> fn)
+            where T : struct
+            where R : struct {
+            if (value.HasValue)
+                return fn(value.GetValueOrDefault());
+            return null;
+        }
+
+        public static R? Map<T, R>(this T? value, Func<T, R?> fn)
+            where T : struct
+            where R : struct {
+            if (value.HasValue)
+                return fn(value.GetValueOrDefault());
+            return null;
+        }
+
+        //public static R Bind<T, R>(this T? value, Func<T, R> fn)
+        //    where T : struct {
+        //    if (value.HasValue)
+        //        return fn(value.GetValueOrDefault());
+        //    return default(R);
+        //}
+
+        #endregion
+
         #region NullIf
 
         public static T? NullIf<T>(this T self, T value)
@@ -64,33 +91,6 @@ namespace WmcSoft
             where T : struct, IFormattable {
             return formattable.ToString(null, formatProvider);
         }
-
-        #endregion
-
-        #region Map & Bind
-
-        //public static R? Map<T, R>(this T? value, Func<T, R> fn)
-        //    where T : struct
-        //    where R : struct {
-        //    if (value.HasValue)
-        //        return fn(value.GetValueOrDefault());
-        //    return null;
-        //}
-
-        //public static R? Map<T, R>(this T? value, Func<T, R?> fn)
-        //    where T : struct
-        //    where R : struct {
-        //    if (value.HasValue)
-        //        return fn(value.GetValueOrDefault());
-        //    return null;
-        //}
-
-        //public static R Bind<T, R>(this T? value, Func<T, R> fn)
-        //    where T : struct {
-        //    if (value.HasValue)
-        //        return fn(value.GetValueOrDefault());
-        //    return default(R);
-        //}
 
         #endregion
     }
