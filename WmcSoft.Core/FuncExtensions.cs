@@ -34,6 +34,20 @@ namespace WmcSoft
 {
     public static class FuncExtensions
     {
+        #region Lift
+
+        public static Func<T?, TResult?> Lift<T, TResult>(this Func<T, TResult> func)
+            where T : struct
+            where TResult : struct {
+            return x => {
+                if (!x.HasValue)
+                    return default(TResult);
+                return func(x.GetValueOrDefault());
+            };
+        }
+
+        #endregion
+
         #region Shield
 
         /// <summary>

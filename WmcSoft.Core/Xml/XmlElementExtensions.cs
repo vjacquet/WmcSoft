@@ -31,7 +31,8 @@ namespace WmcSoft.Xml
 {
    public static class XmlElementExtensions
     {
-        public static T GetAttribute<T>(this XmlElement self, string name) where T : IConvertible {
+        public static T GetAttribute<T>(this XmlElement self, string name)
+            where T : IConvertible {
             var value = self.GetAttribute(name);
             return (T)Convert.ChangeType(value, typeof(T));
         }
