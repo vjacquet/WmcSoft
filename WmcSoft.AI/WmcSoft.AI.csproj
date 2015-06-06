@@ -50,9 +50,20 @@
     <Compile Include="FuzzyLogic\FuzzyVar.cs" />
     <Compile Include="FuzzyLogic\IFuzzyCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Series.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FuzzyLogic\FuzzyLogic.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
+      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
+      <Name>WmcSoft.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Mathematics\WmcSoft.Mathematics.csproj">
+      <Project>{041e639d-20cd-454f-90d5-2852aa58e126}</Project>
+      <Name>WmcSoft.Mathematics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

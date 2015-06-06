@@ -49,8 +49,10 @@
     <Compile Include="Arithmetics\IArithmetics.cs" />
     <Compile Include="Arithmetics\DoubleArithmetics.cs" />
     <Compile Include="Arithmetics\BigIntegerArithmetics.cs" />
+    <Compile Include="Arithmetics\IFunction.cs" />
     <Compile Include="Arithmetics\IInterpolation.cs" />
     <Compile Include="Arithmetics\Int32Arithmetics.cs" />
+    <Compile Include="Arithmetics\LinearFunction.cs" />
     <Compile Include="Arithmetics\LinearInterpolation.cs" />
     <Compile Include="DeterministicRandom.cs" />
     <Compile Include="Generators.cs" />

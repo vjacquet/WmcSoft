@@ -51,3 +51,9 @@ _Library to build custom tools._
 
 This library also provide a declarative, policy based, code generator. 
 The classes are defined in an XML file and then generated in CSharp.
+
+## WmcSoft.Core
+_Library of artificial intelligence algorithms._
+
+This library is so far a collection of algorithm, initially converted from Practical Neural Network Recipes in C++, 
+by Timothy Masters.
