@@ -25,10 +25,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace WmcSoft.Xml
@@ -41,6 +37,12 @@ namespace WmcSoft.Xml
             var value = reader.Value;
             reader.MoveToElement();
             return value;
+        }
+
+        public static T ReadAttributeValue<T>(this XmlReader reader, string name)
+            where T : IConvertible {
+                var value = reader.ReadAttributeValue(name);
+            return (T)Convert.ChangeType(value, typeof(T));
         }
     }
 }
