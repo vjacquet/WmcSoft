@@ -51,6 +51,7 @@
     <Compile Include="Arithmetics\BigIntegerArithmetics.cs" />
     <Compile Include="Arithmetics\IFunction.cs" />
     <Compile Include="Arithmetics\IInterpolation.cs" />
+    <Compile Include="Arithmetics\Int64Arithmetics.cs" />
     <Compile Include="Arithmetics\Int32Arithmetics.cs" />
     <Compile Include="Arithmetics\LinearFunction.cs" />
     <Compile Include="Arithmetics\LinearInterpolation.cs" />
