@@ -55,6 +55,7 @@
     <Compile Include="Arithmetics\Int32Arithmetics.cs" />
     <Compile Include="Arithmetics\LinearFunction.cs" />
     <Compile Include="Arithmetics\LinearInterpolation.cs" />
+    <Compile Include="Arithmetics\Operations.cs" />
     <Compile Include="DeterministicRandom.cs" />
     <Compile Include="Generators.cs" />
     <Compile Include="IntExtensions.cs" />
