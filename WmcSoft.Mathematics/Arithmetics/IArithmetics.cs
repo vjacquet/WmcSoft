@@ -24,6 +24,7 @@
 
 #endregion
 
+using WmcSoft.Algebra;
 namespace WmcSoft.Arithmetics
 {
     /// <summary>
@@ -58,4 +59,129 @@ namespace WmcSoft.Arithmetics
         //public bool IsPositiveInfinity(T x);
         //public bool IsNegativeInfinity(T x);
     }
+
+    public static class ArithmeticsExtensions
+    {
+        static IRingLike<T> ToAdditiveMultiplicativeRing<T, A>(this A arithmetics)
+            where A : IArithmetics<T> {
+            return new AdditiveMultiplicativeRingAdapter<T, A>(arithmetics);
+        }
+    }
+
+    public struct AdditiveMultiplicativeRingAdapter<T, A> : IRingLike<T>
+        where A : IArithmetics<T>
+    {
+        class AdditiveTraits : IGroupLikeTraits
+        {
+            private readonly A _arithmetics;
+
+            public AdditiveTraits(A arithmetics) {
+                _arithmetics = arithmetics;
+            }
+
+            #region IGroupLikeTraits Membres
+
+            public bool SupportIdentity {
+                get { return true; }
+            }
+
+            public bool SupportInverse {
+                get { return true; }
+            }
+
+            public bool IsAssociative {
+                get { return true; }
+            }
+
+            public bool IsCommutative {
+                get { return true; }
+            }
+
+            public bool IsIdempotent {
+                get { return false; }
+            }
+
+            #endregion
+        }
+
+        class MultiplicativeTraits : IGroupLikeTraits
+        {
+            private readonly A _arithmetics;
+
+            public MultiplicativeTraits(A arithmetics) {
+                _arithmetics = arithmetics;
+            }
+
+            #region IGroupLikeTraits Membres
+
+            public bool SupportIdentity {
+                get { return true; }
+            }
+
+            public bool SupportInverse {
+                get { return _arithmetics.SupportReciprocal; }
+            }
+
+            public bool IsAssociative {
+                get { return true; }
+            }
+
+            public bool IsCommutative {
+                get { return true; }
+            }
+
+            public bool IsIdempotent {
+                get { return false; }
+            }
+
+            #endregion
+        }
+
+        private readonly A _arithmetics;
+
+        public AdditiveMultiplicativeRingAdapter(A arithmetics) {
+            _arithmetics = arithmetics;
+        }
+
+        #region IRingLike<T> Membres
+
+        public T Add(T x, T y) {
+            return _arithmetics.Add(x, y);
+        }
+
+        public T Negate(T x) {
+            return _arithmetics.Negate(x);
+        }
+
+        public T Zero {
+            get { return _arithmetics.Zero; }
+        }
+
+        public T Multiply(T x, T y) {
+            return _arithmetics.Multiply(x, y);
+        }
+
+        public T Reciprocal(T x) {
+            return _arithmetics.Reciprocal(x);
+        }
+
+        public T One {
+            get { return _arithmetics.One; }
+        }
+
+        #endregion
+
+        #region IRingLikeTraits Membres
+
+        public IGroupLikeTraits Addition {
+            get { return new AdditiveTraits(_arithmetics); }
+        }
+
+        public IGroupLikeTraits Multiplication {
+            get { return new MultiplicativeTraits(_arithmetics); }
+        }
+
+        #endregion
+    }
+
 }

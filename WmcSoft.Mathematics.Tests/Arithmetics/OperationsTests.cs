@@ -34,7 +34,7 @@ namespace WmcSoft.Arithmetics
         [TestMethod]
         public void CheckPower() {
             var g = new Multiplies();
-            var actual = Operations.Power(10d, 5, g);
+            var actual = Operations.Power(g, 10d, 5);
             var expected = 100000d;
             Assert.AreEqual(expected, actual);
         }

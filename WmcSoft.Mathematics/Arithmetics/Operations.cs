@@ -76,7 +76,27 @@ namespace WmcSoft.Arithmetics
 
         public static T DotProduct<T, A>(this T[] x, T[] y)
             where A : IArithmetics<T>, new() {
-            return DotProduct(new A(), x, y);
+            return DotProduct<T, A>(new A(), x, y);
+        }
+
+        /// <summary>
+        /// Compute the dot products of two vectors.
+        /// </summary>
+        /// <param name="x">The first vector</param>
+        /// <param name="y">The second vector</param>
+        /// <returns>The dot product.</returns>
+        /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
+        /// the small is padded with zeros.</remarks>
+        public static T DotProductRing<T, R>(this R ring, T[] x, T[] y)
+            where R : IRingLike<T> {
+            if (x == null || y == null)
+                return ring.Zero;
+            var length = Math.Min(x.Length, y.Length);
+            var result = ring.Multiply(x[0], y[0]);
+            for (int i = 1; i < length; i++) {
+                result = ring.Add(result, ring.Multiply(x[i], y[i]));
+            }
+            return result;
         }
 
         static bool Odd(int n) {
@@ -89,7 +109,7 @@ namespace WmcSoft.Arithmetics
             return n / 2;
         }
 
-        static T PowerAccumulateSemiGroup<T, G>(T x, T y, int n, G group)
+        static T PowerAccumulateSemiGroup<T, G>(this G group, T x, T y, int n)
             where G : IGroupLike<T> {
             // precondition: n >= 0
             if (n == 0)
@@ -105,7 +125,7 @@ namespace WmcSoft.Arithmetics
             }
         }
 
-        public static T PowerSemiGroup<T, G>(this T x, int n, G group)
+        public static T PowerSemiGroup<T, G>(this G group, T x, int n)
             where G : IGroupLike<T> {
             // precondition: n > 0
             while (Even(n)) {
@@ -114,38 +134,38 @@ namespace WmcSoft.Arithmetics
             }
             if (n == 1)
                 return x;
-            return PowerAccumulateSemiGroup(x, group.Eval(x, x), HalfNonNegative(n - 1), group);
+            return PowerAccumulateSemiGroup(group, x, group.Eval(x, x), HalfNonNegative(n - 1));
         }
 
-        public static T PowerMonoid<T, G>(this T x, int n, G group)
+        public static T PowerMonoid<T, G>(this G group, T x, int n)
             where G : IGroupLike<T> {
             if (n == 0)
                 return group.Identity;
-            return PowerSemiGroup(x, n, group);
+            return PowerSemiGroup(group, x, n);
         }
 
-        public static T Power<T, G>(this T x, int n, G group)
+        public static T Power<T, G>(this G group, T x, int n)
             where G : IGroupLike<T> {
             if (n < 0) {
                 n = -n;
                 x = group.Inverse(x);
             }
-            return PowerMonoid(x, n, group);
+            return PowerMonoid(group, x, n);
         }
 
         public static T PowerSemiGroup<T, G>(this T x, int n)
             where G : IGroupLike<T>, new() {
-            return PowerSemiGroup(x, n, new G());
+                return PowerSemiGroup(new G(), x, n);
         }
 
         public static T PowerMonoid<T, G>(this T x, int n)
             where G : IGroupLike<T>, new() {
-            return PowerMonoid(x, n, new G());
+                return PowerMonoid(new G(), x, n);
         }
 
         public static T Power<T, G>(this T x, int n)
             where G : IGroupLike<T>, new() {
-            return Power(x, n, new G());
+                return Power(new G(), x, n);
         }
     }
 }
