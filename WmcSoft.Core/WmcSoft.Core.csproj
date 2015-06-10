@@ -88,6 +88,7 @@
     <Compile Include="ComponentModel\TypeDescriptorExtensions.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="Configuration\AppConfig.cs" />
+    <Compile Include="Configuration\FactoryElement.cs" />
     <Compile Include="Configuration\FileSearchSectionHandler.cs" />
     <Compile Include="Configuration\ListSectionHandler.cs" />
     <Compile Include="Configuration\MailAddressCollectionConverter.cs" />
