@@ -54,6 +54,21 @@ namespace WmcSoft.Collections.Specialized
             CollectionAssert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void CheckNameValueCollection() {
+            var collection = new NameValueCollection();
+            collection.Add("letter", "a");
+            collection.Add("letter", "b");
+            collection.Add("number", "1");
+            Assert.AreEqual(2, collection.Count);
+            Assert.AreEqual(1, collection.PopValue<int>("number"));
+            Assert.AreEqual(1, collection.Count);
+            Assert.AreEqual(0d, collection.PopValue<double>("number"));
+            Assert.AreEqual(1, collection.Count);
+            CollectionAssert.AreEqual(new[] { "a", "b" }, collection.PopValues<string>("letter").ToArray());
+            Assert.AreEqual(0, collection.Count);
+        }
+
     }
 
 
