@@ -35,6 +35,8 @@ namespace WmcSoft.Collections.Specialized
 {
     public static class NameValueCollectionExtensions
     {
+        #region GetValue(s)
+
         /// <summary>
         /// Gets the named value from the collection and convert it to the requested type, or returns a default value when missing.
         /// </summary>
@@ -112,5 +114,44 @@ namespace WmcSoft.Collections.Specialized
             }
             return Enumerable.Empty<T>();
         }
+
+        #endregion
+
+        #region PopValue(s)
+
+        public static T PopValue<T>(this NameValueCollection self, string name) {
+            return self.PopValue(name, default(T));
+        }
+
+        public static T PopValue<T>(this NameValueCollection self, string name, T defaultValue) {
+            string value = self[name];
+            T result = (value != null)
+                ? (T)Convert.ChangeType(value, typeof(T))
+                : defaultValue;
+            self.Remove(name);
+            return result;
+        }
+
+        public static T PopValue<T>(this NameValueCollection self, string name, Func<T> defaultValue) {
+            string value = self[name];
+            T result = (value != null)
+                ? (T)Convert.ChangeType(value, typeof(T))
+                : defaultValue();
+            self.Remove(name);
+            return result;
+        }
+
+        public static IEnumerable<T> PopValues<T>(this NameValueCollection self, string name) {
+            var values = self.GetValues(name);
+            if (values == null || values.Length == 0)
+                yield break;
+            self.Remove(name);
+
+            for (int i = 0; i < values.Length; i++) {
+                yield return (T)Convert.ChangeType(values[i], typeof(T));
+            }
+        }
+
+        #endregion
     }
 }
