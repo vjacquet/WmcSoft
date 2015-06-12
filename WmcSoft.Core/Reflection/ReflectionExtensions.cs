@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Reflection
 {
     public static class ReflectionExtensions
     {
+        #region EnumerateDefinitions
+
         public static IEnumerable<MethodInfo> EnumerateDefinitions(this MethodInfo method) {
             var baseDefinition = method.GetBaseDefinition();
             var parameters = method.GetParameters().ToArray(p => p.ParameterType);
@@ -19,6 +19,28 @@ namespace WmcSoft.Reflection
             }
             yield return baseDefinition;
         }
+
+        #endregion
+
+        #region GetCustomAttributes / GetMetadataAttribute
+
+        public static TAttribute GetCustomAttribute<TAttribute>(this MemberInfo memberInfo, bool inherit = true) where TAttribute : Attribute {
+            return memberInfo.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().FirstOrDefault();
+        }
+        public static TAttribute GetCustomAttribute<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
+            return type.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().FirstOrDefault();
+        }
+
+        public static IEnumerable<T> GetCustomAttributes<T>(this MemberInfo element, bool inherit = true) where T : Attribute {
+            return (IEnumerable<T>)Attribute.GetCustomAttributes(element, typeof(T), inherit);
+        }
+        public static IEnumerable<T> GetCustomAttributes<T>(this Type type, bool inherit = true) where T : Attribute {
+            return (IEnumerable<T>)Attribute.GetCustomAttributes(type, typeof(T), inherit);
+        }
+
+        #endregion
+
+        #region GetValue
 
         public static T GetValue<T>(this PropertyInfo property, object obj) {
             var value = property.GetValue(obj);
@@ -43,5 +65,7 @@ namespace WmcSoft.Reflection
                 throw new ArgumentOutOfRangeException("propertyName");
             return property.GetValue<T>(obj, provider);
         }
+
+        #endregion
     }
 }
