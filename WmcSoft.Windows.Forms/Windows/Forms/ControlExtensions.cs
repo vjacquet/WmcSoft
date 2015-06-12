@@ -124,6 +124,11 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
+        public static IEnumerable<T> FindControls<T>(this Control self, params string[] names) where T : Control {
+            var set = new HashSet<string>(names);
+            return self.Controls.OfType<T>().Where(c => set.Remove(c.Name));
+        }
+
         #endregion
 
         #region Control extensions
