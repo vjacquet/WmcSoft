@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using WmcSoft.Collections.Generic;
+using WmcSoft.ComponentModel;
 
 namespace WmcSoft.Reflection
 {
@@ -29,6 +33,10 @@ namespace WmcSoft.Reflection
         }
         public static TAttribute GetCustomAttribute<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
             return type.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().FirstOrDefault();
+        }
+
+        public static TAttribute GetMetadataAttribute<TAttribute>(this MemberInfo memberInfo) where TAttribute : Attribute {
+            return TypeDescriptor.GetProperties(memberInfo.DeclaringType)[memberInfo.Name].GetMetadataAttribute<TAttribute>();
         }
 
         public static IEnumerable<T> GetCustomAttributes<T>(this MemberInfo element, bool inherit = true) where T : Attribute {

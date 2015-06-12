@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,6 +51,10 @@ namespace WmcSoft.ComponentModel
             }
             value = null;
             return false;
+        }
+
+        public static TAttribute GetMetadataAttribute<TAttribute>(this PropertyDescriptor propertyDescriptor) where TAttribute : Attribute {
+            return propertyDescriptor.Attributes[typeof(TAttribute)] as TAttribute;
         }
     }
 }
