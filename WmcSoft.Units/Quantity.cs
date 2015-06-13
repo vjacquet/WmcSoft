@@ -25,12 +25,14 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Units
 {
     /// <summary>
     /// Represents an amount measured in some Metric
     /// </summary>
+    [DebuggerDisplay("{_amount,nq} {_metric.Symbol,nq}")]
     public struct Quantity : IComparable<Quantity>, IComparable, IEquatable<Quantity>
     {
         #region Fields

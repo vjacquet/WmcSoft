@@ -8,10 +8,18 @@ namespace WmcSoft.Units
     {
         [TestMethod]
         public void FahrenheitAndCelsiusEqualPoint() {
-            Quantity expected = new Quantity(-40, SI.Celsius);
-            Quantity value = new Quantity(-40, ImperialSystemOfUnit.Fahrenheit);
+            var expected = new Quantity(-40, SI.Celsius);
+            var value = new Quantity(-40, ImperialSystemOfUnit.Fahrenheit);
+            var actual = UnitConverter.Convert(value, SI.Celsius);
+            Assert.AreEqual(expected, actual);
+        }
 
-            Assert.AreEqual(expected, UnitConverter.Convert(value, SI.Celsius));
+        [TestMethod]
+        public void ConvertYardToMeter() {
+            var expected = new Quantity(0.9144m, SI.Meter);
+            var value = new Quantity(1, ImperialSystemOfUnit.Yard);
+            var actual = UnitConverter.Convert(value, SI.Meter);
+            Assert.AreEqual(expected,actual);
         }
     }
 }

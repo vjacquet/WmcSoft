@@ -41,14 +41,14 @@ namespace WmcSoft.Units
         public override bool Equals(object obj) {
             if (obj == null)
                 return false;
-            return this.GetType() == obj.GetType();
+            return GetType() == obj.GetType();
         }
 
         public override int GetHashCode() {
-            return this.GetType().GetHashCode();
+            return GetType().GetHashCode();
         }
         public override string ToString() {
-            return this.Symbol;
+            return Symbol;
         }
 
         public override SystemOfUnits SystemOfUnits {
@@ -84,6 +84,7 @@ namespace WmcSoft.Units
     }
 
     #region SIBaseUnit types
+
     public sealed class Meter : SIBaseUnit
     {
         public Meter() {
@@ -122,5 +123,6 @@ namespace WmcSoft.Units
         public Candela() {
         }
     }
+
     #endregion
 }

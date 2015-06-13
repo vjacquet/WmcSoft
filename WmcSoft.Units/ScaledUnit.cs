@@ -45,10 +45,6 @@ namespace WmcSoft.Units
 
         #region Lifecycle
 
-        public ScaledUnit(decimal scaleFactor, Unit reference)
-            : this(null, null, null, scaleFactor, reference) {
-        }
-
         public ScaledUnit(string name, decimal scaleFactor, Unit reference)
             : this(name, null, null, scaleFactor, reference) {
         }
@@ -60,10 +56,9 @@ namespace WmcSoft.Units
         public ScaledUnit(string name, string symbol, string definition, decimal scaleFactor, Unit reference) {
             if (reference == null)
                 throw new ArgumentNullException("reference");
-            if (symbol == null)
-                throw new ArgumentNullException("symbol");
             if (name == null)
                 throw new ArgumentNullException("name");
+            symbol = symbol ?? name;
             if (scaleFactor <= Decimal.Zero)
                 throw new ArgumentException(RM.GetString(RM.InvalidScaleFactorException), "scaleFactor");
 

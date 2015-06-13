@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Units
 {
@@ -32,6 +33,7 @@ namespace WmcSoft.Units
     /// The metric represents a standard of measurement.
     /// </summary>
     /// <remarks>Based on Enterprise Patterns and MDA, isbn:9780321112309</remarks>
+    [DebuggerDisplay("{Name,nq}")]
     public abstract class Metric : IEquatable<Metric>
     {
         /// <summary>

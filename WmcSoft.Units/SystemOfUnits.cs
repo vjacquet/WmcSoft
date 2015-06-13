@@ -25,13 +25,15 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Units
 {
     /// <summary>
     /// Represents a set of related Units defined by a standard such as SI.
     /// </summary>
-    [System.Diagnostics.DebuggerStepThrough]
+    [DebuggerStepThrough]
+    [DebuggerDisplay("{_nameOfSystem,nq}")]
     public abstract class SystemOfUnits
     {
         #region Fields

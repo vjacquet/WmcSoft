@@ -35,9 +35,10 @@ namespace WmcSoft.Units.Conversion
     internal class CrossSystemConversions
     {
         internal static void RegisterImperialToSIConversions() {
-            if (!_isImperialToSIConversionsRegistered && SI.IsInitialized && ImperialSystemOfUnit.IsInitialized) {
-                UnitConverter.RegisterConversion(new FahrenheitToCelsiusConversion());
-                UnitConverter.RegisterConversion(new FahrenheitToKelvinConversion());
+            if (!_isImperialToSIConversionsRegistered) {
+                UnitConverter.RegisterConversion(new FahrenheitToCelsiusConversion(),false);
+                UnitConverter.RegisterConversion(new FahrenheitToKelvinConversion(), false);
+                UnitConverter.RegisterConversion(new StandardConversion(ImperialSystemOfUnit.Yard, SI.Meter, 0.9144m), false);
 
                 _isImperialToSIConversionsRegistered = true;
             }
@@ -45,15 +46,14 @@ namespace WmcSoft.Units.Conversion
         static bool _isImperialToSIConversionsRegistered;
 
         internal static void RegisterUSCustomaryToSIConversions() {
-            if (!isUSCustomaryToSIRegistered && SI.IsInitialized && USCustomarySystemOfUnit.IsInitialized) {
-
+            if (!isUSCustomaryToSIRegistered) {
                 isUSCustomaryToSIRegistered = true;
             }
         }
         static bool isUSCustomaryToSIRegistered;
 
         internal static void RegisterNaturalToSIConversions() {
-            if (!isNaturalToSIConversionsRegistered && SI.IsInitialized && NaturalSystemOfUnit.IsInitialized) {
+            if (!isNaturalToSIConversionsRegistered) {
 
                 isNaturalToSIConversionsRegistered = true;
             }

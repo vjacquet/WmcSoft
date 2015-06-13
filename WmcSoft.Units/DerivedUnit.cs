@@ -34,7 +34,7 @@ namespace WmcSoft.Units
     /// Represents the combination of one or more base units according to 
     /// a specific equation.
     /// </summary>
-    [DebuggerDisplay("{_name ?? Symbol}")]
+    [DebuggerDisplay("{Name ?? Symbol,nq}")]
     public class DerivedUnit : Unit
     {
         #region Fields

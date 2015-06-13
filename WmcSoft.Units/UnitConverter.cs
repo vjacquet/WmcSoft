@@ -62,7 +62,7 @@ namespace WmcSoft.Units
             }
         }
 
-        static void RegisterConversion(UnitConversion conversion, bool throwOnDuplicate) {
+       internal static void RegisterConversion(UnitConversion conversion, bool throwOnDuplicate) {
             lock (syncRoot) {
                 if (unitConversions == null) {
                     unitConversions = new Dictionary<Unit, Hashtable>();

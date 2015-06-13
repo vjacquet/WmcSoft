@@ -34,10 +34,28 @@ namespace WmcSoft.Units
     [System.Diagnostics.DebuggerStepThrough]
     public class SI : SystemOfUnits
     {
+        static readonly SI si;
+        static readonly Unit[] Units;
+        
         static SI() {
             si = new SI();
+
+            Units = new Unit[] {
+                meter,
+                kilogram,
+                second,
+                ampere,
+                kelvin,
+                mole,
+                candela,
+                new KnownDerivedUnit("Celsius", SystemOfUnits.SI, SI.Kelvin),
+            };
+            UnitConverter.RegisterConversion(new Conversion.CelsiusToKelvinConversion());
+
+            Conversion.CrossSystemConversions.RegisterImperialToSIConversions();
+            Conversion.CrossSystemConversions.RegisterUSCustomaryToSIConversions();
+            Conversion.CrossSystemConversions.RegisterNaturalToSIConversions();
         }
-        static SI si;
 
         private SI()
             : base("SI", "BIPM") {
@@ -47,43 +65,12 @@ namespace WmcSoft.Units
             return si;
         }
 
-        static Unit[] units;
         static public Unit GetUnit(KnownSIUnits unit) {
-            if (units == null) {
-                InitializeKnownUnits();
-            }
-            return units[(int)unit];
-        }
-
-        internal static bool IsInitialized {
-            get {
-                return (units != null);
-            }
-        }
-
-        static void InitializeKnownUnits() {
-            lock (si) {
-                if (units == null) {
-                    units = new Unit[8];
-                    units[(int)KnownSIUnits.Meter] = meter;
-                    units[(int)KnownSIUnits.Kilogram] = kilogram;
-                    units[(int)KnownSIUnits.Second] = second;
-                    units[(int)KnownSIUnits.Ampere] = ampere;
-                    units[(int)KnownSIUnits.Kelvin] = kelvin;
-                    units[(int)KnownSIUnits.Mole] = mole;
-                    units[(int)KnownSIUnits.Candela] = candela;
-                    units[(int)KnownSIUnits.Celsius] = new KnownDerivedUnit("Celsius", SystemOfUnits.SI, SI.Kelvin);
-
-                    UnitConverter.RegisterConversion(new Conversion.CelsiusToKelvinConversion());
-
-                    Conversion.CrossSystemConversions.RegisterImperialToSIConversions();
-                    Conversion.CrossSystemConversions.RegisterUSCustomaryToSIConversions();
-                    Conversion.CrossSystemConversions.RegisterNaturalToSIConversions();
-                }
-            }
+            return Units[(int)unit];
         }
 
         #region standard units
+
         public static Meter Meter {
             get { return meter; }
         }
@@ -122,6 +109,7 @@ namespace WmcSoft.Units
         public static Unit Celsius {
             get { return GetUnit(KnownSIUnits.Celsius); }
         }
+
         #endregion
     }
 
@@ -136,4 +124,5 @@ namespace WmcSoft.Units
         Candela,
         Celsius,
     }
+
 }
