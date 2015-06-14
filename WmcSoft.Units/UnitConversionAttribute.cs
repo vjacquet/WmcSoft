@@ -28,48 +28,36 @@ using System;
 
 namespace WmcSoft.Units
 {
-	/// <summary>
-	/// Description résumée de UnitConversionAttribute.
-	/// </summary>
-	public class UnitConversionAttribute : Attribute
-	{
-		protected UnitConversionAttribute()
-		{
-		}
+    /// <summary>
+    /// Description résumée de UnitConversionAttribute.
+    /// </summary>
+    public class UnitConversionAttribute : Attribute
+    {
+        readonly UnitConversion _conversion;
 
-		public UnitConversionAttribute(Type type)
-		{
-			conversion = (UnitConversion)Activator.CreateInstance(type);
-		}
+        protected UnitConversionAttribute(UnitConversion conversion) {
+            _conversion = conversion;
+        }
 
-		public UnitConversionAttribute(string typeName) : this(Type.GetType(typeName))
-		{
-		}
+        public UnitConversionAttribute(Type type) {
+            _conversion = (UnitConversion)Activator.CreateInstance(type);
+        }
 
-		protected UnitConversion conversion;
+        public UnitConversionAttribute(string typeName)
+            : this(Type.GetType(typeName)) {
+        }
 
-		public Unit Source
-		{
-			get
-			{
-				return conversion.Source;
-			}
-		}
 
-		public Unit Target
-		{
-			get
-			{
-				return conversion.Target;
-			}
-		}
+        public Unit Source {
+            get { return _conversion.Source; }
+        }
 
-		public UnitConversion UnitConversion
-		{
-			get
-			{
-				return conversion;
-			}
-		}
-	}
+        public Unit Target {
+            get { return _conversion.Target; }
+        }
+
+        public UnitConversion UnitConversion {
+            get { return _conversion; }
+        }
+    }
 }

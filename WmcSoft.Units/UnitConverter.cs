@@ -41,58 +41,77 @@ namespace WmcSoft.Units
         static object syncRoot = new Object();
         static IDictionary<Unit, Hashtable> unitConversions;
 
+        static UnitConverter() {
+            unitConversions = new Dictionary<Unit, Hashtable>();
+        }
+
         #endregion
 
         public delegate decimal ConvertCallback(decimal value);
 
-        public static void RegisterConversion(UnitConversion conversion) {
-            RegisterConversion(conversion, true);
+        public static bool RegisterConversion(UnitConversion conversion) {
+            return RegisterConversion(conversion, true);
         }
 
-        static void Register(Unit source, Unit target, ConvertCallback convert, bool throwOnDuplicates) {
+        static bool Register(Unit source, Unit target, ConvertCallback convert, bool throwOnDuplicates) {
             Hashtable table;
             if (!unitConversions.TryGetValue(source, out table)) {
                 table = new Hashtable();
                 table[target] = convert;
                 unitConversions[source] = table;
+                return true;
             } else if (!table.ContainsKey(target)) {
                 table[target] = convert;
+                return true;
             } else if (throwOnDuplicates) {
                 throw new ArgumentException(RM.Format(RM.DuplicateConversionException, source, target));
             }
+            return false;
         }
 
-       internal static void RegisterConversion(UnitConversion conversion, bool throwOnDuplicate) {
+        internal static bool RegisterConversion(UnitConversion conversion, bool throwOnDuplicate) {
             lock (syncRoot) {
                 if (unitConversions == null) {
                     unitConversions = new Dictionary<Unit, Hashtable>();
                 }
 
-                Register(conversion.Source, conversion.Target, new ConvertCallback(conversion.Convert), throwOnDuplicate);
-                Register(conversion.Target, conversion.Source, new ConvertCallback(conversion.ConvertBack), throwOnDuplicate);
+                bool registered = Register(conversion.Source, conversion.Target, new ConvertCallback(conversion.Convert), throwOnDuplicate);
+                registered |= Register(conversion.Target, conversion.Source, new ConvertCallback(conversion.ConvertBack), throwOnDuplicate);
+                return registered;
             }
         }
 
-        public static void RegisterUnit(Unit unit) {
-            if (unitConversions == null) {
-                lock (syncRoot) {
-                    if (unitConversions == null) {
-                        unitConversions = new Dictionary<Unit, Hashtable>();
-                    }
+        public static bool RegisterUnit(ScaledUnit scaledUnit) {
+            if (!unitConversions.ContainsKey(scaledUnit)) {
+                var factor = 1m;
+                var source = scaledUnit;
+                while (scaledUnit != null) {
+                    factor *= scaledUnit.ScaleFactor;
+                    RegisterConversion(new ExtrapolatedConversion(source, scaledUnit.Reference, factor), false);
+                    scaledUnit = scaledUnit.Reference as ScaledUnit;
                 }
+
+                return true;
             }
+            return false;
+        }
+
+        public static bool RegisterUnit(Unit unit) {
             if (!unitConversions.ContainsKey(unit)) {
-                var scaledUnit = unit as ScaledUnit;
-                if (scaledUnit != null) {
-                    RegisterConversion(new ExtrapolatedConversion(scaledUnit), false);
-                }
+
+                //if (scaledUnit != null) {
+                //    RegisterConversion(new ExtrapolatedConversion(scaledUnit), false);
+                //}
+                bool registered = false;
                 foreach (object attribute in unit.GetType().GetCustomAttributes(true)) {
                     var conversion = attribute as UnitConversionAttribute;
                     if (conversion != null) {
-                        RegisterConversion(conversion.UnitConversion);
+                        registered |= RegisterConversion(conversion.UnitConversion);
                     }
                 }
+                return registered;
             }
+            return false;
         }
 
         public static Quantity Convert(Quantity quantity, Unit target) {

@@ -40,7 +40,7 @@ namespace WmcSoft.Units
         static ImperialSystemOfUnit() {
             _systemOfUnits = new ImperialSystemOfUnit();
 
-            var inch = new Inch();
+            var inch = new ScaledUnit("inch", "in", 0.0254m, SI.Meter);
             var foot = new ScaledUnit("foot", "ft", 12m, inch);
             var yard = new ScaledUnit("yard", "yd", 3m, foot);
             var chain = new ScaledUnit("chain", "ch", 22m, yard);
@@ -128,17 +128,10 @@ namespace WmcSoft.Units
     }
 
 
-    public sealed class Inch : Unit
+    public sealed class Inch : ScaledUnit
     {
-        public Inch() {
-        }
-
-        public override string Name {
-            get { return "Inch"; }
-        }
-
-        public override string Symbol {
-            get { return "in"; }
+        public Inch()
+            : base("inch", "in", 0.0254m, SI.Meter) {
         }
 
         public override string Definition {

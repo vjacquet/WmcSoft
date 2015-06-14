@@ -30,13 +30,13 @@ namespace WmcSoft.Units
 {
     public class StandardConversionAttribute : UnitConversionAttribute
     {
-        public StandardConversionAttribute(Unit source, Unit target, decimal factor) {
-            conversion = new StandardConversion(source, target, factor);
+        public StandardConversionAttribute(Unit source, Unit target, decimal factor)
+            : base(new StandardConversion(source, target, factor)) {
         }
 
         public decimal ConversionFactor {
             get {
-                return ((StandardConversion)conversion).ConversionFactor;
+                return ((StandardConversion)UnitConversion).ConversionFactor;
             }
         }
     }

@@ -25,12 +25,14 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Units
 {
     /// <summary>
     /// Represents a unit with a different scale of the reference unit.
     /// </summary>
+    [DebuggerDisplay("{Name,nq}")]
     public class ScaledUnit : Unit
     {
         #region Fields
@@ -58,15 +60,16 @@ namespace WmcSoft.Units
                 throw new ArgumentNullException("reference");
             if (name == null)
                 throw new ArgumentNullException("name");
-            symbol = symbol ?? name;
             if (scaleFactor <= Decimal.Zero)
                 throw new ArgumentException(RM.GetString(RM.InvalidScaleFactorException), "scaleFactor");
 
             _reference = reference;
-            this.symbol = symbol;
+            this.symbol = symbol ?? name;
             this.name = name;
             this.definition = definition;
             this.scaleFactor = scaleFactor;
+
+            UnitConverter.RegisterUnit(this);
         }
 
         #endregion
