@@ -96,5 +96,11 @@ namespace WmcSoft
             Assert.AreEqual("b", "b".SurroundWith(null, null));
             Assert.IsNull(n.SurroundWith("a", "c"));
         }
+
+        [TestMethod]
+        public void CheckTruncate() {
+            Assert.AreEqual("abc\u2026", "abcdef".Truncate(4));
+            Assert.AreEqual("abc", "abc".Truncate(4));
+        }
     }
 }

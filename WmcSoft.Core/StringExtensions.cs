@@ -782,7 +782,15 @@ namespace WmcSoft
 
         #region Truncate
 
-        public static string Truncate(this string self, int maxLength, string ellipsis = "…") {
+        /// <summary>
+        /// Shorten the string so that it is not longer than maxLength, the ellipsis string included.
+        /// </summary>
+        /// <param name="self">The string</param>
+        /// <param name="maxLength">The maximum length of the string</param>
+        /// <param name="ellipsis">The substring added at the end of the string when it is longer than the maxLenght.</param>
+        /// <returns>The shorten string when longer than the max length; otherwise, the string.</returns>
+        /// <remarks>The ellipsis may be empty but not null.</remarks>
+        public static string Truncate(this string self, int maxLength, string ellipsis = "\u2026") {
             if (ellipsis == null)
                 throw new ArgumentNullException("ellipsis");
             if (maxLength < ellipsis.Length)
