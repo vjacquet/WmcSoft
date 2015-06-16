@@ -422,18 +422,34 @@ namespace WmcSoft
 
         #region Nullify methods
 
+        /// <summary>
+        /// Returns null if the string contains only whitespace.
+        /// </summary>
+        /// <param name="value">The string.</param>
+        /// <returns>Returns null if the string contains only whitespace; otherwise, the string.</returns>
         public static string NullifyWhiteSpace(this string value) {
             if (String.IsNullOrWhiteSpace(value))
                 return null;
             return value;
         }
 
+        /// <summary>
+        /// Returns null if the string is empty.
+        /// </summary>
+        /// <param name="value">The string.</param>
+        /// <returns>Returns null if the string is empty; otherwise, the string.</returns>
         public static string NullifyEmpty(this string value) {
             if (String.IsNullOrEmpty(value))
                 return null;
             return value;
         }
 
+        /// <summary>
+        /// Returns null if the string verifies a predicate.
+        /// </summary>
+        /// <param name="value">The string.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>Returns null if the string verifies the predicate; otherwise, the string.</returns>
         public static string Nullify(this string value, Predicate<string> predicate) {
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
@@ -719,17 +735,36 @@ namespace WmcSoft
 
         #region Tokenize
 
+        /// <summary>
+        /// Returns the sequence of substrings of this instance using a tokenizer.
+        /// </summary>
+        /// <typeparam name="TTokenizer">The type of tokenizer.</typeparam>
+        /// <param name="self">The strings.</param>
+        /// <param name="tokenizer">The tokenizer.</param>
+        /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize<TTokenizer>(this string self, TTokenizer tokenizer)
-            where TTokenizer : ITokenizer<string> {
+            where TTokenizer : ITokenizer<string, string> {
             if (self == null)
                 return null;
             return tokenizer.Tokenize(self);
         }
 
+        /// <summary>
+        /// Returns the sequence of substrings of this instance that are delimited by a separator.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="separator">The separator.</param>
+        /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, char separator) {
             return self.Tokenize(new CharTokenizer(separator));
         }
 
+        /// <summary>
+        /// Returns the sequence of substrings of this instance that are delimited by a separator from a set.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="separators">The set of separators</param>
+        /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
             if (separators == null || separators.Length == 0)
                 return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
@@ -738,10 +773,21 @@ namespace WmcSoft
             return self.Tokenize(new CharsTokenizer(separators));
         }
 
-        public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
+        /// <summary>
+        /// Returns the sequence of substrings of this instance that are delimited by char for which a predidate returns true.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="isSeparator">The predicate.</param>
+        /// <returns>The sequence of substrings.</returns>
+          public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
             return self.Tokenize(new PredicateTokenizer(isSeparator));
         }
 
+        /// <summary>
+        /// Returns the sequence of substrings of this instance that are delimited by whitespaces.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self) {
             return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
         }

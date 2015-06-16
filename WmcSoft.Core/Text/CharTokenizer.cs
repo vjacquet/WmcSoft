@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Text
 {
-    struct CharTokenizer : ITokenizer<string>
+    struct CharTokenizer : ITokenizer<string, string>
     {
         readonly char _separator;
 

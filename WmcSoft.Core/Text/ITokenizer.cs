@@ -28,8 +28,13 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Text
 {
-    public interface ITokenizer<TToken>
+    /// <summary>
+    /// Defines a generalized type-specific tokenizer.
+    /// </summary>
+    /// <typeparam name="TInput">The type of input.</typeparam>
+    /// <typeparam name="TToken">The type of tokens.</typeparam>
+    public interface ITokenizer<TInput, TToken>
     {
-        IEnumerable<TToken> Tokenize(string value);
+        IEnumerable<TToken> Tokenize(TInput value);
     }
 }

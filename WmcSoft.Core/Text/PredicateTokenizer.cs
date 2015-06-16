@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Text
 {
-    struct PredicateTokenizer : ITokenizer<string>
+    struct PredicateTokenizer : ITokenizer<string, string>
     {
         readonly Predicate<char> _isSeparator;
 
