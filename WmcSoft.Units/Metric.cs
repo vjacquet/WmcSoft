@@ -34,7 +34,7 @@ namespace WmcSoft.Units
     /// </summary>
     /// <remarks>Based on Enterprise Patterns and MDA, isbn:9780321112309</remarks>
     [DebuggerDisplay("{Name,nq}")]
-    public abstract class Metric : IEquatable<Metric>
+    public abstract class Metric : IEquatable<Metric>, IFormattable
     {
         /// <summary>
         /// Returns the localized name of the metric.
@@ -92,6 +92,39 @@ namespace WmcSoft.Units
             if (other == null)
                 return false;
             return (Name == other.Name) && (Symbol == other.Symbol) && (Definition == other.Definition);
+        }
+
+        #endregion
+
+        #region IFormattable Membres
+
+        public override string ToString() {
+            return ToString("G", null);
+        }
+
+        public string ToString(string format) {
+            return ToString(format, null);
+        }
+
+        public virtual string ToString(string format, IFormatProvider formatProvider) {
+            try {
+                switch (format) {
+                case "S":
+                case "s":
+                    return Symbol;
+                case "D":
+                case "d":
+                    return Definition ?? Name;
+                case "g":
+                    return Name.ToLowerInvariant();
+                case "G":
+                default:
+                    return Name;
+                }
+            }
+            catch (FormatException e) {
+                throw new FormatException();//Resources.InvalidFormatMessage.FormatWith(format), e);
+            }
         }
 
         #endregion

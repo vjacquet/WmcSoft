@@ -32,16 +32,16 @@ namespace WmcSoft.Units
     /// <summary>
     /// Represents a unit with a different scale of the reference unit.
     /// </summary>
-    [DebuggerDisplay("{Name,nq}")]
+    [DebuggerDisplay("{_name,nq} = {_scaleFactor,nq} * {_reference.ToString(\"s\"),nq}")]
     public class ScaledUnit : Unit
     {
         #region Fields
 
-        readonly decimal scaleFactor;
+        readonly decimal _scaleFactor;
         readonly Unit _reference;
-        readonly internal protected string definition;
-        readonly internal protected string name;
-        readonly internal protected string symbol;
+        readonly internal protected string _definition;
+        readonly internal protected string _name;
+        readonly internal protected string _symbol;
 
         #endregion
 
@@ -64,10 +64,10 @@ namespace WmcSoft.Units
                 throw new ArgumentException(RM.GetString(RM.InvalidScaleFactorException), "scaleFactor");
 
             _reference = reference;
-            this.symbol = symbol ?? name;
-            this.name = name;
-            this.definition = definition;
-            this.scaleFactor = scaleFactor;
+            this._symbol = symbol ?? name;
+            this._name = name;
+            this._definition = definition;
+            this._scaleFactor = scaleFactor;
 
             UnitConverter.RegisterUnit(this);
         }
@@ -77,7 +77,7 @@ namespace WmcSoft.Units
         #region Properties
 
         public decimal ScaleFactor {
-            get { return scaleFactor; }
+            get { return _scaleFactor; }
         }
 
         public Unit Reference {
@@ -85,15 +85,15 @@ namespace WmcSoft.Units
         }
 
         public override string Definition {
-            get { return definition; }
+            get { return _definition; }
         }
 
         public override string Name {
-            get { return name; }
+            get { return _name; }
         }
 
         public override string Symbol {
-            get { return symbol; }
+            get { return _symbol; }
         }
 
         public override SystemOfUnits SystemOfUnits {
