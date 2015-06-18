@@ -69,7 +69,7 @@ namespace WmcSoft.Units
                     _units[(int)KnownNaturalUnits.PlanckTime] = new KnownDerivedUnit("PlanckTime", SystemOfUnits.Natural, SI.Second);
                     _units[(int)KnownNaturalUnits.PlanckLength] = new KnownDerivedUnit("PlanckLength", SystemOfUnits.Natural, SI.Meter);
                     _units[(int)KnownNaturalUnits.PlanckMass] = new KnownDerivedUnit("PlanckMass", SystemOfUnits.Natural, SI.Kilogram);
-                    _units[(int)KnownNaturalUnits.PlanckCharge] = new KnownDerivedUnit("PlanckCharge", SystemOfUnits.Natural, new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Ampere), new DerivedUnitTerm(SI.Second) });
+                    _units[(int)KnownNaturalUnits.PlanckCharge] = new KnownDerivedUnit("PlanckCharge", SystemOfUnits.Natural, SI.Ampere, SI.Second);
                     _units[(int)KnownNaturalUnits.PlanckTemperature] = new KnownDerivedUnit("PlanckTemperature", SystemOfUnits.Natural, SI.Kelvin);
 
                     Conversion.CrossSystemConversions.RegisterImperialToSIConversions();

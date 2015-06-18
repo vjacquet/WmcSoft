@@ -29,8 +29,9 @@ using System;
 namespace WmcSoft.Units
 {
     /// <summary>
-    /// Description résumée de UnitConversionAttribute.
+    /// Attribute to decorate a type of units with conversion algorithms.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
     public class UnitConversionAttribute : Attribute
     {
         readonly UnitConversion _conversion;
@@ -46,7 +47,6 @@ namespace WmcSoft.Units
         public UnitConversionAttribute(string typeName)
             : this(Type.GetType(typeName)) {
         }
-
 
         public Unit Source {
             get { return _conversion.Source; }

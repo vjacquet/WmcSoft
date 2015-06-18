@@ -87,7 +87,7 @@ namespace WmcSoft.Units
                 var source = scaledUnit;
                 while (scaledUnit != null) {
                     factor *= scaledUnit.ScaleFactor;
-                    RegisterConversion(new ExtrapolatedConversion(source, scaledUnit.Reference, factor), false);
+                    RegisterConversion(new StandardConversion(source, scaledUnit.Reference, factor), false);
                     scaledUnit = scaledUnit.Reference as ScaledUnit;
                 }
 

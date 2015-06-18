@@ -74,7 +74,7 @@ namespace WmcSoft.Units
         }
 
         public DerivedUnit(string name, string symbol, string definition, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms) {
-            if (terms == null)
+            if (terms == null || terms.Length == 0)
                 throw new ArgumentNullException("terms");
             this.name = name;
             _terms = terms;

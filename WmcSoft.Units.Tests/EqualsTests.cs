@@ -8,16 +8,16 @@ namespace WmcSoft.Units
     {
         [TestMethod]
         public void EqualsUnit() {
-            DerivedUnit expected = new DerivedUnit("speed", "km/h", new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Meter), new DerivedUnitTerm(SI.Second, -1) });
-            DerivedUnit actual = new DerivedUnit("speed", "km/h", new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Meter), new DerivedUnitTerm(SI.Second, -1) });
+            var expected = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
+            var actual = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void op_equalityUnit() {
-            DerivedUnit expected = new DerivedUnit("speed", "km/h", new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Meter), new DerivedUnitTerm(SI.Second, -1) });
-            DerivedUnit actual = new DerivedUnit("speed", "km/h", new DerivedUnitTerm[] { new DerivedUnitTerm(SI.Meter), new DerivedUnitTerm(SI.Second, -1) });
+            var expected = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
+            var actual = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
             Assert.IsTrue(expected == actual);
         }
 
