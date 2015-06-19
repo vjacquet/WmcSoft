@@ -26,6 +26,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 
 namespace WmcSoft.Units
@@ -38,12 +39,12 @@ namespace WmcSoft.Units
     {
         #region Fields
 
-        // "-  0123456789"
+        // "-  0123456789", as exponents
         const string sub = "\u207B  \u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
 
-        readonly int _power;
         readonly Unit _unit;
-        string _symbol;
+        readonly int _power;
+        readonly string _symbol;
 
         #endregion
 
@@ -54,6 +55,16 @@ namespace WmcSoft.Units
                 throw new ArgumentNullException("unit");
             _unit = unit;
             _power = power;
+            var symbol = _unit.Symbol ?? "?";
+            if (_power != 1) {
+                var sb = new StringBuilder(_unit.Symbol);
+                foreach (char c in _power.ToString(CultureInfo.InvariantCulture)) {
+                    sb.Append(sub[c - '-']);
+                }
+                _symbol = sb.ToString();
+            } else {
+                _symbol = _unit.Symbol;
+            }
         }
 
         public DerivedUnitTerm(Unit unit)
@@ -72,32 +83,8 @@ namespace WmcSoft.Units
             get { return _unit; }
         }
 
-        public string Name {
-            get { return _unit.Name; }
-        }
-
         public string Symbol {
-            get {
-                if (_symbol == null && _unit.Symbol != null) {
-                   var sb = new StringBuilder(_unit.Symbol);
-                    string power = _power.ToString();
-                    if (_power != 1) {
-                        foreach (char c in power) {
-                            sb.Append(sub[c - '-']);
-                        }
-                    }
-                    _symbol = sb.ToString();
-                }
-                return _symbol;
-            }
-        }
-
-        public string Definition {
-            get { return _unit.Definition; }
-        }
-
-        public SystemOfUnits SystemOfUnits {
-            get { return _unit.SystemOfUnits; }
+            get { return _symbol; }
         }
 
         #endregion
