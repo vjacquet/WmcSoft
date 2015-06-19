@@ -34,7 +34,7 @@ namespace WmcSoft.Units
     internal class KnownScaledUnit : ScaledUnit
     {
         public KnownScaledUnit(KnownScaledUnitPrefix prefix, Unit reference)
-            : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, new Decimal(Math.Pow(10.0, (double)(int)prefix)), reference) {
+            : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, (decimal)Math.Pow(10, (int)prefix), reference) {
         }
     }
 
