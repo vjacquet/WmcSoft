@@ -47,9 +47,6 @@ namespace WmcSoft.Units
         public override int GetHashCode() {
             return GetType().GetHashCode();
         }
-        public override string ToString() {
-            return Symbol;
-        }
 
         public override SystemOfUnits SystemOfUnits {
             get { return SystemOfUnits.SI; }
