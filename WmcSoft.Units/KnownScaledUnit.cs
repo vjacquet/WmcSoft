@@ -31,7 +31,7 @@ namespace WmcSoft.Units
     /// <summary>
     /// Description résumée de KnownScaledUnit.
     /// </summary>
-    internal class KnownScaledUnit : ScaledUnit
+    public class KnownScaledUnit : ScaledUnit
     {
         public KnownScaledUnit(KnownScaledUnitPrefix prefix, Unit reference)
             : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, (decimal)Math.Pow(10, (int)prefix), reference) {

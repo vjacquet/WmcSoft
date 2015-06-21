@@ -84,7 +84,7 @@ namespace WmcSoft.Units
         }
 
         public DerivedUnit(string name, string symbol, Unit unit)
-            : this(name, symbol, null, null, new[] { new DerivedUnitTerm(unit) }) {
+            : this(name, symbol, null, null, new[] { new DerivedUnitTerm(unit, 1) }) {
         }
 
         #endregion

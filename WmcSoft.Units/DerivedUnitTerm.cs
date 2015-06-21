@@ -67,10 +67,6 @@ namespace WmcSoft.Units
             }
         }
 
-        public DerivedUnitTerm(Unit unit)
-            : this(unit, 1) {
-        }
-
         #endregion
 
         #region Properties
