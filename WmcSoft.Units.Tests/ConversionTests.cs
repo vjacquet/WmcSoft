@@ -25,7 +25,7 @@ namespace WmcSoft.Units
         [TestMethod]
         public void ConvertMeterToKilometer() {
             var m = SI.Meter;
-            var km = new KnownScaledUnit(KnownScaledUnitPrefix.Kilo, m);
+            var km = new KnownScaledUnit(SIPrefix.Kilo, m);
             var value = new Quantity(1000, m);
             var expected = new Quantity(1, km);
             var actual = UnitConverter.Convert(value, km);

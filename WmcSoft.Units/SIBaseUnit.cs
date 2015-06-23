@@ -35,7 +35,16 @@ namespace WmcSoft.Units
     [System.Diagnostics.DebuggerStepThrough]
     public class SIBaseUnit : Unit
     {
+        readonly SIPrefix _prefix;
+        readonly string _symbol;
+
         internal SIBaseUnit() {
+            _symbol = RM.GetSymbol(GetType().Name);
+        }
+
+        internal SIBaseUnit(SIPrefix prefix, string symbol) {
+            _prefix = prefix;
+            _symbol = RM.FormatSIPrefixSymbol((int)prefix, symbol);
         }
 
         public override bool Equals(object obj) {
@@ -53,31 +62,16 @@ namespace WmcSoft.Units
         }
 
         public override string Name {
-            get {
-                if (name == null)
-                    name = RM.GetName(GetType().Name);
-                return name;
-            }
+            get { return RM.GetName(GetType().Name); }
         }
-        string name;
 
         public override string Symbol {
-            get {
-                if (symbol == null)
-                    symbol = RM.GetSymbol(GetType().Name);
-                return symbol;
-            }
+            get { return _symbol; }
         }
-        string symbol;
 
         public override string Definition {
-            get {
-                if (definition == null)
-                    definition = RM.GetDefinition(GetType().Name);
-                return definition;
-            }
+            get { return RM.GetDefinition(GetType().Name); }
         }
-        string definition;
     }
 
     #region SIBaseUnit types
@@ -90,7 +84,8 @@ namespace WmcSoft.Units
 
     public sealed class Kilogram : SIBaseUnit
     {
-        public Kilogram() {
+        public Kilogram()
+            : base(SIPrefix.Kilo, "g") {
         }
     }
 

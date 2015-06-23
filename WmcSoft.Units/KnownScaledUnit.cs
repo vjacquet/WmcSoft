@@ -33,12 +33,12 @@ namespace WmcSoft.Units
     /// </summary>
     public class KnownScaledUnit : ScaledUnit
     {
-        public KnownScaledUnit(KnownScaledUnitPrefix prefix, Unit reference)
+        public KnownScaledUnit(SIPrefix prefix, Unit reference)
             : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, (decimal)Math.Pow(10, (int)prefix), reference) {
         }
     }
 
-    public enum KnownScaledUnitPrefix
+    public enum SIPrefix
     {
         Yotta = 24,
         Zetta = 21,
@@ -49,7 +49,8 @@ namespace WmcSoft.Units
         Mega = 6,
         Kilo = 3,
         Hecto = 2,
-        Deka = 1,
+        Deca = 1,
+        None = 0,
         Deci = -1,
         Centi = -2,
         Milli = -3,

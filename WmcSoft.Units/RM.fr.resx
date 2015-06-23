@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="IncompatibleMetricException" xml:space="preserve">
     <value>Les deux objets Quantity doivent être de même Metric.</value>
@@ -135,17 +135,11 @@
   <data name="Kilogram.Name" xml:space="preserve">
     <value>kilogramme</value>
   </data>
-  <data name="Kilogram.Symbol" xml:space="preserve">
-    <value>kg</value>
-  </data>
   <data name="Kilogram.Definition" xml:space="preserve">
     <value>Le kilogramme est l'unité de masse. Il est égal à la masse du prototype international du kilogramme.</value>
   </data>
   <data name="Second.Name" xml:space="preserve">
     <value>seconde</value>
-  </data>
-  <data name="Second.Symbol" xml:space="preserve">
-    <value>s</value>
   </data>
   <data name="Second.Definition" xml:space="preserve">
     <value>La seconde est la durée de 9 192 631 770 périodes de la radiation correspondant à la transition entre les deux niveaux hyperfins de l'état fondamental de l'atome de césium 133 à une température de 0 kelvin.</value>
@@ -153,17 +147,11 @@
   <data name="Ampere.Name" xml:space="preserve">
     <value>ampère</value>
   </data>
-  <data name="Ampere.Symbol" xml:space="preserve">
-    <value>A</value>
-  </data>
   <data name="Ampere.Definition" xml:space="preserve">
     <value>L'ampère est l'intensité d'un courant constant qui, maintenu dans deux conducteurs parallèles, rectilignes, de longueur infinie, de section circulaire négligeable et placés à une distance de un mètre l'un de l'autre dans le vide produirait entre ces conducteurs une force égale à 2.10^-7 newton par mètre de longueur.</value>
   </data>
   <data name="Kelvin.Name" xml:space="preserve">
     <value>kelvin</value>
-  </data>
-  <data name="Kelvin.Symbol" xml:space="preserve">
-    <value>k</value>
   </data>
   <data name="Kelvin.Definition" xml:space="preserve">
     <value>Le kelvin, unité de température thermodynamique, est la fraction 1/273,16 de la température thermodynamique du point triple de l'eau.</value>
@@ -171,23 +159,14 @@
   <data name="Mole.Name" xml:space="preserve">
     <value>mole</value>
   </data>
-  <data name="Mole.Symbol" xml:space="preserve">
-    <value>mol</value>
-  </data>
   <data name="Mole.Definition" xml:space="preserve">
     <value>La mole est la quantité de matière d'un système contenant autant d'entités élémentaires qu'il y a d'atomes dans 0,012 kilogramme de carbone 12.</value>
   </data>
   <data name="Candela.Name" xml:space="preserve">
     <value>candela</value>
   </data>
-  <data name="Candela.Symbol" xml:space="preserve">
-    <value>cd</value>
-  </data>
   <data name="Candela.Definition" xml:space="preserve">
     <value>La candéla est l'intensité lumineuse, dans une direction donnée, d'une source qui émet un rayonnement monochromatique de fréquence 540.10^12 hertz et dont l'intensité énergétique dans cette direction est de 1/683 watt par stéradian. </value>
-  </data>
-  <data name="Meter.Name" xml:space="preserve">
-    <value>mètre</value>
   </data>
   <data name="Meter.Symbol" xml:space="preserve">
     <value>m</value>
