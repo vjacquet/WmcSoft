@@ -25,10 +25,20 @@ namespace WmcSoft.Units
         [TestMethod]
         public void ConvertMeterToKilometer() {
             var m = SI.Meter;
-            var km = new KnownScaledUnit(SIPrefix.Kilo, m);
+            var km = m.WithPrefix(SIPrefix.Kilo);
             var value = new Quantity(1000, m);
             var expected = new Quantity(1, km);
             var actual = UnitConverter.Convert(value, km);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ConvertKilogramToGram() {
+            var kg = SI.Kilogram;
+            var g = kg.WithPrefix(SIPrefix.None);
+            var value = new Quantity(1, kg);
+            var expected = new Quantity(1000, g);
+            var actual = UnitConverter.Convert(value, g);
             Assert.AreEqual(expected, actual);
         }
     }

@@ -180,4 +180,7 @@
   <data name="ManHour.Definition" xml:space="preserve">
     <value>La quantité de travail fournie par une personne en une heure.</value>
   </data>
+  <data name="Gram.Name" xml:space="preserve">
+    <value>gramme</value>
+  </data>
 </root>

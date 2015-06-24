@@ -31,35 +31,14 @@ namespace WmcSoft.Units
     /// <summary>
     /// Description résumée de KnownScaledUnit.
     /// </summary>
-    public class KnownScaledUnit : ScaledUnit
+    internal class SIPrefixedScaledUnit : ScaledUnit
     {
-        public KnownScaledUnit(SIPrefix prefix, Unit reference)
+        internal SIPrefixedScaledUnit(SIPrefix prefix, SIBaseUnit reference)
             : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, (decimal)Math.Pow(10, (int)prefix), reference) {
         }
-    }
 
-    public enum SIPrefix
-    {
-        Yotta = 24,
-        Zetta = 21,
-        Exa = 18,
-        Peta = 15,
-        Tera = 12,
-        Giga = 9,
-        Mega = 6,
-        Kilo = 3,
-        Hecto = 2,
-        Deca = 1,
-        None = 0,
-        Deci = -1,
-        Centi = -2,
-        Milli = -3,
-        Micro = -6,
-        Nano = -9,
-        Pico = -12,
-        Femto = -15,
-        Atto = -18,
-        Zepto = -21,
-        Yocto = -24,
+        internal SIPrefixedScaledUnit(SIPrefix prefix, Kilogram reference)
+            : base(RM.FormatSIPrefixName((int)prefix, RM.GetName("Gram")), RM.FormatSIPrefixSymbol((int)prefix, RM.GetSymbol("Gram")), null, (decimal)Math.Pow(10, (int)prefix - 3), reference) {
+        }
     }
 }

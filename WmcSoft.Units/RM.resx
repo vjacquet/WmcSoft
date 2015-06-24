@@ -366,4 +366,10 @@
   <data name="SIPrefixSymbol.10^0" xml:space="preserve">
     <value />
   </data>
+  <data name="Gram.Name" xml:space="preserve">
+    <value>gram</value>
+  </data>
+  <data name="Gram.Symbol" xml:space="preserve">
+    <value>g</value>
+  </data>
 </root>
