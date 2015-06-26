@@ -51,6 +51,7 @@
     <Compile Include="CodeDom\CodeNullEqualityExpression.cs" />
     <Compile Include="CodeDom\CodeNullInequalityExpression.cs" />
     <Compile Include="CodeDom\CodeThrowNewExceptionStatement.cs" />
+    <Compile Include="Collections\BitArrayExtensions.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DescendingComparer.cs" />
     <Compile Include="Collections\Generic\AnonymousComparer.cs" />
