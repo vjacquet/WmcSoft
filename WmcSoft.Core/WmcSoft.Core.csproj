@@ -172,6 +172,7 @@
     <Compile Include="Reflection\ReflexionExhibition.cs" />
     <Compile Include="Reflection\XmlDocumentation.cs" />
     <Compile Include="Relation.cs" />
+    <Compile Include="ResourceManagerExtensions.cs" />
     <Compile Include="Runtime\ObjectWalker.cs" />
     <Compile Include="Security\Cryptography\UUDecodeTransform.cs" />
     <Compile Include="Security\Cryptography\UUEncodeTransform.cs" />
@@ -226,6 +227,7 @@
   <ItemGroup>
     <None Include="Xml\XPath\ReflectNavigator.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

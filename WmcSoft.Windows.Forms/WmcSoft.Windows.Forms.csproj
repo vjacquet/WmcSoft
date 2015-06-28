@@ -63,6 +63,10 @@
     <Compile Include="Windows\Forms\BindableListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\BlendFill.cs" />
+    <Compile Include="Windows\Forms\BlendStyle.cs" />
+    <Compile Include="Windows\Forms\BorderEdges.cs" />
+    <Compile Include="Windows\Forms\BorderEdgesConverter.cs" />
     <Compile Include="Windows\Forms\BorderPainter.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -97,6 +101,13 @@
     <Compile Include="Windows\Forms\BindingManagerBaseExtensions.cs" />
     <Compile Include="Windows\Forms\DeckLayoutPanel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\Design\BlendFillEditor.cs" />
+    <Compile Include="Windows\Forms\Design\BlendFillEditorUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\Design\BlendFillEditorUI.Designer.cs">
+      <DependentUpon>BlendFillEditorUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\Design\Border3DSideEditor.cs" />
     <Compile Include="Windows\Forms\Design\ChildControlConverter.cs" />
@@ -145,6 +156,7 @@
     <Compile Include="Windows\Forms\PlaceHolder.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\RM.cs" />
     <Compile Include="Windows\Forms\SplashForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +201,13 @@
     <EmbeddedResource Include="Deployment\BackgroundUpdater.resx">
       <DependentUpon>BackgroundUpdater.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\BorderEdgesConverter.cs.resx">
+      <DependentUpon>BorderEdgesConverter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\Design\BlendFillEditorUI.resx">
+      <DependentUpon>BlendFillEditorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\RM.resx" />
     <EmbeddedResource Include="Windows\Forms\UITextEditor.bmp" />
     <EmbeddedResource Include="Windows\Forms\UIService.bmp" />
     <EmbeddedResource Include="Windows\Forms\ExceptionForm.resx" />
