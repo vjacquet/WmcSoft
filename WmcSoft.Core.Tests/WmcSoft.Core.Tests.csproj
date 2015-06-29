@@ -81,6 +81,7 @@
     <Compile Include="RegexExtensionsTests.cs" />
     <Compile Include="Runtime\ObjectWalkerTests.cs" />
     <Compile Include="IO\StreamExtensionsTests.cs" />
+    <Compile Include="Text\EncoderBestFitFallbackTests.cs" />
     <Compile Include="Text\TokenizerTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="ExpectedTests.cs" />
