@@ -10,9 +10,33 @@ namespace WmcSoft.Text
     {
         [TestMethod]
         public void CanFallbackAccents() {
-            var value = "àéèêëïîôùû";
-            var expected = "aeeeeiiouu";
+            var value = "àçéèêëïîôùû";
+            var expected = "aceeeeiiouu";
             var actual = Encoding.ASCII.BestFitTranscode(value);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanFallbackUppercaseAccents() {
+            var value = "ÀÇÉÈÊËÏÎÔÙÛ";
+            var expected = "ACEEEEIIOUU";
+            var actual = Encoding.ASCII.BestFitTranscode(value);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CannotFallbackOelig() {
+            var value = "œ";
+            var expected = "?";
+            var actual = Encoding.ASCII.BestFitTranscode(value);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanSetUnknownChar() {
+            var value = "œ";
+            var expected = "#";
+            var actual = Encoding.ASCII.BestFitTranscode(value, "#");
             Assert.AreEqual(expected, actual);
         }
     }

@@ -34,8 +34,8 @@ namespace WmcSoft.Text
 {
     public static class EncodingExtensions
     {
-        public static string BestFitTranscode(this Encoding encoding, string value) {
-            var fallback = new EncoderBestFitFallback(encoding);
+        public static string BestFitTranscode(this Encoding encoding, string value, string unknown = "?") {
+            var fallback = new EncoderBestFitFallback(encoding, unknown);
             var target = Encoding.GetEncoding(encoding.EncodingName, fallback, new DecoderExceptionFallback());
             return encoding.GetString(Encoding.Convert(Encoding.Unicode, target, Encoding.Unicode.GetBytes(value)));
         }

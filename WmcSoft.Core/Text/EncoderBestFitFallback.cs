@@ -49,12 +49,99 @@ namespace WmcSoft.Text
     /// </summary>
     public class EncoderBestFitFallback : EncoderFallback
     {
-        private Encoding _parentEncoding;
+        #region EncoderBestFitFallbackBuffer class
 
-        public EncoderBestFitFallback(Encoding targetEncoding) {
+        sealed class EncoderBestFitFallbackBuffer : EncoderFallbackBuffer
+        {
+            private readonly Encoding _parentEncoding;
+            private readonly string _unknown;
+
+            private string _fallback = String.Empty;
+            private int _charIndex = 1;
+
+            public EncoderBestFitFallbackBuffer(EncoderBestFitFallback fallback, string unknown) {
+                _parentEncoding = fallback.ParentEncoding;
+                _unknown = unknown;
+            }
+
+            public override bool Fallback(char charUnknown, int index) {
+                // Since both fallback methods require normalizing a string, make a string out of our char
+                var s = new String(charUnknown, 1);
+                return Fallback(s);
+            }
+
+            public override bool Fallback(char charUnknownHigh, char charUnknownLow, int index) {
+                // Since both fallback methods require normalizing a string, make a string out of our chars
+                var s = new String(new char[] { charUnknownHigh, charUnknownLow });
+                return Fallback(s);
+            }
+
+            private bool Fallback(String unknown) {
+                if (_charIndex <= _fallback.Length) {
+                    _charIndex = 1;
+                    _fallback = String.Empty;
+                    throw new ArgumentException("Unexpected recursive fallback", "chars");
+                }
+
+                var s = "";
+                try {
+                    s = unknown.Normalize(NormalizationForm.FormKD);
+                    if (s == unknown)
+                        s = "";
+                }
+                catch (ArgumentException) {
+                    // Allow the string to become a ? fallback
+                }
+
+                _fallback = _parentEncoding.GetString(_parentEncoding.GetBytes(s));
+
+                if ((_fallback.Length == 0) || (_fallback[0] != s[0])) {
+                    _fallback = _unknown;
+                }
+
+                _charIndex = 0;
+                return true;
+            }
+
+            public override char GetNextChar() {
+                if (_charIndex >= _fallback.Length) {
+                    if (_charIndex == _fallback.Length)
+                        _charIndex++;
+                    return '\0';
+                }
+                return _fallback[_charIndex++];
+            }
+
+            public override bool MovePrevious() {
+                if (_charIndex <= _fallback.Length)
+                    _charIndex--;
+                return (_charIndex >= 0 || _charIndex < _fallback.Length);
+            }
+
+            public override int Remaining {
+                get {
+                    if (_charIndex < _fallback.Length)
+                        return _fallback.Length - _charIndex;
+                    return 0;
+                }
+            }
+
+            public override void Reset() {
+                _fallback = "";
+                _charIndex = 1;
+            }
+        }
+
+        #endregion
+
+        private readonly string _unknown;
+        private readonly Encoding _parentEncoding;
+
+        public EncoderBestFitFallback(Encoding targetEncoding, string unknown = "?") {
             _parentEncoding = (Encoding)targetEncoding.Clone();
             _parentEncoding.EncoderFallback = new EncoderReplacementFallback("");
             _parentEncoding.DecoderFallback = new DecoderReplacementFallback("");
+            _unknown = unknown;
         }
 
         public Encoding ParentEncoding {
@@ -66,89 +153,9 @@ namespace WmcSoft.Text
         }
 
         public override EncoderFallbackBuffer CreateFallbackBuffer() {
-            return new EncoderBestFitFallbackBuffer(this);
+            return new EncoderBestFitFallbackBuffer(this, _unknown);
         }
     }
 
-    sealed class EncoderBestFitFallbackBuffer : EncoderFallbackBuffer
-    {
-        private readonly Encoding _parentEncoding;
-
-        private string _fallback = String.Empty;
-        private int _charIndex = 1;
-
-        public EncoderBestFitFallbackBuffer(EncoderBestFitFallback fallback) {
-            _parentEncoding = fallback.ParentEncoding;
-        }
-
-        public override bool Fallback(char charUnknown, int index) {
-            // Since both fallback methods require normalizing a string, make a string out of our char
-            var s = new String(charUnknown, 1);
-            return Fallback(s);
-        }
-
-        public override bool Fallback(char charUnknownHigh, char charUnknownLow, int index) {
-            // Since both fallback methods require normalizing a string, make a string out of our chars
-            var s = new String(new char[] { charUnknownHigh, charUnknownLow });
-            return Fallback(s);
-        }
-
-        private bool Fallback(String unknown) {
-            if (_charIndex <= _fallback.Length) {
-                _charIndex = 1;
-                _fallback = String.Empty;
-                throw new ArgumentException("Unexpected recursive fallback", "chars");
-            }
-
-            var s = "";
-            try {
-                s = unknown.Normalize(NormalizationForm.FormKD);
-                if (s == unknown)
-                    s = "";
-            }
-            catch (ArgumentException) {
-                // Allow the string to become a ? fallback
-            }
-
-            _fallback = _parentEncoding.GetString(_parentEncoding.GetBytes(s));
-
-            if ((_fallback.Length == 0) || (_fallback[0] != s[0])) {
-                _fallback = "?";
-            }
-
-            _charIndex = 0;
-            return true;
-        }
-
-        public override char GetNextChar() {
-            if (_charIndex >= _fallback.Length) {
-                if (_charIndex == _fallback.Length)
-                    _charIndex++;
-                return '\0';
-            }
-
-            return _fallback[_charIndex++];
-        }
-
-        public override bool MovePrevious() {
-            if (_charIndex <= _fallback.Length)
-                _charIndex--;
-            return (_charIndex >= 0 || _charIndex < _fallback.Length);
-        }
-
-        public override int Remaining {
-            get {
-                if (_charIndex < _fallback.Length)
-                    return _fallback.Length - _charIndex;
-                return 0;
-            }
-        }
-
-        public override void Reset() {
-            _fallback = String.Empty;
-            _charIndex = 1;
-        }
-
-    }
 
 }
