@@ -826,6 +826,21 @@ namespace WmcSoft.Collections.Generic
 
         #region ToArray
 
+        public static BitArray ToBitArray<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
+            var traits = new EnumerableTraits<TSource>(source);
+            if (!traits.HasCount)
+                return new BitArray(source.Select(_ => predicate(_)).ToArray());
+
+            var result = new bool[traits.Count];
+            using (var enumerator = source.GetEnumerator()) {
+                int i = 0;
+                while (enumerator.MoveNext()) {
+                    result[i++] = predicate(enumerator.Current);
+                }
+            }
+            return new BitArray(result);
+        }
+
         private static List<TSource> MakeList<TSource>(this IEnumerable<TSource> source) {
             var collection = source as IReadOnlyCollection<TSource>;
             if (collection != null) {

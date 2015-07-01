@@ -98,7 +98,7 @@ namespace WmcSoft.Units
 
         #region IFormattable Membres
 
-        public override string ToString() {
+        public sealed override string ToString() {
             return ToString("G", null);
         }
 
@@ -107,23 +107,18 @@ namespace WmcSoft.Units
         }
 
         public virtual string ToString(string format, IFormatProvider formatProvider) {
-            try {
-                switch (format) {
-                case "S":
-                case "s":
-                    return Symbol;
-                case "D":
-                case "d":
-                    return Definition ?? Name;
-                case "g":
-                    return Name.ToLowerInvariant();
-                case "G":
-                default:
-                    return Name;
-                }
-            }
-            catch (FormatException e) {
-                throw new FormatException();//Resources.InvalidFormatMessage.FormatWith(format), e);
+            switch (format) {
+            case "S":
+            case "s":
+                return Symbol;
+            case "D":
+            case "d":
+                return Definition ?? Name;
+            case "g":
+                return Name.ToLowerInvariant();
+            case "G":
+            default:
+                return Name;
             }
         }
 

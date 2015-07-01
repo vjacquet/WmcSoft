@@ -111,6 +111,55 @@ namespace WmcSoft
 
         #endregion
 
+        #region AsReadOnlyList
+
+        class ReadOnlyListAdapter : IReadOnlyList<char>
+        {
+            private readonly string _value;
+
+            public ReadOnlyListAdapter(string value) {
+                _value = value;
+            }
+
+            #region IReadOnlyList<char> Membres
+
+            public char this[int index] {
+                get { return _value[index]; }
+            }
+
+            #endregion
+
+            #region IReadOnlyCollection<char> Membres
+
+            public int Count {
+                get { return _value.Length; }
+            }
+
+            #endregion
+
+            #region IEnumerable<char> Membres
+
+            public IEnumerator<char> GetEnumerator() {
+                return _value.GetEnumerator();
+            }
+
+            #endregion
+
+            #region IEnumerable Membres
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+
+            #endregion
+        }
+
+        public static IReadOnlyList<char> AsReadOnlyList(this string self) {
+            return new ReadOnlyListAdapter(self);
+        }
+
+        #endregion
+
         #region Case operations
 
         /// <summary>

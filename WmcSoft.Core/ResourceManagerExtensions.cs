@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -25,39 +25,31 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WmcSoft.Units
+namespace WmcSoft
 {
-    /// <summary>
-    /// Attribute to decorate a type of units with conversion algorithms.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
-    public class UnitConversionAttribute : Attribute
+    public static class ResourceManagerExtensions
     {
-        readonly UnitConversion _conversion;
-
-        protected UnitConversionAttribute(UnitConversion conversion) {
-            _conversion = conversion;
+        public static string[] GetStrings(this ResourceManager rm, params string[] names) {
+            var result = new string[names.Length];
+            for (int i = 0; i < names.Length; i++) {
+                result[i] = rm.GetString(names[i]);
+            }
+            return result;
         }
 
-        public UnitConversionAttribute(Type type) {
-            _conversion = (UnitConversion)Activator.CreateInstance(type);
-        }
-
-        public UnitConversionAttribute(string typeName)
-            : this(Type.GetType(typeName)) {
-        }
-
-        public Unit Source {
-            get { return _conversion.Source; }
-        }
-
-        public Unit Target {
-            get { return _conversion.Target; }
-        }
-
-        public UnitConversion UnitConversion {
-            get { return _conversion; }
+        public static string[] GetStrings(this ResourceManager rm, CultureInfo culture, params string[] names) {
+            var result = new string[names.Length];
+            for (int i = 0; i < names.Length; i++) {
+                result[i] = rm.GetString(names[i], culture);
+            }
+            return result;
         }
     }
 }

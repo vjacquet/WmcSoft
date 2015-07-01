@@ -25,39 +25,29 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+using System.Resources;
 
-namespace WmcSoft.Units
+namespace WmcSoft.Windows.Forms
 {
     /// <summary>
-    /// Attribute to decorate a type of units with conversion algorithms.
+    /// Converter for BorderEdges.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
-    public class UnitConversionAttribute : Attribute
+    public class BorderEdgesConverter : TypeConverter
     {
-        readonly UnitConversion _conversion;
-
-        protected UnitConversionAttribute(UnitConversion conversion) {
-            _conversion = conversion;
+        public BorderEdgesConverter() {
         }
 
-        public UnitConversionAttribute(Type type) {
-            _conversion = (UnitConversion)Activator.CreateInstance(type);
+        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes) {
+            var rm = new ResourceManager(typeof(BorderEdgesConverter));
+
+            var collection = TypeDescriptor.GetProperties(typeof(BorderEdges), attributes);
+            var array = rm.GetStrings("All", "Left", "Top", "Right", "Bottom");
+            return collection.Sort(array);
         }
 
-        public UnitConversionAttribute(string typeName)
-            : this(Type.GetType(typeName)) {
-        }
-
-        public Unit Source {
-            get { return _conversion.Source; }
-        }
-
-        public Unit Target {
-            get { return _conversion.Target; }
-        }
-
-        public UnitConversion UnitConversion {
-            get { return _conversion; }
+        public override bool GetPropertiesSupported(ITypeDescriptorContext context) {
+            return true;
         }
     }
 }

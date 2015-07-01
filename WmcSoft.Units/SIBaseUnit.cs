@@ -35,7 +35,10 @@ namespace WmcSoft.Units
     [System.Diagnostics.DebuggerStepThrough]
     public class SIBaseUnit : Unit
     {
+        readonly string _symbol;
+
         internal SIBaseUnit() {
+            _symbol = RM.GetSymbol(GetType().Name);
         }
 
         public override bool Equals(object obj) {
@@ -47,40 +50,28 @@ namespace WmcSoft.Units
         public override int GetHashCode() {
             return GetType().GetHashCode();
         }
-        public override string ToString() {
-            return Symbol;
-        }
 
         public override SystemOfUnits SystemOfUnits {
             get { return SystemOfUnits.SI; }
         }
 
         public override string Name {
-            get {
-                if (name == null)
-                    name = RM.GetName(GetType().Name);
-                return name;
-            }
+            get { return RM.GetName(GetType().Name); }
         }
-        string name;
 
         public override string Symbol {
-            get {
-                if (symbol == null)
-                    symbol = RM.GetSymbol(GetType().Name);
-                return symbol;
-            }
+            get { return _symbol; }
         }
-        string symbol;
 
         public override string Definition {
-            get {
-                if (definition == null)
-                    definition = RM.GetDefinition(GetType().Name);
-                return definition;
-            }
+            get { return RM.GetDefinition(GetType().Name); }
         }
-        string definition;
+
+        public virtual Unit WithPrefix(SIPrefix prefix) {
+            if (prefix == SIPrefix.None)
+                return this;
+            return new SIPrefixedScaledUnit(prefix, this);
+        }
     }
 
     #region SIBaseUnit types
@@ -94,6 +85,12 @@ namespace WmcSoft.Units
     public sealed class Kilogram : SIBaseUnit
     {
         public Kilogram() {
+        }
+
+        public override Unit WithPrefix(SIPrefix prefix) {
+            if (prefix == SIPrefix.Kilo)
+                return this;
+            return new SIPrefixedScaledUnit(prefix, this);
         }
     }
 

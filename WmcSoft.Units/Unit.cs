@@ -56,5 +56,16 @@ namespace WmcSoft.Units
         }
 
         #endregion
+
+        #region Sugar operators
+
+        public static implicit operator DerivedUnitTerm(Unit u) {
+            return new DerivedUnitTerm(u, 1);
+        }
+        public static DerivedUnitTerm operator ^(Unit u, int power) {
+            return new DerivedUnitTerm(u, power);
+        }
+
+        #endregion
     }
 }

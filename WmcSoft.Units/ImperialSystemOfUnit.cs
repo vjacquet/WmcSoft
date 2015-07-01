@@ -127,13 +127,18 @@ namespace WmcSoft.Units
         League,
     }
 
-
-    public sealed class Inch : ScaledUnit
+    [StandardConversion(typeof(Inch), typeof(Meter), 0.0254)]
+    public sealed class Inch : Unit
     {
-        public Inch()
-            : base("inch", "in", 0.0254m, SI.Meter) {
+        public Inch() {
         }
 
+        public override string Name {
+            get { return "inch"; }
+        }
+        public override string Symbol {
+            get { return "in"; }
+        }
         public override string Definition {
             get { return "1/12 of a foot"; }
         }

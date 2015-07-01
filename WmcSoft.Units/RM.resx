@@ -1,288 +1,375 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="ResMimeType">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="Version">
-		<value>1.0.0.0</value>
-	</resheader>
-	<resheader name="Reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="Writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="IncompatibleMetricException">
-		<value>Both Quantity objets must be in the same Metric.</value>
-	</data>
-	<data name="InvalidScaleFactorException">
-		<value>The scale factor must be strictly positive.</value>
-	</data>
-	<data name="EquivalentUnitException">
-		<value>The scale factor must not be 1.</value>
-	</data>
-	<data name="DuplicateConversionException">
-		<value>A conversion from "{0}" to "{1}" already exists.</value>
-	</data>
-	<data name="NotAUnitException">
-		<value>The Metric of the quantity is not a Unit.</value>
-	</data>
-	<data name="Kilogram.Name">
-		<value>kilogram</value>
-	</data>
-	<data name="Kilogram.Symbol">
-		<value>kg</value>
-	</data>
-	<data name="Kilogram.Definition">
-		<value>The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.</value>
-	</data>
-	<data name="Second.Name">
-		<value>second</value>
-	</data>
-	<data name="Second.Symbol">
-		<value>s</value>
-	</data>
-	<data name="Second.Definition">
-		<value>The second is the duration of 9,192,631,770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of cesium 133 atom.</value>
-	</data>
-	<data name="Ampere.Name">
-		<value>ampere</value>
-	</data>
-	<data name="Ampere.Symbol">
-		<value>A</value>
-	</data>
-	<data name="Ampere.Definition">
-		<value>The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligeable cross-section, and placed 1 meter appart in vacuum, would produce between these two conductors a force equal to 2 x 10^-7 newton per meter of length.</value>
-	</data>
-	<data name="Kelvin.Name">
-		<value>kelvin</value>
-	</data>
-	<data name="Kelvin.Symbol">
-		<value>k</value>
-	</data>
-	<data name="Kelvin.Definition">
-		<value>The kelvin, unit of thermodynamic temperature, is the fraction 1/273.16 of the thermodynamic temperature of the triple point of water.</value>
-	</data>
-	<data name="Mole.Name">
-		<value>mole</value>
-	</data>
-	<data name="Mole.Symbol">
-		<value>mol</value>
-	</data>
-	<data name="Mole.Definition">
-		<value>The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12.</value>
-	</data>
-	<data name="Candela.Name">
-		<value>candela</value>
-	</data>
-	<data name="Candela.Symbol">
-		<value>cd</value>
-	</data>
-	<data name="Candela.Definition">
-		<value>The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540x10^12 hertz and that has a radiant intensity in that direction of 1/683 watt pre steradian.</value>
-	</data>
-	<data name="Meter.Name">
-		<value>meter</value>
-	</data>
-	<data name="Meter.Symbol">
-		<value>m</value>
-	</data>
-	<data name="Meter.Definition">
-		<value>The meter is the length of the path travelled by light in vacuum during a time interval of 1/299792458 of a second.</value>
-	</data>
-	<data name="ManHour.Name">
-		<value>man hour</value>
-	</data>
-	<data name="ManHour.Definition">
-		<value>The amount of work corresponding to one person working for one hour.</value>
-	</data>
-	<data name="Fahrenheit.Name">
-		<value>Fahrenheit</value>
-	</data>
-	<data name="Fahrenheit.Symbol">
-		<value>°F</value>
-	</data>
-	<data name="Celsius.Name">
-		<value>Celsius</value>
-	</data>
-	<data name="Celsius.Symbol">
-		<value>°C</value>
-	</data>
-	<data name="PlanckTime.Name">
-		<value>Planck Time</value>
-	</data>
-	<data name="PlanckTime.Symbol">
-		<value>tp</value>
-	</data>
-	<data name="PlanckLength.Name">
-		<value>Planck Length</value>
-	</data>
-	<data name="PlanckLength.Symbol">
-		<value>lp</value>
-	</data>
-	<data name="PlanckMass.Name">
-		<value>Planck Mass</value>
-	</data>
-	<data name="PlanckMass.Symbol">
-		<value>mp</value>
-	</data>
-	<data name="PlanckCharge.Name">
-		<value>Planck Charge</value>
-	</data>
-	<data name="PlanckCharge.Symbol">
-		<value>qp</value>
-	</data>
-	<data name="PlanckTemperature.Name">
-		<value>Planck Temperature</value>
-	</data>
-	<data name="PlanckTemperature.Symbol">
-		<value>Tp</value>
-	</data>
-	<data name="SIPrefix.10^24">
-		<value>yotta</value>
-	</data>
-	<data name="SIPrefixSymbol.10^24">
-		<value>Y</value>
-	</data>
-	<data name="SIPrefix.10^21">
-		<value>zetta</value>
-	</data>
-	<data name="SIPrefixSymbol.10^21">
-		<value>Z</value>
-	</data>
-	<data name="SIPrefix.10^18">
-		<value>exa</value>
-	</data>
-	<data name="SIPrefixSymbol.10^18">
-		<value>E</value>
-	</data>
-	<data name="SIPrefix.10^15">
-		<value>peta</value>
-	</data>
-	<data name="SIPrefixSymbol.10^15">
-		<value>P</value>
-	</data>
-	<data name="SIPrefix.10^12">
-		<value>tera</value>
-	</data>
-	<data name="SIPrefixSymbol.10^12">
-		<value>T</value>
-	</data>
-	<data name="SIPrefix.10^9">
-		<value>giga</value>
-	</data>
-	<data name="SIPrefixSymbol.10^9">
-		<value>G</value>
-	</data>
-	<data name="SIPrefix.10^6">
-		<value>mega</value>
-	</data>
-	<data name="SIPrefixSymbol.10^6">
-		<value>M</value>
-	</data>
-	<data name="SIPrefix.10^3">
-		<value>kilo</value>
-	</data>
-	<data name="SIPrefixSymbol.10^3">
-		<value>k</value>
-	</data>
-	<data name="SIPrefix.10^2">
-		<value>hecto</value>
-	</data>
-	<data name="SIPrefixSymbol.10^2">
-		<value>h</value>
-	</data>
-	<data name="SIPrefix.10^1">
-		<value>deca</value>
-	</data>
-	<data name="SIPrefixSymbol.10^1">
-		<value>da</value>
-	</data>
-	<data name="SIPrefix.10^-1">
-		<value>deci</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-1">
-		<value>d</value>
-	</data>
-	<data name="SIPrefix.10^-2">
-		<value>centi</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-2">
-		<value>c</value>
-	</data>
-	<data name="SIPrefix.10^-3">
-		<value>milli</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-3">
-		<value>m</value>
-	</data>
-	<data name="SIPrefix.10^-6">
-		<value>micro</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-6">
-		<value>μ</value>
-	</data>
-	<data name="SIPrefix.10^-9">
-		<value>nano</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-9">
-		<value>n</value>
-	</data>
-	<data name="SIPrefix.10^-12">
-		<value>pico</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-12">
-		<value>p</value>
-	</data>
-	<data name="SIPrefix.10^-15">
-		<value>femto</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-15">
-		<value>f</value>
-	</data>
-	<data name="SIPrefix.10^-18">
-		<value>atto</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-18">
-		<value>a</value>
-	</data>
-	<data name="SIPrefix.10^-21">
-		<value>zepto</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-21">
-		<value>z</value>
-	</data>
-	<data name="SIPrefix.10^-24">
-		<value>yocto</value>
-	</data>
-	<data name="SIPrefixSymbol.10^-24">
-		<value>y</value>
-	</data>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IncompatibleMetricException" xml:space="preserve">
+    <value>Both Quantity objets must be in the same Metric.</value>
+  </data>
+  <data name="InvalidScaleFactorException" xml:space="preserve">
+    <value>The scale factor must be strictly positive.</value>
+  </data>
+  <data name="EquivalentUnitException" xml:space="preserve">
+    <value>The scale factor must not be 1.</value>
+  </data>
+  <data name="DuplicateConversionException" xml:space="preserve">
+    <value>A conversion from "{0}" to "{1}" already exists.</value>
+  </data>
+  <data name="NotAUnitException" xml:space="preserve">
+    <value>The Metric of the quantity is not a Unit.</value>
+  </data>
+  <data name="Kilogram.Name" xml:space="preserve">
+    <value>kilogram</value>
+  </data>
+  <data name="Kilogram.Symbol" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="Kilogram.Definition" xml:space="preserve">
+    <value>The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.</value>
+  </data>
+  <data name="Second.Name" xml:space="preserve">
+    <value>second</value>
+  </data>
+  <data name="Second.Symbol" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Second.Definition" xml:space="preserve">
+    <value>The second is the duration of 9,192,631,770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of cesium 133 atom.</value>
+  </data>
+  <data name="Ampere.Name" xml:space="preserve">
+    <value>ampere</value>
+  </data>
+  <data name="Ampere.Symbol" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Ampere.Definition" xml:space="preserve">
+    <value>The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligeable cross-section, and placed 1 meter appart in vacuum, would produce between these two conductors a force equal to 2 x 10^-7 newton per meter of length.</value>
+  </data>
+  <data name="Kelvin.Name" xml:space="preserve">
+    <value>kelvin</value>
+  </data>
+  <data name="Kelvin.Symbol" xml:space="preserve">
+    <value>K</value>
+  </data>
+  <data name="Kelvin.Definition" xml:space="preserve">
+    <value>The kelvin, unit of thermodynamic temperature, is the fraction 1/273.16 of the thermodynamic temperature of the triple point of water.</value>
+  </data>
+  <data name="Mole.Name" xml:space="preserve">
+    <value>mole</value>
+  </data>
+  <data name="Mole.Symbol" xml:space="preserve">
+    <value>mol</value>
+  </data>
+  <data name="Mole.Definition" xml:space="preserve">
+    <value>The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12.</value>
+  </data>
+  <data name="Candela.Name" xml:space="preserve">
+    <value>candela</value>
+  </data>
+  <data name="Candela.Symbol" xml:space="preserve">
+    <value>cd</value>
+  </data>
+  <data name="Candela.Definition" xml:space="preserve">
+    <value>The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540x10^12 hertz and that has a radiant intensity in that direction of 1/683 watt pre steradian.</value>
+  </data>
+  <data name="Meter.Name" xml:space="preserve">
+    <value>meter</value>
+  </data>
+  <data name="Meter.Symbol" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="Meter.Definition" xml:space="preserve">
+    <value>The meter is the length of the path travelled by light in vacuum during a time interval of 1/299792458 of a second.</value>
+  </data>
+  <data name="ManHour.Name" xml:space="preserve">
+    <value>man hour</value>
+  </data>
+  <data name="ManHour.Definition" xml:space="preserve">
+    <value>The amount of work corresponding to one person working for one hour.</value>
+  </data>
+  <data name="Fahrenheit.Name" xml:space="preserve">
+    <value>Fahrenheit</value>
+  </data>
+  <data name="Fahrenheit.Symbol" xml:space="preserve">
+    <value>°F</value>
+  </data>
+  <data name="Celsius.Name" xml:space="preserve">
+    <value>Celsius</value>
+  </data>
+  <data name="Celsius.Symbol" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="PlanckTime.Name" xml:space="preserve">
+    <value>Planck Time</value>
+  </data>
+  <data name="PlanckTime.Symbol" xml:space="preserve">
+    <value>tp</value>
+  </data>
+  <data name="PlanckLength.Name" xml:space="preserve">
+    <value>Planck Length</value>
+  </data>
+  <data name="PlanckLength.Symbol" xml:space="preserve">
+    <value>lp</value>
+  </data>
+  <data name="PlanckMass.Name" xml:space="preserve">
+    <value>Planck Mass</value>
+  </data>
+  <data name="PlanckMass.Symbol" xml:space="preserve">
+    <value>mp</value>
+  </data>
+  <data name="PlanckCharge.Name" xml:space="preserve">
+    <value>Planck Charge</value>
+  </data>
+  <data name="PlanckCharge.Symbol" xml:space="preserve">
+    <value>qp</value>
+  </data>
+  <data name="PlanckTemperature.Name" xml:space="preserve">
+    <value>Planck Temperature</value>
+  </data>
+  <data name="PlanckTemperature.Symbol" xml:space="preserve">
+    <value>Tp</value>
+  </data>
+  <data name="SIPrefix.10^24" xml:space="preserve">
+    <value>yotta</value>
+  </data>
+  <data name="SIPrefixSymbol.10^24" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="SIPrefix.10^21" xml:space="preserve">
+    <value>zetta</value>
+  </data>
+  <data name="SIPrefixSymbol.10^21" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="SIPrefix.10^18" xml:space="preserve">
+    <value>exa</value>
+  </data>
+  <data name="SIPrefixSymbol.10^18" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="SIPrefix.10^15" xml:space="preserve">
+    <value>peta</value>
+  </data>
+  <data name="SIPrefixSymbol.10^15" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="SIPrefix.10^12" xml:space="preserve">
+    <value>tera</value>
+  </data>
+  <data name="SIPrefixSymbol.10^12" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="SIPrefix.10^9" xml:space="preserve">
+    <value>giga</value>
+  </data>
+  <data name="SIPrefixSymbol.10^9" xml:space="preserve">
+    <value>G</value>
+  </data>
+  <data name="SIPrefix.10^6" xml:space="preserve">
+    <value>mega</value>
+  </data>
+  <data name="SIPrefixSymbol.10^6" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="SIPrefix.10^3" xml:space="preserve">
+    <value>kilo</value>
+  </data>
+  <data name="SIPrefixSymbol.10^3" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="SIPrefix.10^2" xml:space="preserve">
+    <value>hecto</value>
+  </data>
+  <data name="SIPrefixSymbol.10^2" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="SIPrefix.10^1" xml:space="preserve">
+    <value>deca</value>
+  </data>
+  <data name="SIPrefixSymbol.10^1" xml:space="preserve">
+    <value>da</value>
+  </data>
+  <data name="SIPrefix.10^-1" xml:space="preserve">
+    <value>deci</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-1" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="SIPrefix.10^-2" xml:space="preserve">
+    <value>centi</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-2" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="SIPrefix.10^-3" xml:space="preserve">
+    <value>milli</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-3" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="SIPrefix.10^-6" xml:space="preserve">
+    <value>micro</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-6" xml:space="preserve">
+    <value>μ</value>
+  </data>
+  <data name="SIPrefix.10^-9" xml:space="preserve">
+    <value>nano</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-9" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="SIPrefix.10^-12" xml:space="preserve">
+    <value>pico</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-12" xml:space="preserve">
+    <value>p</value>
+  </data>
+  <data name="SIPrefix.10^-15" xml:space="preserve">
+    <value>femto</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-15" xml:space="preserve">
+    <value>f</value>
+  </data>
+  <data name="SIPrefix.10^-18" xml:space="preserve">
+    <value>atto</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-18" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="SIPrefix.10^-21" xml:space="preserve">
+    <value>zepto</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-21" xml:space="preserve">
+    <value>z</value>
+  </data>
+  <data name="SIPrefix.10^-24" xml:space="preserve">
+    <value>yocto</value>
+  </data>
+  <data name="SIPrefixSymbol.10^-24" xml:space="preserve">
+    <value>y</value>
+  </data>
+  <data name="SIPrefixSymbol.10^0" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Gram.Name" xml:space="preserve">
+    <value>gram</value>
+  </data>
+  <data name="Gram.Symbol" xml:space="preserve">
+    <value>g</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -112,75 +112,24 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IncompatibleMetricException" xml:space="preserve">
-    <value>Les deux objets Quantity doivent être de même Metric.</value>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
   </data>
-  <data name="InvalidScaleFactorException" xml:space="preserve">
-    <value>Le facteur d'échelle doit être strictement positif.</value>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bottom</value>
   </data>
-  <data name="EquivalentUnitException" xml:space="preserve">
-    <value>Le facteur d'échelle doit être différent de 1.</value>
+  <data name="Left" xml:space="preserve">
+    <value>Left</value>
   </data>
-  <data name="DuplicateConversionException" xml:space="preserve">
-    <value>Une conversion de "{0}" en "{1}" existe déjà.</value>
+  <data name="Right" xml:space="preserve">
+    <value>Right</value>
   </data>
-  <data name="NotAUnitException" xml:space="preserve">
-    <value>La propriété Metric de la quantité n'est pas de type Unit.</value>
-  </data>
-  <data name="Kilogram.Name" xml:space="preserve">
-    <value>kilogramme</value>
-  </data>
-  <data name="Kilogram.Definition" xml:space="preserve">
-    <value>Le kilogramme est l'unité de masse. Il est égal à la masse du prototype international du kilogramme.</value>
-  </data>
-  <data name="Second.Name" xml:space="preserve">
-    <value>seconde</value>
-  </data>
-  <data name="Second.Definition" xml:space="preserve">
-    <value>La seconde est la durée de 9 192 631 770 périodes de la radiation correspondant à la transition entre les deux niveaux hyperfins de l'état fondamental de l'atome de césium 133 à une température de 0 kelvin.</value>
-  </data>
-  <data name="Ampere.Name" xml:space="preserve">
-    <value>ampère</value>
-  </data>
-  <data name="Ampere.Definition" xml:space="preserve">
-    <value>L'ampère est l'intensité d'un courant constant qui, maintenu dans deux conducteurs parallèles, rectilignes, de longueur infinie, de section circulaire négligeable et placés à une distance de un mètre l'un de l'autre dans le vide produirait entre ces conducteurs une force égale à 2.10^-7 newton par mètre de longueur.</value>
-  </data>
-  <data name="Kelvin.Name" xml:space="preserve">
-    <value>kelvin</value>
-  </data>
-  <data name="Kelvin.Definition" xml:space="preserve">
-    <value>Le kelvin, unité de température thermodynamique, est la fraction 1/273,16 de la température thermodynamique du point triple de l'eau.</value>
-  </data>
-  <data name="Mole.Name" xml:space="preserve">
-    <value>mole</value>
-  </data>
-  <data name="Mole.Definition" xml:space="preserve">
-    <value>La mole est la quantité de matière d'un système contenant autant d'entités élémentaires qu'il y a d'atomes dans 0,012 kilogramme de carbone 12.</value>
-  </data>
-  <data name="Candela.Name" xml:space="preserve">
-    <value>candela</value>
-  </data>
-  <data name="Candela.Definition" xml:space="preserve">
-    <value>La candéla est l'intensité lumineuse, dans une direction donnée, d'une source qui émet un rayonnement monochromatique de fréquence 540.10^12 hertz et dont l'intensité énergétique dans cette direction est de 1/683 watt par stéradian. </value>
-  </data>
-  <data name="Meter.Symbol" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="Meter.Definition" xml:space="preserve">
-    <value>Le mètre est la longueur du trajet parcouru dans le vide par la lumière pendant une durée de 1/299 792 458 de seconde.</value>
-  </data>
-  <data name="ManHour.Name" xml:space="preserve">
-    <value>heure-homme</value>
-  </data>
-  <data name="ManHour.Definition" xml:space="preserve">
-    <value>La quantité de travail fournie par une personne en une heure.</value>
-  </data>
-  <data name="Gram.Name" xml:space="preserve">
-    <value>gramme</value>
+  <data name="Top" xml:space="preserve">
+    <value>Top</value>
   </data>
 </root>

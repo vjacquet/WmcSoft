@@ -33,12 +33,8 @@ namespace WmcSoft.Units
     /// </summary>
     internal sealed class KnownDerivedUnit : DerivedUnit
     {
-        public KnownDerivedUnit(string name, SystemOfUnits systemOfUnits, DerivedUnitTerm[] terms)
+        public KnownDerivedUnit(string name, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms)
             : base(name, systemOfUnits, terms) {
-        }
-
-        public KnownDerivedUnit(string name, SystemOfUnits systemOfUnits, Unit unit)
-            : this(name, systemOfUnits, new DerivedUnitTerm[] { new DerivedUnitTerm(unit) }) {
         }
 
         public override string Name {

@@ -19,7 +19,27 @@ namespace WmcSoft.Units
             var expected = new Quantity(0.9144m, SI.Meter);
             var value = new Quantity(1, ImperialSystemOfUnit.Yard);
             var actual = UnitConverter.Convert(value, SI.Meter);
-            Assert.AreEqual(expected,actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ConvertMeterToKilometer() {
+            var m = SI.Meter;
+            var km = m.WithPrefix(SIPrefix.Kilo);
+            var value = new Quantity(1000, m);
+            var expected = new Quantity(1, km);
+            var actual = UnitConverter.Convert(value, km);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ConvertKilogramToGram() {
+            var kg = SI.Kilogram;
+            var g = kg.WithPrefix(SIPrefix.None);
+            var value = new Quantity(1, kg);
+            var expected = new Quantity(1000, g);
+            var actual = UnitConverter.Convert(value, g);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

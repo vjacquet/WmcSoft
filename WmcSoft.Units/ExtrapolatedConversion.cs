@@ -33,10 +33,6 @@ namespace WmcSoft.Units
 	/// </summary>
 	internal class ExtrapolatedConversion : StandardConversion
 	{
-		public ExtrapolatedConversion(Unit source, Unit target, decimal factor) : base(source, target, factor)
-		{
-		}
-
 		public ExtrapolatedConversion(ScaledUnit scaleUnit) : base(scaleUnit, scaleUnit.Reference, scaleUnit.ScaleFactor)
 		{
 		}

@@ -30,8 +30,8 @@ namespace WmcSoft.Units
 {
     public class StandardConversionAttribute : UnitConversionAttribute
     {
-        public StandardConversionAttribute(Unit source, Unit target, decimal factor)
-            : base(new StandardConversion(source, target, factor)) {
+        public StandardConversionAttribute(Type source, Type target, double factor)
+            : base(new StandardConversion((Unit)Activator.CreateInstance(source), (Unit)Activator.CreateInstance(target), (decimal)factor)) {
         }
 
         public decimal ConversionFactor {
