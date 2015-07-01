@@ -83,7 +83,8 @@ namespace WmcSoft.Collections
         /// <param name="j">The item at the <paramref name="j"/> index.</param>
         /// <returns>The list</returns>
         /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
-        public static IList SwapItems(this IList list, int i, int j) {
+        public static TList SwapItems<TList>(this TList list, int i, int j)
+            where TList : IList {
             object temp = list[i];
             list[i] = list[j];
             list[j] = temp;
@@ -125,7 +126,8 @@ namespace WmcSoft.Collections
         /// <param name="items">The items to add to the list.</param>
         /// <returns>The list.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static IList AddRange(this IList list, IEnumerable items) {
+        public static TList AddRange<TList>(this TList list, IEnumerable items)
+          where TList : IList {
             if (list == null)
                 throw new ArgumentNullException("list");
 
@@ -154,31 +156,31 @@ namespace WmcSoft.Collections
         /// <summary>
         /// Remove a range of items from a list. 
         /// </summary>
-        /// <param name="self">The list to remove items from.</param>
+        /// <param name="source">The list to remove items from.</param>
         /// <param name="items">The items to remove from the list.</param>
         /// <returns>The count of items removed from the collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static int RemoveRange(this IList self, IEnumerable items) {
-            if (self == null)
-                throw new ArgumentNullException("self");
+        public static int RemoveRange(this IList source, IEnumerable items) {
+            if (source == null)
+                throw new ArgumentNullException("source");
 
             if (items == null)
                 return 0;
 
-            if (self.IsSynchronized) {
-                lock (self.SyncRoot) {
-                    var count = self.Count;
+            if (source.IsSynchronized) {
+                lock (source.SyncRoot) {
+                    var count = source.Count;
                     foreach (var each in items) {
-                        self.Remove(each);
+                        source.Remove(each);
                     }
-                    return count - self.Count;
+                    return count - source.Count;
                 }
             } else {
-                var count = self.Count;
+                var count = source.Count;
                 foreach (var each in items) {
-                    self.Remove(each);
+                    source.Remove(each);
                 }
-                return count - self.Count;
+                return count - source.Count;
             }
         }
 
@@ -186,9 +188,17 @@ namespace WmcSoft.Collections
 
         #region ToArray
 
-        public static object[] ToArray(this IList collection) {
-            var items = new object[collection.Count];
-            collection.CopyTo(items, 0);
+        /// <summary>
+        /// Converts a list to an array.
+        /// </summary>
+        /// <param name="source">The list</param>
+        /// <returns>An array of objets containing all the items in the collection.</returns>
+        public static object[] ToArray(this IList source) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            var items = new object[source.Count];
+            source.CopyTo(items, 0);
             return items;
         }
 
@@ -196,6 +206,11 @@ namespace WmcSoft.Collections
 
         #region ReplaceAll
 
+        /// <summary>
+        /// Removes all existing items and adds the given items.
+        /// </summary>
+        /// <param name="list">The list</param>
+        /// <param name="items">The items to add</param>
         public static void ReplaceAll(this IList list, IEnumerable items) {
             if (list == null)
                 throw new ArgumentNullException("list");
