@@ -144,6 +144,7 @@
     <Compile Include="IO\TempFile.cs" />
     <Compile Include="IO\TextReaderExtensions.cs" />
     <Compile Include="IO\TextWriterExtensions.cs" />
+    <Compile Include="Linq\Expressions\Dynamic.cs" />
     <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="Net\DownloadBatch.cs" />
     <Compile Include="Net\DownloadSource.cs" />
@@ -223,6 +224,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Linq\Expressions\DynamicDiagram.cd" />
     <None Include="Xml\XPath\ReflectNavigator.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

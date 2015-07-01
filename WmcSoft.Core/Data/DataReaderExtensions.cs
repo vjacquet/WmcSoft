@@ -53,5 +53,4 @@ namespace WmcSoft.Data
 
         #endregion
     }
-
 }
