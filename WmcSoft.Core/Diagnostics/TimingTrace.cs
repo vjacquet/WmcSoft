@@ -32,7 +32,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Traces the time ellapsed in a block when leaving it.
     /// </summary>
-    /// <exexample>
+    /// <example>
     /// using(new TimingTrace("Description of the operation")) {
     ///     // ...
     /// }

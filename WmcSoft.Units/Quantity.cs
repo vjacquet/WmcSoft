@@ -280,7 +280,8 @@ namespace WmcSoft.Units
     /// Represents an amount measured in some Metric. Strongly typed version.
     /// </summary>
     /// <typeparam name="M">The metric</typeparam>
-    public struct Quantity<M> : IComparable<Quantity<M>>, IComparable, IEquatable<Quantity<M>> where M : Metric
+    public struct Quantity<M> : IComparable<Quantity<M>>, IComparable, IEquatable<Quantity<M>>
+        where M : Metric
     {
         #region Fields
 

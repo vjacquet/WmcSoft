@@ -35,6 +35,9 @@ using WmcSoft.Net.Mail;
 
 namespace WmcSoft.Configuration
 {
+    /// <summary>
+    /// Represents a policy to create MailMessage based on the configuration.
+    /// </summary>
     [DebuggerDisplay("{Name,nq}")]
     public class MailPolicy : ConfigurationElement
     {

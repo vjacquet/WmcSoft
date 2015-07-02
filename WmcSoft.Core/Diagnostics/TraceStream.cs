@@ -30,9 +30,13 @@ using System.IO;
 
 namespace WmcSoft.Diagnostics
 {
+    /// <summary>
+    /// Decorates a stream to trace the calls on methods to a specified trace source.
+    /// </summary>
+    /// <remarks>Trace are done at the TraceEventType.Information level.</remarks>
     public class TraceStream : Stream
     {
-       #region Private fields
+        #region Private fields
 
         private readonly Stream _stream;
         private readonly TraceSource _traceSource;
@@ -45,7 +49,7 @@ namespace WmcSoft.Diagnostics
         }
 
         public TraceStream(Stream stream, TraceSource traceSource) {
-            if (stream == null) 
+            if (stream == null)
                 throw new ArgumentNullException("stream");
             if (traceSource == null)
                 throw new ArgumentNullException("traceSource");

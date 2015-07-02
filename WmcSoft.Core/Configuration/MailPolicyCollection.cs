@@ -32,6 +32,9 @@ using System.Configuration;
 
 namespace WmcSoft.Configuration
 {
+    /// <summary>
+    /// Represents a collection of mail policies.
+    /// </summary>
     [ConfigurationCollection(typeof(MailPolicy), CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
     public class MailPolicyCollection : ConfigurationElementCollection<MailPolicy>
     {

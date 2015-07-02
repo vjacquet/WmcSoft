@@ -63,6 +63,7 @@ namespace WmcSoft.Diagnostics
                 return exception.DoCrawlData(converter);
             return exception.DoCrawlUniqueData(converter);
         }
+
         public static IEnumerable<DictionaryEntry> CrawlData<K>(this Exception exception, bool keepDuplicates = false)
             where K : IDataKeyConverter {
             if (keepDuplicates)
@@ -78,6 +79,12 @@ namespace WmcSoft.Diagnostics
             exception.Data[key] = method.Name + " of " + method.DeclaringType.FullName;
             return exception;
         }
+
+        /// <summary>
+        /// Captures the name of the caller in the "caller" Data property of the exception.
+        /// </summary>
+        /// <param name="exception">The exception</param>
+        /// <returns>The given exception</returns>
         public static Exception CaptureCaller(this Exception exception) {
             return exception.CaptureCaller(DataKeyConverter.Default);
         }
@@ -94,6 +101,13 @@ namespace WmcSoft.Diagnostics
             }
             return exception;
         }
+
+        /// <summary>
+        /// Captures the properties of the context in the Data roperty of the exception.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>The given exception.</returns>
         public static Exception CaptureContext(this Exception exception, object context) {
             return exception.CaptureContext(DataKeyConverter.Default, context);
         }
