@@ -25,46 +25,38 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 using System.Runtime.InteropServices;
 
 namespace WmcSoft.CodeDom
 {
-
+    /// <summary>
+    /// Represents a code statement guarding a parameter against null value.
+    /// </summary>
+    /// <remarks>
+    /// if(arg == null) throw new ArgmentNullException("arg");
+    /// </remarks>
     [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]
     public class CodeAssertArgumentNotNulllStatement : CodeConditionStatement
     {
         #region Private fields
 
-        CodeVariableReferenceExpression variable;
-        CodePrimitiveExpression primitive;
+        private readonly CodeVariableReferenceExpression _variable;
+        private readonly CodePrimitiveExpression _primitive;
 
         #endregion
 
         #region Lifecycle
 
-        public CodeAssertArgumentNotNulllStatement(CodeParameterDeclarationExpression parameter) {
-            if (parameter == null) {
-                throw new ArgumentNullException("parameter");
-            }
-            Initialize(parameter.Name);
+        public CodeAssertArgumentNotNulllStatement(CodeParameterDeclarationExpression parameter)
+            : this(parameter == null ? null : parameter.Name) {
         }
 
         public CodeAssertArgumentNotNulllStatement(string argumentName) {
-            if (argumentName == null) {
-                throw new ArgumentNullException("argumentName");
-            }
-            Initialize(argumentName);
-        }
-
-        private void Initialize(string argumentName) {
-            variable = new CodeVariableReferenceExpression(argumentName);
-            this.Condition = new CodeNullEqualityExpression(variable);
-            primitive = new CodePrimitiveExpression(argumentName);
-            this.TrueStatements.Add(
-                new CodeThrowNewExceptionStatement<ArgumentNullException>(primitive));
+            _variable = new CodeVariableReferenceExpression(argumentName);
+            _primitive = new CodePrimitiveExpression(argumentName);
+            Condition = new CodeNullEqualityExpression(_variable);
+            TrueStatements.Add(new CodeThrowNewExceptionStatement<ArgumentNullException>(_primitive));
         }
 
         #endregion
@@ -73,16 +65,14 @@ namespace WmcSoft.CodeDom
 
         public string ArgumentName {
             get {
-                return variable.VariableName;
+                return _variable.VariableName;
             }
             set {
-                variable.VariableName = value;
-                primitive.Value = value;
+                _variable.VariableName = value;
+                _primitive.Value = value;
             }
         }
 
         #endregion
-
     }
-
 }

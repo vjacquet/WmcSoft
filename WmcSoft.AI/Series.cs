@@ -65,21 +65,22 @@ namespace WmcSoft.AI
 
         public void Eval(double[] input, out double slope, out double intercept) {
             var n = input.Length - 1;
-            var xmean = n / 2d;
-            var xvar = 0d;
             var ymean = 0d;
-            var xy = 0d;
             for (int i = 0; i < input.Length; i++) {
                 ymean += input[i];
             }
+
+            var xmean = n / 2d;
+            var xx = 0d;
+            var xy = 0d;
             ymean /= input.Length;
             for (int i = 0; i < input.Length; i++) {
                 var x = (double)i - xmean;
                 var y = input[i] - ymean;
-                xvar += x * x;
+                xx += x * x;
                 xy += x * y;
             }
-            slope = xy / xvar;
+            slope = xy / xx;
             intercept = ymean - slope * xmean;
         }
 

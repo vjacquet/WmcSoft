@@ -25,13 +25,15 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.CodeDom;
+using System.Runtime.InteropServices;
 
 namespace WmcSoft.CodeDom
 {
+    /// <summary>
+    /// Represents a statement that throws an exception of a givent type.
+    /// </summary>
+    /// <typeparam name="T">The type of the exception.</typeparam>
     [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]
     public class CodeThrowNewExceptionStatement<T> : CodeThrowExceptionStatement
         where T : Exception

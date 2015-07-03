@@ -32,6 +32,7 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.AI
 {
+    // TODO: consider using Stream or IObservable instead of arrays.
     public class AutoassociativeFilter
     {
         private readonly double[] _work;

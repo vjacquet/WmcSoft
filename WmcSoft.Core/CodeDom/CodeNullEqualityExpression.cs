@@ -25,20 +25,19 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 using System.Runtime.InteropServices;
 
 namespace WmcSoft.CodeDom
 {
+    /// <summary>
+    /// Represents an equality against null.
+    /// </summary>
     [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]
     public class CodeNullEqualityExpression : CodeBinaryOperatorExpression
     {
         public CodeNullEqualityExpression(CodeExpression expression)
-            : base(new CodePrimitiveExpression(null), 
-                CodeBinaryOperatorType.IdentityEquality, 
-                expression) {
+            : base(expression, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)) {
         }
     }
 }
