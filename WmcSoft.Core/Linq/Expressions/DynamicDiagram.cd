@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Linq.Dynamic.DynamicQueryable" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIAAAACAAAAAAAAAAAAAAAQAAAEAAAAAAAEAQAAAEAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.DynamicClass" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.DynamicProperty" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAFAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.DynamicExpression" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAQCAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.DynamicOrdering" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.Signature" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="System.Linq.Dynamic.ClassFactory" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIIAAAAAAAAABACAQAAAAAACAAAAASAAAAAABAAg=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.ParseException" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAkAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.ExpressionParser">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.IAddSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.ILogicalSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Struct Name="System.Linq.Dynamic.ExpressionParser.Token" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Enum Name="System.Linq.Dynamic.ExpressionParser.TokenId" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.IArithmeticSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.IRelationalSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.INegationSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.INotSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.ISubtractSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.IEqualitySignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Class Name="System.Linq.Dynamic.ExpressionParser.MethodData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Interface Name="System.Linq.Dynamic.ExpressionParser.IEnumerableSignatures" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Linq\Expressions\Dynamic.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>Co+4gUICBFAhMm7UoEgTE7BCIIzYpCqIKkUKBAmRAYI=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Linq.Dynamic.Res" Collapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAgMKhAIAgAAgEAgCIBSSAQAFDAgABEACoACAgLAA8A=</HashCode>
+      <FileName>Linq\Expressions\Dynamic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
