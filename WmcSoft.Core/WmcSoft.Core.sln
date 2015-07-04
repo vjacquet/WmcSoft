@@ -53,6 +53,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.AI", "..\WmcSoft.AI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.AI.Tests", "..\WmcSoft.AI.Tests\WmcSoft.AI.Tests.csproj", "{5978F2DA-93AC-484F-9524-ED0D4FDD432B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business", "..\WmcSoft.Business\WmcSoft.Business.csproj", "{C14575BE-B757-4E41-9EED-EABD5BD28F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Tests", "..\WmcSoft.Business.Tests\WmcSoft.Business.Tests.csproj", "{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +139,14 @@ Global
 		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5978F2DA-93AC-484F-9524-ED0D4FDD432B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C14575BE-B757-4E41-9EED-EABD5BD28F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C14575BE-B757-4E41-9EED-EABD5BD28F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C14575BE-B757-4E41-9EED-EABD5BD28F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C14575BE-B757-4E41-9EED-EABD5BD28F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
