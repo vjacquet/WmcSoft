@@ -25,6 +25,9 @@ them easy to use. They are not aimed to be the fastest but I hope they will be f
 ## WmcSoft.Units
 _Library of units and quantities._
 
+## WmcSoft.Business
+_Library of components to build business applications._
+
 ## WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._
 
@@ -38,10 +41,10 @@ and how it helped building other component.
 
 Yet, the first drawback I see is that it requires to shape the code in a specific way, 
 especially mutating the component through properties. It made the component sometimes harder 
-to implement.  
+to implement, or lead to suboptimal implementations.  
 The second drawback is related to forms, user controls and inheritance because there is a conflict 
-between access control and visual representation. How do you hide what is visible. How can you see 
-controls and yet be unable to move them inside the form? 
+between access control and visual representation. How do you hide in code what is visible in display? 
+How can you see controls and yet be unable to move them inside the form? 
 
 ## WmcSoft.Interop
 _Library of classes or functions encapsulating native functions._
@@ -52,7 +55,7 @@ _Library to build custom tools._
 This library also provide a declarative, policy based, code generator. 
 The classes are defined in an XML file and then generated in CSharp.
 
-## WmcSoft.Core
+## WmcSoft.AI
 _Library of artificial intelligence algorithms._
 
 This library is so far a collection of algorithm, initially converted from Practical Neural Network Recipes in C++, 
