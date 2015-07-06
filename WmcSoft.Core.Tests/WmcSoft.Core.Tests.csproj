@@ -86,6 +86,7 @@
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="ExpectedTests.cs" />
     <Compile Include="Text\StringBuilderExtensionsTests.cs" />
+    <Compile Include="IntExtensionsTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIteratorTests.cs" />

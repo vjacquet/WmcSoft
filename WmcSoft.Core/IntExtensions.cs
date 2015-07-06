@@ -75,5 +75,25 @@ namespace WmcSoft
             }
             return sb.ToString();
         }
+
+        public static IEnumerable<Tuple<int, int>> ToRanges(this IEnumerable<int> values) {
+            using (var enumerator = values.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    yield break;
+                var start = enumerator.Current;
+                var end = start;
+                while (enumerator.MoveNext()) {
+                    if (end + 1 == enumerator.Current) {
+                        end = enumerator.Current;
+                    } else {
+                        yield return Tuple.Create(start, end);
+                        end = start = enumerator.Current;
+                    }
+                }
+                yield return Tuple.Create(start, end);
+            }
+        }
     }
+
+
 }
