@@ -1,28 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="FlowGroup.Security.User">
-    <Position X="3.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Security\User.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="FlowGroup.Security.Role" BaseTypeListCollapsed="true">
-    <Position X="7.25" Y="4" Width="1.5" />
+  <Class Name="WmcSoft.Security.Role" BaseTypeListCollapsed="true">
+    <Position X="7" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACIAAAAAAAAAABAAAAAABAQAAAAAAAAAAAAAAAAQCAA=</HashCode>
       <FileName>Security\Role.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="FlowGroup.Security.Principal">
-    <Position X="1.75" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Security\Principal.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="FlowGroup.Security.Permission" Collapsed="true" BaseTypeListCollapsed="true">
+  <Class Name="WmcSoft.Security.Permission" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="8.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAAACAAAAAAAAAEgAACAAQAAAAAAIACAAAAAAgAAAA=</HashCode>
@@ -30,8 +16,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="FlowGroup.Security.PermissionSet" BaseTypeListCollapsed="true">
-    <Position X="10" Y="4.25" Width="1.5" />
+  <Class Name="WmcSoft.Security.PermissionSet" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="5.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Properties" Collapsed="true" />
@@ -43,39 +29,53 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="FlowGroup.Security.Group" BaseTypeListCollapsed="true">
-    <Position X="3.5" Y="3.75" Width="1.5" />
+  <Class Name="WmcSoft.Security.Group" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACIAAAAAAAAAABBAAAAABAAAAAAAAAAAAAAEAAAQAAA=</HashCode>
+      <HashCode>ACIAAgAAAAAAABBAAAAABAAAAAAAAAAAAAAEAAAQAAA=</HashCode>
       <FileName>Security\Group.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="FlowGroup.Security.RequiredLevelPermission" Collapsed="true">
+  <Class Name="WmcSoft.Security.Principal">
+    <Position X="1.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAEgAAAAAQAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Principal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Security.User">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Security.RequiredLevelPermission">
     <Position X="7" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQABAAAAAAAAAAA=</HashCode>
       <FileName>Security\Permission.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FlowGroup.Security.AutorizeLevelPermission" Collapsed="true">
+  <Class Name="WmcSoft.Security.AutorizeLevelPermission">
     <Position X="9.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQABAAAAAAAAAAA=</HashCode>
       <FileName>Security\Permission.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FlowGroup.Security.AccessControl" Collapsed="true">
+  <Class Name="WmcSoft.Security.AccessControl">
     <Position X="0.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAQAAgAAAAAAAAAAAAAAAAAECAAAAgAA=</HashCode>
-      <FileName>Security\IAccessControl.cs</FileName>
+      <HashCode>AAAAAAAAAAgAAQAAiAAAAAAAAAAgAAAAAAEKAAIAoAA=</HashCode>
+      <FileName>Security\AccessControl.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="1.151" />
   </Class>
-  <Interface Name="FlowGroup.Security.ISecurable">
+  <Interface Name="WmcSoft.Security.ISecurable">
     <Position X="0.5" Y="5" Width="1.5" />
-    <AssociationLine Name="AccessControl" Type="FlowGroup.Security.AccessControl">
+    <AssociationLine Name="AccessControl" Type="WmcSoft.Security.AccessControl">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.143" Y="1.513" />
       </MemberNameLabel>
@@ -91,11 +91,11 @@
       <Property Name="SupportedPermissions" />
     </ShowAsCollectionAssociation>
   </Interface>
-  <Interface Name="FlowGroup.Security.IAccessControl" Collapsed="true">
-    <Position X="3.5" Y="7.25" Width="1.5" />
+  <Interface Name="WmcSoft.Security.IAccessControlLists" Collapsed="true">
+    <Position X="3.25" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAQAAgAAAAAAAAAAAAAAAAAECAAAAAAA=</HashCode>
-      <FileName>Security\IAccessControl.cs</FileName>
+      <HashCode>AAAAAAAAAAgAAQAAAAAAAIAAAAAAAAAAAAEiAAAAAAA=</HashCode>
+      <FileName>Security\IAccessControlLists.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
