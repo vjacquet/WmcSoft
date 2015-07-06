@@ -900,6 +900,28 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region ToRange
+
+        public static IEnumerable<Tuple<T, T>> ToRanges<T>(this IEnumerable<T> values, Func<T, T, bool> isSuccessor) {
+            using (var enumerator = values.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    yield break;
+                var start = enumerator.Current;
+                var end = start;
+                while (enumerator.MoveNext()) {
+                    if (isSuccessor(end, enumerator.Current)) {
+                        end = enumerator.Current;
+                    } else {
+                        yield return Tuple.Create(start, end);
+                        end = start = enumerator.Current;
+                    }
+                }
+                yield return Tuple.Create(start, end);
+            }
+        }
+
+        #endregion
+
         #region ToString
 
         static TextInfo GetTextInfo(IFormatProvider formatProvider) {

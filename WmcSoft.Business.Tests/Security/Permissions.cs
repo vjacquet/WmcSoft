@@ -8,7 +8,7 @@ namespace WmcSoft.Security
     /// <remarks>The class is not static so it is possible to inherit from it.</remarks>
     public class Permissions
     {
-        private Permissions() { }
+        protected Permissions() { }
 
         public static readonly Permission Read = new Permission("read");
         public static readonly Permission Write = new Permission("write");
@@ -19,4 +19,5 @@ namespace WmcSoft.Security
         public static readonly Permission Execute = new Permission("execute");
         public static readonly Permission Abort = new Permission("abort");
     }
+
 }

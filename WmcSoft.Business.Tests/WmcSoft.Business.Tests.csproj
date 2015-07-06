@@ -55,6 +55,7 @@
     <Compile Include="Security\Groups.cs" />
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="Security\PermissionTests.cs" />
+    <Compile Include="Security\RoleTests.cs" />
     <Compile Include="Security\SecurableBase.cs" />
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
