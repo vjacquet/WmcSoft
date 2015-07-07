@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WmcSoft
+namespace FlowGroup.Business.ProductModel
 {
-    interface IUniqueIdentifier<T> where T : IEquatable<T>
+    public abstract class Service : ProductType
     {
-        T Id { get; }
     }
 }
