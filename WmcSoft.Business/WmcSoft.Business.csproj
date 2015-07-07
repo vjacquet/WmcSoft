@@ -41,9 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAuditable.cs" />
-    <Compile Include="IAuthorizable.cs" />
-    <Compile Include="IUniqueIdentifier.cs" />
+    <Compile Include="Business\IAuditable.cs" />
+    <Compile Include="Business\IAuthorizable.cs" />
+    <Compile Include="Business\ITemporal.cs" />
+    <Compile Include="Business\IUniqueIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AccessControl.cs" />
     <Compile Include="Security\AccessControlEntry.cs" />

@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft
+namespace WmcSoft.Business
 {
     public interface IAuthorizable
     {

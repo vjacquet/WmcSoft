@@ -26,13 +26,14 @@
 
 using System;
 
-namespace WmcSoft
+namespace WmcSoft.Business
 {
-    public interface IAuditable
+    /// <summary>
+    /// Provides properties useful to define validity dates on a Business entity.
+    /// </summary>
+    public interface ITemporal
     {
-        string Author { get; set; }
-        DateTime Created { get; set; }
-        string Editor { get; set; }
-        DateTime Modified { get; set; }
+        DateTime ValidSince { get; set; }
+        DateTime? ValidUntil { get; set; }
     }
 }
