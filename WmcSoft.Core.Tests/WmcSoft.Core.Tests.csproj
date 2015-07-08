@@ -69,6 +69,7 @@
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="IO\StreamSourceTests.cs" />
+    <Compile Include="Linq\Expressions\DynamicTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
