@@ -144,5 +144,21 @@ namespace WmcSoft.Units
             var result = Convert(quantity, Activator.CreateInstance<U>());
             return new Quantity<U>(result.Amount);
         }
+
+        /// <summary>
+        /// Creates a reciprocal unit conversion.
+        /// </summary>
+        /// <param name="conversion">The unit conversion.</param>
+        /// <returns>The reciprocal unit conversion.</returns>
+        /// <remarks>This function guarantee that <code>Reciprocal(Reciprocal(conversion)) == conversion</code>.</remarks>
+        public static UnitConversion Reciprocal(this UnitConversion conversion) {
+            if (conversion == null)
+                throw new ArgumentNullException("conversion");
+
+            var reciprocal = conversion as ReciprocalUnitConversion;
+            if (reciprocal == null)
+                return new ReciprocalUnitConversion(conversion);
+            return reciprocal.BaseUnitConversion;
+        }
     }
 }

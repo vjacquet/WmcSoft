@@ -47,6 +47,7 @@
     <Compile Include="ImperialSystemOfUnit.cs" />
     <Compile Include="IncompatibleMetricException.cs" />
     <Compile Include="KnownDerivedUnit.cs" />
+    <Compile Include="ReciprocalUnitConversion.cs" />
     <Compile Include="SIPrefix.cs" />
     <Compile Include="SIPrefixedScaledUnit.cs" />
     <Compile Include="ManHour.cs" />
