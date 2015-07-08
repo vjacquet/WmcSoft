@@ -136,12 +136,24 @@ namespace WmcSoft.Units
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Converts a quantity to a quantity of the target Unit.
+        /// </summary>
+        /// <param name="quantity">The quantity.</param>
+        /// <param name="target">The target unit.</param>
+        /// <returns>The converted quantity.</returns>
         public static Quantity ConvertTo(this Quantity quantity, Unit target) {
             return Convert(quantity, target);
         }
 
-        public static Quantity ConvertTo<U>(this Quantity quantity) where U : Unit {
-            var result = Convert(quantity, Activator.CreateInstance<U>());
+        /// <summary>
+        /// Converts a quantity to a quantity of the target Unit.
+        /// </summary>
+        /// <typeparam name="U">The target unit type.</typeparam>
+        /// <param name="quantity">The quantity.</param>
+        /// <returns>The converted quantity.</returns>
+        public static Quantity<U> ConvertTo<U>(this Quantity quantity) where U : Unit, new() {
+            var result = Convert(quantity, new U());
             return new Quantity<U>(result.Amount);
         }
 
