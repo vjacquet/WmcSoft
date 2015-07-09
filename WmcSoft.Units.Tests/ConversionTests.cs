@@ -46,7 +46,7 @@ namespace WmcSoft.Units
         public void CanCreateCompositeConversion() {
             var yd2ft = new LinearConversion(ImperialSystemOfUnit.Yard, ImperialSystemOfUnit.Foot, 3m);
             var ft2in = new LinearConversion(ImperialSystemOfUnit.Foot, ImperialSystemOfUnit.Inch, 12m);
-            var composite = new CompositeConversion(yd2ft, ft2in);
+            var composite = UnitConverter.Compose(yd2ft, ft2in);
 
             Assert.AreEqual(composite.Source, ImperialSystemOfUnit.Yard);
             Assert.AreEqual(composite.Target, ImperialSystemOfUnit.Inch);

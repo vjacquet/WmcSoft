@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace WmcSoft.Units
 {
@@ -171,6 +172,40 @@ namespace WmcSoft.Units
             if (reciprocal == null)
                 return new ReciprocalUnitConversion(conversion);
             return reciprocal.BaseUnitConversion;
+        }
+
+        static UnitConversion DoCompose(LinearConversion x, LinearConversion y) {
+            return new LinearConversion(x.Source, y.Target, x.ConversionFactor * y.ConversionFactor);
+        }
+
+        static UnitConversion DoCompose(UnitConversion x, UnitConversion y) {
+            return new CompositeConversion(x, y);
+        }
+
+        static UnitConversion DoCompose(CompositeConversion x, UnitConversion y) {
+            return new CompositeConversion(x, y);
+        }
+
+        static UnitConversion DoCompose(UnitConversion x, CompositeConversion y) {
+            return new CompositeConversion(x, y);
+        }
+
+        static UnitConversion DoCompose(CompositeConversion x, CompositeConversion y) {
+            return new CompositeConversion(x, y);
+        }
+
+        public static UnitConversion Compose(UnitConversion x, UnitConversion y) {
+            if (x.Target != y.Source)
+                throw new ArgumentException("y");
+            if (x.Source == y.Target)
+                return new IdentityConversion(x.Source);
+
+            // performs double dispatch
+            var factory = typeof(UnitConverter).GetMethod("DoCompose", BindingFlags.Static | BindingFlags.NonPublic, Type.DefaultBinder, new [] { x.GetType(), y.GetType() }, new ParameterModifier[0]);
+            if (factory != null)
+                return (UnitConversion)factory.Invoke(null, new[] { x, y });
+
+            throw new InvalidOperationException();
         }
     }
 }

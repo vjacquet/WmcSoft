@@ -12,8 +12,6 @@ namespace WmcSoft.Units
 
         internal CompositeConversion(UnitConversion x, UnitConversion y)
             : base(x.Source, y.Target) {
-            if (x.Target != y.Source)
-                throw new ArgumentException("conversion");
             _sequence = new List<UnitConversion>(2);
             _sequence.Add(x);
             _sequence.Add(y);
@@ -21,8 +19,6 @@ namespace WmcSoft.Units
 
         internal CompositeConversion(UnitConversion x, CompositeConversion y)
             : base(x.Source, y.Target) {
-            if (x.Target != y.Source)
-                throw new ArgumentException("conversion");
             _sequence = new List<UnitConversion>(y._sequence.Count + 1);
             _sequence.Add(x);
             _sequence.AddRange(y._sequence);
@@ -30,11 +26,16 @@ namespace WmcSoft.Units
 
         internal CompositeConversion(CompositeConversion x, UnitConversion y)
             : base(x.Source, y.Target) {
-            if (x.Target != y.Source)
-                throw new ArgumentException("conversion");
             _sequence = new List<UnitConversion>(x._sequence.Count + 1);
             _sequence.AddRange(x._sequence);
             _sequence.Add(y);
+        }
+
+        internal CompositeConversion(CompositeConversion x, CompositeConversion y)
+            : base(x.Source, y.Target) {
+            _sequence = new List<UnitConversion>(x._sequence.Count + y._sequence.Count);
+            _sequence.AddRange(x._sequence);
+            _sequence.AddRange(y._sequence);
         }
 
         internal CompositeConversion(params UnitConversion[] conversions)

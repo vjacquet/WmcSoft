@@ -44,7 +44,7 @@
     <Compile Include="Conversion\CrossSystemConversions.cs" />
     <Compile Include="DerivedUnit.cs" />
     <Compile Include="DerivedUnitTerm.cs" />
-    <Compile Include="ExtrapolatedConversion.cs" />
+    <Compile Include="IdentityConversion.cs" />
     <Compile Include="ImperialSystemOfUnit.cs" />
     <Compile Include="IncompatibleMetricException.cs" />
     <Compile Include="KnownDerivedUnit.cs" />
