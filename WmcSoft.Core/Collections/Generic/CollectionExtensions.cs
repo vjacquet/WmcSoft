@@ -37,6 +37,16 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class CollectionExtensions
     {
+        #region Backwards
+
+        public static IEnumerable<T> Backwards<T>(this IReadOnlyList<T> source) {
+            for (int i = source.Count - 1; i >= 0; i--) {
+                yield return source[i];
+            }
+        }
+
+        #endregion
+
         #region Suffle methods
 
         /// <summary>
