@@ -28,16 +28,45 @@ using System;
 
 namespace WmcSoft.Units
 {
-    public class StandardConversionAttribute : UnitConversionAttribute
+    /// <summary>
+    /// Defines a conversion factor that can be used to convert a quantity in
+    /// a source Unit to a quantity in a target unit
+    /// </summary>
+    public class LinearConversion : UnitConversion
     {
-        public StandardConversionAttribute(Type source, Type target, double factor)
-            : base(new StandardConversion((Unit)Activator.CreateInstance(source), (Unit)Activator.CreateInstance(target), (decimal)factor)) {
+        #region Fields
+
+        readonly decimal _factor;
+
+        #endregion
+
+        #region Lifecycle
+
+        public LinearConversion(Unit source, Unit target, decimal factor)
+            : base(source, target) {
+            _factor = factor;
         }
 
+        #endregion
+
+        #region Properties
+
         public decimal ConversionFactor {
-            get {
-                return ((StandardConversion)UnitConversion).ConversionFactor;
-            }
+            get { return _factor; }
         }
+
+        #endregion
+
+        #region Overrides
+
+        public override decimal Convert(decimal value) {
+            return value * _factor;
+        }
+
+        public override decimal ConvertBack(decimal value) {
+            return value / _factor;
+        }
+
+        #endregion
     }
 }

@@ -31,7 +31,7 @@ namespace WmcSoft.Units
 	/// <summary>
 	/// Description résumée de ExtrapolatedConversion.
 	/// </summary>
-	internal class ExtrapolatedConversion : StandardConversion
+	internal class ExtrapolatedConversion : LinearConversion
 	{
 		public ExtrapolatedConversion(ScaledUnit scaleUnit) : base(scaleUnit, scaleUnit.Reference, scaleUnit.ScaleFactor)
 		{

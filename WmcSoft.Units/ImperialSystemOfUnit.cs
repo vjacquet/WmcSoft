@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using WmcSoft.Units.Conversion;
 
 namespace WmcSoft.Units
 {
@@ -49,7 +50,7 @@ namespace WmcSoft.Units
             var league = new ScaledUnit("league", "lea", 3m, mile);
 
             Units = new Unit[] {
-                       new KnownDerivedUnit("Fahrenheit", SystemOfUnits.Imperial, SI.Kelvin),
+                       new Fahrenheit(),
                        inch,
                        foot,
                        yard,
@@ -127,7 +128,7 @@ namespace WmcSoft.Units
         League,
     }
 
-    [StandardConversion(typeof(Inch), typeof(Meter), 0.0254)]
+    [LinearConversion(typeof(Inch), typeof(Meter), 0.0254)]
     public sealed class Inch : Unit
     {
         public Inch() {
@@ -142,6 +143,48 @@ namespace WmcSoft.Units
         public override string Definition {
             get { return "1/12 of a foot"; }
         }
+
+        public override SystemOfUnits SystemOfUnits {
+            get { return SystemOfUnits.Imperial; }
+        }
+    }
+
+    [UnitConversion(typeof(FahrenheitToCelsiusConversion))]
+    [UnitConversion(typeof(FahrenheitToKelvinConversion))]
+    sealed class Fahrenheit : Unit
+    {
+        public Fahrenheit() {
+        }
+
+        public override string Name {
+            get {
+                if (_localizedName == null) {
+                    _localizedName = RM.GetName(GetType().Name);
+                }
+                return _localizedName;
+            }
+        }
+        string _localizedName;
+
+        public override string Definition {
+            get {
+                if (_localizedDefinition == null) {
+                    _localizedDefinition = RM.GetDefinition(GetType().Name);
+                }
+                return _localizedDefinition;
+            }
+        }
+        string _localizedDefinition;
+
+        public override string Symbol {
+            get {
+                if (_localizedSymbol == null) {
+                    _localizedSymbol = RM.GetSymbol(GetType().Name);
+                }
+                return _localizedSymbol;
+            }
+        }
+        string _localizedSymbol;
 
         public override SystemOfUnits SystemOfUnits {
             get { return SystemOfUnits.Imperial; }

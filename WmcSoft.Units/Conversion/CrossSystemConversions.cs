@@ -36,8 +36,8 @@ namespace WmcSoft.Units.Conversion
     {
         internal static void RegisterImperialToSIConversions() {
             if (!_isImperialToSIConversionsRegistered) {
-                UnitConverter.RegisterConversion(new FahrenheitToCelsiusConversion(),false);
-                UnitConverter.RegisterConversion(new FahrenheitToKelvinConversion(), false);
+                //UnitConverter.RegisterConversion(new FahrenheitToCelsiusConversion(),false);
+                //UnitConverter.RegisterConversion(new FahrenheitToKelvinConversion(), false);
                 //UnitConverter.RegisterConversion(new StandardConversion(ImperialSystemOfUnit.Yard, SI.Meter, 0.9144m), false);
 
                 _isImperialToSIConversionsRegistered = true;

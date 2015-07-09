@@ -36,18 +36,18 @@ namespace WmcSoft.Units
     {
         static readonly SI si;
         static readonly Unit[] Units;
-        
+
         static SI() {
             si = new SI();
 
             Units = new Unit[] {
-                meter,
-                kilogram,
-                second,
-                ampere,
-                kelvin,
-                mole,
-                candela,
+                meter = new Meter(),
+                kilogram= new Kilogram(),
+                second=new Second(),
+                ampere=new Ampere(),
+                kelvin=new Kelvin(),
+                mole= new Mole(),
+                candela= new Candela(),
                 new KnownDerivedUnit("Celsius", SystemOfUnits.SI, SI.Kelvin),
             };
             UnitConverter.RegisterConversion(new Conversion.CelsiusToKelvinConversion());
@@ -74,37 +74,37 @@ namespace WmcSoft.Units
         public static Meter Meter {
             get { return meter; }
         }
-        static Meter meter = new Meter();
+        static readonly Meter meter;
 
         public static Kilogram Kilogram {
             get { return kilogram; }
         }
-        static Kilogram kilogram = new Kilogram();
+        static readonly Kilogram kilogram;
 
         public static Second Second {
             get { return second; }
         }
-        static Second second = new Second();
+        static readonly Second second;
 
         public static Ampere Ampere {
             get { return ampere; }
         }
-        static Ampere ampere = new Ampere();
+        static readonly Ampere ampere;
 
         public static Kelvin Kelvin {
             get { return kelvin; }
         }
-        static Kelvin kelvin = new Kelvin();
+        static readonly Kelvin kelvin;
 
         public static Mole Mole {
             get { return mole; }
         }
-        static Mole mole = new Mole();
+        static readonly Mole mole;
 
         public static Candela Candela {
             get { return candela; }
         }
-        static Candela candela = new Candela();
+        static Candela candela;
 
         public static Unit Celsius {
             get { return GetUnit(KnownSIUnits.Celsius); }

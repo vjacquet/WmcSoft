@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositeConversion.cs" />
     <Compile Include="Conversion\Conversion.cs" />
     <Compile Include="Conversion\CrossSystemConversions.cs" />
     <Compile Include="DerivedUnit.cs" />
@@ -61,8 +62,8 @@
     <Compile Include="ScaledUnit.cs" />
     <Compile Include="SIBaseUnit.cs" />
     <Compile Include="SISystemOfUnit.cs" />
-    <Compile Include="StandardConversion.cs" />
-    <Compile Include="StandardConversionAttribute.cs" />
+    <Compile Include="LinearConversion.cs" />
+    <Compile Include="LinearConversionAttribute.cs" />
     <Compile Include="SystemOfUnits.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitConversion.cs" />
@@ -72,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Metric.cd" />
+    <None Include="UnitConversions.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RM.en-us.resx">
