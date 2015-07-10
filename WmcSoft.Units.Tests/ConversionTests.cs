@@ -50,6 +50,7 @@ namespace WmcSoft.Units
 
             Assert.AreEqual(composite.Source, ImperialSystemOfUnit.Yard);
             Assert.AreEqual(composite.Target, ImperialSystemOfUnit.Inch);
+            Assert.IsInstanceOfType(composite, typeof(LinearConversion));
             Assert.AreEqual(36m, composite.Convert(1m));
         }
     }

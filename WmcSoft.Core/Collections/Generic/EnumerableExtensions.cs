@@ -37,6 +37,65 @@ namespace WmcSoft.Collections.Generic
 {
     public static class EnumerableExtensions
     {
+        #region Backwards
+
+        #region BackwardsEnumerableAdapter
+
+        class BackwardsEnumerableAdapter<T> : IEnumerable<T>
+        {
+            private readonly IEnumerable<T> _enumerable;
+
+            public BackwardsEnumerableAdapter(IEnumerable<T> source) {
+                _enumerable = source;
+            }
+
+            #region IEnumerable<T> Membres
+
+            public IEnumerator<T> GetEnumerator() {
+                Stack<T> stack = new Stack<T>();
+                using (var enumerator = _enumerable.GetEnumerator()) {
+                    while (enumerator.MoveNext()) {
+                        stack.Push(enumerator.Current);
+                    }
+                    while (stack.Count > 0) {
+                        yield return stack.Pop();
+                    }
+                }
+            }
+
+            #endregion
+
+            #region IEnumerable Membres
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        public static IEnumerable<T> Backwards<T>(this IReadOnlyList<T> source) {
+            for (int i = source.Count - 1; i >= 0; i--) {
+                yield return source[i];
+            }
+        }
+
+        public static IEnumerable<T> Backwards<T>(this IEnumerable<T> source) {
+            var readOnlyList = source as IReadOnlyList<T>;
+            if (readOnlyList != null)
+                return Backwards(readOnlyList);
+
+            var list = source as IList<T>;
+            if (list != null)
+                return Backwards(list.AsReadOnly());
+
+            return new BackwardsEnumerableAdapter<T>(source);
+        }
+
+        #endregion
+
         #region ElementAt
 
         public static TResult ElementAt<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {

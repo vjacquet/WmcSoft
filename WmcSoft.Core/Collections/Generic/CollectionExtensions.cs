@@ -37,72 +37,6 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class CollectionExtensions
     {
-        #region Backwards
-
-        public static IEnumerable<T> Backwards<T>(this IReadOnlyList<T> source) {
-            for (int i = source.Count - 1; i >= 0; i--) {
-                yield return source[i];
-            }
-        }
-
-        #endregion
-
-        #region Suffle methods
-
-        /// <summary>
-        /// Suffles in place items of the list.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle<T>(this IList<T> list) {
-            Suffle(list, new Random());
-        }
-
-        /// <summary>
-        /// Suffles in place items of the list.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="random">The random object to use to perfom the suffle.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle<T>(this IList<T> list, Random random) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (random == null)
-                throw new ArgumentNullException("random");
-            if (list.IsReadOnly)
-                throw new ArgumentException();
-
-            int j;
-            for (int i = 0; i < list.Count; i++) {
-                j = random.Next(i, list.Count);
-                list.SwapItems(i, j);
-            }
-        }
-
-        #endregion
-
-        #region SwapItems methods
-
-        /// <summary>
-        /// Swaps two items.
-        /// </summary>
-        /// <typeparam name="T">The type of the element of <paramref name="list"/>.</typeparam>
-        /// <param name="list">The list.</param>
-        /// <param name="i">The i.</param>
-        /// <param name="j">The j.</param>
-        /// <returns>The list</returns>
-        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
-        public static IList<T> SwapItems<T>(this IList<T> list, int i, int j) {
-            T temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-            return list;
-        }
-
-        #endregion
-
         #region AddRange methods
 
         /// <summary>
@@ -171,94 +105,13 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region RemoveRange methods
+        #region AsCollection
 
-        /// <summary>
-        /// Remove a range of items from a collection. 
-        /// </summary>
-        /// <typeparam name="T">Type of objects within the collection.</typeparam>
-        /// <param name="self">The collection to remove items from.</param>
-        /// <param name="items">The items to remove from the collection.</param>
-        /// <returns>The count of items removed from the collection.</returns>
-        /// <remarks>Does nothing if items is null.</remarks>
-        public static int RemoveRange<T>(this ICollection<T> self, IEnumerable<T> items) {
-            if (self == null)
-                throw new ArgumentNullException("self");
-
-            if (items == null)
-                return 0;
-
-            ICollection collection = self as ICollection;
-            int count = 0;
-
-            if (collection != null && collection.IsSynchronized) {
-                lock (collection.SyncRoot) {
-                    foreach (var each in items) {
-                        if (self.Remove(each))
-                            count++;
-                    }
-                }
-            } else {
-                foreach (var each in items) {
-                    if (self.Remove(each))
-                        count++;
-                }
-            }
-
-            return count;
-        }
-
-        #endregion
-
-        #region ToArray methods
-
-        /// <summary>
-        /// Convert a collection to an array.
-        /// </summary>
-        /// <typeparam name="TInput">Type of the collection items</typeparam>
-        /// <typeparam name="TOutput">Type of the array items.</typeparam>
-        /// <param name="collection">The collection</param>
-        /// <param name="convert">The converter from the input type to the output type.</param>
-        /// <returns>An array or null if collection is null</returns>
-        /// <remarks>Uses the Count of items of the collection to avoid amortizing reallocations.</remarks>
-        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> convert) {
-            if (convert == null)
-                throw new ArgumentNullException("convert");
-            if (collection == null)
-                return null;
-
-            var output = new TOutput[collection.Count];
-            var i = 0;
-            using (var enumerator = collection.GetEnumerator()) {
-                while (enumerator.MoveNext()) {
-                    output[i++] = convert(enumerator.Current);
-                }
-            }
-            return output;
-        }
-
-        /// <summary>
-        /// Convert a list to an array.
-        /// </summary>
-        /// <typeparam name="TInput">Type of the list items</typeparam>
-        /// <typeparam name="TOutput">Type of the array items.</typeparam>
-        /// <param name="collection">The list</param>
-        /// <param name="convert">The converter from the input type to the output type.</param>
-        /// <returns>An array</returns>
-        /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
-        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
-            if (convert == null)
-                throw new ArgumentNullException("convert");
-            if (list == null)
-                return null;
-
-            var length = list.Count;
-            var output = new TOutput[length];
-            // for List implementation, for loops are slightly faster than foreach loops.
-            for (int i = 0; i < length; i++) {
-                output[i] = convert(list[i]);
-            }
-            return output;
+        public static ICollection<T> AsCollection<T>(this IReadOnlyCollection<T> readOnlyCollection) {
+            var collection = readOnlyCollection as ICollection<T>;
+            if (collection != null)
+                return collection;
+            return new ReadOnlyCollectionToCollectionAdapter<T>(readOnlyCollection);
         }
 
         #endregion
@@ -284,17 +137,6 @@ namespace WmcSoft.Collections.Generic
         public static IEnumerable<TSource> AsEnumerable<TSource>(TSource? source) where TSource : struct {
             if (source.HasValue)
                 yield return source.GetValueOrDefault();
-        }
-
-        #endregion
-
-        #region AsCollection
-
-        public static ICollection<T> AsCollection<T>(this IReadOnlyCollection<T> readOnlyCollection) {
-            var collection = readOnlyCollection as ICollection<T>;
-            if (collection != null)
-                return collection;
-            return new ReadOnlyCollectionToCollectionAdapter<T>(readOnlyCollection);
         }
 
         #endregion
@@ -472,6 +314,45 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region RemoveRange methods
+
+        /// <summary>
+        /// Remove a range of items from a collection. 
+        /// </summary>
+        /// <typeparam name="T">Type of objects within the collection.</typeparam>
+        /// <param name="self">The collection to remove items from.</param>
+        /// <param name="items">The items to remove from the collection.</param>
+        /// <returns>The count of items removed from the collection.</returns>
+        /// <remarks>Does nothing if items is null.</remarks>
+        public static int RemoveRange<T>(this ICollection<T> self, IEnumerable<T> items) {
+            if (self == null)
+                throw new ArgumentNullException("self");
+
+            if (items == null)
+                return 0;
+
+            ICollection collection = self as ICollection;
+            int count = 0;
+
+            if (collection != null && collection.IsSynchronized) {
+                lock (collection.SyncRoot) {
+                    foreach (var each in items) {
+                        if (self.Remove(each))
+                            count++;
+                    }
+                }
+            } else {
+                foreach (var each in items) {
+                    if (self.Remove(each))
+                        count++;
+                }
+            }
+
+            return count;
+        }
+
+        #endregion
+
         #region Reserve
 
         public static void Reserve<T>(this List<T> list, int extraSpace) {
@@ -492,6 +373,115 @@ namespace WmcSoft.Collections.Generic
         public static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> items) {
             foreach (var item in items)
                 queue.Enqueue(item);
+        }
+
+        #endregion
+
+        #region Suffle methods
+
+        /// <summary>
+        /// Suffles in place items of the list.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
+        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        public static void Suffle<T>(this IList<T> list) {
+            Suffle(list, new Random());
+        }
+
+        /// <summary>
+        /// Suffles in place items of the list.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="random">The random object to use to perfom the suffle.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
+        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        public static void Suffle<T>(this IList<T> list, Random random) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (random == null)
+                throw new ArgumentNullException("random");
+            if (list.IsReadOnly)
+                throw new ArgumentException();
+
+            int j;
+            for (int i = 0; i < list.Count; i++) {
+                j = random.Next(i, list.Count);
+                list.SwapItems(i, j);
+            }
+        }
+
+        #endregion
+
+        #region SwapItems methods
+
+        /// <summary>
+        /// Swaps two items.
+        /// </summary>
+        /// <typeparam name="T">The type of the element of <paramref name="list"/>.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="i">The i.</param>
+        /// <param name="j">The j.</param>
+        /// <returns>The list</returns>
+        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
+        public static IList<T> SwapItems<T>(this IList<T> list, int i, int j) {
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+            return list;
+        }
+
+        #endregion
+
+        #region ToArray methods
+
+        /// <summary>
+        /// Convert a collection to an array.
+        /// </summary>
+        /// <typeparam name="TInput">Type of the collection items</typeparam>
+        /// <typeparam name="TOutput">Type of the array items.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="convert">The converter from the input type to the output type.</param>
+        /// <returns>An array or null if collection is null</returns>
+        /// <remarks>Uses the Count of items of the collection to avoid amortizing reallocations.</remarks>
+        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> convert) {
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+            if (collection == null)
+                return null;
+
+            var output = new TOutput[collection.Count];
+            var i = 0;
+            using (var enumerator = collection.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    output[i++] = convert(enumerator.Current);
+                }
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a list to an array.
+        /// </summary>
+        /// <typeparam name="TInput">Type of the list items</typeparam>
+        /// <typeparam name="TOutput">Type of the array items.</typeparam>
+        /// <param name="collection">The list</param>
+        /// <param name="convert">The converter from the input type to the output type.</param>
+        /// <returns>An array</returns>
+        /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
+        public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+            if (list == null)
+                return null;
+
+            var length = list.Count;
+            var output = new TOutput[length];
+            // for List implementation, for loops are slightly faster than foreach loops.
+            for (int i = 0; i < length; i++) {
+                output[i] = convert(list[i]);
+            }
+            return output;
         }
 
         #endregion

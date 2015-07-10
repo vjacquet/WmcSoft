@@ -124,5 +124,13 @@ namespace WmcSoft.Collections.Generic
             var actual = new String(array.SortedCombine((char c, char g) => c).ToArray());
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckBackwards() {
+            var sequence = new[] { 1, 2, 3, 4 };
+            var actual = sequence.Backwards().ToArray();
+            var expected = new[] { 4, 3, 2, 1 };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
