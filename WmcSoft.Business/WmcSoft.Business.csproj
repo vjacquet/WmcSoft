@@ -48,9 +48,17 @@
     <Compile Include="Business\PartyModel\Party.cs" />
     <Compile Include="Business\PartyModel\PartyAuthentification.cs" />
     <Compile Include="Business\PartyModel\PartyIdentifier.cs" />
+    <Compile Include="Business\PartyModel\PartyRelationship.cs" />
+    <Compile Include="Business\PartyModel\PartyRelationshipConstraintAttribute.cs" />
+    <Compile Include="Business\PartyModel\PartyRole.cs" />
+    <Compile Include="Business\PartyModel\PartyRoleConstraintAttribute.cs" />
+    <Compile Include="Business\PartyModel\PartyRoleIdentifier.cs" />
     <Compile Include="Business\PartyModel\RegisteredIdentifier.cs" />
+    <Compile Include="Business\PartyModel\Responsability.cs" />
+    <Compile Include="Business\PartyModel\ResponsabilityAttribute.cs" />
     <Compile Include="Business\PartyModel\RM.cs" />
     <Compile Include="Business\RegistrationPolicy.cs" />
+    <Compile Include="Business\PartyModel\UniqueIdentifierEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AccessControl.cs" />
     <Compile Include="Security\AccessControlEntry.cs" />
@@ -82,6 +90,7 @@
   <ItemGroup>
     <None Include="Security\SecurityDiagram.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

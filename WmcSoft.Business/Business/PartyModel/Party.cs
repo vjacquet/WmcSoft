@@ -44,7 +44,7 @@ namespace WmcSoft.Business.PartyModel
         //readonly Collection<AddressProperties> _addresses;
         readonly Collection<RegisteredIdentifier> _registeredIdentifiers;
         readonly Collection<PartyAuthentication> _partyAuthentications;
-        //readonly Collection<PartyRole> _roles;
+        readonly HashSet<PartyRole> _roles;
         //WeightedPreferenceCollection _preferences;
 
         #endregion
@@ -60,7 +60,7 @@ namespace WmcSoft.Business.PartyModel
             _registeredIdentifiers = new Collection<RegisteredIdentifier>();
             _partyAuthentications = new Collection<PartyAuthentication>();
             _identifier = identifier;
-            //_roles = new Collection<PartyRole>();
+            _roles = new HashSet<PartyRole>(PartyRole.UniqueIdentifierComparer);
         }
 
         #endregion
@@ -110,9 +110,9 @@ namespace WmcSoft.Business.PartyModel
         //    get { return _addresses; }
         //}
 
-        //public ICollection<PartyRole> Roles {
-        //    get { return _roles; }
-        //}
+        public ICollection<PartyRole> Roles {
+            get { return _roles; }
+        }
 
         //public WeightedPreferenceCollection Preferences {
         //    get {
