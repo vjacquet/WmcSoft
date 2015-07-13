@@ -41,9 +41,9 @@ namespace WmcSoft.Business.PartyModel
         #region Fields
 
         readonly PartyIdentifier _identifier;
-        //readonly Collection<AddressProperties> _addresses;
-        readonly Collection<RegisteredIdentifier> _registeredIdentifiers;
-        readonly Collection<PartyAuthentication> _partyAuthentications;
+        //readonly List<AddressProperties> _addresses;
+        readonly List<RegisteredIdentifier> _registeredIdentifiers;
+        readonly List<PartyAuthentication> _partyAuthentications;
         readonly HashSet<PartyRole> _roles;
         //WeightedPreferenceCollection _preferences;
 
@@ -56,9 +56,9 @@ namespace WmcSoft.Business.PartyModel
         }
 
         protected Party(PartyIdentifier identifier) {
-            //_addresses = new Collection<AddressProperties>();
-            _registeredIdentifiers = new Collection<RegisteredIdentifier>();
-            _partyAuthentications = new Collection<PartyAuthentication>();
+            //_addresses = new List<AddressProperties>();
+            _registeredIdentifiers = new List<RegisteredIdentifier>();
+            _partyAuthentications = new List<PartyAuthentication>();
             _identifier = identifier;
             _roles = new HashSet<PartyRole>(PartyRole.UniqueIdentifierComparer);
         }

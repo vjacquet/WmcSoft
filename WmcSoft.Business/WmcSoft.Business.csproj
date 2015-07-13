@@ -45,6 +45,9 @@
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
+    <Compile Include="Business\PartyModel\BodyMetrics.cs" />
+    <Compile Include="Business\PartyModel\Ethnicity.cs" />
+    <Compile Include="Business\PartyModel\Gender.cs" />
     <Compile Include="Business\PartyModel\Party.cs" />
     <Compile Include="Business\PartyModel\PartyAuthentification.cs" />
     <Compile Include="Business\PartyModel\PartyIdentifier.cs" />
@@ -53,6 +56,9 @@
     <Compile Include="Business\PartyModel\PartyRole.cs" />
     <Compile Include="Business\PartyModel\PartyRoleConstraintAttribute.cs" />
     <Compile Include="Business\PartyModel\PartyRoleIdentifier.cs" />
+    <Compile Include="Business\PartyModel\Person.cs" />
+    <Compile Include="Business\PartyModel\PersonName.cs" />
+    <Compile Include="Business\PartyModel\PersonNameUse.cs" />
     <Compile Include="Business\PartyModel\RegisteredIdentifier.cs" />
     <Compile Include="Business\PartyModel\Responsability.cs" />
     <Compile Include="Business\PartyModel\ResponsabilityAttribute.cs" />
