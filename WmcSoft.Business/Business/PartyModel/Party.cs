@@ -41,7 +41,7 @@ namespace WmcSoft.Business.PartyModel
         #region Fields
 
         readonly PartyIdentifier _identifier;
-        //readonly List<AddressProperties> _addresses;
+        readonly List<AddressProperties> _addresses;
         readonly List<RegisteredIdentifier> _registeredIdentifiers;
         readonly List<PartyAuthentication> _partyAuthentications;
         readonly HashSet<PartyRole> _roles;
@@ -66,9 +66,7 @@ namespace WmcSoft.Business.PartyModel
         #endregion
 
         public PartyIdentifier Identifier {
-            get {
-                return _identifier;
-            }
+            get { return _identifier; }
         }
 
         public ICollection<RegisteredIdentifier> RegisteredIdentifiers {
@@ -106,9 +104,9 @@ namespace WmcSoft.Business.PartyModel
             }
         }
 
-        //public ICollection<AddressProperties> Addresses {
-        //    get { return _addresses; }
-        //}
+        public ICollection<AddressProperties> Addresses {
+            get { return _addresses; }
+        }
 
         public ICollection<PartyRole> Roles {
             get { return _roles; }
