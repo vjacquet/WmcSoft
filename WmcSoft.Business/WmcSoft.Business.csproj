@@ -48,10 +48,16 @@
     <Compile Include="Business\PartyModel\AddressBase.cs" />
     <Compile Include="Business\PartyModel\AddressProperties.cs" />
     <Compile Include="Business\PartyModel\BodyMetrics.cs" />
+    <Compile Include="Business\PartyModel\Company.cs" />
+    <Compile Include="Business\PartyModel\CompanyGroup.cs" />
     <Compile Include="Business\PartyModel\EMailAddress.cs" />
     <Compile Include="Business\PartyModel\Ethnicity.cs" />
     <Compile Include="Business\PartyModel\Gender.cs" />
     <Compile Include="Business\PartyModel\GeographicAddress.cs" />
+    <Compile Include="Business\PartyModel\Organization.cs" />
+    <Compile Include="Business\PartyModel\OrganizationalNameUse.cs" />
+    <Compile Include="Business\PartyModel\OrganizationName.cs" />
+    <Compile Include="Business\PartyModel\OrganizationUnit.cs" />
     <Compile Include="Business\PartyModel\Party.cs" />
     <Compile Include="Business\PartyModel\PartyAuthentification.cs" />
     <Compile Include="Business\PartyModel\PartyIdentifier.cs" />
