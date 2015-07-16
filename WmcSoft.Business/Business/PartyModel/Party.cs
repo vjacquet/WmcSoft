@@ -45,7 +45,7 @@ namespace WmcSoft.Business.PartyModel
         readonly List<RegisteredIdentifier> _registeredIdentifiers;
         readonly List<PartyAuthentication> _partyAuthentications;
         readonly HashSet<PartyRole> _roles;
-        //WeightedPreferenceCollection _preferences;
+        WeightedPreferenceCollection _preferences;
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace WmcSoft.Business.PartyModel
         }
 
         protected Party(PartyIdentifier identifier) {
-            //_addresses = new List<AddressProperties>();
+            _addresses = new List<AddressProperties>();
             _registeredIdentifiers = new List<RegisteredIdentifier>();
             _partyAuthentications = new List<PartyAuthentication>();
             _identifier = identifier;
@@ -112,17 +112,17 @@ namespace WmcSoft.Business.PartyModel
             get { return _roles; }
         }
 
-        //public WeightedPreferenceCollection Preferences {
-        //    get {
-        //        if (_preferences == null) {
-        //            lock (_identifier) {
-        //                if (_preferences == null) {
-        //                    _preferences = new WeightedPreferenceCollection();
-        //                }
-        //            }
-        //        }
-        //        return _preferences;
-        //    }
-        //}
+        public WeightedPreferenceCollection Preferences {
+            get {
+                if (_preferences == null) {
+                    lock (_identifier) {
+                        if (_preferences == null) {
+                            _preferences = new WeightedPreferenceCollection();
+                        }
+                    }
+                }
+                return _preferences;
+            }
+        }
     }
 }

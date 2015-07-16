@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Business.PartyModel.PartyRole">
+    <Position X="5.25" Y="2.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="WmcSoft.Business.PartyModel.PartyRole.UniqueIdentifierEqualityComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Business\PartyModel\PartyRole.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAFgAAgAAAAAgAQAAFAAAAAAAAAARAYAAAQ=</HashCode>
+      <FileName>Business\PartyModel\PartyRole.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identifier" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartyRoleIdentifier" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PartyRoleIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartyRelationship">
+    <Position X="1.75" Y="2" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAABQAAEgAMAAAAAAAAQAAAAAAAAAAAAABAAAAAQ=</HashCode>
+      <FileName>Business\PartyModel\PartyRelationship.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+      <Property Name="Supplier" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Responsability">
+    <Position X="2" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\Responsability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartyRelationshipConstraintAttribute">
+    <Position X="10.5" Y="2.75" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAgAAAAAAAAACIAAAAAAAAAAAAAAAAAAQAAQ=</HashCode>
+      <FileName>Business\PartyModel\PartyRelationshipConstraintAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartyRoleConstraintAttribute">
+    <Position X="10.5" Y="5.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQBAAAAIAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PartyRoleConstraintAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartySignature">
+    <Position X="8.75" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAACAoIAAAAAAAAAAAQEAAAAACAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PartySignature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.AssignedResponsability">
+    <Position X="5.25" Y="6" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAAEAAAAAAgAAEAACAAAAQAAAAAAAAAAAAAEAAAAAE=</HashCode>
+      <FileName>Business\PartyModel\AssignedResponsability.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Responsability" />
+      <Property Name="Signature" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

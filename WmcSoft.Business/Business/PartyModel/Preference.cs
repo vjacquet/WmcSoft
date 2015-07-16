@@ -24,20 +24,53 @@
 
 #endregion
 
-using System;
+using System.Collections.Generic;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// A short description of what the name is used for.
+    /// Represents a Party's expressed choice of (or liking for) something,
+    /// often from a set of possible or offered options.
     /// </summary>
-    [Flags]
-    public enum PersonNameUse
+    public abstract class Preference
     {
-        None,
-        LegalName = 0x0001,
-        StageName = 0x0002,
-        Alias = 0x0004,
-        MaidenName = 0x0008,
+        #region Fields
+
+        private readonly string _name;
+        private readonly string _description;
+
+        #endregion
+
+        #region Lifecycle
+        
+        protected Preference(string name, string description) {
+            _name = name;
+            _description = description;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string OptionName {
+            get { return _name; }
+        }
+
+        public string OptionDescription {
+            get { return _description; }
+        }
+
+        #endregion
+
+        #region Overridables
+
+        public abstract string Name { get; }
+
+        public abstract string Description { get; }
+
+        public abstract IEnumerable<Preference> Options { get; }
+
+        #endregion
     }
+
 }

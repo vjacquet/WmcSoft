@@ -47,6 +47,7 @@
     <Compile Include="Business\IUniqueIdentifier.cs" />
     <Compile Include="Business\PartyModel\AddressBase.cs" />
     <Compile Include="Business\PartyModel\AddressProperties.cs" />
+    <Compile Include="Business\PartyModel\AssignedResponsability.cs" />
     <Compile Include="Business\PartyModel\BodyMetrics.cs" />
     <Compile Include="Business\PartyModel\Company.cs" />
     <Compile Include="Business\PartyModel\CompanyGroup.cs" />
@@ -66,9 +67,11 @@
     <Compile Include="Business\PartyModel\PartyRole.cs" />
     <Compile Include="Business\PartyModel\PartyRoleConstraintAttribute.cs" />
     <Compile Include="Business\PartyModel\PartyRoleIdentifier.cs" />
+    <Compile Include="Business\PartyModel\PartySignature.cs" />
     <Compile Include="Business\PartyModel\Person.cs" />
     <Compile Include="Business\PartyModel\PersonName.cs" />
     <Compile Include="Business\PartyModel\PersonNameUse.cs" />
+    <Compile Include="Business\PartyModel\Preference.cs" />
     <Compile Include="Business\PartyModel\RegisteredIdentifier.cs" />
     <Compile Include="Business\PartyModel\Responsability.cs" />
     <Compile Include="Business\PartyModel\ResponsabilityAttribute.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Business\PartyModel\TelecomAddress.cs" />
     <Compile Include="Business\PartyModel\TelecomPhysicalType.cs" />
     <Compile Include="Business\PartyModel\WebPageAddress.cs" />
+    <Compile Include="Business\PartyModel\WeightedPreferenceCollection.cs" />
     <Compile Include="Business\RegistrationPolicy.cs" />
     <Compile Include="Business\PartyModel\UniqueIdentifierEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,6 +111,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Business\PartyModel\PartyModel.cd" />
+    <None Include="Business\PartyModel\PartyRoleModel.cd" />
     <None Include="Security\SecurityDiagram.cd" />
   </ItemGroup>
   <ItemGroup />

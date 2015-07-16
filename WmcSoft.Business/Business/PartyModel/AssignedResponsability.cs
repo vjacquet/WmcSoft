@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -29,15 +29,51 @@ using System;
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// A short description of what the name is used for.
+    /// Represents an instance of a Responsability assigned to a specific PartyRole.
     /// </summary>
-    [Flags]
-    public enum PersonNameUse
+    public class AssignedResponsability : ITemporal
     {
-        None,
-        LegalName = 0x0001,
-        StageName = 0x0002,
-        Alias = 0x0004,
-        MaidenName = 0x0008,
+        #region Fields
+
+        readonly Responsability _responsability;
+        readonly PartySignature _signature;
+
+        #endregion
+
+        #region Lifecycle
+
+        public AssignedResponsability(Responsability responsability, PartySignature signature) {
+            _responsability = responsability;
+            _signature = signature;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string Name {
+            get { return _responsability.Name; }
+        }
+
+        public string Description {
+            get { return _responsability.Description; }
+        }
+
+        public Responsability Responsability {
+            get { return _responsability; }
+        }
+        public PartySignature Signature {
+            get { return _signature; }
+        }
+
+        #endregion
+
+        #region ITemporal Members
+
+        public DateTime ValidSince { get; set; }
+
+        public DateTime? ValidUntil { get; set; }
+
+        #endregion
     }
 }

@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Business.PartyModel.AddressBase">
+    <Position X="12.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAEAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\AddressBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.679" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.CompanyGroup">
+    <Position X="4.25" Y="10" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\CompanyGroup.cs</FileName>
+      <NewMemberFileName>PartyModel\Company.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Companies" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Organization">
+    <Position X="5.25" Y="6.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAIAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\Organization.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OrganizationName" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Party">
+    <Position X="6.5" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAJAAAABAAAgAAAIAAAAgAQAAwAAAAAAAAAJQAAQAEA=</HashCode>
+      <FileName>Business\PartyModel\Party.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identifier" />
+      <Property Name="Preferences" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="RegisteredIdentifiers" />
+      <Property Name="PartyAuthentications" />
+      <Property Name="Addresses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Person">
+    <Position X="8.75" Y="6.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAACAAAAIAAAgAAAQQAAgAAAAAAAAAgA=</HashCode>
+      <FileName>Business\PartyModel\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PersonName" />
+      <Property Name="Gender" />
+      <Property Name="Ethnicity" />
+      <Property Name="BodyMetrics" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OtherPersonNames" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.OrganizationUnit">
+    <Position X="6.5" Y="8.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\OrganizationUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartyIdentifier" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PartyIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.177" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.EMailAddress">
+    <Position X="9.25" Y="10.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\EMailAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.GeographicAddress">
+    <Position X="11.5" Y="10.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAIAAAAAIAAAACAAAEAAAQEAA=</HashCode>
+      <FileName>Business\PartyModel\GeographicAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.TelecomAddress">
+    <Position X="14" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAkAAAAAAAAAEAAAAAAAAAAAQACAAAAAAAAAAE=</HashCode>
+      <FileName>Business\PartyModel\TelecomAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.WebPageAddress">
+    <Position X="16.25" Y="10.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\WebPageAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PersonName">
+    <Position X="11.25" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAgAAAAAAAAAUAAACAAAAAAAAACAAEQAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PersonName.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.RegisteredIdentifier">
+    <Position X="6.5" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAIAAAAgAAAAAAAAAAAAAAAUBAAAAA=</HashCode>
+      <FileName>Business\PartyModel\RegisteredIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Ethnicity" Collapsed="true">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAgAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\Ethnicity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartySignature">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAACAoIAAAAAAAAAAAQEAAAAACAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PartySignature.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PartyIdentifier" />
+      <Property Name="Authentication" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.PartyAuthentication">
+    <Position X="3.5" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\PartyAuthentification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.AddressProperties">
+    <Position X="12.25" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAACAAAAAEAAAAA=</HashCode>
+      <FileName>Business\PartyModel\AddressProperties.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.OrganizationName">
+    <Position X="2.25" Y="6.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\OrganizationName.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Preference">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAgAAAEAAAAAAQAAAAAAAAAAAAGAABAAAA=</HashCode>
+      <FileName>Business\PartyModel\Preference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.WeightedPreferenceCollection">
+    <Position X="9.25" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACIAAQAASCRAAAAACIAABAAAAAAAAQAAIEAEgEJEAAA=</HashCode>
+      <FileName>Business\PartyModel\WeightedPreferenceCollection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Options" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.Company" Collapsed="true">
+    <Position X="4.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\Company.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.BodyMetrics" Collapsed="true">
+    <Position X="8.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAABgAAAAgAAAABQAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\BodyMetrics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="WmcSoft.Business.IUniqueIdentifier&lt;T&gt;" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\IUniqueIdentifier.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="WmcSoft.Business.PartyModel.OrganizationalNameUse" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Business\PartyModel\OrganizationalNameUse.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Business.PartyModel.Gender" Collapsed="true">
+    <Position X="7" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Business\PartyModel\Gender.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Business.PartyModel.TelecomPhysicalType" Collapsed="true">
+    <Position X="15.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgEAAAAAAAABAAAAAAAAAAAAAAAAAIAAAQAA=</HashCode>
+      <FileName>Business\PartyModel\TelecomPhysicalType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Business.PartyModel.PersonNameUse" Collapsed="true">
+    <Position X="15.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAIAAAAAAAAgAAAAAAAEAAAA=</HashCode>
+      <FileName>Business\PartyModel\PersonNameUse.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
