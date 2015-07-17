@@ -60,5 +60,13 @@ namespace WmcSoft.Business.PartyModel
         public DateTime? ValidUntil { get; set; }
 
         #endregion
+
+        #region Overrides
+
+        public override string ToString() {
+            return Name ?? base.ToString();
+        }
+
+        #endregion
     }
 }

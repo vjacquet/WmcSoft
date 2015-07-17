@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -37,14 +36,19 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Fields
 
-        Collection<OrganizationName> _otherOrganizationNames;
+        List<OrganizationName> _otherOrganizationNames;
 
         #endregion
 
         #region Lifecycle
 
         public Organization() {
-            _otherOrganizationNames = new Collection<OrganizationName>();
+            _otherOrganizationNames = new List<OrganizationName>();
+        }
+
+        public Organization(string name)
+            : this() {
+            OrganizationName = new OrganizationName(name);
         }
 
         #endregion

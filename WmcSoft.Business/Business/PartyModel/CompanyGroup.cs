@@ -46,6 +46,10 @@ namespace WmcSoft.Business.PartyModel
         public CompanyGroup() {
             _companies = new List<Company>();
         }
+        protected CompanyGroup(string name)
+            : base(name) {
+            _companies = new List<Company>();
+        }
 
         #endregion
 
