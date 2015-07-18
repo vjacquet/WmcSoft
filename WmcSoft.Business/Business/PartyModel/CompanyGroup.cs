@@ -46,8 +46,8 @@ namespace WmcSoft.Business.PartyModel
         public CompanyGroup() {
             _companies = new List<Company>();
         }
-        protected CompanyGroup(string name)
-            : base(name) {
+        protected CompanyGroup(string organizationName)
+            : base(organizationName) {
             _companies = new List<Company>();
         }
 

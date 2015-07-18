@@ -43,8 +43,8 @@ namespace WmcSoft.Business.PartyModel
 
         protected OrganizationUnit() {
         }
-        protected OrganizationUnit(string name)
-            : base(name) {
+        protected OrganizationUnit(string organizationName)
+            : base(organizationName) {
         }
 
         #endregion

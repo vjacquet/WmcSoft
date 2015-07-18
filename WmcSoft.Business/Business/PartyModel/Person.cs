@@ -47,6 +47,13 @@ namespace WmcSoft.Business.PartyModel
             _otherPersonNames = new List<PersonName>();
         }
 
+        public Person(string preferredName)
+            : this() {
+            PersonName = new PersonName {
+                PreferredName = preferredName
+            };
+        }
+
         #endregion
 
         #region Properties

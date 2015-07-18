@@ -36,8 +36,8 @@ namespace WmcSoft.Business.PartyModel
     {
         public Company() {
         }
-        public Company(string name)
-            : base(name) {
+        public Company(string organizationName)
+            : base(organizationName) {
         }
     }
 }
