@@ -42,5 +42,22 @@ namespace WmcSoft.Business.PartyModel
             //}
             return isTypeCompatible;
         }
+
+        public static R AddRole<R>(this Party party) where R : PartyRole {
+            var role = (R)Activator.CreateInstance(typeof(R), party);
+            return role;
+        }
+
+        public static R EnsureRole<R>(this Party party) where R : PartyRole {
+            var role = party.Roles.OfType<R>().FirstOrDefault();
+            if (role == null)
+                role = party.AddRole<R>();
+            return role;
+        }
+
+        public static bool HasRole<R>(this Party party) where R : PartyRole {
+            var role = party.Roles.OfType<R>().FirstOrDefault();
+            return role != null;
+        }
     }
 }

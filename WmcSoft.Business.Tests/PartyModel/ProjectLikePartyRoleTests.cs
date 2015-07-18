@@ -47,6 +47,10 @@ namespace WmcSoft.Business.PartyModel
             var clearViewTraining = CreateCompany("clearViewTraining");
             var interactiveObjects = CreateCompany("interactiveObjects");
 
+            Assert.IsTrue(clearViewTraining.CanCollaborateOn(jointProject));
+            Assert.IsFalse(jim.CanCollaborateOn(jointProject));
+            Assert.IsTrue(interactiveObjects.CanCollaborateOn(jointProject));
+
             clearViewTraining.CollaborateOn(jointProject);
             interactiveObjects.CollaborateOn(jointProject);
 
@@ -54,6 +58,11 @@ namespace WmcSoft.Business.PartyModel
             clearViewTraining.Employs(ila, new Director(ila));
             interactiveObjects.Employs(richard, new Director(richard));
             interactiveObjects.Employs(ronald, new Employee(ronald));
+
+            Assert.IsTrue(jim.HasRole<ProjectManager>());
+            Assert.IsTrue(jim.HasRole<Employee>());
+            Assert.IsTrue(jim.HasRole<Director>());
+            Assert.IsFalse(ronald.HasRole<Director>());
         }
     }
 }

@@ -8,16 +8,8 @@ namespace WmcSoft.Business.PartyModel
 {
     public static class BusinessExtensions
     {
-        public static R AddRole<R>(this Party party) where R : PartyRole {
-            R role = (R)Activator.CreateInstance(typeof(R), party);
-            return role;
-        }
-
-        public static R EnsureRole<R>(this Party party) where R : PartyRole {
-            R role = party.Roles.OfType<R>().FirstOrDefault();
-            if (role == null)
-                role = party.AddRole<R>();
-            return role;
+        public static bool CanCollaborateOn(this Party party, PartyRole role) {
+            return party is Organization && role is JointProject;
         }
 
         public static Collaboration CollaborateOn(this Organization organization, JointProject project) {
