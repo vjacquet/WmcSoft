@@ -58,16 +58,17 @@ namespace WmcSoft.Business.PartyModel
 
 
         private void CheckConstraints(PartyRole client, PartyRole supplier) {
-            var constraints = GetConstraints(GetType()).GetEnumerator();
-            if (constraints.MoveNext()) {
-                // if I have constraints, at least one should fit.
-                do {
-                    if (constraints.Current.CanFormRelationship(client, supplier))
-                        return;
-                }
-                while (constraints.MoveNext());
+            using (var constraints = GetConstraints(GetType()).GetEnumerator()) {
+                if (constraints.MoveNext()) {
+                    // if I have constraints, at least one should fit.
+                    do {
+                        if (constraints.Current.CanFormRelationship(client, supplier))
+                            return;
+                    }
+                    while (constraints.MoveNext());
 
-                throw new InvalidOperationException();
+                    throw new InvalidOperationException();
+                }
             }
             // no constraints, so ok
         }

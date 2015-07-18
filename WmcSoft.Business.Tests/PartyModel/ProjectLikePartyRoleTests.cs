@@ -63,6 +63,8 @@ namespace WmcSoft.Business.PartyModel
             Assert.IsTrue(jim.HasRole<Employee>());
             Assert.IsTrue(jim.HasRole<Director>());
             Assert.IsFalse(ronald.HasRole<Director>());
+
+            Assert.IsTrue(jim.HasRole<ProjectManager>(project));
         }
     }
 }

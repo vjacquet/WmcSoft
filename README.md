@@ -28,6 +28,10 @@ _Library of units and quantities._
 ## WmcSoft.Business
 _Library of components to build business applications._
 
+- Security
+
+- Party, PartyRoles & PartyRelationship
+
 ## WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._
 

@@ -51,6 +51,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="PartyModel\BusinessExtensions.cs" />
+    <Compile Include="PartyModel\FamilyLikeModel.cs" />
+    <Compile Include="PartyModel\FamilyLikePartyRoleTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PartyModel\ProjectLikePartyRoleTests.cs" />
     <Compile Include="PartyModel\PartyTests.cs" />
     <Compile Include="PartyModel\ProjectLikeModel.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="Security\Todo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PartyModel\FamilyLikeModel.cd" />
     <None Include="PartyModel\ProjectLikeModel.cd" />
   </ItemGroup>
   <ItemGroup>
