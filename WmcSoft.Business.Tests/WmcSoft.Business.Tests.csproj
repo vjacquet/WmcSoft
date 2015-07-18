@@ -50,7 +50,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PartyModel\BusinessExtensions.cs" />
+    <Compile Include="PartyModel\ProjectLikePartyRoleTests.cs" />
     <Compile Include="PartyModel\PartyTests.cs" />
+    <Compile Include="PartyModel\ProjectLikeModel.cs" />
+    <Compile Include="PartyModel\SimplePartyRelationship.cs" />
+    <Compile Include="PartyModel\SimplePartyRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Command.cs" />
     <Compile Include="Security\Groups.cs" />
@@ -61,7 +66,9 @@
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="PartyModel\ProjectLikeModel.cd" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Business\WmcSoft.Business.csproj">
       <Project>{c14575be-b757-4e41-9eed-eabd5bd28f1e}</Project>

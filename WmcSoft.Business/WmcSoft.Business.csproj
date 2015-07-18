@@ -61,11 +61,17 @@
     <Compile Include="Business\PartyModel\OrganizationUnit.cs" />
     <Compile Include="Business\PartyModel\Party.cs" />
     <Compile Include="Business\PartyModel\PartyAuthentification.cs" />
+    <Compile Include="Business\PartyModel\PartyExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Business\PartyModel\PartyIdentifier.cs" />
     <Compile Include="Business\PartyModel\PartyRelationship.cs" />
     <Compile Include="Business\PartyModel\PartyRelationshipConstraintAttribute.cs" />
     <Compile Include="Business\PartyModel\PartyRole.cs" />
     <Compile Include="Business\PartyModel\PartyRoleConstraintAttribute.cs" />
+    <Compile Include="Business\PartyModel\PartyRoleExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Business\PartyModel\PartyRoleIdentifier.cs" />
     <Compile Include="Business\PartyModel\PartySignature.cs" />
     <Compile Include="Business\PartyModel\Person.cs" />
