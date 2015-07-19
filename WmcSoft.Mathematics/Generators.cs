@@ -275,7 +275,7 @@ namespace WmcSoft
         }
 
         public static IEnumerable<IReadOnlyList<T>> Permutations<T>(params T[] values) {
-            // Adapted from Knuth, AoCP, Vol 4A, Page 329, Algorithm G
+            // Adapted from Knuth, TAoCP, Vol 4A, Page 329, Algorithm G
             var n = values.Length;
             var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
             var a = Generators.Iota().ToArray(n);

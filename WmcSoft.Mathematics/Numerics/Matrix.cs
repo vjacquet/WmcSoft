@@ -130,7 +130,7 @@ namespace WmcSoft.Numerics
         /// </summary>
         /// <param name="row">The vector used as the first row.</param>
         /// <returns>The Vandermonde's matrix.</returns>
-        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Vandermonde(Vector row) {
             var n = row.Cardinality;
             var result = new Matrix(n, n);
@@ -155,7 +155,7 @@ namespace WmcSoft.Numerics
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
         /// <returns>The combinatorial matrix.</returns>
-        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Combinatorial(int n, double x, double y) {
             var result = new Matrix(n, n, y);
             var data = result._storage.data;
@@ -174,7 +174,7 @@ namespace WmcSoft.Numerics
         /// <param name="y">Second parameter.</param>
         /// <param name="op">The combination function.</param>
         /// <returns>The combinatorial matrix.</returns>
-        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Combinatorial(int n, double x, double y, Func<double, double, double> op) {
             if (op == null)
                 throw new ArgumentNullException("op");
@@ -210,7 +210,7 @@ namespace WmcSoft.Numerics
         /// <param name="x">The first vector</param>
         /// <param name="y">The second vector</param>
         /// <returns>The Cauchy's matrix.</returns>
-        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Cauchy(Vector x, Vector y) {
             var n = MaximizeCardinalities(ref x, ref y);
             return new Matrix(n, n, (i, j) => 1d / (x[i] + y[j]));
@@ -223,7 +223,7 @@ namespace WmcSoft.Numerics
         /// <param name="y">The second vector</param>
         /// <param name="op">The combination function.</param>
         /// <returns>The Cauchy's matrix.</returns>
-        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Cauchy(Vector x, Vector y, Func<double, double, double> op) {
             if (op == null)
                 throw new ArgumentNullException("op");
