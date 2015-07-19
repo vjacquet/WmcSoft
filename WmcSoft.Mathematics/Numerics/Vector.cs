@@ -64,6 +64,11 @@ namespace WmcSoft.Numerics
             _data = (double[])values.Clone();
         }
 
+        public Vector(int n, double[] values) {
+            _data = new double[n];
+            Array.Copy(values, _data, Math.Min(n, values.Length));
+        }
+
         #endregion
 
         #region Properties

@@ -125,6 +125,113 @@ namespace WmcSoft.Numerics
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Creates a Vandermonde's matrix.
+        /// </summary>
+        /// <param name="row">The vector used as the first row.</param>
+        /// <returns>The Vandermonde's matrix.</returns>
+        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        public static Matrix Vandermonde(Vector row) {
+            var n = row.Cardinality;
+            var result = new Matrix(n, n);
+            var data = result._storage.data;
+            var length = data.Length;
+
+            for (int i = 0; i < n; i++)
+                data[i] = row[i];
+
+            for (var j = n; j < length; j += n) {
+                for (int i = 0; i < n; i++)
+                    data[j + i] = data[j - n + i] * row[i];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a combinatorial matrix.
+        /// </summary>
+        /// <param name="n">Dimension</param>
+        /// <param name="x">First parameter.</param>
+        /// <param name="y">Second parameter.</param>
+        /// <returns>The combinatorial matrix.</returns>
+        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        public static Matrix Combinatorial(int n, double x, double y) {
+            var result = new Matrix(n, n, y);
+            var data = result._storage.data;
+            var length = data.Length;
+            for (int i = 0; i < length; i += n + 1) {
+                result._storage.data[i] = x + y;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a combinatorial matrix.
+        /// </summary>
+        /// <param name="n">Dimension</param>
+        /// <param name="x">First parameter.</param>
+        /// <param name="y">Second parameter.</param>
+        /// <param name="op">The combination function.</param>
+        /// <returns>The combinatorial matrix.</returns>
+        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        public static Matrix Combinatorial(int n, double x, double y, Func<double, double, double> op) {
+            if (op == null)
+                throw new ArgumentNullException("op");
+
+            var result = new Matrix(n, n, y);
+            var data = result._storage.data;
+            var length = data.Length;
+            for (int i = 0; i < length; i += n + 1) {
+                result._storage.data[i] = op(x, y);
+            }
+            return result;
+        }
+
+        static int MaximizeCardinalities(ref Vector x, ref Vector y) {
+            var n = x.Cardinality;
+            var m = y.Cardinality;
+
+            if (n == m)
+                return n;
+
+            if (n < m) {
+                x = new Vector(m, (double[])x);
+                return m;
+            }
+
+            y = new Vector(n, (double[])y);
+            return n;
+        }
+
+        /// <summary>
+        /// Creates a Cauchy's matrix.
+        /// </summary>
+        /// <param name="x">The first vector</param>
+        /// <param name="y">The second vector</param>
+        /// <returns>The Cauchy's matrix.</returns>
+        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        public static Matrix Cauchy(Vector x, Vector y) {
+            var n = MaximizeCardinalities(ref x, ref y);
+            return new Matrix(n, n, (i, j) => 1d / (x[i] + y[j]));
+        }
+
+        /// <summary>
+        /// Creates a Cauchy's matrix.
+        /// </summary>
+        /// <param name="x">The first vector</param>
+        /// <param name="y">The second vector</param>
+        /// <param name="op">The combination function.</param>
+        /// <returns>The Cauchy's matrix.</returns>
+        /// <remarks>See Knuth's AoCP, Vol 1, Page 37.</remarks>
+        public static Matrix Cauchy(Vector x, Vector y, Func<double, double, double> op) {
+            if (op == null)
+                throw new ArgumentNullException("op");
+
+            var n = MaximizeCardinalities(ref x, ref y);
+            return new Matrix(n, n, (i, j) => op(x[i], y[j]));
+        }
+
         #endregion
 
         #region Properties
@@ -163,8 +270,8 @@ namespace WmcSoft.Numerics
         #region Operators
 
         public static explicit operator double[,](Matrix x) {
-            if( x._storage == null)
-                return new double[0,0];
+            if (x._storage == null)
+                return new double[0, 0];
             var result = new double[x._storage.m, x._storage.n];
             var m = x._storage.m;
             var n = x._storage.n;
