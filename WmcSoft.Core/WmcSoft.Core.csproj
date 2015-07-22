@@ -107,6 +107,7 @@
     <Compile Include="Diagnostics\TraceIndent.cs" />
     <Compile Include="Diagnostics\TraceSession.cs" />
     <Compile Include="DirectoryServices\DirectoryServicesExtensions.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="DisposableStack.cs" />
     <Compile Include="Disposer.cs" />
     <Compile Include="ActionExtensions.cs" />

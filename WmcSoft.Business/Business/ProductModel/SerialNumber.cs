@@ -57,7 +57,7 @@ namespace WmcSoft.Business.ProductModel
 
         #region IUniqueIdentifier<string> Members
 
-        public string Identifier {
+        public string Id {
             get { return _serialNumber; }
         }
 

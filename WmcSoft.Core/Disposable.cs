@@ -26,22 +26,20 @@
 
 using System;
 
-namespace WmcSoft.Business
+namespace WmcSoft
 {
-    /// <summary>
-    /// Provides properties useful to define validity dates on a Business entity.
-    /// </summary>
-    public interface ITemporal
+    public static class Disposable
     {
-        DateTime ValidSince { get; set; }
-        DateTime? ValidUntil { get; set; }
-    }
+        class EmptyDisposable : IDisposable
+        {
+            #region IDisposable Membres
 
-    public static class ITemporalExtensions
-    {
-        public static bool IsValidOn(ITemporal self, DateTime dateTime) {
-            return dateTime >= self.ValidSince && (self.ValidUntil == null ||  dateTime < self.ValidUntil.GetValueOrDefault());
-        }
-    }
+            void IDisposable.Dispose() {
+            }
 
+            #endregion
+        };
+
+        public static readonly IDisposable Empty = new EmptyDisposable();
+    }
 }

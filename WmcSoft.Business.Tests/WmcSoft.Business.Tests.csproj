@@ -61,6 +61,7 @@
     <Compile Include="PartyModel\SimplePartyRelationship.cs" />
     <Compile Include="PartyModel\SimplePartyRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangeTests.cs" />
     <Compile Include="Security\Command.cs" />
     <Compile Include="Security\Groups.cs" />
     <Compile Include="Security\Permissions.cs" />

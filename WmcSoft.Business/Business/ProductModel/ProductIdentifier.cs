@@ -50,7 +50,7 @@ namespace WmcSoft.Business.ProductModel
 
         #region Membres de IUniqueIdentifier
 
-        public Guid Identifier {
+        public Guid Id {
             get { return _identifier; }
         }
 

@@ -32,6 +32,22 @@ namespace WmcSoft
 {
     public static class DelegateExtensions
     {
+        static readonly Action<Delegate, object[]> wrapper = new Action<Delegate, object[]>((d, args) => d.DynamicInvoke(args));
+
+        static readonly AsyncCallback callback = new AsyncCallback((ar) => {
+            using (ar.AsyncWaitHandle ?? Disposable.Empty) {
+                wrapper.EndInvoke(ar);
+            }
+        });
+
+        /// <summary>
+        /// Executes the specified delegate with the specified arguments
+        /// asynchronously on a thread pool thread.
+        /// </summary>
+        public static void InvokeAsyncAndForget(this Delegate d, params object[] args) {
+            wrapper.BeginInvoke(d, args, callback, null);
+        }
+
         public static IEnumerable<Delegate> GetInvocationList(this Delegate self, Predicate<Delegate> predicate) {
             return self.GetInvocationList().Where(d => predicate(d));
         }
