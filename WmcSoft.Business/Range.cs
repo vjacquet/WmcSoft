@@ -41,7 +41,7 @@ namespace WmcSoft
     /// <typeparam name="T"></typeparam>
     [Serializable]
     [ImmutableObject(true)]
-    public class Range<T> :
+    public struct Range<T> :
         IComparable,
         IComparable<Range<T>>,
         IEquatable<Range<T>>
@@ -82,11 +82,6 @@ namespace WmcSoft
 
             this.lower = lower;
             this.upper = upper;
-        }
-
-        public Range() {
-            this.lower = default(T);
-            this.upper = this.lower;
         }
 
         #endregion
@@ -223,12 +218,10 @@ namespace WmcSoft
         /// <param name="other">A range to compare with this range.</param>
         /// <returns>true if the current range is equal to the other parameter; otherwise, false.</returns>
         public override bool Equals(object obj) {
-            Range<T> other = obj as Range<T>;
-            if (other != null) {
-                return Equals(other);
-            } else {
+            if (obj == null || obj.GetType() != typeof(Range<T>))
                 return false;
-            }
+            var other = (Range<T>)obj;
+            return Equals(other);
         }
 
         #endregion
@@ -307,11 +300,11 @@ namespace WmcSoft
         /// <param name="obj">An object to compare with this instance. </param>
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
         int IComparable.CompareTo(object obj) {
-            Range<T> range = obj as Range<T>;
-            if (range != null)
-                return CompareTo(range);
-            else
-                throw new ArgumentException("obj");
+            if (obj == null || obj.GetType() != typeof(Range<T>))
+                return 1;
+
+            var range = (Range<T>)obj;
+            return CompareTo(range);
         }
 
         #endregion

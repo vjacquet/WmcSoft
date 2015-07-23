@@ -61,9 +61,8 @@ namespace WmcSoft.Business.PartyModel
         }
 
         public static bool HasRole<R>(this Party party, Party other) where R : PartyRole {
-            var role = party.Roles.OfType<R>().Any(r => r.Relationships.Any(rs => rs.Client.Party == other));
-            return role != null;
+            var hasRole = party.Roles.OfType<R>().Any(r => r.Relationships.Any(rs => rs.Client.Party == other));
+            return hasRole;
         }
-
     }
 }

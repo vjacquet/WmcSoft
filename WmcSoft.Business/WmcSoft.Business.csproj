@@ -86,9 +86,15 @@
     <Compile Include="Business\PartyModel\TelecomPhysicalType.cs" />
     <Compile Include="Business\PartyModel\WebPageAddress.cs" />
     <Compile Include="Business\PartyModel\WeightedPreferenceCollection.cs" />
+    <Compile Include="Business\ProductModel\Batch.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Business\ProductModel\ProductFeatureInstance.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureType.cs" />
     <Compile Include="Business\ProductModel\ProductIdentifier.cs" />
+    <Compile Include="Business\ProductModel\ProductInstance.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Business\ProductModel\ProductType.cs" />
     <Compile Include="Business\ProductModel\RM.cs" />
     <Compile Include="Business\ProductModel\SerialNumber.cs" />
