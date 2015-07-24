@@ -32,6 +32,8 @@ _Library of components to build business applications._
 
 - Party, PartyRoles & PartyRelationship
 
+- Product, Package
+
 ## WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._
 
