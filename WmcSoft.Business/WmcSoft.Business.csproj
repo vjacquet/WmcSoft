@@ -100,6 +100,9 @@
     <Compile Include="Business\ProductModel\ProductType.cs" />
     <Compile Include="Business\ProductModel\RM.cs" />
     <Compile Include="Business\ProductModel\SerialNumber.cs" />
+    <Compile Include="Business\ProductModel\ServiceInstance.cs" />
+    <Compile Include="Business\ProductModel\ServiceType.cs" />
+    <Compile Include="Business\ProductModel\ServiceDeliveryStatus.cs" />
     <Compile Include="Business\RegistrationPolicy.cs" />
     <Compile Include="Business\PartyModel\UniqueIdentifierEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
