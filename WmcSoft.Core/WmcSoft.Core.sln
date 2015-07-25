@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
 EndProject
@@ -56,6 +56,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business", "..\WmcSoft.Business\WmcSoft.Business.csproj", "{C14575BE-B757-4E41-9EED-EABD5BD28F1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Tests", "..\WmcSoft.Business.Tests\WmcSoft.Business.Tests.csproj", "{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xsv", "..\Tools\xsv\xsv.csproj", "{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "..\Tools\xslt\xslt.csproj", "{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +151,14 @@ Global
 		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,5 +169,7 @@ Global
 		{DDBE4376-E69E-434D-AD99-474E846AB44E} = {55C1E273-4025-4D2E-9E13-21385C65C725}
 		{657D9485-0BD3-438D-A8D6-5FBF6172C1C5} = {55C1E273-4025-4D2E-9E13-21385C65C725}
 		{76382268-17DD-4D92-B3CF-D9C5F8915DBD} = {55C1E273-4025-4D2E-9E13-21385C65C725}
+		{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA} = {55C1E273-4025-4D2E-9E13-21385C65C725}
+		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63} = {55C1E273-4025-4D2E-9E13-21385C65C725}
 	EndGlobalSection
 EndGlobal
