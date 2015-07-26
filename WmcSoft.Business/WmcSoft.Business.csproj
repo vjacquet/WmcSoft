@@ -41,6 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Accounting\Cash.cs" />
+    <Compile Include="Business\Accounting\Check.cs" />
+    <Compile Include="Business\Accounting\CreditCard.cs" />
+    <Compile Include="Business\Accounting\Currency.cs" />
+    <Compile Include="Business\Accounting\DebitCard.cs" />
+    <Compile Include="Business\Accounting\ExchangeRate.cs" />
+    <Compile Include="Business\Accounting\IncompatibleCurrencyException.cs" />
+    <Compile Include="Business\Accounting\Money.cs" />
+    <Compile Include="Business\Accounting\Payment.cs" />
+    <Compile Include="Business\Accounting\PaymentCard.cs" />
+    <Compile Include="Business\Accounting\PaymentMethod.cs" />
+    <Compile Include="Business\Accounting\RM.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\ITemporal.cs" />
@@ -123,6 +135,15 @@
     <Compile Include="Security\User.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Business\Accounting\RM.en-us.resx">
+      <DependentUpon>RM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Business\Accounting\RM.fr.resx">
+      <DependentUpon>RM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Business\Accounting\RM.resx">
+      <DependentUpon>RM.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Business\PartyModel\RM.fr.resx">
       <DependentUpon>RM.cs</DependentUpon>
     </EmbeddedResource>
@@ -141,8 +162,13 @@
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Units\WmcSoft.Units.csproj">
+      <Project>{fd4e34d4-7a77-4908-b135-268abe7d2506}</Project>
+      <Name>WmcSoft.Units</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Business\Accounting\Accounting.cd" />
     <None Include="Business\PartyModel\PartyModel.cd" />
     <None Include="Business\PartyModel\PartyRoleModel.cd" />
     <None Include="Business\ProductModel\ProductModel.cd" />
