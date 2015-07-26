@@ -97,6 +97,8 @@
     <Compile Include="Business\ProductModel\ProductInstance.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Business\ProductModel\ProductRelationship.cs" />
+    <Compile Include="Business\ProductModel\ProductSet.cs" />
     <Compile Include="Business\ProductModel\ProductType.cs" />
     <Compile Include="Business\ProductModel\RM.cs" />
     <Compile Include="Business\ProductModel\SerialNumber.cs" />
@@ -143,6 +145,7 @@
   <ItemGroup>
     <None Include="Business\PartyModel\PartyModel.cd" />
     <None Include="Business\PartyModel\PartyRoleModel.cd" />
+    <None Include="Business\ProductModel\ProductModel.cd" />
     <None Include="Security\SecurityDiagram.cd" />
   </ItemGroup>
   <ItemGroup />

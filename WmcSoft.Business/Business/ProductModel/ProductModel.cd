@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Business.ProductModel.ProductFeatureInstance">
+    <Position X="1.75" Y="4.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAABAAAgAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductFeatureInstance.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ProductFeatureType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ProductRelationship">
+    <Position X="15.25" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAgAMAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+      <Property Name="Supplier" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ProductIdentifier" Collapsed="true">
+    <Position X="11.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.Batch">
+    <Position X="4.5" Y="11.25" Width="3.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Identifier" Type="WmcSoft.Business.ProductModel.ProductIdentifier" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.75" Y="12.188" />
+        <Point X="11.25" Y="12.188" />
+        <Point X="11.25" Y="8.787" />
+        <Point X="11.75" Y="8.787" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAADIQBAACjAQAIAAAAAIAABAAUABQICA=</HashCode>
+      <FileName>Business\ProductModel\Batch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identifier" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.SerialNumber">
+    <Position X="1.75" Y="10" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAQAgACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\SerialNumber.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.UpgradableTo" Collapsed="true">
+    <Position X="14.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.SubstitutedBy" Collapsed="true">
+    <Position X="14.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ReplacedBy" Collapsed="true">
+    <Position X="14.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ComplementedBy" Collapsed="true">
+    <Position X="16.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.CompatibleWith" Collapsed="true">
+    <Position X="16.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.IncompatibleWith" Collapsed="true">
+    <Position X="16.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductRelationship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ProductFeatureType">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductFeatureType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PossibleValues" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.PackageType">
+    <Position X="6" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Business\ProductModel\PackageType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Components" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.PackageInstance">
+    <Position X="9.25" Y="8" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Business\ProductModel\PackageInstance.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Contents" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ProductSet" Collapsed="true">
+    <Position X="11.5" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACoAAAAAAAAAABEQAAAABAQAABAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>Business\ProductModel\ProductSet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ProductReferences" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ProductType">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Identifier" Type="WmcSoft.Business.ProductModel.ProductIdentifier">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.188" Y="2.2" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAgBQAAAAQAgAQAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identifier" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.ProductModel.ProductInstance">
+    <Position X="5.75" Y="8" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="ProductType" Type="WmcSoft.Business.ProductModel.ProductType" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.938" Y="8" />
+        <Point X="6.938" Y="7.449" />
+        <Point X="7.5" Y="7.449" />
+        <Point X="7.5" Y="5.804" />
+        <Point X="8.75" Y="5.804" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SerialNumber" Type="WmcSoft.Business.ProductModel.SerialNumber" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.188" Y="9.94" />
+        <Point X="6.188" Y="10.486" />
+        <Point X="3.25" Y="10.486" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Batch" Type="WmcSoft.Business.ProductModel.Batch" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.688" Y="9.94" />
+        <Point X="6.688" Y="10.156" />
+        <Point X="6.688" Y="10.156" />
+        <Point X="6.688" Y="11.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.827" Y="0.123" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Features" Type="WmcSoft.Business.ProductModel.ProductFeatureInstance" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="9.462" />
+        <Point X="3.343" Y="9.462" />
+        <Point X="3.343" Y="5.93" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AQEAAEAQAAAAAABAAAABAAAAAAEAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Business\ProductModel\ProductInstance.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ProductType" />
+      <Property Name="SerialNumber" />
+      <Property Name="Batch" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Features" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
