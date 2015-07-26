@@ -60,6 +60,8 @@
     <Compile Include="PartyModel\ProjectLikeModel.cs" />
     <Compile Include="PartyModel\SimplePartyRelationship.cs" />
     <Compile Include="PartyModel\SimplePartyRole.cs" />
+    <Compile Include="ProductModel\FurnitureModel.cs" />
+    <Compile Include="ProductModel\FurnitureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />
     <Compile Include="Security\Command.cs" />

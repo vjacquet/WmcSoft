@@ -69,11 +69,11 @@ namespace WmcSoft.Business.ProductModel
             get { return _identifier; }
         }
 
-        public IList<ProductFeatureType> Mandatory {
+        public IList<ProductFeatureType> MandatoryFeatures {
             get { return _mandatory; }
         }
 
-        public IList<ProductFeatureType> Optional {
+        public IList<ProductFeatureType> OptionalFeatures {
             get { return _optional; }
         }
 
