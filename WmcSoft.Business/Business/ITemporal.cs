@@ -33,14 +33,15 @@ namespace WmcSoft.Business
     /// </summary>
     public interface ITemporal
     {
-        DateTime ValidSince { get; set; }
+        DateTime? ValidSince { get; set; }
         DateTime? ValidUntil { get; set; }
     }
 
     public static class ITemporalExtensions
     {
         public static bool IsValidOn(ITemporal self, DateTime dateTime) {
-            return dateTime >= self.ValidSince && (self.ValidUntil == null ||  dateTime < self.ValidUntil.GetValueOrDefault());
+            return (self.ValidSince == null || dateTime >= self.ValidSince.GetValueOrDefault())
+                && (self.ValidUntil == null || dateTime < self.ValidUntil.GetValueOrDefault());
         }
     }
 
