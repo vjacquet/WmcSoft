@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="WmcSoft.Business.RuleModel.Rule">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Rule.cs</FileName>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAgQAAAAEgAAAAAAQAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.RuleOverride" Collapsed="true">
+    <Position X="4.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\RuleOverride.cs</FileName>
+      <HashCode>AAAAAACAACAAgAAgAAAAAAAAAAAAAAgAAAAIAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.Proposition" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Proposition.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAQAAAAEAAAAAAAABADAAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.RuleElement" Collapsed="true">
+    <Position X="5.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\RuleElement.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.RuleRef" Collapsed="true">
+    <Position X="2.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\RuleRef.cs</FileName>
+      <HashCode>AAAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.RuleSet" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\RuleSet.cs</FileName>
+      <HashCode>IgAAACIAAAAAAAAAAAAAAgQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.Variable" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Variable.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABADAAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.Operator" Collapsed="true">
+    <Position X="7" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.And">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.Or">
+    <Position X="8.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.XOr">
+    <Position X="10.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.Not">
+    <Position X="5.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.GreaterThanOrEqualTo">
+    <Position X="9.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <InheritanceLine Type="WmcSoft.Business.RuleModel.Operator" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.75" Y="2.38" />
+        <Point X="7.75" Y="2.558" />
+        <Point X="10.239" Y="2.558" />
+        <Point X="10.239" Y="4" />
+        <Point X="10.25" Y="4" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.LesserThanOrEqualTo">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.LesserThan">
+    <Position X="11.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.EqualTo">
+    <Position X="7.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.NotEqualTo">
+    <Position X="13.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.GreaterThan">
+    <Position X="14.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.RuleModel.RuleContext">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\RuleContext.cs</FileName>
+      <HashCode>IAAAACAAAAAACAAACAgAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="WmcSoft.Business.RuleModel.Operators">
+    <Position X="2.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>RuleModel\Operator.cs</FileName>
+      <HashCode>ICAABAAAAAAAAAAAAAAAoAAAACAAgAAgAAAAIAAgAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

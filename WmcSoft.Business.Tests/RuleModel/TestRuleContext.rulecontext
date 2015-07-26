@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleContext
+	version="1.0" 
+	xsi:noNamespaceSchemaLocation="RuleContext.xsd" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+	<variable name="variable1" value="5" />
+	<variable name="variable2" value="5" />
+	<proposition name="proposition1" value="true" />
+</ruleContext>

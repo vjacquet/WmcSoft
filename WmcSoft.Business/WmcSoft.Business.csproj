@@ -119,6 +119,22 @@
     <Compile Include="Business\ProductModel\ServiceDeliveryStatus.cs" />
     <Compile Include="Business\RegistrationPolicy.cs" />
     <Compile Include="Business\PartyModel\UniqueIdentifierEqualityComparer.cs" />
+    <Compile Include="Business\RuleModel\IRuleEvaluator.cs" />
+    <Compile Include="Business\RuleModel\MissingOperationException.cs" />
+    <Compile Include="Business\RuleModel\Operator.cs" />
+    <Compile Include="Business\RuleModel\Proposition.cs" />
+    <Compile Include="Business\RuleModel\RM.cs" />
+    <Compile Include="Business\RuleModel\Rule.cs" />
+    <Compile Include="Business\RuleModel\RuleContext.cs">
+      <DependentUpon>RuleContext.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Business\RuleModel\RuleElement.cs" />
+    <Compile Include="Business\RuleModel\RuleModelException.cs" />
+    <Compile Include="Business\RuleModel\RuleOverride.cs" />
+    <Compile Include="Business\RuleModel\RuleRef.cs" />
+    <Compile Include="Business\RuleModel\RuleSet.cs" />
+    <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
+    <Compile Include="Business\RuleModel\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Security\AccessControl.cs" />
@@ -156,6 +172,12 @@
     <EmbeddedResource Include="Business\ProductModel\RM.resx">
       <DependentUpon>RM.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Business\RuleModel\RM.resx">
+      <DependentUpon>RM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Business\RuleModel\RuleElement.resx">
+      <DependentUpon>RuleElement.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
@@ -172,9 +194,15 @@
     <None Include="Business\PartyModel\PartyModel.cd" />
     <None Include="Business\PartyModel\PartyRoleModel.cd" />
     <None Include="Business\ProductModel\ProductModel.cd" />
+    <None Include="Business\RuleModel\RuleContext.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Business\RuleModel\RuleModel.cd" />
+    <None Include="Business\RuleModel\RuleModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Security\SecurityDiagram.cd" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

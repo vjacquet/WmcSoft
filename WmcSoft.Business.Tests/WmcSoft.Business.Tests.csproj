@@ -36,6 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -64,6 +66,7 @@
     <Compile Include="ProductModel\FurnitureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />
+    <Compile Include="RuleModel\RuleModelTests.cs" />
     <Compile Include="Security\Command.cs" />
     <Compile Include="Security\Groups.cs" />
     <Compile Include="Security\Permissions.cs" />
@@ -76,6 +79,12 @@
   <ItemGroup>
     <None Include="PartyModel\FamilyLikeModel.cd" />
     <None Include="PartyModel\ProjectLikeModel.cd" />
+    <None Include="RuleModel\TestRuleContext.rulecontext">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="RuleModel\TestRuleModel.rule">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Business\WmcSoft.Business.csproj">
