@@ -35,38 +35,14 @@ namespace WmcSoft.Business.RuleModel
 
         /// <remarks/>
         [XmlAttribute("ref")]
-        public string Reference {
-            get {
-                return this.reference;
-            }
-            set {
-                this.reference = value;
-            }
-        }
-        string reference;
+        public string Reference { get; set; }
 
         /// <remarks/>
         [XmlAttribute("why")]
-        public string Why {
-            get {
-                return this.why;
-            }
-            set {
-                this.why = value;
-            }
-        }
-        string why;
+        public string Why { get; set; }
 
         /// <remarks/>
         [XmlAttribute("when")]
-        public DateTime When {
-            get {
-                return this.when;
-            }
-            set {
-                this.when = value;
-            }
-        }
-        DateTime when;
+        public DateTime When { get; set; }
     }
 }

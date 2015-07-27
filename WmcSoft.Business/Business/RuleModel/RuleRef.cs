@@ -37,16 +37,6 @@ namespace WmcSoft.Business.RuleModel
     {
         /// <remarks/>
         [XmlAttribute("ref")]
-        public string Reference {
-            get {
-                return this.reference;
-            }
-            set {
-                if (this.reference != value) {
-                    this.reference = value;
-                }
-            }
-        }
-        string reference;
+        public string Reference { get; set; }
     }
 }

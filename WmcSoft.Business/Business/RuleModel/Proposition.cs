@@ -37,44 +37,18 @@ namespace WmcSoft.Business.RuleModel
         }
 
         public Proposition(bool value) {
-            this.value = value;
+            Value = value;
         }
 
         /// <remarks/>
         [XmlAttribute("value")]
-        public bool Value {
-            get {
-                return this.value;
-            }
-            set {
-                this.value = value;
-            }
-        }
-        bool value;
+        [DefaultValue(false)]
+        public bool Value { get; set; }
 
         /// <remarks/>
-        [XmlIgnore()]
-        public bool ValueSpecified {
-            get {
-                return valueSpecified;
-            }
-            set {
-                valueSpecified = value;
-            }
-        }
-        bool valueSpecified;
-
-        /// <remarks/>
-        [XmlAttribute("type")]
-        [DefaultValue("Proposition")]
+        [XmlIgnore]
         public override string TypeName {
-            get {
-                return type;
-            }
-            set {
-                //type = value;
-            }
+            get { return "Proposition"; }
         }
-        string type = "Proposition";
     }
 }

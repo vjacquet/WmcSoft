@@ -43,15 +43,8 @@ namespace WmcSoft.Business.RuleModel
     [XmlInclude(typeof(GreaterThan))]
     public class Operator : RuleElement
     {
-        /// <remarks/>
-        [XmlAttribute("type")]
-        [DefaultValue("Operator")]
         public override string TypeName {
-            get {
-                return "Operator";
-            }
-            set {
-            }
+            get { return "Operator"; }
         }
     }
 

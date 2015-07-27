@@ -131,9 +131,9 @@ namespace WmcSoft.Business.RuleModel
                                 throw new UnexpectedElementException();
                             }
                         } else if (element is Proposition) {
-                            _stack.Push(_context[element.Name]);
+                            _stack.Push(_context[element.Name] ?? element);
                         } else if (element is Variable) {
-                            _stack.Push(_context[element.Name]);
+                            _stack.Push(_context[element.Name] ?? element);
                         } else {
                             throw new UnexpectedElementException();
                         }

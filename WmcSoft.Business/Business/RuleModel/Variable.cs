@@ -36,27 +36,12 @@ namespace WmcSoft.Business.RuleModel
     {
         /// <remarks/>
         [XmlAttribute("value")]
-        public string Value {
-            get {
-                return this.value;
-            }
-            set {
-                this.value = value;
-            }
-        }
-        string value;
+        [DefaultValue(null)]
+        public string Value { get; set; }
 
-        /// <remarks/>
-        [XmlAttribute("type")]
-        [DefaultValue("Variable")]
+        [XmlIgnore]
         public override string TypeName {
-            get {
-                return type;
-            }
-            set {
-                //type = value;
-            }
+            get { return "Variable"; }
         }
-        string type = "Variable";
     }
 }
