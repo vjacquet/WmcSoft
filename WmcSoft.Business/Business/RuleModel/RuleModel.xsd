@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="RuleModel" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+<xs:schema id="RuleModel" elementFormDefault="qualified"
+					 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					 xmlns:msprop="urn:schemas-microsoft-com:xml-msprop"
+>
 	<!--
-	targetNamespace="http://tempuri.org/RuleModel.xsd" 
-	xmlns="http://tempuri.org/RuleModel.xsd" 
-	xmlns:mstns="http://tempuri.org/RuleModel.xsd" 
+	targetNamespace="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
+	xmlns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
+	xmlns:mstns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
 -->
 	<xs:element name="ruleSet" type="RuleSet">
 	</xs:element>
-	
+
+	<xs:simpleType name="Version">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d\.\d" />
+		</xs:restriction>
+	</xs:simpleType>
+
 	<xs:complexType name="RuleSet">
 		<xs:sequence>
-			<xs:element name="rule" type="Rule" minOccurs="1" maxOccurs="unbounded" />
+			<xs:element name="rule" type="Rule" minOccurs="1" maxOccurs="unbounded">
+				<xs:unique name="uniqueName">
+					<xs:selector xpath="variable|proposition" />
+					<xs:field xpath="@name" />
+				</xs:unique>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="version" type="xs:string" use="required" />
+		<xs:attribute name="version" type="Version" use="required" />
 		<xs:attribute name="name" type="xs:ID" use="required" />
 	</xs:complexType>
-	
+
 	<xs:complexType name="Rule">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:element name="variable" type="Variable" />
@@ -34,16 +48,16 @@
 		</xs:choice>
 		<xs:attribute name="name" type="xs:ID" />
 	</xs:complexType>
-	
+
 	<xs:complexType name="RuleElement" mixed="false" abstract="true">
-		<xs:attribute name="name" type="xs:ID" use="required" />
+		<xs:attribute name="name" type="xs:Name" use="optional" />
 		<xs:attribute name="type" type="xs:string" use="optional" />
 	</xs:complexType>
-	
+
 	<xs:complexType name="Operator" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="RuleElement">
-				<xs:attribute name="type" type="xs:string" fixed="Operator" />
+				<xs:attribute name="type" fixed="Operator" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
@@ -56,7 +70,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="Proposition" mixed="false">
 		<xs:complexContent>
 			<xs:extension base="RuleElement">
@@ -65,93 +79,90 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="And" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="AND" type="xs:ID" />
+				<xs:attribute name="name" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="Or" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="OR" type="xs:ID" />
+				<xs:attribute name="name" fixed="OR" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="XOr" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="XOR" type="xs:ID" />
+				<xs:attribute name="name" fixed="XOR" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="Not" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="NOT" type="xs:ID" />
+				<xs:attribute name="name" fixed="NOT" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="EqualTo" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="EQUALTO" type="xs:ID" />
+				<xs:attribute name="name" fixed="EQUALTO" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="NotEqualTo" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="NOTEQUALTO" type="xs:ID" />
+				<xs:attribute name="name" fixed="NOTEQUALTO" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="GreaterThan" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="GREATERTHAN" type="xs:ID" />
+				<xs:attribute name="name" fixed="GREATERTHAN" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="LesserThan" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="LESSERTHAN" type="xs:ID" />
+				<xs:attribute name="name" fixed="LESSERTHAN" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="GreaterThanOrEqualTo" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="GREATERTHANOREQUALTO" type="xs:ID" />
+				<xs:attribute name="name" fixed="GREATERTHANOREQUALTO" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 	<xs:complexType name="LesserThanOrEqualTo" mixed="false">
 		<xs:complexContent>
 			<xs:restriction base="Operator">
-				<xs:attribute name="name" fixed="LESSERTHANOREQUALTO" type="xs:ID" />
+				<xs:attribute name="name" fixed="LESSERTHANOREQUALTO" use="prohibited" />
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
-	
-	<xs:element name="rule" type="Rule">
-	</xs:element>
-	
+
 	<xs:complexType name="RuleRef">
 		<xs:sequence>
 		</xs:sequence>
-		<xs:attribute name="ref" type="xs:string" use="required" />
+		<xs:attribute name="ref" type="xs:IDREF" use="required" />
 	</xs:complexType>
 </xs:schema>

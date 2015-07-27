@@ -5,9 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <summary>
-    /// Description résumée de RuleModelTests.
-    /// </summary>
     [TestClass]
     public class RuleModelTests
     {
@@ -31,11 +28,12 @@ namespace WmcSoft.Business.RuleModel
         }
 
         [TestMethod]
-        public void DeserializeRuleModel() {
+        public void CanDeserializeRuleModel() {
             RuleSet ruleSet = DeserializeRuleModel("TestRuleModel.rule");
 
             Assert.IsTrue(ruleSet.Version == "1.0");
             Assert.IsTrue(ruleSet.Name == "ruleSet1");
+            Assert.AreEqual(2, ruleSet.Rules.Length);
         }
 
         RuleContext DeserializeRuleContext(string fileName) {
@@ -56,7 +54,7 @@ namespace WmcSoft.Business.RuleModel
         }
 
         [TestMethod]
-        public void DeserializeRuleContext() {
+        public void CanDeserializeRuleContext() {
             RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 
             Assert.IsTrue(ruleContext.Version == "1.0");
@@ -72,7 +70,7 @@ namespace WmcSoft.Business.RuleModel
         }
 
         [TestMethod]
-        public void Evaluate() {
+        public void CanEvaluate() {
             RuleSet ruleSet = DeserializeRuleModel("TestRuleModel.rule");
             RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 

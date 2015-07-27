@@ -26,8 +26,8 @@
 
 using System;
 using System.ComponentModel;
-using System.Collections;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace WmcSoft.Business.RuleModel
 {
@@ -67,78 +67,93 @@ namespace WmcSoft.Business.RuleModel
 
         #region Membres de IRuleEvaluator
 
+        class Evaluator
+        {
+            readonly Stack<RuleElement> _stack;
+            readonly RuleContext _context;
+
+            public Evaluator(RuleContext context) {
+                _context = context ?? new RuleContext();
+                _stack = new Stack<RuleElement>();
+            }
+
+
+            private Proposition PopProposition() {
+                var element = _stack.Pop();
+                return (Proposition)element;
+            }
+
+            private Variable PopVariable() {
+                var element = _stack.Pop();
+                return (Variable)element;
+            }
+
+            public bool Evaluate(IEnumerable<RuleElement> ruleElements) {
+                _stack.Clear();
+                //System.Diagnostics.Debugger.Break();
+
+                using (var enumerator = ruleElements.GetEnumerator()) {
+                    while (enumerator.MoveNext()) {
+                        var element = enumerator.Current;
+                        if (element is Operator) {
+                            switch (element.Name) {
+                            case "NOT":
+                                _stack.Push(new Proposition(!PopProposition().Value));
+                                break;
+                            case "AND":
+                                _stack.Push(new Proposition(PopProposition().Value && PopProposition().Value));
+                                break;
+                            case "OR":
+                                _stack.Push(new Proposition(PopProposition().Value || PopProposition().Value));
+                                break;
+                            case "XOR":
+                                _stack.Push(new Proposition(PopProposition().Value != PopProposition().Value));
+                                break;
+                            case "EQUALTO":
+                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) == 0));
+                                break;
+                            case "NOTEQUALTO":
+                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) != 0));
+                                break;
+                            case "GREATERTHAN":
+                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) > 0));
+                                break;
+                            case "LESSERTHAN":
+                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) < 0));
+                                break;
+                            case "GREATERTHANOREQUALTO":
+                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) >= 0));
+                                break;
+                            case "LESSERTHANOREQUALTO":
+                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) <= 0));
+                                break;
+                            default:
+                                throw new UnexpectedElementException();
+                            }
+                        } else if (element is Proposition) {
+                            _stack.Push(_context[element.Name]);
+                        } else if (element is Variable) {
+                            _stack.Push(_context[element.Name]);
+                        } else {
+                            throw new UnexpectedElementException();
+                        }
+                    }
+                }
+                if (_stack.Count != 1)
+                    throw new InvalidOperationException();
+                var result = PopProposition();
+                return result.Value;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
         public bool Evaluate(RuleContext context) {
-            //System.Diagnostics.Debugger.Break();
-
-            Stack stack = new Stack();
-            IEnumerator enumerator = this.Items.GetEnumerator();
-            while (enumerator.MoveNext()) {
-                RuleElement element = (RuleElement)enumerator.Current;
-                if (!(element is Operator)) {
-                    if (element is Proposition) {
-                        stack.Push(context[element.Name]);
-                    } else if (element is Variable) {
-                        stack.Push(context[element.Name]);
-                    } else {
-                        throw new UnexpectedElementException();
-                    }
-                } else {
-                    switch (element.Name) {
-                    case "NOT":
-                        stack.Push(new Proposition(!PopProposition(stack).Value));
-                        break;
-                    case "AND":
-                        stack.Push(new Proposition(PopProposition(stack).Value && PopProposition(stack).Value));
-                        break;
-                    case "OR":
-                        stack.Push(new Proposition(PopProposition(stack).Value || PopProposition(stack).Value));
-                        break;
-                    case "XOR":
-                        stack.Push(new Proposition(PopProposition(stack).Value != PopProposition(stack).Value));
-                        break;
-                    case "EQUALTO":
-                        stack.Push(new Proposition(PopVariable(stack).Value.CompareTo(PopVariable(stack).Value) == 0));
-                        break;
-                    case "NOTEQUALTO":
-                        stack.Push(new Proposition(PopVariable(stack).Value.CompareTo(PopVariable(stack).Value) != 0));
-                        break;
-                    case "GREATERTHAN":
-                        stack.Push(new Proposition(PopVariable(stack).Value.CompareTo(PopVariable(stack).Value) > 0));
-                        break;
-                    case "LESSERTHAN":
-                        stack.Push(new Proposition(PopVariable(stack).Value.CompareTo(PopVariable(stack).Value) < 0));
-                        break;
-                    case "GREATERTHANOREQUALTO":
-                        stack.Push(new Proposition(PopVariable(stack).Value.CompareTo(PopVariable(stack).Value) >= 0));
-                        break;
-                    case "LESSERTHANOREQUALTO":
-                        stack.Push(new Proposition(PopVariable(stack).Value.CompareTo(PopVariable(stack).Value) <= 0));
-                        break;
-                    default:
-                        throw new UnexpectedElementException();
-                    }
-                }
-            }
-
-            if (stack.Count != 1)
-                throw new InvalidOperationException();
-            Proposition result = PopProposition(stack);
-            return result.Value;
-        }
-
-        private static Proposition PopProposition(Stack stack) {
-            RuleElement element = (RuleElement)stack.Pop();
-            return (Proposition)element;
-        }
-
-        private static Variable PopVariable(Stack stack) {
-            RuleElement element = (RuleElement)stack.Pop();
-            return (Variable)element;
+            var evaluator = new Evaluator(context);
+            return evaluator.Evaluate(Items);
         }
 
         #endregion
