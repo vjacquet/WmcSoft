@@ -24,57 +24,17 @@
 
 #endregion
 
-using System;
+using System.Collections.Generic;
+using WmcSoft.Business.RuleModel;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Represents an instance of a Responsability assigned to a specific PartyRole.
+    /// The Capabilities represents a collection of facts about what a 
+    /// Party is capable of doing.
     /// </summary>
-    public class AssignedResponsability : ITemporal
+    public interface ISupportCapabilities
     {
-        #region Fields
-
-        readonly Responsability _responsability;
-        readonly PartySignature _signature;
-
-        #endregion
-
-        #region Lifecycle
-
-        public AssignedResponsability(Responsability responsability, PartySignature signature) {
-            _responsability = responsability;
-            _signature = signature;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public string Name {
-            get { return _responsability.Name; }
-        }
-
-        public string Description {
-            get { return _responsability.Description; }
-        }
-
-        public Responsability Responsability {
-            get { return _responsability; }
-        }
-
-        public PartySignature Signature {
-            get { return _signature; }
-        }
-
-        #endregion
-
-        #region ITemporal Members
-
-        public DateTime? ValidSince { get; set; }
-
-        public DateTime? ValidUntil { get; set; }
-
-        #endregion
+        RuleContext Capabilities { get; }
     }
 }

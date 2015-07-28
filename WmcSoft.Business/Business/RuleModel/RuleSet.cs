@@ -33,6 +33,11 @@ namespace WmcSoft.Business.RuleModel
     [XmlRoot("ruleSet", Namespace = "", IsNullable = false)]
     public class RuleSet : IRuleEvaluator
     {
+        public static readonly RuleSet Empty = new RuleSet {
+            Version = "1.0",
+            Rules = new Rule[0],
+        };
+
         /// <remarks/>
         [XmlElement("rule")]
         public Rule[] Rules { get; set; }

@@ -24,6 +24,7 @@
 
 #endregion
 
+using WmcSoft.Business.RuleModel;
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
@@ -49,9 +50,14 @@ namespace WmcSoft.Business.PartyModel
 
         public abstract string Description { get; }
 
-        #endregion
+        public virtual RuleSet RequirementsForResponsability {
+            get { return RuleSet.Empty; }
+        }
 
-        // GetRequirementsForResponsability
-        // GetConditionsOfSatisfaction
+        public virtual RuleSet ConditionsOfSatisfaction {
+            get { return RuleSet.Empty; }
+        }
+
+        #endregion
     }
 }

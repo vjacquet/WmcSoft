@@ -67,6 +67,7 @@
     <Compile Include="Business\PartyModel\Ethnicity.cs" />
     <Compile Include="Business\PartyModel\Gender.cs" />
     <Compile Include="Business\PartyModel\GeographicAddress.cs" />
+    <Compile Include="Business\PartyModel\ISupportCapabilities.cs" />
     <Compile Include="Business\PartyModel\Organization.cs" />
     <Compile Include="Business\PartyModel\OrganizationalNameUse.cs" />
     <Compile Include="Business\PartyModel\OrganizationName.cs" />

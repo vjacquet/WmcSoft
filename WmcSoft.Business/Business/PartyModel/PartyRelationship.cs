@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using WmcSoft.Business.RuleModel;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -87,6 +88,10 @@ namespace WmcSoft.Business.PartyModel
 
         public PartyRole Supplier {
             get { return _supplier; }
+        }
+
+        public virtual RuleSet RequirementsForRole {
+            get { return RuleSet.Empty; }
         }
 
         #endregion
