@@ -130,7 +130,6 @@ namespace WmcSoft.AI.FuzzyLogic
             return this.ToString(null, provider);
         }
 
-
         public TypeCode GetTypeCode() {
             return TypeCode.Double;
         }

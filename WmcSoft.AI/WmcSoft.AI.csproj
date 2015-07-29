@@ -49,6 +49,7 @@
     <Compile Include="FuzzyLogic\FuzzyCategory.cs" />
     <Compile Include="FuzzyLogic\FuzzyVar.cs" />
     <Compile Include="FuzzyLogic\IFuzzyCategory.cs" />
+    <Compile Include="Measuring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Series.cs" />
   </ItemGroup>
@@ -64,6 +65,9 @@
       <Project>{041e639d-20cd-454f-90d5-2852aa58e126}</Project>
       <Name>WmcSoft.Mathematics</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NeuralNetwork\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

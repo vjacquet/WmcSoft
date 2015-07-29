@@ -52,7 +52,7 @@ namespace WmcSoft.Collections.Generic
             #region IEnumerable<T> Membres
 
             public IEnumerator<T> GetEnumerator() {
-                Stack<T> stack = new Stack<T>();
+                var stack = new Stack<T>();
                 using (var enumerator = _enumerable.GetEnumerator()) {
                     while (enumerator.MoveNext()) {
                         stack.Push(enumerator.Current);
