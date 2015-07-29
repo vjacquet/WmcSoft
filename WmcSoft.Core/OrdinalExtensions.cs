@@ -59,5 +59,34 @@ namespace WmcSoft
                     yield return last;
             }
         }
+
+        public static bool IsNext<T>(this IOrdinal<T> ordinal, T x, T y) {
+            return ordinal.Compare(x, y) == 1;
+        }
+
+        public static bool IsPrevious<T>(this IOrdinal<T> ordinal, T x, T y) {
+            return ordinal.Compare(x, y) == -1;
+        }
+
+        public static IEnumerable<R> Collate<T, R>(this IEnumerable<T> sequence, IOrdinal<T> ordinal, Func<T, T, R> factory) {
+            if (sequence != null) {
+                using (var enumerator = sequence.GetEnumerator()) {
+                    if (enumerator.MoveNext()) {
+                        var from = enumerator.Current;
+                        var to = from;
+                        while (enumerator.MoveNext()) {
+                            if (ordinal.IsNext(to, enumerator.Current)) {
+                                to = enumerator.Current;
+                            } else {
+                                yield return factory(from, to);
+
+                                from = to = enumerator.Current;
+                            }
+                        }
+                        yield return factory(from, to);
+                    }
+                }
+            }
+        }
     }
 }

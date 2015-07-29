@@ -34,7 +34,7 @@ namespace WmcSoft
     /// </summary>
     /// <typeparam name="T">The type of items to order.</typeparam>
     /// <remrks>The Compare method returns the distance between two elements.</remrks>
-    public interface IOrdinal<in T> : IComparer<T>
+    public interface IOrdinal<T> : IComparer<T>
     {
         T Advance(T x, int n);
     }
