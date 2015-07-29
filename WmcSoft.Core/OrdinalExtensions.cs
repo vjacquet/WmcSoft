@@ -26,54 +26,38 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WmcSoft
 {
-    /// <summary>
-    /// Defines an order on elements with means to jump from one to another.
-    /// </summary>
-    /// <typeparam name="T">The type of items to order.</typeparam>
-    /// <remrks>The Compare method returns the distance between two elements.</remrks>
-    public interface IOrdinal<in T> : IComparer<T>
+    public static class OrdinalExtensions
     {
-        T Advance(T x, int n);
-    }
-
-    public struct Int32Ordinal : IOrdinal<int>
-    {
-        #region IOrdinal<int> Members
-
-        public int Advance(int x, int n) {
-            return checked(x + n);
+        public static T Next<T>(this IOrdinal<T> ordinal, T x, int n = 1) {
+            return ordinal.Advance(x, n);
         }
 
-        #endregion
-
-        #region IComparer<int> Members
-
-        public int Compare(int x, int y) {
-            return checked(y - x);
+        public static T Previous<T>(this IOrdinal<T> ordinal, T x, int n = 1) {
+            return ordinal.Advance(x, -n);
         }
 
-        #endregion
-    }
-
-    public struct DateTimeOrdinal : IOrdinal<DateTime>
-    {
-        #region IOrdinal<DateTime> Members
-
-        public DateTime Advance(DateTime x, int n) {
-            return x.AddDays(n);
+        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last, int stride = 1) {
+            if (stride > 0) {
+                while (ordinal.Compare(first, last) <= 0) {
+                    yield return first;
+                    first = ordinal.Advance(first, stride);
+                }
+            } else if (stride < 0) {
+                while (ordinal.Compare(first, last) >= 0) {
+                    yield return first;
+                    first = ordinal.Advance(first, stride);
+                }
+            } else {
+                yield return first;
+                if (ordinal.Compare(first, last) != 0)
+                    yield return last;
+            }
         }
-
-        #endregion
-
-        #region IComparer<DateTime> Members
-
-        public int Compare(DateTime x, DateTime y) {
-            return (int)Math.Truncate((y - x).TotalDays);
-        }
-
-        #endregion
     }
 }
