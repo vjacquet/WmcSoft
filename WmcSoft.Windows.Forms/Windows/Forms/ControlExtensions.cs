@@ -176,6 +176,8 @@ namespace WmcSoft.Windows.Forms
 
         #region Control specific extensions
 
+        #region NumericUpDown
+
         public static TextBox GetTextBox(this NumericUpDown numericUpDown) {
             return numericUpDown.Controls[1] as TextBox;
         }
@@ -188,6 +190,40 @@ namespace WmcSoft.Windows.Forms
                 return;
             action(textBox);
         }
+
+        #endregion
+
+        #region TreeView
+
+        public static bool RemoveIf(this TreeNodeCollection collection, Predicate<TreeNode> predicate) {
+            var count = collection.Count;
+            for (int i = 0; i < count; i++) {
+                var node = collection[i];
+                if (predicate(node)) {
+                    collection.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static int RemoveAll(this TreeNodeCollection collection, Predicate<TreeNode> predicate) {
+            var count = collection.Count;
+            var removed = 0;
+            for (int i = 0; i < count; ) {
+                var node = collection[i];
+                if (predicate(node)) {
+                    collection.RemoveAt(i);
+                    removed++;
+                    count--;
+                } else {
+                    i++;
+                }
+            }
+            return removed;
+        }
+
+        #endregion
 
         #endregion
     }

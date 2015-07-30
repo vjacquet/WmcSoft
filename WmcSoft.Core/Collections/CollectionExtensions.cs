@@ -202,6 +202,31 @@ namespace WmcSoft.Collections
             return items;
         }
 
+        /// <summary>
+        /// Convert a list to an array.
+        /// </summary>
+        /// <typeparam name="TInput">Type of the list items</typeparam>
+        /// <typeparam name="TOutput">Type of the array items.</typeparam>
+        /// <param name="collection">The list</param>
+        /// <param name="convert">The converter from the input type to the output type.</param>
+        /// <returns>An array</returns>
+        /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
+        public static TOutput[] ToArray<TInput, TOutput>(this ICollection collection, Converter<TInput, TOutput> convert) {
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+            if (collection == null)
+                return null;
+
+            var length = collection.Count;
+            var output = new TOutput[length];
+            // for List implementation, for loops are slightly faster than foreach loops.
+            var i = 0;
+            foreach (var item in collection) {
+                output[i++] = convert((TInput)item);
+            }
+            return output;
+        }
+
         #endregion
 
         #region ReplaceAll
