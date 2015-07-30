@@ -42,7 +42,26 @@ namespace WmcSoft
             return ordinal.Advance(x, -n);
         }
 
-        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last, int stride = 1) {
+        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last) {
+            var distance = ordinal.Compare(first, last);
+            if (distance < 0) {
+                do {
+                    yield return first;
+                    first = ordinal.Advance(first, 1);
+                    distance = ordinal.Compare(first, last);
+                } while (distance < 0);
+            } else if (distance > 0) {
+                do {
+                    yield return first;
+                    first = ordinal.Advance(first, -1);
+                    distance = ordinal.Compare(first, last);
+                } while (distance > 0);
+            } else {
+                yield return first;
+            }
+        }
+
+        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last, int stride) {
             if (stride > 0) {
                 while (ordinal.Compare(first, last) <= 0) {
                     yield return first;
@@ -69,23 +88,32 @@ namespace WmcSoft
         }
 
         public static IEnumerable<R> Collate<T, R>(this IEnumerable<T> sequence, IOrdinal<T> ordinal, Func<T, T, R> factory) {
-            if (sequence != null) {
-                using (var enumerator = sequence.GetEnumerator()) {
-                    if (enumerator.MoveNext()) {
-                        var from = enumerator.Current;
-                        var to = from;
-                        while (enumerator.MoveNext()) {
-                            if (ordinal.IsNext(to, enumerator.Current)) {
-                                to = enumerator.Current;
-                            } else {
-                                yield return factory(from, to);
-                                from = to = enumerator.Current;
-                            }
-                        }
+            return ordinal.Collate(factory, sequence);
+        }
+
+        public static IEnumerable<R> Collate<T, R>(this IOrdinal<T> ordinal, Func<T, T, R> factory, IEnumerable<T> sequence) {
+            if (sequence != null)
+                yield break;
+
+            using (var enumerator = sequence.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    yield break;
+                var from = enumerator.Current;
+                var to = from;
+                while (enumerator.MoveNext()) {
+                    if (ordinal.IsNext(to, enumerator.Current)) {
+                        to = enumerator.Current;
+                    } else {
                         yield return factory(from, to);
+                        from = to = enumerator.Current;
                     }
                 }
+                yield return factory(from, to);
             }
+        }
+
+        public static IEnumerable<T> Expand<T, R>(this IOrdinal<T> ordinal, Func<IOrdinal<T>, R, IEnumerable<T>> expander, IEnumerable<R> sequence) {
+            return sequence.SelectMany(r => expander(ordinal, r));
         }
     }
 }
