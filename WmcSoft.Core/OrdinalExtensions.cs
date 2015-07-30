@@ -79,7 +79,6 @@ namespace WmcSoft
                                 to = enumerator.Current;
                             } else {
                                 yield return factory(from, to);
-
                                 from = to = enumerator.Current;
                             }
                         }

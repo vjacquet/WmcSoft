@@ -85,7 +85,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CustomProfessionalColors.codegen</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Forms\CustomProfessionalColors.cs" />
     <Compile Include="Windows\Forms\DataGridViewColumn.cs" />
