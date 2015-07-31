@@ -66,6 +66,9 @@
     <Compile Include="ComponentModel\Design\DesignerHostListForm.Designer.cs">
       <DependentUpon>DesignerHostListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ComponentModel\Design\LazyDictionaryService.cs" />
+    <Compile Include="ComponentModel\Design\DictionaryServiceExtensions.cs" />
+    <Compile Include="ComponentModel\Design\DictionaryService.cs" />
     <Compile Include="ComponentModel\Design\Serialization\InstanceDescriptorExtensions.cs" />
     <Compile Include="ComponentModel\Design\NameCreationService.cs" />
     <Compile Include="ComponentModel\Design\SelectionService.cs" />
