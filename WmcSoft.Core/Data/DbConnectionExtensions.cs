@@ -29,7 +29,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 
-namespace WmcSoft.Data.Common
+namespace WmcSoft.Data
 {
     public static class DbConnectionExtensions
     {
@@ -56,6 +56,12 @@ namespace WmcSoft.Data.Common
                 command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
             }
             return command;
+        }
+
+        public static int ExecuteNonQuery(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+            using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
+                return command.ExecuteNonQuery();
+            }
         }
 
         public static T ReadScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
