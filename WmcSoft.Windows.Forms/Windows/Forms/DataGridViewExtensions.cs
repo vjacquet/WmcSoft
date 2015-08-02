@@ -31,6 +31,8 @@ namespace WmcSoft.Windows.Forms
 {
     public static class DataGridViewExtensions
     {
+        #region ForEach
+
         public static void ForEach<TCell>(this DataGridView dataGridView, int index, Action<TCell> action) where TCell : DataGridViewCell {
             if (dataGridView == null)
                 return;
@@ -63,24 +65,35 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
-        public static DataGridViewElementStates GetInheritedState(this DataGridView dataGridView, int columnIndex, int rowIndex) {
-            return dataGridView.Rows.SharedRow(rowIndex).Cells[columnIndex].GetInheritedState(rowIndex);
-        }
-
         public static void ForEach<TCell>(this DataGridViewColumn column, Action<TCell> action) where TCell : DataGridViewCell {
             if (column == null)
                 return;
             column.DataGridView.ForEach<TCell>(column.Index, action);
         }
+
         public static void ForEach<TCell>(this DataGridViewColumn column, Action<TCell, int> action) where TCell : DataGridViewCell {
             if (column == null)
                 return;
             column.DataGridView.ForEach<TCell>(column.Index, action);
         }
 
+        #endregion
+
+        #region GetInheritedState
+
+        public static DataGridViewElementStates GetInheritedState(this DataGridView dataGridView, int columnIndex, int rowIndex) {
+            return dataGridView.Rows.SharedRow(rowIndex).Cells[columnIndex].GetInheritedState(rowIndex);
+        }
+
+        #endregion
+
+        #region ReplaceAll
+
         public static void ReplaceAll(this DataGridViewComboBoxCell.ObjectCollection collection, object[] items) {
             collection.Clear();
             collection.AddRange(items);
         }
+
+        #endregion
     }
 }

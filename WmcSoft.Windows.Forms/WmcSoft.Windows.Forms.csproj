@@ -136,6 +136,7 @@
       <DependentUpon>HeaderedPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\HeaderStrip.cs" />
+    <Compile Include="Windows\Forms\ISupportReadOnly.cs" />
     <Compile Include="Windows\Forms\Layout\DeckLayoutEngine.cs" />
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
