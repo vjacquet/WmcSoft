@@ -95,5 +95,38 @@ namespace WmcSoft.Windows.Forms
         }
 
         #endregion
+
+        #region Selection
+
+        public static void SelectRow(this DataGridViewRow row, bool select) {
+            row.Selected = select;
+            //row.DataGridView.CurrentCell = row.HeaderCell;
+        }
+
+        public static bool IsFirstRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count == 0)
+                return false;
+            return dataGrid.Rows[0].Selected;
+        }
+
+        public static bool IsLastRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count == 0)
+                return false;
+            return dataGrid.Rows[dataGrid.Rows.Count - 1].Selected;
+        }
+
+        public static bool IsOnlyFirstRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count != 1)
+                return false;
+            return dataGrid.Rows[0].Selected;
+        }
+
+        public static bool IsOnlyLastRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count != 1)
+                return false;
+            return dataGrid.Rows[dataGrid.Rows.Count - 1].Selected;
+        }
+
+        #endregion
     }
 }
