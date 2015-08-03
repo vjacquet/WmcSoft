@@ -92,7 +92,7 @@ namespace WmcSoft
         }
 
         public static IEnumerable<R> Collate<T, R>(this IOrdinal<T> ordinal, Func<T, T, R> factory, IEnumerable<T> sequence) {
-            if (sequence != null)
+            if (sequence == null)
                 yield break;
 
             using (var enumerator = sequence.GetEnumerator()) {
