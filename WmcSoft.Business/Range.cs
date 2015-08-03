@@ -25,11 +25,9 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft
 {
@@ -117,8 +115,12 @@ namespace WmcSoft
             return other.IsLower(_upper) && other.IsUpper(_lower);
         }
 
+        public bool Includes<S>(T value, S strategy) where S : IBoundStrategy<T> {
+            return strategy.IsWithinRange(value, _lower, _upper);
+        }
+
         public bool Includes(T value) {
-            return BoundStrategy<T>.Inclusive.IsWithinRange(value, _lower, _upper);
+            return Includes(value, BoundStrategy<T>.Inclusive);
         }
 
         public bool Overlaps(Range<T> other) {
@@ -375,56 +377,5 @@ namespace WmcSoft
 
         #endregion
 
-    }
-
-    public abstract class BoundStrategy<T>
-    {
-        #region Strategies
-
-        class InclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) <= 0)
-                    && (comparer.Compare(value, upper) <= 0);
-            }
-        }
-
-        class ExclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) < 0)
-                    && (comparer.Compare(value, upper) < 0);
-            }
-        }
-
-        class LowerExclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) < 0)
-                    && (comparer.Compare(value, upper) <= 0);
-            }
-        }
-
-        class UpperExclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) <= 0)
-                    && (comparer.Compare(value, upper) < 0);
-            }
-        }
-
-        #endregion
-
-        private IComparer<T> comparer;
-        private BoundStrategy() {
-            comparer = Comparer<T>.Default;
-        }
-
-        public abstract bool IsWithinRange(T value, T lower, T upper);
-
-        static public readonly BoundStrategy<T> Inclusive = new InclusiveStrategy();
-        static public readonly BoundStrategy<T> Exclusive = new ExclusiveStrategy();
-        static public readonly BoundStrategy<T> LowerExclusive = new LowerExclusiveStrategy();
-        static public readonly BoundStrategy<T> UpperExclusive = new UpperExclusiveStrategy();
     }
 }

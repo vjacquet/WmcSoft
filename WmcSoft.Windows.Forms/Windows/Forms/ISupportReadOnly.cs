@@ -89,6 +89,32 @@ namespace WmcSoft.Windows.Forms
             #endregion
         }
 
+        class DataGridViewAdapter : ISupportReadOnly
+        {
+            #region Fields
+
+            readonly DataGridView _control;
+
+            #endregion
+
+            #region Lifecycle
+
+            public DataGridViewAdapter(DataGridView control) {
+                _control = control;
+            }
+
+            #endregion
+
+            #region ISupportReadOnly Members
+
+            public bool ReadOnly {
+                get { return !_control.ReadOnly; }
+                set { _control.ReadOnly = !value; }
+            }
+
+            #endregion
+        }
+
         #endregion
 
         public static ISupportReadOnly AsReadOnly(this Control control) {
@@ -105,6 +131,10 @@ namespace WmcSoft.Windows.Forms
 
         public static ISupportReadOnly AsReadOnly(this TextBoxBase control) {
             return new TextBoxBaseAdapter(control);
+        }
+
+        public static ISupportReadOnly AsReadOnly(this DataGridView control) {
+            return new DataGridViewAdapter(control);
         }
     }
 }
