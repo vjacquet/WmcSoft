@@ -25,12 +25,37 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
     public static class DataGridViewExtensions
     {
+        #region Any
+
+        public static bool Any<T>(this DataGridViewColumnCollection columns)
+            where T : DataGridViewColumn {
+            foreach (DataGridViewColumn column in columns) {
+                var typed = column as T;
+                if (typed != null)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool Any<T>(this DataGridViewColumnCollection columns, Func<T, bool> predicate)
+            where T : DataGridViewColumn {
+            foreach (DataGridViewColumn column in columns) {
+                var typed = column as T;
+                if (typed != null && predicate(typed))
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion
+
         #region ForEach
 
         public static void ForEach<TCell>(this DataGridView dataGridView, int index, Action<TCell> action) where TCell : DataGridViewCell {
@@ -83,6 +108,19 @@ namespace WmcSoft.Windows.Forms
 
         public static DataGridViewElementStates GetInheritedState(this DataGridView dataGridView, int columnIndex, int rowIndex) {
             return dataGridView.Rows.SharedRow(rowIndex).Cells[columnIndex].GetInheritedState(rowIndex);
+        }
+
+        #endregion
+
+        #region OfType
+
+        public static IEnumerable<T> OfType<T>(this DataGridViewColumnCollection columns)
+            where T : DataGridViewColumn {
+            foreach (DataGridViewColumn column in columns) {
+                var typed = column as T;
+                if (typed != null)
+                    yield return typed;
+            }
         }
 
         #endregion
