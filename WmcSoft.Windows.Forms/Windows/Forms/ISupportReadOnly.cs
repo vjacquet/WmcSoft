@@ -24,6 +24,8 @@
 
 #endregion
 
+using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
@@ -37,7 +39,7 @@ namespace WmcSoft.Windows.Forms
     {
         #region Adapters
 
-        class NotEnableAdapter : ISupportReadOnly
+        sealed class NotEnableAdapter : ISupportReadOnly
         {
             #region Fields
 
@@ -63,7 +65,7 @@ namespace WmcSoft.Windows.Forms
             #endregion
         }
 
-        class TextBoxBaseAdapter : ISupportReadOnly
+        sealed class TextBoxBaseAdapter : ISupportReadOnly
         {
             #region Fields
 
@@ -89,7 +91,7 @@ namespace WmcSoft.Windows.Forms
             #endregion
         }
 
-        class DataGridViewAdapter : ISupportReadOnly
+        sealed class DataGridViewAdapter : ISupportReadOnly
         {
             #region Fields
 
@@ -115,6 +117,36 @@ namespace WmcSoft.Windows.Forms
             #endregion
         }
 
+        sealed class PropertyDescriptorAdapter : ISupportReadOnly
+        {
+            #region Fields
+
+            readonly object _component;
+            readonly PropertyDescriptor _property;
+
+            #endregion
+
+            #region Lifecycle
+
+            public PropertyDescriptorAdapter(object component, PropertyDescriptor property) {
+                _component = component;
+                _property = property;
+            }
+
+            #endregion
+
+            #region ISupportReadOnly Members
+
+            public bool ReadOnly {
+                get { return Convert.ToBoolean(_property.GetValue(_component)); }
+                set {
+                    _property.SetValue(_component, value);
+                }
+            }
+
+            #endregion
+        }
+
         #endregion
 
         public static ISupportReadOnly AsReadOnly(this Control control) {
@@ -125,6 +157,14 @@ namespace WmcSoft.Windows.Forms
             var tb = control as TextBoxBase;
             if (tb != null)
                 return AsReadOnly(tb);
+
+            var dg = control as DataGridView;
+            if (dg != null)
+                return AsReadOnly(tb);
+
+            var pd = TypeDescriptor.GetProperties(control).Find("ReadOnly", true);
+            if (pd != null && pd.PropertyType == typeof(bool))
+                return new PropertyDescriptorAdapter(control, pd);
 
             return new NotEnableAdapter(control);
         }
