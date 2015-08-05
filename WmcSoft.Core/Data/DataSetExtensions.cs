@@ -57,7 +57,30 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region RemoveAll
+
+        public static void RemoveAll(this DataRowCollection collection, IEnumerable<DataRow> rows) {
+            foreach (var row in rows)
+                collection.Remove(row);
+        }
+
+        #endregion
+
         #region ToDictionary
+
+        public static IDictionary<string, object> ToDictionary(this DataRow row, IDictionary<string, object> additionalData) {
+            if (additionalData == null)
+                return row.ToDictionary();
+
+            var dictionary = new Dictionary<string, object>(additionalData);
+            var columns = row.Table.Columns;
+            foreach (DataColumn dc in columns) {
+                if (row.IsNull(dc))
+                    dictionary.Remove(dc.ColumnName);
+                dictionary[dc.ColumnName] = row[dc];
+            }
+            return dictionary;
+        }
 
         public static IDictionary<string, object> ToDictionary(this DataRow row) {
             var columns = row.Table.Columns;

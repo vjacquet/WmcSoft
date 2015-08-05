@@ -90,8 +90,18 @@ namespace WmcSoft.Windows.Forms
 
         void form_Load(object sender, EventArgs e) {
             try {
-                form.Size = Settings.Size;
-                form.Location = Settings.Location;
+                var screen = Screen.FromControl(form).Bounds;
+                var rect = new Rectangle(Settings.Location, Settings.Size);
+                var x = (rect.Right < screen.Left)
+                    ? screen.Left
+                    : (screen.Right < rect.Left)
+                        ? screen.Right - Settings.Size.Width
+                        : Settings.Location.X;
+                var y = (rect.Bottom < screen.Top) || (screen.Bottom < rect.Top)
+                    ? screen.Top
+                    : Settings.Location.Y;
+
+                form.DesktopBounds = new Rectangle(new Point(x, y), Settings.Size);
                 form.WindowState = Settings.WindowState;
             }
             catch (NullReferenceException) {
