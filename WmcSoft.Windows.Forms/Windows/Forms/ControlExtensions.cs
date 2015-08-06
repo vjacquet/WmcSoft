@@ -129,6 +129,20 @@ namespace WmcSoft.Windows.Forms
             return self.Controls.OfType<T>().Where(c => set.Remove(c.Name));
         }
 
+        public static bool IsAncestorOrSelf(this Control control, Control candidate) {
+            if (control == null)
+                throw new NullReferenceException();
+
+            var it = candidate;
+            while (it != null) {
+                if (it == control)
+                    return true;
+                it = it.Parent;
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region Control extensions

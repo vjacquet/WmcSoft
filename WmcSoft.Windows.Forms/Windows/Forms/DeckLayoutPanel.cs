@@ -70,8 +70,10 @@ namespace WmcSoft.Windows.Forms
 
                 Control inactive = _activeControl;
                 _activeControl = active;
+                _activeControl.Visible = true;
                 if (inactive != null) {
                     OnControlDeactivated(new ControlEventArgs(inactive));
+                    inactive.Visible = false;
                 }
                 OnControlActivated(new ControlEventArgs(active));
                 LayoutEngine.Layout(this, new LayoutEventArgs(active, null));

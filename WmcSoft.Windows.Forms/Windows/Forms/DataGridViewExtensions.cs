@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
@@ -163,6 +164,14 @@ namespace WmcSoft.Windows.Forms
             if (dataGrid == null || dataGrid.SelectedRows.Count != 1)
                 return false;
             return dataGrid.Rows[dataGrid.Rows.Count - 1].Selected;
+        }
+
+        #endregion
+
+        #region Skip
+
+        public static IEnumerable<DataGridViewColumn> Skip(this DataGridViewColumnCollection columns, int count) {
+            return columns.OfType<DataGridViewColumn>().Skip(count);
         }
 
         #endregion
