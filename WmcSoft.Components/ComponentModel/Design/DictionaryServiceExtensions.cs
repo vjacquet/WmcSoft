@@ -48,5 +48,19 @@ namespace WmcSoft.ComponentModel.Design
         public static IDictionaryService ToDictionaryService(this IDictionary dictionary) {
             return new DictionaryService(new Hashtable(dictionary));
         }
+
+        /// <summary>
+        /// Removes a value from the dictionary service.
+        /// </summary>
+        /// <param name="svc">The dictionary service.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>true if the value was removed, false if it was missing.</returns>
+        public static bool RemoveValue(this IDictionaryService svc, object key) {
+            if (svc.GetValue(key) != null) {
+                svc.SetValue(key, null);
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -25,6 +25,7 @@
 #endregion
 
 using System.Collections;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 
 namespace WmcSoft.ComponentModel.Design

@@ -62,6 +62,7 @@
       <DependentUpon>BenchComponent.cs</DependentUpon>
     </Compile>
     <Compile Include="CommandLine\CommandLineTests.cs" />
+    <Compile Include="ComponentModel\Design\DictionaryServiceTests.cs" />
     <Compile Include="ComponentModel\EventBarrierTests.cs">
       <SubType>Component</SubType>
     </Compile>
