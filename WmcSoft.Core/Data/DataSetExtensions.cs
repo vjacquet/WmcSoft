@@ -20,6 +20,15 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region Compute
+
+        public static T Compute<T>(this DataTable dataTable, string expression, string filter) {
+            var value = dataTable.Compute(expression, filter);
+            return DataConvert.ChangeType<T>(value);
+        }
+
+        #endregion
+
         #region CreateUniqueName
 
         public static string CreateUniquePrefixedName(this IEnumerable<string> names, string prefix) {

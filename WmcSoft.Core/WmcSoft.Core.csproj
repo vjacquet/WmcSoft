@@ -95,6 +95,7 @@
     <Compile Include="Configuration\MailAddressCollectionConverter.cs" />
     <Compile Include="Configuration\MailPolicy.cs" />
     <Compile Include="Configuration\MailPolicyCollection.cs" />
+    <Compile Include="Data\DataConvert.cs" />
     <Compile Include="Data\DataSetExtensions.cs" />
     <Compile Include="DelegateExtensions.cs" />
     <Compile Include="Diagnostics\ExceptionExtensions.cs" />
