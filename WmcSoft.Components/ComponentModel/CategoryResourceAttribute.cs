@@ -45,6 +45,4 @@ namespace WmcSoft.ComponentModel
             return ResourceHelpers.GetString(_resourceBase, value);
         }
     }
-
-
 }

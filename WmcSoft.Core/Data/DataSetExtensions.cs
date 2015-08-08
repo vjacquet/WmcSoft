@@ -24,7 +24,7 @@ namespace WmcSoft.Data
 
         public static T Compute<T>(this DataTable dataTable, string expression, string filter) {
             var value = dataTable.Compute(expression, filter);
-            return DataConvert.ChangeType<T>(value);
+            return DataConvert.ChangeTypeOrDefault<T>(value);
         }
 
         #endregion
