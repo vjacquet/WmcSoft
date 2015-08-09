@@ -78,5 +78,31 @@ namespace WmcSoft.Business.Accounting
                 amount += 0.001m;
             }
         }
+
+        [TestMethod]
+        public void CanAllocate3() {
+            var eur = new CultureInfoCurrency(CultureInfo.GetCultureInfo("fr-FR"));
+            var m = new Money(100, eur);
+            var actual = m.AllocateAmounts(3);
+            var expected = new[] { 33.34m, 33.33m, 33.33m };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanAllocate3Shares() {
+            var eur = new CultureInfoCurrency(CultureInfo.GetCultureInfo("fr-FR"));
+            var m = new Money(100, eur);
+            var actual = m.AllocateAmounts(3);
+            var expected = new[] { 33.34m, 33.33m, 33.33m };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        public void CanSolveFoemmelsConundrum() {
+            var eur = new CultureInfoCurrency(CultureInfo.GetCultureInfo("fr-FR"));
+            var m = new Money(0.05m, eur);
+            var actual = m.AllocateAmounts(3, 7);
+            var expected = new[] { 0.02m, 0.03m };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

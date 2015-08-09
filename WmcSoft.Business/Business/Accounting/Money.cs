@@ -84,6 +84,49 @@ namespace WmcSoft.Business.Accounting
             return new Money(policy.Round(_amount), _currency);
         }
 
+        public decimal[] AllocateAmounts(int n) {
+            var decimalDigits = Currency.DecimalDigits;
+
+            var lo = Floor(_amount / n, decimalDigits);
+            var hi = Ceiling(_amount / n, decimalDigits);
+            int remainder = (int)(_amount % n);
+            var results = new decimal[n];
+            var i = 0;
+            for (i = 0; i < remainder; i++)
+                results[i] = hi;
+            for (; i < n; i++)
+                results[i] = lo;
+            return results;
+        }
+
+        public decimal[] AllocateAmounts(params int[] ratios) {
+            var decimalDigits = Currency.DecimalDigits;
+            var espilon = new Decimal(System.Math.Pow(0.1, decimalDigits));
+
+            var total = ratios.Sum();
+            var remainder = _amount;
+            var results = new decimal[ratios.Length];
+            for (int i = 0; i < results.Length; i++) {
+                results[i] = Floor(_amount * ratios[i] / total, decimalDigits);
+                remainder -= results[i];
+            }
+            for (int i = 0; remainder > 0m; i++) {
+                results[i] += espilon;
+                remainder -= espilon;
+            }
+            return results;
+        }
+
+        public Money[] Allocate(int n) {
+            var currency = _currency;
+            return AllocateAmounts(n).ConvertAll(a => new Money(a, currency));
+        }
+
+        public Money[] Allocate(params int[] ratios) {
+            var currency = _currency;
+            return AllocateAmounts(ratios).ConvertAll(a => new Money(a, currency));
+        }
+
         #endregion
 
         #region Operators
