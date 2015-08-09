@@ -45,18 +45,6 @@ namespace WmcSoft.Data
             }
         }
 
-        public static IDbCommand CreateCommand(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
-            var command = connection.CreateCommand();
-            command.CommandType = commandType;
-            command.CommandText = commandText;
-            command.Transaction = transaction;
-            command.AddReflectedParameters(parameters);
-            if (timeout != null) {
-                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
-            }
-            return command;
-        }
-
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, CommandBehavior behavior, Func<IDataRecord, T> materializer) {
             using (command)
             using (var reader = command.ExecuteReader(behavior)) {

@@ -40,7 +40,7 @@ namespace WmcSoft.Windows.Forms
         {
             // Methods
             public CategoryAttribute(string resourceName)
-                : base(resourceName) {
+                : base(resourceName + ".Category") {
             }
 
             protected override string GetLocalizedString(string value) {
@@ -51,28 +51,21 @@ namespace WmcSoft.Windows.Forms
         internal class DescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public DescriptionAttribute(string resourceName)
-                : base(RM.GetString(resourceName)) {
+                : base(RM.GetString(resourceName + ".Description")) {
             }
         }
 
         internal class DisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
         {
             public DisplayNameAttribute(string resourceName)
-                : base(RM.GetString(resourceName)) {
+                : base(RM.GetString(resourceName + ".DisplayName")) {
             }
         }
 
-        public static ResourceManager ResourceManager {
-            get {
-                // Load in the manager if necessary.
-                if (resourceManager == null) {
-                    resourceManager = new System.Resources.ResourceManager(typeof(RM));
-                }
-
-                return resourceManager;
-            }
+        private static readonly ResourceManager ResourceManager;
+        static RM() {
+            ResourceManager = new System.Resources.ResourceManager(typeof(RM));
         }
-        private static ResourceManager resourceManager;
 
         public static string GetString(string name) {
             return ResourceManager.GetString(name);

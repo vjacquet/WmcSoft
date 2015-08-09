@@ -43,6 +43,10 @@ namespace WmcSoft.Windows.Forms
             Available = false;
         }
 
+        public ToolStripBackgroundWorkerProgressBar(string name):base(name) {
+            Available = false;
+        }
+
         protected override void Dispose(bool disposing) {
             if (disposing) {
             }
@@ -50,6 +54,15 @@ namespace WmcSoft.Windows.Forms
             base.Dispose(disposing);
         }
 
+        public override ISite Site {
+            get {
+                return base.Site;
+            }
+            set {
+                base.Site = value;
+                Available = (value != null && value.DesignMode);
+            }
+        }
         #endregion
 
         #region Properties
@@ -119,5 +132,4 @@ namespace WmcSoft.Windows.Forms
 
         #endregion
     }
-
 }

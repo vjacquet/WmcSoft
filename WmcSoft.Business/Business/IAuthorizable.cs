@@ -38,4 +38,11 @@ namespace WmcSoft.Business
         bool CanRevoke();
         void Revoke();
     }
+
+    public static class AuthorizableExtensions
+    {
+        public static bool IsAuthorized(this IAuthorizable authorizable) {
+            return authorizable.AuthorizedOn.HasValue;
+        }
+    }
 }

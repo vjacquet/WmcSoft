@@ -746,7 +746,11 @@ namespace WmcSoft
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
         public static string Left(this string self, int length) {
-            if (self == null || length > self.Length)
+            if (self == null)
+                return self;
+            if (length < 0)
+                length = self.Length - length;
+            if(length > self.Length)
                 return self;
             return self.Substring(0, length);
         }
@@ -758,7 +762,11 @@ namespace WmcSoft
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
         public static string Right(this string self, int length) {
-            if (self == null || length > self.Length)
+            if (self == null)
+                return self;
+            if (length < 0)
+                length = self.Length - length;
+            if (length > self.Length)
                 return self;
             return self.Substring(self.Length - length, length);
         }

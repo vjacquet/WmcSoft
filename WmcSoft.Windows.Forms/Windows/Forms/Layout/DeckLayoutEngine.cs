@@ -41,7 +41,7 @@ namespace WmcSoft.Windows.Forms.Layout
                 Control active = containerControl.ActiveControl;
 
                 foreach (Control control in parent.Controls) {
-                    if (control == active) {
+                    if (control.IsAncestorOrSelf(active)) {
                         control.Visible = true;
                         control.Location = new Point(0, 0);
                         control.Size = parent.Size;

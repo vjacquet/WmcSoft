@@ -25,12 +25,40 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
     public static class DataGridViewExtensions
     {
+        #region Any
+
+        public static bool Any<T>(this DataGridViewColumnCollection columns)
+            where T : DataGridViewColumn {
+            foreach (DataGridViewColumn column in columns) {
+                var typed = column as T;
+                if (typed != null)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool Any<T>(this DataGridViewColumnCollection columns, Func<T, bool> predicate)
+            where T : DataGridViewColumn {
+            foreach (DataGridViewColumn column in columns) {
+                var typed = column as T;
+                if (typed != null && predicate(typed))
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region ForEach
+
         public static void ForEach<TCell>(this DataGridView dataGridView, int index, Action<TCell> action) where TCell : DataGridViewCell {
             if (dataGridView == null)
                 return;
@@ -63,24 +91,89 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
-        public static DataGridViewElementStates GetInheritedState(this DataGridView dataGridView, int columnIndex, int rowIndex) {
-            return dataGridView.Rows.SharedRow(rowIndex).Cells[columnIndex].GetInheritedState(rowIndex);
-        }
-
         public static void ForEach<TCell>(this DataGridViewColumn column, Action<TCell> action) where TCell : DataGridViewCell {
             if (column == null)
                 return;
             column.DataGridView.ForEach<TCell>(column.Index, action);
         }
+
         public static void ForEach<TCell>(this DataGridViewColumn column, Action<TCell, int> action) where TCell : DataGridViewCell {
             if (column == null)
                 return;
             column.DataGridView.ForEach<TCell>(column.Index, action);
         }
 
+        #endregion
+
+        #region GetInheritedState
+
+        public static DataGridViewElementStates GetInheritedState(this DataGridView dataGridView, int columnIndex, int rowIndex) {
+            return dataGridView.Rows.SharedRow(rowIndex).Cells[columnIndex].GetInheritedState(rowIndex);
+        }
+
+        #endregion
+
+        #region OfType
+
+        public static IEnumerable<T> OfType<T>(this DataGridViewColumnCollection columns)
+            where T : DataGridViewColumn {
+            foreach (DataGridViewColumn column in columns) {
+                var typed = column as T;
+                if (typed != null)
+                    yield return typed;
+            }
+        }
+
+        #endregion
+
+        #region ReplaceAll
+
         public static void ReplaceAll(this DataGridViewComboBoxCell.ObjectCollection collection, object[] items) {
             collection.Clear();
             collection.AddRange(items);
         }
+
+        #endregion
+
+        #region Selection
+
+        public static void SelectRow(this DataGridViewRow row, bool select) {
+            row.Selected = select;
+            //row.DataGridView.CurrentCell = row.HeaderCell;
+        }
+
+        public static bool IsFirstRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count == 0)
+                return false;
+            return dataGrid.Rows[0].Selected;
+        }
+
+        public static bool IsLastRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count == 0)
+                return false;
+            return dataGrid.Rows[dataGrid.Rows.Count - 1].Selected;
+        }
+
+        public static bool IsOnlyFirstRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count != 1)
+                return false;
+            return dataGrid.Rows[0].Selected;
+        }
+
+        public static bool IsOnlyLastRowSelected(this DataGridView dataGrid) {
+            if (dataGrid == null || dataGrid.SelectedRows.Count != 1)
+                return false;
+            return dataGrid.Rows[dataGrid.Rows.Count - 1].Selected;
+        }
+
+        #endregion
+
+        #region Skip
+
+        public static IEnumerable<DataGridViewColumn> Skip(this DataGridViewColumnCollection columns, int count) {
+            return columns.OfType<DataGridViewColumn>().Skip(count);
+        }
+
+        #endregion
     }
 }

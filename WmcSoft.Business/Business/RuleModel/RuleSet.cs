@@ -33,41 +33,22 @@ namespace WmcSoft.Business.RuleModel
     [XmlRoot("ruleSet", Namespace = "", IsNullable = false)]
     public class RuleSet : IRuleEvaluator
     {
+        public static readonly RuleSet Empty = new RuleSet {
+            Version = "1.0",
+            Rules = new Rule[0],
+        };
+
         /// <remarks/>
         [XmlElement("rule")]
-        public Rule[] Rules {
-            get {
-                return this.rules;
-            }
-            set {
-                this.rules = value;
-            }
-        }
-        Rule[] rules;
+        public Rule[] Rules { get; set; }
 
         /// <remarks/>
         [XmlAttribute("version")]
-        public string Version {
-            get {
-                return this.version;
-            }
-            set {
-                this.version = value;
-            }
-        }
-        string version;
+        public string Version { get; set; }
 
         /// <remarks/>
         [XmlAttribute("name", DataType = "ID")]
-        public string Name {
-            get {
-                return this.name;
-            }
-            set {
-                this.name = value;
-            }
-        }
-        string name;
+        public string Name { get; set; }
 
         #region Membres de IRuleEvaluator
 
@@ -77,10 +58,11 @@ namespace WmcSoft.Business.RuleModel
         /// <param name="context"></param>
         /// <returns></returns>
         public bool Evaluate(RuleContext context) {
-            foreach (Rule rule in this.rules) {
-                RuleElement element = context[rule.Name];
-                if (element != null && element is RuleOverride) {
-                    if (!((RuleOverride)element).Value)
+            foreach (Rule rule in Rules) {
+                var ruleElement = context[rule.Name];
+                var ruleOverride = ruleElement as RuleOverride;
+                if (ruleOverride != null) {
+                    if (!ruleOverride.Value)
                         return false;
                 } else if (!rule.Evaluate(context))
                     return false;

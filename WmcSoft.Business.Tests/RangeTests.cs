@@ -17,9 +17,11 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void CannotCreateInvalidRange() {
+        public void CanFixInvalidRange() {
             var actual = new Range<int>(5, 2);
+
+            Assert.AreEqual(2, actual.Lower);
+            Assert.AreEqual(5, actual.Upper);
         }
 
         [TestMethod]

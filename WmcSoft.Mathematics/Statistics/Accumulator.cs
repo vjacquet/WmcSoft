@@ -107,13 +107,13 @@ namespace WmcSoft.Tests.Statistics
         public double Sum { get { return _sum; } }
         public double SquaredSum { get { return _squaredSum; } }
         public double Mean { get { return (_count == 0) ? 0d : _sum / _count; } }
-        public double MeanSquared { get { return (_count == 0) ? 0d : _squaredSum / _count; } }
+        public double SquaredMean { get { return (_count == 0) ? 0d : _squaredSum / _count; } }
         public double Variance {
             get {
                 if (_count == 0)
                     return 0d;
                 var mean = Mean;
-                return MeanSquared - mean * mean;
+                return SquaredMean - mean * mean;
             }
         }
         public double Sigma { get { return Math.Sqrt(Variance); } }

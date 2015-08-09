@@ -25,11 +25,9 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft
 {
@@ -58,14 +56,14 @@ namespace WmcSoft
         /// <summary>
         /// The lower bound of the range.
         /// </summary>
-        public T Lower { get { return lower; } }
-        readonly T lower;
+        public T Lower { get { return _lower; } }
+        readonly T _lower;
 
         /// <summary>
         /// The upper bound of the range.
         /// </summary>
-        public T Upper { get { return upper; } }
-        readonly T upper;
+        public T Upper { get { return _upper; } }
+        readonly T _upper;
 
         #endregion
 
@@ -74,14 +72,16 @@ namespace WmcSoft
         /// <summary>
         /// Creates a new range with given lower and upper bounds.
         /// </summary>
-        /// <param name="lower">The lower element of the range.</param>
-        /// <param name="upper">The upper element of the range.</param>
-        public Range(T lower, T upper) {
-            if (lower.CompareTo(upper) > 0)
-                throw new ArgumentOutOfRangeException("upper");
-
-            this.lower = lower;
-            this.upper = upper;
+        /// <param name="x">The lower bound of the range.</param>
+        /// <param name="y">The upper bound of the range.</param>
+        public Range(T x, T y) {
+            if (x.CompareTo(y) > 0) {
+                _lower = y;
+                _upper = x;
+            } else {
+                _lower = x;
+                _upper = y;
+            }
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace WmcSoft
 
         public bool IsEmpty {
             get {
-                return this.upper.CompareTo(this.lower) <= 0;
+                return _upper.CompareTo(_lower) <= 0;
             }
         }
 
@@ -99,42 +99,46 @@ namespace WmcSoft
         #region Methods
 
         public bool IsLower(T value) {
-            return value.CompareTo(upper) > 0;
+            return value.CompareTo(_upper) > 0;
         }
 
         public bool IsUpper(T value) {
-            return value.CompareTo(lower) < 0;
+            return value.CompareTo(_lower) < 0;
         }
 
         public bool IsAdjacent(Range<T> other) {
-            return this.upper.CompareTo(other.lower) == 0
-                || this.lower.CompareTo(other.upper) == 0;
+            return _upper.CompareTo(other._lower) == 0
+                || _lower.CompareTo(other._upper) == 0;
         }
 
         public bool Includes(Range<T> other) {
-            return other.IsLower(upper) && other.IsUpper(lower);
+            return other.IsLower(_upper) && other.IsUpper(_lower);
+        }
+
+        public bool Includes<S>(T value, S strategy) where S : IBoundStrategy<T> {
+            return strategy.IsWithinRange(value, _lower, _upper);
         }
 
         public bool Includes(T value) {
-            return BoundStrategy<T>.Inclusive.IsWithinRange(value, lower, upper);
+            return Includes(value, BoundStrategy<T>.Inclusive);
         }
 
         public bool Overlaps(Range<T> other) {
-            return (this.IsLower(other.upper) && this.Includes(other.lower))
-            || (this.IsUpper(other.lower) && this.Includes(other.upper));
+            return (this.IsLower(other._upper) && this.Includes(other._lower))
+            || (this.IsUpper(other._lower) && this.Includes(other._upper));
         }
 
         public bool IsDistinct(Range<T> other) {
-            return other.IsLower(lower) || other.IsUpper(upper);
+            return other.IsLower(_lower) || other.IsUpper(_upper);
         }
 
         public Range<T> GapBetween(Range<T> other) {
             if (this.Overlaps(other))
                 return Range<T>.Empty;
             else if (this < other)
-                return new Range<T>(this.upper, other.lower);
+                return new Range<T>(_upper, other._lower);
             else
-                return new Range<T>(other.upper, this.lower);
+                return new Range<T>(other._upper, _lower);
         }
 
         public Range<T> Merge(Range<T> other) {
@@ -191,12 +195,12 @@ namespace WmcSoft
         public override string ToString() {
             StringBuilder builder = new StringBuilder();
             builder.Append('[');
-            if (this.Lower != null) {
-                builder.Append(this.Lower.ToString());
+            if (_lower != null) {
+                builder.Append(_lower.ToString());
             }
             builder.Append(", ");
-            if (this.Upper != null) {
-                builder.Append(this.Upper.ToString());
+            if (_upper != null) {
+                builder.Append(_upper.ToString());
             }
             builder.Append(']');
             return builder.ToString();
@@ -209,8 +213,8 @@ namespace WmcSoft
         /// </summary>
         /// <returns>The hash code.</returns>
         public override int GetHashCode() {
-            int hashFirst = (lower == null) ? 0x0 : lower.GetHashCode();
-            int hashSecond = (upper == null) ? 0x0 : upper.GetHashCode();
+            int hashFirst = (_lower == null) ? 0x0 : _lower.GetHashCode();
+            int hashSecond = (_upper == null) ? 0x0 : _upper.GetHashCode();
             return hashFirst ^ hashSecond;
         }
 
@@ -232,9 +236,9 @@ namespace WmcSoft
         /// <param name="other">A range to compare with this range.</param>
         /// <returns>true if the current range is equal to the other parameter; otherwise, false.</returns>
         public bool Equals(Range<T> other) {
-            EqualityComparer<T> comparer = EqualityComparer<T>.Default;
-            return comparer.Equals(Lower, other.Lower)
-                && comparer.Equals(Upper, other.Upper);
+            var comparer = EqualityComparer<T>.Default;
+            return comparer.Equals(_lower, other._lower)
+                && comparer.Equals(_upper, other._upper);
         }
 
         #endregion
@@ -265,10 +269,10 @@ namespace WmcSoft
         /// <param name="obj">An object to compare with this instance. </param>
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
         public int CompareTo(Range<T> other) {
-            Comparer<T> comparer = Comparer<T>.Default;
-            int firstCompare = comparer.Compare(Lower, other.Lower);
+            var comparer = Comparer<T>.Default;
+            int firstCompare = comparer.Compare(_lower, other._lower);
             if (firstCompare == 0)
-                return comparer.Compare(Upper, other.Upper);
+                return comparer.Compare(_upper, other._upper);
             return firstCompare;
         }
 
@@ -318,7 +322,7 @@ namespace WmcSoft
         /// <param name="y">The second range to compare.</param>
         /// <returns>true if the specified ranges are equal; otherwise, false.</returns>
         public static bool operator ==(Range<T> x, Range<T> y) {
-            return Object.Equals(x, y);
+            return x.Equals(y);
         }
 
         /// <summary>
@@ -328,7 +332,7 @@ namespace WmcSoft
         /// <param name="y">The second range to compare.</param>
         /// <returns>true if the specified ranges are not equal; otherwise, false.</returns>
         public static bool operator !=(Range<T> x, Range<T> y) {
-            return !Object.Equals(x, y);
+            return !x.Equals(y);
         }
 
         /// <summary>
@@ -373,56 +377,5 @@ namespace WmcSoft
 
         #endregion
 
-    }
-
-    public abstract class BoundStrategy<T>
-    {
-        #region Strategies
-
-        class InclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) <= 0)
-                    && (comparer.Compare(value, upper) <= 0);
-            }
-        }
-
-        class ExclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) < 0)
-                    && (comparer.Compare(value, upper) < 0);
-            }
-        }
-
-        class LowerExclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) < 0)
-                    && (comparer.Compare(value, upper) <= 0);
-            }
-        }
-
-        class UpperExclusiveStrategy : BoundStrategy<T>
-        {
-            public override bool IsWithinRange(T value, T lower, T upper) {
-                return (comparer.Compare(lower, value) <= 0)
-                    && (comparer.Compare(value, upper) < 0);
-            }
-        }
-
-        #endregion
-
-        private IComparer<T> comparer;
-        private BoundStrategy() {
-            comparer = Comparer<T>.Default;
-        }
-
-        public abstract bool IsWithinRange(T value, T lower, T upper);
-
-        static public readonly BoundStrategy<T> Inclusive = new InclusiveStrategy();
-        static public readonly BoundStrategy<T> Exclusive = new ExclusiveStrategy();
-        static public readonly BoundStrategy<T> LowerExclusive = new LowerExclusiveStrategy();
-        static public readonly BoundStrategy<T> UpperExclusive = new UpperExclusiveStrategy();
     }
 }

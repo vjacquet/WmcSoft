@@ -52,7 +52,7 @@ namespace WmcSoft.Collections.Generic
             #region IEnumerable<T> Membres
 
             public IEnumerator<T> GetEnumerator() {
-                Stack<T> stack = new Stack<T>();
+                var stack = new Stack<T>();
                 using (var enumerator = _enumerable.GetEnumerator()) {
                     while (enumerator.MoveNext()) {
                         stack.Push(enumerator.Current);
@@ -959,9 +959,9 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region ToRange
+        #region ToRanges
 
-        public static IEnumerable<Tuple<T, T>> ToRanges<T>(this IEnumerable<T> values, Func<T, T, bool> isSuccessor) {
+        public static IEnumerable<R> ToRanges<T, R>(this IEnumerable<T> values, Func<T, T, bool> isSuccessor, Func<T, T, R> factory) {
             using (var enumerator = values.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     yield break;
@@ -971,12 +971,16 @@ namespace WmcSoft.Collections.Generic
                     if (isSuccessor(end, enumerator.Current)) {
                         end = enumerator.Current;
                     } else {
-                        yield return Tuple.Create(start, end);
+                        yield return factory(start, end);
                         end = start = enumerator.Current;
                     }
                 }
-                yield return Tuple.Create(start, end);
+                yield return factory(start, end);
             }
+        }
+
+        public static IEnumerable<Tuple<T, T>> ToRanges<T>(this IEnumerable<T> values, Func<T, T, bool> isSuccessor) {
+            return values.ToRanges(isSuccessor, Tuple.Create);
         }
 
         #endregion

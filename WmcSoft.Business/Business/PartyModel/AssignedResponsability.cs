@@ -62,6 +62,7 @@ namespace WmcSoft.Business.PartyModel
         public Responsability Responsability {
             get { return _responsability; }
         }
+
         public PartySignature Signature {
             get { return _signature; }
         }

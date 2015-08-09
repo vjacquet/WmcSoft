@@ -66,6 +66,7 @@
     <Compile Include="ComponentModel\TypeDescriptorExtensionsTests.cs" />
     <Compile Include="Configuration\MailPolicyTests.cs" />
     <Compile Include="Configuration\TestSection.cs" />
+    <Compile Include="Data\DataConvertTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="IO\StreamSourceTests.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ExpectedTests.cs" />
     <Compile Include="Text\StringBuilderExtensionsTests.cs" />
     <Compile Include="IntExtensionsTests.cs" />
+    <Compile Include="OrdinatExtensionsTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIteratorTests.cs" />

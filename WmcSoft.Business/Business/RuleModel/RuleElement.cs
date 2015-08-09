@@ -30,38 +30,27 @@ using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-	/// <remarks/>
-	[XmlInclude(typeof(Proposition))]
-	[XmlInclude(typeof(Variable))]
-	[XmlInclude(typeof(Operator))]
-	[XmlInclude(typeof(XOr))]
-	[XmlInclude(typeof(And))]
-	[XmlInclude(typeof(Or))]
-	[XmlInclude(typeof(GreaterThanOrEqualTo))]
-	[XmlInclude(typeof(LesserThanOrEqualTo))]
-	[XmlInclude(typeof(LesserThan))]
-	[XmlInclude(typeof(Not))]
-	[XmlInclude(typeof(EqualTo))]
-	[XmlInclude(typeof(NotEqualTo))]
-	[XmlInclude(typeof(GreaterThan))]
-	public abstract class RuleElement 
-	{
-		/// <remarks/>
-		[XmlAttribute("name", DataType="ID")]
-		public string Name 
-		{ 
-			get
-			{
-				return this.name;
-			}
-			set
-			{
-				this.name = value;
-			}
-		} string name;
+    /// <remarks/>
+    [XmlInclude(typeof(Proposition))]
+    [XmlInclude(typeof(Variable))]
+    [XmlInclude(typeof(Operator))]
+    [XmlInclude(typeof(XOr))]
+    [XmlInclude(typeof(And))]
+    [XmlInclude(typeof(Or))]
+    [XmlInclude(typeof(GreaterThanOrEqualTo))]
+    [XmlInclude(typeof(LesserThanOrEqualTo))]
+    [XmlInclude(typeof(LesserThan))]
+    [XmlInclude(typeof(Not))]
+    [XmlInclude(typeof(EqualTo))]
+    [XmlInclude(typeof(NotEqualTo))]
+    [XmlInclude(typeof(GreaterThan))]
+    public abstract class RuleElement
+    {
+        /// <remarks/>
+        [XmlAttribute("name")]
+        public string Name { get; set; }
 
-		/// <remarks/>
-		[XmlAttributeAttribute("type")]
-		public abstract string TypeName { get; set; }
-	}
+        [XmlIgnore]
+        public abstract string TypeName { get; }
+    }
 }

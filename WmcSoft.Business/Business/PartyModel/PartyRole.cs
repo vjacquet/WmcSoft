@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using WmcSoft.Business.RuleModel;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -72,8 +73,9 @@ namespace WmcSoft.Business.PartyModel
 
         private readonly Party _party;
         private readonly PartyRoleIdentifier _identifier;
-        internal readonly Collection<PartyRelationship> _relationships;
-        //WeightedPreferenceCollection _preferences;
+        internal readonly List<PartyRelationship> _relationships;
+        private WeightedPreferenceCollection _preferences;
+        private readonly List<AssignedResponsability> _assignedResponsabilities;
 
         #endregion
 
@@ -86,7 +88,8 @@ namespace WmcSoft.Business.PartyModel
             _identifier = new PartyRoleIdentifier();
             _party.Roles.Add(this);
 
-            _relationships = new Collection<PartyRelationship>();
+            _relationships = new List<PartyRelationship>();
+            _assignedResponsabilities = new List<AssignedResponsability>();
         }
 
         private void CheckConstraints(Party party) {
@@ -126,18 +129,28 @@ namespace WmcSoft.Business.PartyModel
             }
         }
 
-        //public WeightedPreferenceCollection Preferences {
-        //    get {
-        //        if (_preferences == null) {
-        //            lock (_identifier) {
-        //                if (_preferences == null) {
-        //                    _preferences = new WeightedPreferenceCollection();
-        //                }
-        //            }
-        //        }
-        //        return _preferences;
-        //    }
-        //}
+        public WeightedPreferenceCollection Preferences {
+            get {
+                if (_preferences == null) {
+                    lock (_identifier) {
+                        if (_preferences == null) {
+                            _preferences = new WeightedPreferenceCollection();
+                        }
+                    }
+                }
+                return _preferences;
+            }
+        }
+
+        public virtual RuleSet RequirementsForRole {
+            get { return RuleSet.Empty; }
+        }
+
+        public ICollection<AssignedResponsability> AssignedResponsabilities {
+            get {
+                return _assignedResponsabilities;
+            }
+        }
 
         #endregion
 

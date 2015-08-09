@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -41,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoundStrategy.cs" />
     <Compile Include="Business\Accounting\Cash.cs" />
     <Compile Include="Business\Accounting\Check.cs" />
     <Compile Include="Business\Accounting\CreditCard.cs" />
@@ -55,8 +57,10 @@
     <Compile Include="Business\Accounting\RM.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
+    <Compile Include="Business\IPublishable.cs" />
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
+    <Compile Include="Business\ModerationStatus.cs" />
     <Compile Include="Business\PartyModel\AddressBase.cs" />
     <Compile Include="Business\PartyModel\AddressProperties.cs" />
     <Compile Include="Business\PartyModel\AssignedResponsability.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="Business\PartyModel\Ethnicity.cs" />
     <Compile Include="Business\PartyModel\Gender.cs" />
     <Compile Include="Business\PartyModel\GeographicAddress.cs" />
+    <Compile Include="Business\PartyModel\ISupportCapabilities.cs" />
     <Compile Include="Business\PartyModel\Organization.cs" />
     <Compile Include="Business\PartyModel\OrganizationalNameUse.cs" />
     <Compile Include="Business\PartyModel\OrganizationName.cs" />
@@ -114,6 +119,7 @@
     <Compile Include="Business\ProductModel\ProductRelationship.cs" />
     <Compile Include="Business\ProductModel\ProductSet.cs" />
     <Compile Include="Business\ProductModel\ProductType.cs" />
+    <Compile Include="Business\ProductModel\ProductTypeExtensions.cs" />
     <Compile Include="Business\ProductModel\RM.cs" />
     <Compile Include="Business\ProductModel\SerialNumber.cs" />
     <Compile Include="Business\ProductModel\ServiceInstance.cs" />
@@ -137,6 +143,8 @@
     <Compile Include="Business\RuleModel\RuleSet.cs" />
     <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
     <Compile Include="Business\RuleModel\Variable.cs" />
+    <Compile Include="IBoundStrategy.cs" />
+    <Compile Include="RM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Security\AccessControl.cs" />
@@ -179,6 +187,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Business\RuleModel\RuleElement.resx">
       <DependentUpon>RuleElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RM.fr.resx">
+      <DependentUpon>RM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RM.resx">
+      <DependentUpon>RM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

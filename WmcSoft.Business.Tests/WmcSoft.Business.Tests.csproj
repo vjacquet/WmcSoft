@@ -77,6 +77,14 @@
     <Compile Include="Security\Todo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\WmcSoft.Business\Business\RuleModel\RuleContext.xsd">
+      <Link>RuleModel\RuleContext.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\WmcSoft.Business\Business\RuleModel\RuleModel.xsd">
+      <Link>RuleModel\RuleModel.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="PartyModel\FamilyLikeModel.cd" />
     <None Include="PartyModel\ProjectLikeModel.cd" />
     <None Include="RuleModel\TestRuleContext.rulecontext">

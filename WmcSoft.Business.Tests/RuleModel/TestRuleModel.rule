@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ruleSet name="ruleSet1"
 	version="1.0" 
-	xsi:noNamespaceSchemaLocation="RuleModel.xsd" 
+	xsi:noNamespaceSchemaLocation="..\..\WmcSoft.Business\Business\RuleModel\RuleModel.xsd" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
 	<rule name="rule1">
@@ -10,5 +10,10 @@
 		<equalTo />
 		<proposition name="proposition1" />
 		<and />
+	</rule>
+	<rule name="rule2">
+		<variable name="variable1" />
+		<variable name="variable3" />
+		<notEqualTo/>
 	</rule>
 </ruleSet>
