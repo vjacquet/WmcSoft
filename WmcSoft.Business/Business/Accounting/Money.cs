@@ -26,9 +26,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WmcSoft.Collections.Generic;
 using WmcSoft.Units;
 
 namespace WmcSoft.Business.Accounting
@@ -36,6 +38,7 @@ namespace WmcSoft.Business.Accounting
     /// <summary>
     /// Represents an amount of a specific Currency. This Currency is acceptedIn one or more CultureInfo.
     /// </summary>
+    [DebuggerDisplay("{Currency.ThreeLetterISOCode,nq} {Amount,nq}")]
     public struct Money : IComparable<Money>, IComparable, IEquatable<Money>
     {
         #region Fields
@@ -208,6 +211,8 @@ namespace WmcSoft.Business.Accounting
         #region IEquatable<Money> Membres
 
         public bool Equals(Money other) {
+            if (this.Currency != other.Currency)
+                return false;
             return CompareTo(other) == 0;
         }
 
@@ -220,6 +225,66 @@ namespace WmcSoft.Business.Accounting
             if (this.Currency != other.Currency)
                 throw new IncompatibleCurrencyException();
             return _amount.CompareTo(other._amount);
+        }
+
+        #endregion
+
+        #region Round
+
+        static decimal GetAwayFromZeroBoundary(int decimalDigits) {
+            if (decimalDigits == 2)
+                return 0.005m;
+            var boundary = 0.5m / new Decimal(System.Math.Pow(10, decimalDigits));
+            return boundary;
+        }
+
+        static decimal GetTowardsZeroBoundary(int decimalDigits) {
+            if (decimalDigits == 2)
+                return 0.004m;
+            var boundary = 0.4m / new Decimal(System.Math.Pow(10, decimalDigits));
+            return boundary;
+        }
+
+        static decimal Floor(decimal amount, int decimalDigits) {
+            if (decimalDigits == 0)
+                return Decimal.Floor(amount);
+            var boundary = (amount >= 0)
+                ? GetAwayFromZeroBoundary(decimalDigits)
+                : GetTowardsZeroBoundary(decimalDigits);
+            return Decimal.Round(amount - boundary, decimalDigits, MidpointRounding.AwayFromZero);
+        }
+
+        public static Money Floor(Money money) {
+            var decimalDigits = money.Currency.DecimalDigits;
+            var amount = Floor(money.Amount, decimalDigits);
+            return new Money(amount, money.Currency);
+        }
+
+        static decimal Ceiling(decimal amount, int decimalDigits) {
+            if (decimalDigits == 0)
+                return Decimal.Ceiling(amount);
+            var boundary = (amount >= 0)
+                ? GetTowardsZeroBoundary(decimalDigits)
+                : GetAwayFromZeroBoundary(decimalDigits);
+            return Decimal.Round(amount + boundary, decimalDigits, MidpointRounding.AwayFromZero);
+        }
+
+        public static Money Ceiling(Money money) {
+            var decimalDigits = money.Currency.DecimalDigits;
+            var amount = Ceiling(money.Amount, decimalDigits);
+            return new Money(amount, money.Currency);
+        }
+
+        public static Money Round(Money money, MidpointRounding mode) {
+            var decimalDigits = money.Currency.DecimalDigits;
+            var amount = Decimal.Round(money.Amount, decimalDigits, mode);
+            return new Money(amount, money.Currency);
+        }
+
+        public static Money Round(Money money) {
+            var decimalDigits = money.Currency.DecimalDigits;
+            var amount = Decimal.Round(money.Amount, decimalDigits, MidpointRounding.AwayFromZero);
+            return new Money(amount, money.Currency);
         }
 
         #endregion

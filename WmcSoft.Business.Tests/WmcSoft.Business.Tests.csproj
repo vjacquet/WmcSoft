@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Accounting\MoneyTests.cs" />
     <Compile Include="PartyModel\BusinessExtensions.cs" />
     <Compile Include="PartyModel\FamilyLikeModel.cs" />
     <Compile Include="PartyModel\FamilyLikePartyRoleTests.cs">
@@ -102,6 +103,10 @@
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
       <Name>WmcSoft.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Units\WmcSoft.Units.csproj">
+      <Project>{fd4e34d4-7a77-4908-b135-268abe7d2506}</Project>
+      <Name>WmcSoft.Units</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

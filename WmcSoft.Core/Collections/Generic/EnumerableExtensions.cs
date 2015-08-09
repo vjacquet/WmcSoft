@@ -37,6 +37,22 @@ namespace WmcSoft.Collections.Generic
 {
     public static class EnumerableExtensions
     {
+        #region AsReadOnlyCollection
+
+        /// <summary>
+        /// Returns an enumerable optimized for functions requiring a Count
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The count of items</param>
+        /// <param name="count">The count of items.</param>
+        /// <returns>The decorated enumerable</returns>
+        /// <remarks>For optimization, the function does not guard against wrong count.</remarks>
+        public static IReadOnlyCollection<T> AsReadOnlyCollection<T>(this IEnumerable<T> source, int count) {
+            return new ReadOnlyCollectionAdapter<T>(source, count);
+        }
+
+        #endregion
+
         #region Backwards
 
         #region BackwardsEnumerableAdapter

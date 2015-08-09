@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WmcSoft
 {
     [TestClass]
-    public class OrdinatExtensionsTests
+    public class OrdinalExtensionsTests
     {
         [TestMethod]
         public void CanCollate() {

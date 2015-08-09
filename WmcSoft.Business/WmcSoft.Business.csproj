@@ -46,6 +46,7 @@
     <Compile Include="Business\Accounting\Cash.cs" />
     <Compile Include="Business\Accounting\Check.cs" />
     <Compile Include="Business\Accounting\CreditCard.cs" />
+    <Compile Include="Business\Accounting\CultureInfoCurrency.cs" />
     <Compile Include="Business\Accounting\Currency.cs" />
     <Compile Include="Business\Accounting\DebitCard.cs" />
     <Compile Include="Business\Accounting\ExchangeRate.cs" />
@@ -144,6 +145,11 @@
     <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
     <Compile Include="Business\RuleModel\Variable.cs" />
     <Compile Include="IBoundStrategy.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
@@ -187,6 +193,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Business\RuleModel\RuleElement.resx">
       <DependentUpon>RuleElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RM.fr.resx">
       <DependentUpon>RM.cs</DependentUpon>

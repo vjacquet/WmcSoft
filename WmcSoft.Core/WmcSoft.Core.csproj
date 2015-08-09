@@ -64,6 +64,7 @@
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\SourceComparer.cs" />
     <Compile Include="Collections\ReadOnlyCollectionOfObjectAdapter.cs" />
     <Compile Include="Collections\Generic\ConvertingCollectionAdapter.cs" />

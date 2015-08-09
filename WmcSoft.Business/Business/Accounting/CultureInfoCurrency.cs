@@ -25,50 +25,49 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using WmcSoft.Units;
+using WmcSoft.Properties;
 
 namespace WmcSoft.Business.Accounting
 {
-    /// <summary>
-    /// Represents a Metric or standard value for measuring Money.
-    /// </summary>
-    [DebuggerDisplay("{ThreeLetterISOCode,nq}")]
-    public abstract class Currency : Metric, ITemporal
+    public sealed class CultureInfoCurrency : Currency
     {
         #region Private fields
 
-        private readonly List<CultureInfo> _acceptedIn;
+        private readonly CultureInfo _culture;
+        private readonly RegionInfo _regionInfo;
 
         #endregion
 
         #region Lifecycle
 
-        public Currency() {
-            _acceptedIn = new List<CultureInfo>();
+        public CultureInfoCurrency(CultureInfo culture) {
+            _culture = culture;
+            _regionInfo = new RegionInfo(culture.LCID);
         }
 
         #endregion
 
         #region Properties
 
-        IList<CultureInfo> AcceptedIn {
-            get { return _acceptedIn; }
+        public override string Symbol {
+            get { return _culture.NumberFormat.CurrencySymbol; }
         }
 
-        public abstract string ThreeLetterISOCode { get; }
+        public override string Name {
+            get { return _regionInfo.CurrencyNativeName; }
+        }
 
-        public abstract int DecimalDigits { get; }
+        public override string Definition {
+            get { return String.Format(Resources.CurrencyFromRegionDescriptionFormat, _regionInfo.NativeName); }
+        }
 
-        #endregion
-
-        #region ITemporal Members
-
-        public DateTime? ValidSince { get; set; }
-
-        public DateTime? ValidUntil { get; set; }
+        public override string ThreeLetterISOCode {
+            get { return _regionInfo.ISOCurrencySymbol; }
+        }
+        public override int DecimalDigits {
+            get { return _culture.NumberFormat.CurrencyDecimalDigits; }
+        }
 
         #endregion
     }
