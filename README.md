@@ -30,9 +30,13 @@ _Library of components to build business applications._
 
 - Security
 
-- Party, PartyRoles & PartyRelationship
+- RuleModel
 
-- Product, Package
+- Party, PartyRole & PartyRelationship
+
+- ProductType, ProductInstance, Package
+
+- Accounting
 
 ## WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._
@@ -65,4 +69,4 @@ The classes are defined in an XML file and then generated in CSharp.
 _Library of artificial intelligence algorithms._
 
 This library is so far a collection of algorithm, initially converted from Practical Neural Network Recipes in C++, 
-by Timothy Masters.
+by Timothy Masters, and C++ Neural Networks & Fuzzy Logic by Rao & Rao.

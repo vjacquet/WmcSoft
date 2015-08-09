@@ -98,11 +98,13 @@
     <Compile Include="Business\PartyModel\TelecomPhysicalType.cs" />
     <Compile Include="Business\PartyModel\WebPageAddress.cs" />
     <Compile Include="Business\PartyModel\WeightedPreferenceCollection.cs" />
+    <Compile Include="Business\ProductModel\ArbitraryPrice.cs" />
     <Compile Include="Business\ProductModel\Batch.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Business\ProductModel\PackageInstance.cs" />
     <Compile Include="Business\ProductModel\PackageType.cs" />
+    <Compile Include="Business\ProductModel\Price.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureInstance.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureType.cs" />
     <Compile Include="Business\ProductModel\ProductIdentifier.cs" />
