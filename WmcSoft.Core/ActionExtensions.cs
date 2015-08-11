@@ -33,6 +33,13 @@ namespace WmcSoft
     {
         #region ApplyEach & TryEach
 
+        /// <summary>
+        /// Apply the action for each argument.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <param name="func">The action</param>
+        /// <param name="args">The arguments</param>
+        /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
         public static void ApplyEach<T, TResult>(this Action<T> action, params T[] args) {
             int i = 0;
             try {
@@ -47,6 +54,14 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Try to apply the action for each argument, returning the caught exception when the call failed.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <param name="func">The action</param>
+        /// <param name="args">The arguments</param>
+        /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
+        /// <returns>The array of exception, in the order of the arguments.</returns>
         public static Exception[] TryEach<T, TResult>(this Action<T> action, params T[] args) {
             var results = new Exception[args.Length];
             for (int i = 0; i < args.Length; i++) {

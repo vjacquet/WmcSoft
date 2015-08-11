@@ -33,6 +33,15 @@ namespace WmcSoft
     {
         #region ApplyEach & TryEach
 
+        /// <summary>
+        /// Apply the func for each argument.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="func">The function</param>
+        /// <param name="args">The arguments</param>
+        /// <returns>The array of results, in the order of the arguments.</returns>
+        /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
         public static TResult[] ApplyEach<T, TResult>(this Func<T, TResult> func, params T[] args) {
             int i = 0;
             try {
@@ -48,6 +57,14 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Try to the func for each argument.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="func">The function</param>
+        /// <param name="args">The arguments</param>
+        /// <returns>The array of expected results, in the order of the arguments.</returns>
         public static Expected<TResult>[] TryEach<T, TResult>(this Func<T, TResult> func, params T[] args) {
             var results = new Expected<TResult>[args.Length];
             for (int i = 0; i < args.Length; i++) {
