@@ -25,15 +25,44 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WmcSoft.Diagnostics;
 
 namespace WmcSoft
 {
     public static class FuncExtensions
     {
+        #region ApplyEach & TryEach
+
+        public static TResult[] ApplyEach<T, TResult>(this Func<T, TResult> func, params T[] args) {
+            int i = 0;
+            try {
+                var results = new TResult[args.Length];
+                for (; i < args.Length; i++) {
+                    results[i] = func(args[i]);
+                }
+                return results;
+            }
+            catch (Exception e) {
+                e.CaptureContext(new { i, arg = args[i] });
+                throw;
+            }
+        }
+
+        public static Expected<TResult>[] TryEach<T, TResult>(this Func<T, TResult> func, params T[] args) {
+            var results = new Expected<TResult>[args.Length];
+            for (int i = 0; i < args.Length; i++) {
+                try {
+                    results[i] = func(args[i]);
+                }
+                catch (Exception e) {
+                    results[i] = e;
+                }
+            }
+            return results;
+        }
+
+        #endregion
+
         #region Lift
 
         public static Func<T?, TResult?> Lift<T, TResult>(this Func<T, TResult> func)
