@@ -108,9 +108,11 @@
     <Compile Include="Business\ProductModel\Batch.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Business\ProductModel\CatalogEntry.cs" />
     <Compile Include="Business\ProductModel\PackageInstance.cs" />
     <Compile Include="Business\ProductModel\PackageType.cs" />
     <Compile Include="Business\ProductModel\Price.cs" />
+    <Compile Include="Business\ProductModel\ProductCatalog.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureInstance.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureType.cs" />
     <Compile Include="Business\ProductModel\ProductIdentifier.cs" />
