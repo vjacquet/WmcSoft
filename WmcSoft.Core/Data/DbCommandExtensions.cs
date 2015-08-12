@@ -28,11 +28,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Threading;
 
 namespace WmcSoft.Data
 {
     public static class DbCommandExtensions
     {
+        #region NameGenerators
+
+        static Func<int, string> _defaultNameGenerator;
+        public static Func<int, string> ParameterNameGenerator {
+            get {
+                return _defaultNameGenerator;
+            }
+            set {
+                Interlocked.Exchange(ref _defaultNameGenerator, value);
+            }
+        }
+
+        public static readonly Func<int, string> DefaultParameterNameGenerator = null;
+
+        #endregion
+
         public static TCommand WithReflectedParameters<TCommand>(this TCommand command, object parameters)
             where TCommand : IDbCommand {
             if (parameters != null) {
@@ -88,12 +105,36 @@ namespace WmcSoft.Data
             return results;
         }
 
-        public static IDbDataParameter[] AddParameters(this IDbCommand command, int count) {
+        public static IDbDataParameter AddParameter(this IDbCommand command, Func<int, string> nameGenerator) {
+            if (nameGenerator == null)
+                nameGenerator = ParameterNameGenerator;
+
+            var parameter = command.CreateParameter();
+            if (nameGenerator != null)
+                parameter.ParameterName = nameGenerator(0);
+            command.Parameters.Add(parameter);
+            return parameter;
+        }
+
+        public static IDbDataParameter[] AddParameters(this IDbCommand command, int count, Func<int, string> nameGenerator = null) {
             var results = new IDbDataParameter[count];
-            for (int i = 0; i != count; i++) {
-                var parameter = command.CreateParameter();
-                command.Parameters.Add(parameter);
-                results[i] = parameter;
+
+            if (nameGenerator == null)
+                nameGenerator = ParameterNameGenerator;
+
+            if (nameGenerator == null) {
+                for (int i = 0; i != count; i++) {
+                    var parameter = command.CreateParameter();
+                    command.Parameters.Add(parameter);
+                    results[i] = parameter;
+                }
+            } else {
+                for (int i = 0; i != count; i++) {
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = nameGenerator(i);
+                    command.Parameters.Add(parameter);
+                    results[i] = parameter;
+                }
             }
             return results;
         }

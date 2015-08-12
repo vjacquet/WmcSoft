@@ -28,28 +28,12 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Threading;
+using System.Diagnostics;
 
 namespace WmcSoft.Data
 {
     public static class DbConnectionExtensions
     {
-        #region NameGenerators
-
-        static Func<int, string> _defaultNameGenerator;
-        public static Func<int, string> ParameterNameGenerator {
-            get {
-                return _defaultNameGenerator;
-            }
-            set {
-                Interlocked.Exchange(ref _defaultNameGenerator, value);
-            }
-        }
-
-        public static readonly Func<int, string> DefaultParameterNameGenerator = null;
-
-        #endregion
-
         /// <summary>
         /// Opens a database connection.
         /// </summary>
@@ -106,71 +90,93 @@ namespace WmcSoft.Data
             }
         }
 
-        public static Func<T, int> Prepare<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
-            var command = connection.CreateCommand();
-            command.CommandType = commandType;
-            command.CommandText = commandText;
-            command.Transaction = transaction;
-
-            if (timeout != null)
-                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
-
-            if (nameGenerator == null)
-                nameGenerator = ParameterNameGenerator;
-
-            var p = nameGenerator == ParameterNameGenerator
-                ? command.AddParameter()
-                : command.AddParameter(nameGenerator(0));
-
+        public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
+            var p = command.AddParameter(nameGenerator);
             return p0 => {
                 p.Value = p0;
                 return command.ExecuteNonQuery();
             };
         }
 
-        public static Func<T1, T2, int> Prepare<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
-            var command = connection.CreateCommand();
-            command.CommandType = commandType;
-            command.CommandText = commandText;
-            command.Transaction = transaction;
+        static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator) {
+            var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
+            parameters = command.AddParameters(parameterCount, nameGenerator);
+            return command;
+        }
 
-            if (timeout != null)
-                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
+        static void SetValues(IDbDataParameter[] parameters, params object[] values) {
+            for (int i = 0; i < parameters.Length; i++) {
+                parameters[i].Value = values[i];
+            }
+        }
 
-            if (nameGenerator == null)
-                nameGenerator = ParameterNameGenerator;
-
-            var p = nameGenerator == ParameterNameGenerator
-                ? command.AddParameters(2)
-                : command.AddParameters(nameGenerator(0), nameGenerator(1));
+        public static Func<T1, T2, int> PrepareExecuteNonQuery<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(2, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
             return (p0, p1) => {
-                p[0].Value = p0;
-                p[1].Value = p1;
+                SetValues(p, p0, p1);
                 return command.ExecuteNonQuery();
             };
         }
 
-        public static Func<T1, T2, T3, int> Prepare<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
-            var command = connection.CreateCommand();
-            command.CommandType = commandType;
-            command.CommandText = commandText;
-            command.Transaction = transaction;
-
-            if (timeout != null)
-                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
-
-            if (nameGenerator == null)
-                nameGenerator = ParameterNameGenerator;
-
-            var p = nameGenerator == ParameterNameGenerator
-                ? command.AddParameters(3)
-                : command.AddParameters(nameGenerator(0), nameGenerator(1), nameGenerator(2));
+        public static Func<T1, T2, T3, int> PrepareExecuteNonQuery<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(3, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
             return (p0, p1, p2) => {
-                p[0].Value = p0;
-                p[1].Value = p1;
-                p[2].Value = p2;
+                SetValues(p, p0, p1, p2);
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, T3, T4, int> PrepareExecuteNonQuery<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(4, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3) => {
+                SetValues(p, p0, p1, p2, p3);
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, T3, T4, T5, int> Prepare<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(5, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4) => {
+                SetValues(p, p0, p1, p2, p3, p4);
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(6, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4, p5) => {
+                SetValues(p, p0, p1, p2, p3, p4, p5);
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, T7, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(7, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4, p5, p6) => {
+                SetValues(p, p0, p1, p2, p3, p4, p5, p6);
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(8, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4, p5, p6, p7) => {
+                SetValues(p, p0, p1, p2, p3, p4, p5, p6, p7);
                 return command.ExecuteNonQuery();
             };
         }
