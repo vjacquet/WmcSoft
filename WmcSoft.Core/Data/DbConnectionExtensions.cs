@@ -28,11 +28,28 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Threading;
 
 namespace WmcSoft.Data
 {
     public static class DbConnectionExtensions
     {
+        #region NameGenerators
+
+        static Func<int, string> _defaultNameGenerator;
+        public static Func<int, string> ParameterNameGenerator {
+            get {
+                return _defaultNameGenerator;
+            }
+            set {
+                Interlocked.Exchange(ref _defaultNameGenerator, value);
+            }
+        }
+
+        public static readonly Func<int, string> DefaultParameterNameGenerator = null;
+
+        #endregion
+
         /// <summary>
         /// Opens a database connection.
         /// </summary>
@@ -51,7 +68,7 @@ namespace WmcSoft.Data
             command.CommandType = commandType;
             command.CommandText = commandText;
             command.Transaction = transaction;
-            command.AddReflectedParameters(parameters);
+            command.WithReflectedParameters(parameters);
             if (timeout != null) {
                 command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
             }
@@ -87,6 +104,75 @@ namespace WmcSoft.Data
                     return null;
                 return (T)Convert.ChangeType(result, typeof(T));
             }
+        }
+
+        public static Func<T, int> Prepare<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            var command = connection.CreateCommand();
+            command.CommandType = commandType;
+            command.CommandText = commandText;
+            command.Transaction = transaction;
+
+            if (timeout != null)
+                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
+
+            if (nameGenerator == null)
+                nameGenerator = ParameterNameGenerator;
+
+            var p = nameGenerator == ParameterNameGenerator
+                ? command.AddParameter()
+                : command.AddParameter(nameGenerator(0));
+
+            return p0 => {
+                p.Value = p0;
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, int> Prepare<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            var command = connection.CreateCommand();
+            command.CommandType = commandType;
+            command.CommandText = commandText;
+            command.Transaction = transaction;
+
+            if (timeout != null)
+                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
+
+            if (nameGenerator == null)
+                nameGenerator = ParameterNameGenerator;
+
+            var p = nameGenerator == ParameterNameGenerator
+                ? command.AddParameters(2)
+                : command.AddParameters(nameGenerator(0), nameGenerator(1));
+
+            return (p0, p1) => {
+                p[0].Value = p0;
+                p[1].Value = p1;
+                return command.ExecuteNonQuery();
+            };
+        }
+
+        public static Func<T1, T2, T3, int> Prepare<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            var command = connection.CreateCommand();
+            command.CommandType = commandType;
+            command.CommandText = commandText;
+            command.Transaction = transaction;
+
+            if (timeout != null)
+                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
+
+            if (nameGenerator == null)
+                nameGenerator = ParameterNameGenerator;
+
+            var p = nameGenerator == ParameterNameGenerator
+                ? command.AddParameters(3)
+                : command.AddParameters(nameGenerator(0), nameGenerator(1), nameGenerator(2));
+
+            return (p0, p1, p2) => {
+                p[0].Value = p0;
+                p[1].Value = p1;
+                p[2].Value = p2;
+                return command.ExecuteNonQuery();
+            };
         }
     }
 }

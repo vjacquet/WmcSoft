@@ -33,16 +33,77 @@ namespace WmcSoft.Data
 {
     public static class DbCommandExtensions
     {
-        public static void AddReflectedParameters(this IDbCommand command, object parameters) {
-            if (parameters == null)
-                return;
-
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(parameters)) {
-                var parameter = command.CreateParameter();
-                parameter.ParameterName = descriptor.Name;
-                parameter.Value = descriptor.GetValue(parameters);
-                command.Parameters.Add(parameter);
+        public static TCommand WithReflectedParameters<TCommand>(this TCommand command, object parameters)
+            where TCommand : IDbCommand {
+            if (parameters != null) {
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(parameters)) {
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = descriptor.Name;
+                    parameter.Value = descriptor.GetValue(parameters);
+                    command.Parameters.Add(parameter);
+                }
             }
+
+            return command;
+        }
+
+        public static TCommand WithParameters<TCommand>(this TCommand command, params string[] names)
+            where TCommand : IDbCommand {
+            foreach (var name in names) {
+                command.AddParameter(name);
+            }
+            return command;
+        }
+
+        public static TCommand WithParameters<TCommand>(this TCommand command, int count)
+            where TCommand : IDbCommand {
+            while (count > 0) {
+                command.AddParameter();
+                --count;
+            }
+            return command;
+        }
+
+        public static IDbDataParameter AddParameter(this IDbCommand command) {
+            var parameter = command.CreateParameter();
+            command.Parameters.Add(parameter);
+            return parameter;
+        }
+
+        public static IDbDataParameter AddParameter(this IDbCommand command, string name) {
+            var parameter = command.CreateParameter();
+            parameter.ParameterName = name;
+            command.Parameters.Add(parameter);
+            return parameter;
+        }
+
+        public static IDbDataParameter[] AddParameters(this IDbCommand command, params string[] names) {
+            var results = new IDbDataParameter[names.Length];
+            for (int i = 0; i != names.Length; i++) {
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = names[i];
+                command.Parameters.Add(parameter);
+                results[i] = parameter;
+            }
+            return results;
+        }
+
+        public static IDbDataParameter[] AddParameters(this IDbCommand command, int count) {
+            var results = new IDbDataParameter[count];
+            for (int i = 0; i != count; i++) {
+                var parameter = command.CreateParameter();
+                command.Parameters.Add(parameter);
+                results[i] = parameter;
+            }
+            return results;
+        }
+
+        public static IDbDataParameter AddParameter<T>(this IDbCommand command, string name, T value = default(T)) {
+            var parameter = command.CreateParameter();
+            parameter.ParameterName = name;
+            parameter.Value = value;
+            command.Parameters.Add(parameter);
+            return parameter;
         }
 
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, CommandBehavior behavior, Func<IDataRecord, T> materializer) {
