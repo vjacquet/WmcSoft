@@ -170,7 +170,6 @@ namespace WmcSoft.Data
         #region ReadXXX
 
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, CommandBehavior behavior, Func<IDataRecord, T> materializer) {
-            using (command)
             using (var reader = command.ExecuteReader(behavior)) {
                 while (reader.Read()) {
                     yield return materializer(reader);
@@ -179,7 +178,6 @@ namespace WmcSoft.Data
         }
 
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, Func<IDataRecord, T> materializer) {
-            using (command)
             using (var reader = command.ExecuteReader()) {
                 while (reader.Read()) {
                     yield return materializer(reader);
@@ -188,28 +186,22 @@ namespace WmcSoft.Data
         }
 
         public static T ReadScalar<T>(this IDbCommand command) {
-            using (command) {
-                var result = command.ExecuteScalar();
-                return (T)Convert.ChangeType(result, typeof(T));
-            }
+            var result = command.ExecuteScalar();
+            return (T)Convert.ChangeType(result, typeof(T));
         }
 
         public static T ReadScalarOrDefault<T>(this IDbCommand command) {
-            using (command) {
-                var result = command.ExecuteScalar();
-                if (result == null || DBNull.Value.Equals(result))
-                    return default(T);
-                return (T)Convert.ChangeType(result, typeof(T));
-            }
+            var result = command.ExecuteScalar();
+            if (result == null || DBNull.Value.Equals(result))
+                return default(T);
+            return (T)Convert.ChangeType(result, typeof(T));
         }
 
         public static T? ReadNullableScalar<T>(this IDbCommand command) where T : struct {
-            using (command) {
-                var result = command.ExecuteScalar();
-                if (result == null || DBNull.Value.Equals(result))
-                    return null;
-                return (T)Convert.ChangeType(result, typeof(T));
-            }
+            var result = command.ExecuteScalar();
+            if (result == null || DBNull.Value.Equals(result))
+                return null;
+            return (T)Convert.ChangeType(result, typeof(T));
         }
 
         #endregion

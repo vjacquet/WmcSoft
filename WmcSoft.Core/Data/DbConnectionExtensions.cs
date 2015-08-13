@@ -53,9 +53,8 @@ namespace WmcSoft.Data
             command.CommandText = commandText;
             command.Transaction = transaction;
             command.WithParameters(parameters);
-            if (timeout != null) {
+            if (timeout != null)
                 command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
-            }
             return command;
         }
 
@@ -67,29 +66,22 @@ namespace WmcSoft.Data
 
         public static T ReadScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
-                var result = command.ExecuteScalar();
-                return (T)Convert.ChangeType(result, typeof(T));
+                return command.ReadScalar<T>();
             }
         }
 
         public static T ReadScalarOrDefault<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
-                var result = command.ExecuteScalar();
-                if (result == null || DBNull.Value.Equals(result))
-                    return default(T);
-                return (T)Convert.ChangeType(result, typeof(T));
+                return command.ReadScalarOrDefault<T>();
             }
         }
 
-        public static T? ReadNullableScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) where T : struct {
+        public static T? ReadNullableScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+            where T : struct {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
-                var result = command.ExecuteScalar();
-                if (result == null || DBNull.Value.Equals(result))
-                    return null;
-                return (T)Convert.ChangeType(result, typeof(T));
+                return command.ReadNullableScalar<T>();
             }
         }
-
 
         static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator) {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
