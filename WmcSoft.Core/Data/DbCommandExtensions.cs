@@ -167,6 +167,29 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region ExecuteXXX
+
+        public static T ExecuteScalar<T>(this IDbCommand command) {
+            var result = command.ExecuteScalar();
+            return (T)Convert.ChangeType(result, typeof(T));
+        }
+
+        public static T ExecuteScalarOrDefault<T>(this IDbCommand command) {
+            var result = command.ExecuteScalar();
+            if (result == null || DBNull.Value.Equals(result))
+                return default(T);
+            return (T)Convert.ChangeType(result, typeof(T));
+        }
+
+        public static T? ExecuteNullableScalar<T>(this IDbCommand command) where T : struct {
+            var result = command.ExecuteScalar();
+            if (result == null || DBNull.Value.Equals(result))
+                return null;
+            return (T)Convert.ChangeType(result, typeof(T));
+        }
+
+        #endregion
+
         #region ReadXXX
 
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, CommandBehavior behavior, Func<IDataRecord, T> materializer) {
@@ -183,25 +206,6 @@ namespace WmcSoft.Data
                     yield return materializer(reader);
                 }
             }
-        }
-
-        public static T ReadScalar<T>(this IDbCommand command) {
-            var result = command.ExecuteScalar();
-            return (T)Convert.ChangeType(result, typeof(T));
-        }
-
-        public static T ReadScalarOrDefault<T>(this IDbCommand command) {
-            var result = command.ExecuteScalar();
-            if (result == null || DBNull.Value.Equals(result))
-                return default(T);
-            return (T)Convert.ChangeType(result, typeof(T));
-        }
-
-        public static T? ReadNullableScalar<T>(this IDbCommand command) where T : struct {
-            var result = command.ExecuteScalar();
-            if (result == null || DBNull.Value.Equals(result))
-                return null;
-            return (T)Convert.ChangeType(result, typeof(T));
         }
 
         #endregion

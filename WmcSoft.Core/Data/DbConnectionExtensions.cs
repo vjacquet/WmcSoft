@@ -34,6 +34,8 @@ namespace WmcSoft.Data
 {
     public static class DbConnectionExtensions
     {
+        #region Factory methods
+
         /// <summary>
         /// Opens a database connection.
         /// </summary>
@@ -58,30 +60,38 @@ namespace WmcSoft.Data
             return command;
         }
 
+        #endregion
+
+        #region ExecuteXXX
+
         public static int ExecuteNonQuery(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
                 return command.ExecuteNonQuery();
             }
         }
 
-        public static T ReadScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+        public static T ExecuteScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
-                return command.ReadScalar<T>();
+                return command.ExecuteScalar<T>();
             }
         }
 
-        public static T ReadScalarOrDefault<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+        public static T ExecuteScalarOrDefault<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
-                return command.ReadScalarOrDefault<T>();
+                return command.ExecuteScalarOrDefault<T>();
             }
         }
 
-        public static T? ReadNullableScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+        public static T? ExecuteNullableScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
             where T : struct {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
-                return command.ReadNullableScalar<T>();
+                return command.ExecuteNullableScalar<T>();
             }
         }
+
+        #endregion
+
+        #region PrepareXXX
 
         static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator) {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
@@ -175,6 +185,8 @@ namespace WmcSoft.Data
                 return command.ExecuteNonQuery();
             };
         }
+
+        #endregion
 
         #endregion
     }
