@@ -52,7 +52,7 @@ namespace WmcSoft.Data
             command.CommandType = commandType;
             command.CommandText = commandText;
             command.Transaction = transaction;
-            command.WithReflectedParameters(parameters);
+            command.WithParameters(parameters);
             if (timeout != null) {
                 command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
             }
@@ -90,14 +90,6 @@ namespace WmcSoft.Data
             }
         }
 
-        public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
-            var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
-            var p = command.AddParameter(nameGenerator);
-            return p0 => {
-                p.Value = p0;
-                return command.ExecuteNonQuery();
-            };
-        }
 
         static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator) {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
@@ -109,6 +101,17 @@ namespace WmcSoft.Data
             for (int i = 0; i < parameters.Length; i++) {
                 parameters[i].Value = values[i];
             }
+        }
+
+        #region PrepareExecuteNonQuery
+
+        public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
+            var p = command.AddParameter(nameGenerator);
+            return p0 => {
+                p.Value = p0;
+                return command.ExecuteNonQuery();
+            };
         }
 
         public static Func<T1, T2, int> PrepareExecuteNonQuery<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
@@ -180,5 +183,7 @@ namespace WmcSoft.Data
                 return command.ExecuteNonQuery();
             };
         }
+
+        #endregion
     }
 }

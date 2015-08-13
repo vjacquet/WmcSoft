@@ -50,7 +50,9 @@ namespace WmcSoft.Data
 
         #endregion
 
-        public static TCommand WithReflectedParameters<TCommand>(this TCommand command, object parameters)
+        #region WithParameters
+
+        public static TCommand WithParameters<TCommand>(this TCommand command, object parameters)
             where TCommand : IDbCommand {
             if (parameters != null) {
                 foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(parameters)) {
@@ -72,14 +74,30 @@ namespace WmcSoft.Data
             return command;
         }
 
-        public static TCommand WithParameters<TCommand>(this TCommand command, int count)
+        public static TCommand WithParameters<TCommand>(this TCommand command, int count, Func<int, string> nameGenerator = null)
             where TCommand : IDbCommand {
-            while (count > 0) {
-                command.AddParameter();
-                --count;
+            if (nameGenerator == null)
+                nameGenerator = ParameterNameGenerator;
+
+            if (nameGenerator == null) {
+                for (int i = 0; i != count; i++) {
+                    var parameter = command.CreateParameter();
+                    command.Parameters.Add(parameter);
+                }
+            } else {
+                for (int i = 0; i != count; i++) {
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = nameGenerator(i);
+                    command.Parameters.Add(parameter);
+                }
             }
+
             return command;
         }
+
+        #endregion
+
+        #region AddParameter(s)
 
         public static IDbDataParameter AddParameter(this IDbCommand command) {
             var parameter = command.CreateParameter();
@@ -147,6 +165,10 @@ namespace WmcSoft.Data
             return parameter;
         }
 
+        #endregion
+
+        #region ReadXXX
+
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, CommandBehavior behavior, Func<IDataRecord, T> materializer) {
             using (command)
             using (var reader = command.ExecuteReader(behavior)) {
@@ -189,5 +211,7 @@ namespace WmcSoft.Data
                 return (T)Convert.ChangeType(result, typeof(T));
             }
         }
+
+        #endregion
     }
 }
