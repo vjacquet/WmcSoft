@@ -38,15 +38,90 @@ namespace WmcSoft.Data
 
         static Func<int, string> _defaultNameGenerator;
         public static Func<int, string> ParameterNameGenerator {
-            get {
-                return _defaultNameGenerator;
-            }
-            set {
-                Interlocked.Exchange(ref _defaultNameGenerator, value);
-            }
+            get { return _defaultNameGenerator; }
+            set { Interlocked.Exchange(ref _defaultNameGenerator, value); }
         }
 
         public static readonly Func<int, string> DefaultParameterNameGenerator = null;
+
+        #endregion
+
+        #region PreparedParameter class
+
+        class PreparedParameter : IDbDataParameter
+        {
+            readonly IDbDataParameter _base;
+
+            public PreparedParameter(IDbDataParameter parameter) {
+                _base = parameter;
+            }
+
+            #region IDbDataParameter Members
+
+            public byte Precision {
+                get { return _base.Precision; }
+                set { _base.Precision = value; }
+            }
+
+            public byte Scale {
+                get { return _base.Scale; }
+                set { _base.Scale = value; }
+            }
+
+            public int Size {
+                get { return _base.Size; }
+                set { _base.Size = value; }
+            }
+
+            #endregion
+
+            #region IDataParameter Members
+
+            public DbType DbType {
+                get { return _base.DbType; }
+                set { _base.DbType = value; }
+            }
+
+            public ParameterDirection Direction {
+                get { return _base.Direction; }
+                set { _base.Direction = value; }
+            }
+
+            public bool IsNullable {
+                get { throw new NotImplementedException(); }
+            }
+
+            public string ParameterName {
+                get { return _base.ParameterName; }
+                set { _base.ParameterName = value; }
+            }
+
+            public string SourceColumn {
+                get { return _base.SourceColumn; }
+                set { _base.SourceColumn = value; }
+            }
+
+            public DataRowVersion SourceVersion {
+                get { return _base.SourceVersion; }
+                set { _base.SourceVersion = value; }
+            }
+
+            public object Value {
+                get {
+                    var value = _base.Value;
+                    if (DBNull.Value.Equals(value))
+                        return null;
+                    return value;
+                }
+                set {
+                    if (value == null)
+                        _base.Value = DBNull.Value;
+                    _base.Value = value;
+                }
+            }
+
+            #endregion
+        }
 
         #endregion
 
@@ -69,7 +144,7 @@ namespace WmcSoft.Data
         public static TCommand WithParameters<TCommand>(this TCommand command, params string[] names)
             where TCommand : IDbCommand {
             foreach (var name in names) {
-                command.AddParameter(name);
+                command.PrepareParameter(name);
             }
             return command;
         }
@@ -99,31 +174,31 @@ namespace WmcSoft.Data
 
         #region AddParameter(s)
 
-        public static IDbDataParameter AddParameter(this IDbCommand command) {
+        public static IDbDataParameter PrepareParameter(this IDbCommand command) {
             var parameter = command.CreateParameter();
             command.Parameters.Add(parameter);
-            return parameter;
+            return new PreparedParameter(parameter);
         }
 
-        public static IDbDataParameter AddParameter(this IDbCommand command, string name) {
+        public static IDbDataParameter PrepareParameter(this IDbCommand command, string name) {
             var parameter = command.CreateParameter();
             parameter.ParameterName = name;
             command.Parameters.Add(parameter);
-            return parameter;
+            return new PreparedParameter(parameter);
         }
 
-        public static IDbDataParameter[] AddParameters(this IDbCommand command, params string[] names) {
+        public static IDbDataParameter[] PrepareParameters(this IDbCommand command, params string[] names) {
             var results = new IDbDataParameter[names.Length];
             for (int i = 0; i != names.Length; i++) {
                 var parameter = command.CreateParameter();
                 parameter.ParameterName = names[i];
                 command.Parameters.Add(parameter);
-                results[i] = parameter;
+                results[i] = new PreparedParameter(parameter);
             }
             return results;
         }
 
-        public static IDbDataParameter AddParameter(this IDbCommand command, Func<int, string> nameGenerator) {
+        public static IDbDataParameter PrepareParameter(this IDbCommand command, Func<int, string> nameGenerator) {
             if (nameGenerator == null)
                 nameGenerator = ParameterNameGenerator;
 
@@ -131,10 +206,10 @@ namespace WmcSoft.Data
             if (nameGenerator != null)
                 parameter.ParameterName = nameGenerator(0);
             command.Parameters.Add(parameter);
-            return parameter;
+            return new PreparedParameter(parameter);
         }
 
-        public static IDbDataParameter[] AddParameters(this IDbCommand command, int count, Func<int, string> nameGenerator = null) {
+        public static IDbDataParameter[] PrepareParameters(this IDbCommand command, int count, Func<int, string> nameGenerator = null) {
             var results = new IDbDataParameter[count];
 
             if (nameGenerator == null)
@@ -144,25 +219,27 @@ namespace WmcSoft.Data
                 for (int i = 0; i != count; i++) {
                     var parameter = command.CreateParameter();
                     command.Parameters.Add(parameter);
-                    results[i] = parameter;
+                    results[i] = new PreparedParameter(parameter);
                 }
             } else {
                 for (int i = 0; i != count; i++) {
                     var parameter = command.CreateParameter();
                     parameter.ParameterName = nameGenerator(i);
                     command.Parameters.Add(parameter);
-                    results[i] = parameter;
+                    results[i] = new PreparedParameter(parameter);
                 }
             }
             return results;
         }
 
-        public static IDbDataParameter AddParameter<T>(this IDbCommand command, string name, T value = default(T)) {
+        public static IDbDataParameter PrepareParameter<T>(this IDbCommand command, string name, T value = default(T)) {
             var parameter = command.CreateParameter();
             parameter.ParameterName = name;
-            parameter.Value = value;
             command.Parameters.Add(parameter);
-            return parameter;
+
+            var prepared =new PreparedParameter(parameter);
+            prepared.Value = value;
+            return prepared;
         }
 
         #endregion

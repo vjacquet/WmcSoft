@@ -95,7 +95,7 @@ namespace WmcSoft.Data
 
         static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator) {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
-            parameters = command.AddParameters(parameterCount, nameGenerator);
+            parameters = command.PrepareParameters(parameterCount, nameGenerator);
             return command;
         }
 
@@ -109,7 +109,7 @@ namespace WmcSoft.Data
 
         public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
-            var p = command.AddParameter(nameGenerator);
+            var p = command.PrepareParameter(nameGenerator);
             return p0 => {
                 p.Value = p0;
                 return command.ExecuteNonQuery();
