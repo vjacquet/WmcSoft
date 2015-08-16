@@ -28,6 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 
 namespace WmcSoft.Data
@@ -237,7 +240,7 @@ namespace WmcSoft.Data
             parameter.ParameterName = name;
             command.Parameters.Add(parameter);
 
-            var prepared =new PreparedParameter(parameter);
+            var prepared = new PreparedParameter(parameter);
             prepared.Value = value;
             return prepared;
         }
@@ -283,6 +286,71 @@ namespace WmcSoft.Data
                     yield return materializer(reader);
                 }
             }
+        }
+
+        #endregion
+
+        #region Materalizers (lab)
+
+        private static readonly IDictionary<Type, MethodInfo> DataReaderAccessors;
+
+        static DbCommandExtensions() {
+            const BindingFlags bindingAttr = BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance;
+            var type = typeof(IDataRecord);
+            var query = from m in type.GetMethods(bindingAttr)
+                        where m.Name.StartsWith("Get") && m.Name != "GetDataTypeName" && m.Name != "GetName"
+                        where m.ReturnType != typeof(object) && m.ReturnType != typeof(IDataReader) && m.ReturnType != typeof(Type)
+                        let p = m.GetParameters()
+                        where p.Length == 1 && p[0].ParameterType == typeof(int)
+                        select m;
+            DataReaderAccessors = query.ToDictionary(m => m.ReturnType);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<TResult>() {
+            var reader = Expression.Parameter(typeof(IDataRecord), "reader");
+            var bind = Expression.Call(reader, DataReaderAccessors[typeof(TResult)], Expression.Constant(0));
+            var lamba = Expression.Lambda<Func<IDataReader, TResult>>(bind, reader);
+            return lamba.Compile();
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<TResult>(MethodInfo method) {
+            var reader = Expression.Parameter(typeof(IDataRecord), "reader");
+            var calls = method.GetParameters().Select((t, i) => Expression.Call(reader, DataReaderAccessors[t.ParameterType], Expression.Constant(i)));
+            var bind = Expression.Call(method, calls);
+            var lamba = Expression.Lambda<Func<IDataReader, TResult>>(bind, reader);
+            return lamba.Compile();
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T, TResult>(Func<T, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, TResult>(Func<T1, T2, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, T3, T4, T5, TResult>(Func<T1, T2, T3, T4, T5, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, T3, T4, T5, T6, TResult>(Func<T1, T2, T3, T4, T5, T6, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, T3, T4, T5, T6, T7, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
+        }
+
+        public static Func<IDataReader, TResult> MakeMaterializer<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> func) {
+            return MakeMaterializer<TResult>(func.Method);
         }
 
         #endregion

@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -67,6 +68,7 @@
     <Compile Include="Configuration\MailPolicyTests.cs" />
     <Compile Include="Configuration\TestSection.cs" />
     <Compile Include="Data\DataConvertTests.cs" />
+    <Compile Include="Data\DataReaderTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="IO\StreamSourceTests.cs" />

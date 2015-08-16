@@ -34,7 +34,7 @@ using WmcSoft.Windows.Forms.Layout;
 
 namespace WmcSoft.Windows.Forms
 {
-    [ToolboxBitmap(typeof(PlaceHolder), "DeckLayoutPanel.bmp")]
+    [ToolboxBitmap(typeof(DeckLayoutPanel), "DeckLayoutPanel.bmp")]
     [Designer(typeof(DeckLayoutPanelDesigner))]
     [Docking(DockingBehavior.Ask)]
     public sealed class DeckLayoutPanel : Panel, IContainerControl
