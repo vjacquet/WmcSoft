@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -31,15 +32,41 @@ namespace WmcSoft.Xml
 {
     public static class XmlWriterExtensions
     {
-        public static void WriteNodeChildren(this XmlWriter writer, XPathNavigator navigator) {
-            if (navigator.MoveToFirstChild()) {
+        /// <summary>
+        /// Copies The matching children to the writer.
+        /// </summary>
+        /// <param name="writer">The writer to copy to.</param>
+        /// <param name="navigator">The <see cref="XPathNavigator"/> to copy from.</param>
+        /// <param name="defattr">true to copy the default attributes, otherwise false.</param>
+        /// <param name="predicate">The predicate applied to the children to filter which are written to the writer.</param>
+        /// <returns>The count of children wrote to the writer.</returns>
+        /// <remarks>The position of the <see cref="XPathNavigator"/> remains unchanged.</remarks>
+        public static int WriteNodeChildren(this XmlWriter writer, XPathNavigator navigator, bool defattr = true, Predicate<XPathNavigator> predicate = null) {
+            var nav = navigator.CreateNavigator();
+
+            if (!nav.MoveToFirstChild())
+                return 0;
+
+            var count = 0;
+            if (predicate == null) {
                 do {
-                    writer.WriteNode(navigator.CreateNavigator(), true);
-                } while (navigator.MoveToNext());
+                    writer.WriteNode(nav.CreateNavigator(), defattr);
+                    count++;
+                } while (nav.MoveToNext());
+            } else {
+                do {
+                    // create a copy of the navigator for the predicate too, so it could not alter the
+                    // current position;
+                    if (predicate(nav.CreateNavigator())) {
+                        writer.WriteNode(nav.CreateNavigator(), defattr);
+                        count++;
+                    }
+                } while (nav.MoveToNext());
             }
+            return count;
         }
 
-        /// <remarks>Adapted frop Mark Russel's code. See http://blogs.msdn.com/b/mfussell/archive/2005/02/12/371546.aspx .</remarks>
+        /// <remarks>Adapted from Mark Russel's code. See http://blogs.msdn.com/b/mfussell/archive/2005/02/12/371546.aspx .</remarks>
         public static XmlWriter WriteShallowNode(this XmlWriter writer, XmlReader reader) {
             switch (reader.NodeType) {
             case XmlNodeType.Element:

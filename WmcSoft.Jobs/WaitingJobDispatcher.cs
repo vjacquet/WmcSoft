@@ -53,6 +53,10 @@ namespace WmcSoft.Threading
             }
 
             void monitored_Executed(IJob job) {
+                // unregister to prevent being called twice if dispatched again.
+                var monitored = (MonitoredJob)job;
+                monitored.Executed -= monitored_Executed;
+
                 if (0 == Interlocked.Decrement(ref _workingJobs))
                     _onIdle.Set();
             }

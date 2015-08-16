@@ -25,15 +25,61 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WmcSoft.Diagnostics;
 
 namespace WmcSoft
 {
     public static class FuncExtensions
     {
+        #region ApplyEach & TryEach
+
+        /// <summary>
+        /// Apply the func for each argument.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="func">The function</param>
+        /// <param name="args">The arguments</param>
+        /// <returns>The array of results, in the order of the arguments.</returns>
+        /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
+        public static TResult[] ApplyEach<T, TResult>(this Func<T, TResult> func, params T[] args) {
+            int i = 0;
+            try {
+                var results = new TResult[args.Length];
+                for (; i < args.Length; i++) {
+                    results[i] = func(args[i]);
+                }
+                return results;
+            }
+            catch (Exception e) {
+                e.CaptureContext(new { i, arg = args[i] });
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Try to the func for each argument.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="func">The function</param>
+        /// <param name="args">The arguments</param>
+        /// <returns>The array of expected results, in the order of the arguments.</returns>
+        public static Expected<TResult>[] TryEach<T, TResult>(this Func<T, TResult> func, params T[] args) {
+            var results = new Expected<TResult>[args.Length];
+            for (int i = 0; i < args.Length; i++) {
+                try {
+                    results[i] = func(args[i]);
+                }
+                catch (Exception e) {
+                    results[i] = e;
+                }
+            }
+            return results;
+        }
+
+        #endregion
+
         #region Lift
 
         public static Func<T?, TResult?> Lift<T, TResult>(this Func<T, TResult> func)

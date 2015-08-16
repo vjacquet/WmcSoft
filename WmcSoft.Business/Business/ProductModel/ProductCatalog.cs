@@ -33,50 +33,29 @@ using System.Threading.Tasks;
 namespace WmcSoft.Business.ProductModel
 {
     /// <summary>
-    /// Represents a specific instance of a product type.
+    /// represents a persistent store of product information 
+    /// used in the selling process.
     /// </summary>
-    public class ProductInstance
+    public class ProductCatalog
     {
         #region Fields
 
-        readonly ProductType _productType;
-        readonly SerialNumber _serialNumber;
-        readonly Batch _batch;
-        readonly List<ProductFeatureInstance> _features;
+        readonly List<CatalogEntry> _entries;
 
         #endregion
 
         #region Lifecycle
 
-        public ProductInstance(ProductType productType) {
-            _productType = productType;
-            _features = new List<ProductFeatureInstance>();
-        }
-
-        public ProductInstance(ProductType productType, SerialNumber serialNumber, Batch batch)
-            : this(productType) {
-            _serialNumber = serialNumber;
-            _batch = batch;
+        public ProductCatalog() {
+            _entries = new List<CatalogEntry>();
         }
 
         #endregion
 
         #region Properties
-
-        public ProductType ProductType {
-            get { return _productType; }
-        }
-
-        public SerialNumber SerialNumber {
-            get { return _serialNumber; }
-        }
-
-        public Batch Batch {
-            get { return _batch; }
-        }
-
-        public IList<ProductFeatureInstance> Features {
-            get { return _features; }
+        
+        public IList<CatalogEntry> Entries {
+            get { return _entries; }
         }
 
         #endregion
