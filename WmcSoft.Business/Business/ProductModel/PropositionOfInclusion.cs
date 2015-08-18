@@ -24,34 +24,43 @@
 
 #endregion
 
-using System.Collections.Generic;
+using System;
 
 namespace WmcSoft.Business.ProductModel
 {
     /// <summary>
-    /// Represents a persistent store of product information 
-    /// used in the selling process.
+    /// Determines the ProductTypes of the ProductInstances that may be included 
+    /// in a PackageInstance based on selections from a ProductSet.
     /// </summary>
-    public class ProductCatalog
+    public class PropositionOfInclusion
     {
         #region Fields
 
-        readonly List<CatalogEntry> _entries;
 
         #endregion
 
-        #region Lifecycle
+        #region Lifecyle
 
-        public ProductCatalog() {
-            _entries = new List<CatalogEntry>();
+        public PropositionOfInclusion() {
         }
 
         #endregion
 
         #region Properties
-        
-        public IList<CatalogEntry> Entries {
-            get { return _entries; }
+
+        public string Name { get; set; }
+
+        public PackageInstance TargetPackage { get; set; }
+        public ProductSet ProductSet { get; set; }
+        public int Minimum { get; set; }
+        public int Maximum { get; set; }
+
+        #endregion
+
+        #region Overridables
+
+        public virtual bool IsSubsetOf() {
+            throw new NotImplementedException();
         }
 
         #endregion

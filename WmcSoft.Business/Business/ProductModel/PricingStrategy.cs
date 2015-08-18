@@ -29,31 +29,12 @@ using System.Collections.Generic;
 namespace WmcSoft.Business.ProductModel
 {
     /// <summary>
-    /// Represents a persistent store of product information 
-    /// used in the selling process.
+    /// Determines how the Price is calculated for a PackageType.
     /// </summary>
-    public class ProductCatalog
+    public enum PricingStrategy
     {
-        #region Fields
-
-        readonly List<CatalogEntry> _entries;
-
-        #endregion
-
-        #region Lifecycle
-
-        public ProductCatalog() {
-            _entries = new List<CatalogEntry>();
-        }
-
-        #endregion
-
-        #region Properties
-        
-        public IList<CatalogEntry> Entries {
-            get { return _entries; }
-        }
-
-        #endregion
+        // TODO: Enum or class ?
+        Assigned,
+        Aggregated,
     }
 }

@@ -109,9 +109,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Business\ProductModel\CatalogEntry.cs" />
+    <Compile Include="Business\ProductModel\ConditionalPropositionOfInclusion.cs" />
     <Compile Include="Business\ProductModel\PackageInstance.cs" />
     <Compile Include="Business\ProductModel\PackageType.cs" />
     <Compile Include="Business\ProductModel\Price.cs" />
+    <Compile Include="Business\ProductModel\PricingStrategy.cs" />
     <Compile Include="Business\ProductModel\ProductCatalog.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureInstance.cs" />
     <Compile Include="Business\ProductModel\ProductFeatureType.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Business\ProductModel\ProductSet.cs" />
     <Compile Include="Business\ProductModel\ProductType.cs" />
     <Compile Include="Business\ProductModel\ProductTypeExtensions.cs" />
+    <Compile Include="Business\ProductModel\PropositionOfInclusion.cs" />
     <Compile Include="Business\ProductModel\RM.cs" />
     <Compile Include="Business\ProductModel\SerialNumber.cs" />
     <Compile Include="Business\ProductModel\ServiceInstance.cs" />
