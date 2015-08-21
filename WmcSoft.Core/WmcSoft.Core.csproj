@@ -194,6 +194,7 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Text\CharsTokenizer.cs" />
     <Compile Include="Text\CharTokenizer.cs" />
+    <Compile Include="Text\DataInjecter.cs" />
     <Compile Include="Text\EncoderBestFitFallback.cs" />
     <Compile Include="Text\EncodingExtensions.cs" />
     <Compile Include="Text\ITokenizer.cs" />
