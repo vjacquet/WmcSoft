@@ -139,9 +139,7 @@
     <Compile Include="Business\RuleModel\Proposition.cs" />
     <Compile Include="Business\RuleModel\RM.cs" />
     <Compile Include="Business\RuleModel\Rule.cs" />
-    <Compile Include="Business\RuleModel\RuleContext.cs">
-      <DependentUpon>RuleContext.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="Business\RuleModel\RuleContext.cs" />
     <Compile Include="Business\RuleModel\RuleElement.cs" />
     <Compile Include="Business\RuleModel\RuleModelException.cs" />
     <Compile Include="Business\RuleModel\RuleOverride.cs" />
@@ -225,9 +223,6 @@
     <None Include="Business\PartyModel\PartyModel.cd" />
     <None Include="Business\PartyModel\PartyRoleModel.cd" />
     <None Include="Business\ProductModel\ProductModel.cd" />
-    <None Include="Business\RuleModel\RuleContext.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Business\RuleModel\RuleModel.cd" />
     <None Include="Business\RuleModel\RuleModel.xsd">
       <SubType>Designer</SubType>

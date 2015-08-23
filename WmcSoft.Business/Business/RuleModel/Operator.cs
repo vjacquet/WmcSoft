@@ -43,7 +43,7 @@ namespace WmcSoft.Business.RuleModel
     [XmlInclude(typeof(GreaterThan))]
     public class Operator : RuleElement
     {
-        public override string TypeName {
+        public sealed override string TypeName {
             get { return "Operator"; }
         }
     }

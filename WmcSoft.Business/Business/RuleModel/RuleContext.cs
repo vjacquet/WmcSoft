@@ -31,7 +31,7 @@ using System.Xml.Serialization;
 namespace WmcSoft.Business.RuleModel
 {
     /// <remarks/>
-    [XmlRootAttribute("ruleContext", Namespace = "", IsNullable = false)]
+    [XmlRootAttribute("ruleContext", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
     public class RuleContext
     {
         private Dictionary<string, RuleElement> _dictionary = new Dictionary<string, RuleElement>();

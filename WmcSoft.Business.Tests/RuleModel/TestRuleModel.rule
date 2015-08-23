@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<ruleSet name="ruleSet1"
-	version="1.0" 
-	xsi:noNamespaceSchemaLocation="..\..\WmcSoft.Business\Business\RuleModel\RuleModel.xsd" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<ruleSet name="ruleSet1" version="1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd"
 >
 	<rule name="rule1">
 		<variable name="variable1" />

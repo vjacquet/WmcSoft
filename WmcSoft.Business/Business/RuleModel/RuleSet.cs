@@ -30,7 +30,7 @@ using System.Xml.Serialization;
 namespace WmcSoft.Business.RuleModel
 {
     /// <remarks/>
-    [XmlRoot("ruleSet", Namespace = "", IsNullable = false)]
+    [XmlRoot("ruleSet", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
     public class RuleSet : IRuleEvaluator
     {
         public static readonly RuleSet Empty = new RuleSet {

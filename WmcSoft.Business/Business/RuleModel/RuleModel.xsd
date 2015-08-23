@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="RuleModel" elementFormDefault="qualified"
-					 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-					 xmlns:msprop="urn:schemas-microsoft-com:xml-msprop"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:msprop="urn:schemas-microsoft-com:xml-msprop"
+           targetNamespace="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
+           xmlns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
+           xmlns:mstns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
 >
-	<!--
-	targetNamespace="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
-	xmlns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
-	xmlns:mstns="http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd" 
--->
 	<xs:element name="ruleSet" type="RuleSet">
+	</xs:element>
+
+	<xs:element name="ruleContext" type="RuleContext">
 	</xs:element>
 
 	<xs:simpleType name="Version">
@@ -164,5 +165,26 @@
 		<xs:sequence>
 		</xs:sequence>
 		<xs:attribute name="ref" type="xs:IDREF" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="RuleContext">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="variable" type="Variable" />
+			<xs:element name="proposition" type="Proposition" />
+			<xs:element name="ruleOverride" type="RuleOverride" />
+		</xs:choice>
+		<xs:attribute name="version" type="Version" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="RuleOverride">
+		<xs:complexContent>
+			<xs:extension base="Proposition">
+				<xs:sequence>
+				</xs:sequence>
+				<xs:attribute name="ref" type="xs:string" use="required" />
+				<xs:attribute name="why" type="xs:string" use="required" />
+				<xs:attribute name="when" type="xs:dateTime" use="required" />
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 </xs:schema>
