@@ -31,7 +31,6 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <remarks/>
     [XmlRoot("rule", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
     public class Rule : IRuleEvaluator
     {

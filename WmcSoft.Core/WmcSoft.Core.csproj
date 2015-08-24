@@ -187,6 +187,7 @@
     <Compile Include="ResourceManagerExtensions.cs" />
     <Compile Include="Runtime\ObjectWalker.cs" />
     <Compile Include="Runtime\Serialization\BinarySerializer.cs" />
+    <Compile Include="Runtime\Serialization\ISerializationStrategy.cs" />
     <Compile Include="Runtime\Serialization\XmlSerializer.cs" />
     <Compile Include="Security\Cryptography\UUDecodeTransform.cs" />
     <Compile Include="Security\Cryptography\UUEncodeTransform.cs" />

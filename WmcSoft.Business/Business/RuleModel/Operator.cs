@@ -30,7 +30,9 @@ using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <remarks/>
+    /// <summary>
+    /// Represents a boolean operator or a quantifier operator.
+    /// </summary>
     [XmlInclude(typeof(And))]
     [XmlInclude(typeof(Or))]
     [XmlInclude(typeof(XOr))]

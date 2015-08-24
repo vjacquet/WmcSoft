@@ -27,10 +27,10 @@
 using System;
 using System.Xml.Serialization;
 
-namespace WmcSoft.Business.RuleModel 
+namespace WmcSoft.Business.RuleModel
 {
-	public interface IRuleEvaluator
-	{
-		bool Evaluate(RuleContext context);
-	}
+    public interface IRuleEvaluator
+    {
+        bool Evaluate(RuleContext context);
+    }
 }

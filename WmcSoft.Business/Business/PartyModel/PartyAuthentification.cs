@@ -27,8 +27,8 @@
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Represents an agreed and trusted way to confirm that a Party is who 
-    /// they say they are.
+    /// Represents an agreed and trusted way to confirm that a <see cref="Party"/> 
+    /// is who they say they are.
     /// </summary>
     public class PartyAuthentication
     {

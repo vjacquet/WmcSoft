@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Specifies a way of contacting a Party via e-mail.
+    /// Specifies a way of contacting a <see cref="Party"/> via e-mail.
     /// </summary>
     public class EMailAddress : AddressBase
     {

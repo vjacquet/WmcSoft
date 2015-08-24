@@ -30,7 +30,9 @@ using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <remarks/>
+    /// <summary>
+    /// Represents a proposition in formal logic.
+    /// </summary>
     public class Proposition : RuleElement
     {
         public Proposition() {

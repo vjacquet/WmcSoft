@@ -29,7 +29,9 @@ using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <remarks/>
+    /// <summary>
+    /// Overrides a <see cref="Rule"/> in a <see cref="RuleSet"/>.
+    /// </summary>
     public class RuleOverride : Proposition
     {
 

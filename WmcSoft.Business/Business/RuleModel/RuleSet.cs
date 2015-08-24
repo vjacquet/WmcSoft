@@ -29,7 +29,9 @@ using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <remarks/>
+    /// <summary>
+    /// Represents a set of rules, with no duplicates allowed.
+    /// </summary>
     [XmlRoot("ruleSet", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
     public class RuleSet : IRuleEvaluator
     {

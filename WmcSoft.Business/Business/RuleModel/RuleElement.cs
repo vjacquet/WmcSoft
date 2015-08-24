@@ -30,7 +30,9 @@ using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    /// <remarks/>
+    /// <summary>
+    /// Represents an element of a <see cref="Rule"/> or <see cref="RuleContext"/>.
+    /// </summary>
     [XmlInclude(typeof(Proposition))]
     [XmlInclude(typeof(Variable))]
     [XmlInclude(typeof(Operator))]

@@ -47,6 +47,7 @@ namespace WmcSoft.Business.RuleModel
         }
 
         #region DefaultMessage
+
         public static string DefaultMessage {
             get {
                 if (defaultMessage == null) {
@@ -56,7 +57,7 @@ namespace WmcSoft.Business.RuleModel
             }
         }
         static string defaultMessage;
+
         #endregion
     }
-
 }

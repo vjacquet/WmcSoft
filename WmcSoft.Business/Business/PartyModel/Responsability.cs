@@ -28,7 +28,7 @@ using WmcSoft.Business.RuleModel;
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Represents a description of an activity that a PartyRole type may
+    /// Represents a description of an activity that a <see cref="PartyRole"/> type may
     /// be expected to perform.
     /// </summary>
     public abstract class Responsability

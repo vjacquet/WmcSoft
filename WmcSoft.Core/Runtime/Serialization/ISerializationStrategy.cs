@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -25,24 +25,17 @@
 #endregion
 
 using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
 
-namespace WmcSoft.Business.RuleModel
+namespace WmcSoft.Runtime.Serialization
 {
-    /// <summary>
-    /// Represents a variable in formal logic.
-    /// </summary>
-    public class Variable : RuleElement
+    public interface IXmlSerializationStrategy<T>
     {
-        /// <remarks/>
-        [XmlAttribute("value")]
-        [DefaultValue(null)]
-        public string Value { get; set; }
-
-        [XmlIgnore]
-        public override string TypeName {
-            get { return "Variable"; }
-        }
+        T Deserialize(XmlReader reader);
+        void Serialize(XmlWriter writer, T value);
     }
 }

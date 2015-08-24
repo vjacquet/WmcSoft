@@ -52,5 +52,4 @@ namespace WmcSoft
             return self.GetInvocationList().Where(d => predicate(d));
         }
     }
-
 }

@@ -35,42 +35,42 @@ namespace WmcSoft.Runtime.Serialization
     {
         #region Strategies
 
-        interface ISerializationStrategy
-        {
-            T Deserialize(XmlReader reader);
-            void Serialize(XmlWriter writer, T value);
-        }
-
-        class DataContractStrategy : ISerializationStrategy
+        class DataContractStrategy : IXmlSerializationStrategy<T>
         {
             private readonly DataContractSerializer _serializer;
 
-            public DataContractStrategy() {
+            public DataContractStrategy()
+            {
                 _serializer = new DataContractSerializer(typeof(T));
             }
 
-            public T Deserialize(XmlReader reader) {
+            public T Deserialize(XmlReader reader)
+            {
                 return (T)_serializer.ReadObject(reader);
             }
 
-            public void Serialize(XmlWriter writer, T value) {
+            public void Serialize(XmlWriter writer, T value)
+            {
                 _serializer.WriteObject(writer, value);
             }
         }
 
-        class XmlStrategy : ISerializationStrategy
+        class XmlStrategy : IXmlSerializationStrategy<T>
         {
             private readonly XmlSerializer _serializer;
 
-            public XmlStrategy() {
+            public XmlStrategy()
+            {
                 _serializer = new XmlSerializer(typeof(T));
             }
 
-            public T Deserialize(XmlReader reader) {
+            public T Deserialize(XmlReader reader)
+            {
                 return (T)_serializer.Deserialize(reader);
             }
 
-            public void Serialize(XmlWriter writer, T value) {
+            public void Serialize(XmlWriter writer, T value)
+            {
                 _serializer.Serialize(writer, value);
             }
         }
@@ -79,7 +79,7 @@ namespace WmcSoft.Runtime.Serialization
 
         #region Fields
 
-        private readonly ISerializationStrategy _strategy;
+        private readonly IXmlSerializationStrategy<T> _strategy;
         private readonly XmlReaderSettings _readerSettings;
         private readonly XmlWriterSettings _writerSettings;
 
@@ -87,69 +87,94 @@ namespace WmcSoft.Runtime.Serialization
 
         #region Lifecycle
 
-        public XmlSerializer() {
+        static IXmlSerializationStrategy<T> GetStrategy()
+        {
             if (typeof(T).IsDefined(typeof(XmlTypeAttribute), false))
-                _strategy = new XmlStrategy();
+                return new XmlStrategy();
             else
-                _strategy = new DataContractStrategy();
+                return new DataContractStrategy();
+        }
 
-            _readerSettings = new XmlReaderSettings {
+        protected XmlSerializer(IXmlSerializationStrategy<T> strategy)
+        {
+            _strategy = strategy;
+            _readerSettings = new XmlReaderSettings
+            {
                 CloseInput = false,
                 IgnoreComments = true,
                 IgnoreWhitespace = true,
                 ConformanceLevel = ConformanceLevel.Auto,
             };
-            _writerSettings = new XmlWriterSettings {
+            _writerSettings = new XmlWriterSettings
+            {
                 CloseOutput = false,
                 Indent = true,
                 IndentChars = "  ",
             };
         }
 
+        public XmlSerializer() : this(GetStrategy())
+        {
+        }
+
         #endregion
 
         #region Methods
 
-        protected virtual T DoDeserialize(XmlReader reader) {
+        protected virtual T DoDeserialize(XmlReader reader)
+        {
             return _strategy.Deserialize(reader);
         }
 
-        public T Deserialize(Stream stream) {
-            using (var reader = XmlReader.Create(stream, _readerSettings)) {
+        public T Deserialize(Stream stream)
+        {
+            using (var reader = XmlReader.Create(stream, _readerSettings))
+            {
                 return DoDeserialize(reader);
             }
         }
 
-        public T Deserialize(TextReader textReader) {
-            using (var reader = XmlReader.Create(textReader, _readerSettings)) {
+        public T Deserialize(TextReader textReader)
+        {
+            using (var reader = XmlReader.Create(textReader, _readerSettings))
+            {
                 return DoDeserialize(reader);
             }
         }
 
-        public T Deserialize(XmlReader xmlReader) {
-            using (var reader = XmlReader.Create(xmlReader, _readerSettings)) {
+        public T Deserialize(XmlReader xmlReader)
+        {
+            using (var reader = XmlReader.Create(xmlReader, _readerSettings))
+            {
                 return DoDeserialize(reader);
             }
         }
 
-        protected virtual void DoSerialize(XmlWriter writer, T value) {
+        protected virtual void DoSerialize(XmlWriter writer, T value)
+        {
             _strategy.Serialize(writer, value);
         }
 
-        public void Serialize(Stream stream, T value) {
-            using (var writer = XmlWriter.Create(stream, _writerSettings)) {
+        public void Serialize(Stream stream, T value)
+        {
+            using (var writer = XmlWriter.Create(stream, _writerSettings))
+            {
                 DoSerialize(writer, value);
             }
         }
 
-        public void Serialize(TextWriter textWriter, T value) {
-            using (var writer = XmlWriter.Create(textWriter, _writerSettings)) {
+        public void Serialize(TextWriter textWriter, T value)
+        {
+            using (var writer = XmlWriter.Create(textWriter, _writerSettings))
+            {
                 DoSerialize(writer, value);
             }
         }
 
-        public void Serialize(XmlWriter xmlWriter, T value) {
-            using (var writer = XmlWriter.Create(xmlWriter, _writerSettings)) {
+        public void Serialize(XmlWriter xmlWriter, T value)
+        {
+            using (var writer = XmlWriter.Create(xmlWriter, _writerSettings))
+            {
                 DoSerialize(writer, value);
             }
         }

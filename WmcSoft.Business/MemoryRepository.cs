@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowGroup.Business.ProductModel
+namespace WmcSoft.Business
 {
-    public abstract class Service : ProductType
+    class MemoryRepository
     {
     }
 }
