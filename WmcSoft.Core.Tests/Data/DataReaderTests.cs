@@ -47,7 +47,7 @@ namespace WmcSoft.Data
 
         public override int FieldCount
         {
-            get { return 2; }
+            get { return _data.Length; }
         }
 
         public override Type GetFieldType(int i)
