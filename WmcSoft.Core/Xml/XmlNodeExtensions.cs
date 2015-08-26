@@ -134,5 +134,43 @@ namespace WmcSoft.Xml
         public static string GetXPath(this XmlNode self) {
             return XPathLocator.GetXPathTo(self);
         }
+
+        public static XmlNode InsertBefore(this XmlNode self, XmlNode node) {
+            return self.ParentNode.InsertBefore(node, self);
+        }
+
+        public static XmlNode InsertAfter(this XmlNode self, XmlNode node) {
+            return self.ParentNode.InsertAfter(node, self);
+        }
+
+        public static int IndexOf(this XmlNode self) {
+            int index = 0;
+            foreach (XmlNode node in self.ParentNode.ChildNodes) {
+                if (self == node)
+                    return index;
+                index++;
+            }
+            return -1;
+        }
+
+        public static int IndexOf(this XmlNode self, XmlNode child) {
+            int index = 0;
+            foreach (XmlNode node in self.ChildNodes) {
+                if (child == node)
+                    return index;
+                index++;
+            }
+            return -1;
+        }
+
+        public static int IndexOf(this XmlNodeList self, XmlNode child) {
+            int index = 0;
+            foreach (XmlNode node in self) {
+                if (child == node)
+                    return index;
+                index++;
+            }
+            return -1;
+        }
     }
 }
