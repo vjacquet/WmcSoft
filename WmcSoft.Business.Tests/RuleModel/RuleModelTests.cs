@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.Runtime.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
@@ -18,7 +19,7 @@ namespace WmcSoft.Business.RuleModel
                 FileShare.Read);
 
             try {
-                var serializer = new XmlSerializer(typeof(RuleSet));
+                var serializer = new XmlSerializer<RuleSet>();
                 var ruleSet = (RuleSet)serializer.Deserialize(ifs);
                 return ruleSet;
             }
@@ -44,8 +45,8 @@ namespace WmcSoft.Business.RuleModel
                 FileShare.Read);
 
             try {
-                XmlSerializer serializer = new XmlSerializer(typeof(RuleContext));
-                RuleContext ruleContext = (RuleContext)serializer.Deserialize(ifs);
+                var serializer = new XmlSerializer<RuleContext>();
+                var ruleContext = serializer.Deserialize(ifs);
                 return ruleContext;
             }
             finally {
