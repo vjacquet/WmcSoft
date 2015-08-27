@@ -24,18 +24,13 @@
 
 #endregion
 
-using System;
 using System.Xml.Serialization;
 
-// 
-// Ce code source a été automatiquement généré par xsd, Version=1.1.4322.2032.
-// 
 namespace WmcSoft.Business.RuleModel
 {
     /// <remarks/>
     public class RuleRef : Proposition
     {
-        /// <remarks/>
         [XmlAttribute("ref")]
         public string Reference { get; set; }
     }

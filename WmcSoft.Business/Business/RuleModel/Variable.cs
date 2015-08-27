@@ -41,7 +41,7 @@ namespace WmcSoft.Business.RuleModel
         public string Value { get; set; }
 
         [XmlIgnore]
-        public override string TypeName {
+        public override sealed string TypeName {
             get { return "Variable"; }
         }
     }

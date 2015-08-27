@@ -25,12 +25,15 @@
 #endregion
 
 using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
+    /// <summary>
+    /// Represents a constraint on the operation of the software systems of the business.
+    /// Its semantics are defined by a sequence of <see cref="RuleElement"/>.
+    /// </summary>
     [XmlRoot("rule", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
     public class Rule : IRuleEvaluator
     {

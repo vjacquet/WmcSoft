@@ -49,7 +49,7 @@ namespace WmcSoft.Business.RuleModel
 
         /// <remarks/>
         [XmlIgnore]
-        public override string TypeName {
+        public sealed override string TypeName {
             get { return "Proposition"; }
         }
     }
