@@ -147,6 +147,8 @@
     <Compile Include="Business\RuleModel\RuleSet.cs" />
     <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
     <Compile Include="Business\RuleModel\Variable.cs" />
+    <Compile Include="Business\TaskError.cs" />
+    <Compile Include="Business\TaskResult.cs" />
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -186,6 +186,7 @@
     <Compile Include="Relation.cs" />
     <Compile Include="ResourceManagerExtensions.cs" />
     <Compile Include="Runtime\ObjectWalker.cs" />
+    <Compile Include="Runtime\Remoting\Services\TraceTrackingHandler.cs" />
     <Compile Include="Runtime\Serialization\BinarySerializer.cs" />
     <Compile Include="Runtime\Serialization\IXmlSerializationStrategy.cs" />
     <Compile Include="Runtime\Serialization\XmlSerializer.cs" />
