@@ -51,14 +51,14 @@
       <FileName>Business\Accounting\Cash.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Business.Accounting.CreditCard" Collapsed="true">
+  <Class Name="WmcSoft.Business.Accounting.CreditCard">
     <Position X="4.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\Accounting\CreditCard.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Business.Accounting.DebitCard" Collapsed="true">
+  <Class Name="WmcSoft.Business.Accounting.DebitCard">
     <Position X="6.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>

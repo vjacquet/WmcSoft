@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
-    sealed class ReadOnlyList<T> : IReadOnlyList<T>
+    sealed class ReadOnlyListFacade<T> : IReadOnlyList<T>
     {
         #region fields
 
@@ -38,7 +38,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public ReadOnlyList(IList<T> list) {
+        public ReadOnlyListFacade(IList<T> list) {
             _list = list;
         }
 

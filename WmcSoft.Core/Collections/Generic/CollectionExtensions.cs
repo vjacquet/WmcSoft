@@ -150,7 +150,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="collection">The collection</param>
         /// <returns>A read only collection</returns>
         public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection) {
-            return new ReadOnlyCollection<T>(collection);
+            return new ReadOnlyCollectionFacade<T>(collection);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list</param>
         /// <returns>A read only list</returns>
         public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> list) {
-            return new ReadOnlyList<T>(list);
+            return new ReadOnlyListFacade<T>(list);
         }
 
         /// <summary>

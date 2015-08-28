@@ -73,12 +73,12 @@
     <Compile Include="Collections\ReadOnlyCollectionOfObjectAdapter.cs" />
     <Compile Include="Collections\Generic\ConvertingCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\ConvertingListAdapter.cs" />
-    <Compile Include="Collections\Generic\ReadOnlyList.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyListFacade.cs" />
     <Compile Include="Collections\Generic\ReverseComparer.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.cs" />
     <Compile Include="Collections\Generic\EnumerableTraits.cs" />
     <Compile Include="Collections\Generic\EqualityComparerAdapter.cs" />
-    <Compile Include="Collections\Generic\ReadOnlyCollection.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyCollectionFacade.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionToCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\RelationComparer.cs" />
     <Compile Include="Collections\Generic\SetUtilities.cs" />

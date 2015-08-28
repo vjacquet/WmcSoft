@@ -30,7 +30,7 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
-    sealed class ReadOnlyCollection<T> : IReadOnlyCollection<T>, ICollection<T>
+    sealed class ReadOnlyCollectionFacade<T> : IReadOnlyCollection<T>, ICollection<T>
     {
         #region fields
 
@@ -40,7 +40,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public ReadOnlyCollection(ICollection<T> collection) {
+        public ReadOnlyCollectionFacade(ICollection<T> collection) {
             _collection = collection;
         }
 
