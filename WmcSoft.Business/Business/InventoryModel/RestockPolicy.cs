@@ -24,46 +24,18 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WmcSoft.Business
+namespace WmcSoft.Business.InventoryModel
 {
-    public class TaskResult
+    /// <summary>
+    /// Represents a set of rules determining when inventory items need to be reordered.
+    /// </summary>
+    public class RestockPolicy
     {
-        #region Fields
-
-        static readonly TaskResult _success = new TaskResult(true);
-
-        private readonly bool _succeeded;
-        private readonly TaskError[] _errors;
-
-        #endregion
-
-        #region Lifecyle
-
-        protected TaskResult(bool succeeded) {
-            _succeeded = succeeded;
-        }
-        protected TaskResult(params TaskError[] errors) {
-            _succeeded = false;
-            _errors = errors;
-        }
-
-        public static TaskResult Success {
-            get { return _success; }
-        }
-
-        public static TaskResult Failed(params TaskError[] errors) {
-            return new TaskResult(errors);
-        }
-
-        #endregion
-
-        #region Properties
-
-        public bool Succeeded { get { return _succeeded; } }
-        public IReadOnlyCollection<TaskError> Errors { get { return _errors; } }
-
-        #endregion
     }
 }

@@ -58,6 +58,13 @@
     <Compile Include="Business\Accounting\RM.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
+    <Compile Include="Business\InventoryModel\Inventory.cs" />
+    <Compile Include="Business\InventoryModel\ServiceInventoryEntry.cs" />
+    <Compile Include="Business\InventoryModel\InventoryEntry.cs" />
+    <Compile Include="Business\InventoryModel\InventoryManagementService.cs" />
+    <Compile Include="Business\InventoryModel\InventoryReservationService.cs" />
+    <Compile Include="Business\InventoryModel\ProductInventoryEntry.cs" />
+    <Compile Include="Business\InventoryModel\RestockPolicy.cs" />
     <Compile Include="Business\IPublishable.cs" />
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
@@ -83,6 +90,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Business\PartyModel\PartyIdentifier.cs" />
+    <Compile Include="Business\PartyModel\PartyManager.cs" />
     <Compile Include="Business\PartyModel\PartyRelationship.cs" />
     <Compile Include="Business\PartyModel\PartyRelationshipConstraintAttribute.cs" />
     <Compile Include="Business\PartyModel\PartyRole.cs" />
@@ -222,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Business\Accounting\Accounting.cd" />
+    <None Include="Business\InventoryModel\InventoryModel.cd" />
     <None Include="Business\PartyModel\PartyModel.cd" />
     <None Include="Business\PartyModel\PartyRoleModel.cd" />
     <None Include="Business\ProductModel\ProductModel.cd" />
@@ -231,6 +240,7 @@
     </None>
     <None Include="Security\SecurityDiagram.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
