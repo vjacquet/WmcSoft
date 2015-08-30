@@ -58,7 +58,12 @@
     <Compile Include="Business\Accounting\RM.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
+    <Compile Include="Business\InventoryModel\CapacityManager.cs" />
     <Compile Include="Business\InventoryModel\Inventory.cs" />
+    <Compile Include="Business\InventoryModel\Reservation.cs" />
+    <Compile Include="Business\InventoryModel\ReservationIdentifier.cs" />
+    <Compile Include="Business\InventoryModel\ReservationRequest.cs" />
+    <Compile Include="Business\InventoryModel\ReservationStatus.cs" />
     <Compile Include="Business\InventoryModel\ServiceInventoryEntry.cs" />
     <Compile Include="Business\InventoryModel\InventoryEntry.cs" />
     <Compile Include="Business\InventoryModel\InventoryManagementService.cs" />

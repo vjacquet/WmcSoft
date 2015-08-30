@@ -29,7 +29,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.InventoryModel.ProductInventoryEntry" Collapsed="true">
-    <Position X="13.5" Y="4.75" Width="1.5" />
+    <Position X="11.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\InventoryModel\ProductInventoryEntry.cs</FileName>
@@ -49,5 +49,47 @@
       <FileName>Business\InventoryModel\InventoryManagementService.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="WmcSoft.Business.InventoryModel.CapacityManager" Collapsed="true">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\InventoryModel\CapacityManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.InventoryModel.Reservation" Collapsed="true">
+    <Position X="15.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\InventoryModel\Reservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.InventoryModel.ReservationIdentifier" Collapsed="true">
+    <Position X="15.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\InventoryModel\ReservationIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.InventoryModel.ReservationRequest">
+    <Position X="14.75" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Business\InventoryModel\ReservationRequest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identifier" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="WmcSoft.Business.InventoryModel.ReservationStatus" Collapsed="true">
+    <Position X="15.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\InventoryModel\ReservationStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
