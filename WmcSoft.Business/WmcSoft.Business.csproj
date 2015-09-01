@@ -56,11 +56,17 @@
     <Compile Include="Business\Accounting\PaymentCard.cs" />
     <Compile Include="Business\Accounting\PaymentMethod.cs" />
     <Compile Include="Business\Accounting\RM.cs" />
+    <Compile Include="Business\CustomerRelationshipModel\Action.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Communication.cs" />
     <Compile Include="Business\CustomerRelationshipModel\CommunicationRouting.cs" />
+    <Compile Include="Business\CustomerRelationshipModel\CommunicationThread.cs" />
+    <Compile Include="Business\CustomerRelationshipModel\CustomerServiceRepresentative.cs" />
+    <Compile Include="Business\CustomerRelationshipModel\CustomerAgent.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Customer.cs" />
     <Compile Include="Business\CustomerRelationshipModel\CustomerCommunicationManager.cs" />
+    <Compile Include="Business\CustomerRelationshipModel\CustomerServiceCase.cs" />
     <Compile Include="Business\CustomerRelationshipModel\CustomerServiceCaseIdentifier.cs" />
+    <Compile Include="Business\CustomerRelationshipModel\Outcome.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\InventoryModel\CapacityManager.cs" />

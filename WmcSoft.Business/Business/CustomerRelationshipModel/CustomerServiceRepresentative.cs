@@ -30,39 +30,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WmcSoft.Business.PartyModel;
-using WmcSoft.Business.ProductModel;
 
-namespace WmcSoft.Business.InventoryModel
+namespace WmcSoft.Business.CustomerRelationshipModel
 {
     /// <summary>
-    /// Represents the assignments of one or more <see cref="ProductInstance"/>s to one or more
-    /// <see cref="Party"/> - that is, an arrangement by which a <see cref="ProductInstance"/> is kept for the
-    /// use of a specific see cref="Party"/> at some point in time.
+    /// Type of <see cref="PartyRole"/> played by someone who acts 
+    /// on behalf of, and with the autorization and authority of, 
+    /// the customer service department.
     /// </summary>
-    public class Reservation
+    public abstract class CustomerServiceRepresentative : PartyRole
     {
-        #region Fields
-
-        readonly ReservationIdentifier _identifier;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected Reservation()
-            : this(new ReservationIdentifier()) {
+        protected CustomerServiceRepresentative(Party party) : base(party) {
         }
-
-        protected Reservation(ReservationIdentifier identifier) {
-            _identifier = identifier;
-        }
-
-        #endregion
-
-        public ReservationIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-
     }
 }

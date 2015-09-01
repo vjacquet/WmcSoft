@@ -30,39 +30,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WmcSoft.Business.PartyModel;
-using WmcSoft.Business.ProductModel;
 
-namespace WmcSoft.Business.InventoryModel
+namespace WmcSoft.Business.CustomerRelationshipModel
 {
     /// <summary>
-    /// Represents the assignments of one or more <see cref="ProductInstance"/>s to one or more
-    /// <see cref="Party"/> - that is, an arrangement by which a <see cref="ProductInstance"/> is kept for the
-    /// use of a specific see cref="Party"/> at some point in time.
+    /// Represent a description of something that can happen.
     /// </summary>
-    public class Reservation
+    public class Action
     {
-        #region Fields
-
-        readonly ReservationIdentifier _identifier;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected Reservation()
-            : this(new ReservationIdentifier()) {
+        public Action() {
+            PossibleOutcomes = new List<Outcome>();
+            ActualOutcomes = new List<Outcome>();
         }
 
-        protected Reservation(ReservationIdentifier identifier) {
-            _identifier = identifier;
+        /// <summary>
+        /// A short description of the <see cref="Action"/>.
+        /// </summary>
+        /// <remarks>This should focus on what the <see cref="Action"/> is trying to achieve.</remarks>
+        public string Description { get; set; }
+        public string Reason { get; set; }
+        public string Status { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
+
+        public IList<Outcome> PossibleOutcomes { get; private set; }
+        public IList<Outcome> ActualOutcomes { get; private set; }
+
+        public PartySignature ActionInitiator {
+            get {
+                throw new NotImplementedException();
+            }
         }
-
-        #endregion
-
-        public ReservationIdentifier Identifier {
-            get { return _identifier; }
+        public IList<PartySignature> ActionApprovers {
+            get {
+                throw new NotImplementedException();
+            }
         }
+    }
 
-
+    public enum ActionStatus
+    {
+        Pending,
+        Open,
+        Closed,
     }
 }

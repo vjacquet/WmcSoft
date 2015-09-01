@@ -30,39 +30,63 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WmcSoft.Business.PartyModel;
-using WmcSoft.Business.ProductModel;
 
-namespace WmcSoft.Business.InventoryModel
+namespace WmcSoft.Business.CustomerRelationshipModel
 {
     /// <summary>
-    /// Represents the assignments of one or more <see cref="ProductInstance"/>s to one or more
-    /// <see cref="Party"/> - that is, an arrangement by which a <see cref="ProductInstance"/> is kept for the
-    /// use of a specific see cref="Party"/> at some point in time.
+    /// Represents a collection of all <see cref="Communication"/>s about a specific topic
+    /// related to a specific <see cref="Customer"/>.
     /// </summary>
-    public class Reservation
+    public class CustomerServiceCase
     {
         #region Fields
 
-        readonly ReservationIdentifier _identifier;
+        readonly CustomerServiceCaseIdentifier _identifier;
 
         #endregion
 
         #region Lifecycle
 
-        protected Reservation()
-            : this(new ReservationIdentifier()) {
+        protected CustomerServiceCase()
+            : this(new CustomerServiceCaseIdentifier()) {
         }
 
-        protected Reservation(ReservationIdentifier identifier) {
+        protected CustomerServiceCase(CustomerServiceCaseIdentifier identifier) {
             _identifier = identifier;
         }
 
         #endregion
 
-        public ReservationIdentifier Identifier {
+        public CustomerServiceCaseIdentifier Identifier {
             get { return _identifier; }
         }
 
+        /// <summary>
+        ///  The title of the case.
+        /// </summary>
+        /// <remarks>This should summarize the nature of the case, e.g. "Complaint about call out service".</remarks>
+        public string Title { get; set; }
 
+        /// <summary>
+        /// A short description of the case.
+        /// </summary>
+        public string BriefDescription { get; set; }
+
+        /// <summary>
+        /// The <see cref="PartyRoleIdentifier"/> of the <see cref="PartyRole"/> that raised the case.
+        /// </summary>
+        /// <remarks>This is usually the <see cref="PartyRoleIdentifier"/> of a <see cref="Customer"/>.</remarks>
+        public PartyRoleIdentifier RaisedBy { get; set; }
+
+        public DateTime Start { get; set; }
+        public DateTime? End { get; set; }
+        public bool IsOpen { get; set; }
+    }
+
+    public enum Priority
+    {
+        Low,
+        Medium,
+        High,
     }
 }

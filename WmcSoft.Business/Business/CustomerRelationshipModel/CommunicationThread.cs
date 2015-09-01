@@ -29,40 +29,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WmcSoft.Business.PartyModel;
-using WmcSoft.Business.ProductModel;
 
-namespace WmcSoft.Business.InventoryModel
+namespace WmcSoft.Business.CustomerRelationshipModel
 {
     /// <summary>
-    /// Represents the assignments of one or more <see cref="ProductInstance"/>s to one or more
-    /// <see cref="Party"/> - that is, an arrangement by which a <see cref="ProductInstance"/> is kept for the
-    /// use of a specific see cref="Party"/> at some point in time.
+    /// Represents a sequence of <see cref="Communication"/>s about a particular <see cref="Topic"/>.
     /// </summary>
-    public class Reservation
+    public class CommunicationThread
     {
-        #region Fields
-
-        readonly ReservationIdentifier _identifier;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected Reservation()
-            : this(new ReservationIdentifier()) {
-        }
-
-        protected Reservation(ReservationIdentifier identifier) {
-            _identifier = identifier;
-        }
-
-        #endregion
-
-        public ReservationIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-
+        public string Topic { get; set; }
+        public string BriefDescription { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime? End { get; set; }
     }
 }
