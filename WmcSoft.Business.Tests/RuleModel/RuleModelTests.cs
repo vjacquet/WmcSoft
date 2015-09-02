@@ -45,7 +45,7 @@ namespace WmcSoft.Business.RuleModel
                 FileShare.Read);
 
             try {
-                var serializer = new XmlSerializer<RuleContext>();
+                var serializer = new RuleContextSerializer();// new XmlSerializer<RuleContext>();
                 var ruleContext = serializer.Deserialize(ifs);
                 return ruleContext;
             }

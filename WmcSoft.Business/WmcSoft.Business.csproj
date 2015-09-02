@@ -165,6 +165,7 @@
     <Compile Include="Business\RuleModel\RM.cs" />
     <Compile Include="Business\RuleModel\Rule.cs" />
     <Compile Include="Business\RuleModel\RuleContext.cs" />
+    <Compile Include="Business\RuleModel\RuleContextSerializer.cs" />
     <Compile Include="Business\RuleModel\RuleElement.cs" />
     <Compile Include="Business\RuleModel\RuleModelException.cs" />
     <Compile Include="Business\RuleModel\RuleOverride.cs" />
@@ -256,6 +257,7 @@
     <None Include="Business\RuleModel\RuleModel.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="DesignNotes.md" />
     <None Include="Security\SecurityDiagram.cd" />
   </ItemGroup>
   <ItemGroup />
