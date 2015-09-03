@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Runtime.Serialization;
+using System.Text;
 
 namespace WmcSoft.Business.RuleModel
 {
@@ -56,6 +57,15 @@ namespace WmcSoft.Business.RuleModel
 
         [TestMethod]
         public void CanDeserializeRuleContext() {
+            RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
+            var serializer = new RuleContextSerializer();
+            var sb = new StringBuilder();
+            var w = new StringWriter(sb);
+            serializer.Serialize(w, ruleContext);
+        }
+
+        [TestMethod]
+        public void CanSerializeRuleContext() {
             RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 
             Assert.IsTrue(ruleContext.Version == "1.0");

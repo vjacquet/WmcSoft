@@ -104,5 +104,25 @@ namespace WmcSoft.Xml
             }
             return writer;
         }
+
+        #region WriteAttributeValue
+
+        public static void WriteAttributeValue(this XmlWriter writer, string prefix, string localName, string ns, bool value) {
+            writer.WriteStartAttribute(prefix, localName, ns);
+            writer.WriteValue(value);
+            writer.WriteEndAttribute();
+        }
+         public static void WriteAttributeValue(this XmlWriter writer, string localName, string ns, bool value) {
+            writer.WriteStartAttribute(localName, ns);
+            writer.WriteValue(value);
+            writer.WriteEndAttribute();
+        }
+        public static void WriteAttributeValue(this XmlWriter writer, string localName, bool value) {
+            writer.WriteStartAttribute(localName);
+            writer.WriteValue(value);
+            writer.WriteEndAttribute();
+        }
+
+       #endregion
     }
 }

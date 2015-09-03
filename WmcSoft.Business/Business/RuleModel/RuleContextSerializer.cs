@@ -31,26 +31,82 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using WmcSoft.Xml;
 using WmcSoft.Runtime.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
     public class RuleContextSerializer : XmlSerializer<RuleContext>
     {
-        const string Xmlns = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd";
-
         protected override RuleContext DoDeserialize(XmlReader reader) {
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ruleContext" && reader.NamespaceURI == Xmlns) {
+            var s = new RuleContextDeserializer(reader);
+            return s.Deserialize();
+        }
+
+        protected override void DoSerialize(XmlWriter writer, RuleContext value) {
+            const string xmlns = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd";
+            writer.WriteStartElement("ruleContext", xmlns);
+            writer.WriteAttributeString("version", value.Version);
+            foreach (var item in value.Items) {
+                var type = item.GetType();
+                if (type == typeof(Variable)) {
+                    var variable = (Variable)item;
+                    writer.WriteStartElement("variable");
+                    writer.WriteAttributeString("name", variable.Name);
+                    writer.WriteAttributeString("value", variable.Value);
+                    writer.WriteEndElement();
+                } else if (type == typeof(Proposition)) {
+                    var proposition = (Proposition)item;
+                    writer.WriteStartElement("proposition");
+                    writer.WriteAttributeString("name", proposition.Name);
+                    writer.WriteAttributeValue("value", proposition.Value);
+                    writer.WriteEndElement();
+                } else {
+                    throw new NotImplementedException();
+                }
+            }
+            writer.WriteEndElement();
+        }
+    }
+
+    class RuleContextDeserializer
+    {
+        class Names
+        {
+            public readonly string xmlns;
+            public readonly string ruleContext;
+            public readonly string version;
+            public readonly string name;
+            public readonly string value;
+
+            public Names(XmlNameTable nt) {
+                xmlns = nt.Add(@"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd");
+                ruleContext = nt.Add("ruleContext");
+                version = nt.Add("version");
+                name = nt.Add("name");
+                value = nt.Add("value");
+            }
+        }
+
+        readonly XmlReader _reader;
+        readonly Names N;
+
+        public RuleContextDeserializer(XmlReader reader) {
+            N = new Names(reader.NameTable);
+            _reader = reader;
+        }
+
+        public RuleContext Deserialize() {
+            if (_reader.MoveToContent() == XmlNodeType.Element && _reader.LocalName == N.ruleContext && _reader.NamespaceURI == N.xmlns) {
                 string version = null;
                 var mandatory = new BitArray(1);
-                while (reader.MoveToNextAttribute()) {
+                while (_reader.MoveToNextAttribute()) {
                     //if (reader.NamespaceURI != Xmlns)
                     //    continue;
-                    if (!mandatory[0] && reader.LocalName == "version") {
-                        version = reader.Value;
+                    if (!mandatory[0] && _reader.LocalName == "version") {
+                        version = _reader.Value;
                         mandatory[0] = true;
                     }
-
 
                     //if (!array2[1] && base.Reader.LocalName == this.id69_version && base.Reader.NamespaceURI == this.id2_Item)
                     //{
@@ -74,41 +130,37 @@ namespace WmcSoft.Business.RuleModel
                     //}
                 }
 
-                var ruleContext = new RuleContext { Version = version };
-                reader.MoveToElement();
-                if (reader.IsEmptyElement) {
-                    reader.Skip();
-                    return ruleContext;
+                var entity = new RuleContext { Version = version };
+                _reader.MoveToElement();
+                if (_reader.IsEmptyElement) {
+                    _reader.Skip();
+                    return entity;
                 } else {
-                    reader.ReadStartElement();
-                    reader.MoveToContent();
+                    _reader.ReadStartElement();
+                    _reader.MoveToContent();
                     var items = new List<RuleElement>();
-                    while (reader.NodeType != XmlNodeType.EndElement && reader.NodeType != XmlNodeType.None) {
-                        if (reader.NodeType == XmlNodeType.Element && reader.NamespaceURI == Xmlns) {
-                            if (reader.LocalName == "variable") {
-                                var ruleElement = Deserialize(reader, (Variable)null);
+                    while (_reader.NodeType != XmlNodeType.EndElement && _reader.NodeType != XmlNodeType.None) {
+                        if (_reader.NodeType == XmlNodeType.Element && _reader.NamespaceURI == N.xmlns) {
+                            if (_reader.LocalName == "variable") {
+                                var ruleElement = Deserialize(_reader, (Variable)null);
                                 items.Add(ruleElement);
-                            } else if (reader.LocalName == "proposition") {
-                                var ruleElement = Deserialize(reader, (Proposition)null);
+                            } else if (_reader.LocalName == "proposition") {
+                                var ruleElement = Deserialize(_reader, (Proposition)null);
                                 items.Add(ruleElement);
-                            } else if (reader.LocalName == "ruleOverride") {
-                                var ruleElement = Deserialize(reader, (RuleOverride)null);
+                            } else if (_reader.LocalName == "ruleOverride") {
+                                var ruleElement = Deserialize(_reader, (RuleOverride)null);
                                 items.Add(ruleElement);
                             }
 
                         }
-                        reader.MoveToContent();
+                        _reader.MoveToContent();
                     }
-                    reader.ReadEndElement();
-                    ruleContext.Items = items.ToArray();
+                    _reader.ReadEndElement();
+                    entity.Items = items.ToArray();
                 }
-                return ruleContext;
+                return entity;
             }
             throw new InvalidOperationException();
-        }
-
-        protected override void DoSerialize(XmlWriter writer, RuleContext value) {
-            throw new NotImplementedException();
         }
 
         Variable Deserialize(XmlReader reader, Variable prototype) {
@@ -118,10 +170,10 @@ namespace WmcSoft.Business.RuleModel
             while (reader.MoveToNextAttribute()) {
                 //if (reader.NamespaceURI != Xmlns)
                 //    continue;
-                if (!mandatory[0] && reader.LocalName == "name") {
+                if (!mandatory[0] && reader.LocalName == N.name) {
                     name = reader.Value;
                     mandatory[0] = true;
-                } else if (reader.LocalName == "value") {
+                } else if (reader.LocalName == N.value) {
                     value = reader.Value;
                 }
             }
@@ -136,15 +188,16 @@ namespace WmcSoft.Business.RuleModel
             while (reader.MoveToNextAttribute()) {
                 //if (reader.NamespaceURI != Xmlns)
                 //    continue;
-                if (!mandatory[0] && reader.LocalName == "name") {
+                if (!mandatory[0] && reader.LocalName == N.name) {
                     name = reader.Value;
                     mandatory[0] = true;
-                } else if (reader.LocalName == "value") {
+                } else if (reader.LocalName == N.value) {
                     value = reader.ReadContentAsBoolean();
                 }
             }
             reader.Skip();
             return new Proposition { Name = name, Value = value };
         }
+
     }
 }
