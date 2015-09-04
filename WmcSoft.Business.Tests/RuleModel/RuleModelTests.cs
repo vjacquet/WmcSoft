@@ -58,17 +58,26 @@ namespace WmcSoft.Business.RuleModel
         [TestMethod]
         public void CanDeserializeRuleContext() {
             RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
-            var serializer = new RuleContextSerializer();
-            var sb = new StringBuilder();
-            var w = new StringWriter(sb);
-            serializer.Serialize(w, ruleContext);
+            Assert.IsTrue(ruleContext.Version == "1.0");
         }
 
         [TestMethod]
         public void CanSerializeRuleContext() {
-            RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
+            var expected = new RuleContext { Version = "1.0" };
+            expected.Items = new RuleElement[] {
+                new Variable { Name="var1", Value="value1" },
+                new Variable { Name="var2", Value="value2" },
+            };
 
-            Assert.IsTrue(ruleContext.Version == "1.0");
+            var serializer = new RuleContextSerializer();
+            var sb = new StringBuilder();
+            var w = new StringWriter(sb);
+            serializer.Serialize(w, expected);
+            var actual = serializer.Deserialize(new StringReader(sb.ToString()));
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(expected.Version, actual.Version);
+            CollectionAssert.AreEquivalent(expected.Items, actual.Items);
         }
 
         [TestMethod]

@@ -33,7 +33,7 @@ namespace WmcSoft.Business.RuleModel
     /// <summary>
     /// Represents a variable in formal logic.
     /// </summary>
-    public class Variable : RuleElement
+    public class Variable : RuleElement, IEquatable<Variable>
     {
         /// <remarks/>
         [XmlAttribute("value")]
@@ -43,6 +43,16 @@ namespace WmcSoft.Business.RuleModel
         [XmlIgnore]
         public override sealed string TypeName {
             get { return "Variable"; }
+        }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as Variable);
+        }
+
+        public bool Equals(Variable other) {
+            if (other == null)
+                return false;
+            return base.Equals(other) && Value == other.Value;
         }
     }
 }

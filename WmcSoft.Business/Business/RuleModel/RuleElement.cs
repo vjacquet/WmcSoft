@@ -46,7 +46,7 @@ namespace WmcSoft.Business.RuleModel
     [XmlInclude(typeof(EqualTo))]
     [XmlInclude(typeof(NotEqualTo))]
     [XmlInclude(typeof(GreaterThan))]
-    public abstract class RuleElement
+    public abstract class RuleElement : IEquatable<RuleElement>
     {
         /// <remarks/>
         [XmlAttribute("name")]
@@ -54,5 +54,19 @@ namespace WmcSoft.Business.RuleModel
 
         [XmlIgnore]
         public abstract string TypeName { get; }
+
+        public override int GetHashCode() {
+            return String.IsNullOrWhiteSpace(Name) ? 0 : Name.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as RuleElement);
+        }
+
+        public bool Equals(RuleElement other) {
+            if (other == null)
+                return false;
+            return Name == other.Name && TypeName == other.TypeName;
+        }
     }
 }
