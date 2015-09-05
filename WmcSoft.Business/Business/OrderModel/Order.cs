@@ -29,23 +29,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WmcSoft.Business.PartyModel;
 
-namespace WmcSoft.Business.CustomerRelationshipModel
+namespace WmcSoft.Business.OrderModel
 {
     /// <summary>
-    /// Describes the possible or actual result of an <see cref="Action"/>(the <see cref="Description"/>) 
-    /// and an optional <see cref="Reason"/> for that specific <see cref="Outcome"/>.
+    /// Represents a record of a request by a buyer for a
+    /// seller to supply some goods or services.
     /// </summary>
-    public class Outcome
+    public class Order
     {
-        public string Description { get; set; }
-        public string Reason { get; set; }
+        #region Fields
 
-        public IList<PartySignature> OutcomeApprovers {
-            get {
-                throw new NotImplementedException();
-            }
+        private readonly OrderIdentifier _identifier;
+
+        #endregion
+
+        #region Lifecycle
+
+        protected Order() {
+            _identifier = new OrderIdentifier();
         }
+
+        #endregion
+
+        #region Properties
+
+        public OrderIdentifier Identifier {
+            get { return _identifier; }
+        }
+
+        #endregion
     }
 }

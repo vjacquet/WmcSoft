@@ -85,6 +85,8 @@
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
     <Compile Include="Business\ModerationStatus.cs" />
+    <Compile Include="Business\OrderModel\Order.cs" />
+    <Compile Include="Business\OrderModel\OrderIdentifier.cs" />
     <Compile Include="Business\PartyModel\AddressBase.cs" />
     <Compile Include="Business\PartyModel\AddressProperties.cs" />
     <Compile Include="Business\PartyModel\AssignedResponsability.cs" />

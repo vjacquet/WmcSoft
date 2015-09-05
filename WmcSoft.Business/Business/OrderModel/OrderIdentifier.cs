@@ -1,4 +1,4 @@
-﻿#region Licence
+#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -25,27 +25,43 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WmcSoft.Business.PartyModel;
 
-namespace WmcSoft.Business.CustomerRelationshipModel
+namespace WmcSoft.Business.OrderModel
 {
     /// <summary>
-    /// Describes the possible or actual result of an <see cref="Action"/>(the <see cref="Description"/>) 
-    /// and an optional <see cref="Reason"/> for that specific <see cref="Outcome"/>.
+    /// Represents a unique identifier for a type of product.
     /// </summary>
-    public class Outcome
+    [Serializable]
+    public class OrderIdentifier : IUniqueIdentifier<Guid>
     {
-        public string Description { get; set; }
-        public string Reason { get; set; }
+        #region Fields
 
-        public IList<PartySignature> OutcomeApprovers {
-            get {
-                throw new NotImplementedException();
-            }
+        readonly Guid _identifier;
+
+        #endregion
+
+        #region Lifecycle
+
+        public OrderIdentifier() {
+            _identifier = Guid.NewGuid();
         }
+
+        #endregion
+
+        #region Membres de IUniqueIdentifier
+
+        public Guid Id {
+            get { return _identifier; }
+        }
+
+        #endregion
+
+        #region IEquatable<Guid> Members
+
+        public bool Equals(Guid other) {
+            return _identifier == other;
+        }
+
+        #endregion
     }
 }
