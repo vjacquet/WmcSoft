@@ -75,5 +75,29 @@ namespace WmcSoft.Collections
         public static string Mask(this BitArray mask, string x, string y) {
             return new String(Mask<char>(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
         }
+
+        public static bool All(this BitArray bits) {
+            foreach (bool b in bits) {
+                if (!b)
+                    return false;
+            }
+            return true;
+        }
+
+        public static bool Any(this BitArray bits) {
+            foreach (bool b in bits) {
+                if (b)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool None(this BitArray bits) {
+            foreach (bool b in bits) {
+                if (b)
+                    return false;
+            }
+            return true;
+        }
     }
 }
