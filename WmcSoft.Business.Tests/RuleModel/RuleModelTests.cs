@@ -67,6 +67,8 @@ namespace WmcSoft.Business.RuleModel
             expected.Items = new RuleElement[] {
                 new Variable { Name="var1", Value="value1" },
                 new Variable { Name="var2", Value="value2" },
+                new Proposition { Name="prop1", Value=true },
+                new RuleOverride { Name="rule1", Value=true, Reference="ref", Why="because", When=new DateTime(2015, 01, 22) },
             };
 
             var serializer = new RuleContextSerializer();

@@ -45,14 +45,22 @@ namespace WmcSoft.Business.RuleModel
             get { return "Variable"; }
         }
 
-        public override bool Equals(object obj) {
-            return Equals(obj as Variable);
-        }
+        #region IEquatable<Variable> Membres
 
         public bool Equals(Variable other) {
             if (other == null)
                 return false;
             return base.Equals(other) && Value == other.Value;
         }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as Variable);
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
+
+        #endregion
     }
 }

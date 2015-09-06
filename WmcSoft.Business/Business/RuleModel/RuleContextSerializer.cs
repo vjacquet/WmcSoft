@@ -33,6 +33,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using WmcSoft.Xml;
 using WmcSoft.Runtime.Serialization;
+using WmcSoft.Collections;
 
 namespace WmcSoft.Business.RuleModel
 {
@@ -61,6 +62,15 @@ namespace WmcSoft.Business.RuleModel
                     writer.WriteAttributeString("name", proposition.Name);
                     writer.WriteAttributeValue("value", proposition.Value);
                     writer.WriteEndElement();
+                } else if (type == typeof(RuleOverride)) {
+                    var ruleOverride = (RuleOverride)item;
+                    writer.WriteStartElement("ruleOverride");
+                    writer.WriteAttributeString("name", ruleOverride.Name);
+                    writer.WriteAttributeValue("value", ruleOverride.Value);
+                    writer.WriteAttributeString("ref", ruleOverride.Reference);
+                    writer.WriteAttributeString("why", ruleOverride.Why);
+                    writer.WriteAttributeValue("when", ruleOverride.When);
+                    writer.WriteEndElement();
                 } else {
                     throw new NotImplementedException();
                 }
@@ -78,6 +88,9 @@ namespace WmcSoft.Business.RuleModel
             public readonly string version;
             public readonly string name;
             public readonly string value;
+            public readonly string @ref;
+            public readonly string why;
+            public readonly string when;
 
             public Names(XmlNameTable nt) {
                 xmlns = nt.Add(@"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd");
@@ -85,6 +98,9 @@ namespace WmcSoft.Business.RuleModel
                 version = nt.Add("version");
                 name = nt.Add("name");
                 value = nt.Add("value");
+                @ref = nt.Add("ref");
+                why = nt.Add("why");
+                when = nt.Add("when");
             }
         }
 
@@ -199,5 +215,36 @@ namespace WmcSoft.Business.RuleModel
             return new Proposition { Name = name, Value = value };
         }
 
+        RuleOverride Deserialize(XmlReader reader, RuleOverride prototype) {
+            string name = null;
+            bool value = false;
+            string @ref = null;
+            string why = null;
+            DateTime when = DateTime.MinValue;
+            var mandatory = new BitArray(4);
+            while (reader.MoveToNextAttribute()) {
+                //if (reader.NamespaceURI != Xmlns)
+                //    continue;
+                if (!mandatory[0] && reader.LocalName == N.name) {
+                    name = reader.Value;
+                    mandatory[0] = true;
+                } else if (!mandatory[1] && reader.LocalName == N.@ref) {
+                    @ref = reader.Value;
+                    mandatory[1] = true;
+                } else if (!mandatory[2] && reader.LocalName == N.why) {
+                    why = reader.Value;
+                    mandatory[2] = true;
+                } else if (!mandatory[3] && reader.LocalName == N.when) {
+                    when = reader.ReadContentAsDateTime();
+                    mandatory[3] = true;
+                } else if (reader.LocalName == N.value) {
+                    value = reader.ReadContentAsBoolean();
+                }
+            }
+            reader.Skip();
+            if (!mandatory.All())
+                throw new InvalidOperationException();
+            return new RuleOverride { Name = name, Value = value, Reference = @ref, Why = why, When = when };
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace WmcSoft.Business.RuleModel
     /// <summary>
     /// Represents a proposition in formal logic.
     /// </summary>
-    public class Proposition : RuleElement
+    public class Proposition : RuleElement, IEquatable<Proposition>
     {
         public Proposition() {
         }
@@ -49,8 +49,26 @@ namespace WmcSoft.Business.RuleModel
 
         /// <remarks/>
         [XmlIgnore]
-        public sealed override string TypeName {
+        public override string TypeName {
             get { return "Proposition"; }
         }
+
+        #region IEquatable<Proposition> Membres
+
+        public bool Equals(Proposition other) {
+            if (other == null)
+                return false;
+            return base.Equals(other) && Value == other.Value;
+        }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as Proposition);
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
+
+        #endregion
     }
 }

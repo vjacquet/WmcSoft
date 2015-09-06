@@ -32,9 +32,8 @@ namespace WmcSoft.Business.RuleModel
     /// <summary>
     /// Overrides a <see cref="Rule"/> in a <see cref="RuleSet"/>.
     /// </summary>
-    public class RuleOverride : Proposition
+    public class RuleOverride : Proposition, IEquatable<RuleOverride>
     {
-
         /// <remarks/>
         [XmlAttribute("ref")]
         public string Reference { get; set; }
@@ -46,5 +45,33 @@ namespace WmcSoft.Business.RuleModel
         /// <remarks/>
         [XmlAttribute("when")]
         public DateTime When { get; set; }
+
+        /// <remarks/>
+        [XmlIgnore]
+        public sealed override string TypeName {
+            get { return "RuleOverride"; }
+        }
+
+        #region IEquatable<Proposition> Membres
+
+        public bool Equals(RuleOverride other) {
+            if (other == null)
+                return false;
+            return base.Equals(other)
+                && Value == other.Value
+                && Reference == other.Reference
+                && Why == other.Why
+                && When == other.When;
+        }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as RuleOverride);
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
+
+        #endregion
     }
 }
