@@ -33,35 +33,14 @@ using System.Threading.Tasks;
 namespace WmcSoft.Business.OrderModel
 {
     /// <summary>
-    /// Represents a record of a request by a buyer for a
-    /// seller to supply some goods or services.
+    /// Represents a type of <see cref="Order"/> raised by a buyer and submitted
+    /// to a seller as a request fr goods or services in return for an agreed payment.
     /// </summary>
-    public abstract class Order
+    public class PurchaseOrder : Order
     {
-        #region Fields
-
-        private readonly OrderIdentifier _identifier;
-        private OrderStatus _status;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected Order() {
-            _identifier = new OrderIdentifier();
-        }
-
-        #endregion
-
         #region Properties
 
-        public OrderIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-        public OrderStatus Status {
-            get { return _status; }
-        }
+        public DateTime Sent { get; set; }
 
         #endregion
     }

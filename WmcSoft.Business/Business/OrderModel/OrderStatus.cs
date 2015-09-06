@@ -32,37 +32,11 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Business.OrderModel
 {
-    /// <summary>
-    /// Represents a record of a request by a buyer for a
-    /// seller to supply some goods or services.
-    /// </summary>
-    public abstract class Order
+    public enum OrderStatus
     {
-        #region Fields
-
-        private readonly OrderIdentifier _identifier;
-        private OrderStatus _status;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected Order() {
-            _identifier = new OrderIdentifier();
-        }
-
-        #endregion
-
-        #region Properties
-
-        public OrderIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-        public OrderStatus Status {
-            get { return _status; }
-        }
-
-        #endregion
+        Initializing,
+        Open,
+        Closed,
+        Cancelled,
     }
 }

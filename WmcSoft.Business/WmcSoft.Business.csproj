@@ -87,6 +87,9 @@
     <Compile Include="Business\ModerationStatus.cs" />
     <Compile Include="Business\OrderModel\Order.cs" />
     <Compile Include="Business\OrderModel\OrderIdentifier.cs" />
+    <Compile Include="Business\OrderModel\OrderStatus.cs" />
+    <Compile Include="Business\OrderModel\SalesOrder.cs" />
+    <Compile Include="Business\OrderModel\PurchaseOrder.cs" />
     <Compile Include="Business\PartyModel\AddressBase.cs" />
     <Compile Include="Business\PartyModel\AddressProperties.cs" />
     <Compile Include="Business\PartyModel\AssignedResponsability.cs" />
@@ -252,6 +255,7 @@
     <None Include="Business\Accounting\Accounting.cd" />
     <None Include="Business\CustomerRelationshipModel\CustomerRelationshipModel.cd" />
     <None Include="Business\InventoryModel\InventoryModel.cd" />
+    <None Include="Business\OrderModel\OrderModel.cd" />
     <None Include="Business\PartyModel\PartyModel.cd" />
     <None Include="Business\PartyModel\PartyRoleModel.cd" />
     <None Include="Business\ProductModel\ProductModel.cd" />
