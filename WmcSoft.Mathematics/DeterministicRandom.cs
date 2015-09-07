@@ -29,10 +29,10 @@ using System;
 namespace WmcSoft
 {
     /// <summary>
-    /// Returns values for a predefined set.
+    /// Returns values from a predefined set.
     /// </summary>
-    /// <remarks>This class is usefull for tests.</remarks>
-    public class DeterministicRandom : Random
+    /// <remarks>This class is usefull for tests. Also, unlike Random, all methods call Sample</remarks>
+    public class DeterministicRandom : RandomBase
     {
         readonly double[] _values;
         int _index;
@@ -41,23 +41,10 @@ namespace WmcSoft
             _values = values;
         }
 
-        public override double NextDouble() {
+        protected override double Sample() {
             double result = _values[_index];
             _index = (_index + 1) % _values.Length;
             return result;
-        }
-
-        public override int Next() {
-            return Next(0, Int32.MaxValue);
-        }
-
-        public override int Next(int maxValue) {
-            return Next(0, maxValue);
-        }
-
-        public override int Next(int minValue, int maxValue) {
-            double value = NextDouble();
-            return minValue + (int)System.Math.Floor(0.5 + value * ((long)maxValue - (long)minValue));
         }
     }
 }

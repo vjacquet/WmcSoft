@@ -166,6 +166,11 @@ namespace WmcSoft
 
         #region Random
 
+        /// <summary>
+        /// Returns a nonnegative random number. 
+        /// </summary>
+        /// <param name="random">The random generator.</param>
+        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="Int32.MaxValue"/>.</returns>
         public static IEnumerable<int> Random(Random random) {
             if (random == null)
                 throw new ArgumentNullException("random");
@@ -174,10 +179,22 @@ namespace WmcSoft
                 yield return random.Next();
             }
         }
+        /// <summary>
+        /// Returns a nonnegative random number, using the default <see cref="Random"/> generator. 
+        /// </summary>
+        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="Int32.MaxValue"/>.</returns>
         public static IEnumerable<int> Random() {
             return Random(new Random());
         }
 
+        /// <summary>
+        /// Returns a nonnegative random number less than the specified maximum.
+        /// </summary>
+        /// <param name="random">The random generator.</param>
+        /// <param name="maxValue">The exclusive upper bound of the random number to be generated. <see cref="maxValue"/> must be greater than or equal to zero. </param>
+        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="maxValue"/>; that is, 
+        /// the range of return values includes zero but not <see cref="maxValue"/>.
+        ///  If <see cref="maxValue"/> equals zero, <see cref="maxValue"/> is returned. </returns>
         public static IEnumerable<int> Random(Random random, int maxValue) {
             if (random == null)
                 throw new ArgumentNullException("random");
@@ -186,10 +203,26 @@ namespace WmcSoft
                 yield return random.Next(maxValue);
             }
         }
+        /// <summary>
+        /// Returns a nonnegative random number less than the specified maximum, using the default <see cref="Random"/> generator.
+        /// </summary>
+        /// <param name="maxValue">The exclusive upper bound of the random number to be generated. <see cref="maxValue"/> must be greater than or equal to zero. </param>
+        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="maxValue"/>; that is, 
+        /// the range of return values includes zero but not <see cref="maxValue"/>.
+        ///  If <see cref="maxValue"/> equals zero, <see cref="maxValue"/> is returned. </returns>
         public static IEnumerable<int> Random(int maxValue) {
             return Random(new Random(), maxValue);
         }
 
+        /// <summary>
+        /// Yields random numbers within a specified range.
+        /// </summary>
+        /// <param name="random">The random generator.</param>
+        /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
+        /// <param name="maxValue">The exclusive upper bound of the random number returned. <see cref="maxValue"/> must be greater than or equal to <see cref="minValue"/>. </param>
+        /// <returns>A 32-bit signed integer greater than or equal to <see cref="minValue"/> and less than <see cref="maxValue"/>; that is, 
+        /// the range of return values includes <see cref="minValue"/> but not <see cref="maxValue"/>.
+        ///  If <see cref="minValue"/> equals <see cref="maxValue"/>, <see cref="minValue"/> is returned. </returns>
         public static IEnumerable<int> Random(Random random, int minValue, int maxValue) {
             if (random == null)
                 throw new ArgumentNullException("random");
@@ -198,22 +231,39 @@ namespace WmcSoft
                 yield return random.Next(minValue, maxValue);
             }
         }
+        /// <summary>
+        /// Yields random numbers within a specified range, using the default <see cref="Random"/> generator.
+        /// </summary>
+        /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
+        /// <param name="maxValue">The exclusive upper bound of the random number returned. <see cref="maxValue"/> must be greater than or equal to <see cref="minValue"/>. </param>
+        /// <returns>A 32-bit signed integer greater than or equal to <see cref="minValue"/> and less than <see cref="maxValue"/>; that is, 
+        /// the range of return values includes <see cref="minValue"/> but not <see cref="maxValue"/>.
+        ///  If <see cref="minValue"/> equals <see cref="maxValue"/>, <see cref="minValue"/> is returned. </returns>
         public static IEnumerable<int> Random(int minValue, int maxValue) {
             return Random(new Random(), minValue, maxValue);
         }
 
-        public static IEnumerable<double> RandomDouble() {
-            var random = new Random();
-            while (true) {
-                yield return random.NextDouble();
-            }
-        }
+        /// <summary>
+        /// Returns a random number between 0.0 and 1.0. 
+        /// </summary>
+        /// <param name="random">The random generator.</param>
+        /// <returns>A double-precision floating point number greater than or equal to 0.0, and less than 1.0.</returns>
         public static IEnumerable<double> RandomDouble(Random random) {
             if (random == null)
                 throw new ArgumentNullException("random");
 
             while (true) {
                 yield return random.Next();
+            }
+        }
+        /// <summary>
+        /// Returns a random number between 0.0 and 1.0, using the default <see cref="Random"/> generator. 
+        /// </summary>
+        /// <returns>A double-precision floating point number greater than or equal to 0.0, and less than 1.0.</returns>
+        public static IEnumerable<double> RandomDouble() {
+            var random = new Random();
+            while (true) {
+                yield return random.NextDouble();
             }
         }
 
