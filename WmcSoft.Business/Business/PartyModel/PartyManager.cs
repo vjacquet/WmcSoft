@@ -24,7 +24,10 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -41,20 +44,24 @@ namespace WmcSoft.Business.PartyModel
 #if FUTURE
     // TODO: should we try MicroSoft approach like in the UserManager ?
 
-    public class PartyManager<TStore, TParty>
+    public class PartyManager<TStore, TParty, TIdentifier>
         where TParty : class
-        where TStore : IPartyStore<TParty>
+        where TStore : IPartyStore<TParty, TIdentifier>
     {
-        public abstract Task<TaskResult> AddPartyAsync(TParty party, CancellationToken cancellationToken);
-        public abstract Task<TaskResult> DeletePartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken);
-        public abstract Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken);
+        public Task AddPartyAsync(TParty party, CancellationToken cancellationToken) {
+            throw new NotImplementedException();
+        }
+        public abstract Task<bool> DeletePartyAsync(TIdentifier partyId, CancellationToken cancellationToken);
+        public abstract Task<TParty> GetPartyAsync(TIdentifier partyId, CancellationToken cancellationToken);
         public abstract Task<TParty> GetPartyByPartyRoleIdentifierAsync(PartyRoleIdentifier partyRoleId, CancellationToken cancellationToken);
         public abstract Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken);
         public abstract Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken);
     }
 
-    public interface IPartyStore<TParty> : IDisposable where TParty : class
+    public interface IPartyStore<TParty, TIdentifier> : IDisposable 
+        where TParty : class
     {
     }
+
 #endif
 }
