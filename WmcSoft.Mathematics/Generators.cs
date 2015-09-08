@@ -348,6 +348,5 @@ namespace WmcSoft
         }
 
         #endregion
-
     }
 }

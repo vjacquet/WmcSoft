@@ -157,6 +157,7 @@
     <Compile Include="IO\TextWriterExtensions.cs" />
     <Compile Include="Linq\Expressions\Dynamic.cs" />
     <Compile Include="Linq\QueryableExtensions.cs" />
+    <Compile Include="Algorithms.cs" />
     <Compile Include="Net\DownloadBatch.cs" />
     <Compile Include="Net\DownloadSource.cs" />
     <Compile Include="Net\Mail\SmtpExtensions.cs" />
