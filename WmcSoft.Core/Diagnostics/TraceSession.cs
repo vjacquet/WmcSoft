@@ -27,6 +27,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 
 namespace WmcSoft.Diagnostics
 {
@@ -101,18 +102,11 @@ namespace WmcSoft.Diagnostics
 
         #endregion
 
-        #region Helpers
-
-        void Noop() {
-        }
-
-        #endregion
-
         #region IDisposable Membres
 
         public void Dispose() {
-            _onDispose();
-            _onDispose = Disposer.Noop;
+            var action = Interlocked.Exchange(ref _onDispose, Disposer.Noop);
+            action();
             _tracer = null;
             GC.SuppressFinalize(this);
         }

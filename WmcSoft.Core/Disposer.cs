@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Threading;
 
 namespace WmcSoft
 {
@@ -57,14 +58,7 @@ namespace WmcSoft
         #region Lifecycle
 
         public Disposer(Action action) {
-            _action = action ?? Noop;
-        }
-
-        #endregion
-
-        #region Helpers
-
-        public static void Noop() {
+            _action = action;
         }
 
         #endregion
@@ -72,9 +66,17 @@ namespace WmcSoft
         #region IDisposable Membres
 
         public void Dispose() {
-            _action();
-            _action = Noop;
+            var action = Interlocked.Exchange(ref _action, null);
+            if (action != null)
+                action();
             GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        internal static void Noop() {
         }
 
         #endregion
