@@ -31,6 +31,13 @@ namespace WmcSoft
 {
     public static class ActionExtensions
     {
+        #region Helpers
+
+        internal static void Noop() {
+        }
+
+        #endregion
+
         #region ApplyEach & TryEach
 
         /// <summary>
@@ -80,7 +87,7 @@ namespace WmcSoft
         #region Then
 
         public static Action<T> Then<T>(this Action<T> action, Action<T> then) {
-            return delegate(T obj) {
+            return delegate (T obj) {
                 action(obj);
                 then(obj);
             };
@@ -91,7 +98,7 @@ namespace WmcSoft
         #region Unless
 
         public static Action<T> Unless<T>(this Action<T> action, Predicate<T> condition) {
-            return delegate(T obj) {
+            return delegate (T obj) {
                 if (!condition(obj))
                     action(obj);
             };
@@ -102,7 +109,7 @@ namespace WmcSoft
         #region Using
 
         public static Action<T> Using<T>(this Action<T> action, IDisposable usedBy) {
-            return delegate(T obj) {
+            return delegate (T obj) {
                 using (usedBy) {
                     action(obj);
                 }
@@ -110,7 +117,7 @@ namespace WmcSoft
         }
 
         public static Action<T> Using<T>(this Action<T> action, Func<T, IDisposable> usedBy) {
-            return delegate(T obj) {
+            return delegate (T obj) {
                 using (usedBy(obj)) {
                     action(obj);
                 }

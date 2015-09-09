@@ -73,12 +73,5 @@ namespace WmcSoft
         }
 
         #endregion
-
-        #region Helpers
-
-        internal static void Noop() {
-        }
-
-        #endregion
     }
 }

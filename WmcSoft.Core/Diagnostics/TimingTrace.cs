@@ -80,7 +80,8 @@ namespace WmcSoft.Diagnostics
         #region IDisposable Membres
 
         public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, Disposer.Noop);
+            var action = Interlocked.Exchange(ref _onDispose, null);
+            Debug.Assert(action != null, "Dispose must be called once.");
             action();
             GC.SuppressFinalize(this);
         }
