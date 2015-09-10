@@ -25,6 +25,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -111,6 +114,16 @@ namespace WmcSoft
             get { return _exception; }
         }
 
+        public IEnumerable<Exception> GetExceptions() {
+            if (IsFaulted) {
+                var aggregated = _exception as AggregateException;
+                if (aggregated != null)
+                    return aggregated.InnerExceptions;
+                return new SingleItemReadOnlyList<Exception>(_exception);
+            }
+            return Enumerable.Empty<Exception>();
+        }
+
         #endregion
 
         #region Methods
@@ -138,6 +151,7 @@ namespace WmcSoft
                 return PassThrough(e, translate);
             }
         }
+
         public Expected<TResult> Apply<TResult>(Func<T, TResult> func) {
             if (IsFaulted)
                 return _exception;
@@ -187,11 +201,30 @@ namespace WmcSoft
 
     public static class Expected
     {
-        public static Expected<TResult> Apply<T1, T2, TResult>(Expected<T1> first, Expected<T2> second, Func<T1, T2, TResult> func) {
-            if (first.IsFaulted)
-                return first.Exception;
-            if (second.IsFaulted)
-                return second.Exception;
+        static Exception Compose(Exception x, Exception y) {
+            if (x == null)
+                return y;
+            if (y == null)
+                return x;
+            return new AggregateException(x, y);
+        }
+
+        static Exception Compose(params Exception[] exceptions) {
+            if (exceptions == null)
+                return null;
+            var x = exceptions.Where(i => i != null).ToList();
+            switch (x.Count) {
+                case 0: return null;
+                case 1: return x[0];
+                default: return new AggregateException(x);
+            }
+        }
+
+        public static Expected<TResult> Apply<T1, T2, TResult>(Func<T1, T2, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>)) {
+            var x = Compose(first.Exception, second.Exception);
+            if (x != null)
+                return x;
+
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault());
             }
@@ -200,13 +233,11 @@ namespace WmcSoft
             }
         }
 
-        public static Expected<TResult> Apply<T1, T2, T3, TResult>(Expected<T1> first, Expected<T2> second, Expected<T3> third, Func<T1, T2, T3, TResult> func) {
-            if (first.IsFaulted)
-                return first.Exception;
-            if (second.IsFaulted)
-                return second.Exception;
-            if (third.IsFaulted)
-                return third.Exception;
+        public static Expected<TResult> Apply<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>), Expected<T3> third = default(Expected<T3>)) {
+            var x = Compose(first.Exception, second.Exception, third.Exception);
+            if (x != null)
+                return x;
+
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault());
             }
@@ -215,15 +246,11 @@ namespace WmcSoft
             }
         }
 
-        public static Expected<TResult> Apply<T1, T2, T3, T4, TResult>(Expected<T1> first, Expected<T2> second, Expected<T3> third, Expected<T4> fourth, Func<T1, T2, T3, T4, TResult> func) {
-            if (first.IsFaulted)
-                return first.Exception;
-            if (second.IsFaulted)
-                return second.Exception;
-            if (third.IsFaulted)
-                return third.Exception;
-            if (fourth.IsFaulted)
-                return fourth.Exception;
+        public static Expected<TResult> Apply<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>), Expected<T3> third = default(Expected<T3>), Expected<T4> fourth = default(Expected<T4>)) {
+            var x = Compose(first.Exception, second.Exception, third.Exception, fourth.Exception);
+            if (x != null)
+                return x;
+
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault(), fourth.GetValueOrDefault());
             }
