@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Diagnostics;
 
@@ -53,6 +48,14 @@ namespace WmcSoft
             var converter = DataKeyConverter.Basic.WithPrefix("own.").WithPrefix("my.");
             var actual = converter.ToKey("key");
             Assert.AreEqual("my.own.key", actual);
+        }
+
+        [TestMethod]
+        public void CanUseInIfStatements() {
+            var result = Failed<int>(new ArgumentOutOfRangeException());
+            if (result) {
+                Assert.Fail();
+            }
         }
     }
 }

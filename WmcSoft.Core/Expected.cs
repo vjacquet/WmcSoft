@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WmcSoft.Collections.Generic;
+using WmcSoft.Diagnostics;
 
 namespace WmcSoft
 {
@@ -60,15 +61,32 @@ namespace WmcSoft
 
         #region Operators
 
+        public static bool operator !(Expected<T> x) {
+            return x.IsFaulted;
+        }
+
+        public static bool operator true(Expected<T> x) {
+            return x.HasValue;
+        }
+
+        public static bool operator false(Expected<T> x) {
+            return x.IsFaulted;
+        }
+
         public static implicit operator Expected<T>(T value) {
             return new Expected<T>(value);
         }
+
         public static explicit operator T(Expected<T> expected) {
             return expected.Value;
         }
 
         public static implicit operator Expected<T>(Exception exception) {
             return new Expected<T>(exception);
+        }
+
+        public static implicit operator Fault(Expected<T> x) {
+            return new Fault(x._exception);
         }
 
         #endregion

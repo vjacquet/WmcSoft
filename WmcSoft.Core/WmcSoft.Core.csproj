@@ -121,6 +121,7 @@
     <Compile Include="ActionExtensions.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Expected.cs" />
+    <Compile Include="Diagnostics\Fault.cs" />
     <Compile Include="FuncExtensions.cs" />
     <Compile Include="Indices.cs" />
     <Compile Include="IOrdinal.cs" />

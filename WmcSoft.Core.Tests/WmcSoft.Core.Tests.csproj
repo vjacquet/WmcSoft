@@ -70,6 +70,7 @@
     <Compile Include="Data\DataConvertTests.cs" />
     <Compile Include="Data\DataReaderTests.cs" />
     <Compile Include="DateTimeTests.cs" />
+    <Compile Include="Diagnostics\FaultTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="IO\StreamSourceTests.cs" />
     <Compile Include="Linq\Expressions\DynamicTests.cs" />
