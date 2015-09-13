@@ -99,5 +99,20 @@ namespace WmcSoft.Collections.Generic
             var actual = new String(s.Interleave().ToArray(s.Sum(i => i.Length)));
             Assert.AreEqual("aM1bN2cP3d4e", actual);
         }
+
+        [TestMethod]
+        public void CheckTail() {
+            var collection = new[] { 1, 2, 3, 4, 5 };
+            var expected = new[] { 3, 4, 5 };
+            var actual = collection.Tail(3).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckTailWhenCollectionHasLessElements() {
+            var expected = new[] { 1, 2, 3, 4, 5 };
+            var actual = expected.Tail(6).ToArray(); ;
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

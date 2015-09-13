@@ -899,6 +899,98 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Tail
+
+        /// <summary>
+        /// Returns the count last elements from the input sequence.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <see cref="source"/>.</typeparam>
+        /// <param name="source">The sequence to return elements from.</param>
+        /// <param name="count">The number of elements to return.</param>
+        /// <returns>A sequence that contains at most the specified number elements at the end of the input sequence.</returns>
+        public static IEnumerable<TSource> Tail<TSource>(this IEnumerable<TSource> source, int count) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (count <= 0)
+                return System.Linq.Enumerable.Empty<TSource>();
+            if (count == 1)
+                return TailIterator1(source);
+            return TailIterator(source, count);
+        }
+
+        static IEnumerable<TSource> TailIterator1<TSource>(IEnumerable<TSource> source) {
+            var last = source.Last();
+            yield return last;
+        }
+
+        static IEnumerable<TSource> TailIterator<TSource>(IEnumerable<TSource> source, int count) {
+            var buffer = new TSource[count];
+            var n = 0;
+            var full = false;
+            foreach (var e in source) {
+                buffer[n++] = e;
+                if (n == count) {
+                    n = 0;
+                    full = true;
+                }
+            }
+            if (full) {
+                for (int i = n; i < count; i++)
+                    yield return buffer[i];
+                for (int i = 0; i < n; i++)
+                    yield return buffer[i];
+            } else {
+                for (int i = 0; i < n; i++)
+                    yield return buffer[i];
+            }
+        }
+
+        #endregion
+
+        #region TailUnless
+
+        /// <summary>
+        /// Returns the count last element that does not match the predicate.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <see cref="source"/>.</typeparam>
+        /// <param name="source">The sequence to return elements from.</param>
+        /// <param name="predicate">The predicate</param>
+        /// <param name="count">The number of elements to return.</param>
+        /// <returns>A sequence that contains at most the specified number elements not matching the predicate, at the end of the input sequence.</returns>
+        public static IEnumerable<TSource> TailUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (count <= 0)
+                return System.Linq.Enumerable.Empty<TSource>();
+            Func<TSource, bool> unless = x => !predicate(x);
+            if (count == 1)
+                return TailUnless1(source, unless);
+            return TailIterator(source.Where(unless), count);
+        }
+
+        static IEnumerable<TSource> TailUnless1<TSource>(IEnumerable<TSource> source, Func<TSource, bool> predicate) {
+            var last = source.Last(predicate);
+            yield return last;
+        }
+
+        #endregion
+
+        #region TakeUnless
+
+        /// <summary>
+        /// Returns the count first elements that does not match the predicate.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <see cref="source"/>.</typeparam>
+        /// <param name="source">The sequence to return elements from.</param>
+        /// <param name="predicate">The predicate</param>
+        /// <param name="count">The number of elements to return.</param>
+        /// <returns>A sequence that contains at most the specified number elements not matching the predicate, from the start of the input sequence.</returns>
+        public static IEnumerable<TSource> TakeUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
+            if (source == null) throw new ArgumentNullException("source");
+            Func<TSource, bool> unless = x => !predicate(x);
+            return source.Where(unless).Take(count);
+        }
+
+        #endregion
+
         #region ToArray
 
         public static BitArray ToBitArray<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
@@ -998,23 +1090,23 @@ namespace WmcSoft.Collections.Generic
                 throw new ArgumentNullException("elementSelector");
             Dictionary<TKey, TElement> d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
-            case DuplicatePolicy.ThrowException:
-                foreach (TSource element in source) {
-                    d.Add(keySelector(element), elementSelector(element));
-                }
-                break;
-            case DuplicatePolicy.KeepFirst:
-                foreach (TSource element in source) {
-                    var selector = keySelector(element);
-                    if (!d.ContainsKey(selector))
-                        d.Add(selector, elementSelector(element));
-                }
-                break;
-            case DuplicatePolicy.KeepLast:
-                foreach (TSource element in source) {
-                    d[keySelector(element)] = elementSelector(element);
-                }
-                break;
+                case DuplicatePolicy.ThrowException:
+                    foreach (TSource element in source) {
+                        d.Add(keySelector(element), elementSelector(element));
+                    }
+                    break;
+                case DuplicatePolicy.KeepFirst:
+                    foreach (TSource element in source) {
+                        var selector = keySelector(element);
+                        if (!d.ContainsKey(selector))
+                            d.Add(selector, elementSelector(element));
+                    }
+                    break;
+                case DuplicatePolicy.KeepLast:
+                    foreach (TSource element in source) {
+                        d[keySelector(element)] = elementSelector(element);
+                    }
+                    break;
             }
             return d;
         }
