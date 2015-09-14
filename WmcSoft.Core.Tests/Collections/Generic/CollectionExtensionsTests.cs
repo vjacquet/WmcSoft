@@ -132,5 +132,13 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 4, 3, 2, 1 };
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckConvertAll() {
+            var sequence = new[] { 1, 2, 3, 4 };
+            IList<int> list = new List<int>(sequence);
+            var actual = list.ConvertAll(x => x * x);
+            Assert.IsInstanceOfType(actual, typeof(IList<int>));
+        }
     }
 }

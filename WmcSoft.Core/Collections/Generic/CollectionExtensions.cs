@@ -73,7 +73,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="items">The items to add to the collection.</param>
         /// <returns>The collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static ICollection<T> AddRange<T>(this  ICollection<T> self, IEnumerable<T> items) {
+        public static ICollection<T> AddRange<T>(this ICollection<T> self, IEnumerable<T> items) {
             if (self == null)
                 throw new ArgumentNullException("self");
 
@@ -282,6 +282,41 @@ namespace WmcSoft.Collections.Generic
             return list.BinaryFind(0, list.Count, finder, defaultValue);
         }
 
+        #endregion
+
+        #region ConvertAll
+
+        /// <summary>
+        /// Converts a collection of one type to a collection of another type.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the elements of the source collection.</typeparam>
+        /// <typeparam name="TOutput">The type of the elements of the target collection.</typeparam>
+        /// <param name="source">The source collection.</param>
+        /// <param name="converter">A Converter<TInput, TOutput> that converts each element from one type to another type.</param>
+        /// <returns>A collection of the target type containing the converted elements from the source array.</returns>
+        public static ICollection<TOutput> ConvertAll<TInput, TOutput>(this ICollection<TInput> source, Converter<TInput, TOutput> converter) {
+            var list = new List<TOutput>(source.Count);
+            foreach (var item in source) {
+                list.Add(converter(item));
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Converts a list of one type to a list of another type.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the elements of the source list.</typeparam>
+        /// <typeparam name="TOutput">The type of the elements of the target list.</typeparam>
+        /// <param name="source">The source list.</param>
+        /// <param name="converter">A Converter<TInput, TOutput> that converts each element from one type to another type.</param>
+        /// <returns>A list of the target type containing the converted elements from the source array.</returns>
+        public static IList<TOutput> ConvertAll<TInput, TOutput>(this IList<TInput> source, Converter<TInput, TOutput> converter) {
+            var list = new List<TOutput>(source.Count);
+            foreach (var item in source) {
+                list.Add(converter(item));
+            }
+            return list;
+        }
         #endregion
 
         #region ElementsAt
