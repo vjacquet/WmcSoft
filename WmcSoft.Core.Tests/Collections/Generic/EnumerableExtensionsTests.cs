@@ -114,5 +114,12 @@ namespace WmcSoft.Collections.Generic
             var actual = expected.Tail(6).ToArray(); ;
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckTailWhenCollectionHasSameElementCount() {
+            var expected = new[] { 1, 2, 3, 4, 5 };
+            var actual = expected.Tail(5).ToArray(); ;
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
