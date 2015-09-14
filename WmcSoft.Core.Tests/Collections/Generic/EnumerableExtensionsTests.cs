@@ -101,7 +101,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckTail() {
+        public void CheckTailOnCollection() {
             var collection = new[] { 1, 2, 3, 4, 5 };
             var expected = new[] { 3, 4, 5 };
             var actual = collection.Tail(3).ToArray();
@@ -111,15 +111,37 @@ namespace WmcSoft.Collections.Generic
         [TestMethod]
         public void CheckTailWhenCollectionHasLessElements() {
             var expected = new[] { 1, 2, 3, 4, 5 };
-            var actual = expected.Tail(6).ToArray(); ;
+            var actual = expected.Tail(6).ToArray(); 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void CheckTailWhenCollectionHasSameElementCount() {
             var expected = new[] { 1, 2, 3, 4, 5 };
-            var actual = expected.Tail(5).ToArray(); ;
+            var actual = expected.Tail(5).ToArray(); 
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckTailOnEnumerable() {
+            var enumerable = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
+            var expected = new[] { 3, 4, 5 };
+            var actual = enumerable.Tail(3).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckTailWhenEnumerableHasLessElements() {
+            var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
+            var actual = expected.Tail(6).ToArray();
+            CollectionAssert.AreEqual(expected.ToArray(), actual);
+        }
+
+        [TestMethod]
+        public void CheckTailWhenEnumerableHasSameElementCount() {
+            var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
+            var actual = expected.Tail(5).ToArray(); 
+            CollectionAssert.AreEqual(expected.ToArray(), actual);
         }
     }
 }

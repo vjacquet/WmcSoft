@@ -169,7 +169,6 @@ namespace WmcSoft.Collections.Generic
             if (_storage.Count == 0)
                 return false;
             var traits = new EnumerableTraits<T>(other);
-            var collection = other as ICollection<T>;
             if (traits.HasCount && traits.Count == 0)
                 return false;
 

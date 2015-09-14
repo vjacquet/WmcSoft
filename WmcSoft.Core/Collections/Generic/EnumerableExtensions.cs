@@ -914,6 +914,14 @@ namespace WmcSoft.Collections.Generic
                 return System.Linq.Enumerable.Empty<TSource>();
             if (count == 1)
                 return TailIterator1(source);
+
+            var traits = new EnumerableTraits<TSource>(source);
+            if (traits.HasCount) {
+                if (traits.Count <= count)
+                    return source;
+                return source.Skip(traits.Count - count);
+            }
+
             return TailIterator(source, count);
         }
 
@@ -1063,6 +1071,37 @@ namespace WmcSoft.Collections.Generic
                 return array;
 
             return values.ToArray();
+        }
+
+        #endregion
+
+        #region ToEnumerable
+
+        class ShieldEnumerable<TSource> : IEnumerable<TSource>
+        {
+            readonly IEnumerable<TSource> _source;
+
+            public ShieldEnumerable(IEnumerable<TSource> source) {
+                _source = source;
+            }
+
+            public IEnumerator<TSource> GetEnumerator() {
+                return _source.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return _source.GetEnumerator();
+            }
+        }
+
+        /// <summary>
+        /// Hides a enumerable.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> ToEnumerable<TSource>(this IEnumerable<TSource> source) {
+            return new ShieldEnumerable<TSource>(source);
         }
 
         #endregion
