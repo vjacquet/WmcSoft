@@ -68,14 +68,9 @@ namespace WmcSoft.Collections.Generic
             #region IEnumerable<T> Membres
 
             public IEnumerator<T> GetEnumerator() {
-                var stack = new Stack<T>();
-                using (var enumerator = _enumerable.GetEnumerator()) {
-                    while (enumerator.MoveNext()) {
-                        stack.Push(enumerator.Current);
-                    }
-                    while (stack.Count > 0) {
-                        yield return stack.Pop();
-                    }
+                var stack = new Stack<T>(_enumerable);
+                while (stack.Count > 0) {
+                    yield return stack.Pop();
                 }
             }
 
@@ -98,16 +93,24 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static IEnumerable<T> Backwards<T>(this IEnumerable<T> source) {
-            var readOnlyList = source as IReadOnlyList<T>;
+        /// <summary>
+        /// Inverts the order of the elements in a sequence.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <see cref="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to reverse.</param>
+        /// <returns>A sequence whose elements correspond to those of the input sequence in reverse order.</returns>
+        /// <remarks>Similar to <see cref="Enumerable.Reverse{TSource}(IEnumerable{TSource})"/> except that a copy 
+        /// is avoided for classes implementing <see cref="IList{TSource}"/>.</remarks>
+        public static IEnumerable<TSource> Backwards<TSource>(this IEnumerable<TSource> source) {
+            var readOnlyList = source as IReadOnlyList<TSource>;
             if (readOnlyList != null)
                 return Backwards(readOnlyList);
 
-            var list = source as IList<T>;
+            var list = source as IList<TSource>;
             if (list != null)
                 return Backwards(list.AsReadOnly());
 
-            return new BackwardsEnumerableAdapter<T>(source);
+            return new BackwardsEnumerableAdapter<TSource>(source);
         }
 
         #endregion
