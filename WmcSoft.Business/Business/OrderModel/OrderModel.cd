@@ -1,20 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="WmcSoft.Business.OrderModel.Order">
-    <Position X="4.25" Y="3" Width="1.5" />
+    <Position X="7" Y="5.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AEAAAAAEAAAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <HashCode>AEAAAAAEEAAAAAAAAAAAgAAAAAAAAAAAAAAIQAAAAAA=</HashCode>
       <FileName>Business\OrderModel\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Status" />
+      <Property Name="Identifier" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrderLines" />
+      <Property Name="ChargeLines" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.SalesOrder" Collapsed="true">
-    <Position X="5.25" Y="5.5" Width="1.5" />
+    <Position X="8" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\OrderModel\SalesOrder.cs</FileName>
@@ -22,14 +27,64 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.PurchaseOrder" Collapsed="true">
-    <Position X="3" Y="5.5" Width="1.5" />
+    <Position X="5.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\OrderModel\PurchaseOrder.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="WmcSoft.Business.OrderModel.OrderLine">
+    <Position X="4.25" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAQAAAgAAAAAAABgAAAAAEAAAABAAAIQgAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderLine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ChargeLines" />
+      <Property Name="Taxes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.OrderIdentifier" Collapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.ChargeLine">
+    <Position X="7" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAgACAAAAAAAAAAAAAQgAAAAA=</HashCode>
+      <FileName>Business\OrderModel\ChargeLine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Taxes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.SalesTaxPolicy" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAEAAQAAA=</HashCode>
+      <FileName>Business\OrderModel\SalesTaxPolicy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.TaxOnLine">
+    <Position X="3.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAABAAAQAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Business\OrderModel\TaxOnLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Enum Name="WmcSoft.Business.OrderModel.OrderStatus" Collapsed="true">
-    <Position X="4.25" Y="1.75" Width="1.5" />
+    <Position X="10" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQCAAIAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
       <FileName>Business\OrderModel\OrderStatus.cs</FileName>

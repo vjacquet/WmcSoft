@@ -86,6 +86,8 @@
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
     <Compile Include="Business\ModerationStatus.cs" />
+    <Compile Include="Business\OrderModel\DeliveryReceiver.cs" />
+    <Compile Include="Business\OrderModel\ChargeLine.cs" />
     <Compile Include="Business\OrderModel\OrderLine.cs" />
     <Compile Include="Business\OrderModel\Order.cs" />
     <Compile Include="Business\OrderModel\OrderLineIdentifier.cs" />
@@ -93,6 +95,8 @@
     <Compile Include="Business\OrderModel\OrderStatus.cs" />
     <Compile Include="Business\OrderModel\SalesOrder.cs" />
     <Compile Include="Business\OrderModel\PurchaseOrder.cs" />
+    <Compile Include="Business\OrderModel\SalesTaxPolicy.cs" />
+    <Compile Include="Business\OrderModel\TaxOnLine.cs" />
     <Compile Include="Business\PartyModel\AddressBase.cs" />
     <Compile Include="Business\PartyModel\AddressProperties.cs" />
     <Compile Include="Business\PartyModel\AssignedResponsability.cs" />

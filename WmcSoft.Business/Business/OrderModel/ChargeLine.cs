@@ -35,10 +35,10 @@ using WmcSoft.Business.ProductModel;
 namespace WmcSoft.Business.OrderModel
 {
     /// <summary>
-    /// Represents pats of an <see cref="Order"/> that is a summary of particular
-    /// goods or services ordered by a buyer.
+    /// Represents an additional charge for an <see cref="OrderLine"/> over and above the <see cref="OrderLine"/> value
+    /// or an extra charge added to an <see cref="Order"/>.
     /// </summary>
-    public class OrderLine
+    public class ChargeLine
     {
         #region Fields
 
@@ -48,10 +48,9 @@ namespace WmcSoft.Business.OrderModel
 
         #region Lifecycle
 
-        protected OrderLine() {
+        protected ChargeLine() {
             _identifier = new OrderLineIdentifier();
 
-            ChargeLines = new List<ChargeLine>();
             Taxes = new List<TaxOnLine>();
         }
 
@@ -63,19 +62,9 @@ namespace WmcSoft.Business.OrderModel
             get { return _identifier; }
         }
 
-        public ProductIdentifier ProductType { get; set; }
+        public Money Amount { get; set; }
 
         public string Description { get; set; }
-
-        public SerialNumber SerialNumber { get; set; }
-
-        public int NumberOrdered { get; set; }
-
-        public Money UnitPrice { get; set; }
-
-        public DateTime? ExpectedDeliveryDate { get; set; }
-
-        public ICollection<ChargeLine> ChargeLines { get; private set; }
 
         public ICollection<TaxOnLine> Taxes { get; private set; }
 

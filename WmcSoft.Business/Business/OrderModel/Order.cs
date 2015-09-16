@@ -49,6 +49,9 @@ namespace WmcSoft.Business.OrderModel
 
         protected Order() {
             _identifier = new OrderIdentifier();
+
+            OrderLines = new List<OrderLine>();
+            ChargeLines = new List<ChargeLine>();
         }
 
         #endregion
@@ -62,6 +65,9 @@ namespace WmcSoft.Business.OrderModel
         public OrderStatus Status {
             get { return _status; }
         }
+
+        public ICollection<OrderLine> OrderLines { get; private set; }
+        public ICollection<ChargeLine> ChargeLines { get; private set; }
 
         #endregion
     }

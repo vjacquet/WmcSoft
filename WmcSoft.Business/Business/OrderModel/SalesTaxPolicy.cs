@@ -29,56 +29,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WmcSoft.Business.Accounting;
-using WmcSoft.Business.ProductModel;
 
 namespace WmcSoft.Business.OrderModel
 {
     /// <summary>
-    /// Represents pats of an <see cref="Order"/> that is a summary of particular
-    /// goods or services ordered by a buyer.
+    /// Records the prevailing taxation rate for a particular category of sales tax.
     /// </summary>
-    public class OrderLine
+    public class SalesTaxPolicy : ITemporal
     {
-        #region Fields
-
-        private readonly OrderLineIdentifier _identifier;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected OrderLine() {
-            _identifier = new OrderLineIdentifier();
-
-            ChargeLines = new List<ChargeLine>();
-            Taxes = new List<TaxOnLine>();
-        }
-
-        #endregion
-
-        #region Properties
-
-        public OrderLineIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-        public ProductIdentifier ProductType { get; set; }
-
-        public string Description { get; set; }
-
-        public SerialNumber SerialNumber { get; set; }
-
-        public int NumberOrdered { get; set; }
-
-        public Money UnitPrice { get; set; }
-
-        public DateTime? ExpectedDeliveryDate { get; set; }
-
-        public ICollection<ChargeLine> ChargeLines { get; private set; }
-
-        public ICollection<TaxOnLine> Taxes { get; private set; }
-
-        #endregion
+        public string TaxationType { get; set; }
+        public decimal TaxationRate { get; set; }
+        public DateTime? ValidSince { get; set; }
+        public DateTime? ValidUntil { get; set; }
     }
 }
