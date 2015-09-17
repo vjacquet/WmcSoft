@@ -10,8 +10,8 @@
       <FileName>Business\OrderModel\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Status" />
       <Property Name="Identifier" />
+      <Property Name="Status" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="OrderLines" />
@@ -81,6 +81,45 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAAAAAAAAAAAABAAAQAAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>Business\OrderModel\TaxOnLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.OrderEvent">
+    <Position X="20.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACARAAAAAAAAAgAAAAAAAAAABAAAAQAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.LifecycleEvent" Collapsed="true">
+    <Position X="20.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.OpenEvent" Collapsed="true">
+    <Position X="20.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.CloseEvent" Collapsed="true">
+    <Position X="22.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.OrderModel.CancelEvent" Collapsed="true">
+    <Position X="18" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="WmcSoft.Business.OrderModel.OrderStatus" Collapsed="true">
