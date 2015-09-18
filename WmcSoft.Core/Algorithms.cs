@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Linq;
 
 namespace WmcSoft
 {
@@ -120,6 +121,39 @@ namespace WmcSoft
                 max = System.Math.Max(max, values[i]);
             }
             return max;
+        }
+
+        public static T Min<T>(T x, T y) where T : IComparable<T> {
+            return y.CompareTo(x) < 0 ? y : x;
+        }
+
+        public static T Max<T>(T x, T y) where T : IComparable<T> {
+            return x.CompareTo(y) < 0 ? x : y;
+        }
+
+        public static T Min<T>(params T[] args) where T:IComparable<T> {
+            return args.Min();
+        }
+
+        public static T Max<T>(params T[] args) where T : IComparable<T> {
+            return args.Max();
+        }
+
+        public static Tuple<T, T> MinMax<T>(params T[] args) where T : IComparable<T> {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+            if (args.Length == 1)
+                return Tuple.Create(args[0], args[0]);
+
+            var min = args[0];
+            var max = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (args[i].CompareTo(min) < 0)
+                    min = args[i];
+                else if (args[i].CompareTo(max) >= 0)
+                    max = args[i];
+            }
+            return Tuple.Create(min, max);
         }
     }
 }
