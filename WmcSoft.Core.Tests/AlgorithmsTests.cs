@@ -22,9 +22,9 @@ namespace WmcSoft
             DateTime x = new DateTime(1973, 5, 2);
             DateTime y = new DateTime(1973, 5, 1);
 
-            var comparer = new AnonymousComparer<DateTime>((a, b) => a.Month.CompareTo(b.Month));
+            Comparison<DateTime> comparison = (a, b) => a.Month.CompareTo(b.Month);
             var expected = x;
-            var actual = Algorithms.Min(comparer, x, y);
+            var actual = Algorithms.Min(comparison, x, y);
             Assert.AreEqual(expected, actual);
         }
 
@@ -43,9 +43,9 @@ namespace WmcSoft
             DateTime x = new DateTime(1973, 5, 2);
             DateTime y = new DateTime(1973, 5, 1);
 
-            var comparer = new AnonymousComparer<DateTime>((a, b) => a.Month.CompareTo(b.Month));
+            Comparison<DateTime> comparison = (a, b) => a.Month.CompareTo(b.Month);
             var expected = y;
-            var actual = Algorithms.Max(comparer, x, y);
+            var actual = Algorithms.Max(comparison, x, y);
             Assert.AreEqual(expected, actual);
         }
     }
