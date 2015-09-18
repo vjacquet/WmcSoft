@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WmcSoft
@@ -123,20 +124,54 @@ namespace WmcSoft
             return max;
         }
 
+        #region Min/Max
+
         public static T Min<T>(T x, T y) where T : IComparable<T> {
             return y.CompareTo(x) < 0 ? y : x;
+        }
+
+        public static T Min<T>(params T[] args) where T : IComparable<T> {
+            return args.Min();
+        }
+
+        public static T Min<T>(IComparer<T> comparer, T x, T y) {
+            return comparer.Compare(y, x) < 0 ? y : x;
+        }
+
+        public static T Min<T>(IComparer<T> comparer, params T[] args) {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+
+            var min = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (comparer.Compare(args[i], min) < 0)
+                    min = args[i];
+            }
+            return min;
+        }
+
+        public static T Max<T>(params T[] args) where T : IComparable<T> {
+            return args.Max();
         }
 
         public static T Max<T>(T x, T y) where T : IComparable<T> {
             return x.CompareTo(y) < 0 ? x : y;
         }
 
-        public static T Min<T>(params T[] args) where T:IComparable<T> {
-            return args.Min();
+        public static T Max<T>(IComparer<T> comparer, T x, T y) {
+            return comparer.Compare(x, y) < 0 ? x : y;
         }
 
-        public static T Max<T>(params T[] args) where T : IComparable<T> {
-            return args.Max();
+        public static T Max<T>(IComparer<T> comparer, params T[] args) {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+
+            var max = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (comparer.Compare(args[i], max) >= 0)
+                    max = args[i];
+            }
+            return max;
         }
 
         public static Tuple<T, T> MinMax<T>(params T[] args) where T : IComparable<T> {
@@ -155,5 +190,24 @@ namespace WmcSoft
             }
             return Tuple.Create(min, max);
         }
+
+        public static Tuple<T, T> MinMax<T>(IComparer<T> comparer, params T[] args) {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+            if (args.Length == 1)
+                return Tuple.Create(args[0], args[0]);
+
+            var min = args[0];
+            var max = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (comparer.Compare(args[i], min) < 0)
+                    min = args[i];
+                else if (comparer.Compare(args[i], max) >= 0)
+                    max = args[i];
+            }
+            return Tuple.Create(min, max);
+        }
+
+        #endregion
     }
 }
