@@ -155,11 +155,11 @@ namespace WmcSoft
         }
 
         public static T Max<T>(T x, T y) where T : IComparable<T> {
-            return x.CompareTo(y) < 0 ? x : y;
+            return x.CompareTo(y) <= 0 ? y : x;
         }
 
         public static T Max<T>(IComparer<T> comparer, T x, T y) {
-            return comparer.Compare(x, y) < 0 ? x : y;
+            return comparer.Compare(x, y) <= 0 ? y : x;
         }
 
         public static T Max<T>(IComparer<T> comparer, params T[] args) {
