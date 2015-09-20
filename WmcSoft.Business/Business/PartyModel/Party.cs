@@ -38,7 +38,6 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Fields
 
-        readonly PartyIdentifier _identifier;
         readonly List<AddressProperties> _addresses;
         readonly List<RegisteredIdentifier> _registeredIdentifiers;
         readonly List<PartyAuthentication> _partyAuthentications;
@@ -57,14 +56,14 @@ namespace WmcSoft.Business.PartyModel
             _addresses = new List<AddressProperties>();
             _registeredIdentifiers = new List<RegisteredIdentifier>();
             _partyAuthentications = new List<PartyAuthentication>();
-            _identifier = identifier;
+            Id = identifier;
             _roles = new HashSet<PartyRole>(PartyRole.UniqueIdentifierComparer);
         }
 
         #endregion
 
-        public PartyIdentifier Identifier {
-            get { return _identifier; }
+        public PartyIdentifier Id {
+            get; set;
         }
 
         public ICollection<RegisteredIdentifier> RegisteredIdentifiers {
@@ -110,10 +109,11 @@ namespace WmcSoft.Business.PartyModel
             get { return _roles; }
         }
 
+        readonly object syncRoot = new object();
         public WeightedPreferenceCollection Preferences {
             get {
                 if (_preferences == null) {
-                    lock (_identifier) {
+                    lock (syncRoot) {
                         if (_preferences == null) {
                             _preferences = new WeightedPreferenceCollection();
                         }

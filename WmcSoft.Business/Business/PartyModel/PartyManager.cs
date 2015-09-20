@@ -26,42 +26,67 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace WmcSoft.Business.PartyModel
 {
-    public abstract class PartyManager
-    {
-        public abstract void AddParty(Party party);
-        public abstract bool DeleteParty(PartyIdentifier partyId);
-        public abstract Party GetParty(PartyIdentifier partyId);
-        public abstract Party GetPartyByPartyRoleIdentifier(PartyRoleIdentifier partyRoleId);
-        public abstract IEnumerable<Party> FindPartiesByName(string name);
-        public abstract IEnumerable<Party> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId);
-    }
-
-#if FUTURE
-    // TODO: should we try MicroSoft approach like in the UserManager ?
-
-    public class PartyManager<TStore, TParty, TIdentifier>
+    public class PartyManager<TStore, TParty>
         where TParty : class
-        where TStore : IPartyStore<TParty, TIdentifier>
+        where TStore : IPartyStore<TParty>
     {
-        public Task AddPartyAsync(TParty party, CancellationToken cancellationToken) {
-            throw new NotImplementedException();
+        public PartyManager(TStore store) {
+            Store = store;
         }
-        public abstract Task<bool> DeletePartyAsync(TIdentifier partyId, CancellationToken cancellationToken);
-        public abstract Task<TParty> GetPartyAsync(TIdentifier partyId, CancellationToken cancellationToken);
-        public abstract Task<TParty> GetPartyByPartyRoleIdentifierAsync(PartyRoleIdentifier partyRoleId, CancellationToken cancellationToken);
-        public abstract Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken);
-        public abstract Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken);
+
+        internal TStore Store { get; }
+
+        public Task<PartyIdentifier> AddPartyAsync(TParty party, CancellationToken cancellationToken = default(CancellationToken)) {
+            return Store.AddPartyAsync(party, cancellationToken);
+        }
+        public Task<bool> DeletePartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken = default(CancellationToken)) {
+            return Store.DeletePartyAsync(partyId, cancellationToken);
+        }
+        public Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken = default(CancellationToken)) {
+            return Store.GetPartyAsync(partyId, cancellationToken);
+        }
+        public Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken = default(CancellationToken)) {
+            return Store.FindPartiesByName(name, cancellationToken);
+        }
+        public Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken = default(CancellationToken)) {
+            return Store.FindPartiesByRegisteredIdentifier(registeredId, cancellationToken);
+        }
     }
 
-    public interface IPartyStore<TParty, TIdentifier> : IDisposable 
+    public interface IPartyStore<TParty> : IDisposable
         where TParty : class
     {
+        Task<PartyIdentifier> AddPartyAsync(TParty party, CancellationToken cancellationToken);
+        Task<bool> DeletePartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken);
+        Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken);
+        Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken);
+        Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken);
     }
 
-#endif
+    public interface IPartyRoleStore<TParty> : IPartyStore<TParty>
+        where TParty : class
+    {
+        Task<TParty> GetPartyByPartyRoleIdentifierAsync(PartyRoleIdentifier partyRoleId, CancellationToken cancellationToken);
+    }
+
+    public interface IQueryablePartyStore<TParty> : IPartyStore<TParty>
+        where TParty : class
+    {
+        IQueryable<TParty> QueryParties();
+    }
+
+    public static class PartyManagerExtensions
+    {
+        public static Task<TParty> GetPartyByPartyRoleIdentifierAsync<TStore, TParty>(this PartyManager<TStore, TParty> partyManager, PartyRoleIdentifier partyRoleId, CancellationToken cancellationToken = default(CancellationToken))
+            where TParty : class
+            where TStore : IPartyRoleStore<TParty> {
+            return partyManager.Store.GetPartyByPartyRoleIdentifierAsync(partyRoleId, cancellationToken);
+        }
+    }
 }

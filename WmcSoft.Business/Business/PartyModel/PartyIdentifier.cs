@@ -67,5 +67,9 @@ namespace WmcSoft.Business.PartyModel
         }
 
         #endregion
+
+        public override string ToString() {
+            return _id.ToString();
+        }
     }
 }
