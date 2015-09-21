@@ -47,11 +47,13 @@ namespace WmcSoft.Business.PartyModel
             _otherPersonNames = new List<PersonName>();
         }
 
-        public Person(string preferredName)
+        public Person(PersonName name)
             : this() {
-            PersonName = new PersonName {
-                PreferredName = preferredName
-            };
+            PersonName = name;
+        }
+
+        public Person(string preferredName)
+            : this(new PersonName { PreferredName = preferredName }) {
         }
 
         #endregion
@@ -76,6 +78,16 @@ namespace WmcSoft.Business.PartyModel
         public Ethnicity Ethnicity { get; set; }
 
         public BodyMetrics BodyMetrics { get; set; }
+
+        #endregion
+
+        #region Overrides
+
+        public override string Name {
+            get {
+                return PersonName.PreferredName;
+            }
+        }
 
         #endregion
     }

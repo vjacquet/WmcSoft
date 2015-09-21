@@ -33,7 +33,10 @@ namespace WmcSoft.Business.PartyModel.InMemory
         }
 
         public Task<bool> DeletePartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken) {
-            throw new NotImplementedException();
+            TParty party;
+            var key = ConvertPartyIdentifierToKey(partyId);
+            var result = _context.TryRemove(key, out party);
+            return Task.FromResult(result);
         }
 
         public Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken) {
@@ -51,7 +54,11 @@ namespace WmcSoft.Business.PartyModel.InMemory
         }
 
         public Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken) {
-            throw new NotImplementedException();
+            TParty party;
+            var key = ConvertPartyIdentifierToKey(partyId);
+            if (!_context.TryGetValue(key, out party))
+                return Task.FromException<TParty>(new ArgumentOutOfRangeException("partyId"));
+            return Task.FromResult(party);
         }
 
         #region IDisposable Support

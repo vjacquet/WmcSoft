@@ -46,9 +46,13 @@ namespace WmcSoft.Business.PartyModel
             _otherOrganizationNames = new List<OrganizationName>();
         }
 
-        public Organization(string organizationName)
+        public Organization(OrganizationName organizationName)
             : this() {
-            OrganizationName = new OrganizationName(organizationName);
+            OrganizationName = organizationName;
+        }
+
+        public Organization(string organizationName)
+            : this(new OrganizationName(organizationName)) {
         }
 
         #endregion
