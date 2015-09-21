@@ -32,12 +32,12 @@ namespace WmcSoft.Business.PartyModel
     /// The RegisteredIdentifier represents an identifier for a Party that
     /// has been assigned by a recognized or statutory body.
     /// </summary>
-    public class RegisteredIdentifier : ITemporal
+    public class RegisteredIdentifier : ITemporal, IEquatable<RegisteredIdentifier>
     {
         #region Fields
 
         readonly string _identifier;
-        readonly string _registrationAuthority;
+        readonly string _authority;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace WmcSoft.Business.PartyModel
 
         public RegisteredIdentifier(string identifier, string registrationAuthority) {
             _identifier = identifier;
-            _registrationAuthority = registrationAuthority;
+            _authority = registrationAuthority;
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace WmcSoft.Business.PartyModel
         }
 
         public string RegistrationAuthority {
-            get { return _registrationAuthority; }
+            get { return _authority; }
         }
 
         #endregion
@@ -67,6 +67,31 @@ namespace WmcSoft.Business.PartyModel
         public DateTime? ValidSince { get; set; }
 
         public DateTime? ValidUntil { get; set; }
+
+        #endregion
+
+        #region IEquatable<RegisteredIdentifier> Members
+
+        public bool Equals(RegisteredIdentifier other) {
+            if (other == null)
+                return false;
+            return String.Equals(_identifier, other._identifier, StringComparison.CurrentCulture)
+                && String.Equals(_authority, other._authority, StringComparison.CurrentCulture);
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override bool Equals(object obj) {
+            return base.Equals(obj as RegisteredIdentifier);
+        }
+
+        public override int GetHashCode() {
+            var identifier = String.IsNullOrWhiteSpace(_identifier) ? 0 : _identifier.GetHashCode();
+            var authority = String.IsNullOrWhiteSpace(_authority) ? 0 : _authority.GetHashCode();
+            return (authority.GetHashCode() * 397) ^ identifier;
+        }
 
         #endregion
     }
