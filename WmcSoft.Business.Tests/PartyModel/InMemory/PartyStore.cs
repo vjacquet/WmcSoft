@@ -50,7 +50,13 @@ namespace WmcSoft.Business.PartyModel.InMemory
         }
 
         public Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken) {
-            throw new NotImplementedException();
+            var result = new List<Party>();
+            foreach (var kv in _context) {
+                var p = kv.Value;
+                if (p.RegisteredIdentifiers.Any(i => i.Match(registeredId)))
+                    result.Add(p);
+            }
+            return Task.FromResult((IEnumerable<TParty>)result);
         }
 
         public Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken) {

@@ -73,6 +73,12 @@ namespace WmcSoft.Business.PartyModel
         #region IEquatable<RegisteredIdentifier> Members
 
         public bool Equals(RegisteredIdentifier other) {
+            if (!Match(other))
+                return false;
+            return ValidSince == other.ValidSince && ValidUntil == other.ValidUntil;
+        }
+
+        public bool Match(RegisteredIdentifier other) {
             if (other == null)
                 return false;
             return String.Equals(_identifier, other._identifier, StringComparison.CurrentCulture)
