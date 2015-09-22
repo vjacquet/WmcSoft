@@ -190,6 +190,7 @@
     <Compile Include="Runtime\ObjectWalker.cs" />
     <Compile Include="Runtime\Remoting\Services\TraceTrackingHandler.cs" />
     <Compile Include="Runtime\Serialization\BinarySerializer.cs" />
+    <Compile Include="Runtime\Serialization\DataRecordExtensions.cs" />
     <Compile Include="Runtime\Serialization\IXmlSerializationStrategy.cs" />
     <Compile Include="Runtime\Serialization\XmlSerializer.cs" />
     <Compile Include="Security\Cryptography\UUDecodeTransform.cs" />

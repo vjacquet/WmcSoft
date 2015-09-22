@@ -63,10 +63,28 @@ namespace WmcSoft.Data
             return record.GetBoolean(i);
         }
 
+        public static byte? GetNullableByte(this IDataRecord record, int i) {
+            if (record.IsDBNull(i))
+                return null;
+            return record.GetByte(i);
+        }
+
+        public static char? GetNullableChar(this IDataRecord record, int i) {
+            if (record.IsDBNull(i))
+                return null;
+            return record.GetChar(i);
+        }
+
         public static DateTime? GetNullableDateTime(this IDataRecord record, int i) {
             if (record.IsDBNull(i))
                 return null;
             return record.GetDateTime(i);
+        }
+
+        public static Guid? GetNullableGuid(this IDataRecord record, int i) {
+            if (record.IsDBNull(i))
+                return null;
+            return record.GetGuid(i);
         }
 
         public static short? GetNullableInt16(this IDataRecord record, int i) {
@@ -121,73 +139,66 @@ namespace WmcSoft.Data
             return record.GetBoolean(i);
         }
 
-        public static DateTime? GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = new DateTime()) {
+        public static byte GetByteOrDefault(this IDataRecord record, int i, byte defaultValue = default(byte)) {
+            if (record.IsDBNull(i))
+                return defaultValue;
+            return record.GetByte(i);
+        }
+
+        public static char GetCharOrDefault(this IDataRecord record, int i, char defaultValue = default(char)) {
+            if (record.IsDBNull(i))
+                return defaultValue;
+            return record.GetChar(i);
+        }
+
+        public static DateTime GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = default(DateTime)) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDateTime(i);
         }
 
-        public static short? GetInt16OrDefault(this IDataRecord record, int i, short defaultValue = 0) {
+        public static Guid GetGuidOrDefault(this IDataRecord record, int i, Guid defaultValue = default(Guid)) {
+            if (record.IsDBNull(i))
+                return defaultValue;
+            return record.GetGuid(i);
+        }
+
+        public static short GetInt16OrDefault(this IDataRecord record, int i, short defaultValue = 0) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt16(i);
         }
 
-        public static int? GetInt32OrDefault(this IDataRecord record, int i, int defaultValue = 0) {
+        public static int GetInt32OrDefault(this IDataRecord record, int i, int defaultValue = 0) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt32(i);
         }
 
-        public static long? GetInt64OrDefault(this IDataRecord record, int i, long defaultValue = 0) {
+        public static long GetInt64OrDefault(this IDataRecord record, int i, long defaultValue = 0) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt64(i);
         }
 
-        public static float? GetFloatOrDefault(this IDataRecord record, int i, float defaultValue = 0f) {
+        public static float GetFloatOrDefault(this IDataRecord record, int i, float defaultValue = 0f) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetFloat(i);
         }
 
-        public static double? GetDoubleOrDefault(this IDataRecord record, int i, double defaultValue = 0d) {
+        public static double GetDoubleOrDefault(this IDataRecord record, int i, double defaultValue = 0d) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDouble(i);
         }
 
-        public static decimal? GetDecimalOrDefault(this IDataRecord record, int i, decimal defaultValue = 0m) {
+        public static decimal GetDecimalOrDefault(this IDataRecord record, int i, decimal defaultValue = 0m) {
             if (record.IsDBNull(i))
                 return defaultValue;
             return (decimal)record.GetDecimal(i);
         }
 
-        #endregion
-
-        #region GetObjectFromXml
-
-        public static T GetObjectFromXml<T>(this IDataRecord record, int i)
-            where T : new() {
-            var xml = record.GetValue(i).ToString();
-            if (String.IsNullOrEmpty(xml))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T));
-            using (var reader = XmlReader.Create(new StringReader(xml))) {
-                return (T)serializer.ReadObject(reader);
-            }
-        }
-
-        public static T GetObjectFromXml<T>(this IDataRecord record, int i, IDataContractSurrogate surrogate)
-            where T : new() {
-            var xml = record.GetValue(i).ToString();
-            if (String.IsNullOrEmpty(xml))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T), new Type[0], Int16.MaxValue, false, true, surrogate);
-            using (var reader = XmlReader.Create(new StringReader(xml))) {
-                return (T)serializer.ReadObject(reader);
-            }
-        }
         #endregion
     }
 }
