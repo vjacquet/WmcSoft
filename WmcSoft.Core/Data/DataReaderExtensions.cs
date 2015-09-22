@@ -17,7 +17,7 @@ namespace WmcSoft.Data
             var sqlClient = reader as SqlDataReader;
             if (sqlClient != null)
                 return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i);
-            return DataRecordExtensions.GetObjectFromXml<T>(reader, i);
+            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i);
         }
 
         public static T GetObjectFromXml<T>(this DbDataReader reader, int i, IDataContractSurrogate surrogate)
@@ -25,7 +25,7 @@ namespace WmcSoft.Data
             var sqlClient = reader as SqlDataReader;
             if (sqlClient != null)
                 return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i, surrogate);
-            return DataRecordExtensions.GetObjectFromXml<T>(reader, i, surrogate);
+            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i, surrogate);
         }
 
         #endregion
