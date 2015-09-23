@@ -115,7 +115,7 @@ namespace WmcSoft
             return other.IsLower(_upper) && other.IsUpper(_lower);
         }
 
-        public bool Includes<S>(T value, S strategy) where S : IBoundStrategy<T> {
+        public bool Includes<S>(T value, S strategy) where S : struct, IBoundStrategy<T> {
             return strategy.IsWithinRange(value, _lower, _upper);
         }
 
@@ -133,7 +133,7 @@ namespace WmcSoft
         }
 
         public Range<T> GapBetween(Range<T> other) {
-            if (this.Overlaps(other))
+            if (Overlaps(other))
                 return Range<T>.Empty;
             else if (this < other)
                 return new Range<T>(_upper, other._lower);

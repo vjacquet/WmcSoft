@@ -24,10 +24,20 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace WmcSoft
 {
     public interface IBoundStrategy<T>
     {
-        bool IsWithinRange(T value, T lower, T upper);
+        bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper);
+    }
+
+    public static class BoudStrategyExtensions
+    {
+        public static bool IsWithinRange<S, T>(this S strategy, T value, T lower, T upper)
+            where S : struct, IBoundStrategy<T> {
+            return strategy.IsWithinRange(Comparer<T>.Default, value, lower, upper);
+        }
     }
 }

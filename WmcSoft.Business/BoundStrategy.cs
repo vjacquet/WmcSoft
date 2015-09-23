@@ -28,56 +28,69 @@ using System.Collections.Generic;
 
 namespace WmcSoft
 {
-    public abstract class BoundStrategy<T> : IBoundStrategy<T>
+    public sealed class BoundStrategy<T> : IBoundStrategy<T>
     {
-        protected IComparer<T> _comparer;
+        #region Strategies
 
-        public BoundStrategy(IComparer<T> comparer = null) {
-            _comparer = comparer ?? Comparer<T>.Default;
+        public struct InclusiveStrategy<T> : IBoundStrategy<T>
+        {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+                return (comparer.Compare(lower, value) <= 0)
+                    && (comparer.Compare(value, upper) <= 0);
+            }
         }
 
-        public abstract bool IsWithinRange(T value, T lower, T upper);
-
-        static public readonly BoundStrategy<T> Inclusive = new InclusiveStrategy<T>();
-        static public readonly BoundStrategy<T> Exclusive = new ExclusiveStrategy<T>();
-        static public readonly BoundStrategy<T> LowerExclusive = new LowerExclusiveStrategy<T>();
-        static public readonly BoundStrategy<T> UpperExclusive = new UpperExclusiveStrategy<T>();
-    }
-
-    #region Strategies
-
-    public sealed class InclusiveStrategy<T> : BoundStrategy<T>
-    {
-        public override bool IsWithinRange(T value, T lower, T upper) {
-            return (_comparer.Compare(lower, value) <= 0)
-                && (_comparer.Compare(value, upper) <= 0);
+        public struct ExclusiveStrategy<T> : IBoundStrategy<T>
+        {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+                return (comparer.Compare(lower, value) < 0)
+                    && (comparer.Compare(value, upper) < 0);
+            }
         }
-    }
 
-    public sealed class ExclusiveStrategy<T> : BoundStrategy<T>
-    {
-        public override bool IsWithinRange(T value, T lower, T upper) {
-            return (_comparer.Compare(lower, value) < 0)
-                && (_comparer.Compare(value, upper) < 0);
+        public struct LowerExclusiveStrategy<T> : IBoundStrategy<T>
+        {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+                return (comparer.Compare(lower, value) < 0)
+                    && (comparer.Compare(value, upper) <= 0);
+            }
         }
-    }
 
-    public sealed class LowerExclusiveStrategy<T> : BoundStrategy<T>
-    {
-        public override bool IsWithinRange(T value, T lower, T upper) {
-            return (_comparer.Compare(lower, value) < 0)
-                && (_comparer.Compare(value, upper) <= 0);
+        public sealed class UpperExclusiveStrategy<T> : IBoundStrategy<T>
+        {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+                return (comparer.Compare(lower, value) <= 0)
+                    && (comparer.Compare(value, upper) < 0);
+            }
         }
-    }
 
-    public sealed class UpperExclusiveStrategy<T> : BoundStrategy<T>
-    {
-        public override bool IsWithinRange(T value, T lower, T upper) {
-            return (_comparer.Compare(lower, value) <= 0)
-                && (_comparer.Compare(value, upper) < 0);
+        static public readonly InclusiveStrategy<T> Inclusive = new InclusiveStrategy<T>();
+        static public readonly ExclusiveStrategy<T> Exclusive = new ExclusiveStrategy<T>();
+        static public readonly LowerExclusiveStrategy<T> LowerExclusive = new LowerExclusiveStrategy<T>();
+        static public readonly UpperExclusiveStrategy<T> UpperExclusive = new UpperExclusiveStrategy<T>();
+
+        #endregion
+
+        #region Fields
+
+        IBoundStrategy<T> _underlying;
+
+        #endregion
+
+        #region Lifecycle
+
+        public BoundStrategy(IBoundStrategy<T> strategy) {
+            _underlying = strategy;
         }
+
+        #endregion
+
+        #region IBoundStrategy<T> Members
+
+        public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+            return _underlying.IsWithinRange(comparer, value, lower, upper);
+        }
+
+        #endregion
     }
-
-    #endregion
-
 }
