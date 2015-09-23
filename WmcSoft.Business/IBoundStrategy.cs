@@ -28,6 +28,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines a strategy to deal with bounds on ranges of values.
+    /// </summary>
+    /// <typeparam name="T">The item type.</typeparam>
     public interface IBoundStrategy<T>
     {
         bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper);

@@ -28,11 +28,15 @@ using System.Collections.Generic;
 
 namespace WmcSoft
 {
-    public sealed class BoundStrategy<T> : IBoundStrategy<T>
+    /// <summary>
+    /// Wrapper to decorated strategies not implemented as structs so the extension methods can be applied.
+    /// </summary>
+    /// <typeparam name="T">The item type.</typeparam>
+    public struct BoundStrategy<T> : IBoundStrategy<T>
     {
         #region Strategies
 
-        public struct InclusiveStrategy<T> : IBoundStrategy<T>
+        public struct InclusiveStrategy : IBoundStrategy<T>
         {
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) <= 0)
@@ -40,7 +44,7 @@ namespace WmcSoft
             }
         }
 
-        public struct ExclusiveStrategy<T> : IBoundStrategy<T>
+        public struct ExclusiveStrategy : IBoundStrategy<T>
         {
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) < 0)
@@ -48,7 +52,7 @@ namespace WmcSoft
             }
         }
 
-        public struct LowerExclusiveStrategy<T> : IBoundStrategy<T>
+        public struct LowerExclusiveStrategy : IBoundStrategy<T>
         {
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) < 0)
@@ -56,7 +60,7 @@ namespace WmcSoft
             }
         }
 
-        public sealed class UpperExclusiveStrategy<T> : IBoundStrategy<T>
+        public sealed class UpperExclusiveStrategy : IBoundStrategy<T>
         {
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) <= 0)
@@ -64,10 +68,10 @@ namespace WmcSoft
             }
         }
 
-        static public readonly InclusiveStrategy<T> Inclusive = new InclusiveStrategy<T>();
-        static public readonly ExclusiveStrategy<T> Exclusive = new ExclusiveStrategy<T>();
-        static public readonly LowerExclusiveStrategy<T> LowerExclusive = new LowerExclusiveStrategy<T>();
-        static public readonly UpperExclusiveStrategy<T> UpperExclusive = new UpperExclusiveStrategy<T>();
+        static public readonly InclusiveStrategy Inclusive = new InclusiveStrategy();
+        static public readonly ExclusiveStrategy Exclusive = new ExclusiveStrategy();
+        static public readonly LowerExclusiveStrategy LowerExclusive = new LowerExclusiveStrategy();
+        static public readonly UpperExclusiveStrategy UpperExclusive = new UpperExclusiveStrategy();
 
         #endregion
 
