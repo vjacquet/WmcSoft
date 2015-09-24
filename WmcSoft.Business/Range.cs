@@ -36,7 +36,7 @@ namespace WmcSoft
     /// T of a list.
     /// </summary>
     /// <remarks>This class is immutable.</remarks>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
     public struct Range<T> :
@@ -56,14 +56,12 @@ namespace WmcSoft
         /// <summary>
         /// The lower bound of the range.
         /// </summary>
-        public T Lower { get { return _lower; } }
-        readonly T _lower;
+        public T Lower { get; }
 
         /// <summary>
         /// The upper bound of the range.
         /// </summary>
-        public T Upper { get { return _upper; } }
-        readonly T _upper;
+        public T Upper { get; }
 
         #endregion
 
@@ -76,11 +74,11 @@ namespace WmcSoft
         /// <param name="y">The upper bound of the range.</param>
         public Range(T x, T y) {
             if (x.CompareTo(y) > 0) {
-                _lower = y;
-                _upper = x;
+                Lower = y;
+                Upper = x;
             } else {
-                _lower = x;
-                _upper = y;
+                Lower = x;
+                Upper = y;
             }
         }
 
@@ -90,7 +88,7 @@ namespace WmcSoft
 
         public bool IsEmpty {
             get {
-                return _upper.CompareTo(_lower) <= 0;
+                return Upper.CompareTo(Lower) == 0;
             }
         }
 
@@ -99,24 +97,24 @@ namespace WmcSoft
         #region Methods
 
         public bool IsLower(T value) {
-            return value.CompareTo(_upper) > 0;
+            return value.CompareTo(Upper) > 0;
         }
 
         public bool IsUpper(T value) {
-            return value.CompareTo(_lower) < 0;
+            return value.CompareTo(Lower) < 0;
         }
 
         public bool IsAdjacent(Range<T> other) {
-            return _upper.CompareTo(other._lower) == 0
-                || _lower.CompareTo(other._upper) == 0;
+            return Upper.CompareTo(other.Lower) == 0
+                || Lower.CompareTo(other.Upper) == 0;
         }
 
         public bool Includes(Range<T> other) {
-            return other.IsLower(_upper) && other.IsUpper(_lower);
+            return other.IsLower(Upper) && other.IsUpper(Lower);
         }
 
         public bool Includes<S>(T value, S strategy) where S : struct, IBoundStrategy<T> {
-            return strategy.IsWithinRange(value, _lower, _upper);
+            return strategy.IsWithinRange(value, Lower, Upper);
         }
 
         public bool Includes(T value) {
@@ -124,21 +122,21 @@ namespace WmcSoft
         }
 
         public bool Overlaps(Range<T> other) {
-            return (this.IsLower(other._upper) && this.Includes(other._lower))
-            || (this.IsUpper(other._lower) && this.Includes(other._upper));
+            return (this.IsLower(other.Upper) && this.Includes(other.Lower))
+            || (this.IsUpper(other.Lower) && this.Includes(other.Upper));
         }
 
         public bool IsDistinct(Range<T> other) {
-            return other.IsLower(_lower) || other.IsUpper(_upper);
+            return other.IsLower(Lower) || other.IsUpper(Upper);
         }
 
         public Range<T> GapBetween(Range<T> other) {
             if (Overlaps(other))
                 return Range<T>.Empty;
             else if (this < other)
-                return new Range<T>(_upper, other._lower);
+                return new Range<T>(Upper, other.Lower);
             else
-                return new Range<T>(other._upper, _lower);
+                return new Range<T>(other.Upper, Lower);
         }
 
         public Range<T> Merge(Range<T> other) {
@@ -147,12 +145,12 @@ namespace WmcSoft
         }
 
         public static bool IsContiguous(IEnumerable<Range<T>> enumerable) {
-            List<Range<T>> list = new List<Range<T>>(enumerable);
+            var list = new List<Range<T>>(enumerable);
             list.Sort();
             return IsContiguous(list);
         }
 
-        private static bool IsContiguous(List<Range<T>> list) {
+        private static bool IsContiguous(IList<Range<T>> list) {
             for (int i = 1; i < list.Count; i++) {
                 if (!list[i - 1].IsAdjacent(list[i]))
                     return false;
@@ -161,19 +159,19 @@ namespace WmcSoft
         }
 
         public static Range<T> Merge(IEnumerable<Range<T>> enumerable) {
-            List<Range<T>> list = new List<Range<T>>(enumerable);
+            var list = new List<Range<T>>(enumerable);
             list.Sort();
             if (!IsContiguous(list))
                 throw new ArgumentException("Unable to merge ranges", "enumerable");
             return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
         }
 
-        private static Range<T> Merge(List<Range<T>> list) {
+        private static Range<T> Merge(IList<Range<T>> list) {
             return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
         }
 
         public bool PartitionedBy(IEnumerable<Range<T>> enumerable) {
-            List<Range<T>> list = new List<Range<T>>(enumerable);
+            var list = new List<Range<T>>(enumerable);
             list.Sort();
             if (!IsContiguous(list))
                 return false;
@@ -195,13 +193,9 @@ namespace WmcSoft
         public override string ToString() {
             StringBuilder builder = new StringBuilder();
             builder.Append('[');
-            if (_lower != null) {
-                builder.Append(_lower.ToString());
-            }
+            builder.Append(Lower);
             builder.Append(", ");
-            if (_upper != null) {
-                builder.Append(_upper.ToString());
-            }
+            builder.Append(Upper);
             builder.Append(']');
             return builder.ToString();
         }
@@ -213,9 +207,7 @@ namespace WmcSoft
         /// </summary>
         /// <returns>The hash code.</returns>
         public override int GetHashCode() {
-            int hashFirst = (_lower == null) ? 0x0 : _lower.GetHashCode();
-            int hashSecond = (_upper == null) ? 0x0 : _upper.GetHashCode();
-            return hashFirst ^ hashSecond;
+            return Lower.GetHashCode() ^ Upper.GetHashCode();
         }
 
         /// <summary>Indicates whether the current range is equal to another range of the same type.</summary>
@@ -237,8 +229,8 @@ namespace WmcSoft
         /// <returns>true if the current range is equal to the other parameter; otherwise, false.</returns>
         public bool Equals(Range<T> other) {
             var comparer = EqualityComparer<T>.Default;
-            return comparer.Equals(_lower, other._lower)
-                && comparer.Equals(_upper, other._upper);
+            return comparer.Equals(Lower, other.Lower)
+                && comparer.Equals(Upper, other.Upper);
         }
 
         #endregion
@@ -270,9 +262,9 @@ namespace WmcSoft
         /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
         public int CompareTo(Range<T> other) {
             var comparer = Comparer<T>.Default;
-            int firstCompare = comparer.Compare(_lower, other._lower);
+            int firstCompare = comparer.Compare(Lower, other.Lower);
             if (firstCompare == 0)
-                return comparer.Compare(_upper, other._upper);
+                return comparer.Compare(Upper, other.Upper);
             return firstCompare;
         }
 
@@ -376,6 +368,5 @@ namespace WmcSoft
         }
 
         #endregion
-
     }
 }
