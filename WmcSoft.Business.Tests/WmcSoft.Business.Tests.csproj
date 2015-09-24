@@ -50,7 +50,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -81,6 +83,7 @@
     <Compile Include="Security\SecurableBase.cs" />
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
+    <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\WmcSoft.Business\Business\RuleModel\RuleModel.xsd">

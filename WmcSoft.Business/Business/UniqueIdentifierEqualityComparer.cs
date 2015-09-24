@@ -27,19 +27,20 @@
 using System;
 using System.Collections.Generic;
 
-namespace WmcSoft.Business.PartyModel
+namespace WmcSoft.Business
 {
-    public class UniqueIdentifierEqualityComparer<T> : IEqualityComparer<IUniqueIdentifier<Guid>>
-        where T : IUniqueIdentifier<Guid>
+    public class UniqueIdentifierEqualityComparer<U, T> : IEqualityComparer<IUniqueIdentifier<T>>
+        where U : IUniqueIdentifier<T>
+        where T : IEquatable<T>
     {
-        public static readonly UniqueIdentifierEqualityComparer<T> Default = new UniqueIdentifierEqualityComparer<T>();
+        public static readonly UniqueIdentifierEqualityComparer<U, T> Default = new UniqueIdentifierEqualityComparer<U, T>();
 
         private UniqueIdentifierEqualityComparer() {
         }
 
         #region IEqualityComparer<IUniqueIdentifier<Guid>> Membres
 
-        public bool Equals(IUniqueIdentifier<Guid> x, IUniqueIdentifier<Guid> y) {
+        public bool Equals(IUniqueIdentifier<T> x, IUniqueIdentifier<T> y) {
             if (x == null)
                 return y == null;
             if (x == null)
@@ -47,8 +48,8 @@ namespace WmcSoft.Business.PartyModel
             return x.Id.Equals(y.Id);
         }
 
-        public int GetHashCode(IUniqueIdentifier<Guid> obj) {
-            if(obj ==null)
+        public int GetHashCode(IUniqueIdentifier<T> obj) {
+            if (obj == null)
                 return 0;
             return obj.Id.GetHashCode();
         }

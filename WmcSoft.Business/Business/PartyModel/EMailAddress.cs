@@ -31,22 +31,21 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Specifies a way of contacting a <see cref="Party"/> via e-mail.
     /// </summary>
-    public class EMailAddress : AddressBase
+    public class EmailAddress : AddressBase
     {
         #region Lifecycle
 
-        public EMailAddress()
-            : base() {
+        public EmailAddress() {
         }
 
         #endregion
 
         #region Properties
 
-        public string EMail { get; set; }
+        public string Email { get; set; }
 
         public override string Address {
-            get { return EMail; }
+            get { return Email; }
         }
 
         #endregion

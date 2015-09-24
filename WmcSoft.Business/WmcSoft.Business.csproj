@@ -103,7 +103,7 @@
     <Compile Include="Business\PartyModel\BodyMetrics.cs" />
     <Compile Include="Business\PartyModel\Company.cs" />
     <Compile Include="Business\PartyModel\CompanyGroup.cs" />
-    <Compile Include="Business\PartyModel\EMailAddress.cs" />
+    <Compile Include="Business\PartyModel\EmailAddress.cs" />
     <Compile Include="Business\PartyModel\Ethnicity.cs" />
     <Compile Include="Business\PartyModel\Gender.cs" />
     <Compile Include="Business\PartyModel\GeographicAddress.cs" />
@@ -169,7 +169,7 @@
     <Compile Include="Business\ProductModel\ServiceType.cs" />
     <Compile Include="Business\ProductModel\ServiceDeliveryStatus.cs" />
     <Compile Include="Business\RegistrationPolicy.cs" />
-    <Compile Include="Business\PartyModel\UniqueIdentifierEqualityComparer.cs" />
+    <Compile Include="Business\UniqueIdentifierEqualityComparer.cs" />
     <Compile Include="Business\RuleModel\IRuleEvaluator.cs" />
     <Compile Include="Business\RuleModel\MissingOperationException.cs" />
     <Compile Include="Business\RuleModel\Operator.cs" />

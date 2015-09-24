@@ -36,8 +36,7 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public TelecomAddress()
-            : base() {
+        public TelecomAddress() {
         }
 
         #endregion

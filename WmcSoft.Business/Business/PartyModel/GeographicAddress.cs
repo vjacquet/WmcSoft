@@ -44,8 +44,7 @@ namespace WmcSoft.Business.PartyModel
 
         #region Lifecycle
 
-        public GeographicAddress()
-            : base() {
+        public GeographicAddress() {
             _addressLines = new StringCollection();
         }
 

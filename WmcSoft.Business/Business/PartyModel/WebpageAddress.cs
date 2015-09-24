@@ -9,8 +9,7 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public WebPageAddress()
-            : base() {
+        public WebPageAddress() {
         }
 
         #endregion
