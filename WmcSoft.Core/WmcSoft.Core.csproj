@@ -216,6 +216,7 @@
     <Compile Include="Threading\LockFreeStack.cs" />
     <Compile Include="Threading\SpinWait.cs" />
     <Compile Include="Threading\ThinEvent.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="Unsubscriber.cs" />
     <Compile Include="Xml\XmlElementExtensions.cs" />
     <Compile Include="Xml\XmlReaderDecorator.cs" />

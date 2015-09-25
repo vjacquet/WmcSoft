@@ -43,6 +43,7 @@ namespace WmcSoft.Business.PartyModel
         }
 
         public PartyRoleConstraintAttribute(string typeName) {
+            _typeName = typeName;
         }
 
         public PartyRoleConstraintAttribute(Type type) {

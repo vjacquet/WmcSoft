@@ -25,24 +25,18 @@
 #endregion
 
 using System;
-using System.IO;
-using WmcSoft.IO;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WmcSoft
 {
-    public static class ObjectExtensions
+    public static class TypeExtensions
     {
-        public static T Clone<T>(this T self) where T : class {
-            var cloneable = self as ICloneable;
-            if (cloneable != null)
-                return (T)cloneable.Clone();
-
-            using (MemoryStream ms = new MemoryStream()) {
-                var f = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                f.Serialize(ms, self);
-                ms.Rewind();
-                return (T)f.Deserialize(ms);
-            }
+        public static IEnumerable<A> GetAttributes<A>(this Type type) where A : Attribute {
+            return TypeDescriptor.GetAttributes(type).OfType<A>();
         }
     }
 }

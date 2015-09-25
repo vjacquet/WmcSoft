@@ -93,18 +93,20 @@ namespace WmcSoft.Business.PartyModel
         }
 
         private void CheckConstraints(Party party) {
-            var constraints = GetAttributes<PartyRoleConstraintAttribute>(GetType()).GetEnumerator();
-            if (constraints.MoveNext()) {
-                // if I have constraints, at least one should fit.
-                do {
-                    if (constraints.Current.CanPlayRole(party))
-                        return;
-                }
-                while (constraints.MoveNext());
+            var constraints = GetType().GetAttributes<PartyRoleConstraintAttribute>();
+            using (var enumerator = constraints.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    // if I have constraints, at least one should fit.
+                    do {
+                        if (enumerator.Current.CanPlayRole(party))
+                            return;
+                    }
+                    while (enumerator.MoveNext());
 
-                throw new InvalidOperationException();
+                    throw new InvalidOperationException();
+                }
+                // no constraints, so ok
             }
-            // no constraints, so ok
         }
 
         #endregion
@@ -157,15 +159,15 @@ namespace WmcSoft.Business.PartyModel
         #region Management of responsabilities
 
         public static IEnumerable<Responsability> GetMandatoryResponsabilitiesOf<R>() where R : PartyRole {
-            return GetAttributes<ResponsabilityAttribute>(typeof(R))
-                .Where(a => a.Policy == RegistrationPolicy.Mandatory)
-                .Select(a => a.Responsability);
+            return from a in typeof(R).GetAttributes<ResponsabilityAttribute>()
+                   where a.Policy == RegistrationPolicy.Mandatory
+                   select a.Responsability;
         }
 
         public static IEnumerable<Responsability> GetOptionalResponsabilitiesOf<R>() where R : PartyRole {
-            return GetAttributes<ResponsabilityAttribute>(typeof(R))
-                .Where(a => a.Policy == RegistrationPolicy.Optional)
-                .Select(a => a.Responsability);
+            return from a in typeof(R).GetAttributes<ResponsabilityAttribute>()
+                   where a.Policy == RegistrationPolicy.Optional
+                   select a.Responsability;
         }
 
         #endregion
@@ -173,15 +175,7 @@ namespace WmcSoft.Business.PartyModel
         #region Management of contraints
 
         public static IEnumerable<PartyRoleConstraintAttribute> GetConstraintsOf<R>() where R : PartyRole {
-            return GetAttributes<PartyRoleConstraintAttribute>(typeof(R));
-        }
-
-        #endregion
-
-        #region Helpers
-
-        protected static IEnumerable<A> GetAttributes<A>(Type type) where A : Attribute {
-            return TypeDescriptor.GetAttributes(type).OfType<A>();
+            return typeof(R).GetAttributes<PartyRoleConstraintAttribute>();
         }
 
         #endregion

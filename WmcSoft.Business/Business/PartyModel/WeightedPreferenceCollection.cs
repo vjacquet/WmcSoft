@@ -95,12 +95,8 @@ namespace WmcSoft.Business.PartyModel
         }
 
         public double this[Preference key] {
-            get {
-                return inner[key];
-            }
-            set {
-                inner[key] = value;
-            }
+            get {                return inner[key];            }
+            set {                inner[key] = value;            }
         }
 
         #endregion
