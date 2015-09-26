@@ -38,5 +38,19 @@ namespace WmcSoft
         public static IEnumerable<A> GetAttributes<A>(this Type type) where A : Attribute {
             return TypeDescriptor.GetAttributes(type).OfType<A>();
         }
+
+        public static string GetDisplayName(this Type type, bool inherit) {
+            var attributes = (DisplayNameAttribute[])type.GetCustomAttributes(typeof(DisplayNameAttribute), inherit);
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].DisplayName;
+            return type.Name;
+        }
+
+        public static string GetDescription(this Type type, bool inherit) {
+            var attributes = (DescriptionAttribute[])type.GetCustomAttributes(typeof(DescriptionAttribute), inherit);
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].Description;
+            return "";
+        }
     }
 }
