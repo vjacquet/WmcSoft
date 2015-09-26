@@ -36,16 +36,9 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class GeographicAddress : AddressBase
     {
-        #region Fields
-
-        readonly StringCollection _addressLines;
-
-        #endregion
-
         #region Lifecycle
 
         public GeographicAddress() {
-            _addressLines = new StringCollection();
         }
 
         #endregion
@@ -59,16 +52,10 @@ namespace WmcSoft.Business.PartyModel
             }
         }
 
-        public StringCollection AddressLines {
-            get { return _addressLines; }
-        }
-
+        public string[] AddressLines { get; set; }
         public string City { get; set; }
-
         public string RegionOrState { get; set; }
-
         public string ZipOrPostCode { get; set; }
-
         public RegionInfo Country { get; set; }
 
         #endregion

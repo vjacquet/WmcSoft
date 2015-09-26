@@ -14,7 +14,8 @@ namespace WmcSoft.Business.PartyModel
     {
         [TestMethod]
         public void CanAddParty() {
-            var mgr = new MyPartyManager(new PartyStore<Party, Guid>());
+            var store = new PartyStore<Party, Guid>(() => Guid.NewGuid());
+            var mgr = new MyPartyManager(store);
             var person = new Person("Vincent JACQUET");
             var id = mgr.AddPartyAsync(person).Result;
             Assert.AreEqual(id, person.Id);

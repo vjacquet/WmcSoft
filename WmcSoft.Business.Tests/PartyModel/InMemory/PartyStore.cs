@@ -14,12 +14,14 @@ namespace WmcSoft.Business.PartyModel.InMemory
           where TParty : Party
     {
         readonly ConcurrentDictionary<TKey, TParty> _context = new ConcurrentDictionary<TKey, TParty>();
+        readonly Func<PartyIdentifier> _uniqueIdGenerator;
 
-        public PartyStore() {
+        public PartyStore(Func<PartyIdentifier> uniqueIdGenerator) {
+            _uniqueIdGenerator = uniqueIdGenerator;
         }
 
         public Task<PartyIdentifier> AddPartyAsync(TParty party, CancellationToken cancellationToken) {
-            var id = new PartyIdentifier();
+            var id = _uniqueIdGenerator();
             var key = ConvertPartyIdentifierToKey(id);
             _context.TryAdd(key, party);
             party.Id = id;

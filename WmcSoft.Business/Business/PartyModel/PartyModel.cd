@@ -41,11 +41,10 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAJAAAABAAAgAAAIAAAAgAQAAwAAAAAAAAAJQAAQAEA=</HashCode>
+      <HashCode>AAJCAAABAAAgAAAYAAAAAAQAAwAAAAAAAAAJAAAQAEA=</HashCode>
       <FileName>Business\PartyModel\Party.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Identifier" />
       <Property Name="Preferences" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
@@ -55,12 +54,12 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.Person">
-    <Position X="8.75" Y="6.25" Width="1.5" />
+    <Position X="8.5" Y="6.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>gAAAAAAAAAAAAACAAAAIAAAgAAAQQAAgAAAAAAAAAgA=</HashCode>
+      <HashCode>gAAAAAAAAAAAAACAAAAIAAQgAAAQQAAgAAAAAAAAAgA=</HashCode>
       <FileName>Business\PartyModel\Person.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -89,20 +88,10 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AACCAAAAAACAAAAEgABAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\PartyIdentifier.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Bottom" Position="0.177" />
-  </Class>
-  <Class Name="WmcSoft.Business.PartyModel.EMailAddress">
-    <Position X="9.25" Y="10.75" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAACAAAAAAAAAAA=</HashCode>
-      <FileName>Business\PartyModel\EMailAddress.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.GeographicAddress">
     <Position X="11.5" Y="10.75" Width="1.75" />
@@ -110,7 +99,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIAAAAIAAAAAIAAAACAAAEAAAQEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAIAAAAAIAAAACAAAAAAAQEAA=</HashCode>
       <FileName>Business\PartyModel\GeographicAddress.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -145,7 +134,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAIAAAAgAAAAAAAAAAAAAAAUBAAAAA=</HashCode>
+      <HashCode>AAAAEgAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAUBAAAAA=</HashCode>
       <FileName>Business\PartyModel\RegisteredIdentifier.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -202,7 +191,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAEAAAAAA=</HashCode>
+      <HashCode>AAAAEAAAAAAAAAAEAAAAAAQAAAAEAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Business\PartyModel\OrganizationName.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -242,10 +231,20 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.BodyMetrics" Collapsed="true">
-    <Position X="8.75" Y="8.75" Width="1.5" />
+    <Position X="8.5" Y="9" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAgAAAABgAAAAgAAAABQAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\BodyMetrics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Business.PartyModel.EmailAddress">
+    <Position X="9" Y="10.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Business\PartyModel\EmailAddress.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="WmcSoft.Business.IUniqueIdentifier&lt;T&gt;" Collapsed="true">
@@ -263,7 +262,7 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="WmcSoft.Business.PartyModel.Gender" Collapsed="true">
-    <Position X="7" Y="7" Width="1.5" />
+    <Position X="10.75" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BACAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAIAAAA=</HashCode>
       <FileName>Business\PartyModel\Gender.cs</FileName>

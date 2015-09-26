@@ -31,6 +31,8 @@ using System.ComponentModel;
 using System.Linq;
 using WmcSoft.Business.RuleModel;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
@@ -47,20 +49,20 @@ namespace WmcSoft.Business.PartyModel
             public UniqueIdentifierEqualityComparer() {
             }
 
-            #region IEqualityComparer<PartyRole> Membres
+            #region IEqualityComparer<PartyRole<TKey>> Membres
 
             bool IEqualityComparer<PartyRole>.Equals(PartyRole x, PartyRole y) {
                 if (x == null)
                     return y == null;
                 if (x == null)
                     return y == null;
-                return x.Identifier.Id.Equals(y.Identifier.Id);
+                return x.Id.Equals(y.Id);
             }
 
             int IEqualityComparer<PartyRole>.GetHashCode(PartyRole obj) {
                 if (obj == null)
                     return 0;
-                return obj.Identifier.Id.GetHashCode();
+                return obj.Id.GetHashCode();
             }
 
             #endregion
@@ -113,16 +115,39 @@ namespace WmcSoft.Business.PartyModel
 
         #region Properties
 
-        public abstract string Name { get; }
+        public virtual string Name {
+            get {
+                // crawl the hierarchy of types to find a name
+                var type = GetType();
+                while (type != typeof(PartyRole)) {
+                    var name = RM.GetName(type);
+                    if (!String.IsNullOrEmpty(name))
+                        return name;
+                }
+                return null;
+            }
+        }
 
-        public abstract string Description { get; }
+        public virtual string Description {
+            get {
+                var type = GetType();
+                while (type != typeof(PartyRole)) {
+                    // crawl the hierarchy of types to find a name
+                    // then get the associated description
+                    var name = RM.GetName(type);
+                    if (!String.IsNullOrEmpty(name))
+                        return RM.GetDescription(type);
+                }
+                return null;
+            }
+        }
 
         public Party Party {
             get { return _party; }
         }
 
-        public PartyRoleIdentifier Identifier {
-            get { return _identifier; }
+        public TKey Id {
+            get; set;
         }
 
         public ICollection<PartyRelationship> Relationships {

@@ -34,13 +34,6 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class PersonName : ITemporal
     {
-        #region Lifecycle
-
-        public PersonName() {
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -89,7 +82,6 @@ namespace WmcSoft.Business.PartyModel
         #region ITemporal Members
 
         public DateTime? ValidSince { get; set; }
-
         public DateTime? ValidUntil { get; set; }
 
         #endregion

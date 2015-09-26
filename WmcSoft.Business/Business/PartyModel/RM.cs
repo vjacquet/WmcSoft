@@ -66,12 +66,17 @@ namespace WmcSoft.Business.PartyModel
             return String.Format(GetManager().GetString(name, culture), args);
         }
 
+        static string UndecoratedName(Type type) {
+            var name = type.Name;
+            return name.SubstringBefore('`') ?? name;
+        }
+
         public static string GetName(Type type) {
             return GetName(type, (CultureInfo)null);
         }
 
         public static string GetName(Type type, CultureInfo culture) {
-            return GetManager().GetString(String.Format("{0}.Name", type.Name), culture);
+            return GetManager().GetString(String.Format("{0}.Name", UndecoratedName(type)), culture);
         }
 
         public static string GetDescription(Type type) {
@@ -79,7 +84,7 @@ namespace WmcSoft.Business.PartyModel
         }
 
         public static string GetDescription(Type type, CultureInfo culture) {
-            return GetManager().GetString(String.Format("{0}.Description", type.Name), culture);
+            return GetManager().GetString(String.Format("{0}.Description", UndecoratedName(type)), culture);
         }
     }
 }

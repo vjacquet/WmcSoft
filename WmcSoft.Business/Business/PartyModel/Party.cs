@@ -27,6 +27,8 @@
 using System;
 using System.Collections.Generic;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
@@ -48,21 +50,20 @@ namespace WmcSoft.Business.PartyModel
 
         #region Lifecycle
 
-        protected Party()
-            : this(new PartyIdentifier()) {
-        }
-
-        protected Party(PartyIdentifier identifier) {
+        protected Party() {
             _addresses = new List<AddressProperties>();
             _registeredIdentifiers = new List<RegisteredIdentifier>();
             _partyAuthentications = new List<PartyAuthentication>();
-            Id = identifier;
             _roles = new HashSet<PartyRole>(PartyRole.UniqueIdentifierComparer);
+        }
+
+        protected Party(TKey identifier) : this() {
+            Id = identifier;
         }
 
         #endregion
 
-        public PartyIdentifier Id {
+        public TKey Id {
             get; set;
         }
 
