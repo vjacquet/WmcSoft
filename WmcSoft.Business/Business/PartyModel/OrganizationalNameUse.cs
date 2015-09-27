@@ -35,7 +35,7 @@ namespace WmcSoft.Business.PartyModel
     public enum OrganizationalNameUse
     {
         None,
-        LegalName,
-        TradingName,
+        LegalName = 0x0001,
+        TradingName = 0x0002,
     }
 }

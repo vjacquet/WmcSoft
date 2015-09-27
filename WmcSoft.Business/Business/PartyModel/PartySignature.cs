@@ -25,53 +25,22 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
+
+using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents the identifying mark of a Party.
     /// </summary>
-    public class PartySignature
+    public class PartySignature : DomainObject<TKey>
     {
-        #region Fields
-
-        private readonly PartyIdentifier _partyIdentifier;
-        private readonly PartyAuthentication _partyAuthentication;
-        private readonly DateTime _when;
-        private readonly string _reason;
-
-        #endregion
-
-        #region Lifecycle
-
-        public PartySignature(PartyIdentifier partyIdentifier, PartyAuthentication partyAuthentication, DateTime when, string reason) {
-            _partyIdentifier = partyIdentifier;
-            _partyAuthentication = partyAuthentication;
-            _when = when;
-            _reason = reason;
-        }
-
-        #endregion
-
         #region Properties
 
-        public PartyIdentifier PartyIdentifier {
-            get { return _partyIdentifier; }
-        }
-
-        public PartyAuthentication Authentication {
-            get { return _partyAuthentication; }
-        }
-
-        public DateTime When {
-            get { return _when; }
-        }
-
-        public string Reason {
-            get { return _reason; }
-        }
+        public PartyIdentifier PartyIdentifier { get; set; }
+        public string Authentication { get; set; }
+        public DateTime When { get; set; }
+        public string Reason { get; set; }
 
         #endregion
     }

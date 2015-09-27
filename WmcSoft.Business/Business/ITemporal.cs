@@ -39,10 +39,9 @@ namespace WmcSoft.Business
 
     public static class ITemporalExtensions
     {
-        public static bool IsValidOn(ITemporal self, DateTime dateTime) {
+        public static bool IsValidOn(this ITemporal self, DateTime dateTime) {
             return (self.ValidSince == null || dateTime >= self.ValidSince.GetValueOrDefault())
                 && (self.ValidUntil == null || dateTime < self.ValidUntil.GetValueOrDefault());
         }
     }
-
 }

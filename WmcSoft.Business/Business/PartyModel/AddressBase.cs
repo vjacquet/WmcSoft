@@ -25,24 +25,30 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+
+using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents information that can be used to contact a Party.
     /// </summary>
-    public abstract class AddressBase : ITemporal
+    public abstract class AddressBase : DomainObject<TKey>
     {
+        #region Lifecycle
+
+        protected AddressBase() {
+            Parties = new List<AddressProperties>();
+        }
+
+        #endregion
+
         #region Properties
 
         public abstract string Address { get; }
 
-        #endregion
-
-        #region ITemporal Members
-
-        public DateTime? ValidSince { get; set; }
-        public DateTime? ValidUntil { get; set; }
+        public virtual ICollection<AddressProperties> Parties { get; private set; }
 
         #endregion
     }

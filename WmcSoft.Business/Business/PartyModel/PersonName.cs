@@ -25,14 +25,15 @@
 #endregion
 
 using System;
-using System.ComponentModel;
+
+using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents the name for a Person.
     /// </summary>
-    public class PersonName : ITemporal
+    public class PersonName : DomainObject<TKey>, ITemporal
     {
         #region Properties
 
@@ -76,6 +77,8 @@ namespace WmcSoft.Business.PartyModel
         /// Bart, Baronet; KG, Knight of the Garter)
         /// </summary>
         public string Suffix { get; set; }
+
+        public PersonNameUse Use { get; set; }
 
         #endregion
 

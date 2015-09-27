@@ -34,7 +34,7 @@ namespace WmcSoft.Business.PartyModel
     /// Represents a unique identifier for a Party.
     /// </summary>
     [Serializable]
-    public class PartyIdentifier : IUniqueIdentifier<TKey>
+    public struct PartyIdentifier : IUniqueIdentifier<TKey>
     {
         #region Fields
 

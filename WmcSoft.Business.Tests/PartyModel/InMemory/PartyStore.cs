@@ -29,8 +29,6 @@ namespace WmcSoft.Business.PartyModel.InMemory
         }
 
         private TKey ConvertPartyIdentifierToKey(PartyIdentifier id) {
-            if (id == null)
-                return default(TKey);
             return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id.ToString());
         }
 

@@ -75,6 +75,19 @@ namespace WmcSoft.Business.PartyModel
         Task<TParty> GetPartyByPartyRoleIdentifierAsync(PartyRoleIdentifier partyRoleId, CancellationToken cancellationToken);
     }
 
+    // TODO: should have one for party roles too.
+    public interface IPartyPreferenceStore<TParty> : IPartyStore<TParty>
+        where TParty : class
+    {
+        Task<WeightedPreferenceCollection> GetPartyPreferencesAsync(PartyIdentifier partyId, CancellationToken cancellationToken);
+    }
+
+    public interface IPartyAuthenticationStore<TParty> : IPartyStore<TParty>
+        where TParty : class
+    {
+        Task<List<PartyAuthentication>> GetPartyAuthenticationsAsync(PartyIdentifier partyId, CancellationToken cancellationToken);
+    }
+
     public interface IQueryablePartyStore<TParty> : IPartyStore<TParty>
         where TParty : class
     {

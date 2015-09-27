@@ -27,13 +27,15 @@
 using System;
 using static WmcSoft.Helpers;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// The RegisteredIdentifier represents an identifier for a Party that
     /// has been assigned by a recognized or statutory body.
     /// </summary>
-    public class RegisteredIdentifier : ITemporal, IEquatable<RegisteredIdentifier>
+    public class RegisteredIdentifier : DomainObject<TKey>, ITemporal, IEquatable<RegisteredIdentifier>
     {
         #region Lifecycle
 
