@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Text
 {
-    public sealed class Strip : IComparable<string>, IReadOnlyList<char>
+    public sealed class Strip : IComparable<string>, IReadOnlyList<char>, ICloneable<Strip>
     {
         static readonly Strip Null = new Strip(null, 0, 0);
         public static readonly Strip Empty = new Strip(String.Empty, 0, 0);
@@ -24,6 +24,10 @@ namespace WmcSoft.Text
         #region Lifecycle
 
         public Strip(string s, int startIndex, int length) {
+            if (s == null) throw new ArgumentNullException("s");
+            if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException("startIndex");
+            if (length < 0 || startIndex > (s.Length - length)) throw new ArgumentOutOfRangeException("length");
+
             _s = s;
             _start = startIndex;
             _end = startIndex + length;
@@ -31,10 +35,24 @@ namespace WmcSoft.Text
 
         #endregion
 
-        #region Properties
+        #region String-like properties & methods
 
         public int Length {
             get { return _end - _start; }
+        }
+
+        public Strip Substring(int startIndex, int length) {
+            var start = _start + startIndex;
+            if (start == _end || Length == 0)
+                return Empty;
+            return new Strip(_s, start, start + length);
+        }
+
+        public Strip Substring(int startIndex) {
+            var start = _start + startIndex;
+            if (start == _end)
+                return Empty;
+            return new Strip(_s, start, Length - startIndex);
         }
 
         #endregion
@@ -121,6 +139,18 @@ namespace WmcSoft.Text
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region ICloneable<Strip> Members
+
+        public Strip Clone() {
+            return this;
+        }
+
+        object ICloneable.Clone() {
+            return this;
         }
 
         #endregion
