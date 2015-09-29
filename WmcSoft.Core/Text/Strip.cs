@@ -23,6 +23,12 @@ namespace WmcSoft.Text
 
         #region Lifecycle
 
+        private Strip(Strip s, int start, int end) {
+            _s = s._s;
+            _start = start;
+            _end = end;
+        }
+
         public Strip(string s, int startIndex, int length) {
             if (s == null) throw new ArgumentNullException("s");
             if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException("startIndex");
@@ -55,6 +61,50 @@ namespace WmcSoft.Text
             return new Strip(_s, start, Length - startIndex);
         }
 
+        public static bool IsNullOrEmpty(Strip value) {
+            return value == null || value._s == null || value.Length == 0;
+        }
+
+        public static bool IsNullOrWhiteSpace(Strip value) {
+            return value == null || value._s == null || value.All(Char.IsWhiteSpace);
+        }
+
+        public bool Contains(string value) {
+            return IndexOf(value) >= 0;
+        }
+
+        public int IndexOf(char value) {
+            return _s.IndexOf(value, _start, Length);
+        }
+
+        public int IndexOf(string value) {
+            return _s.IndexOf(value, _start, Length);
+        }
+
+        public int IndexOfAny(params char[] anyOf) {
+            return _s.IndexOfAny(anyOf, _start, Length);
+        }
+
+        public int IndexOf(string value, StringComparison comparisonType) {
+            return _s.IndexOf(value, _start, Length, comparisonType);
+        }
+
+        public int LastIndexOf(char value) {
+            return _s.LastIndexOf(value, _start, Length);
+        }
+
+        public int LastIndexOf(string value) {
+            return _s.IndexOf(value, _start, Length);
+        }
+
+        public int LastIndexOf(string value, StringComparison comparisonType) {
+            return _s.IndexOf(value, _start, Length, comparisonType);
+        }
+
+        public int LastIndexOfAny(params char[] anyOf) {
+            return _s.LastIndexOfAny(anyOf, _start, Length);
+        }
+
         #endregion
 
         #region Overrides
@@ -72,6 +122,14 @@ namespace WmcSoft.Text
             return culture.CompareInfo.Compare(_s, _start, Length, other, 0, other == null ? 0 : other.Length, CompareOptions.None);
         }
 
+        public static bool Equals(Strip a, Strip b) {
+            return 0 == DoCompare(a ?? Null, b ?? Null, CultureInfo.CurrentCulture, CompareOptions.None);
+        }
+
+        public static bool Equals(Strip a, Strip b, StringComparison comparisonType) {
+            return 0 == Compare(a ?? Null, b ?? Null, comparisonType);
+
+        }
         public static int Compare(Strip strA, Strip strB) {
             return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.CurrentCulture, CompareOptions.None);
         }
