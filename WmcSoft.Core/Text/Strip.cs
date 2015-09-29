@@ -32,7 +32,7 @@ using System.Linq;
 
 namespace WmcSoft.Text
 {
-    public sealed class Strip : IComparable<string>, IReadOnlyList<char>, ICloneable<Strip>
+    public sealed class Strip : IComparable<string>, ICloneable<Strip>, IReadOnlyList<char>, IList<char>
     {
         #region Public fields
 
@@ -345,6 +345,18 @@ namespace WmcSoft.Text
 
         #endregion
 
+        #region ICloneable<Strip> Members
+
+        public Strip Clone() {
+            return this;
+        }
+
+        object ICloneable.Clone() {
+            return this;
+        }
+
+        #endregion
+
         #region IReadOnlyList<char> Members
 
         int IReadOnlyCollection<char>.Count {
@@ -367,14 +379,47 @@ namespace WmcSoft.Text
 
         #endregion
 
-        #region ICloneable<Strip> Members
+        #region IList<char> Members
 
-        public Strip Clone() {
-            return this;
+        public bool IsReadOnly {
+            get { return true; }
         }
 
-        object ICloneable.Clone() {
-            return this;
+        char IList<char>.this[int index] {
+            get { return _s[_start + index]; }
+            set { throw new NotSupportedException(); }
+        }
+
+        public void Insert(int index, char item) {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAt(int index) {
+            throw new NotSupportedException();
+        }
+
+        public void Add(char item) {
+            throw new NotSupportedException();
+        }
+
+        public void Clear() {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(char item) {
+            return IndexOf(item) >= 0;
+        }
+
+        public void CopyTo(char[] array, int arrayIndex) {
+            if (array == null) throw new ArgumentNullException("array");
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex");
+            if ((array.Length - arrayIndex) < Length) throw new ArgumentException("array");
+
+            _s.CopyTo(_start, array, arrayIndex, Length);
+        }
+
+        public bool Remove(char item) {
+            throw new NotSupportedException();
         }
 
         #endregion
