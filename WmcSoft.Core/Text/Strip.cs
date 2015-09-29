@@ -83,6 +83,18 @@ namespace WmcSoft.Text
 
         #endregion
 
+        #region Operators
+
+        public static bool operator ==(Strip a, Strip b) {
+            return Equals(a, b);
+        }
+
+        public static bool operator !=(Strip a, Strip b) {
+            return !Equals(a, b);
+        }
+
+        #endregion
+
         #region String-like properties & methods
 
         public int Length {
@@ -249,6 +261,22 @@ namespace WmcSoft.Text
 
         public override string ToString() {
             return _s.Substring(_start, Length);
+        }
+
+        public override bool Equals(object obj) {
+            var that = obj as Strip;
+            if (that == null)
+                return false;
+            return 0 == DoCompare(this, that, CultureInfo.CurrentCulture, CompareOptions.None);
+        }
+
+        public override int GetHashCode() {
+            if (_start == _end)
+                return 0;
+            var h = _s.GetHashCode();
+            h = h * 65537 ^ _start;
+            h = h * 65537 ^ _end;
+            return h;
         }
 
         #endregion
