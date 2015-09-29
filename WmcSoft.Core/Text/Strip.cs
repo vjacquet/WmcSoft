@@ -24,7 +24,7 @@
 
 #endregion
 
- using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,8 +34,12 @@ namespace WmcSoft.Text
 {
     public sealed class Strip : IComparable<string>, IReadOnlyList<char>, ICloneable<Strip>
     {
-        static readonly Strip Null = new Strip((string)null, 0, 0);
+        #region Public fields
+
+        static readonly Strip Null = new Strip();
         public static readonly Strip Empty = new Strip(String.Empty, 0, 0);
+
+        #endregion
 
         #region Fields
 
@@ -53,6 +57,16 @@ namespace WmcSoft.Text
             _end = end;
         }
 
+        public Strip() {
+        }
+
+        public Strip(string s) {
+            if (s == null) throw new ArgumentNullException("s");
+
+            _s = s;
+            _start = 0;
+            _end = s.Length;
+        }
         public Strip(string s, int startIndex, int length) {
             if (s == null) throw new ArgumentNullException("s");
             if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException("startIndex");
@@ -61,6 +75,10 @@ namespace WmcSoft.Text
             _s = s;
             _start = startIndex;
             _end = startIndex + length;
+        }
+
+        public static implicit operator string (Strip s) {
+            return s == null ? null : s.ToString();
         }
 
         #endregion
@@ -127,6 +145,102 @@ namespace WmcSoft.Text
 
         public int LastIndexOfAny(params char[] anyOf) {
             return _s.LastIndexOfAny(anyOf, _start, Length);
+        }
+
+        public Strip Trim() {
+            var end = _end - 1; ;
+            for (; end >= _start; end--) {
+                if (!Char.IsWhiteSpace(_s[end]))
+                    break;
+            }
+
+            var start = _start;
+            for (; start < end; start++) {
+                if (!Char.IsWhiteSpace(_s[start]))
+                    break;
+            }
+
+            return new Strip(this, start, end + 1);
+        }
+
+        public Strip Trim(params char[] trimChars) {
+            if (trimChars == null || trimChars.Length == 0)
+                return Trim();
+
+            var end = _end - 1;
+            var start = _start;
+            if (trimChars.Length == 1) {
+                var ch = trimChars[0];
+
+                for (; end >= _start; end--) {
+                    if (_s[end] != ch)
+                        break;
+                }
+
+                for (; start < _end; start++) {
+                    if (_s[start] != ch)
+                        break;
+                }
+
+            } else {
+                for (; end >= _start; end--) {
+                    if (Array.IndexOf(trimChars, _s[end]) < 0)
+                        break;
+                }
+
+                for (; start < end; start++) {
+                    if (Array.IndexOf(trimChars, _s[start]) < 0)
+                        break;
+                }
+            }
+
+            return new Strip(this, start, end + 1);
+        }
+
+        public Strip TrimEnd(params char[] trimChars) {
+            var end = _end - 1;
+            if (trimChars == null || trimChars.Length == 0) {
+                for (; end >= _start; end--) {
+                    if (!Char.IsWhiteSpace(_s[end]))
+                        break;
+                }
+            } else if (trimChars.Length == 1) {
+                var ch = trimChars[0];
+                for (; end >= _start; end--) {
+                    if (_s[end] != ch)
+                        break;
+                }
+            } else {
+                for (; end >= _start; end--) {
+                    if (Array.IndexOf(trimChars, _s[end]) < 0)
+                        break;
+                }
+            }
+
+            return new Strip(this, _start, end + 1);
+        }
+
+        public Strip TrimStart(params char[] trimChars) {
+            var start = _start;
+            if (trimChars == null || trimChars.Length == 0) {
+                for (; start < _end; start++) {
+                    if (!Char.IsWhiteSpace(_s[start]))
+                        break;
+                }
+            } else if (trimChars.Length == 1) {
+                var ch = trimChars[0];
+                for (; start < _end; start++) {
+                    if (_s[start] != ch)
+                        break;
+                }
+            } else {
+                for (; start < _end; start++) {
+                    if (Array.IndexOf(trimChars, _s[start]) < 0)
+                        break;
+                }
+            }
+
+            return new Strip(this, start, _end);
         }
 
         #endregion
