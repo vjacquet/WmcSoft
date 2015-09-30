@@ -287,6 +287,34 @@ namespace WmcSoft.Text
             return DoEqual(_s, _start, value._s, value._start, length, comparisonType);
         }
 
+        public bool StartsWith(string value) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _start, value, 0, length, CultureInfo.CurrentCulture, CompareOptions.None);
+        }
+
+        public bool StartsWith(string value, bool ignoreCase, CultureInfo culture) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
+            return DoEqual(_s, _start, value,0, length, culture ?? CultureInfo.CurrentCulture, options);
+        }
+
+        public bool StartsWith(string value, StringComparison comparisonType) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _start, value, 0, length, comparisonType);
+        }
+
         public bool EndsWith(Strip value) {
             if (value == null) throw new ArgumentNullException("value");
 
@@ -313,6 +341,34 @@ namespace WmcSoft.Text
             if (Length < length)
                 return false;
             return DoEqual(_s, _end - length, value._s, value._start, length, comparisonType);
+        }
+
+        public bool EndsWith(string value) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _end - length, value, 0, length, CultureInfo.CurrentCulture, CompareOptions.None);
+        }
+
+        public bool EndsWith(string value, bool ignoreCase, CultureInfo culture) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
+            return DoEqual(_s, _end - length, value, 0, length, culture ?? CultureInfo.CurrentCulture, options);
+        }
+
+        public bool EndsWith(string value, StringComparison comparisonType) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _end - length, value, 0, length, comparisonType);
         }
 
         #endregion
