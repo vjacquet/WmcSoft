@@ -97,5 +97,17 @@ namespace WmcSoft.Text
             var expected = "abc";
             Assert.AreEqual(expected, data.TrimEnd('.', ' '));
         }
+
+        [TestMethod]
+        public void CheckStartsWith() {
+            var data = new Strip("abcdefghijklmnopqrstuvwxyz");
+            Assert.IsTrue(data.StartsWith("abc"));
+        }
+
+        [TestMethod]
+        public void CheckEndsWith() {
+            var data = new Strip("abcdefghijklmnopqrstuvwxyz");
+            Assert.IsTrue(data.EndsWith("xyz"));
+        }
     }
 }

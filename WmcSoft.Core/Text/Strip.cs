@@ -81,6 +81,10 @@ namespace WmcSoft.Text
             return s == null ? null : s.ToString();
         }
 
+        public static implicit operator Strip(string s) {
+            return new Strip(s);
+        }
+
         #endregion
 
         #region Operators
@@ -255,6 +259,62 @@ namespace WmcSoft.Text
             return new Strip(this, start, _end);
         }
 
+        public bool StartsWith(Strip value) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _start, value, CultureInfo.CurrentCulture, CompareOptions.None);
+        }
+
+        public bool StartsWith(Strip value, bool ignoreCase, CultureInfo culture) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
+            return DoEqual(_s, _start, value, culture ?? CultureInfo.CurrentCulture, options);
+        }
+
+        public bool StartsWith(Strip value, StringComparison comparisonType) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _start, value, comparisonType);
+        }
+
+        public bool EndsWith(Strip value) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _end - length, value, CultureInfo.CurrentCulture, CompareOptions.None);
+        }
+
+        public bool EndsWith(Strip value, bool ignoreCase, CultureInfo culture) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
+            return DoEqual(_s, _end - length, value, culture ?? CultureInfo.CurrentCulture, options);
+        }
+
+        public bool EndsWith(Strip value, StringComparison comparisonType) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            var length = value.Length;
+            if (Length < length)
+                return false;
+            return DoEqual(_s, _end - length, value, comparisonType);
+        }
+
         #endregion
 
         #region Overrides
@@ -343,6 +403,29 @@ namespace WmcSoft.Text
             return culture.CompareInfo.Compare(strA._s, strA._start, strA.Length, strB._s, strB._start, strB.Length, options);
         }
 
+        static bool DoEqual(string strA, int startIndex, Strip strB, StringComparison comparisonType) {
+            switch (comparisonType) {
+                case StringComparison.CurrentCulture:
+                    return DoEqual(strA, startIndex, strB, CultureInfo.CurrentCulture, CompareOptions.None);
+                case StringComparison.CurrentCultureIgnoreCase:
+                    return DoEqual(strA, startIndex, strB, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase);
+                case StringComparison.InvariantCulture:
+                    return DoEqual(strA, startIndex, strB, CultureInfo.InvariantCulture, CompareOptions.None);
+                case StringComparison.InvariantCultureIgnoreCase:
+                    return DoEqual(strA, startIndex, strB, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase);
+                case StringComparison.Ordinal:
+                    return DoEqual(strA, startIndex, strB, CultureInfo.InvariantCulture, CompareOptions.Ordinal);
+                case StringComparison.OrdinalIgnoreCase:
+                    return DoEqual(strA, startIndex, strB, CultureInfo.InvariantCulture, CompareOptions.OrdinalIgnoreCase);
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        static bool DoEqual(string strA, int startIndex, Strip strB, CultureInfo culture, CompareOptions options) {
+            return 0 == culture.CompareInfo.Compare(strA, startIndex, strB.Length, strB._s, strB._start, strB.Length, options);
+        }
+
         #endregion
 
         #region ICloneable<Strip> Members
@@ -380,6 +463,10 @@ namespace WmcSoft.Text
         #endregion
 
         #region IList<char> Members
+
+        int ICollection<char>.Count {
+            get { return Length; }
+        }
 
         public bool IsReadOnly {
             get { return true; }
