@@ -31,6 +31,7 @@ namespace WmcSoft.Business
     /// <summary>
     /// Provides properties useful to define validity dates on a Business entity.
     /// </summary>
+    /// <remarks><see cref="ValidSince"/> is inclusive while <see cref=" ValidUntil"/> is exclusive.</remarks>
     public interface ITemporal
     {
         DateTime? ValidSince { get; set; }
@@ -39,6 +40,12 @@ namespace WmcSoft.Business
 
     public static class ITemporalExtensions
     {
+        /// <summary>
+        /// Check if the specified <see cref="ITemporal"/> is defined at the specified <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="self">The temporal.</param>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns>Returns true if the <see cref="ITemporal"/> is valid at the specified date & time.</returns>
         public static bool IsValidOn(this ITemporal self, DateTime dateTime) {
             return (self.ValidSince == null || dateTime >= self.ValidSince.GetValueOrDefault())
                 && (self.ValidUntil == null || dateTime < self.ValidUntil.GetValueOrDefault());
