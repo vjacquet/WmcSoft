@@ -27,11 +27,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace WmcSoft.Linq
 {
     public static class QueryableExtensions
     {
+        #region Conversions
+
         public static IList<TResult> ToList<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert) {
             var list = new List<TResult>();
             foreach (var record in query) {
@@ -43,5 +46,32 @@ namespace WmcSoft.Linq
         public static TResult[] ToArray<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert) {
             return query.ToList(convert).ToArray();
         }
+
+        #endregion
+
+        #region None
+
+        /// <summary>
+        /// Determines whether a sequence contains no element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">The <see cref="IQueryable{TSource}"/> to check for emptiness.</param>
+        /// <returns>true if the source sequence is empty; otherwise, false.</returns>
+        public static bool None<TSource>(this IQueryable<TSource> source) {
+            return !source.Any();
+        }
+
+        /// <summary>
+        /// Determines whether no element of a sequence satisfies a condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">An <see cref="IQueryable{TSource}"/> whose elements to apply the predicate to.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns>true if no element in the source sequence pass the test in the specified predicate, or if the sequence is empty; otherwise, false.</returns>
+        public static bool None<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) {
+            return !source.Any(predicate);
+        }
+
+        #endregion
     }
 }
