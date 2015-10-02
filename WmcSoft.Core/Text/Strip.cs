@@ -197,7 +197,6 @@ namespace WmcSoft.Text
                     if (_s[start] != ch)
                         break;
                 }
-
             } else {
                 for (; end >= _start; end--) {
                     if (Array.IndexOf(trimChars, _s[end]) < 0)
