@@ -66,6 +66,7 @@
     <Compile Include="Collections\Generic\ComparerExtensions.cs" />
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
+    <Compile Include="IndexedAlgorithms.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionAdapter.cs" />

@@ -412,6 +412,22 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Reverse
+
+        public static void Reverse<T>(this IList<T> list, int startIndex, int length) {
+            var start = startIndex;
+            var end = startIndex + length - 1;
+            while (start < end) {
+                list.SwapItems(start, end);
+            }
+        }
+
+        public static void Reverse<T>(this IList<T> list) {
+            Reverse(list, 0, list.Count);
+        }
+
+        #endregion
+
         #region Suffle methods
 
         /// <summary>
@@ -453,10 +469,9 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Swaps two items.
         /// </summary>
-        /// <typeparam name="T">The type of the element of <paramref name="list"/>.</typeparam>
         /// <param name="list">The list.</param>
-        /// <param name="i">The i.</param>
-        /// <param name="j">The j.</param>
+        /// <param name="i">The item at the <paramref name="i"/> index.</param>
+        /// <param name="j">The item at the <paramref name="j"/> index.</param>
         /// <returns>The list</returns>
         /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
         public static IList<T> SwapItems<T>(this IList<T> list, int i, int j) {
