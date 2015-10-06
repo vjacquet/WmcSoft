@@ -349,6 +349,32 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region RemoveIf methods
+
+        public static int RemoveIf<T>(this ICollection<T> source, Func<T, bool> predicate) {
+            int count = 0;
+            var list = source as IList<T>;
+            if (list != null) {
+                for (int i = list.Count - 1; i >= 0; i--) {
+                    var item = list[i];
+                    if (predicate(item)) {
+                        list.RemoveAt(i);
+                        count++;
+                    }
+                }
+            } else {
+                var recycler = new List<T>();
+                recycler.AddRange(source.Where(predicate));
+                foreach (var item in recycler) {
+                    if (source.Remove(item))
+                        count++;
+                }
+            }
+            return count;
+        }
+
+        #endregion
+
         #region RemoveRange methods
 
         /// <summary>
