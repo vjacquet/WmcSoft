@@ -25,77 +25,77 @@ namespace WmcSoft.Text
         public void CanTrim() {
             var data = new Strip("  abc   ");
             var expected = "abc";
-            Assert.AreEqual(expected, data.Trim());
+            Assert.AreEqual<string>(expected, data.Trim());
         }
 
         [TestMethod]
         public void CanTrimEmpty() {
             var data = new Strip("");
             var expected = "";
-            Assert.AreEqual(expected, data.Trim());
+            Assert.AreEqual<string>(expected, data.Trim());
         }
 
         [TestMethod]
         public void CanTrimWhitespaces() {
             var data = new Strip("    ");
             var expected = "";
-            Assert.AreEqual(expected, data.Trim());
+            Assert.AreEqual<string>(expected, data.Trim());
         }
 
         [TestMethod]
         public void CanTrimChar() {
             var data = new Strip("    abc    ");
             var expected = "abc";
-            Assert.AreEqual(expected, data.Trim(' '));
+            Assert.AreEqual<string>(expected, data.Trim(' '));
         }
 
         [TestMethod]
         public void CanTrimChars() {
             var data = new Strip("  ..abc..  ");
             var expected = "abc";
-            Assert.AreEqual(expected, data.Trim('.', ' '));
+            Assert.AreEqual<string>(expected, data.Trim('.', ' '));
         }
 
         [TestMethod]
         public void CanTrimStartWhitespaces() {
             var data = new Strip("   abc");
             var expected = "abc";
-            Assert.AreEqual(expected, data.TrimStart());
+            Assert.AreEqual<string>(expected, data.TrimStart());
         }
 
         [TestMethod]
         public void CanTrimStartChar() {
             var data = new Strip("    abc");
             var expected = "abc";
-            Assert.AreEqual(expected, data.TrimStart(' '));
+            Assert.AreEqual<string>(expected, data.TrimStart(' '));
         }
 
         [TestMethod]
         public void CanTrimStartChars() {
             var data = new Strip("  ..abc");
             var expected = "abc";
-            Assert.AreEqual(expected, data.TrimStart('.', ' '));
+            Assert.AreEqual<string>(expected, data.TrimStart('.', ' '));
         }
 
         [TestMethod]
         public void CanTrimEndWhitespaces() {
             var data = new Strip("abc   ");
             var expected = "abc";
-            Assert.AreEqual(expected, data.TrimEnd());
+            Assert.AreEqual<string>(expected, data.TrimEnd());
         }
 
         [TestMethod]
         public void CanTrimEndChar() {
             var data = new Strip("abc    ");
             var expected = "abc";
-            Assert.AreEqual(expected, data.TrimEnd(' '));
+            Assert.AreEqual<string>(expected, data.TrimEnd(' '));
         }
 
         [TestMethod]
         public void CanTrimEndChars() {
             var data = new Strip("abc..  ");
             var expected = "abc";
-            Assert.AreEqual(expected, data.TrimEnd('.', ' '));
+            Assert.AreEqual<string>(expected, data.TrimEnd('.', ' '));
         }
 
         [TestMethod]

@@ -302,7 +302,7 @@ namespace WmcSoft.Text
             if (Length < length)
                 return false;
             var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
-            return DoEqual(_s, _start, value,0, length, culture ?? CultureInfo.CurrentCulture, options);
+            return DoEqual(_s, _start, value, 0, length, culture ?? CultureInfo.CurrentCulture, options);
         }
 
         public bool StartsWith(string value, StringComparison comparisonType) {
@@ -380,8 +380,13 @@ namespace WmcSoft.Text
 
         public override bool Equals(object obj) {
             var that = obj as Strip;
-            if (that == null)
-                return false;
+            if (that == null) {
+                var s = obj as string;
+                if (s == null)
+                    return false;
+
+                that = new Strip(s);
+            }
             return 0 == DoCompare(this, that, CultureInfo.CurrentCulture, CompareOptions.None);
         }
 

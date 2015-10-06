@@ -352,22 +352,27 @@ namespace WmcSoft.Collections.Generic
         #region RemoveIf methods
 
         public static int RemoveIf<T>(this ICollection<T> source, Func<T, bool> predicate) {
-            int count = 0;
             var list = source as IList<T>;
-            if (list != null) {
-                for (int i = list.Count - 1; i >= 0; i--) {
-                    var item = list[i];
-                    if (predicate(item)) {
-                        list.RemoveAt(i);
-                        count++;
-                    }
-                }
-            } else {
-                var recycler = new List<T>();
-                recycler.AddRange(source.Where(predicate));
-                foreach (var item in recycler) {
-                    if (source.Remove(item))
-                        count++;
+            if (list != null)
+                return RemoveIf(list, predicate);
+
+            int count = 0;
+            var recycler = new List<T>();
+            recycler.AddRange(source.Where(predicate));
+            foreach (var item in recycler) {
+                if (source.Remove(item))
+                    count++;
+            }
+            return count;
+        }
+
+        public static int RemoveIf<T>(this IList<T> source, Func<T, bool> predicate) {
+            int count = 0;
+            for (int i = source.Count - 1; i >= 0; i--) {
+                var item = source[i];
+                if (predicate(item)) {
+                    source.RemoveAt(i);
+                    count++;
                 }
             }
             return count;
