@@ -37,13 +37,6 @@ namespace WmcSoft.Business.Accounting
     [DebuggerDisplay("{Currency.ThreeLetterISOCode,nq} {Amount,nq}")]
     public struct Money : IComparable<Money>, IComparable, IEquatable<Money>
     {
-        #region Fields
-
-        readonly decimal _amount;
-        readonly Currency _currency;
-
-        #endregion
-
         #region Lifecycle
 
         public Money(Currency currency)
@@ -53,21 +46,17 @@ namespace WmcSoft.Business.Accounting
         public Money(decimal amount, Currency currency) {
             if (currency == null)
                 throw new ArgumentNullException("currency");
-            _amount = amount;
-            _currency = currency;
+            Amount = amount;
+            Currency = currency;
         }
 
         #endregion
 
         #region Properties
 
-        public decimal Amount {
-            get { return _amount; }
-        }
+        public decimal Amount {get;        }
 
-        public Currency Currency {
-            get { return _currency; }
-        }
+        public Currency Currency {            get;        }
 
         #endregion
 
@@ -77,15 +66,15 @@ namespace WmcSoft.Business.Accounting
             if (policy == null)
                 throw new ArgumentNullException("policy");
 
-            return new Money(policy.Round(_amount), _currency);
+            return new Money(policy.Round(Amount), Currency);
         }
 
         public decimal[] AllocateAmounts(int n) {
             var decimalDigits = Currency.DecimalDigits;
 
-            var lo = Floor(_amount / n, decimalDigits);
-            var hi = Ceiling(_amount / n, decimalDigits);
-            int remainder = (int)(_amount % n);
+            var lo = Floor(Amount / n, decimalDigits);
+            var hi = Ceiling(Amount / n, decimalDigits);
+            int remainder = (int)(Amount % n);
             var results = new decimal[n];
             var i = 0;
             for (i = 0; i < remainder; i++)
@@ -100,10 +89,10 @@ namespace WmcSoft.Business.Accounting
             var espilon = new Decimal(System.Math.Pow(0.1, decimalDigits));
 
             var total = ratios.Sum();
-            var remainder = _amount;
+            var remainder = Amount;
             var results = new decimal[ratios.Length];
             for (int i = 0; i < results.Length; i++) {
-                results[i] = Floor(_amount * ratios[i] / total, decimalDigits);
+                results[i] = Floor(Amount * ratios[i] / total, decimalDigits);
                 remainder -= results[i];
             }
             for (int i = 0; remainder > 0m; i++) {
@@ -114,12 +103,12 @@ namespace WmcSoft.Business.Accounting
         }
 
         public Money[] Allocate(int n) {
-            var currency = _currency;
+            var currency = Currency;
             return AllocateAmounts(n).ConvertAll(a => new Money(a, currency));
         }
 
         public Money[] Allocate(params int[] ratios) {
-            var currency = _currency;
+            var currency = Currency;
             return AllocateAmounts(ratios).ConvertAll(a => new Money(a, currency));
         }
 
@@ -128,13 +117,13 @@ namespace WmcSoft.Business.Accounting
         #region Operators
 
         public static explicit operator decimal(Money that) {
-            return that._amount;
+            return that.Amount;
         }
 
         public static Money operator +(Money value, Money money) {
             if (value.Currency != money.Currency)
                 throw new IncompatibleCurrencyException();
-            return new Money(value._amount + money._amount, value.Currency);
+            return new Money(value.Amount + money.Amount, value.Currency);
         }
 
         public static Money Add(Money value, Money money) {
@@ -144,7 +133,7 @@ namespace WmcSoft.Business.Accounting
         public static Money operator -(Money value, Money money) {
             if (value.Currency != money.Currency)
                 throw new IncompatibleCurrencyException();
-            return new Money(value._amount - money._amount, value.Currency);
+            return new Money(value.Amount - money.Amount, value.Currency);
         }
 
         public static Money Subtract(Money value, Money money) {
@@ -152,7 +141,7 @@ namespace WmcSoft.Business.Accounting
         }
 
         public static Money operator *(Money value, decimal multiplier) {
-            return new Money(multiplier * value._amount, value.Currency);
+            return new Money(multiplier * value.Amount, value.Currency);
         }
 
         public static Money Multiply(Money value, decimal multiplier) {
@@ -184,7 +173,7 @@ namespace WmcSoft.Business.Accounting
             //    terms[index++] = new DerivedUnitTerm((Unit)quantity.Metric, -1);
             //}
 
-            //return new Quantity(value._amount * quantity.Amount, new DerivedUnit(terms));
+            //return new Quantity(value.Amount * quantity.Amount, new DerivedUnit(terms));
         }
 
         public static Quantity Divide(Money value, Quantity quantity) {
@@ -192,7 +181,7 @@ namespace WmcSoft.Business.Accounting
         }
 
         public static Money operator /(Money value, decimal divider) {
-            return new Money(value._amount / divider, value.Currency);
+            return new Money(value.Amount / divider, value.Currency);
         }
 
         public static Money Divide(Money value, decimal divider) {
@@ -232,7 +221,7 @@ namespace WmcSoft.Business.Accounting
         }
 
         public override int GetHashCode() {
-            return this._amount.GetHashCode() ^ this._currency.GetHashCode();
+            return this.Amount.GetHashCode() ^ this.Currency.GetHashCode();
         }
 
         #endregion
@@ -263,7 +252,7 @@ namespace WmcSoft.Business.Accounting
             // TODO: attempt to convert before deciding...
             if (this.Currency != other.Currency)
                 throw new IncompatibleCurrencyException();
-            return _amount.CompareTo(other._amount);
+            return Amount.CompareTo(other.Amount);
         }
 
         #endregion

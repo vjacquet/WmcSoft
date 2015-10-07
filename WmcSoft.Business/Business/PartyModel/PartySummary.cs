@@ -38,32 +38,19 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class PartySummary
     {
-        #region Fields
-
-        readonly PartyIdentifier _partyIdentifier;
-        readonly PartyRoleIdentifier _roleIdentifier;
-
-        #endregion
-
         #region Lifetime
 
         public PartySummary(PartyIdentifier partyIdentifier, PartyRoleIdentifier roleIdentifier) {
-            _partyIdentifier = partyIdentifier;
-            _roleIdentifier = roleIdentifier;
+            PartyIdentifier = partyIdentifier;
+            RoleIdentifier = roleIdentifier;
         }
 
         #endregion
 
         #region Properties
 
-        public PartyIdentifier PartyIdentifier {
-            get { return _partyIdentifier; }
-        }
-
-        public PartyRoleIdentifier RoleIdentifier {
-            get { return _roleIdentifier; }
-        }
-
+        public PartyIdentifier PartyIdentifier { get; }
+        public PartyRoleIdentifier RoleIdentifier { get; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string TelephoneNumber { get; set; }
