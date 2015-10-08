@@ -33,7 +33,7 @@ namespace WmcSoft
     /// Defines an order on elements with means to jump from one to another.
     /// </summary>
     /// <typeparam name="T">The type of items to order.</typeparam>
-    /// <remrks>The Compare method returns the distance between two elements.</remrks>
+    /// <remarks>The Compare method returns the distance between two elements.</remarks>
     public interface IOrdinal<T> : IComparer<T>
     {
         T Advance(T x, int n);
@@ -72,6 +72,25 @@ namespace WmcSoft
 
         public int Compare(DateTime x, DateTime y) {
             return (int)Math.Truncate((y - x).TotalDays);
+        }
+
+        #endregion
+    }
+
+    public struct YearOrdinal : IOrdinal<DateTime>
+    {
+        #region IOrdinal<DateTime> Members
+
+        public DateTime Advance(DateTime x, int n) {
+            return x.AddYears(n);
+        }
+
+        #endregion
+
+        #region IComparer<DateTime> Members
+
+        public int Compare(DateTime x, DateTime y) {
+            return (y.Year - x.Year);
         }
 
         #endregion
