@@ -48,7 +48,6 @@ namespace WmcSoft.Business.PartyModel
         #region Properties
 
         public string Name { get; }
-
         public string Description { get; }
 
         #endregion

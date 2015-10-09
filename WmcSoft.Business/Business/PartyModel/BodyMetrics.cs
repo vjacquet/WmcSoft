@@ -35,27 +35,14 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class BodyMetrics
     {
-        #region Lifecycle
-
-        BodyMetrics() {
-        }
-
-        #endregion
-
         #region Properties
 
         public string BloodType { get; set; }
-
         public string EyeColor { get; set; }
-
         public string Hair { get; set; }
-
         public string Complexion { get; set; }
-
         public string Weight { get; set; }
-
         public string Height { get; set; }
-
         public string ShoeSize { get; set; }
 
         #endregion
