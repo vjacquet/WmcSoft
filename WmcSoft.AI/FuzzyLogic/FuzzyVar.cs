@@ -47,7 +47,7 @@ namespace WmcSoft.AI.FuzzyLogic
             if (value < 0.0 || value > 1.0) {
                 throw new ArgumentOutOfRangeException("value");
             }
-            this._value = value;
+            _value = value;
         }
 
         public static bool IsNaN(FuzzyVar x) {
@@ -68,7 +68,7 @@ namespace WmcSoft.AI.FuzzyLogic
         public override bool Equals(object obj) {
             if (obj is FuzzyVar) {
                 FuzzyVar fuzzyVar = (FuzzyVar)obj;
-                if (fuzzyVar._value == this._value) {
+                if (fuzzyVar._value == _value) {
                     return true;
                 }
                 if (FuzzyVar.IsNaN(fuzzyVar)) {
@@ -79,19 +79,19 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public override int GetHashCode() {
-            return this._value.GetHashCode();
+            return _value.GetHashCode();
         }
 
         public override string ToString() {
-            return this.ToString(null, null);
+            return ToString(null, null);
         }
 
         public string ToString(string format) {
-            return this.ToString(format, null);
+            return ToString(format, null);
         }
 
         public string ToString(string format, IFormatProvider formatProvider) {
-            return this._value.ToString(format, NumberFormatInfo.GetInstance(formatProvider));
+            return _value.ToString(format, NumberFormatInfo.GetInstance(formatProvider));
         }
 
         public static FuzzyVar Parse(string text) {
@@ -127,7 +127,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public string ToString(IFormatProvider provider) {
-            return this.ToString(null, provider);
+            return ToString(null, provider);
         }
 
         public TypeCode GetTypeCode() {
@@ -135,7 +135,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         bool IConvertible.ToBoolean(IFormatProvider provider) {
-            return Convert.ToBoolean(this._value);
+            return Convert.ToBoolean(_value);
         }
 
         char IConvertible.ToChar(IFormatProvider provider) {
@@ -143,47 +143,47 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         sbyte IConvertible.ToSByte(IFormatProvider provider) {
-            return Convert.ToSByte(this._value);
+            return Convert.ToSByte(_value);
         }
         byte IConvertible.ToByte(IFormatProvider provider) {
-            return Convert.ToByte(this._value);
+            return Convert.ToByte(_value);
         }
 
         short IConvertible.ToInt16(IFormatProvider provider) {
-            return Convert.ToInt16(this._value);
+            return Convert.ToInt16(_value);
         }
 
         //[CLSCompliant(false)]
         ushort IConvertible.ToUInt16(IFormatProvider provider) {
-            return Convert.ToUInt16(this._value);
+            return Convert.ToUInt16(_value);
         }
 
         int IConvertible.ToInt32(IFormatProvider provider) {
-            return Convert.ToInt32(this._value);
+            return Convert.ToInt32(_value);
         }
 
         uint IConvertible.ToUInt32(IFormatProvider provider) {
-            return Convert.ToUInt32(this._value);
+            return Convert.ToUInt32(_value);
         }
 
         long IConvertible.ToInt64(IFormatProvider provider) {
-            return Convert.ToInt64(this._value);
+            return Convert.ToInt64(_value);
         }
 
         ulong IConvertible.ToUInt64(IFormatProvider provider) {
-            return Convert.ToUInt64(this._value);
+            return Convert.ToUInt64(_value);
         }
 
         float IConvertible.ToSingle(IFormatProvider provider) {
-            return Convert.ToSingle(this._value);
+            return Convert.ToSingle(_value);
         }
 
         double IConvertible.ToDouble(IFormatProvider provider) {
-            return this._value;
+            return _value;
         }
 
         decimal IConvertible.ToDecimal(IFormatProvider provider) {
-            return Convert.ToDecimal(this._value);
+            return Convert.ToDecimal(_value);
         }
 
         DateTime IConvertible.ToDateTime(IFormatProvider provider) {
@@ -210,11 +210,11 @@ namespace WmcSoft.AI.FuzzyLogic
             return this | value;
         }
 
-        public static explicit operator FuzzyVar(double value) {
+        public static implicit operator FuzzyVar(double value) {
             return new FuzzyVar(value);
         }
 
-        public static implicit operator double(FuzzyVar value) {
+        public static explicit operator double(FuzzyVar value) {
             return value._value;
         }
 
@@ -237,17 +237,17 @@ namespace WmcSoft.AI.FuzzyLogic
         #region IComparable<FuzzyVar> Members
 
         public int CompareTo(FuzzyVar other) {
-            if (this._value < other._value) {
+            if (_value < other._value) {
                 return -1;
             }
-            if (this._value > other._value) {
+            if (_value > other._value) {
                 return 1;
             }
-            if (this._value != other._value) {
-                if (!FuzzyVar.IsNaN(this)) {
+            if (_value != other._value) {
+                if (!IsNaN(this)) {
                     return 1;
                 }
-                if (!FuzzyVar.IsNaN(other)) {
+                if (!IsNaN(other)) {
                     return -1;
                 }
             }

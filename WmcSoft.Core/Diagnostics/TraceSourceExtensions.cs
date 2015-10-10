@@ -63,6 +63,5 @@ namespace WmcSoft.Diagnostics
         }
 
         #endregion;
-
     }
 }
