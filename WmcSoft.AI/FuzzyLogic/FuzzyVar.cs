@@ -195,7 +195,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar operator &(FuzzyVar x, FuzzyVar y) {
-            return new FuzzyVar(System.Math.Min(x, y));
+            return new FuzzyVar(System.Math.Min(x._value, y._value));
         }
 
         public FuzzyVar BitwiseAnd(FuzzyVar value) {
@@ -203,7 +203,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar operator |(FuzzyVar x, FuzzyVar y) {
-            return new FuzzyVar(System.Math.Max(x, y));
+            return new FuzzyVar(System.Math.Max(x._value, y._value));
         }
 
         public FuzzyVar BitwiseOr(FuzzyVar value) {

@@ -43,6 +43,9 @@ namespace WmcSoft.Text
         }
 
         public IEnumerable<string> Tokenize(string value) {
+            if (String.IsNullOrEmpty(value))
+                yield break;
+
             var start = 0;
             var length = 0;
             var pos = value.IndexOfAny(_separators, start);
