@@ -32,15 +32,9 @@ namespace WmcSoft.AI.FuzzyLogic
     public class FuzzyCategory : IFuzzyCategory
     {
         public FuzzyCategory(string displayName, double lowValue, double midValue, double highValue) {
-            if (highValue < 0.0 || highValue > 1.0) {
-                throw new ArgumentOutOfRangeException("highValue");
-            }
-            if (midValue < 0.0 || midValue > 1.0) {
-                throw new ArgumentOutOfRangeException("midValue");
-            }
-            if (lowValue < 0.0 || lowValue > 1.0) {
-                throw new ArgumentOutOfRangeException("lowValue");
-            }
+            if (highValue < 0.0 || highValue > 1.0) throw new ArgumentOutOfRangeException("highValue");
+            if (midValue < 0.0 || midValue > 1.0) throw new ArgumentOutOfRangeException("midValue");
+            if (lowValue < 0.0 || lowValue > 1.0) throw new ArgumentOutOfRangeException("lowValue");
 
             HighValue = highValue;
             MidValue = midValue;
