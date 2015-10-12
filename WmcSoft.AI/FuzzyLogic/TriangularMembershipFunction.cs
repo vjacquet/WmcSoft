@@ -28,12 +28,11 @@ using System;
 
 namespace WmcSoft.AI.FuzzyLogic
 {
-    public struct TriangleMembershipFunction : IMembershipFunction<double>
+    public struct TriangularMembershipFunction : IMembershipFunction<double>
     {
-        public TriangleMembershipFunction(double lo, double mid, double hi) {
-            if (hi < 0.0 || hi > 1.0) throw new ArgumentOutOfRangeException("hi");
-            if (mid < 0.0 || mid > 1.0) throw new ArgumentOutOfRangeException("mid");
-            if (lo < 0.0 || lo > 1.0) throw new ArgumentOutOfRangeException("lo");
+        public TriangularMembershipFunction(double lo, double mid, double hi) {
+            if (lo > mid) throw new ArgumentOutOfRangeException("lo");
+            if (mid > hi) throw new ArgumentOutOfRangeException("hi");
 
             Low = lo;
             Mid = mid;
@@ -52,7 +51,7 @@ namespace WmcSoft.AI.FuzzyLogic
             else if (x < Mid)
                 return (Low - x) / (Low - Mid);
             else
-                return 1;
+                return 1d;
         }
     }
 }

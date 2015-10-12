@@ -51,8 +51,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FuzzyLogic\Fuzzifier.cs" />
-    <Compile Include="FuzzyLogic\FuzzyVar.cs" />
+    <Compile Include="FuzzyLogic\FuzzifierTests.cs" />
+    <Compile Include="FuzzyLogic\FuzzyVarTests.cs" />
+    <Compile Include="FuzzyLogic\MembershipFunctionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutoassociativeFilterTests.cs" />
     <Compile Include="SeriesTests.cs" />
