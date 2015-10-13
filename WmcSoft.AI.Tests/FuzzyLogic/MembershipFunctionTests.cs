@@ -26,5 +26,15 @@ namespace WmcSoft.AI.FuzzyLogic
             Assert.AreEqual(0.5d, (double)m.Evaluate(-0.5d), 0.000001d);
             Assert.AreEqual(1d, (double)m.Evaluate(10d), 0.000001d);
         }
+
+        [TestMethod]
+        public void CheckTrapezoidMembershipFunction() {
+            var m = new TrapezoidMembershipFunction(-2d, -1d, 1d, 2d);
+            Assert.AreEqual(1d, (double)m.Evaluate(0d), 0.000001d);
+            Assert.AreEqual(0.5d, (double)m.Evaluate(1.5d), 0.000001d);
+            Assert.AreEqual(0.5d, (double)m.Evaluate(-1.5d), 0.000001d);
+            Assert.AreEqual(0d, (double)m.Evaluate(5d), 0.000001d);
+            Assert.AreEqual(0d, (double)m.Evaluate(-5d), 0.000001d);
+        }
     }
 }
