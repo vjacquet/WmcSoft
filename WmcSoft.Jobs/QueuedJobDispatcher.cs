@@ -84,12 +84,8 @@ namespace WmcSoft.Threading
         #region Properties
 
         public TimeSpan ContinuationTimeSpan {
-            get {
-                return TimeSpan.FromTicks(continuationTicks);
-            }
-            set {
-                Interlocked.Exchange(ref continuationTicks, value.Ticks);
-            }
+            get { return TimeSpan.FromTicks(continuationTicks); }
+            set { Interlocked.Exchange(ref continuationTicks, value.Ticks); }
         }
 
         #endregion
