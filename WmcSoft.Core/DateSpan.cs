@@ -36,6 +36,9 @@ namespace WmcSoft
     {
         #region Fields
 
+        const double DaysInYear = 365.2421875d;
+        const double DaysInMonth = DaysInYear / 12d;
+
         const int MonthsInYear = 12;
         const int DaysInWeek = 7;
 
@@ -47,14 +50,9 @@ namespace WmcSoft
             _months = month;
         }
 
-        public DateSpan(int years, int months, int days) {
-            _days = days;
-            _months = MonthsInYear * years + months;
-        }
-
-        public DateSpan(int weeks, int days) {
+        public DateSpan(int years = 0, int months = 0, int weeks = 0, int days = 0) {
             _days = DaysInWeek * weeks + days;
-            _months = 0;
+            _months = MonthsInYear * years + months;
         }
 
         #endregion
@@ -132,7 +130,7 @@ namespace WmcSoft
         #region IComparable<DateSpan> members
 
         public int CompareTo(DateSpan other) {
-            throw new NotImplementedException();
+            return (_months * DaysInMonth + _days).CompareTo(other._months * DaysInMonth + other._days);
         }
 
         public int CompareTo(object obj) {
@@ -146,7 +144,7 @@ namespace WmcSoft
         #region IEquatable<DateSpan> members
 
         public bool Equals(DateSpan other) {
-            return _days == other._days && _months == other._months;
+            return CompareTo(other) == 0;
         }
 
         #endregion
@@ -160,7 +158,7 @@ namespace WmcSoft
         }
 
         public override int GetHashCode() {
-            return _months * 397 ^ _days;
+            return (_months * DaysInMonth + _days).GetHashCode();
         }
 
         #endregion
