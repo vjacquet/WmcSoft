@@ -750,7 +750,7 @@ namespace WmcSoft
                 return self;
             if (length < 0)
                 length = self.Length - length;
-            if(length > self.Length)
+            if (length > self.Length)
                 return self;
             return self.Substring(0, length);
         }
@@ -813,7 +813,7 @@ namespace WmcSoft
         /// <param name="separator">The separator.</param>
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, char separator) {
-            return self.Tokenize(new CharTokenizer(separator));
+            return Tokenize(self, new CharTokenizer(separator));
         }
 
         /// <summary>
@@ -824,10 +824,10 @@ namespace WmcSoft
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
             if (separators == null || separators.Length == 0)
-                return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
+                return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
             if (separators.Length == 1)
-                return self.Tokenize(new CharTokenizer(separators[0]));
-            return self.Tokenize(new CharsTokenizer(separators));
+                return Tokenize(self, new CharTokenizer(separators[0]));
+            return Tokenize(self, new CharsTokenizer(separators));
         }
 
         /// <summary>
@@ -836,8 +836,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="isSeparator">The predicate.</param>
         /// <returns>The sequence of substrings.</returns>
-          public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
-            return self.Tokenize(new PredicateTokenizer(isSeparator));
+        public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
+            return Tokenize(self, new PredicateTokenizer(isSeparator));
         }
 
         /// <summary>
@@ -846,7 +846,7 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self) {
-            return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
+            return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
         }
 
         #endregion
