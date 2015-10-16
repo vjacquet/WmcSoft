@@ -73,18 +73,19 @@ namespace WmcSoft.Configuration
         }
 
         public bool Contains(T item) {
-            return base.BaseIndexOf(item) >= 0;
+            return BaseIndexOf(item) >= 0;
         }
 
         public bool Remove(T item) {
-            var count = this.Count;
+            var count = Count;
             BaseRemove(GetElementKey(item));
-            return this.Count != count;
+            return Count != count;
         }
 
         bool ICollection<T>.IsReadOnly {
             get { return base.IsReadOnly(); }
         }
+
         void ICollection<T>.Clear() {
             BaseClear();
         }

@@ -34,15 +34,15 @@ namespace WmcSoft.DirectoryServices
         #region Flags manipulation
 
         public static void ResetFlagValue(this PropertyValueCollection self, int flags) {
-            int value = (int)self.Value;
+            var value = (int)self.Value;
             self.Value = value & ~flags;
         }
         public static void SetFlagValue(this PropertyValueCollection self, int flags) {
-            int value = (int)self.Value;
+            var value = (int)self.Value;
             self.Value = value | flags;
         }
         public static bool HasFlagValue(this PropertyValueCollection self, int flags) {
-            int value = (int)self.Value;
+            var value = (int)self.Value;
             return (value & flags) == flags;
         }
 
@@ -51,7 +51,7 @@ namespace WmcSoft.DirectoryServices
         #region GetNTAccount
 
         public static string GetNTAccount(this DirectoryEntry member) {
-            PropertyCollection collection = member.Properties;
+            var collection = member.Properties;
             var objectSid = collection["objectSid"];
             var value = objectSid.Value;
             var identifier = new SecurityIdentifier((byte[])value, 0);

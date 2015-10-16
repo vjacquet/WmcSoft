@@ -554,7 +554,7 @@ namespace WmcSoft
         /// If totalWidth is equal to the length of this instance, the method returns a new string that is identical to this instance.</returns>
         /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
         public static string PadEnds(this string self, int totalWidth) {
-            return self.PadEnds(totalWidth, ' ');
+            return PadEnds(self, totalWidth, ' ');
         }
 
         #endregion

@@ -33,7 +33,7 @@ namespace WmcSoft.CodeDom
 {
     public static class CodeDomExtensions
     {
-        #region FinCode
+        #region FindCode
 
         public static IEnumerable<T> FindCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter) where T : CodeObject {
             foreach (CodeStatement statement in statements) {
@@ -222,8 +222,8 @@ namespace WmcSoft.CodeDom
                 typeDeclaration.Members.Add(field);
             }
 
-            CodeMemberProperty property = new CodeMemberProperty();
-            string name = field.Name;
+            var property = new CodeMemberProperty();
+            var name = field.Name;
             if (name.StartsWith("_"))
                 property.Name = name.Substring(1);
             else if (name.StartsWith("m_"))
@@ -260,7 +260,7 @@ namespace WmcSoft.CodeDom
         }
 
         public static void AddStatementToInitializeComponent(this CodeTypeDeclaration declaration, CodeStatement statement) {
-            CodeMemberMethod init = FindInitializeComponent(declaration);
+            var init = FindInitializeComponent(declaration);
             if (init != null) {
                 init.Statements.Add(statement);
             }
@@ -268,10 +268,10 @@ namespace WmcSoft.CodeDom
 
         public static void Remove<T>(this CodeStatementCollection statements, Predicate<T> shouldRemove)
             where T : CodeObject {
-            List<CodeStatement> toRemove = new List<CodeStatement>();
+            var toRemove = new List<CodeStatement>();
             foreach (CodeStatement statement in statements) {
-                T typedStatement = statement as T;
-                CodeExpressionStatement expression = statement as CodeExpressionStatement;
+                var typedStatement = statement as T;
+                var expression = statement as CodeExpressionStatement;
                 if (typedStatement == null && expression != null) {
                     typedStatement = expression.Expression as T;
                 }
@@ -287,7 +287,7 @@ namespace WmcSoft.CodeDom
 
         public static void RemoveFromInitializeComponent<T>(this CodeTypeDeclaration declaration, Predicate<T> shouldRemove)
             where T : CodeObject {
-            CodeMemberMethod initialize = FindInitializeComponent(declaration);
+            var initialize = FindInitializeComponent(declaration);
             if (initialize != null) {
                 Remove<T>(initialize.Statements, shouldRemove);
             }
@@ -407,5 +407,4 @@ namespace WmcSoft.CodeDom
 
         #endregion
     }
-
 }
