@@ -26,9 +26,23 @@
 
 namespace WmcSoft.Diagnostics
 {
+    /// <summary>
+    /// Defines a generalized strategy to convert value to key to <see cref="System.Exception"/>'s <see cref="System.Exception.Data"/> property keys.
+    /// </summary>
     public interface IDataKeyConverter
     {
+        /// <summary>
+        /// Converts a <paramref name="name"/> to a key.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>The key.</returns>
         object ToKey(string name);
+
+        /// <summary>
+        /// Converts a <paramref name="key"/> back to its name.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The name.</returns>
         string FromKey(object key);
     }
 }
