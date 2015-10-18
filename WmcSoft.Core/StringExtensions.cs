@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Text;
 
@@ -607,6 +608,53 @@ namespace WmcSoft
                 sb.Replace(arg, "");
             }
             return sb.ToString();
+        }
+
+        #endregion
+
+        #region ReplaceWord
+
+        class WordReplacer
+        {
+            static readonly Regex WordMatcher = new Regex(@"(\w+)", RegexOptions.Compiled);
+
+            readonly string _oldWord;
+            readonly string _newWord;
+            int _count;
+
+            public WordReplacer(string oldWord, string newWord) {
+                _oldWord = oldWord;
+                _newWord = newWord;
+            }
+
+            string Substitute(Match match) {
+                var value = match.ToString();
+                if (value != _oldWord)
+                    return value;
+                _count++;
+                return _newWord;
+            }
+
+            public string Invoke(string source) {
+                _count = 0;
+                var result = WordMatcher.Replace(source, Substitute);
+                if (_count > 0)
+                    return result;
+                return source;
+            }
+        }
+
+        /// <summary>
+        /// Returns a new string in which all occurrences of a specified word in the current instance are replaced with another specified word.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="oldWord">The word to be replaced. </param>
+        /// <param name="newWord">The word to replace all occurrences of <paramref name="oldWord"/>. </param>
+        /// <returns>A string that is equivalent to the current string except that all instances of oldWord are replaced with newWord.
+        /// If oldWord is not found in the current instance, the method returns the current instance unchanged. </returns>
+        public static string ReplaceWord(this string self, string oldWord, string newWord) {
+            var substituer = new WordReplacer(oldWord, newWord);
+            return substituer.Invoke(self);
         }
 
         #endregion
