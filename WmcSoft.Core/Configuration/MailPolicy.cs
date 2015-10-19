@@ -92,12 +92,12 @@ namespace WmcSoft.Configuration
         public MailMessage CreateMessage(Func<MailAddress, IEnumerable<MailAddress>> interpreter) {
             var m = new MailMessage();
 
-            m.Subject = this.Subject ?? "";
+            m.Subject = Subject ?? "";
 
-            var to = this.To ?? new MailAddressCollection();
-            var cc = this.Cc ?? new MailAddressCollection();
-            var bcc = this.Bcc ?? new MailAddressCollection();
-            var replyTo = this.ReplyTo ?? new MailAddressCollection();
+            var to = To ?? new MailAddressCollection();
+            var cc = Cc ?? new MailAddressCollection();
+            var bcc = Bcc ?? new MailAddressCollection();
+            var replyTo = ReplyTo ?? new MailAddressCollection();
 
             m.To.AddRange(to.SelectMany(a => interpreter(a)));
             m.CC.AddRange(cc.SelectMany(a => interpreter(a)).Except(to));
