@@ -48,9 +48,17 @@ namespace WmcSoft.Configuration
         }
 
         [ConfigurationProperty("subject", IsRequired = false, DefaultValue = null)]
+        [TypeConverter(typeof(MailAddressConverter))]
         public string Subject {
             get { return (string)this["subject"]; }
             set { this["subject"] = value; }
+        }
+
+        [ConfigurationProperty("sender", IsRequired = false, DefaultValue = null)]
+        [TypeConverter(typeof(MailAddressCollectionConverter))]
+        public MailAddress Sender {
+            get { return (MailAddress)this["sender"]; }
+            set { this["sender"] = value; }
         }
 
         [ConfigurationProperty("to", IsRequired = false, DefaultValue = null)]
@@ -85,10 +93,23 @@ namespace WmcSoft.Configuration
             yield return address;
         }
 
+        /// <summary>
+        /// Creates a <see cref="MailMessage"/> using the configured elements.
+        /// </summary>
+        /// <returns>The mail message.</returns>
+        /// <remarks>Duplicates are removed per properties and across properties 
+        /// (i.e. an email address in <see cref="MailMessage.To"/> will be removed from <see cref="MailMessage.CC"/> and <see cref="MailMessage.Bcc"/></remarks>
         public MailMessage CreateMessage() {
             return CreateMessage(Forward);
         }
 
+        /// <summary>
+        /// Creates a <see cref="MailMessage"/> using the configured elements, expanding fake email addresses into real email addresses.
+        /// </summary>
+        /// <param name="interpreter">The interpreter function to expand the email addresses.</param>
+        /// <returns>The mail message.</returns>
+        /// <remarks>Duplicates are removed per properties and across properties 
+        /// (i.e. an email address in <see cref="MailMessage.To"/> will be removed from <see cref="MailMessage.CC"/> and <see cref="MailMessage.Bcc"/></remarks>
         public MailMessage CreateMessage(Func<MailAddress, IEnumerable<MailAddress>> interpreter) {
             var m = new MailMessage();
 
@@ -99,10 +120,12 @@ namespace WmcSoft.Configuration
             var bcc = Bcc ?? new MailAddressCollection();
             var replyTo = ReplyTo ?? new MailAddressCollection();
 
-            m.To.AddRange(to.SelectMany(a => interpreter(a)));
-            m.CC.AddRange(cc.SelectMany(a => interpreter(a)).Except(to));
-            m.Bcc.AddRange(bcc.SelectMany(a => interpreter(a)).Except(to).Except(cc));
-            m.ReplyToList.AddRange(replyTo.SelectMany(a => interpreter(a)));
+            if (Sender != null)
+                m.Sender = Sender;
+            m.To.AddRange(to.SelectMany(interpreter).Distinct());
+            m.CC.AddRange(cc.SelectMany(interpreter).Except(to).Distinct());
+            m.Bcc.AddRange(bcc.SelectMany(interpreter).Except(to).Except(cc).Distinct());
+            m.ReplyToList.AddRange(replyTo.SelectMany(interpreter));
 
             return m;
         }
