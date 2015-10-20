@@ -48,14 +48,13 @@ namespace WmcSoft.Configuration
         }
 
         [ConfigurationProperty("subject", IsRequired = false, DefaultValue = null)]
-        [TypeConverter(typeof(MailAddressConverter))]
         public string Subject {
             get { return (string)this["subject"]; }
             set { this["subject"] = value; }
         }
 
         [ConfigurationProperty("sender", IsRequired = false, DefaultValue = null)]
-        [TypeConverter(typeof(MailAddressCollectionConverter))]
+        [TypeConverter(typeof(MailAddressConverter))]
         public MailAddress Sender {
             get { return (MailAddress)this["sender"]; }
             set { this["sender"] = value; }
