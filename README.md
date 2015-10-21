@@ -13,19 +13,41 @@ I try to respect the following laws, from "From Mathematics to Generic Programmi
 
 For now, all this code is a **work in progress**. Comments and questions are welcome.
 
-## WmcSoft.Core
+## Design notes
+
+To improve readability:
+
+- Extensions methods calling extensions methods in the same class should be called as function.
+
+        public static IEnumerable<string> Tokenize(this string self, char separator) {
+            return Tokenize(self, new CharTokenizer(separator));
+        }
+
+- Operator overloads should provide the equivalent with a named function. Apparently, the framework does not have 
+a clear policy on whether the function should be static or not. It is static for `Complex` but not for `TimeSpan`.
+
+        public static Rational operator -(Rational x) {
+            return new Rational(-x._numerator, x._denominator);
+        }
+        public static Rational Negate(Rational x) {
+            return -x;
+        }
+
+## Libraries
+
+### WmcSoft.Core
 _Library of extensions and helpers._
 
-## WmcSoft.Mathematics
+### WmcSoft.Mathematics
 _Library of mathematical objects, such as Rationals, Vectors and Matrices._
 
 The main goal is to have 
 them easy to use. They are not aimed to be the fastest but I hope they will be fast enough.
 
-## WmcSoft.Units
+### WmcSoft.Units
 _Library of units and quantities._
 
-## WmcSoft.Business
+### WmcSoft.Business
 _Library of components to build business applications._
 
 - Security
@@ -38,10 +60,10 @@ _Library of components to build business applications._
 
 - Accounting
 
-## WmcSoft.Jobs
+### WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._
 
-## WmcSoft.Components & WmcSoft.Windows.Forms
+### WmcSoft.Components & WmcSoft.Windows.Forms
 _Libraries of component and windows forms controls._
 
 These are pretty much useless now, as the component model and the windows form are kind of deprecated.
@@ -56,16 +78,16 @@ The second drawback is related to forms, user controls and inheritance because t
 between access control and visual representation. How do you hide in code what is visible in display? 
 How can you see controls and yet be unable to move them inside the form? 
 
-## WmcSoft.Interop
+### WmcSoft.Interop
 _Library of classes or functions encapsulating native functions._
 
-## WmcSoft.VisualStudio
+### WmcSoft.VisualStudio
 _Library to build custom tools._
 
 This library also provide a declarative, policy based, code generator. 
 The classes are defined in an XML file and then generated in CSharp.
 
-## WmcSoft.AI
+### WmcSoft.AI
 _Library of artificial intelligence algorithms._
 
 This library is so far a collection of algorithm, initially converted from Practical Neural Network Recipes in C++, 
