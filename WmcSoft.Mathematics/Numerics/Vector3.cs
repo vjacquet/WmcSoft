@@ -48,7 +48,7 @@ namespace WmcSoft.Numerics
 
         #region Fields
 
-        private readonly double[] _data;
+        internal readonly double[] _data;
 
         #endregion
 
@@ -203,10 +203,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<double> Members
 
-        IEnumerator<double> IEnumerable<double>.GetEnumerator() {
-            if (_data == null || _data.Length == 0)
-                return Enumerable.Empty<double>().GetEnumerator();
-            return new StrideEnumerator<double>(_data);
+        public IEnumerator<double> GetEnumerator() {
+            return new StrideEnumerator<double>(_data ?? Zero._data);
         }
 
         #endregion
