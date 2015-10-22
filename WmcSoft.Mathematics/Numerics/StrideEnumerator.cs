@@ -42,25 +42,15 @@ namespace WmcSoft.Numerics
         readonly int _end;
         int _pos;
 
-        public StrideEnumerator(T[] data) {
-            _data = data;
-            _start = 0;
-            _stride = 1;
-            _end = data.Length - _stride;
-            Reset();
+        public StrideEnumerator(T[] data) : this(data, 0, data.Length, 1) {
         }
 
         public StrideEnumerator(T[] data, int start, int count, int stride = 1) {
-            int end = _start + count * _stride;
+            int end = start + count * stride;
 #if DEBUG
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (start >= data.Length)
-                throw new ArgumentOutOfRangeException("start");
-            if (end >= data.Length)
-                throw new ArgumentOutOfRangeException("count");
-            if (stride < 1)
-                throw new ArgumentOutOfRangeException("stride");
+            if (start > data.Length) throw new ArgumentOutOfRangeException("start");
+            if (stride < 1) throw new ArgumentOutOfRangeException("stride");
+            if ((end - stride) > data.Length) throw new ArgumentOutOfRangeException("count");
 #endif
             _data = data;
             _start = start;
@@ -74,7 +64,7 @@ namespace WmcSoft.Numerics
         public T Current {
             get {
 #if DEBUG
-                if (_pos < _start || _end < _pos)
+                if (_pos < _start | _end < _pos)
                     throw new InvalidOperationException();
 #endif
                 return _data[_pos];
