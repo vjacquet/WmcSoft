@@ -190,6 +190,18 @@ namespace WmcSoft.Windows.Forms
 
         #region Control specific extensions
 
+        #region NotifyIcon
+
+        public static void ShowBalloonTip(this NotifyIcon notifyIcon, TimeSpan timeout, string tipTitle, string tipText, ToolTipIcon tipIcon) {
+            notifyIcon.ShowBalloonTip((int)timeout.TotalMilliseconds, tipTitle, tipText, tipIcon);
+        }
+
+        public static void ShowBalloonTip(this NotifyIcon notifyIcon, TimeSpan timeout) {
+            notifyIcon.ShowBalloonTip((int)timeout.TotalMilliseconds);
+        }
+
+        #endregion
+
         #region NumericUpDown
 
         public static TextBox GetTextBox(this NumericUpDown numericUpDown) {
@@ -224,7 +236,7 @@ namespace WmcSoft.Windows.Forms
         public static int RemoveAll(this TreeNodeCollection collection, Predicate<TreeNode> predicate) {
             var count = collection.Count;
             var removed = 0;
-            for (int i = 0; i < count; ) {
+            for (int i = 0; i < count;) {
                 var node = collection[i];
                 if (predicate(node)) {
                     collection.RemoveAt(i);
