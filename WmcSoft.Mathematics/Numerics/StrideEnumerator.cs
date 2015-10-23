@@ -47,11 +47,6 @@ namespace WmcSoft.Numerics
 
         public StrideEnumerator(T[] data, int start, int count, int stride = 1) {
             int end = start + count * stride;
-#if DEBUG
-            if (start > data.Length) throw new ArgumentOutOfRangeException("start");
-            if (stride < 1) throw new ArgumentOutOfRangeException("stride");
-            if ((end - stride) > data.Length) throw new ArgumentOutOfRangeException("count");
-#endif
             _data = data;
             _start = start;
             _stride = stride;

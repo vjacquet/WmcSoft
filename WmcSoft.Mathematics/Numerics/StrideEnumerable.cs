@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Numerics
 {
@@ -37,6 +38,8 @@ namespace WmcSoft.Numerics
     /// <remarks>This class is private because it has some undefined behavior in release mode.</remarks>
     sealed class StrideEnumerable<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection
     {
+        public static readonly StrideEnumerable<T> Empty = new StrideEnumerable<T>(null, 0, 0);
+
         readonly T[] _data;
         readonly int _start;
         readonly int _count;
@@ -46,11 +49,10 @@ namespace WmcSoft.Numerics
         }
 
         public StrideEnumerable(T[] data, int start, int count, int stride = 1) {
-#if DEBUG
-            if (data == null) throw new ArgumentNullException("data");
-            if (start > data.Length) throw new ArgumentOutOfRangeException("start");
-            if (stride < 1) throw new ArgumentOutOfRangeException("stride");
-#endif
+            Debug.Assert(stride > 0);
+            Debug.Assert(start >= 0);
+            Debug.Assert(count >= 0);
+
             _data = data;
             _start = start;
             _count = count;
@@ -74,7 +76,14 @@ namespace WmcSoft.Numerics
         #region ICollection Membres
 
         public void CopyTo(Array array, int index) {
-            Array.Copy(_data, 0, array, index, _count);
+            if (_stride == 1) {
+                Array.Copy(_data, 0, array, index, _count);
+            } else {
+                int end = _start + _count * _stride;
+                for (int i = _start; i < end; i += _stride) {
+                    array.SetValue(_data[i], index++);
+                }
+            }
         }
 
         public object SyncRoot {

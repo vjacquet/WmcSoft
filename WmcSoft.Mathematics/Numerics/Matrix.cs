@@ -238,28 +238,19 @@ namespace WmcSoft.Numerics
         public Dimensions Size { get { return _storage.Size; } }
         public double this[int i, int j] { get { return _storage.data[i * _storage.n + j]; } }
 
-        public IEnumerable<double> Row(int i) {
-            // TODO: Change IEnumerable to a IReadOnlyCollection
+        public IReadOnlyCollection<double> Row(int i) {
             if (_storage == null)
-                yield break;
+                return StrideEnumerable<double>.Empty;
 
-            var countdown = _storage.n;
             var k = i * _storage.n;
-            while (countdown-- > 0)
-                yield return _storage.data[k++];
+            return new StrideEnumerable<double>(_storage.data, k, _storage.n, 1);
         }
 
-        public IEnumerable<double> Column(int j) {
-            // TODO: Change IEnumerable to a IReadOnlyCollection
+        public IReadOnlyCollection<double> Column(int j) {
             if (_storage == null)
-                yield break;
+                return StrideEnumerable<double>.Empty;
 
-            var countdown = _storage.m;
-            var k = j;
-            while (countdown-- > 0) {
-                yield return _storage.data[k];
-                k += _storage.n;
-            }
+            return new StrideEnumerable<double>(_storage.data, j, _storage.m, _storage.n);
         }
 
         #endregion
