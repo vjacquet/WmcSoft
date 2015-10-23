@@ -238,7 +238,7 @@ namespace WmcSoft.Numerics
         public Dimensions Size { get { return _storage.Size; } }
         public double this[int i, int j] { get { return _storage.data[i * _storage.n + j]; } }
 
-        public IReadOnlyCollection<double> Row(int i) {
+        public IReadOnlyList<double> Row(int i) {
             if (_storage == null)
                 return StrideEnumerable<double>.Empty;
 
@@ -246,7 +246,7 @@ namespace WmcSoft.Numerics
             return new StrideEnumerable<double>(_storage.data, k, _storage.n, 1);
         }
 
-        public IReadOnlyCollection<double> Column(int j) {
+        public IReadOnlyList<double> Column(int j) {
             if (_storage == null)
                 return StrideEnumerable<double>.Empty;
 

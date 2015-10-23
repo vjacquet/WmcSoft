@@ -36,7 +36,7 @@ namespace WmcSoft.Numerics
     /// </summary>
     /// <typeparam name="T">The type of the items of the array</typeparam>
     /// <remarks>This class is private because it has some undefined behavior in release mode.</remarks>
-    sealed class StrideEnumerable<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection
+    sealed class StrideEnumerable<T> : IEnumerable<T>, IReadOnlyList<T>, ICollection
     {
         public static readonly StrideEnumerable<T> Empty = new StrideEnumerable<T>(null, 0, 0);
 
@@ -58,6 +58,18 @@ namespace WmcSoft.Numerics
             _count = count;
             _stride = stride;
         }
+
+        #region IReadOnlyList<T> Membres
+
+        public T this[int index] {
+            get {
+                if (index < 0 || index >= _count)
+                    throw new IndexOutOfRangeException();
+                return _data[_start + index * _stride];
+            }
+        }
+
+        #endregion
 
         #region IReadOnlyCollection<T> Membres
 
