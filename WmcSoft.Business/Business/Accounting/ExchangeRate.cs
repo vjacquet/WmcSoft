@@ -33,36 +33,27 @@ namespace WmcSoft.Business.Accounting
     /// </summary>
     public class ExchangeRate : ITemporal
     {
-        #region Fields
-
-        private readonly Currency _from;
-        private readonly Currency _to;
-        private readonly decimal _rate;
-
-        #endregion
-
         #region Lifecycle
 
         public ExchangeRate(Currency from, Currency to, decimal rate) {
-            _from = from;
-            _to = to;
-            _rate = rate;
+            FromCurrency = from;
+            ToCurrency = to;
+            Rate = rate;
         }
 
         #endregion
 
         #region Properties
 
-        public Currency FromCurrency { get { return _from; } }
-        public Currency ToCurrency { get { return _to; } }
-        public decimal Rate { get { return _rate; } }
+        public Currency FromCurrency { get; }
+        public Currency ToCurrency { get; }
+        public decimal Rate { get; }
 
         #endregion
 
         #region ITemporal Members
 
         public DateTime? ValidSince { get; set; }
-
         public DateTime? ValidUntil { get; set; }
 
         #endregion

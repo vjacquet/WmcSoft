@@ -68,6 +68,7 @@
     <Compile Include="Business\CustomerRelationshipModel\CustomerServiceCase.cs" />
     <Compile Include="Business\CustomerRelationshipModel\CustomerServiceCaseIdentifier.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Outcome.cs" />
+    <Compile Include="Business\DomainObject.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\InventoryModel\CapacityManager.cs" />

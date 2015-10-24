@@ -36,63 +36,6 @@ namespace WmcSoft.Collections
     /// </summary>
     public static class CollectionExtensions
     {
-        #region Suffle methods
-
-        /// <summary>
-        /// Suffles in place items of the list.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList list) {
-            Suffle(list, new Random());
-        }
-
-        /// <summary>
-        /// Suffles in place items of the list.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="random">The random object to use to perfom the suffle.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList list, Random random) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (random == null)
-                throw new ArgumentNullException("random");
-            if (list.IsReadOnly)
-                throw new ArgumentException();
-
-            int j;
-
-            for (int i = 0; i < list.Count; i++) {
-                j = random.Next(i, list.Count);
-                list.SwapItems(i, j);
-            }
-        }
-
-        #endregion
-
-        #region SwapItems methods
-
-        /// <summary>
-        /// Swaps two items.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="i">The item at the <paramref name="i"/> index.</param>
-        /// <param name="j">The item at the <paramref name="j"/> index.</param>
-        /// <returns>The list</returns>
-        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
-        public static TList SwapItems<TList>(this TList list, int i, int j)
-            where TList : IList {
-            object temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-            return list;
-        }
-
-        #endregion
-
         #region AddRange methods
 
         /// <summary>
@@ -186,6 +129,38 @@ namespace WmcSoft.Collections
 
         #endregion
 
+        #region ReplaceAll
+
+        /// <summary>
+        /// Removes all existing items and adds the given items.
+        /// </summary>
+        /// <param name="list">The list</param>
+        /// <param name="items">The items to add</param>
+        public static void ReplaceAll(this IList list, IEnumerable items) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+
+            if (list.IsSynchronized) {
+                lock (list.SyncRoot) {
+                    list.Clear();
+                    if (items == null)
+                        return;
+                    foreach (var each in items) {
+                        list.Add(each);
+                    }
+                }
+            } else {
+                list.Clear();
+                if (items == null)
+                    return;
+                foreach (var each in items) {
+                    list.Add(each);
+                }
+            }
+        }
+
+        #endregion
+
         #region ToArray
 
         /// <summary>
@@ -229,34 +204,59 @@ namespace WmcSoft.Collections
 
         #endregion
 
-        #region ReplaceAll
+        #region Suffle methods
 
         /// <summary>
-        /// Removes all existing items and adds the given items.
+        /// Suffles in place items of the list.
         /// </summary>
-        /// <param name="list">The list</param>
-        /// <param name="items">The items to add</param>
-        public static void ReplaceAll(this IList list, IEnumerable items) {
+        /// <param name="list">The list.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
+        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        public static void Suffle(this IList list) {
+            Suffle(list, new Random());
+        }
+
+        /// <summary>
+        /// Suffles in place items of the list.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="random">The random object to use to perfom the suffle.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
+        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        public static void Suffle(this IList list, Random random) {
             if (list == null)
                 throw new ArgumentNullException("list");
+            if (random == null)
+                throw new ArgumentNullException("random");
+            if (list.IsReadOnly)
+                throw new ArgumentException();
 
-            if (list.IsSynchronized) {
-                lock (list.SyncRoot) {
-                    list.Clear();
-                    if (items == null)
-                        return;
-                    foreach (var each in items) {
-                        list.Add(each);
-                    }
-                }
-            } else {
-                list.Clear();
-                if (items == null)
-                    return;
-                foreach (var each in items) {
-                    list.Add(each);
-                }
+            int j;
+
+            for (int i = 0; i < list.Count; i++) {
+                j = random.Next(i, list.Count);
+                list.SwapItems(i, j);
             }
+        }
+
+        #endregion
+
+        #region SwapItems methods
+
+        /// <summary>
+        /// Swaps two items.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="i">The item at the <paramref name="i"/> index.</param>
+        /// <param name="j">The item at the <paramref name="j"/> index.</param>
+        /// <returns>The list</returns>
+        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
+        public static TList SwapItems<TList>(this TList list, int i, int j)
+            where TList : IList {
+            object temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+            return list;
         }
 
         #endregion

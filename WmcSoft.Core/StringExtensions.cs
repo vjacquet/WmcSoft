@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Text;
 
@@ -554,7 +555,7 @@ namespace WmcSoft
         /// If totalWidth is equal to the length of this instance, the method returns a new string that is identical to this instance.</returns>
         /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
         public static string PadEnds(this string self, int totalWidth) {
-            return self.PadEnds(totalWidth, ' ');
+            return PadEnds(self, totalWidth, ' ');
         }
 
         #endregion
@@ -607,6 +608,53 @@ namespace WmcSoft
                 sb.Replace(arg, "");
             }
             return sb.ToString();
+        }
+
+        #endregion
+
+        #region ReplaceWord
+
+        class WordReplacer
+        {
+            static readonly Regex WordMatcher = new Regex(@"(\w+)", RegexOptions.Compiled);
+
+            readonly string _oldWord;
+            readonly string _newWord;
+            int _count;
+
+            public WordReplacer(string oldWord, string newWord) {
+                _oldWord = oldWord;
+                _newWord = newWord;
+            }
+
+            string Substitute(Match match) {
+                var value = match.ToString();
+                if (value != _oldWord)
+                    return value;
+                _count++;
+                return _newWord;
+            }
+
+            public string Invoke(string source) {
+                _count = 0;
+                var result = WordMatcher.Replace(source, Substitute);
+                if (_count > 0)
+                    return result;
+                return source;
+            }
+        }
+
+        /// <summary>
+        /// Returns a new string in which all occurrences of a specified word in the current instance are replaced with another specified word.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="oldWord">The word to be replaced. </param>
+        /// <param name="newWord">The word to replace all occurrences of <paramref name="oldWord"/>. </param>
+        /// <returns>A string that is equivalent to the current string except that all instances of oldWord are replaced with newWord.
+        /// If oldWord is not found in the current instance, the method returns the current instance unchanged. </returns>
+        public static string ReplaceWord(this string self, string oldWord, string newWord) {
+            var substituer = new WordReplacer(oldWord, newWord);
+            return substituer.Invoke(self);
         }
 
         #endregion
@@ -750,7 +798,7 @@ namespace WmcSoft
                 return self;
             if (length < 0)
                 length = self.Length - length;
-            if(length > self.Length)
+            if (length > self.Length)
                 return self;
             return self.Substring(0, length);
         }
@@ -813,7 +861,7 @@ namespace WmcSoft
         /// <param name="separator">The separator.</param>
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, char separator) {
-            return self.Tokenize(new CharTokenizer(separator));
+            return Tokenize(self, new CharTokenizer(separator));
         }
 
         /// <summary>
@@ -824,10 +872,10 @@ namespace WmcSoft
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
             if (separators == null || separators.Length == 0)
-                return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
+                return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
             if (separators.Length == 1)
-                return self.Tokenize(new CharTokenizer(separators[0]));
-            return self.Tokenize(new CharsTokenizer(separators));
+                return Tokenize(self, new CharTokenizer(separators[0]));
+            return Tokenize(self, new CharsTokenizer(separators));
         }
 
         /// <summary>
@@ -836,8 +884,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="isSeparator">The predicate.</param>
         /// <returns>The sequence of substrings.</returns>
-          public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
-            return self.Tokenize(new PredicateTokenizer(isSeparator));
+        public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
+            return Tokenize(self, new PredicateTokenizer(isSeparator));
         }
 
         /// <summary>
@@ -846,7 +894,7 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self) {
-            return self.Tokenize(new PredicateTokenizer(Char.IsWhiteSpace));
+            return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
         }
 
         #endregion

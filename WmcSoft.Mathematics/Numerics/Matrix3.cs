@@ -7,13 +7,13 @@ namespace WmcSoft.Numerics
     public struct Matrix3 : IEquatable<Matrix3>
     {
         struct Tag { };
-        static Tag Uninitialized = new Tag();
+        static readonly Tag Uninitialized = new Tag();
 
         const int N = 3;
 
-        public static Matrix3 Empty;
-        public static Matrix3 Zero = new Matrix3(Uninitialized);
-        public static Matrix3 Identity = new Matrix3(1, 0, 0, 0, 1, 0, 0, 0, 1);
+        public readonly static Matrix3 Empty;
+        public readonly static Matrix3 Zero = new Matrix3(Uninitialized);
+        public readonly static Matrix3 Identity = new Matrix3(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
         #region Fields
 
@@ -81,35 +81,26 @@ namespace WmcSoft.Numerics
         public Dimensions Size { get { return new Dimensions(N, N); } }
         public double this[int i, int j] { get { return _storage[i * N + j]; } }
 
-        public IEnumerable<double> Row(int i) {
-            // TODO: Change IEnumerable to a IReadOnlyCollection
+        public IReadOnlyList<double> Row(int i) {
             if (_storage == null)
-                yield break;
+                return new StrideEnumerable<double>(Vector3.Zero._data);
 
-            var countdown = N;
             var k = i * N;
-            while (countdown-- > 0)
-                yield return _storage[k++];
+            return new StrideEnumerable<double>(_storage, k, N, 1);
         }
 
-        public IEnumerable<double> Column(int j) {
-            // TODO: Change IEnumerable to a IReadOnlyCollection
+        public IReadOnlyList<double> Column(int j) {
             if (_storage == null)
-                yield break;
+                return new StrideEnumerable<double>(Vector3.Zero._data);
 
-            var countdown = N;
-            var k = j;
-            while (countdown-- > 0) {
-                yield return _storage[k];
-                k += N;
-            }
+            return new StrideEnumerable<double>(_storage, j, N, N);
         }
 
         #endregion
 
         #region Operators
 
-        public static explicit operator double[,](Matrix3 x) {
+        public static explicit operator double[,] (Matrix3 x) {
             if (x._storage == null)
                 return new double[N, N];
             var result = new double[N, N];
@@ -216,6 +207,31 @@ namespace WmcSoft.Numerics
         }
         public static Matrix3 Divide(Matrix3 matrix, double scalar) {
             return matrix / scalar;
+        }
+
+        public static Vector3 operator *(Matrix3 m, Vector3 v) {
+            if (v._data == null | m._storage == null)
+                return Vector3.Zero;
+
+            var x = m._storage[0] * v._data[0] + m._storage[1] * v._data[1] + m._storage[2] * v._data[2];
+            var y = m._storage[3] * v._data[0] + m._storage[4] * v._data[1] + m._storage[5] * v._data[2];
+            var z = m._storage[6] * v._data[0] + m._storage[7] * v._data[1] + m._storage[8] * v._data[2];
+            return new Vector3(x, y, z);
+        }
+        public static Vector3 Multiply(Matrix3 x, Vector3 y) {
+            return x * y;
+        }
+
+        public Vector3 MultiplyAndAdd(Vector3 v, Vector3 w) {
+            if (v._data == null | _storage == null)
+                return w;
+            if (w._data == null)
+                return this * v;
+
+            var x = w._data[0] + _storage[0] * v._data[0] + _storage[0] * v._data[1] + _storage[0] * v._data[2];
+            var y = w._data[1] + _storage[1] * v._data[0] + _storage[1] * v._data[1] + _storage[1] * v._data[2];
+            var z = w._data[2] + _storage[2] * v._data[0] + _storage[2] * v._data[1] + _storage[2] * v._data[2];
+            return new Vector3(x, y, z);
         }
 
         #endregion

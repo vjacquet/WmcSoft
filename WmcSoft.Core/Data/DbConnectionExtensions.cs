@@ -105,8 +105,6 @@ namespace WmcSoft.Data
             }
         }
 
-        #region PrepareExecuteNonQuery
-
         public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
             var p = command.PrepareParameter(nameGenerator);
@@ -185,8 +183,6 @@ namespace WmcSoft.Data
                 return command.ExecuteNonQuery();
             };
         }
-
-        #endregion
 
         #endregion
     }

@@ -25,46 +25,31 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 
 namespace WmcSoft.CodeDom
 {
     public class CodeDomTypeBuilder
     {
-        #region Fields
-
-        CodeTypeDeclaration typeDeclaration;
-
-        #endregion
-
         #region Lifecyle
 
         public CodeDomTypeBuilder(CodeTypeDeclaration typeDeclaration) {
-            this.typeDeclaration = typeDeclaration;
+            TypeDeclaration = typeDeclaration;
         }
 
         #endregion
 
         #region Properties
 
-        public CodeTypeDeclaration TypeDeclaration {
-            get {
-                return typeDeclaration;
-            }
-            set {
-                typeDeclaration = value;
-            }
-        }
+        public CodeTypeDeclaration TypeDeclaration { get; set; }
 
         #endregion
 
         #region Methods
 
         public CodeDomTypeBuilder DeclareMember(CodeTypeMember member) {
-            if (!typeDeclaration.Members.Contains(member)) {
-                typeDeclaration.Members.Add(member);
+            if (!TypeDeclaration.Members.Contains(member)) {
+                TypeDeclaration.Members.Add(member);
             }
             return this;
         }
@@ -74,12 +59,12 @@ namespace WmcSoft.CodeDom
         }
 
         public CodeDomTypeBuilder EncapsulateField(CodeMemberField field, bool notifyChanges) {
-            if (!typeDeclaration.Members.Contains(field)) {
-                typeDeclaration.Members.Add(field);
+            if (!TypeDeclaration.Members.Contains(field)) {
+                TypeDeclaration.Members.Add(field);
             }
 
-            CodeMemberProperty property = new CodeMemberProperty();
-            string name = field.Name;
+            var property = new CodeMemberProperty();
+            var name = field.Name;
             if (name.StartsWith("_"))
                 property.Name = name.Substring(1);
             else if (name.StartsWith("m_"))
@@ -106,21 +91,21 @@ namespace WmcSoft.CodeDom
                         new CodeThisReferenceExpression(), field.Name),
                             new CodePropertySetValueReferenceExpression()));
 
-            typeDeclaration.Members.Add(property);
+            TypeDeclaration.Members.Add(property);
 
             return this;
         }
 
         public CodeMemberMethod FindMethod(string name) {
-            foreach (CodeTypeMember member in typeDeclaration.Members) {
-                CodeMemberMethod method = member as CodeMemberMethod;
+            foreach (CodeTypeMember member in TypeDeclaration.Members) {
+                var method = member as CodeMemberMethod;
                 if (method != null && method.Name == name) {
                     return method;
                 }
             }
             return null;
         }
-        #endregion
 
+        #endregion
     }
 }

@@ -42,7 +42,7 @@ namespace WmcSoft.Numerics
 
         #region Fields
 
-        private readonly double[] _data;
+        internal readonly double[] _data;
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
-        public static explicit operator double[](Vector x) {
+        public static explicit operator double[] (Vector x) {
             return x._data == null
                 ? new double[0]
                 : (double[])x._data.Clone();
@@ -233,7 +233,7 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<double> Members
 
-        IEnumerator<double> IEnumerable<double>.GetEnumerator() {
+        public IEnumerator<double> GetEnumerator() {
             if (_data == null || _data.Length == 0)
                 return Enumerable.Empty<double>().GetEnumerator();
             return new StrideEnumerator<double>(_data);

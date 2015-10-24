@@ -30,28 +30,14 @@ namespace WmcSoft.Business.PartyModel
     /// Represents an agreed and trusted way to confirm that a <see cref="Party"/> 
     /// is who they say they are.
     /// </summary>
-    public class PartyAuthentication
+    public abstract class PartyAuthentication
     {
-        #region Fields
-
-        private readonly string _authenticationType;
-
-        #endregion
-
-        #region Lifecycle
-
-        public PartyAuthentication(string authenticationType) {
-            _authenticationType = authenticationType;
-        }
-
-        #endregion
-
         #region Properties
 
-        public string AuthenticationType {
-            get { return _authenticationType; }
-        }
+        public abstract string AuthenticationType { get; }
 
         #endregion
+
+        public abstract void Authenticate(PartySignature signature);
     }
 }

@@ -36,31 +36,19 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class Ethnicity
     {
-        #region Fields
-
-        private readonly string _name;
-        private readonly string _description;
-
-        #endregion
-
         #region Lifecycle
 
         public Ethnicity(string name, string description) {
-            _name = name;
-            _description = description;
+            Name = name;
+            Description = description;
         }
 
         #endregion
 
         #region Properties
 
-        public string Name {
-            get { return _name; }
-        }
-
-        public string Description {
-            get { return _description; }
-        }
+        public string Name { get; }
+        public string Description { get; }
 
         #endregion
     }

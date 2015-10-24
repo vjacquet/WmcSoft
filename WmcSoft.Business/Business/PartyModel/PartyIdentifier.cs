@@ -26,50 +26,68 @@
 
 using System;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents a unique identifier for a Party.
     /// </summary>
     [Serializable]
-    public class PartyIdentifier : IUniqueIdentifier<Guid>
+    public struct PartyIdentifier : IUniqueIdentifier<TKey>
     {
         #region Fields
 
-        readonly Guid _id;
+        readonly TKey _id;
 
         #endregion
 
         #region Lifecycle
 
-        public PartyIdentifier() {
-            _id = Guid.NewGuid();
+        public PartyIdentifier(TKey id) {
+            _id = id;
         }
 
-        public PartyIdentifier(Guid identifier) {
-            _id = identifier;
+        #endregion
+
+        #region Operators & conversions 
+
+        public static explicit operator PartyIdentifier(Party party) {
+            return party.Id;
+        }
+
+        public static implicit operator PartyIdentifier(TKey id) {
+            return new PartyIdentifier(id);
+        }
+
+        public static implicit operator TKey(PartyIdentifier id) {
+            return id.Id;
         }
 
         #endregion
 
         #region Membres de IUniqueIdentifier
 
-        public Guid Id {
+        public TKey Id {
             get { return _id; }
         }
 
         #endregion
-  
-        #region IEquatable<Guid> Members
 
-        public bool Equals(Guid other) {
-            return _id == other;
+        #region IEquatable<TKey> Members
+
+        public bool Equals(TKey other) {
+            return Id.Equals(other);
         }
 
         #endregion
 
+        #region Overidables
+
         public override string ToString() {
             return _id.ToString();
         }
+
+        #endregion
     }
 }

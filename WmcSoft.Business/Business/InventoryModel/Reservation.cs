@@ -41,12 +41,6 @@ namespace WmcSoft.Business.InventoryModel
     /// </summary>
     public class Reservation
     {
-        #region Fields
-
-        readonly ReservationIdentifier _identifier;
-
-        #endregion
-
         #region Lifecycle
 
         protected Reservation()
@@ -54,15 +48,11 @@ namespace WmcSoft.Business.InventoryModel
         }
 
         protected Reservation(ReservationIdentifier identifier) {
-            _identifier = identifier;
+            Identifier = identifier;
         }
 
         #endregion
 
-        public ReservationIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-
+        public ReservationIdentifier Identifier { get; }
     }
 }

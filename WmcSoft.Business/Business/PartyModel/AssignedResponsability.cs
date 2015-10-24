@@ -26,53 +26,49 @@
 
 using System;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents an instance of a Responsability assigned to a specific PartyRole.
     /// </summary>
-    public class AssignedResponsability : ITemporal
+    public class AssignedResponsability : DomainObject<TKey>, ITemporal
     {
-        #region Fields
+        #region Lifecycle
 
-        readonly Responsability _responsability;
-        readonly PartySignature _signature;
+        public AssignedResponsability() {
+        }
+
+        public AssignedResponsability(Responsability responsability, PartySignature signature) {
+            Responsability = responsability;
+            Signature = signature;
+        }
 
         #endregion
 
-        #region Lifecycle
+        #region Traits
 
-        public AssignedResponsability(Responsability responsability, PartySignature signature) {
-            _responsability = responsability;
-            _signature = signature;
+        public string Name {
+            get { return Responsability.Name; }
+        }
+
+        public string Description {
+            get { return Responsability.Description; }
         }
 
         #endregion
 
         #region Properties
 
-        public string Name {
-            get { return _responsability.Name; }
-        }
-
-        public string Description {
-            get { return _responsability.Description; }
-        }
-
-        public Responsability Responsability {
-            get { return _responsability; }
-        }
-
-        public PartySignature Signature {
-            get { return _signature; }
-        }
+        public virtual Responsability Responsability { get; set; }
+        public virtual PartySignature Signature { get; set; }
 
         #endregion
 
         #region ITemporal Members
 
         public DateTime? ValidSince { get; set; }
-
         public DateTime? ValidUntil { get; set; }
 
         #endregion

@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 
 namespace WmcSoft
 {
@@ -34,6 +35,20 @@ namespace WmcSoft
             if (String.IsNullOrWhiteSpace(value))
                 return 0;
             return value.GetHashCode();
+        }
+
+        public static string GetTraitDisplayName(Type type) {
+            var attributes = (DisplayNameAttribute[])type.GetCustomAttributes(typeof(DisplayNameAttribute), true);
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].DisplayName;
+            return null;
+        }
+
+        public static string GetTraitDescription(Type type) {
+            var attributes = (DescriptionAttribute[])type.GetCustomAttributes(typeof(DescriptionAttribute), true);
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].Description;
+            return null;
         }
     }
 }

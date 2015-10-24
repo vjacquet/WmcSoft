@@ -238,35 +238,26 @@ namespace WmcSoft.Numerics
         public Dimensions Size { get { return _storage.Size; } }
         public double this[int i, int j] { get { return _storage.data[i * _storage.n + j]; } }
 
-        public IEnumerable<double> Row(int i) {
-            // TODO: Change IEnumerable to a IReadOnlyCollection
+        public IReadOnlyList<double> Row(int i) {
             if (_storage == null)
-                yield break;
+                return StrideEnumerable<double>.Empty;
 
-            var countdown = _storage.n;
             var k = i * _storage.n;
-            while (countdown-- > 0)
-                yield return _storage.data[k++];
+            return new StrideEnumerable<double>(_storage.data, k, _storage.n, 1);
         }
 
-        public IEnumerable<double> Column(int j) {
-            // TODO: Change IEnumerable to a IReadOnlyCollection
+        public IReadOnlyList<double> Column(int j) {
             if (_storage == null)
-                yield break;
+                return StrideEnumerable<double>.Empty;
 
-            var countdown = _storage.m;
-            var k = j;
-            while (countdown-- > 0) {
-                yield return _storage.data[k];
-                k += _storage.n;
-            }
+            return new StrideEnumerable<double>(_storage.data, j, _storage.m, _storage.n);
         }
 
         #endregion
 
         #region Operators
 
-        public static explicit operator double[,](Matrix x) {
+        public static explicit operator double[,] (Matrix x) {
             if (x._storage == null)
                 return new double[0, 0];
             var result = new double[x._storage.m, x._storage.n];
@@ -386,6 +377,39 @@ namespace WmcSoft.Numerics
         }
         public static Matrix Divide(Matrix matrix, double scalar) {
             return matrix / scalar;
+        }
+
+        public static Vector operator *(Matrix x, Vector y) {
+            var n = x._storage.n;
+            if (y.Cardinality != n)
+                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError);
+
+            var m = x._storage.m;
+            var result = new Vector(n);
+            var e = y.GetEnumerator();
+            for (int i = 0; i < m; i++, e.Reset()) {
+                result._data[i] = Vector.DotProductNotEmpty(m, x.Row(i).GetEnumerator(), e);
+            }
+            return result;
+        }
+        public static Vector Multiply(Matrix x, Vector y) {
+            return x * y;
+        }
+
+        public Vector MultiplyAndAdd(Vector v, Vector w) {
+            var n = _storage.n;
+            if (v.Cardinality != n)
+                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "v");
+            if (w.Cardinality != n)
+                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError,"w");
+
+            var m = _storage.m;
+            var result = new Vector(w._data);
+            var e = v.GetEnumerator();
+            for (int i = 0; i < m; i++, e.Reset()) {
+                result._data[i] += Vector.DotProductNotEmpty(m, Row(i).GetEnumerator(), e);
+            }
+            return result;
         }
 
         #endregion

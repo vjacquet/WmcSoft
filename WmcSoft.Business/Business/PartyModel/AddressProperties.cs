@@ -28,34 +28,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Specifies information about an Address assigned to a specific Party.
     /// </summary>
-    public class AddressProperties
+    public class AddressProperties : DomainObject<TKey>, ITemporal
     {
-        #region Fields
-
-        readonly AddressBase _address;
-
-        #endregion
-
-        #region Lifecycle
-
-        protected AddressProperties(AddressBase address) {
-            _address = address;
-        }
-
-        #endregion
-
         #region Properties
 
-        public AddressBase Address {
-            get { return _address; }
-        }
-
+        public Party Party { get; set; }
+        public AddressBase Address { get; set; }
         public string Use { get; set; }
+
+        #endregion
+
+        #region ITemporal Members
+
+        public DateTime? ValidSince { get; set; }
+        public DateTime? ValidUntil { get; set; }
 
         #endregion
     }

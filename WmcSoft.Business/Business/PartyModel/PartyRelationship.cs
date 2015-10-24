@@ -30,18 +30,20 @@ using System.ComponentModel;
 using System.Linq;
 using WmcSoft.Business.RuleModel;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Captures the fact that there is a semantic relationship between two parties 
     /// in which each Party plays a specific role.
     /// </summary>
-    public abstract class PartyRelationship
+    public abstract class PartyRelationship : DomainObject<TKey>
     {
         #region Fields
 
-        private readonly PartyRole _client;
-        private readonly PartyRole _supplier;
+        private PartyRole _client;
+        private PartyRole _supplier;
 
         #endregion
 
@@ -51,12 +53,11 @@ namespace WmcSoft.Business.PartyModel
             CheckConstraints(client, supplier);
 
             _client = client;
+            _client.Relationships.Add(this);
+
             _supplier = supplier;
-
-            client._relationships.Add(this);
-            supplier._relationships.Add(this);
+            _supplier.Relationships.Add(this);
         }
-
 
         private void CheckConstraints(PartyRole client, PartyRole supplier) {
             using (var constraints = GetConstraints(GetType()).GetEnumerator()) {
@@ -76,18 +77,43 @@ namespace WmcSoft.Business.PartyModel
 
         #endregion
 
-        #region Properties
+        #region Traits
 
-        public abstract string Name { get; }
-
-        public abstract string Description { get; }
-
-        public PartyRole Client {
-            get { return _client; }
+        public virtual string Name {
+            get { return RM.GetInheritedName(GetType()); }
         }
 
+        public virtual string Description {
+            get { return RM.GetInheritedDescription(GetType()); }
+        }
+
+        #endregion
+
+        #region Properties
+
+        public PartyRole Client {
+            get {
+                return _client;
+            }
+            set {
+                if (_client != value) {
+                    _client.Relationships.Remove(this);
+                    _client = value;
+                    _client.Relationships.Add(this);
+                }
+            }
+        }
         public PartyRole Supplier {
-            get { return _supplier; }
+            get {
+                return _supplier;
+            }
+            set {
+                if (_supplier != value) {
+                    _supplier.Relationships.Remove(this);
+                    _supplier = value;
+                    _supplier.Relationships.Add(this);
+                }
+            }
         }
 
         public virtual RuleSet RequirementsForRole {

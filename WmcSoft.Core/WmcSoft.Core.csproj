@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -66,6 +66,9 @@
     <Compile Include="Collections\Generic\ComparerExtensions.cs" />
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
+    <Compile Include="Configuration\MailAddressConverter.cs" />
+    <Compile Include="DateSpan.cs" />
+    <Compile Include="IndexedAlgorithms.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionAdapter.cs" />
@@ -152,6 +155,7 @@
     <Compile Include="IO\FileSystemInfoExtensions.cs" />
     <Compile Include="IO\HeaderedTextWriter.cs" />
     <Compile Include="IO\MirroringStream.cs" />
+    <Compile Include="IO\SubstringReader.cs" />
     <Compile Include="IO\TempDirectory.cs" />
     <Compile Include="IO\TempFile.cs" />
     <Compile Include="IO\TextReaderExtensions.cs" />
@@ -169,6 +173,7 @@
     <Compile Include="NullableExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="OrdinalExtensions.cs" />
+    <Compile Include="PiecewiseConstruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -208,6 +213,7 @@
     <Compile Include="Text\PredicateTokenizer.cs" />
     <Compile Include="Text\RegularExpressions\RegexExtensions.cs" />
     <Compile Include="Text\StringBuilderExtensions.cs" />
+    <Compile Include="Text\Strip.cs" />
     <Compile Include="Text\Tokenizer.cs" />
     <Compile Include="Threading\Barrier.cs" />
     <Compile Include="Threading\BlockingQueue.cs" />

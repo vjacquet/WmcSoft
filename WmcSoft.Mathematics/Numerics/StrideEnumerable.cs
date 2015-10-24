@@ -25,7 +25,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Numerics
 {
@@ -34,27 +36,46 @@ namespace WmcSoft.Numerics
     /// </summary>
     /// <typeparam name="T">The type of the items of the array</typeparam>
     /// <remarks>This class is private because it has some undefined behavior in release mode.</remarks>
-    sealed class StrideEnumerable<T> : IEnumerable<T>
+    sealed class StrideEnumerable<T> : IEnumerable<T>, IReadOnlyList<T>, ICollection
     {
+        public static readonly StrideEnumerable<T> Empty = new StrideEnumerable<T>(null, 0, 0);
+
         readonly T[] _data;
         readonly int _start;
         readonly int _count;
         readonly int _stride;
 
+        public StrideEnumerable(T[] data) : this(data, 0, data.Length, 1) {
+        }
+
         public StrideEnumerable(T[] data, int start, int count, int stride = 1) {
-#if DEBUG
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (start >= data.Length)
-                throw new ArgumentOutOfRangeException("start");
-            if (stride < 1)
-                throw new ArgumentOutOfRangeException("stride");
-#endif
+            Debug.Assert(stride > 0);
+            Debug.Assert(start >= 0);
+            Debug.Assert(count >= 0);
+
             _data = data;
             _start = start;
             _count = count;
             _stride = stride;
         }
+
+        #region IReadOnlyList<T> Membres
+
+        public T this[int index] {
+            get {
+                if (index < 0 || index >= _count)
+                    throw new IndexOutOfRangeException();
+                return _data[_start + index * _stride];
+            }
+        }
+
+        #endregion
+
+        #region IReadOnlyCollection<T> Membres
+
+        public int Count { get { return _count; } }
+
+        #endregion
 
         #region IEnumerable<T> Membres
 
@@ -64,9 +85,32 @@ namespace WmcSoft.Numerics
 
         #endregion
 
+        #region ICollection Membres
+
+        public void CopyTo(Array array, int index) {
+            if (_stride == 1) {
+                Array.Copy(_data, 0, array, index, _count);
+            } else {
+                int end = _start + _count * _stride;
+                for (int i = _start; i < end; i += _stride) {
+                    array.SetValue(_data[i], index++);
+                }
+            }
+        }
+
+        public object SyncRoot {
+            get { return _data; }
+        }
+
+        public bool IsSynchronized {
+            get { return true; }
+        }
+
+        #endregion
+
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 

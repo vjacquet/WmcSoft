@@ -66,20 +66,37 @@ namespace WmcSoft.Business.PartyModel
             return String.Format(GetManager().GetString(name, culture), args);
         }
 
-        public static string GetName(Type type) {
-            return GetName(type, (CultureInfo)null);
+        static string UndecoratedName(Type type) {
+            var name = type.Name;
+            return name.SubstringBefore('`') ?? name;
         }
 
-        public static string GetName(Type type, CultureInfo culture) {
-            return GetManager().GetString(String.Format("{0}.Name", type.Name), culture);
+        public static string GetName(Type type, CultureInfo culture=null) {
+            return GetManager().GetString(String.Format("{0}.Name", UndecoratedName(type)), culture);
         }
 
-        public static string GetDescription(Type type) {
-            return GetDescription(type, (CultureInfo)null);
+        public static string GetInheritedName(Type type, CultureInfo culture = null) {
+            while (type != typeof(object)) {
+                var name = GetName(type);
+                if (!String.IsNullOrEmpty(name))
+                    return name;
+            }
+            return null;
         }
 
-        public static string GetDescription(Type type, CultureInfo culture) {
-            return GetManager().GetString(String.Format("{0}.Description", type.Name), culture);
+        public static string GetDescription(Type type, CultureInfo culture=null) {
+            return GetManager().GetString(String.Format("{0}.Description", UndecoratedName(type)), culture);
+        }
+
+        public static string GetInheritedDescription(Type type, CultureInfo culture = null) {
+            while (type != typeof(object)) {
+                // crawl the hierarchy of types to find a name
+                // then get the associated description
+                var name = GetName(type);
+                if (!String.IsNullOrEmpty(name))
+                    return GetDescription(type);
+            }
+            return null;
         }
     }
 }

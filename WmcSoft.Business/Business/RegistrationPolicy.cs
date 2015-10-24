@@ -30,7 +30,9 @@ namespace WmcSoft.Business
 {
     public enum RegistrationPolicy
     {
+        [RM.Description("RegistrationPolicy.Optional")]
         Optional,
+        [RM.Description("RegistrationPolicy.Mandatory")]
         Mandatory
     }
 }

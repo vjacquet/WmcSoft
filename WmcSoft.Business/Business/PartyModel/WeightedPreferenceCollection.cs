@@ -83,20 +83,16 @@ namespace WmcSoft.Business.PartyModel
         }
 
         ICollection<double> IDictionary<Preference, double>.Values {
-            get {
-                return inner.Values;
-            }
+            get { return inner.Values; }
         }
 
         public ICollection<double> Weights {
-            get {
-                return inner.Values;
-            }
+            get { return inner.Values; }
         }
 
         public double this[Preference key] {
-            get {                return inner[key];            }
-            set {                inner[key] = value;            }
+            get { return inner[key]; }
+            set { inner[key] = value; }
         }
 
         #endregion

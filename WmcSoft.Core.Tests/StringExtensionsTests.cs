@@ -102,5 +102,28 @@ namespace WmcSoft
             Assert.AreEqual("abc\u2026", "abcdef".Truncate(4));
             Assert.AreEqual("abc", "abc".Truncate(4));
         }
+
+        [TestMethod]
+        public void CanReplaceWord() {
+            const string expected = "You do not buy a dog in a catalog.";
+            var phrase = "You do not buy a cat in a catalog.";
+            var actual = phrase.ReplaceWord("cat", "dog");
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanReplaceWordPreserveReferenceWhenNotFound() {
+            var data = "abd def ghi jkl mno pqr";
+            var result = data.ReplaceWord("xyz", "stu");
+            Assert.AreEqual(data, result);
+            Assert.IsTrue(Object.ReferenceEquals(data, result));
+        }
+
+        [TestMethod]
+        public void CanReplaceWordInComplexPhrase() {
+            var eq = "y=ax+b";
+            Assert.AreEqual("y=ax+b", eq.ReplaceWord("a", "A"));
+            Assert.AreEqual("y=ax+B", eq.ReplaceWord("b", "B"));
+        }
     }
 }

@@ -26,10 +26,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using WmcSoft.Business.RuleModel;
+
+using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -37,44 +37,10 @@ namespace WmcSoft.Business.PartyModel
     /// Captures the semantics of the role played by a Party in a particular
     /// PartyRelationship.
     /// </summary>
-    public abstract class PartyRole
+    public abstract class PartyRole : DomainObject<TKey>
     {
-        #region Comparers
-
-        class UniqueIdentifierEqualityComparer : IEqualityComparer<PartyRole>
-        {
-
-            public UniqueIdentifierEqualityComparer() {
-            }
-
-            #region IEqualityComparer<PartyRole> Membres
-
-            bool IEqualityComparer<PartyRole>.Equals(PartyRole x, PartyRole y) {
-                if (x == null)
-                    return y == null;
-                if (x == null)
-                    return y == null;
-                return x.Identifier.Id.Equals(y.Identifier.Id);
-            }
-
-            int IEqualityComparer<PartyRole>.GetHashCode(PartyRole obj) {
-                if (obj == null)
-                    return 0;
-                return obj.Identifier.Id.GetHashCode();
-            }
-
-            #endregion
-        }
-        public readonly static IEqualityComparer<PartyRole> UniqueIdentifierComparer = new UniqueIdentifierEqualityComparer();
-
-        #endregion
-
         #region Fields
 
-        private readonly Party _party;
-        private readonly PartyRoleIdentifier _identifier;
-        internal readonly List<PartyRelationship> _relationships;
-        private WeightedPreferenceCollection _preferences;
         private readonly List<AssignedResponsability> _assignedResponsabilities;
 
         #endregion
@@ -84,11 +50,10 @@ namespace WmcSoft.Business.PartyModel
         protected PartyRole(Party party) {
             CheckConstraints(party);
 
-            _party = party;
-            _identifier = new PartyRoleIdentifier();
-            _party.Roles.Add(this);
+            Party = party;
+            party.Roles.Add(this);
 
-            _relationships = new List<PartyRelationship>();
+            Relationships = new List<PartyRelationship>();
             _assignedResponsabilities = new List<AssignedResponsability>();
         }
 
@@ -111,38 +76,22 @@ namespace WmcSoft.Business.PartyModel
 
         #endregion
 
+        #region Traits
+
+        public virtual string Name {
+            get { return RM.GetInheritedName(GetType()); }
+        }
+
+        public virtual string Description {
+            get { return RM.GetInheritedDescription(GetType()); }
+        }
+
+        #endregion
+
         #region Properties
 
-        public abstract string Name { get; }
-
-        public abstract string Description { get; }
-
-        public Party Party {
-            get { return _party; }
-        }
-
-        public PartyRoleIdentifier Identifier {
-            get { return _identifier; }
-        }
-
-        public ICollection<PartyRelationship> Relationships {
-            get {
-                return _relationships;
-            }
-        }
-
-        public WeightedPreferenceCollection Preferences {
-            get {
-                if (_preferences == null) {
-                    lock (_identifier) {
-                        if (_preferences == null) {
-                            _preferences = new WeightedPreferenceCollection();
-                        }
-                    }
-                }
-                return _preferences;
-            }
-        }
+        public virtual Party Party { get; private set; }
+        public virtual ICollection<PartyRelationship> Relationships { get; internal set; }
 
         public virtual RuleSet RequirementsForRole {
             get { return RuleSet.Empty; }

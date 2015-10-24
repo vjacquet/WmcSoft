@@ -46,5 +46,18 @@ namespace WmcSoft.Numerics.Tests
             var actual = v.ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanMultiplyWithMatrix() {
+            var v = new Vector(1, 2, 3);
+            var m = new Matrix(new double[,] {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+            });
+            var actual = m * v;
+            var expected = new Vector(14, 32, 50);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

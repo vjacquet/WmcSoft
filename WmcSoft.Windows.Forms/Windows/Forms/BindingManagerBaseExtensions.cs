@@ -25,10 +25,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
@@ -40,6 +37,18 @@ namespace WmcSoft.Windows.Forms
                 return null;
             var props = cm.GetItemProperties();
             return props.Find(name, ignoreCase);
+        }
+
+        public static int RemoveIf(this ControlBindingsCollection bindings, Predicate<Binding> predicate) {
+            int count = 0;
+            for (int i = bindings.Count - 1; i >= 0; i--) {
+                var binding = bindings[i];
+                if (predicate(binding)) {
+                    bindings.RemoveAt(i);
+                    count++;
+                }
+            }
+            return count;
         }
     }
 }

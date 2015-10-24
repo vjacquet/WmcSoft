@@ -34,16 +34,10 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public abstract class Organization : Party
     {
-        #region Fields
-
-        List<OrganizationName> _otherOrganizationNames;
-
-        #endregion
-
         #region Lifecycle
 
         public Organization() {
-            _otherOrganizationNames = new List<OrganizationName>();
+            OtherOrganizationNames = new List<OrganizationName>();
         }
 
         public Organization(OrganizationName organizationName)
@@ -60,12 +54,7 @@ namespace WmcSoft.Business.PartyModel
         #region Properties
 
         public OrganizationName OrganizationName { get; set; }
-
-        public ICollection<OrganizationName> OtherOrganizationNames {
-            get {
-                return _otherOrganizationNames;
-            }
-        }
+        public virtual ICollection<OrganizationName> OtherOrganizationNames { get; private set; }
 
         #endregion
     }

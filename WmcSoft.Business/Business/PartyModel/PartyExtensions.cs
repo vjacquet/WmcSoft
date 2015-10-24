@@ -42,6 +42,7 @@ namespace WmcSoft.Business.PartyModel
 
         public static R AddRole<R>(this Party party) where R : PartyRole {
             var role = (R)Activator.CreateInstance(typeof(R), party);
+            role.Id = Guid.NewGuid();
             return role;
         }
 
@@ -53,8 +54,8 @@ namespace WmcSoft.Business.PartyModel
         }
 
         public static bool HasRole<R>(this Party party) where R : PartyRole {
-            var role = party.Roles.OfType<R>().FirstOrDefault();
-            return role != null;
+            var hasRole = party.Roles.OfType<R>().Any();
+            return hasRole;
         }
 
         public static bool HasRole<R>(this Party party, Party other) where R : PartyRole {

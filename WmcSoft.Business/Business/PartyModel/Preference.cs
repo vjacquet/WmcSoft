@@ -42,7 +42,7 @@ namespace WmcSoft.Business.PartyModel
         #endregion
 
         #region Lifecycle
-        
+
         protected Preference(string name, string description) {
             _name = name;
             _description = description;
@@ -65,9 +65,7 @@ namespace WmcSoft.Business.PartyModel
         #region Overridables
 
         public abstract string Name { get; }
-
         public abstract string Description { get; }
-
         public abstract IEnumerable<Preference> Options { get; }
 
         #endregion

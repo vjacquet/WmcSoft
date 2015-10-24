@@ -26,12 +26,14 @@
 
 using System;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents a noame for an Organization
     /// </summary>
-    public class OrganizationName : ITemporal
+    public class OrganizationName : DomainObject<TKey>, ITemporal
     {
         #region Lifecycle
 
@@ -48,7 +50,6 @@ namespace WmcSoft.Business.PartyModel
         #region Properties
 
         public string Name { get; set; }
-
         public OrganizationalNameUse Use { get; set; }
 
         #endregion
@@ -56,7 +57,6 @@ namespace WmcSoft.Business.PartyModel
         #region ITemporal Members
 
         public DateTime? ValidSince { get; set; }
-
         public DateTime? ValidUntil { get; set; }
 
         #endregion

@@ -50,14 +50,11 @@ namespace WmcSoft.Collections
         }
 
         public static TSource[] Mask<TSource>(this BitArray mask, IReadOnlyList<TSource> x, IReadOnlyList<TSource> y) {
-            if (x == null)
-                throw new ArgumentNullException("x");
-            if (mask.Count != x.Count)
-                throw new ArgumentException("x");
-            if (y == null)
-                throw new ArgumentNullException("y");
-            if (mask.Count != y.Count)
-                throw new ArgumentException("y");
+            if (x == null) throw new ArgumentNullException("x");
+            if (mask.Count != x.Count) throw new ArgumentException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            if (mask.Count != y.Count) throw new ArgumentException("y");
+
             var result = new TSource[mask.Count];
             for (int i = 0; i < mask.Count; i++) {
                 if (mask.Get(i))
@@ -69,11 +66,11 @@ namespace WmcSoft.Collections
         }
 
         public static TSource[] Mask<TSource>(this BitArray mask, IList<TSource> x, IList<TSource> y) {
-            return Mask<TSource>(mask, x.AsReadOnly(), y.AsReadOnly());
+            return Mask(mask, x.AsReadOnly(), y.AsReadOnly());
         }
 
         public static string Mask(this BitArray mask, string x, string y) {
-            return new String(Mask<char>(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
+            return new String(Mask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
         }
 
         public static bool All(this BitArray bits) {

@@ -53,13 +53,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnCell() {
-            var x = new[, ,] {
+            var x = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[, ,] {
+            var y = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {99, 35, 36} },
@@ -72,17 +72,17 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnRank() {
-            var x = new[, ,] {
+            var x = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
             var y = new[,] {
-                {11, 12, 13}, 
-                {21, 22, 23}, 
-                {31, 32, 33}, 
-                {41, 42, 43}, 
+                {11, 12, 13},
+                {21, 22, 23},
+                {31, 32, 33},
+                {41, 42, 43},
             };
 
             var comparer = new ArrayEqualityComparer<int>();
@@ -91,13 +91,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnDimensions() {
-            var x = new[, ,] {
+            var x = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[, ,] {
+            var y = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -139,6 +139,24 @@ namespace WmcSoft.Collections.Generic
             IList<int> list = new List<int>(sequence);
             var actual = list.ConvertAll(x => x * x);
             Assert.IsInstanceOfType(actual, typeof(IList<int>));
+        }
+
+        [TestMethod]
+        public void CheckRemoveIfOnList() {
+            var sequence = new List<int> { 1, 2, 3, 4, 5 };
+            var count = sequence.RemoveIf(i => i % 2 == 1);
+            Assert.AreEqual(3, count);
+            var expected = new[] { 2, 4 };
+            CollectionAssert.AreEqual(expected, sequence);
+        }
+
+        [TestMethod]
+        public void CheckRemoveIfOnCollection() {
+            var sequence = new SortedSet<int> { 1, 2, 3, 4, 5 };
+            var count = sequence.RemoveIf(i => i % 2 == 1);
+            Assert.AreEqual(3, count);
+            var expected = new[] { 2, 4 };
+            CollectionAssert.AreEqual(expected, sequence);
         }
     }
 }

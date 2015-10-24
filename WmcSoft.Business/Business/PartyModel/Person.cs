@@ -26,7 +26,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+
+using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -35,16 +36,10 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class Person : Party
     {
-        #region Fields
-
-        List<PersonName> _otherPersonNames;
-
-        #endregion
-
         #region Lifecycle
 
         public Person() {
-            _otherPersonNames = new List<PersonName>();
+            OtherPersonNames = new List<PersonName>();
         }
 
         public Person(PersonName name)
@@ -61,33 +56,12 @@ namespace WmcSoft.Business.PartyModel
         #region Properties
 
         public DateTime DateOfBirth { get; set; }
-
         public DateTime? DateOfDeath { get; set; }
-
         public PersonName PersonName { get; set; }
-
-        public ICollection<PersonName> OtherPersonNames {
-            get {
-                return _otherPersonNames;
-            }
-        }
-
-        [DefaultValue(typeof(Gender), "NotKnown")]
+        public ICollection<PersonName> OtherPersonNames { get; private set; }
         public Gender Gender { get; set; }
-
         public Ethnicity Ethnicity { get; set; }
-
         public BodyMetrics BodyMetrics { get; set; }
-
-        #endregion
-
-        #region Overrides
-
-        public override string Name {
-            get {
-                return PersonName.PreferredName;
-            }
-        }
 
         #endregion
     }

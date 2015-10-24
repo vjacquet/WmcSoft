@@ -25,8 +25,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
+
+using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -34,25 +34,41 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents a unique identifier for a PartyRole.
     /// </summary>
-    public class PartyRoleIdentifier : IUniqueIdentifier<Guid>
+    public struct PartyRoleIdentifier : IUniqueIdentifier<TKey>
     {
         #region Fields
 
-        readonly Guid _id;
+        readonly TKey _id;
 
         #endregion
 
         #region Lifecycle
 
-        public PartyRoleIdentifier() {
-            _id = Guid.NewGuid();
+        public PartyRoleIdentifier(TKey id) {
+            _id = id;
+        }
+
+        #endregion
+
+        #region Operators & conversions 
+
+        public static explicit operator PartyRoleIdentifier(PartyRole partyRole) {
+            return partyRole.Id;
+        }
+
+        public static implicit operator PartyRoleIdentifier(TKey id) {
+            return new PartyRoleIdentifier(id);
+        }
+
+        public static implicit operator TKey(PartyRoleIdentifier id) {
+            return id.Id;
         }
 
         #endregion
 
         #region IUniqueIdentifier<string> Membres
 
-        public Guid Id {
+        public TKey Id {
             get { return _id; }
         }
 
@@ -62,6 +78,14 @@ namespace WmcSoft.Business.PartyModel
 
         public bool Equals(Guid other) {
             return _id == other;
+        }
+
+        #endregion
+
+        #region Overidables
+
+        public override string ToString() {
+            return _id.ToString();
         }
 
         #endregion

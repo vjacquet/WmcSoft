@@ -135,19 +135,15 @@ namespace WmcSoft.Text
         #endregion
 
         private readonly string _unknown;
-        private readonly Encoding _parentEncoding;
 
         public EncoderBestFitFallback(Encoding targetEncoding, string unknown = "?") {
-            _parentEncoding = (Encoding)targetEncoding.Clone();
-            _parentEncoding.EncoderFallback = new EncoderReplacementFallback("");
-            _parentEncoding.DecoderFallback = new DecoderReplacementFallback("");
+            ParentEncoding = (Encoding)targetEncoding.Clone();
+            ParentEncoding.EncoderFallback = new EncoderReplacementFallback("");
+            ParentEncoding.DecoderFallback = new DecoderReplacementFallback("");
             _unknown = unknown;
         }
 
-        public Encoding ParentEncoding {
-            get { return _parentEncoding; }
-        }
-
+        public Encoding ParentEncoding { get; }
         public override int MaxCharCount {
             get { return 18; }
         }
@@ -156,6 +152,4 @@ namespace WmcSoft.Text
             return new EncoderBestFitFallbackBuffer(this, _unknown);
         }
     }
-
-
 }

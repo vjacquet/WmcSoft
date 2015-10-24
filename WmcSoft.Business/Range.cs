@@ -87,9 +87,7 @@ namespace WmcSoft
         #region Properties
 
         public bool IsEmpty {
-            get {
-                return Upper.CompareTo(Lower) == 0;
-            }
+            get { return Upper.CompareTo(Lower) == 0; }
         }
 
         #endregion
@@ -122,8 +120,8 @@ namespace WmcSoft
         }
 
         public bool Overlaps(Range<T> other) {
-            return (this.IsLower(other.Upper) && this.Includes(other.Lower))
-            || (this.IsUpper(other.Lower) && this.Includes(other.Upper));
+            return (IsLower(other.Upper) && Includes(other.Lower))
+            || (IsUpper(other.Lower) && Includes(other.Upper));
         }
 
         public bool IsDistinct(Range<T> other) {
@@ -132,7 +130,7 @@ namespace WmcSoft
 
         public Range<T> GapBetween(Range<T> other) {
             if (Overlaps(other))
-                return Range<T>.Empty;
+                return Empty;
             else if (this < other)
                 return new Range<T>(Upper, other.Lower);
             else
@@ -151,6 +149,7 @@ namespace WmcSoft
         }
 
         private static bool IsContiguous(IList<Range<T>> list) {
+            // requires list is sorted
             for (int i = 1; i < list.Count; i++) {
                 if (!list[i - 1].IsAdjacent(list[i]))
                     return false;
@@ -167,6 +166,7 @@ namespace WmcSoft
         }
 
         private static Range<T> Merge(IList<Range<T>> list) {
+            // requires list is sorted
             return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
         }
 
@@ -175,7 +175,7 @@ namespace WmcSoft
             list.Sort();
             if (!IsContiguous(list))
                 return false;
-            return this.Equals(Merge(list));
+            return Equals(Merge(list));
         }
 
         #endregion
@@ -186,7 +186,7 @@ namespace WmcSoft
         /// Returns a string representation of the range. The string representation of the range is
         /// of the form:
         /// <enumerable>[{0}, {1}]</enumerable>
-        /// where {0} is the isBusy of First.ToString(), and {1} is the isBusy of Second.ToString() (or
+        /// where {0} is the result of First.ToString(), and {1} is the result of Second.ToString() (or
         /// empty if they are null.)
         /// </summary>
         /// <returns> The string representation of the range.</returns>
@@ -368,5 +368,19 @@ namespace WmcSoft
         }
 
         #endregion
+    }
+
+    public static class Range
+    {
+        public static Range<T> Create<T>(T x, T y)
+            where T : IComparable<T> {
+            return new Range<T>(x, y);
+        }
+
+        public static Range<T> Inflate<T, O>(this Range<T> range, int delta, O ordinal)
+            where T : IComparable<T>
+            where O : IOrdinal<T> {
+            return new Range<T>(ordinal.Advance(range.Lower, -delta), ordinal.Advance(range.Upper, delta));
+        }
     }
 }

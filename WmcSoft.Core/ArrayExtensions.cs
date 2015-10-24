@@ -40,45 +40,6 @@ namespace WmcSoft
 
         #endregion
 
-        #region Sort methods
-
-        /// <summary>
-        /// Sorts the elements in an entire Array using the <see cref="IComparable&lt;T&gt;"/> generic interface implementation of each element of the Array.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the array.</typeparam>
-        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <returns>The one-dimensional, zero-based sorted Array</returns>
-        public static T[] Sort<T>(this T[] array) {
-            Array.Sort(array);
-            return array;
-        }
-
-        /// <summary>
-        /// Sorts the elements in an Array using the specified <see cref="Comparison&lt;T&gt;"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the array.</typeparam>
-        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparison">The <see cref="Comparison&lt;T&gt;"/> to use when comparing elements.</param>
-        /// <returns>The one-dimensional, zero-based sorted Array</returns>
-        public static T[] Sort<T>(this T[] array, Comparison<T> comparison) {
-            Array.Sort(array, comparison);
-            return array;
-        }
-
-        /// <summary>
-        /// Sorts the elements in an Array using the specified <see cref="IComparer&lt;T&gt;"/> generic interface.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the array.</typeparam>
-        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparer">The <see cref="IComparer&lt;T&gt;"/> generic interface implementation to use when comparing elements, or null to use the IComparable<T> generic interface implementation of each element.</param>
-        /// <returns>The one-dimensional, zero-based sorted Array</returns>
-        public static T[] Sort<T>(this T[] array, IComparer<T> comparer) {
-            Array.Sort(array, comparer);
-            return array;
-        }
-
-        #endregion
-
         #region ConvertAll
 
         /// <summary>
@@ -211,12 +172,41 @@ namespace WmcSoft
 
         #endregion
 
-        #region SwapItems
+        #region Sort methods
 
-        public static void SwapItems<T>(this T[] array, int i, int j) {
-            var t = array[i];
-            array[i] = array[j];
-            array[j] = t;
+        /// <summary>
+        /// Sorts the elements in an entire Array using the <see cref="IComparable&lt;T&gt;"/> generic interface implementation of each element of the Array.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the array.</typeparam>
+        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
+        /// <returns>The one-dimensional, zero-based sorted Array</returns>
+        public static T[] Sort<T>(this T[] array) {
+            Array.Sort(array);
+            return array;
+        }
+
+        /// <summary>
+        /// Sorts the elements in an Array using the specified <see cref="Comparison&lt;T&gt;"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the array.</typeparam>
+        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
+        /// <param name="comparison">The <see cref="Comparison&lt;T&gt;"/> to use when comparing elements.</param>
+        /// <returns>The one-dimensional, zero-based sorted Array</returns>
+        public static T[] Sort<T>(this T[] array, Comparison<T> comparison) {
+            Array.Sort(array, comparison);
+            return array;
+        }
+
+        /// <summary>
+        /// Sorts the elements in an Array using the specified <see cref="IComparer&lt;T&gt;"/> generic interface.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the array.</typeparam>
+        /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
+        /// <param name="comparer">The <see cref="IComparer&lt;T&gt;"/> generic interface implementation to use when comparing elements, or null to use the IComparable<T> generic interface implementation of each element.</param>
+        /// <returns>The one-dimensional, zero-based sorted Array</returns>
+        public static T[] Sort<T>(this T[] array, IComparer<T> comparer) {
+            Array.Sort(array, comparer);
+            return array;
         }
 
         #endregion

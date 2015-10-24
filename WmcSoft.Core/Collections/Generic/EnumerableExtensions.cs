@@ -487,6 +487,31 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region None
+
+        /// <summary>
+        /// Determines whether a sequence contains no element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">The <see cref="IEnumerable{TSource}"/> to check for emptiness.</param>
+        /// <returns>true if the source sequence is empty; otherwise, false.</returns>
+        public static bool None<TSource>(this IEnumerable<TSource> source) {
+            return !source.Any();
+        }
+
+        /// <summary>
+        /// Determines whether no element of a sequence satisfies a condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{TSource}"/> whose elements to apply the predicate to.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns>true if no element in the source sequence pass the test in the specified predicate, or if the sequence is empty; otherwise, false.</returns>
+        public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) {
+            return !source.Any(predicate);
+        }
+
+        #endregion
+
         #region Quorum & Elected
 
         /// <summary>

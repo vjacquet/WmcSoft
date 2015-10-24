@@ -37,7 +37,6 @@ namespace WmcSoft.Business.PartyModel
         public static readonly ResponsabilityAttribute Default = new ResponsabilityAttribute();
 
         private readonly string _typeName;
-        private readonly RegistrationPolicy _policy;
 
         [NonSerialized]
         private Type _type;
@@ -50,13 +49,13 @@ namespace WmcSoft.Business.PartyModel
 
         public ResponsabilityAttribute(string typeName, RegistrationPolicy policy = RegistrationPolicy.Optional) {
             _typeName = typeName;
-            _policy = policy;
+            Policy = policy;
         }
 
         public ResponsabilityAttribute(Type type, RegistrationPolicy policy = RegistrationPolicy.Optional) {
             _type = type;
             _typeName = type.AssemblyQualifiedName;
-            _policy = policy;
+            Policy = policy;
         }
 
         public Responsability Responsability {
@@ -71,8 +70,6 @@ namespace WmcSoft.Business.PartyModel
             }
         }
 
-        public RegistrationPolicy Policy {
-            get { return _policy; }
-        }
+        public RegistrationPolicy Policy { get; }
     }
 }

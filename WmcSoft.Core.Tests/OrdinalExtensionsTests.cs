@@ -50,5 +50,14 @@ namespace WmcSoft
 
             CollectionAssert.AreEquivalent(expected, actual);
         }
+
+        [TestMethod]
+        public void ChechYearOrdinal() {
+            YearOrdinal ordinal;
+
+            var expected = new DateTime(2017, 02, 28);
+            var actual = ordinal.Advance(new DateTime(2016, 02, 29), 1);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

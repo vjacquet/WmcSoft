@@ -27,6 +27,8 @@
 using System;
 using System.Collections.Generic;
 
+using TKey = System.Guid;
+
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
@@ -34,93 +36,42 @@ namespace WmcSoft.Business.PartyModel
     /// and that normally has autonomous control over (at least some of) its
     /// actions.
     /// </summary>
-    public abstract class Party
+    public abstract class Party : DomainObject<TKey>
     {
-        #region Fields
-
-        readonly List<AddressProperties> _addresses;
-        readonly List<RegisteredIdentifier> _registeredIdentifiers;
-        readonly List<PartyAuthentication> _partyAuthentications;
-        readonly HashSet<PartyRole> _roles;
-        WeightedPreferenceCollection _preferences;
-
-        #endregion
-
         #region Lifecycle
 
-        protected Party()
-            : this(new PartyIdentifier()) {
+        protected Party() {
+            Addresses = new List<AddressProperties>();
+            RegisteredIdentifiers = new List<RegisteredIdentifier>();
+            Roles = new HashSet<PartyRole>(UniqueIdentifierComparer);
         }
 
-        protected Party(PartyIdentifier identifier) {
-            _addresses = new List<AddressProperties>();
-            _registeredIdentifiers = new List<RegisteredIdentifier>();
-            _partyAuthentications = new List<PartyAuthentication>();
+        protected Party(TKey identifier) : this() {
             Id = identifier;
-            _roles = new HashSet<PartyRole>(PartyRole.UniqueIdentifierComparer);
         }
 
         #endregion
 
-        public PartyIdentifier Id {
-            get; set;
-        }
-
-        public ICollection<RegisteredIdentifier> RegisteredIdentifiers {
-            get { return _registeredIdentifiers; }
-        }
-
-        public ICollection<PartyAuthentication> PartyAuthentications {
-            get { return _partyAuthentications; }
-        }
+        #region Traits
 
         public virtual string Name {
-            get {
-                // crawl the hierarchy of types to find a name
-                var type = GetType();
-                while (type != typeof(Party)) {
-                    var name = RM.GetName(type);
-                    if (!String.IsNullOrEmpty(name))
-                        return name;
-                }
-                return null;
-            }
+            get { return RM.GetInheritedName(GetType()); }
         }
 
         public virtual string Description {
-            get {
-                var type = GetType();
-                while (type != typeof(Party)) {
-                    // crawl the hierarchy of types to find a name
-                    // then get the associated description
-                    var name = RM.GetName(type);
-                    if (!String.IsNullOrEmpty(name))
-                        return RM.GetDescription(type);
-                }
-                return null;
-            }
+            get { return RM.GetInheritedDescription(GetType()); }
         }
 
-        public ICollection<AddressProperties> Addresses {
-            get { return _addresses; }
-        }
+        #endregion
 
-        public ICollection<PartyRole> Roles {
-            get { return _roles; }
-        }
+        #region Properties
 
-        readonly object syncRoot = new object();
-        public WeightedPreferenceCollection Preferences {
-            get {
-                if (_preferences == null) {
-                    lock (syncRoot) {
-                        if (_preferences == null) {
-                            _preferences = new WeightedPreferenceCollection();
-                        }
-                    }
-                }
-                return _preferences;
-            }
-        }
+        public virtual ICollection<RegisteredIdentifier> RegisteredIdentifiers { get; private set; }
+
+        public virtual ICollection<AddressProperties> Addresses { get; private set; }
+
+        public virtual ICollection<PartyRole> Roles { get; private set; }
+
+        #endregion
     }
 }

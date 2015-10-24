@@ -68,10 +68,10 @@ namespace WmcSoft.Numerics
             return new Rational(x, 1);
         }
         public static Rational FromInt32(int x) {
-            return (Rational)x;
+            return x;
         }
 
-        public static explicit operator int(Rational q) {
+        public static explicit operator int (Rational q) {
             if (q._denominator == 1)
                 return q._numerator;
             if (q._numerator % q._denominator == 0)
@@ -139,14 +139,12 @@ namespace WmcSoft.Numerics
         }
 
         public static int GreatestCommonDivisor(int m, int n) {
-            if (m == 0)
-                throw new ArgumentOutOfRangeException("m");
-            else if (m < 0)
-                m = -m;
+            if (m == 0) throw new ArgumentOutOfRangeException("m");
+            if (n == 0) throw new ArgumentOutOfRangeException("n");
 
-            if (n == 0)
-                throw new ArgumentOutOfRangeException("n");
-            else if (n < 0)
+            if (m < 0)
+                m = -m;
+            if (n < 0)
                 n = -n;
 
             while (n != 0) {

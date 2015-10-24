@@ -36,7 +36,6 @@ namespace WmcSoft.Business.Accounting
         #region Fields
 
         private readonly Money _money;
-        private readonly PaymentMethod _method;
 
         #endregion
 
@@ -48,7 +47,7 @@ namespace WmcSoft.Business.Accounting
 
         public Payment(Money money, PaymentMethod method) {
             _money = money;
-            _method = method;
+            PaidBy = method;
         }
 
         #endregion
@@ -64,7 +63,7 @@ namespace WmcSoft.Business.Accounting
         }
 
         public PaymentMethod PaidBy {
-            get { return _method; }
+            get;
         }
 
         /// <summary>
