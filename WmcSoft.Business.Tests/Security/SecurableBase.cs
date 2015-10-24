@@ -33,6 +33,7 @@ namespace WmcSoft.Security
         protected SecurableBase() {
             _accessControl = new AccessControl();
         }
+
         #region ISecurable Members
 
         public AccessControl AccessControl {

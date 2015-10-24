@@ -23,6 +23,5 @@ namespace WmcSoft.Reflection
             var actual = m.EnumerateDefinitions().Select(d => d.DeclaringType).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
-
     }
 }
