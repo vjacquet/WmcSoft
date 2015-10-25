@@ -26,9 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WmcSoft.Properties;
 
 namespace WmcSoft.Numerics
 {
@@ -38,12 +35,9 @@ namespace WmcSoft.Numerics
     [Serializable]
     public struct Vector3 : IEquatable<Vector3>, IReadOnlyList<double>, IFormattable
     {
-        struct Tag { };
-        static readonly Tag Uninitialized = new Tag();
-
         const int N = 3;
 
-        public readonly static Vector3 Zero = new Vector3(Uninitialized);
+        public readonly static Vector3 Zero = new Vector3(0, 0, 0);
         public readonly static Vector3 One = new Vector3(1, 1, 1);
 
         #region Fields
@@ -53,10 +47,6 @@ namespace WmcSoft.Numerics
         #endregion
 
         #region Lifecycle
-
-        private Vector3(Tag tag) {
-            _data = new double[N];
-        }
 
         public Vector3(Func<int, double> generator) : this(generator(0), generator(1), generator(2)) {
         }
@@ -78,7 +68,8 @@ namespace WmcSoft.Numerics
         #region Operators
 
         public static explicit operator double[] (Vector3 x) {
-            return x._data == null ? new double[3] : (double[])x._data.Clone();
+            var data = x._data ?? Zero._data;
+            return (double[])data.Clone();
         }
         public static double[] ToArray(Vector3 x) {
             return (double[])x;
@@ -174,8 +165,17 @@ namespace WmcSoft.Numerics
         #region IEquatable<Vector3> Membres
 
         public bool Equals(Vector3 other) {
-            var x = _data ?? Zero._data;
-            var y = other._data ?? Zero._data;
+            var x = _data;
+            var y = _data;
+            if (_data == null) {
+                if (other._data == null)
+                    return true;
+                x = Zero._data;
+            } else if (other._data == null) {
+                y = Zero._data;
+            }
+            if (ReferenceEquals(x, y))
+                return true;
             return x[0].Equals(y[0]) && x[1].Equals(y[1]) && x[2].Equals(y[2]);
         }
 
@@ -222,24 +222,13 @@ namespace WmcSoft.Numerics
         public override string ToString() {
             return ToString(null, null);
         }
+
         public string ToString(IFormatProvider formatProvider) {
             return ToString(null, formatProvider);
         }
+
         public string ToString(string format, IFormatProvider formatProvider = null) {
-            if (_data == null)
-                return "[0,0,0]";
-            var length = _data.Length;
-            var values = Array.ConvertAll(_data, x => x.ToString(format, formatProvider));
-            var capacity = values.Sum(x => x.Length + 2);
-            var sb = new StringBuilder(capacity);
-            sb.Append('[');
-            sb.Append(values[0]);
-            for (int i = 1; i < length; i++) {
-                sb.Append("  ");
-                sb.Append(values[i]);
-            }
-            sb.Append(']');
-            return sb.ToString();
+            return NumericsUtilities.FormatVector(_data ?? Zero._data, format, formatProvider);
         }
 
         #endregion

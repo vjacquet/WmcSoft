@@ -51,7 +51,8 @@ namespace WmcSoft.Numerics
                 data = new double[m * n];
             }
 
-            public Dimensions Size { get { return data == null ? Dimensions.Empty : new Dimensions(m, n); } }
+            public int Length { get { return data.Length; } }
+            public Dimensions Size { get { return new Dimensions(m, n); } }
         }
 
         #region Fields
@@ -82,25 +83,24 @@ namespace WmcSoft.Numerics
 
         public Matrix(int m, int n, double value)
             : this(m, n) {
-            var length = _storage.data.Length;
-            for (int i = 0; i < length; i++) {
-                _storage.data[i] = value;
-            }
+            NumericsUtilities.CopyValue(_storage.data, value);
         }
 
         public Matrix(double[,] values)
             : this(values.GetLength(0), values.GetLength(1)) {
             var k = 0;
+            var data = _storage.data;
             foreach (var value in values) {
-                _storage.data[k++] = value;
+                data[k++] = value;
             }
         }
 
         public static Matrix Identity(int n) {
             var result = new Matrix(n);
-            var length = result._storage.data.Length;
+            var data = result._storage.data;
+            var length = data.Length;
             for (int i = 0; i < length; i += n + 1) {
-                result._storage.data[i] = 1d;
+                data[i] = 1d;
             }
             return result;
         }
@@ -180,7 +180,7 @@ namespace WmcSoft.Numerics
             var data = result._storage.data;
             var length = data.Length;
             for (int i = 0; i < length; i += n + 1) {
-                result._storage.data[i] = op(x, y);
+                data[i] = op(x, y);
             }
             return result;
         }
@@ -233,10 +233,20 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
-        public int Rank { get { return _storage.data == null ? 0 : 2; } }
-        public int Cardinality { get { return _storage.data == null ? 0 : _storage.data.Length; } }
-        public Dimensions Size { get { return _storage.Size; } }
-        public double this[int i, int j] { get { return _storage.data[i * _storage.n + j]; } }
+        public int Rank { get { return _storage == null ? 0 : 2; } }
+        public int Cardinality { get { return _storage == null ? 0 : _storage.Length; } }
+        public Dimensions Size { get { return _storage == null ? Dimensions.Empty : _storage.Size; } }
+
+        public double this[int i, int j] {
+            get {
+                try {
+                    return _storage.data[i * _storage.n + j];
+                }
+                catch (NullReferenceException) {
+                    throw new IndexOutOfRangeException();
+                }
+            }
+        }
 
         public IReadOnlyList<double> Row(int i) {
             if (_storage == null)
@@ -401,7 +411,7 @@ namespace WmcSoft.Numerics
             if (v.Cardinality != n)
                 throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "v");
             if (w.Cardinality != n)
-                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError,"w");
+                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "w");
 
             var m = _storage.m;
             var result = new Vector(w._data);
