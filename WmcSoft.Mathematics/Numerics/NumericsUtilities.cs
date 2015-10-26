@@ -6,6 +6,13 @@ namespace WmcSoft.Numerics
 {
     static class NumericsUtilities
     {
+        #region Tags
+
+        public struct UninitializedTag { }
+        public static readonly UninitializedTag Uninitialized = default(UninitializedTag);
+
+        #endregion
+
         public static string FormatVector<T>(T[] v, string format, IFormatProvider formatProvider)
              where T : IFormattable {
             var length = v.Length;

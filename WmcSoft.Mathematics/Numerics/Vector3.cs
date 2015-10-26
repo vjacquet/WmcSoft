@@ -37,7 +37,7 @@ namespace WmcSoft.Numerics
     {
         const int N = 3;
 
-        public readonly static Vector3 Zero = new Vector3(0, 0, 0);
+        public readonly static Vector3 Zero = new Vector3(NumericsUtilities.Uninitialized);
         public readonly static Vector3 One = new Vector3(1, 1, 1);
 
         #region Fields
@@ -48,7 +48,12 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        public Vector3(Func<int, double> generator) : this(generator(0), generator(1), generator(2)) {
+        private Vector3(NumericsUtilities.UninitializedTag tag) {
+            _data = new double[N];
+        }
+
+        public Vector3(Func<int, double> generator)
+            : this(generator(0), generator(1), generator(2)) {
         }
 
         public Vector3(double x = 0d, double y = 0d, double z = 0d) {

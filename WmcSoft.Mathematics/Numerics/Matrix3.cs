@@ -6,13 +6,9 @@ namespace WmcSoft.Numerics
     [Serializable]
     public struct Matrix3 : IEquatable<Matrix3>
     {
-        struct Tag { };
-        static readonly Tag Uninitialized = new Tag();
-
         const int N = 3;
 
-        public readonly static Matrix3 Empty;
-        public readonly static Matrix3 Zero = new Matrix3(Uninitialized);
+        public readonly static Matrix3 Zero = new Matrix3(NumericsUtilities.Uninitialized);
         public readonly static Matrix3 Identity = new Matrix3(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
         #region Fields
@@ -23,7 +19,7 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        private Matrix3(Tag tag) {
+        private Matrix3(NumericsUtilities.UninitializedTag tag) {
             _storage = new double[N * N];
         }
 
