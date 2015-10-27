@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Numerics
 {
+    /// <summary>
+    /// Represents a 3x3 matrix of <see cref="double"/>s.
+    /// </summary>
     [Serializable]
     public struct Matrix3 : IEquatable<Matrix3>
     {
@@ -94,6 +97,16 @@ namespace WmcSoft.Numerics
 
         #endregion
 
+        #region Methods
+
+        public double Det() {
+            return _storage[0] * (_storage[4] * _storage[8] - _storage[5] * _storage[7])
+                - _storage[1] * (_storage[3] * _storage[8] - _storage[5] * _storage[6])
+                + _storage[2] * (_storage[3] * _storage[7] - _storage[6] * _storage[4]);
+        }
+
+        #endregion
+
         #region Operators
 
         public static explicit operator double[,] (Matrix3 x) {
@@ -113,7 +126,7 @@ namespace WmcSoft.Numerics
         }
 
         public static Matrix3 operator +(Matrix3 x, Matrix3 y) {
-            var result = new Matrix3(Uninitialized);
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
             var length = result._storage.Length;
             for (int i = 0; i < length; i++) {
                 result._storage[i] = y._storage[i] + y._storage[i];
@@ -125,7 +138,7 @@ namespace WmcSoft.Numerics
         }
 
         public static Matrix3 operator -(Matrix3 x, Matrix3 y) {
-            var result = new Matrix3(Uninitialized);
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
             var length = result.Cardinality;
             for (int i = 0; i < length; i++) {
                 result._storage[i] = y._storage[i] - y._storage[i];
@@ -138,7 +151,7 @@ namespace WmcSoft.Numerics
 
         public static Matrix3 operator *(Matrix3 x, Matrix3 y) {
             var k = 0;
-            var result = new Matrix3(Uninitialized);
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
             for (int j = 0; j < N; j++) {
                 for (int i = 0; i < N; i++) {
                     result._storage[k++] = Vector.DotProductNotEmpty(N, x.Row(i).GetEnumerator(), y.Column(j).GetEnumerator());
@@ -171,7 +184,7 @@ namespace WmcSoft.Numerics
 
         public static Matrix3 operator *(double scalar, Matrix3 matrix) {
             var length = matrix.Cardinality;
-            var result = new Matrix3(Uninitialized);
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
             for (int i = 0; i < length; i++) {
                 result._storage[i] = scalar * matrix._storage[i];
             }
@@ -183,7 +196,7 @@ namespace WmcSoft.Numerics
 
         public static Matrix3 operator *(Matrix3 matrix, double scalar) {
             var length = matrix.Cardinality;
-            var result = new Matrix3(Uninitialized);
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
             for (int i = 0; i < length; i++) {
                 result._storage[i] = scalar * matrix._storage[i];
             }
@@ -195,7 +208,7 @@ namespace WmcSoft.Numerics
 
         public static Matrix3 operator /(Matrix3 matrix, double scalar) {
             var length = matrix.Cardinality;
-            var result = new Matrix3(Uninitialized);
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
             for (int i = 0; i < length; i++) {
                 result._storage[i] = matrix._storage[i] / scalar;
             }

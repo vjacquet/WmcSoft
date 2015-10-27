@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// Represents a Vector3.
+    /// Represents a vector of 3 <see cref="double"/>s.
     /// </summary>
     [Serializable]
     public struct Vector3 : IEquatable<Vector3>, IReadOnlyList<double>, IFormattable

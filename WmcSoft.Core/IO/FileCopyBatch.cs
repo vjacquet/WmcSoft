@@ -66,7 +66,7 @@ namespace WmcSoft.IO
             if (_impersonator!=null) {
                 return _impersonator();
             }
-            return Disposer.Empty;
+            return Disposable.Empty;
         }
 
         /// <summary>

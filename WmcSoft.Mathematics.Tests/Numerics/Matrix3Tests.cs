@@ -147,5 +147,17 @@ namespace WmcSoft.Numerics.Tests
             var actual = x * y;
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanComputeDet() {
+            var x = new Matrix3(new double[,] {
+                {1, 2, 3},
+                {0, 1, 4},
+                {5, 6, 0},
+            });
+            var expected = 1d;
+            var actual = x.Det();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

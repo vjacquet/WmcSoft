@@ -32,7 +32,7 @@ using WmcSoft.Properties;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// Represents a vector.
+    /// Represents a vector of <see cref="double"/>s.
     /// </summary>
     [Serializable]
     public struct Vector : IEquatable<Vector>, IReadOnlyList<double>, IFormattable

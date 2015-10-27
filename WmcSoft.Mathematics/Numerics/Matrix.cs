@@ -31,7 +31,7 @@ using WmcSoft.Properties;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// Represents a matrix.
+    /// Represents a matrix of <see cref="double"/>s.
     /// </summary>
     /// <remarks>See [http://en.wikipedia.org/wiki/Matrix_(mathematics)]</remarks>
     [Serializable]

@@ -34,21 +34,6 @@ namespace WmcSoft
     /// </summary>
     public sealed class Disposer : IDisposable
     {
-        #region EmptyDisposable
-
-        class EmptyDisposable : IDisposable
-        {
-            #region IDisposable Membres
-
-            public void Dispose() {
-            }
-
-            #endregion
-        }
-        public static IDisposable Empty = new EmptyDisposable();
-
-        #endregion
-
         #region Fields
 
         Action _action;
@@ -69,7 +54,6 @@ namespace WmcSoft
             var action = Interlocked.Exchange(ref _action, null);
             if (action != null)
                 action();
-            GC.SuppressFinalize(this);
         }
 
         #endregion
