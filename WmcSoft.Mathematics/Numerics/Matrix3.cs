@@ -132,7 +132,10 @@ namespace WmcSoft.Numerics
             storage[7] = -(_storage[0] * _storage[7] - _storage[6] * _storage[1]);
             storage[8] = (_storage[0] * _storage[4] - _storage[3] * _storage[1]);
 
-            m = result / det;
+            for (int i = 0; i < storage.Length; i++) {
+                storage[i] /= det;
+            }
+            m = result;
             return true;
         }
 
@@ -247,6 +250,13 @@ namespace WmcSoft.Numerics
         }
         public static Matrix3 Divide(Matrix3 matrix, double scalar) {
             return matrix / scalar;
+        }
+
+        public static Matrix3 operator /(Matrix3 x, Matrix3 y) {
+            return x * y.Inverse();
+        }
+        public static Matrix3 Divide(Matrix3 x, Matrix3 y) {
+            return x / y;
         }
 
         public static Vector3 operator *(Matrix3 m, Vector3 v) {
