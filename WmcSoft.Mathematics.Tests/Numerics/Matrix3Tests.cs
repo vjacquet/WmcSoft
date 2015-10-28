@@ -159,5 +159,21 @@ namespace WmcSoft.Numerics.Tests
             var actual = x.Det();
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanInverse() {
+            var x = new Matrix3(new double[,] {
+                {1, 2, 3},
+                {0, 1, 4},
+                {5, 6, 0},
+            });
+            var expected = new Matrix3(new double[,] {
+                {-24, 18, 5},
+                {20, -15, -4},
+                {-5, 4, 1},
+            });
+            var actual = x.Inverse();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

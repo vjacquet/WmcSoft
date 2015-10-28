@@ -105,6 +105,37 @@ namespace WmcSoft.Numerics
                 + _storage[2] * (_storage[3] * _storage[7] - _storage[6] * _storage[4]);
         }
 
+        public Matrix3 Inverse() {
+            Matrix3 result;
+            if (!TryInverse(out result))
+                throw new InvalidOperationException("Cannot inverse matrix");
+            return result;
+        }
+
+        public bool TryInverse(out Matrix3 m) {
+            var result = new Matrix3(NumericsUtilities.Uninitialized);
+            var storage = result._storage;
+            storage[0] = (_storage[4] * _storage[8] - _storage[5] * _storage[7]);
+            storage[3] = -(_storage[3] * _storage[8] - _storage[5] * _storage[6]);
+            storage[6] = (_storage[3] * _storage[7] - _storage[6] * _storage[4]);
+
+            var det = _storage[0] * storage[0] + _storage[1] * storage[3] + _storage[2] * storage[6];
+            if (det == 0d) {
+                m = default(Matrix3);
+                return false;
+            }
+
+            storage[1] = -(_storage[1] * _storage[8] - _storage[7] * _storage[2]);
+            storage[2] = (_storage[1] * _storage[5] - _storage[4] * _storage[2]);
+            storage[4] = (_storage[0] * _storage[8] - _storage[6] * _storage[2]);
+            storage[5] = -(_storage[0] * _storage[5] - _storage[3] * _storage[2]);
+            storage[7] = -(_storage[0] * _storage[7] - _storage[6] * _storage[1]);
+            storage[8] = (_storage[0] * _storage[4] - _storage[3] * _storage[1]);
+
+            m = result / det;
+            return true;
+        }
+
         #endregion
 
         #region Operators
