@@ -26,8 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace WmcSoft.Threading
@@ -36,7 +34,7 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        private Queue<IJob> _queue = new Queue<IJob>();
+        private readonly Queue<IJob> _queue = new Queue<IJob>();
 
         #endregion
 
@@ -76,9 +74,7 @@ namespace WmcSoft.Threading
         }
 
         public bool IsEmpty {
-            get {
-                return _queue.Count == 0;
-            }
+            get { return _queue.Count == 0; }
         }
 
         public void Clear(Action<IJob> action) {
@@ -94,5 +90,4 @@ namespace WmcSoft.Threading
 
         #endregion
     }
-
 }

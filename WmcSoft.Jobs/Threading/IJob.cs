@@ -1,4 +1,4 @@
-﻿#region Licence
+#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -25,38 +25,18 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace WmcSoft.Threading
 {
     /// <summary>
-    /// Defines an abstraction of a job queue.
+    /// Defines a mechanism for executing a job to dispatch using a <see cref="JobDispatcher"/>.
     /// </summary>
-    public interface IJobQueue
+    public interface IJob
     {
         /// <summary>
-        /// Enqueues the specified job.
+        /// Performs the job to be done.
         /// </summary>
-        /// <param name="job">The job.</param>
-        void Enqueue(IJob job);
-        /// <summary>
-        /// Dequeues the next job.
-        /// </summary>
-        /// <returns>A job.</returns>
-        IJob Dequeue();
-        /// <summary>
-        /// Tries to dequeue the next job.
-        /// </summary>
-        /// <param name="job">The job.</param>
-        /// <param name="timeout">The timeout.</param>
-        /// <returns><c>true</c> if a job was dequed before the specified time elapsed; otherwise, <c>false</c>.</returns>
-        bool TryDequeue(out IJob job, TimeSpan timeout);
-        /// <summary>
-        /// Clears the job queue.
-        /// </summary>
-        /// <param name="action">The cleanup action for each job.</param>
-        void Clear(Action<IJob> action);
+        /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
+        void Execute(IServiceProvider serviceProvider);
     }
 }

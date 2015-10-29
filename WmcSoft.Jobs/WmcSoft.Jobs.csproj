@@ -7,7 +7,7 @@
     <ProjectGuid>{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.Threading</RootNamespace>
+    <RootNamespace>WmcSoft</RootNamespace>
     <AssemblyName>WmcSoft.Jobs</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -39,32 +39,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackgroundWorkerDispatcher.cs" />
-    <Compile Include="BatchJob.cs" />
-    <Compile Include="JobDispatcherDecorator.cs" />
-    <Compile Include="IJob.cs" />
-    <Compile Include="IJobQueue.cs" />
-    <Compile Include="IWaitableJobDispatcher.cs" />
-    <Compile Include="JobBase.cs" />
-    <Compile Include="JobDispatcher.cs" />
-    <Compile Include="JobExtensions.cs" />
-    <Compile Include="JobQueue.cs" />
-    <Compile Include="LifecycleWrappingJob.cs" />
-    <Compile Include="MonitoredJob.cs" />
+    <Compile Include="Threading\BackgroundWorkerDispatcher.cs" />
+    <Compile Include="Threading\BatchJob.cs" />
+    <Compile Include="Threading\IJobInstrumentationProvider.cs" />
+    <Compile Include="Threading\NullJobInstrumentationProvider.cs" />
+    <Compile Include="Threading\JobDispatcherDecorator.cs" />
+    <Compile Include="Threading\IJob.cs" />
+    <Compile Include="Threading\IJobQueue.cs" />
+    <Compile Include="Threading\IWaitableJobDispatcher.cs" />
+    <Compile Include="Threading\JobBase.cs" />
+    <Compile Include="Threading\JobDispatcher.cs" />
+    <Compile Include="Threading\JobExtensions.cs" />
+    <Compile Include="Threading\JobQueue.cs" />
+    <Compile Include="Threading\LifecycleWrappingJob.cs" />
+    <Compile Include="Threading\MonitoredJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="QueuedJobDispatcher.cs" />
-    <Compile Include="ReactorJobDispacther.cs" />
-    <Compile Include="SequenceJob.cs" />
-    <Compile Include="SynchronousJobDispatcher.cs" />
-    <Compile Include="WaitingJobDispatcher.cs" />
+    <Compile Include="Threading\QueuedJobDispatcher.cs" />
+    <Compile Include="Threading\ReactorJobDispacther.cs" />
+    <Compile Include="Threading\SequenceJob.cs" />
+    <Compile Include="Threading\SynchronousJobDispatcher.cs" />
+    <Compile Include="Threading\WaitingJobDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="JobDispatcher.cd" />
+    <None Include="Threading\JobDispatcher.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -72,6 +74,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -25,20 +25,30 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WmcSoft.Threading
 {
     /// <summary>
-    /// Defines a mechanism for executing a job to dispatch using a <see cref="JobDispatcher"/>.
+    /// Provides functionality to instrument the <see cref="WmcSoft.Threading.IJob"/> dispatching.
     /// </summary>
-    public interface IJob
+    public interface IJobInstrumentationProvider
     {
         /// <summary>
-        /// Performs the job to be done.
+        /// Fires that the job dispatched.
         /// </summary>
-        /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
-        void Execute(IServiceProvider serviceProvider);
+        void FireJobDispatched();
+        /// <summary>
+        /// Fires that the job executed.
+        /// </summary>
+        void FireJobExecuted();
+        /// <summary>
+        /// Fires that the job completed.
+        /// </summary>
+        void FireJobCompleted();
+        /// <summary>
+        /// Fires that the job failed.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        void FireJobFailed(Exception exception);
     }
 }
