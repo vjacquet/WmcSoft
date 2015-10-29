@@ -109,5 +109,12 @@ namespace WmcSoft.Text
             var data = new Strip("abcdefghijklmnopqrstuvwxyz");
             Assert.IsTrue(data.EndsWith("xyz"));
         }
+
+        [TestMethod]
+        public void CheckIndexOf() {
+            var data = "...abc...";
+            var s = new Strip(data, 3, 3);
+            Assert.AreEqual(1, s.IndexOf('b'));
+        }
     }
 }

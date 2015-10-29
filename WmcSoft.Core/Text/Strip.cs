@@ -128,39 +128,39 @@ namespace WmcSoft.Text
         }
 
         public bool Contains(string value) {
-            return IndexOf(value) >= 0;
+            return _s.IndexOf(value, _start, Length) >= 0;
         }
 
         public int IndexOf(char value) {
-            return _s.IndexOf(value, _start, Length);
+            return RebaseIndex(_s.IndexOf(value, _start, Length));
         }
 
         public int IndexOf(string value) {
-            return _s.IndexOf(value, _start, Length);
+            return RebaseIndex(_s.IndexOf(value, _start, Length));
         }
 
         public int IndexOfAny(params char[] anyOf) {
-            return _s.IndexOfAny(anyOf, _start, Length);
+            return RebaseIndex(_s.IndexOfAny(anyOf, _start, Length));
         }
 
         public int IndexOf(string value, StringComparison comparisonType) {
-            return _s.IndexOf(value, _start, Length, comparisonType);
+            return RebaseIndex(_s.IndexOf(value, _start, Length, comparisonType));
         }
 
         public int LastIndexOf(char value) {
-            return _s.LastIndexOf(value, _start, Length);
+            return RebaseIndex(_s.LastIndexOf(value, _start, Length));
         }
 
         public int LastIndexOf(string value) {
-            return _s.IndexOf(value, _start, Length);
+            return RebaseIndex(_s.IndexOf(value, _start, Length));
         }
 
         public int LastIndexOf(string value, StringComparison comparisonType) {
-            return _s.IndexOf(value, _start, Length, comparisonType);
+            return RebaseIndex(_s.IndexOf(value, _start, Length, comparisonType));
         }
 
         public int LastIndexOfAny(params char[] anyOf) {
-            return _s.LastIndexOfAny(anyOf, _start, Length);
+            return RebaseIndex(_s.LastIndexOfAny(anyOf, _start, Length));
         }
 
         public Strip Trim() {
@@ -567,6 +567,16 @@ namespace WmcSoft.Text
 
         public bool Remove(char item) {
             throw new NotSupportedException();
+        }
+
+        #endregion
+
+        #region Helpers
+
+        int RebaseIndex(int index) {
+            if (index != -1)
+                return index - _start;
+            return -1;
         }
 
         #endregion
