@@ -74,9 +74,10 @@ namespace WmcSoft.Numerics
         public static explicit operator int (Rational q) {
             if (q._denominator == 1)
                 return q._numerator;
-            if (q._numerator % q._denominator == 0)
-                return q._numerator / q._denominator;
-
+            int rem;
+            var n = Math.DivRem(q._numerator, q._denominator, out rem);
+            if (rem == 0)
+                return n;
             throw new InvalidCastException();
         }
         public static int FromInt32(Rational q) {

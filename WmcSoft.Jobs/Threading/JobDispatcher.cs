@@ -27,7 +27,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Threading;
-using WmcSoft.Threading.Properties;
+using WmcSoft.Properties;
 
 namespace WmcSoft.Threading
 {

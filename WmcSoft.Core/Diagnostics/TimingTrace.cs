@@ -59,12 +59,17 @@ namespace WmcSoft.Diagnostics
         }
         public TimingTrace(string category, string message)
             : this() {
-                _onDispose = () => Trace.WriteLine(category, Format(message));
+            _onDispose = () => Trace.WriteLine(category, Format(message));
         }
 
         public TimingTrace(TraceSource traceSource, string message)
             : this() {
             _onDispose = () => traceSource.TraceInformation(Format(message));
+        }
+
+        public TimingTrace(TraceSource traceSource, Func<string> message)
+            : this() {
+            _onDispose = () => traceSource.TraceInformation(Format(message()));
         }
 
         #endregion

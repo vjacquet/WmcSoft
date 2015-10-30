@@ -76,6 +76,5 @@ namespace WmcSoft.Threading
         }
 
         #endregion
-
     }
 }

@@ -47,7 +47,7 @@ namespace WmcSoft.Threading
         #region Lifecycle
 
         public MonitoredJob(IJob decorated) {
-            this._decorated = decorated;
+            _decorated = decorated;
             _delayBeforeExecute = -1;
             _totalTime = -1;
 
