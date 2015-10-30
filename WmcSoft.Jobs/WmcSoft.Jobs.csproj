@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messaging\IMessageService.cs" />
+    <Compile Include="Messaging\NullMessageService.cs" />
+    <Compile Include="Messaging\TraceMessageService.cs" />
     <Compile Include="Threading\BackgroundWorkerDispatcher.cs" />
     <Compile Include="Threading\BatchJob.cs" />
     <Compile Include="Threading\IJobInstrumentationProvider.cs" />
