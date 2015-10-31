@@ -30,6 +30,26 @@ namespace WmcSoft.Text
 {
     public static class StringBuilderExtensions
     {
+        #region Append
+
+        public static StringBuilder Append(this StringBuilder sb, Strip value) {
+            return value.AppendTo(sb);
+        }
+
+        #endregion
+
+        #region Insert
+
+        public static StringBuilder Insert(this StringBuilder sb, int index, string value, int startIndex, int count) {
+            return sb.Insert(index, value.Substring(startIndex, count));
+        }
+
+        public static StringBuilder Insert(this StringBuilder sb, int index, Strip value) {
+            return value.InsertInto(sb, index);
+        }
+
+        #endregion
+
         #region Prepend 
 
         public static StringBuilder Prepend(this StringBuilder sb, bool value) {
@@ -98,6 +118,14 @@ namespace WmcSoft.Text
 
         public static StringBuilder Prepend(this StringBuilder sb, string value, int count) {
             return sb.Insert(0, value, count);
+        }
+
+        public static StringBuilder Prepend(this StringBuilder sb, string value, int startIndex, int count) {
+            return Insert(sb, 0, value, startIndex, count);
+        }
+
+        public static StringBuilder Prepend(this StringBuilder sb, Strip value) {
+            return value.PrependTo(sb);
         }
 
         #endregion

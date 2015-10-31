@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace WmcSoft.Text
 {
@@ -81,7 +82,7 @@ namespace WmcSoft.Text
             return s == null ? null : s.ToString();
         }
 
-        public static implicit operator Strip(string s) {
+        public static explicit operator Strip(string s) {
             return new Strip(s);
         }
 
@@ -426,20 +427,20 @@ namespace WmcSoft.Text
 
         public static int Compare(Strip strA, Strip strB, StringComparison comparisonType) {
             switch (comparisonType) {
-                case StringComparison.CurrentCulture:
-                    return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.CurrentCulture, CompareOptions.None);
-                case StringComparison.CurrentCultureIgnoreCase:
-                    return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase);
-                case StringComparison.InvariantCulture:
-                    return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.None);
-                case StringComparison.InvariantCultureIgnoreCase:
-                    return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase);
-                case StringComparison.Ordinal:
-                    return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.Ordinal);
-                case StringComparison.OrdinalIgnoreCase:
-                    return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.OrdinalIgnoreCase);
-                default:
-                    throw new NotSupportedException();
+            case StringComparison.CurrentCulture:
+                return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.CurrentCulture, CompareOptions.None);
+            case StringComparison.CurrentCultureIgnoreCase:
+                return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase);
+            case StringComparison.InvariantCulture:
+                return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.None);
+            case StringComparison.InvariantCultureIgnoreCase:
+                return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase);
+            case StringComparison.Ordinal:
+                return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.Ordinal);
+            case StringComparison.OrdinalIgnoreCase:
+                return DoCompare(strA ?? Null, strB ?? Null, CultureInfo.InvariantCulture, CompareOptions.OrdinalIgnoreCase);
+            default:
+                throw new NotSupportedException();
             }
         }
 
@@ -465,20 +466,20 @@ namespace WmcSoft.Text
 
         static bool DoEqual(string strA, int idxA, string strB, int idxB, int length, StringComparison comparisonType) {
             switch (comparisonType) {
-                case StringComparison.CurrentCulture:
-                    return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.CurrentCulture, CompareOptions.None);
-                case StringComparison.CurrentCultureIgnoreCase:
-                    return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase);
-                case StringComparison.InvariantCulture:
-                    return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.None);
-                case StringComparison.InvariantCultureIgnoreCase:
-                    return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase);
-                case StringComparison.Ordinal:
-                    return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.Ordinal);
-                case StringComparison.OrdinalIgnoreCase:
-                    return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.OrdinalIgnoreCase);
-                default:
-                    throw new NotSupportedException();
+            case StringComparison.CurrentCulture:
+                return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.CurrentCulture, CompareOptions.None);
+            case StringComparison.CurrentCultureIgnoreCase:
+                return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase);
+            case StringComparison.InvariantCulture:
+                return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.None);
+            case StringComparison.InvariantCultureIgnoreCase:
+                return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase);
+            case StringComparison.Ordinal:
+                return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.Ordinal);
+            case StringComparison.OrdinalIgnoreCase:
+                return DoEqual(strA, idxA, strB, idxB, length, CultureInfo.InvariantCulture, CompareOptions.OrdinalIgnoreCase);
+            default:
+                throw new NotSupportedException();
             }
         }
 
@@ -577,6 +578,26 @@ namespace WmcSoft.Text
             if (index != -1)
                 return index - _start;
             return -1;
+        }
+
+        // The following are internal because, for convenience, they are exposed as extensions on StringBuilder
+        // Making the private fields internal was not an option to protect the encapsulation of the type.
+        internal StringBuilder AppendTo(StringBuilder sb) {
+            if (String.IsNullOrEmpty(_s) || Length == 0)
+                return sb;
+            return sb.Append(_s, _start, Length);
+        }
+
+        internal StringBuilder PrependTo(StringBuilder sb) {
+            if (String.IsNullOrEmpty(_s) || Length == 0)
+                return sb;
+            return sb.Insert(0, _s.Substring(_start, Length));
+        }
+
+        internal StringBuilder InsertInto(StringBuilder sb, int index) {
+            if (String.IsNullOrEmpty(_s) || Length == 0)
+                return sb;
+            return sb.Insert(index, _s.Substring(_start, Length));
         }
 
         #endregion
