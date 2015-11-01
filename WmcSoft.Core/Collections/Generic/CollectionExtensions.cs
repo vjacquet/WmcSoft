@@ -157,7 +157,7 @@ namespace WmcSoft.Collections.Generic
         /// Shield a list as a readonly list
         /// </summary>
         /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="list">The sorted list</param>
         /// <returns>A read only list</returns>
         public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> list) {
             return new ReadOnlyListFacade<T>(list);
@@ -181,7 +181,7 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="TInput">The source element type</typeparam>
         /// <typeparam name="TOutput">The target element type</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="list">The sorted list</param>
         /// <param name="converter">The converter</param>
         /// <returns>A read only list</returns>
         /// <remarks>Conversion are done "on demand" and are not cached.</remarks>
@@ -199,14 +199,14 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the zero-based index of the element.
+        /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="list">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <returns>The zero-based index of item in the sorted IReadOnlyList<T>, if item is found; 
+        /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
         public static int BinarySearch<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder) {
@@ -236,50 +236,154 @@ namespace WmcSoft.Collections.Generic
                 return ~lo;
             }
             catch (Exception e) {
-                throw new InvalidOperationException("The comparer threw an exception", e);
+                throw new InvalidOperationException("The finder threw an exception", e);
             }
         }
 
         /// <summary>
-        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the zero-based index of the element.
+        /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="list">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <returns>The zero-based index of item in the sorted IReadOnlyList<T>, if item is found; 
+        /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
         public static int BinarySearch<T>(this IReadOnlyList<T> list, Func<T, int> finder) {
-            return list.BinarySearch(0, list.Count, finder);
+            return BinarySearch(list, 0, list.Count, finder);
         }
 
         /// <summary>
-        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the element.
+        /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="list">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the defaultValue when not found</returns>
-        public static T BinaryFind<T>(this IReadOnlyList<T> list, int index, int length, Func<T, int> finder, T defaultValue = default(T)) {
-            var found = list.BinarySearch(index, length, finder);
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static T BinaryFind<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = list.BinarySearch(index, count, finder);
             if (found >= 0)
                 return list[found];
             return defaultValue;
         }
 
         /// <summary>
-        /// Searches a range of elements in the sorted IReadOnlyList<T> for an element using the specified function and returns the element.
+        /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="list">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the defaultValue when not found</returns>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
         public static T BinaryFind<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
             return list.BinaryFind(0, list.Count, finder, defaultValue);
+        }
+
+        /// <summary>
+        /// Returns the last element for which the finder returns a negative value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static T LowerBound<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
+            return LowerBound(list, 0, list.Count, finder, defaultValue);
+        }
+
+        /// <summary>
+        /// Returns the last element for which the finder returns a negative value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static T LowerBound<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = BinarySearch(list, index, count, finder);
+            if (found < 0) {
+                var lo = ~found;
+                if (lo > index)
+                    return list[lo - 1];
+                return defaultValue;
+            }
+            return list[found];
+        }
+
+        /// <summary>
+        /// Returns the first element for which the finder returns a positive value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static T UpperBound<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
+            return UpperBound(list, 0, list.Count, finder, defaultValue);
+        }
+
+        /// <summary>
+        /// Returns the first element for which the finder returns a positive value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static T UpperBound<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = BinarySearch(list, index, count, finder);
+            if (found < 0) {
+                var lo = ~found;
+                if (lo < index + count)
+                    return list[lo];
+                return defaultValue;
+            }
+            return list[found];
+        }
+
+        /// <summary>
+        /// Returns the first element for which the finder returns a positive value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static Tuple<T, T> Bounds<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
+            return Bounds(list, 0, list.Count, finder, defaultValue);
+        }
+
+        /// <summary>
+        /// Returns the first element for which the finder returns a positive value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        public static Tuple<T, T> Bounds<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            if (count == 0)
+                return Tuple.Create(defaultValue, defaultValue);
+            var found = BinarySearch(list, index, count, finder);
+            if (found < 0) {
+                var lo = ~found;
+                if (lo <= index)
+                    return Tuple.Create(defaultValue, list[lo]);
+                if (lo < index + count)
+                    return Tuple.Create(list[lo - 1], list[lo]);
+                return Tuple.Create(list[lo - 1], defaultValue);
+            }
+            var equivalent = list[found];
+            return Tuple.Create(equivalent, equivalent);
         }
 
         #endregion

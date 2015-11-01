@@ -53,13 +53,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnCell() {
-            var x = new[,,] {
+            var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[,,] {
+            var y = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {99, 35, 36} },
@@ -72,7 +72,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnRank() {
-            var x = new[,,] {
+            var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -91,13 +91,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnDimensions() {
-            var x = new[,,] {
+            var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[,,] {
+            var y = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -157,6 +157,44 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(3, count);
             var expected = new[] { 2, 4 };
             CollectionAssert.AreEqual(expected, sequence);
+        }
+
+        static Func<T, int> Find<T>(T value) where T : IComparable<T> {
+            return x => -value.CompareTo(x);
+        }
+
+        [TestMethod]
+        public void CheckBinaryFind() {
+            var sequence = new[] { 1, 3, 5, 7 };
+            var expected = 5;
+            Assert.AreEqual(expected, sequence.BinaryFind(Find(5)));
+        }
+
+        [TestMethod]
+        public void CheckLowerBound() {
+            var sequence = new[] { 1, 3, 5, 7 };
+            Assert.AreEqual(3, sequence.LowerBound(Find(4)));
+            Assert.AreEqual(5, sequence.LowerBound(Find(5)));
+            Assert.AreEqual(7, sequence.LowerBound(Find(9)));
+            Assert.AreEqual(0, sequence.LowerBound(Find(-1)));
+        }
+
+        [TestMethod]
+        public void CheckUpperBound() {
+            var sequence = new[] { 1, 3, 5, 7 };
+            Assert.AreEqual(5, sequence.UpperBound(Find(4)));
+            Assert.AreEqual(5, sequence.UpperBound(Find(5)));
+            Assert.AreEqual(0, sequence.UpperBound(Find(9)));
+            Assert.AreEqual(1, sequence.UpperBound(Find(-1)));
+        }
+
+        [TestMethod]
+        public void CheckBound() {
+            var sequence = new[] { 1, 3, 5, 7 };
+            Assert.AreEqual(Tuple.Create(3,5), sequence.Bounds(Find(4)));
+            Assert.AreEqual(Tuple.Create(5, 5), sequence.Bounds(Find(5)));
+            Assert.AreEqual(Tuple.Create(7, 0), sequence.Bounds(Find(9)));
+            Assert.AreEqual(Tuple.Create(0, 1), sequence.Bounds(Find(-1)));
         }
     }
 }

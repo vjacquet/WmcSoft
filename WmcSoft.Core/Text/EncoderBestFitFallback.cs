@@ -134,19 +134,18 @@ namespace WmcSoft.Text
 
         #endregion
 
+        private readonly Encoding _parentEncoding;
         private readonly string _unknown;
 
         public EncoderBestFitFallback(Encoding targetEncoding, string unknown = "?") {
-            ParentEncoding = (Encoding)targetEncoding.Clone();
+            _parentEncoding = (Encoding)targetEncoding.Clone();
             ParentEncoding.EncoderFallback = new EncoderReplacementFallback("");
             ParentEncoding.DecoderFallback = new DecoderReplacementFallback("");
             _unknown = unknown;
         }
 
-        public Encoding ParentEncoding { get; }
-        public override int MaxCharCount {
-            get { return 18; }
-        }
+        public Encoding ParentEncoding { get { return _parentEncoding; } }
+        public override int MaxCharCount { get { return 18; } }
 
         public override EncoderFallbackBuffer CreateFallbackBuffer() {
             return new EncoderBestFitFallbackBuffer(this, _unknown);
