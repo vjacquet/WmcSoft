@@ -25,12 +25,15 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Arithmetics;
 using WmcSoft.Properties;
 
 namespace WmcSoft.Numerics.Generic
 {
-    public struct Vector<T, C> where C : IArithmetics<T>, new()
+    public struct Vector<T, C> : IEquatable<Vector<T, C>>, IReadOnlyList<T> 
+        where C : IArithmetics<T>, new()
     {
         public static Vector<T, C> Empty;
 
@@ -57,6 +60,11 @@ namespace WmcSoft.Numerics.Generic
 
         public Vector(params T[] values) {
             _data = values;
+        }
+
+        public Vector(int n, T[] values) {
+            _data = new T[n];
+            Array.Copy(values, _data, Math.Min(n, values.Length));
         }
 
         #endregion
@@ -178,6 +186,20 @@ namespace WmcSoft.Numerics.Generic
 
         }
 
+        internal static T DotProductNotEmpty(int length, IEnumerator<T> x, IEnumerator<T> y) {
+            x.MoveNext();
+            y.MoveNext();
+
+            var result = Calculator.Multiply(x.Current, y.Current);
+            length--;
+            while (length-- > 0) {
+                x.MoveNext();
+                y.MoveNext();
+                result = Calculator.Add(result, Calculator.Multiply(x.Current, y.Current));
+            }
+            return result;
+        }
+
         #endregion
 
         #region IEquatable<Vector> Membres
@@ -203,6 +225,32 @@ namespace WmcSoft.Numerics.Generic
             if (_data == null)
                 return 0;
             return _data.GetHashCode();
+        }
+
+        #endregion
+
+        #region IReadOnlyCollection<T> Members
+
+        int IReadOnlyCollection<T>.Count {
+            get { return Cardinality; }
+        }
+
+        #endregion
+
+        #region IEnumerable<T> Members
+
+        public IEnumerator<T> GetEnumerator() {
+            if (_data == null || _data.Length == 0)
+                return Enumerable.Empty<T>().GetEnumerator();
+            return new StrideEnumerator<T>(_data);
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return _data.GetEnumerator();
         }
 
         #endregion
