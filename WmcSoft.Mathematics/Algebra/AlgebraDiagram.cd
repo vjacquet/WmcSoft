@@ -16,6 +16,12 @@
   </Interface>
   <Interface Name="WmcSoft.Algebra.IRingLikeTraits">
     <Position X="3.5" Y="0.75" Width="1.5" />
+    <AssociationLine Name="Addition" Type="WmcSoft.Algebra.IGroupLikeTraits" FixedToPoint="true">
+      <Path>
+        <Point X="3.5" Y="1.375" />
+        <Point X="2" Y="1.375" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Algebra\IRingLikeTraits.cs</FileName>
@@ -28,7 +34,7 @@
   <Interface Name="WmcSoft.Algebra.IGroupLikeTraits">
     <Position X="0.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAw=</HashCode>
+      <HashCode>AAIAAAAAAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAw=</HashCode>
       <FileName>Algebra\IGroupLikeTraits.cs</FileName>
     </TypeIdentifier>
   </Interface>

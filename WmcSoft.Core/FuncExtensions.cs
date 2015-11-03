@@ -80,6 +80,26 @@ namespace WmcSoft
 
         #endregion
 
+        #region Bind
+
+        public static Action<T2> BindFirst<T1, T2>(this Action<T1, T2> action, T1 first) {
+            return x => action(first, x);
+        }
+
+        public static Action<T1> BindSecond<T1, T2>(this Action<T1, T2> action, T2 second) {
+            return x => action(x, second);
+        }
+
+        public static Func<T2, TResult> BindFirst<T1, T2, TResult>(this Func<T1, T2, TResult> func, T1 first) {
+            return x => func(first, x);
+        }
+
+        public static Func<T1, TResult> BindSecond<T1, T2, TResult>(this Func<T1, T2, TResult> func, T2 second) {
+            return x => func(x, second);
+        }
+
+        #endregion
+
         #region Lift
 
         public static Func<T?, TResult?> Lift<T, TResult>(this Func<T, TResult> func)

@@ -24,12 +24,31 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
     public static class ComparerExtensions
     {
+        #region Bind
+
+        public static Func<T, int> BindFirst<T>(this IComparer<T> comparer, T first) {
+            return x => comparer.Compare(first, x);
+        }
+
+        public static Func<T, int> BindSecond<T>(this IComparer<T> comparer, T second) {
+            return x => comparer.Compare(x, second);
+        }
+
+        public static Predicate<T> Bind<T>(this IEqualityComparer<T> comparer, T first) {
+            return x => comparer.Equals(first, x);
+        }
+
+        #endregion
+
+        #region EqualsAny
+
         public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2) {
             return comparer.Equals(reference, value1) || comparer.Equals(reference, value2);
         }
@@ -41,5 +60,7 @@ namespace WmcSoft.Collections.Generic
             }
             return false;
         }
+
+        #endregion
     }
 }
