@@ -36,6 +36,8 @@ namespace WmcSoft
     /// Contains a value or an exception explaining why the value is missing.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
+    /// <remarks>This type can simplify code when combining results from several functions, or 
+    /// for giving a cheap way for the user to handle errors.</remarks>
     public struct Expected<T>
     {
         #region Fields
@@ -47,11 +49,19 @@ namespace WmcSoft
 
         #region Lifecycle
 
+        /// <summary>
+        /// Constructs the expected from a value.
+        /// </summary>
+        /// <param name="value">The value</param>
         public Expected(T value) {
             _value = value;
             _exception = null;
         }
 
+        /// <summary>
+        /// Constructs the expected from an exception.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
         public Expected(Exception exception) {
             _value = default(T);
             _exception = exception;
