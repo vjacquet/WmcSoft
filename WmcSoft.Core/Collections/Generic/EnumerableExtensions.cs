@@ -416,16 +416,16 @@ namespace WmcSoft.Collections.Generic
                     }
                 }
 
-            NoMoreValue1:
-                // first is empty, consume all second
+NoMoreValue1:
+// first is empty, consume all second
                 while (hasValue2) {
                     yield return enumerator2.Current;
                     hasValue2 = enumerator2.MoveNext();
                 }
                 yield break;
 
-            NoMoreValue2:
-                // second is empty, consume all first
+NoMoreValue2:
+// second is empty, consume all first
                 while (hasValue1) {
                     yield return enumerator1.Current;
                     hasValue1 = enumerator1.MoveNext();
@@ -1149,31 +1149,67 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, DuplicatePolicy policy) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (keySelector == null)
-                throw new ArgumentNullException("keySelector");
-            if (elementSelector == null)
-                throw new ArgumentNullException("elementSelector");
-            Dictionary<TKey, TElement> d = new Dictionary<TKey, TElement>(comparer);
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+
+            var d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
-                case DuplicatePolicy.ThrowException:
-                    foreach (TSource element in source) {
-                        d.Add(keySelector(element), elementSelector(element));
-                    }
-                    break;
-                case DuplicatePolicy.KeepFirst:
-                    foreach (TSource element in source) {
-                        var selector = keySelector(element);
-                        if (!d.ContainsKey(selector))
-                            d.Add(selector, elementSelector(element));
-                    }
-                    break;
-                case DuplicatePolicy.KeepLast:
-                    foreach (TSource element in source) {
-                        d[keySelector(element)] = elementSelector(element);
-                    }
-                    break;
+            case DuplicatePolicy.ThrowException:
+                foreach (TSource item in source) {
+                    d.Add(keySelector(item), elementSelector(item));
+                }
+                break;
+            case DuplicatePolicy.KeepFirst:
+                foreach (TSource item in source) {
+                    var selector = keySelector(item);
+                    if (!d.ContainsKey(selector))
+                        d.Add(selector, elementSelector(item));
+                }
+                break;
+            case DuplicatePolicy.KeepLast:
+                foreach (TSource item in source) {
+                    d[keySelector(item)] = elementSelector(item);
+                }
+                break;
+            }
+            return d;
+        }
+
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, Func<TElement, TSource, TElement> merger) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (merger == null) throw new ArgumentNullException("merger");
+
+            var d = new Dictionary<TKey, TElement>(comparer);
+            foreach (TSource item in source) {
+                var selector = keySelector(item);
+                TElement element;
+                if (!d.TryGetValue(selector, out element)) {
+                    d.Add(selector, elementSelector(item));
+                } else {
+                    d[selector] = merger(element, item);
+                }
+            }
+            return d;
+        }
+
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, Func<TElement, TElement, TElement> merger) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (merger == null) throw new ArgumentNullException("merger");
+
+            var d = new Dictionary<TKey, TElement>(comparer);
+            foreach (TSource item in source) {
+                var selector = keySelector(item);
+                TElement element;
+                if (!d.TryGetValue(selector, out element)) {
+                    d.Add(selector, elementSelector(item));
+                } else {
+                    d[selector] = merger(element, elementSelector(item));
+                }
             }
             return d;
         }

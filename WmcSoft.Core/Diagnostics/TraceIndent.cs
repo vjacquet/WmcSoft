@@ -52,6 +52,12 @@ namespace WmcSoft.Diagnostics
 
         #region IDisposable Membres
 
+        ~TraceIndent() {
+            try {
+                _onDispose(); // here only when dispose was not called.
+            }
+            catch { }
+        }
         public void Dispose() {
             var action = Interlocked.Exchange(ref _onDispose, null);
             Debug.Assert(action != null, "Dispose must be called once.");

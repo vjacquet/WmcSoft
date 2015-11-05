@@ -31,6 +31,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Utility class useful for testing exceptions and combining them, possibly using short circuit.
     /// </summary>
+    /// <remarks>This class is interresting for demonstrating short circuit but la real use cases.</remarks>
     public struct Fault : IEquatable<Fault>
     {
         #region Fields
