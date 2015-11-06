@@ -26,6 +26,10 @@ namespace WmcSoft.Numerics
             _storage = new double[N * N];
         }
 
+        private Matrix3(NumericsUtilities.UninitializedTag tag, double[] storage) {
+            _storage = storage;
+        }
+
         private Matrix3(params double[] values) {
             _storage = new double[N * N];
             Array.Copy(values, _storage, Math.Min(N * N, values.Length));
@@ -71,6 +75,10 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        public static Matrix3 Transpose(Matrix3 m) {
+            return m.Transpose();
+        }
+
         #endregion
 
         #region Properties
@@ -100,9 +108,10 @@ namespace WmcSoft.Numerics
         #region Methods
 
         public double Det() {
-            return _storage[0] * (_storage[4] * _storage[8] - _storage[5] * _storage[7])
-                - _storage[1] * (_storage[3] * _storage[8] - _storage[5] * _storage[6])
-                + _storage[2] * (_storage[3] * _storage[7] - _storage[6] * _storage[4]);
+            var ms = _storage;
+            return ms[0] * (ms[4] * ms[8] - ms[5] * ms[7])
+                - ms[1] * (ms[3] * ms[8] - ms[5] * ms[6])
+                + ms[2] * (ms[3] * ms[7] - ms[6] * ms[4]);
         }
 
         public Matrix3 Inverse() {
@@ -112,31 +121,57 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        public static Matrix3 Inverse(Matrix3 m) {
+            return m.Inverse();
+        }
+
         public bool TryInverse(out Matrix3 m) {
             var result = new Matrix3(NumericsUtilities.Uninitialized);
-            var storage = result._storage;
-            storage[0] = (_storage[4] * _storage[8] - _storage[5] * _storage[7]);
-            storage[3] = -(_storage[3] * _storage[8] - _storage[5] * _storage[6]);
-            storage[6] = (_storage[3] * _storage[7] - _storage[6] * _storage[4]);
+            var mt = result._storage;
+            var ms = _storage;
 
-            var det = _storage[0] * storage[0] + _storage[1] * storage[3] + _storage[2] * storage[6];
+            mt[0] = +(ms[4] * ms[8] - ms[5] * ms[7]);
+            mt[3] = -(ms[3] * ms[8] - ms[5] * ms[6]);
+            mt[6] = +(ms[3] * ms[7] - ms[6] * ms[4]);
+
+            var det = ms[0] * mt[0] + ms[1] * mt[3] + ms[2] * mt[6];
             if (det == 0d) {
                 m = default(Matrix3);
                 return false;
             }
 
-            storage[1] = -(_storage[1] * _storage[8] - _storage[7] * _storage[2]);
-            storage[2] = (_storage[1] * _storage[5] - _storage[4] * _storage[2]);
-            storage[4] = (_storage[0] * _storage[8] - _storage[6] * _storage[2]);
-            storage[5] = -(_storage[0] * _storage[5] - _storage[3] * _storage[2]);
-            storage[7] = -(_storage[0] * _storage[7] - _storage[6] * _storage[1]);
-            storage[8] = (_storage[0] * _storage[4] - _storage[3] * _storage[1]);
+            mt[1] = -(ms[1] * ms[8] - ms[7] * ms[2]);
+            mt[2] = +(ms[1] * ms[5] - ms[4] * ms[2]);
+            mt[4] = +(ms[0] * ms[8] - ms[6] * ms[2]);
+            mt[5] = -(ms[0] * ms[5] - ms[3] * ms[2]);
+            mt[7] = -(ms[0] * ms[7] - ms[6] * ms[1]);
+            mt[8] = +(ms[0] * ms[4] - ms[3] * ms[1]);
 
-            for (int i = 0; i < storage.Length; i++) {
-                storage[i] /= det;
+            for (int i = 0; i < mt.Length; i++) {
+                mt[i] /= det;
             }
             m = result;
             return true;
+        }
+
+        public Matrix3 Cofactors() {
+            var ms = _storage;
+            var mt = new double[9] {
+                +(ms[4] * ms[8] - ms[5] * ms[7]),
+                -(ms[3] * ms[8] - ms[5] * ms[6]),
+                +(ms[3] * ms[7] - ms[4] * ms[6]),
+                -(ms[1] * ms[8] - ms[2] * ms[7]),
+                +(ms[0] * ms[8] - ms[2] * ms[6]),
+                -(ms[0] * ms[7] - ms[1] * ms[6]),
+                +(ms[1] * ms[5] - ms[2] * ms[4]),
+                -(ms[0] * ms[5] - ms[2] * ms[3]),
+                +(ms[0] * ms[4] - ms[1] * ms[3]),
+            };
+            return new Matrix3(NumericsUtilities.Uninitialized, mt);
+        }
+
+        public static Matrix3 Cofactors(Matrix3 m) {
+            return m.Cofactors();
         }
 
         #endregion
@@ -263,9 +298,11 @@ namespace WmcSoft.Numerics
             if (v._data == null | m._storage == null)
                 return Vector3.Zero;
 
-            var x = m._storage[0] * v._data[0] + m._storage[1] * v._data[1] + m._storage[2] * v._data[2];
-            var y = m._storage[3] * v._data[0] + m._storage[4] * v._data[1] + m._storage[5] * v._data[2];
-            var z = m._storage[6] * v._data[0] + m._storage[7] * v._data[1] + m._storage[8] * v._data[2];
+            var ms = m._storage;
+            var vs = v._data;
+            var x = ms[0] * vs[0] + ms[1] * vs[1] + ms[2] * vs[2];
+            var y = ms[3] * vs[0] + ms[4] * vs[1] + ms[5] * vs[2];
+            var z = ms[6] * vs[0] + ms[7] * vs[1] + ms[8] * vs[2];
             return new Vector3(x, y, z);
         }
         public static Vector3 Multiply(Matrix3 x, Vector3 y) {
@@ -278,9 +315,12 @@ namespace WmcSoft.Numerics
             if (w._data == null)
                 return this * v;
 
-            var x = w._data[0] + _storage[0] * v._data[0] + _storage[0] * v._data[1] + _storage[0] * v._data[2];
-            var y = w._data[1] + _storage[1] * v._data[0] + _storage[1] * v._data[1] + _storage[1] * v._data[2];
-            var z = w._data[2] + _storage[2] * v._data[0] + _storage[2] * v._data[1] + _storage[2] * v._data[2];
+            var ms = _storage;
+            var vs = v._data;
+            var ws = w._data;
+            var x = ws[0] + ms[0] * vs[0] + ms[0] * vs[1] + ms[0] * vs[2];
+            var y = ws[1] + ms[1] * vs[0] + ms[1] * vs[1] + ms[1] * vs[2];
+            var z = ws[2] + ms[2] * vs[0] + ms[2] * vs[1] + ms[2] * vs[2];
             return new Vector3(x, y, z);
         }
 
@@ -324,6 +364,5 @@ namespace WmcSoft.Numerics
         }
 
         #endregion
-
     }
 }
