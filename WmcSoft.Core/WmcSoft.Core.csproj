@@ -66,6 +66,7 @@
     <Compile Include="Collections\Generic\ComparerExtensions.cs" />
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
+    <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
     <Compile Include="Configuration\MailAddressConverter.cs" />
     <Compile Include="DateSpan.cs" />

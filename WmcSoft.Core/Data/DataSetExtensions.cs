@@ -92,7 +92,8 @@ namespace WmcSoft.Data
         #region RemoveAll
 
         public static void RemoveAll(this DataRowCollection collection, IEnumerable<DataRow> rows) {
-            foreach (var row in rows)
+            var bin = rows.ToList(); // copy to prevent modifying the underlying collection
+            foreach (var row in bin)
                 collection.Remove(row);
         }
 
@@ -136,8 +137,8 @@ namespace WmcSoft.Data
             }
 
             protected override void Dispose(bool disposing) {
-                if (this.Table != null) {
-                    this.Table.Columns.Remove(this);
+                if (Table != null) {
+                    Table.Columns.Remove(this);
                 }
                 base.Dispose(disposing);
             }
@@ -156,18 +157,6 @@ namespace WmcSoft.Data
 
             var columnName = collection.CreateUniqueName("$expr{0}$");
             return collection.Transient(columnName, type, expression);
-        }
-
-        #endregion
-
-        #region Where
-
-        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, bool> predicate) {
-            return collection.Cast<DataRow>().Where(predicate);
-        }
-
-        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, int, bool> predicate) {
-            return collection.Cast<DataRow>().Where(predicate);
         }
 
         #endregion
