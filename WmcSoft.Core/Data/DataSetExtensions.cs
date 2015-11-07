@@ -41,6 +41,13 @@ namespace WmcSoft.Data
             }
         }
 
+        public static IEnumerable<R> Cast<R>(this DataView view, DataRowVersion rowVersion) where R : DataRow {
+            foreach (DataRowView r in view) {
+                if (r.RowVersion == rowVersion)
+                    yield return (R)r.Row;
+            }
+        }
+
         #endregion
 
         #region Compute

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Text;
 
 namespace WmcSoft.Data
 {
