@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -257,6 +258,14 @@ namespace WmcSoft.Collections
             list[i] = list[j];
             list[j] = temp;
             return list;
+        }
+
+        #endregion
+
+        #region ToArrayList
+
+        public static ArrayList ToArrayList<T>(this ICollection<T> list) {
+            return AddRange(new ArrayList(list.Count), list);
         }
 
         #endregion

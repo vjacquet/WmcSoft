@@ -35,6 +35,49 @@ namespace WmcSoft.Windows.Forms
 {
     public static class ControlExtensions
     {
+        #region Linq-like extensions
+
+        public static IEnumerable<Control> Where(this Control.ControlCollection collection, Func<Control, bool> predicate) {
+            return collection.Cast<Control>().Where(predicate);
+        }
+
+        public static IEnumerable<U> Select<U>(this Control.ControlCollection collection, Func<Control, U> selector) {
+            return collection.Cast<Control>().Select(selector);
+        }
+        public static IEnumerable<V> SelectMany<U, V>(this Control.ControlCollection collection, Func<Control, IEnumerable<U>> selector, Func<Control, U, V> resultSelector) {
+            return collection.Cast<Control>().SelectMany(selector, resultSelector);
+        }
+
+        public static IEnumerable<V> Join<U, K, V>(this Control.ControlCollection collection, IEnumerable<U> inner, Func<Control, K> outerKeySelector, Func<U, K> innerKeySelector, Func<Control, U, V> resultSelector) {
+            return collection.Cast<Control>().Join(inner, outerKeySelector, innerKeySelector, resultSelector);
+        }
+
+        public static IEnumerable<V> GroupJoin<U, K, V>(this Control.ControlCollection collection, IEnumerable<U> inner, Func<Control, K> outerKeySelector, Func<U, K> innerKeySelector, Func<Control, IEnumerable<U>, V> resultSelector) {
+            return collection.Cast<Control>().GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
+        }
+
+        public static IOrderedEnumerable<Control> OrderBy<K>(this Control.ControlCollection collection, Func<Control, K> keySelector) {
+            return collection.Cast<Control>().OrderBy(keySelector);
+        }
+
+        public static IOrderedEnumerable<Control> OrderByDescending<K>(this Control.ControlCollection collection, Func<Control, K> keySelector) {
+            return collection.Cast<Control>().OrderByDescending(keySelector);
+        }
+
+        public static IEnumerable<IGrouping<K, Control>> GroupBy<K>(this Control.ControlCollection collection, Func<Control, K> keySelector) {
+            return collection.Cast<Control>().GroupBy(keySelector);
+        }
+
+        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this Control.ControlCollection collection, Func<Control, K> keySelector, Func<Control, E> elementSelector) {
+            return collection.Cast<Control>().GroupBy(keySelector, elementSelector);
+        }
+
+        public static IEnumerable<Control> Where(this Control.ControlCollection collection, Func<Control, int, bool> predicate) {
+            return collection.Cast<Control>().Where(predicate);
+        }
+
+        #endregion
+
         #region Navigation
 
         public static T AddNew<T>(this Control control)

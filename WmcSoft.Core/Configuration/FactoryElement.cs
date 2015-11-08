@@ -26,9 +26,11 @@
 
 using System;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace WmcSoft.Configuration
 {
+    [DebuggerDisplay("{Name,nq} => {TypeName,nq}")]
     public abstract class FactoryElement<T> : ConfigurationElement
     {
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]

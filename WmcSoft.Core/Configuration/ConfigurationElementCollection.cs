@@ -106,5 +106,4 @@ namespace WmcSoft.Configuration
 
         #endregion
     }
-
 }

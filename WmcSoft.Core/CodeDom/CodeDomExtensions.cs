@@ -35,7 +35,8 @@ namespace WmcSoft.CodeDom
     {
         #region FindCode
 
-        public static IEnumerable<T> FindCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter) where T : CodeObject {
+        public static IEnumerable<T> FindCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter)
+            where T : CodeObject {
             foreach (CodeStatement statement in statements) {
                 T expression = statement as T;
                 var expressionStatement = statement as CodeExpressionStatement;
@@ -48,7 +49,8 @@ namespace WmcSoft.CodeDom
             }
         }
 
-        public static T FindFirstCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter) where T : CodeObject {
+        public static T FindFirstCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter)
+            where T : CodeObject {
             foreach (CodeStatement statement in statements) {
                 T expression = statement as T;
                 var expressionStatement = statement as CodeExpressionStatement;
@@ -62,7 +64,8 @@ namespace WmcSoft.CodeDom
             return default(T);
         }
 
-        public static T FindMember<T>(this CodeTypeDeclaration declaration, string memberName) where T : CodeObject {
+        public static T FindMember<T>(this CodeTypeDeclaration declaration, string memberName)
+            where T : CodeObject {
             foreach (CodeTypeMember member in declaration.Members) {
                 T local = member as T;
                 if ((local != null) && (member.Name == memberName)) {
@@ -76,7 +79,8 @@ namespace WmcSoft.CodeDom
 
         #region RemoveFromStatements
 
-        public static void RemoveFromStatements<T>(this CodeStatementCollection statements, Predicate<T> shouldRemove) where T : CodeObject {
+        public static void RemoveFromStatements<T>(this CodeStatementCollection statements, Predicate<T> shouldRemove)
+            where T : CodeObject {
             var list = new List<CodeStatement>();
             foreach (CodeStatement statement in statements) {
                 T expression = statement as T;
@@ -175,6 +179,18 @@ namespace WmcSoft.CodeDom
 
         #endregion
 
+        #region CodeMemberField
+
+        public static CodeFieldReferenceExpression Reference(CodeExpression targetObject, CodeMemberField field) {
+            return new CodeFieldReferenceExpression(targetObject, field.Name);
+        }
+
+        public static CodeFieldReferenceExpression Reference(CodeMemberField field) {
+            return Reference(new CodeThisReferenceExpression(), field);
+        }
+
+        #endregion
+
         #region Property
 
         public static CodeMemberProperty Implements(this CodeMemberProperty property, CodeTypeReference type) {
@@ -231,24 +247,17 @@ namespace WmcSoft.CodeDom
             else if (name.StartsWith("m") && Char.IsUpper(name[1]))
                 property.Name = name.Substring(1);
             else
-                property.Name = String.Concat(Char.ToLower(name[0]), name.Substring(1));
+                property.Name = Char.ToLower(name[0]) + name.Substring(1);
             property.Type = field.Type;
             property.Attributes = MemberAttributes.Public;
 
             // Declares a property get statement to return the value of the integer field.
-            property.GetStatements.Add(
-                new CodeMethodReturnStatement(
-                    new CodeFieldReferenceExpression(
-                        new CodeThisReferenceExpression(), field.Name)));
+            property.GetStatements.Add(new CodeMethodReturnStatement(Reference(field)));
 
             // Declares a property set statement to set the value to the integer field.
             // The CodePropertySetValueReferenceExpression represents the value argument 
             // passed to the property set statement.
-            property.SetStatements.Add(
-                new CodeAssignStatement(
-                    new CodeFieldReferenceExpression(
-                        new CodeThisReferenceExpression(), field.Name),
-                            new CodePropertySetValueReferenceExpression()));
+            property.SetStatements.Add(new CodeAssignStatement(Reference(field), new CodePropertySetValueReferenceExpression()));
 
             typeDeclaration.Members.Add(property);
 
@@ -289,7 +298,7 @@ namespace WmcSoft.CodeDom
             where T : CodeObject {
             var initialize = FindInitializeComponent(declaration);
             if (initialize != null) {
-                Remove<T>(initialize.Statements, shouldRemove);
+                Remove(initialize.Statements, shouldRemove);
             }
         }
 

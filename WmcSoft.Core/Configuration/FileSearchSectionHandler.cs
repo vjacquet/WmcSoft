@@ -1,3 +1,29 @@
+#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
 using System;
 using System.Collections;
 using System.Linq;
@@ -9,7 +35,6 @@ using WmcSoft.Collections.Generic;
 using WmcSoft.Properties;
 using WmcSoft.Xml;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace WmcSoft.Configuration
 {
@@ -46,7 +71,7 @@ namespace WmcSoft.Configuration
         /// Provides direct access to the XML contents of the configuration section.</param>
         /// <returns>A <see cref="System.Collections.ArrayList"/> that 
         /// contains the section's configuration settings.</returns>
-        public override object Create(object parent, object context, System.Xml.XmlNode section) {
+        public override object Create(object parent, object context, XmlNode section) {
             var paths = section.Attributes.RemoveNamedItem("root").GetValueOrNull()
                 ?? AppDomain.CurrentDomain.SetupInformation.PrivateBinPath;
 
@@ -54,8 +79,7 @@ namespace WmcSoft.Configuration
                 throw new ConfigurationErrorsException(String.Format(Resources.UnrecognizedAttributeFormat, section.Attributes[0]), section);
 
             string applicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var directories = new List<string>();
-            directories.Add(applicationBase);
+            var directories = new List<string> { applicationBase };
 
             foreach (var path in paths.Split(';')) {
                 var directory = Path.Combine(applicationBase, path);
@@ -77,15 +101,11 @@ namespace WmcSoft.Configuration
                 switch (node.Name) {
                 case "add":
                     value = node.RemoveAttributeNode(ValueAttributeName).Value;
-                    foreach (string filename in directories.SelectMany(d => Directory.GetFiles(d, value))) {
-                        cache.Add(filename);
-                    }
+                    cache.UnionWith(directories.SelectMany(d => Directory.GetFiles(d, value)));
                     break;
                 case "remove":
                     value = node.RemoveAttributeNode(ValueAttributeName).Value;
-                    foreach (string filename in directories.SelectMany(d => Directory.GetFiles(d, value))) {
-                        cache.Remove(filename);
-                    }
+                    cache.ExceptWith(directories.SelectMany(d => Directory.GetFiles(d, value)));
                     break;
                 case "clear":
                     cache.Clear();
@@ -95,8 +115,7 @@ namespace WmcSoft.Configuration
                 }
             }
 
-            return new ArrayList(cache.Count)
-                .AddRange(cache);
+            return cache.ToArrayList();
         }
 
         #endregion
