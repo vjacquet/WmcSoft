@@ -325,7 +325,7 @@ namespace WmcSoft
             // Adapted from Knuth, TAoCP, Vol 4A, Page 329, Algorithm G
             var n = values.Length;
             var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
-            var a = Generators.Iota().ToArray(n);
+            var a = Iota().ToArray(n);
             var list = new SourceReadOnlyList<T>(values, a);
             int k;
             while (true) {

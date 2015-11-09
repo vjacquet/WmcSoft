@@ -119,33 +119,64 @@ namespace WmcSoft.Collections.Specialized
 
         #region PopValue(s)
 
-        public static T PopValue<T>(this NameValueCollection self, string name) {
-            return self.PopValue(name, default(T));
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The required type</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <returns>The value or default(T) if missing.</returns>
+        public static T PopValue<T>(this NameValueCollection collection, string name) {
+            return PopValue(collection, name, default(T));
         }
 
-        public static T PopValue<T>(this NameValueCollection self, string name, T defaultValue) {
-            string value = self[name];
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The value or <paramref name="defaultValue"/> if missing.</returns>
+        public static T PopValue<T>(this NameValueCollection collection, string name, T defaultValue) {
+            string value = collection[name];
             T result = (value != null)
                 ? (T)Convert.ChangeType(value, typeof(T))
                 : defaultValue;
-            self.Remove(name);
+            collection.Remove(name);
             return result;
         }
 
-        public static T PopValue<T>(this NameValueCollection self, string name, Func<T> defaultValue) {
-            string value = self[name];
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <param name="defaultValue">The default value generator</param>
+        /// <returns>The value or <paramref name="defaultValue"/> if missing.</returns>
+        public static T PopValue<T>(this NameValueCollection collection, string name, Func<T> defaultValue) {
+            string value = collection[name];
             T result = (value != null)
                 ? (T)Convert.ChangeType(value, typeof(T))
                 : defaultValue();
-            self.Remove(name);
+            collection.Remove(name);
             return result;
         }
 
-        public static IEnumerable<T> PopValues<T>(this NameValueCollection self, string name) {
-            var values = self.GetValues(name);
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <returns>An enumerable of the values.</returns>
+        /// <remarks>The value is removed from the <see cref="NameValueCollection"/> even if the values are not enumerated.</remarks>
+        public static IEnumerable<T> PopValues<T>(this NameValueCollection collection, string name) {
+            var values = collection.GetValues(name);
             if (values == null || values.Length == 0)
                 yield break;
-            self.Remove(name);
+            collection.Remove(name);
 
             for (int i = 0; i < values.Length; i++) {
                 yield return (T)Convert.ChangeType(values[i], typeof(T));
