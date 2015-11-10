@@ -31,21 +31,33 @@ namespace WmcSoft.Numerics
     /// <summary>
     /// 
     /// </summary>
-    [SerializableAttribute]
-    public struct Rational : IEquatable<Rational>, IComparable<Rational>, IFormattable
+    [Serializable]
+    public struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IFormattable
     {
         private readonly int _numerator;
         private readonly int _denominator;
 
         #region Lifecycle
 
-        public Rational(int numerator, int denominator) {
+        internal Fraction(NumericsUtilities.UninitializedTag tag, int numerator) {
+            _numerator = numerator;
+            _denominator = 1;
+        }
+
+        internal Fraction(NumericsUtilities.UninitializedTag tag, int numerator, int denominator) {
+            _numerator = numerator;
+            _denominator = denominator;
+        }
+
+        public Fraction(int numerator, int denominator) {
             if (denominator == 0)
                 throw new DivideByZeroException();
             else if (denominator > 0) {
-                _numerator = numerator;
-                _denominator = denominator;
+                var gcd = GreatestCommonDivisor(Math.Abs(numerator), denominator);
+                _numerator = numerator / gcd;
+                _denominator = denominator / gcd;
             } else {
+                var gcd = GreatestCommonDivisor(Math.Abs(numerator), -denominator);
                 _numerator = -numerator;
                 _denominator = -denominator;
             }
@@ -58,20 +70,20 @@ namespace WmcSoft.Numerics
         public int Numerator { get { return _numerator; } }
         public int Denominator { get { return _denominator; } }
 
-        public bool IsInteger { get { return _denominator == 1 || _numerator % _denominator == 0; } }
+        public bool IsInteger { get { return _denominator == 1; } }
 
         #endregion
 
         #region Operators
 
-        public static implicit operator Rational(int x) {
-            return new Rational(x, 1);
+        public static implicit operator Fraction(int x) {
+            return new Fraction(NumericsUtilities.Uninitialized, x);
         }
-        public static Rational FromInt32(int x) {
+        public static Fraction FromInt32(int x) {
             return x;
         }
 
-        public static explicit operator int (Rational q) {
+        public static explicit operator int (Fraction q) {
             if (q._denominator == 1)
                 return q._numerator;
             int rem;
@@ -80,53 +92,53 @@ namespace WmcSoft.Numerics
                 return n;
             throw new InvalidCastException();
         }
-        public static int FromInt32(Rational q) {
+        public static int FromInt32(Fraction q) {
             return (int)q;
         }
 
-        public static Rational operator +(Rational x, Rational y) {
+        public static Fraction operator +(Fraction x, Fraction y) {
             if (x._denominator == y._denominator)
-                return new Rational(x._numerator + y._numerator, x._denominator);
-            return new Rational(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
+                return new Fraction(x._numerator + y._numerator, x._denominator);
+            return new Fraction(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
         }
-        public static Rational Add(Rational x, Rational y) {
+        public static Fraction Add(Fraction x, Fraction y) {
             return x + y;
         }
 
-        public static Rational operator -(Rational x, Rational y) {
+        public static Fraction operator -(Fraction x, Fraction y) {
             if (x._denominator == y._denominator)
-                return new Rational(x._numerator - y._numerator, x._denominator);
-            return new Rational(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
+                return new Fraction(x._numerator - y._numerator, x._denominator);
+            return new Fraction(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
         }
-        public static Rational Subtract(Rational x, Rational y) {
+        public static Fraction Subtract(Fraction x, Fraction y) {
             return x - y;
         }
 
-        public static Rational operator *(Rational x, Rational y) {
-            return new Rational(x._numerator * y._numerator, x._denominator * y._denominator);
+        public static Fraction operator *(Fraction x, Fraction y) {
+            return new Fraction(x._numerator * y._numerator, x._denominator * y._denominator);
         }
-        public static Rational Multiply(Rational x, Rational y) {
+        public static Fraction Multiply(Fraction x, Fraction y) {
             return x * y;
         }
 
-        public static Rational operator /(Rational x, Rational y) {
-            return new Rational(x._numerator * y._denominator, x._denominator * y._numerator);
+        public static Fraction operator /(Fraction x, Fraction y) {
+            return new Fraction(x._numerator * y._denominator, x._denominator * y._numerator);
         }
-        public static Rational Divide(Rational x, Rational y) {
+        public static Fraction Divide(Fraction x, Fraction y) {
             return x / y;
         }
 
-        public static Rational operator -(Rational x) {
-            return new Rational(-x._numerator, x._denominator);
+        public static Fraction operator -(Fraction x) {
+            return new Fraction(-x._numerator, x._denominator);
         }
-        public static Rational Negate(Rational x) {
+        public static Fraction Negate(Fraction x) {
             return -x;
         }
 
-        public static Rational operator +(Rational x) {
+        public static Fraction operator +(Fraction x) {
             return x;
         }
-        public static Rational Plus(Rational x) {
+        public static Fraction Plus(Fraction x) {
             return x;
         }
 
@@ -134,26 +146,13 @@ namespace WmcSoft.Numerics
 
         #region Methods
 
-        public Rational Simplify() {
-            var gcd = GreatestCommonDivisor(_numerator, _denominator);
-            return new Rational(_numerator / gcd, _denominator / gcd);
-        }
-
-        public static int GreatestCommonDivisor(int m, int n) {
-            if (m == 0) throw new ArgumentOutOfRangeException("m");
-            if (n == 0) throw new ArgumentOutOfRangeException("n");
-
-            if (m < 0)
-                m = -m;
-            if (n < 0)
-                n = -n;
-
+        static int GreatestCommonDivisor(int m, int n) {
+            // assumes m & n are striclty positive numbers
             while (n != 0) {
                 var t = m % n;
                 m = n;
                 n = t;
             }
-
             return m;
         }
 
@@ -161,14 +160,14 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Rational> Membres
 
-        public bool Equals(Rational other) {
+        public bool Equals(Fraction other) {
             return CompareTo(other) == 0;
         }
 
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            return CompareTo((Rational)obj) == 0;
+            return CompareTo((Fraction)obj) == 0;
         }
 
         public override int GetHashCode() {
@@ -179,7 +178,7 @@ namespace WmcSoft.Numerics
 
         #region IComparable<Rational> Membres
 
-        public int CompareTo(Rational other) {
+        public int CompareTo(Fraction other) {
             long numerator = _numerator;
             long denominator = _denominator;
             return (numerator * other._denominator - denominator * other._numerator).Clamp();

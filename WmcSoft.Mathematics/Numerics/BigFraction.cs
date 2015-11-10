@@ -30,20 +30,32 @@ using System.Numerics;
 namespace WmcSoft.Numerics
 {
     [SerializableAttribute]
-    public struct BigRational : IEquatable<BigRational>, IComparable<BigRational>, IFormattable
+    public struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>, IFormattable
     {
         private readonly BigInteger _numerator;
         private readonly BigInteger _denominator;
 
         #region Lifecycle
 
-        public BigRational(BigInteger numerator, BigInteger denominator) {
+        internal BigFraction(NumericsUtilities.UninitializedTag tag, BigInteger numerator) {
+            _numerator = numerator;
+            _denominator = BigInteger.One;
+        }
+
+        internal BigFraction(NumericsUtilities.UninitializedTag tag, BigInteger numerator, BigInteger denominator) {
+            _numerator = numerator;
+            _denominator = denominator;
+        }
+
+        public BigFraction(BigInteger numerator, BigInteger denominator) {
             if (denominator == 0)
                 throw new DivideByZeroException();
             else if (denominator > 0) {
-                _numerator = numerator;
-                _denominator = denominator;
+                var gcd = BigInteger.GreatestCommonDivisor(numerator, denominator);
+                _numerator = numerator / gcd;
+                _denominator = denominator / gcd;
             } else {
+                var gcd = BigInteger.GreatestCommonDivisor(numerator, denominator);
                 _numerator = -numerator;
                 _denominator = -denominator;
             }
@@ -56,27 +68,27 @@ namespace WmcSoft.Numerics
         public BigInteger Numerator { get { return _numerator; } }
         public BigInteger Denominator { get { return _denominator; } }
 
-        public bool IsInteger { get { return _denominator == 1 || _numerator % _denominator == 0; } }
+        public bool IsInteger { get { return _denominator == BigInteger.One; } }
 
         #endregion
 
         #region Operators
 
-        public static implicit operator BigRational(int x) {
-            return new BigRational(x, 1);
+        public static implicit operator BigFraction(int x) {
+            return new BigFraction(x, 1);
         }
-        public static BigRational FromInt32(int x) {
-            return (BigRational)x;
-        }
-
-        public static implicit operator BigRational(BigInteger x) {
-            return new BigRational(x, 1);
-        }
-        public static BigRational FromBigInteger(BigInteger x) {
-            return (BigRational)x;
+        public static BigFraction FromInt32(int x) {
+            return x;
         }
 
-        public static explicit operator BigInteger(BigRational q) {
+        public static implicit operator BigFraction(BigInteger x) {
+            return new BigFraction(x, 1);
+        }
+        public static BigFraction FromBigInteger(BigInteger x) {
+            return x;
+        }
+
+        public static explicit operator BigInteger(BigFraction q) {
             if (q._denominator == 1)
                 return q._numerator;
             if (q._numerator % q._denominator == 0)
@@ -84,77 +96,68 @@ namespace WmcSoft.Numerics
 
             throw new InvalidCastException();
         }
-        public static BigInteger FromBigInteger(BigRational q) {
+        public static BigInteger FromBigInteger(BigFraction q) {
             return (BigInteger)q;
         }
 
-        public static BigRational operator +(BigRational x, BigRational y) {
+        public static BigFraction operator +(BigFraction x, BigFraction y) {
             if (x._denominator == y._denominator)
-                return new BigRational(x._numerator + y._numerator, x._denominator);
-            return new BigRational(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
+                return new BigFraction(x._numerator + y._numerator, x._denominator);
+            return new BigFraction(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
         }
-        public static BigRational Add(BigRational x, BigRational y) {
+        public static BigFraction Add(BigFraction x, BigFraction y) {
             return x + y;
         }
 
-        public static BigRational operator -(BigRational x, BigRational y) {
+        public static BigFraction operator -(BigFraction x, BigFraction y) {
             if (x._denominator == y._denominator)
-                return new BigRational(x._numerator + y._numerator, x._denominator);
-            return new BigRational(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
+                return new BigFraction(x._numerator + y._numerator, x._denominator);
+            return new BigFraction(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
         }
-        public static BigRational Subtract(BigRational x, BigRational y) {
+        public static BigFraction Subtract(BigFraction x, BigFraction y) {
             return x - y;
         }
 
-        public static BigRational operator *(BigRational x, BigRational y) {
-            return new BigRational(x._numerator * y._numerator, x._denominator * y._denominator);
+        public static BigFraction operator *(BigFraction x, BigFraction y) {
+            return new BigFraction(x._numerator * y._numerator, x._denominator * y._denominator);
         }
-        public static BigRational Multiply(BigRational x, BigRational y) {
+        public static BigFraction Multiply(BigFraction x, BigFraction y) {
             return x * y;
         }
 
-        public static BigRational operator /(BigRational x, BigRational y) {
-            return new BigRational(x._numerator * y._denominator, x._denominator * y._numerator);
+        public static BigFraction operator /(BigFraction x, BigFraction y) {
+            return new BigFraction(x._numerator * y._denominator, x._denominator * y._numerator);
         }
-        public static BigRational Divide(BigRational x, BigRational y) {
+        public static BigFraction Divide(BigFraction x, BigFraction y) {
             return x / y;
         }
 
-        public static BigRational operator -(BigRational x) {
-            return new BigRational(-x._numerator, x._denominator);
+        public static BigFraction operator -(BigFraction x) {
+            return new BigFraction(-x._numerator, x._denominator);
         }
-        public static BigRational Negate(BigRational x) {
+        public static BigFraction Negate(BigFraction x) {
             return -x;
         }
 
-        public static BigRational operator +(BigRational x) {
+        public static BigFraction operator +(BigFraction x) {
             return x;
         }
-        public static BigRational Plus(BigRational x) {
+        public static BigFraction Plus(BigFraction x) {
             return x;
-        }
-
-        #endregion
-
-        #region Methods
-
-        public BigRational Simplify() {
-            var gcd = BigInteger.GreatestCommonDivisor(_numerator, _denominator);
-            return new BigRational(_numerator / gcd, _denominator / gcd);
         }
 
         #endregion
 
         #region IEquatable<BigRational> Membres
 
-        public bool Equals(BigRational other) {
+        public bool Equals(BigFraction other) {
             return CompareTo(other) == 0;
         }
 
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            return CompareTo((BigRational)obj) == 0;
+            return CompareTo((BigFraction)obj) == 0;
         }
 
         public override int GetHashCode() {
@@ -165,7 +168,7 @@ namespace WmcSoft.Numerics
 
         #region IComparable<BigRational> Membres
 
-        public int CompareTo(BigRational other) {
+        public int CompareTo(BigFraction other) {
             // TODO: Try to optimize. It is correct but certainly very slow.
             var result = (_numerator * other._denominator - _denominator * other._numerator);
             if (result < 0)
@@ -181,6 +184,9 @@ namespace WmcSoft.Numerics
 
         public override string ToString() {
             return ToString(null, null);
+        }
+        public string ToString(IFormatProvider formatProvider) {
+            return ToString(null, formatProvider);
         }
         public string ToString(string format, IFormatProvider formatProvider) {
             if (_denominator == 1 || _numerator == 0)
