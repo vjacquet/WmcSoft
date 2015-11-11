@@ -3,10 +3,10 @@
 namespace WmcSoft.Numerics.Tests
 {
     [TestClass]
-    public class RationalTests
+    public class FractionTests
     {
         [TestMethod]
-        public void CanAdd() {
+        public void CanAddWithRelativePrimeDenominators() {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -14,12 +14,29 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanSubtract() {
+        public void CanSubtractRelativePrimeDenominators() {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
             Assert.AreEqual(new Fraction(1, 6), x - y);
         }
+
+        [TestMethod]
+        public void CanAdd() {
+            var x = new Fraction(1, 4);
+            var y = new Fraction(1, 6);
+
+            Assert.AreEqual(new Fraction(5, 12), x + y);
+        }
+
+        [TestMethod]
+        public void CanSubtract() {
+            var x = new Fraction(1, 4);
+            var y = new Fraction(1, 6);
+
+            Assert.AreEqual(new Fraction(1, 12), x - y);
+        }
+
 
         [TestMethod]
         public void CanMultiply() {

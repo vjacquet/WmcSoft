@@ -29,13 +29,23 @@ using System;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// 
+    /// Represents a fraction, where the numerator and denominator are prime to each other.
     /// </summary>
     [Serializable]
     public struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IFormattable
     {
+        #region Constants
+
+        public static Fraction Zero = new Fraction(NumericsUtilities.Uninitialized, 0);
+
+        #endregion
+
+        #region Fields
+
         private readonly int _numerator;
         private readonly int _denominator;
+
+        #endregion
 
         #region Lifecycle
 
@@ -96,33 +106,70 @@ namespace WmcSoft.Numerics
             return (int)q;
         }
 
+        static Fraction Add(int un, int ud, int vn, int vd) {
+            if (ud == vd)
+                return new Fraction(un + vn, ud);
+
+            // Algorithm to avoid potential overflow - it might be faster to simply convert to long then back to int.
+            var d1 = GreatestCommonDivisor(ud, vd);
+            if (d1 == 1)
+                return new Fraction(NumericsUtilities.Uninitialized, un * vd + ud * vn, ud * vd);
+            var t = un * (vd / d1) + vn * (ud / d1);
+            var d2 = GreatestCommonDivisor(t, d1);
+            return new Fraction(NumericsUtilities.Uninitialized, t / d2, (ud / d1) * (vd / d2));
+        }
+
         public static Fraction operator +(Fraction x, Fraction y) {
-            if (x._denominator == y._denominator)
-                return new Fraction(x._numerator + y._numerator, x._denominator);
-            return new Fraction(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
+            return Add(x._numerator, x._denominator, y._numerator, y._denominator);
         }
         public static Fraction Add(Fraction x, Fraction y) {
             return x + y;
         }
 
         public static Fraction operator -(Fraction x, Fraction y) {
-            if (x._denominator == y._denominator)
-                return new Fraction(x._numerator - y._numerator, x._denominator);
-            return new Fraction(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
+            return Add(x._numerator, x._denominator, -y._numerator, y._denominator);
         }
         public static Fraction Subtract(Fraction x, Fraction y) {
             return x - y;
         }
 
-        public static Fraction operator *(Fraction x, Fraction y) {
-            return new Fraction(x._numerator * y._numerator, x._denominator * y._denominator);
+        static Fraction Multiply(int un, int ud, int vn, int vd) {
+            // assumes all parameters are stricly positive
+            var d1 = GreatestCommonDivisor(un, vd);
+            var d2 = GreatestCommonDivisor(ud, vn);
+            return new Fraction(NumericsUtilities.Uninitialized, (un / d1) * (vn / d2), (ud / d2) * (vd / d1));
         }
+
+        public static Fraction operator *(Fraction x, Fraction y) {
+            if (x._numerator == 0 || y._numerator == 0)
+                return Zero;
+
+            if (x._numerator > 0 && y._numerator > 0)
+                return Multiply(x._numerator, x._denominator, y._numerator, y._denominator);
+            if (x._numerator > 0 && y._numerator < 0)
+                return -Multiply(x._numerator, x._denominator, -y._numerator, y._denominator);
+            if (x._numerator < 0 && y._numerator < 0)
+                return Multiply(-x._numerator, x._denominator, -y._numerator, y._denominator);
+            return -Multiply(-x._numerator, x._denominator, y._numerator, y._denominator);
+        }
+
         public static Fraction Multiply(Fraction x, Fraction y) {
             return x * y;
         }
 
         public static Fraction operator /(Fraction x, Fraction y) {
-            return new Fraction(x._numerator * y._denominator, x._denominator * y._numerator);
+            if (x._numerator == 0)
+                return Zero;
+            if (y._numerator == 0)
+                throw new DivideByZeroException();
+
+            if (x._numerator > 0 && y._numerator > 0)
+                return Multiply(x._numerator, x._denominator, y._denominator, y._numerator);
+            if (x._numerator > 0 && y._numerator < 0)
+                return -Multiply(x._numerator, x._denominator, -y._denominator, -y._numerator);
+            if (x._numerator < 0 && y._numerator < 0)
+                return Multiply(-x._numerator, x._denominator, -y._denominator, -y._numerator);
+            return -Multiply(-x._numerator, x._denominator, y._denominator, y._numerator);
         }
         public static Fraction Divide(Fraction x, Fraction y) {
             return x / y;
@@ -140,6 +187,17 @@ namespace WmcSoft.Numerics
         }
         public static Fraction Plus(Fraction x) {
             return x;
+        }
+
+        public Fraction Inverse() {
+            if (_numerator > 0)
+                return new Fraction(NumericsUtilities.Uninitialized, _denominator, _numerator);
+            if (_numerator < 0)
+                return new Fraction(NumericsUtilities.Uninitialized, -_denominator, -_numerator);
+            throw new DivideByZeroException();
+        }
+        public static Fraction Inverse(Fraction x) {
+            return x.Inverse();
         }
 
         #endregion

@@ -59,7 +59,7 @@
     <Compile Include="CalculatorTests.cs" />
     <Compile Include="Numerics\Generic\VectorTests.cs" />
     <Compile Include="Numerics\Matrix3Tests.cs" />
-    <Compile Include="Numerics\RationalTests.cs" />
+    <Compile Include="Numerics\FractionTests.cs" />
     <Compile Include="Numerics\MatrixTests.cs" />
     <Compile Include="Numerics\PolynomialTests.cs" />
     <Compile Include="Numerics\StrideTests.cs" />
