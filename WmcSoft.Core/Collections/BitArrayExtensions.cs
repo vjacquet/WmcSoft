@@ -57,10 +57,7 @@ namespace WmcSoft.Collections
 
             var result = new TSource[mask.Count];
             for (int i = 0; i < mask.Count; i++) {
-                if (mask.Get(i))
-                    result[i] = y[i];
-                else
-                    result[i] = x[i];
+                result[i] = mask.Get(i) ? y[i] : x[i];
             }
             return result;
         }

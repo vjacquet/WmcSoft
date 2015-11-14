@@ -135,27 +135,27 @@ namespace WmcSoft.Collections
         /// <summary>
         /// Removes all existing items and adds the given items.
         /// </summary>
-        /// <param name="list">The list</param>
+        /// <param name="source">The list</param>
         /// <param name="items">The items to add</param>
-        public static void ReplaceAll(this IList list, IEnumerable items) {
-            if (list == null)
-                throw new ArgumentNullException("list");
+        public static void ReplaceAll(this IList source, IEnumerable items) {
+            if (source == null)
+                throw new ArgumentNullException("source");
 
-            if (list.IsSynchronized) {
-                lock (list.SyncRoot) {
-                    list.Clear();
+            if (source.IsSynchronized) {
+                lock (source.SyncRoot) {
+                    source.Clear();
                     if (items == null)
                         return;
                     foreach (var each in items) {
-                        list.Add(each);
+                        source.Add(each);
                     }
                 }
             } else {
-                list.Clear();
+                source.Clear();
                 if (items == null)
                     return;
                 foreach (var each in items) {
-                    list.Add(each);
+                    source.Add(each);
                 }
             }
         }
@@ -183,21 +183,21 @@ namespace WmcSoft.Collections
         /// </summary>
         /// <typeparam name="TInput">Type of the list items</typeparam>
         /// <typeparam name="TOutput">Type of the array items.</typeparam>
-        /// <param name="collection">The list</param>
+        /// <param name="source">The list</param>
         /// <param name="convert">The converter from the input type to the output type.</param>
         /// <returns>An array</returns>
         /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
-        public static TOutput[] ToArray<TInput, TOutput>(this ICollection collection, Converter<TInput, TOutput> convert) {
+        public static TOutput[] ToArray<TInput, TOutput>(this ICollection source, Converter<TInput, TOutput> convert) {
             if (convert == null)
                 throw new ArgumentNullException("convert");
-            if (collection == null)
+            if (source == null)
                 return null;
 
-            var length = collection.Count;
+            var length = source.Count;
             var output = new TOutput[length];
             // for List implementation, for loops are slightly faster than foreach loops.
             var i = 0;
-            foreach (var item in collection) {
+            foreach (var item in source) {
                 output[i++] = convert((TInput)item);
             }
             return output;
@@ -210,33 +210,33 @@ namespace WmcSoft.Collections
         /// <summary>
         /// Suffles in place items of the list.
         /// </summary>
-        /// <param name="list">The list.</param>
+        /// <param name="source">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList list) {
-            Suffle(list, new Random());
+        public static void Suffle(this IList source) {
+            Suffle(source, new Random());
         }
 
         /// <summary>
         /// Suffles in place items of the list.
         /// </summary>
-        /// <param name="list">The list.</param>
+        /// <param name="source">The list.</param>
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList list, Random random) {
-            if (list == null)
-                throw new ArgumentNullException("list");
+        public static void Suffle(this IList source, Random random) {
+            if (source == null)
+                throw new ArgumentNullException("source");
             if (random == null)
                 throw new ArgumentNullException("random");
-            if (list.IsReadOnly)
+            if (source.IsReadOnly)
                 throw new ArgumentException();
 
             int j;
 
-            for (int i = 0; i < list.Count; i++) {
-                j = random.Next(i, list.Count);
-                list.SwapItems(i, j);
+            for (int i = 0; i < source.Count; i++) {
+                j = random.Next(i, source.Count);
+                source.SwapItems(i, j);
             }
         }
 
@@ -247,25 +247,31 @@ namespace WmcSoft.Collections
         /// <summary>
         /// Swaps two items.
         /// </summary>
-        /// <param name="list">The list.</param>
+        /// <param name="source">The list.</param>
         /// <param name="i">The item at the <paramref name="i"/> index.</param>
         /// <param name="j">The item at the <paramref name="j"/> index.</param>
         /// <returns>The list</returns>
         /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
-        public static TList SwapItems<TList>(this TList list, int i, int j)
+        public static TList SwapItems<TList>(this TList source, int i, int j)
             where TList : IList {
-            object temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-            return list;
+            object temp = source[i];
+            source[i] = source[j];
+            source[j] = temp;
+            return source;
         }
 
         #endregion
 
         #region ToArrayList
 
-        public static ArrayList ToArrayList<T>(this ICollection<T> list) {
-            return AddRange(new ArrayList(list.Count), list);
+        /// <summary>
+        /// Creates an <see cref="ArrayList"/> from an <see cref="ICollection{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the collection's items.</typeparam>
+        /// <param name="source">The collection.</param>
+        /// <returns>The array list</returns>
+        public static ArrayList ToArrayList<T>(this ICollection<T> source) {
+            return AddRange(new ArrayList(source.Count), source);
         }
 
         #endregion
