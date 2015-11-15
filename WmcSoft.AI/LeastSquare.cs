@@ -24,34 +24,36 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace WmcSoft.AI
 {
-    public class Measuring
+    /// <summary>
+    /// Implements the least square strategy to determine the trend's slope and intercept.
+    /// </summary>
+    public struct LeastSquare : ITrendEvaluator
     {
-        private readonly List<double> _targets;
-        private readonly double _mean;
-        private readonly double _squaredMean;
+        #region ITrendEvaluator Members
 
-        public Measuring(IEnumerable<double> targetValues) {
-            _targets = new List<double>(targetValues);
-            var n = _targets.Count;
-            if (n == 0)
-                throw new ArgumentException("targetValues");
-
-            for (int i = 0; i < n; i++) {
-                var t = _targets[i];
-                _mean += t;
-                _squaredMean += t * t;
+        public void Eval(double[] input, out double slope, out double intercept) {
+            var n = input.Length - 1;
+            var ymean = 0d;
+            for (int i = 0; i < input.Length; i++) {
+                ymean += input[i];
             }
-            _mean /= n;
-            _squaredMean /= n;
+
+            var xmean = n / 2d;
+            var xx = 0d;
+            var xy = 0d;
+            ymean /= input.Length;
+            for (int i = 0; i < input.Length; i++) {
+                var x = (double)i - xmean;
+                var y = input[i] - ymean;
+                xx += x * x;
+                xy += x * y;
+            }
+            slope = xy / xx;
+            intercept = ymean - slope * xmean;
         }
 
-        public Measures Measure(IEnumerable<double> outputs) {
-            return new Measures(_targets, _mean, _squaredMean, outputs);
-        }
+        #endregion
     }
 }

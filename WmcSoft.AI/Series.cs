@@ -28,7 +28,6 @@ namespace WmcSoft.AI
 {
     public static class Series
     {
-
         public static double[] Detrend(double[] input, double slope, double intercept) {
             var output = new double[input.Length];
             var y = intercept;
@@ -56,52 +55,5 @@ namespace WmcSoft.AI
             }
             return output;
         }
-
-    }
-
-    public interface ITrendEvaluator
-    {
-        void Eval(double[] input, out double slope, out double intercept);
-    }
-
-    public struct EndPoints : ITrendEvaluator
-    {
-        #region ITrendEvaluator Members
-
-        public void Eval(double[] input, out double slope, out double intercept) {
-            var n = input.Length - 1;
-            intercept = input[0];
-            slope = (input[n] - intercept) / n;
-        }
-
-        #endregion
-    }
-
-    public struct LeastSquare : ITrendEvaluator
-    {
-        #region ITrendEvaluator Members
-
-        public void Eval(double[] input, out double slope, out double intercept) {
-            var n = input.Length - 1;
-            var ymean = 0d;
-            for (int i = 0; i < input.Length; i++) {
-                ymean += input[i];
-            }
-
-            var xmean = n / 2d;
-            var xx = 0d;
-            var xy = 0d;
-            ymean /= input.Length;
-            for (int i = 0; i < input.Length; i++) {
-                var x = (double)i - xmean;
-                var y = input[i] - ymean;
-                xx += x * x;
-                xy += x * y;
-            }
-            slope = xy / xx;
-            intercept = ymean - slope * xmean;
-        }
-
-        #endregion
     }
 }

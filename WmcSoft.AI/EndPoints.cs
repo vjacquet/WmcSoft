@@ -24,34 +24,21 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace WmcSoft.AI
 {
-    public class Measuring
+    /// <summary>
+    /// Implements the end points strategy to determine the trend's slope and intercept.
+    /// </summary>
+    public struct EndPoints : ITrendEvaluator
     {
-        private readonly List<double> _targets;
-        private readonly double _mean;
-        private readonly double _squaredMean;
+        #region ITrendEvaluator Members
 
-        public Measuring(IEnumerable<double> targetValues) {
-            _targets = new List<double>(targetValues);
-            var n = _targets.Count;
-            if (n == 0)
-                throw new ArgumentException("targetValues");
-
-            for (int i = 0; i < n; i++) {
-                var t = _targets[i];
-                _mean += t;
-                _squaredMean += t * t;
-            }
-            _mean /= n;
-            _squaredMean /= n;
+        public void Eval(double[] input, out double slope, out double intercept) {
+            var n = input.Length - 1;
+            intercept = input[0];
+            slope = (input[n] - intercept) / n;
         }
 
-        public Measures Measure(IEnumerable<double> outputs) {
-            return new Measures(_targets, _mean, _squaredMean, outputs);
-        }
+        #endregion
     }
 }

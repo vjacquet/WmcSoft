@@ -55,8 +55,12 @@
     <Compile Include="FuzzyLogic\IMembershipFunction.cs" />
     <Compile Include="FuzzyLogic\TrapezoidMembershipFunction.cs" />
     <Compile Include="FuzzyLogic\TriangularMembershipFunction.cs" />
+    <Compile Include="Measures.cs" />
     <Compile Include="Measuring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EndPoints.cs" />
+    <Compile Include="LeastSquare.cs" />
+    <Compile Include="ITrendEvaluator.cs" />
     <Compile Include="Series.cs" />
   </ItemGroup>
   <ItemGroup>

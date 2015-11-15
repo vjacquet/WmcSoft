@@ -32,12 +32,12 @@ namespace WmcSoft.AI
     public class AutoassociativeFilter
     {
         private readonly double[] _work;
-        private readonly Action<double[], int, double[]> _evalute;
+        private readonly Action<double[], int, double[]> _evaluate;
 
         public AutoassociativeFilter(Action<double[], int, double[]> evaluate, int length) {
             if (evaluate == null)
                 throw new ArgumentNullException("evaluate");
-            _evalute = evaluate;
+            _evaluate = evaluate;
             _work = new double[length];
         }
 
@@ -62,7 +62,7 @@ namespace WmcSoft.AI
             var n = _work.Length;
             var count = m - n + 1;
             for (i = 0; i < count; i++) {
-                _evalute(input, i, _work);
+                _evaluate(input, i, _work);
                 for (j = 0; j < n; j++) {
                     output[i + j] += _work[j];
                 }
