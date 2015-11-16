@@ -408,26 +408,91 @@ namespace WmcSoft.Collections.Generic
                     } else {
                         yield return combiner(enumerator1.Current, enumerator2.Current);
                         hasValue1 = enumerator1.MoveNext();
+                        hasValue2 = enumerator2.MoveNext();
                         if (!hasValue1)
                             goto NoMoreValue1;
-                        hasValue2 = enumerator2.MoveNext();
                         if (!hasValue2)
                             goto NoMoreValue2;
                     }
                 }
 
-NoMoreValue1:
-// first is empty, consume all second
+            NoMoreValue1:
+                // first is empty, consume all second
                 while (hasValue2) {
                     yield return enumerator2.Current;
                     hasValue2 = enumerator2.MoveNext();
                 }
                 yield break;
 
-NoMoreValue2:
-// second is empty, consume all first
+            NoMoreValue2:
+                // second is empty, consume all first
                 while (hasValue1) {
                     yield return enumerator1.Current;
+                    hasValue1 = enumerator1.MoveNext();
+                }
+                yield break;
+            }
+        }
+
+        /// <summary>
+        /// Combines two sorted enumerable of unique element in another enumerable sorted using the same comparer. When two items are equivalent, they are combined with the combiner.
+        /// </summary>
+        /// <typeparam name="TInput">The type of enumerated element</typeparam>
+        /// <typeparam name="TOutput">The type of enumerated element</typeparam>
+        /// <param name="self">The first enumerable</param>
+        /// <param name="other">The second enumerable</param>
+        /// <param name="comparer">The comparer</param>
+        /// <param name="combiner">The combiner</param>
+        /// <param name="defaultValue">The default value for the combiner when one value is missing</param>
+        /// <returns>The sorted enumerable</returns>
+        /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
+        public static IEnumerable<TOutput> Combine<TInput, TOutput>(this IEnumerable<TInput> self, IEnumerable<TInput> other, IComparer<TInput> comparer, Func<TInput, TInput, TOutput> combiner, TInput defaultValue = default(TInput)) {
+            using (var enumerator1 = self.GetEnumerator())
+            using (var enumerator2 = other.GetEnumerator()) {
+                var hasValue1 = enumerator1.MoveNext();
+                var hasValue2 = enumerator2.MoveNext();
+
+                if (!hasValue1)
+                    goto NoMoreValue1;
+
+                if (!hasValue2)
+                    goto NoMoreValue2;
+
+                while (true) {
+                    int comparison = comparer.Compare(enumerator2.Current, enumerator1.Current);
+                    if (comparison < 0) {
+                        yield return combiner(defaultValue, enumerator2.Current);
+                        hasValue2 = enumerator2.MoveNext();
+                        if (!hasValue2)
+                            goto NoMoreValue2;
+                    } else if (comparison > 0) {
+                        yield return combiner(enumerator1.Current, defaultValue);
+                        hasValue1 = enumerator1.MoveNext();
+                        if (!hasValue1)
+                            goto NoMoreValue1;
+                    } else {
+                        yield return combiner(enumerator1.Current, enumerator2.Current);
+                        hasValue1 = enumerator1.MoveNext();
+                        hasValue2 = enumerator2.MoveNext();
+                        if (!hasValue1)
+                            goto NoMoreValue1;
+                        if (!hasValue2)
+                            goto NoMoreValue2;
+                    }
+                }
+
+            NoMoreValue1:
+                // first is empty, consume all second
+                while (hasValue2) {
+                    yield return combiner(defaultValue, enumerator2.Current);
+                    hasValue2 = enumerator2.MoveNext();
+                }
+                yield break;
+
+            NoMoreValue2:
+                // second is empty, consume all first
+                while (hasValue1) {
+                    yield return combiner(enumerator1.Current, defaultValue);
                     hasValue1 = enumerator1.MoveNext();
                 }
                 yield break;
