@@ -1,39 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="WmcSoft.Business.CustomerRelationshipModel.Communication">
-    <Position X="0.5" Y="4" Width="2" />
+    <Position X="11.75" Y="0.75" Width="2" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
+    <AssociationLine Name="PreviousCommunication" Type="WmcSoft.Business.CustomerRelationshipModel.Communication">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.12" Y="0.392" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAABAgAAAAAAAAAAQAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAgBAAAAAABAAQAAAAAIAAAAgAAAAgAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\Communication.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PreviousCommunication" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="NextCommunications" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerCommunicationManager" Collapsed="true">
-    <Position X="6.5" Y="1" Width="2.5" />
+    <Position X="22.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\CustomerCommunicationManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerServiceCaseIdentifier" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="10.75" Y="1" Width="2.5" />
+  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerServiceCaseIdentifier" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\CustomerServiceCaseIdentifier.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="WmcSoft.Business.CustomerRelationshipModel.Customer" Collapsed="true">
-    <Position X="4" Y="2.25" Width="1.5" />
+  <Class Name="WmcSoft.Business.CustomerRelationshipModel.Customer">
+    <Position X="19.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.CustomerRelationshipModel.CommunicationRouting">
-    <Position X="0.5" Y="6.75" Width="2" />
+    <Position X="11.75" Y="4" Width="2" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -43,7 +54,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.CustomerRelationshipModel.Action">
-    <Position X="7.5" Y="4" Width="1.75" />
+    <Position X="16.75" Y="8.75" Width="1.75" />
+    <AssociationLine Name="ActionApprovers" Type="WmcSoft.Business.PartyModel.PartySignature">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.355" Y="0.169" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAIAQAAEACAgAAJAAAAAAAAAAAAAAIAAAAAAAAAAAgA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\Action.cs</FileName>
@@ -56,17 +72,17 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.PartySignature">
-    <Position X="4.5" Y="4" Width="1.5" />
+    <Position X="16.75" Y="6.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAACAoIAAAAAAAAAAAQEAAAAACAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAIAAAAAAAAAAAAQEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\PartySignature.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.CustomerRelationshipModel.Outcome">
-    <Position X="4.25" Y="7" Width="2.25" />
+    <Position X="20" Y="6.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\Outcome.cs</FileName>
@@ -75,49 +91,62 @@
       <Property Name="OutcomeApprovers" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerAgent" Collapsed="true">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerAgent">
+    <Position X="15.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\CustomerAgent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.PartyRole" Collapsed="true">
-    <Position X="1.75" Y="1" Width="1.5" />
+    <Position X="17.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEFAAAAAAAFgAAgAAAAAgAQAAFAAAAAAAAAIRBYAAEQ=</HashCode>
+      <HashCode>AEFAAAAAAAFgAAAAAAAAAAQAAEAAAAAAAAAABBIAAAA=</HashCode>
       <FileName>Business\PartyModel\PartyRole.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerServiceCase">
-    <Position X="10" Y="3.5" Width="3" />
+    <Position X="4.25" Y="0.5" Width="3" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>IAIAAAAAACAAAEAAAAAAgAQAAAAAAAAAgAAAQAAAAAA=</HashCode>
+      <HashCode>IAIAAACAACAAAEAAAgAAgAQAAAAAAAAAgAAAQAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\CustomerServiceCase.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Identifier" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="CommunicationThreads" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerServiceRepresentative" Collapsed="true">
-    <Position X="2.25" Y="2.25" Width="1.5" />
+  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CustomerServiceRepresentative">
+    <Position X="17.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\CustomerServiceRepresentative.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="WmcSoft.Business.CustomerRelationshipModel.CommunicationThread">
+    <Position X="8.75" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAQCAAAAAAAAAAAAAAAAAAAAAAgAAAICAAAAA=</HashCode>
+      <FileName>Business\CustomerRelationshipModel\CommunicationThread.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Communications" />
+    </ShowAsCollectionAssociation>
+  </Class>
   <Enum Name="WmcSoft.Business.CustomerRelationshipModel.ActionStatus" Collapsed="true">
-    <Position X="10" Y="2.25" Width="1.5" />
+    <Position X="22.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAIACAAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\Action.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="WmcSoft.Business.CustomerRelationshipModel.Priority" Collapsed="true">
-    <Position X="6.25" Y="2.25" Width="1.5" />
+    <Position X="24.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Business\CustomerRelationshipModel\CustomerServiceCase.cs</FileName>

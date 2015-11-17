@@ -26,9 +26,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.CustomerRelationshipModel
 {
@@ -37,5 +35,13 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     /// </summary>
     public abstract class CustomerCommunicationManager
     {
+        public abstract CustomerServiceCaseIdentifier OpenCase(string title);
+
+        public abstract CustomerServiceCase FindCase(CustomerServiceCaseIdentifier identifier);
+        public abstract CustomerServiceCase FindCase(string title);
+
+        public abstract IEnumerable<CustomerServiceCase> FindCase(DateTime? from = null, DateTime? to = null, bool isOpen = true);
+        public abstract IEnumerable<CustomerServiceCase> FindCase(Party identifier, DateTime? from = null, DateTime? to = null, bool isOpen = true);
+        public abstract IEnumerable<CustomerServiceCase> FindCase(PartyRole identifier, DateTime? from = null, DateTime? to = null, bool isOpen = true);
     }
 }

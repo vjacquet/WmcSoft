@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.CustomerRelationshipModel
 {
@@ -41,5 +42,9 @@ namespace WmcSoft.Business.CustomerRelationshipModel
         public string BriefDescription { get; set; }
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
+
+        public ICollection<Communication> Communications { get; set; }
+
+        public PartySignature CommunicationThreadTerminator { get; set; }
     }
 }

@@ -26,9 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.CustomerRelationshipModel
@@ -81,6 +78,12 @@ namespace WmcSoft.Business.CustomerRelationshipModel
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
         public bool IsOpen { get; set; }
+
+        public ICollection<CommunicationThread> CommunicationThreads { get; set; }
+
+        public virtual void CloseCase() {
+            IsOpen = false;
+        }
     }
 
     public enum Priority

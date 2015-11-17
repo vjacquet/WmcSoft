@@ -53,6 +53,12 @@ namespace WmcSoft.Business.CustomerRelationshipModel
         public string Content { get; set; }
         public string Outcome { get; set; }
 
+        public AddressBase FromAddress { get; set; }
+        public AddressBase ToAddress { get; set; }
+
+        public Communication PreviousCommunication { get; set; }
+        public ICollection<Communication> NextCommunications { get; set; }
+
         #endregion
     }
 }
