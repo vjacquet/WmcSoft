@@ -46,7 +46,7 @@ namespace WmcSoft.Windows.Forms
         #region Lifecycle
 
         public DeckLayoutPanel() {
-            base.SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
         #endregion

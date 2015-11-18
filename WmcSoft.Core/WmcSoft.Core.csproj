@@ -68,6 +68,7 @@
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
+    <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
     <Compile Include="Configuration\MailAddressConverter.cs" />
     <Compile Include="DateSpan.cs" />
