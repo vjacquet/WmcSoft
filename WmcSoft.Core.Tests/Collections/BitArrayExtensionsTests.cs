@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Collections;
 using WmcSoft.Collections.Generic;
@@ -27,6 +26,21 @@ namespace WmcSoft
             var y = "YY_Y__";
             var mask = x.ToBitArray(_ => _ != '_');
             var actual = mask.Mask(y, x);
+        }
+
+        [TestMethod]
+        public void CanResize() {
+            var bits = new BitArray(48, true);
+            bits.Resize(64, true);
+            Assert.AreEqual(true, bits[48]);
+        }
+
+        [TestMethod]
+        public void CanConcat() {
+            var x= new BitArray(16, false);
+            var y= new BitArray(16, true);
+            var actual = x.Concat(y);
+            Assert.AreEqual(32, actual.Length);
         }
     }
 }

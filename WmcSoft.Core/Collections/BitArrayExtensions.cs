@@ -93,5 +93,36 @@ namespace WmcSoft.Collections
             }
             return true;
         }
+
+        public static BitArray Concat(this BitArray x, BitArray y) {
+            var z = new BitArray(x.Length + y.Length);
+            for (var i=0; i < x.Length; i++) {
+                z.Set(i, x.Get(i));
+            }
+            var j = x.Length;
+            for (int i = 0; i < y.Length; i++) {
+                z.Set(j + i, x.Get(i));
+            }
+            return z;
+        }
+
+        /// <summary>
+        /// Resizes the <see cref="BitArray"/>, padding it with the <paramref name="defaultValue"/>.
+        /// </summary>
+        /// <param name="bits">The <see cref="BitArray"/></param>
+        /// <param name="length">The new length.</param>
+        /// <param name="defaultValue">The value to use for padding.</param>
+        /// <returns></returns>
+        public static BitArray Resize(this BitArray bits, int length, bool defaultValue = false) {
+            if (defaultValue && bits.Length < length) {
+                int first = bits.Length;
+                bits.Length = length;
+                for (; first < length; first++)
+                    bits.Set(first, true);
+            } else {
+                bits.Length = length;
+            }
+            return bits;
+        }
     }
 }
