@@ -37,10 +37,13 @@ namespace WmcSoft
 
         [TestMethod]
         public void CanConcat() {
-            var x= new BitArray(16, false);
-            var y= new BitArray(16, true);
+            var x = new BitArray(16, false);
+            var y = new BitArray(16, true);
             var actual = x.Concat(y);
             Assert.AreEqual(32, actual.Length);
+            var buffer = new int[1];
+            actual.CopyTo(buffer, 0);
+            Assert.AreEqual(-65536, buffer[0]);
         }
     }
 }

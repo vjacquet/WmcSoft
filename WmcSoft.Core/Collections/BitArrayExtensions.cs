@@ -67,7 +67,7 @@ namespace WmcSoft.Collections
         }
 
         public static string Mask(this BitArray mask, string x, string y) {
-            return new String(Mask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
+            return new string(Mask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
         }
 
         public static bool All(this BitArray bits) {
@@ -96,14 +96,27 @@ namespace WmcSoft.Collections
 
         public static BitArray Concat(this BitArray x, BitArray y) {
             var z = new BitArray(x.Length + y.Length);
-            for (var i=0; i < x.Length; i++) {
+            for (var i = 0; i < x.Length; i++) {
                 z.Set(i, x.Get(i));
             }
             var j = x.Length;
             for (int i = 0; i < y.Length; i++) {
-                z.Set(j + i, x.Get(i));
+                z.Set(j + i, y.Get(i));
             }
             return z;
+        }
+
+        public static void CopyTo(this BitArray source, BitArray array, int index) {
+            var length = source.Length;
+            for (int i = 0; i < length; i++, index++) {
+                array.Set(index, source.Get(i));
+            }
+        }
+
+        public static void CopyTo(this BitArray source, int sourceIndex, BitArray array, int destinationIndex, int length) {
+            while (length-- != 0) {
+                array.Set(destinationIndex++, source.Get(sourceIndex++));
+            }
         }
 
         /// <summary>
