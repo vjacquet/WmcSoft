@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BinaryFormatter.cs" />
+    <Compile Include="BitArithmetics.cs" />
     <Compile Include="CodeDom\CodeAssertArgumentNotNulllStatement.cs" />
     <Compile Include="CodeDom\CodeDomExtensions.cs" />
     <Compile Include="CodeDom\CodeDomTypeBuilder.cs" />
