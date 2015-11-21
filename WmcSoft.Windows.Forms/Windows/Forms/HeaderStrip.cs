@@ -43,25 +43,25 @@ namespace WmcSoft.Windows.Forms
         {
             public LargeHeaderStripRenderer(ProfessionalColorTable colorTable)
                 : base(colorTable) {
-                this.RoundedEdges = false;
+                RoundedEdges = false;
             }
 
             protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e) {
                 // Size to paint
-                Rectangle bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
+                var bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
 
                 // Make sure we need to do work
                 if ((bounds.Width > 0) && (bounds.Height > 0)) {
-                    Color start = Application.RenderWithVisualStyles ? this.ColorTable.OverflowButtonGradientMiddle : this.ColorTable.OverflowButtonGradientEnd;
-                    Color end = this.ColorTable.OverflowButtonGradientEnd;
-                    using (Brush b = new LinearGradientBrush(bounds, start, end, LinearGradientMode.Vertical)) {
+                    var start = Application.RenderWithVisualStyles ? ColorTable.OverflowButtonGradientMiddle : ColorTable.OverflowButtonGradientEnd;
+                    var end = ColorTable.OverflowButtonGradientEnd;
+                    using (var b = new LinearGradientBrush(bounds, start, end, LinearGradientMode.Vertical)) {
                         e.Graphics.FillRectangle(b, bounds);
                     }
                 }
             }
 
             protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e) {
-                Color color = e.TextColor;
+                var color = e.TextColor;
                 if (!e.Item.Selected || !e.Item.Pressed) {
                     e.TextColor = SystemColors.HighlightText;
                 }
@@ -71,8 +71,8 @@ namespace WmcSoft.Windows.Forms
 
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e) {
                 // Size to paint
-                Rectangle bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
-                using (Pen pen = new Pen(this.ColorTable.OverflowButtonGradientEnd)) {
+                var bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
+                using (var pen = new Pen(this.ColorTable.OverflowButtonGradientEnd)) {
                     e.Graphics.DrawLine(pen, bounds.Left, bounds.Bottom - 1, bounds.Right, bounds.Bottom - 1);
                 }
             }
@@ -83,18 +83,18 @@ namespace WmcSoft.Windows.Forms
         {
             public SmallHeaderStripRenderer(ProfessionalColorTable colorTable)
                 : base(colorTable) {
-                this.RoundedEdges = false;
+                RoundedEdges = false;
             }
 
             protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e) {
                 // Size to paint
-                Rectangle bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
+                var bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
 
                 // Make sure we need to do work
                 if ((bounds.Width > 0) && (bounds.Height > 0)) {
-                    Color start = this.ColorTable.MenuStripGradientEnd;
-                    Color end = this.ColorTable.MenuStripGradientBegin;
-                    using (Brush b = new LinearGradientBrush(bounds, start, end, LinearGradientMode.Vertical)) {
+                    var start = ColorTable.MenuStripGradientEnd;
+                    var end = ColorTable.MenuStripGradientBegin;
+                    using (var b = new LinearGradientBrush(bounds, start, end, LinearGradientMode.Vertical)) {
                         e.Graphics.FillRectangle(b, bounds);
                     }
                 }
@@ -102,11 +102,11 @@ namespace WmcSoft.Windows.Forms
 
             protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e) {
                 // Size to paint
-                Rectangle bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
-                using (Pen pen = new Pen(this.ColorTable.MenuStripGradientBegin)) {
+                var bounds = new Rectangle(Point.Empty, e.ToolStrip.Size);
+                using (var pen = new Pen(ColorTable.MenuStripGradientBegin)) {
                     e.Graphics.DrawLine(pen, bounds.Left, bounds.Top, bounds.Right, bounds.Top);
                 }
-                using (Pen pen = new Pen(this.ColorTable.OverflowButtonGradientEnd)) {
+                using (var pen = new Pen(ColorTable.OverflowButtonGradientEnd)) {
                     e.Graphics.DrawLine(pen, bounds.Left, bounds.Bottom - 1, bounds.Right, bounds.Bottom - 1);
                 }
             }
@@ -116,7 +116,7 @@ namespace WmcSoft.Windows.Forms
         {
             public NormalHeaderStripRenderer(ProfessionalColorTable colorTable)
                 : base(colorTable) {
-                this.RoundedEdges = false;
+                RoundedEdges = false;
             }
         }
 
@@ -131,23 +131,23 @@ namespace WmcSoft.Windows.Forms
         #region Lifecycle
 
         public HeaderStrip() {
-            this.SuspendLayout();
+            SuspendLayout();
 
-            this.AutoSize = true;
-            this.Stretch = true;
-            this.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.Margin = new Padding(0);
+            AutoSize = true;
+            Stretch = true;
+            GripStyle = ToolStripGripStyle.Hidden;
+            Margin = new Padding(0);
 
             // Set visualStyleRenderer - override background painting
             InitializeRenderer();
 
             // Setup Headers
-            SystemEvents.UserPreferenceChanged += delegate(object sender, UserPreferenceChangedEventArgs e) {
+            SystemEvents.UserPreferenceChanged += delegate (object sender, UserPreferenceChangedEventArgs e) {
                 SetHeaderStyle();
             };
             SetHeaderStyle();
 
-            this.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion

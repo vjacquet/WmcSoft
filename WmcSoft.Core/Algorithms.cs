@@ -124,6 +124,24 @@ namespace WmcSoft
             return max;
         }
 
+        #region Median
+
+        public static int Median(int lo, int hi) {
+            var delta = hi - lo;
+            if (delta > 0)
+                return lo + delta / 2;
+            return hi - delta / 2;
+        }
+
+        public static long Median(long lo, long hi) {
+            var delta = hi - lo;
+            if (delta > 0)
+                return lo + delta / 2;
+            return hi - delta / 2;
+        }
+
+        #endregion
+
         #region Min/Max
 
         public static T Min<T>(T x, T y) where T : IComparable<T> {
@@ -150,12 +168,30 @@ namespace WmcSoft
             return min;
         }
 
+        public static T Min<T>(Relation<T> relation, T x, T y) {
+            return relation(y, x) ? y : x;
+        }
+
+        public static T Min<T>(Relation<T> relation, params T[] args) {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+
+            var min = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (relation(args[i], min))
+                    min = args[i];
+            }
+            return min;
+        }
+
         public static T Min<T>(IComparer<T> comparer, T x, T y) {
-            return Min(comparer.Compare, x, y);
+            Comparison<T> comparison = comparer.Compare;
+            return Min(comparison, x, y);
         }
 
         public static T Min<T>(IComparer<T> comparer, params T[] args) {
-            return Min(comparer.Compare, args);
+            Comparison<T> comparison = comparer.Compare;
+            return Min(comparison, args);
         }
 
         public static T Max<T>(params T[] args) where T : IComparable<T> {
@@ -182,12 +218,30 @@ namespace WmcSoft
             return max;
         }
 
+        public static T Max<T>(Relation<T> relation, T x, T y) {
+            return relation(y, x) ? x : y;
+        }
+
+        public static T Max<T>(Relation<T> relation, params T[] args) {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+
+            var max = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (relation(max, args[i]))
+                    max = args[i];
+            }
+            return max;
+        }
+
         public static T Max<T>(IComparer<T> comparer, T x, T y) {
-            return Max(comparer.Compare, x, y);
+            Comparison<T> comparison = comparer.Compare;
+            return Max(comparison, x, y);
         }
 
         public static T Max<T>(IComparer<T> comparer, params T[] args) {
-            return Max(comparer.Compare, args);
+            Comparison<T> comparison = comparer.Compare;
+            return Max(comparison, args);
         }
 
         public static Tuple<T, T> MinMax<T>(params T[] args) where T : IComparable<T> {

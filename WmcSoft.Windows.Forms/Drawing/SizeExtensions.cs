@@ -24,39 +24,17 @@
 
 #endregion
 
-namespace WmcSoft
+using System;
+using System.Drawing;
+
+namespace WmcSoft.Drawing
 {
-    /// <summary>
-    /// Formula taken from Hacker's Delight, second edition, by Henry S. Warren, Jr.
-    /// </summary>
-    public static class BitArithmetics
+    public static class SizeExtensions
     {
-        public static uint TurnOffRightMostOne(uint x) {
-            return x & (x - 1);
-        }
-
-        public static uint TurnOnRightMostZero(uint x) {
-            return x | (x + 1);
-        }
-
-        public static uint TurnOffTrailingOnes(uint x) {
-            return x & (x + 1);
-        }
-
-        public static uint TurnOnTrailingZeroes(uint x) {
-            return x | (x - 1);
-        }
-
-        public static uint MarkRightMostZero(uint x) {
-            return ~x & (x + 1);
-        }
-
-        public static uint MarkRightMostOne(uint x) {
-            return ~(~x | (x - 1));
-        }
-
-        public static bool IsPowerOfTwo(uint x) {
-            return 0 == (x & (x - 1));
+        public static Size Combine(Size x, Size y) {
+            var w = Math.Max(x.Width, y.Width);
+            var h = Math.Max(x.Height, y.Height);
+            return new Size(w, h);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -8,9 +7,17 @@ namespace WmcSoft
     public class AlgorithmsTests
     {
         [TestMethod]
+        public void CheckMediam() {
+            var x = 20;
+            var y = 40;
+            Assert.AreEqual(30, Algorithms.Median(x, y));
+            Assert.AreEqual(30, Algorithms.Median(y, x));
+        }
+
+        [TestMethod]
         public void CheckMin() {
-            DateTime x = new DateTime(1973, 5, 2);
-            DateTime y = new DateTime(1973, 5, 1);
+            var x = new DateTime(1973, 5, 2);
+            var y = new DateTime(1973, 5, 1);
 
             var expected = y;
             var actual = Algorithms.Min(x, y);
@@ -19,8 +26,8 @@ namespace WmcSoft
 
         [TestMethod]
         public void CheckMinStablility() {
-            DateTime x = new DateTime(1973, 5, 2);
-            DateTime y = new DateTime(1973, 5, 1);
+            var x = new DateTime(1973, 5, 2);
+            var y = new DateTime(1973, 5, 1);
 
             Comparison<DateTime> comparison = (a, b) => a.Month.CompareTo(b.Month);
             var expected = x;
@@ -30,9 +37,9 @@ namespace WmcSoft
 
         [TestMethod]
         public void CheckMinStablilityN() {
-            DateTime x = new DateTime(1973, 5, 2);
-            DateTime y = new DateTime(1973, 5, 1);
-            DateTime z = new DateTime(1973, 6, 2);
+            var x = new DateTime(1973, 5, 2);
+            var y = new DateTime(1973, 5, 1);
+            var z = new DateTime(1973, 6, 2);
 
             Comparison<DateTime> comparison = (a, b) => a.Month.CompareTo(b.Month);
             var expected = x;
@@ -42,8 +49,8 @@ namespace WmcSoft
 
         [TestMethod]
         public void CheckMax() {
-            DateTime x = new DateTime(1973, 5, 2);
-            DateTime y = new DateTime(1973, 5, 1);
+            var x = new DateTime(1973, 5, 2);
+            var y = new DateTime(1973, 5, 1);
 
             var expected = x;
             var actual = Algorithms.Max(x, y);
@@ -52,8 +59,8 @@ namespace WmcSoft
 
         [TestMethod]
         public void CheckMaxStablility() {
-            DateTime x = new DateTime(1973, 5, 2);
-            DateTime y = new DateTime(1973, 5, 1);
+            var x = new DateTime(1973, 5, 2);
+            var y = new DateTime(1973, 5, 1);
 
             Comparison<DateTime> comparison = (a, b) => a.Month.CompareTo(b.Month);
             var expected = y;
@@ -63,9 +70,9 @@ namespace WmcSoft
 
         [TestMethod]
         public void CheckMaxStablilityN() {
-            DateTime x = new DateTime(1973, 5, 2);
-            DateTime y = new DateTime(1973, 5, 1);
-            DateTime z = new DateTime(1973, 4, 1);
+            var x = new DateTime(1973, 5, 2);
+            var y = new DateTime(1973, 5, 1);
+            var z = new DateTime(1973, 4, 1);
 
             Comparison<DateTime> comparison = (a, b) => a.Month.CompareTo(b.Month);
             var expected = y;
