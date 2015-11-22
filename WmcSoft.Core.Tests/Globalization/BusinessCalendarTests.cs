@@ -14,6 +14,5 @@ namespace WmcSoft.Globalization
             Assert.IsFalse(calendar.IsBusinessDay(new DateTime(2015, 1, 4)));
             Assert.IsTrue(calendar.IsBusinessDay(new DateTime(2015, 1, 5)));
         }
-
     }
 }

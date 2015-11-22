@@ -279,9 +279,26 @@ namespace WmcSoft
         }
 
         public static Tuple<T, T> MinMax<T>(IComparer<T> comparer, params T[] args) {
-            return MinMax(comparer.Compare, args);
+            Comparison<T> comparison = comparer.Compare;
+            return MinMax(comparison, args);
         }
 
+        public static Tuple<T, T> MinMax<T>(Relation<T> relation, params T[] args) {
+            if (args == null || args.Length == 0)
+                throw new ArgumentException("args");
+            if (args.Length == 1)
+                return Tuple.Create(args[0], args[0]);
+
+            var min = args[0];
+            var max = args[0];
+            for (int i = 1; i < args.Length; i++) {
+                if (relation(args[i], min))
+                    min = args[i];
+                else if (relation(max, args[i]))
+                    max = args[i];
+            }
+            return Tuple.Create(min, max);
+        }
         #endregion
     }
 }
