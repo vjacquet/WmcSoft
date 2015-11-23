@@ -31,7 +31,7 @@ using System.Linq;
 
 namespace WmcSoft.Globalization
 {
-    public class BusinessCalendar
+    public class BusinessCalendar : IBusinessCalendar
     {
         readonly DateTime _epoch;
         readonly BitArray _holidays;
@@ -74,6 +74,29 @@ namespace WmcSoft.Globalization
 
         public static BusinessCalendar And(BusinessCalendar x, BusinessCalendar y) {
             return x & y;
+        }
+    }
+
+    public interface IBusinessCalendar
+    {
+        bool IsBusinessDay(DateTime date);
+    }
+
+    public static class BusinessCalendarExtensions
+    {
+        public static DateTime AddBusinessDays<TCalendar>(this TCalendar calendar, DateTime date, int days)
+            where TCalendar : IBusinessCalendar {
+            while (days > 0) {
+                date = date.AddDays(1);
+                if (calendar.IsBusinessDay(date))
+                    days--;
+            }
+            while (days < 0) {
+                date = date.AddDays(-1);
+                if (calendar.IsBusinessDay(date))
+                    days++;
+            }
+            return date;
         }
     }
 }
