@@ -8,7 +8,7 @@ namespace WmcSoft.Globalization
     {
         [TestMethod]
         public void CanCreateBusinessCalendarWithoutWeekEnds() {
-            var calendar = new BusinessCalendar(new DateTime(2015, 1, 1), TimeSpan.FromDays(100), BusinessCalendar.NoSaturdays, BusinessCalendar.NoSundays);
+            var calendar = new BusinessCalendar(new DateTime(2015, 1, 1), TimeSpan.FromDays(100), BusinessCalendar.Saturdays, BusinessCalendar.Sundays);
             Assert.IsTrue(calendar.IsBusinessDay(new DateTime(2015, 1, 2)));
             Assert.IsFalse(calendar.IsBusinessDay(new DateTime(2015, 1, 3)));
             Assert.IsFalse(calendar.IsBusinessDay(new DateTime(2015, 1, 4)));

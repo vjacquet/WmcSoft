@@ -39,6 +39,15 @@ namespace WmcSoft.Globalization
         private BusinessCalendar(DateTime epoch, BitArray holidays) {
             _epoch = epoch;
             _holidays = holidays;
+
+            // The 7 week patterns.
+            // 1100 0001 1000 0011 0000 0110 0000 1100
+            // 0001 1000 0011 0000 0110 0000 1100 0001
+            // 1000 0011 0000 0110 0000 1100 0001 1000
+            // 0011 0000 0110 0000 1100 0001 1000 0011
+            // 0000 0110 0000 1100 0001 1000 0011 0000
+            // 0110 0000 1100 0001 1000 0011 0000 0110 
+            // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
         public BusinessCalendar(DateTime since, TimeSpan duration, params Predicate<DateTime>[] holidays) {
@@ -57,12 +66,25 @@ namespace WmcSoft.Globalization
             return !_holidays[(int)duration.TotalDays];
         }
 
-        public static bool NoSaturdays(DateTime date) {
+        public static bool Saturdays(DateTime date) {
             return date.DayOfWeek == DayOfWeek.Saturday;
         }
 
-        public static bool NoSundays(DateTime date) {
+        public static bool Sundays(DateTime date) {
             return date.DayOfWeek == DayOfWeek.Sunday;
+        }
+
+        public static bool WeekEnds(DateTime date) {
+            var dow = date.DayOfWeek;
+            return dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday;
+        }
+
+        public static bool Christmas(DateTime date) {
+            return date.Month == 12 && date.Day == 25;
+        }
+
+        public static bool NewYear(DateTime date) {
+            return date.Month == 1 && date.Day == 1;
         }
 
         public static BusinessCalendar operator &(BusinessCalendar x, BusinessCalendar y) {
@@ -80,6 +102,19 @@ namespace WmcSoft.Globalization
     public interface IBusinessCalendar
     {
         bool IsBusinessDay(DateTime date);
+    }
+
+    public struct CombinedCalendar : IBusinessCalendar
+    {
+        readonly IBusinessCalendar[] _calendars;
+
+        public CombinedCalendar(params IBusinessCalendar[] calendars) {
+            _calendars = calendars;
+        }
+
+        public bool IsBusinessDay(DateTime date) {
+            return _calendars.All(c => c.IsBusinessDay(date));
+        }
     }
 
     public static class BusinessCalendarExtensions
