@@ -58,5 +58,14 @@ namespace WmcSoft
         public static bool IsPowerOfTwo(uint x) {
             return 0 == (x & (x - 1));
         }
+
+        public static int CountBits(uint x) {
+            int n = 0;
+            while(x!=0) {
+                ++n;
+                x &= (x - 1);
+            }
+            return n;
+        }
     }
 }

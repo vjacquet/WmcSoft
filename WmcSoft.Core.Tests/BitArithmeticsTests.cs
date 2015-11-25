@@ -47,5 +47,11 @@ namespace WmcSoft
             uint y = 0x08; // 0000 1000;
             Assert.AreEqual(y, MarkRightMostOne(x));
         }
+
+        [TestMethod]
+        public void CanCountBits() {
+            uint x = 0xC8; // 1010 1000;
+            Assert.AreEqual(3, CountBits(x));
+        }
     }
 }
