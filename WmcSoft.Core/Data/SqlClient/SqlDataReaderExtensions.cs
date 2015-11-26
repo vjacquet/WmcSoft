@@ -25,5 +25,14 @@ namespace WmcSoft.Data.SqlClient
                 return (T)serializer.ReadObject(xml);
             }
         }
+
+        public static T GetObjectFromXml<T>(this SqlDataReader reader, int i, XmlObjectSerializer serializer)
+            where T : new() {
+            if (reader.IsDBNull(i))
+                return new T();
+            using (var xml = reader.GetSqlXml(i).CreateReader()) {
+                return (T)serializer.ReadObject(xml);
+            }
+        }
     }
 }
