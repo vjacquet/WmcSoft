@@ -54,6 +54,11 @@ namespace WmcSoft.Data
 
         public static T Compute<T>(this DataTable dataTable, string expression, string filter) {
             var value = dataTable.Compute(expression, filter);
+            return DataConvert.ChangeType<T>(value);
+        }
+
+        public static T ComputeOrDefault<T>(this DataTable dataTable, string expression, string filter) {
+            var value = dataTable.Compute(expression, filter);
             return DataConvert.ChangeTypeOrDefault<T>(value);
         }
 
@@ -137,6 +142,9 @@ namespace WmcSoft.Data
 
         #region Transient
 
+        /// <summary>
+        /// Represents a data column that will be removed from its table when disposed.
+        /// </summary>
         class TransientDataColumn : DataColumn
         {
             public TransientDataColumn(string columnName, Type dataType, string expr)
@@ -151,17 +159,33 @@ namespace WmcSoft.Data
             }
         }
 
+        /// <summary>
+        /// Add to a data columns collection a column that will be removed from it on dispose.
+        /// </summary>
+        /// <param name="collection">The data columns collection.</param>
+        /// <param name="columnName">The name of the column.</param>
+        /// <param name="type">The data type of the column value.</param>
+        /// <param name="expression">The expression for the column.</param>
+        /// <returns>The column that was added to the collection.</returns>
         public static DataColumn Transient(this DataColumnCollection collection, string columnName, Type type, string expression) {
             var t = new TransientDataColumn(columnName, type, expression);
             collection.Add(t);
             return t;
         }
 
+
+        /// <summary>
+        /// Add to a data columns collection an anonymous column that will be removed from it on dispose.
+        /// </summary>
+        /// <param name="collection">The data columns collection.</param>
+        /// <param name="type">The data type of the column value.</param>
+        /// <param name="expression">The expression for the column.</param>
+        /// <returns>The column that was added to the collection.</returns>
+        /// <remarks>If transient column with the same expression exists in the collection, it is returned.</remarks>
         public static DataColumn Transient(this DataColumnCollection collection, Type type, string expression) {
             var found = collection.OfType<TransientDataColumn>().SingleOrDefault(c => c.Expression == expression);
             if (found != null)
                 return found;
-
             var columnName = collection.CreateUniqueName("$expr{0}$");
             return collection.Transient(columnName, type, expression);
         }
