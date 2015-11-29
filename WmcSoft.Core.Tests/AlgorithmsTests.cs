@@ -7,11 +7,11 @@ namespace WmcSoft
     public class AlgorithmsTests
     {
         [TestMethod]
-        public void CheckMedian() {
+        public void CheckMidpoint() {
             var x = 20;
             var y = 40;
-            Assert.AreEqual(30, Algorithms.Median(x, y));
-            Assert.AreEqual(30, Algorithms.Median(y, x));
+            Assert.AreEqual(30, Algorithms.Midpoint(x, y));
+            Assert.AreEqual(30, Algorithms.Midpoint(y, x));
         }
 
         [TestMethod]

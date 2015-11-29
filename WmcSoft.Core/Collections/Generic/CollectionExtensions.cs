@@ -193,7 +193,7 @@ namespace WmcSoft.Collections.Generic
 
         #region BinarySearch methods
 
-        private static int GetMedian(int lo, int hi) {
+        private static int GetMidpoint(int lo, int hi) {
             Debug.Assert(hi - lo >= 0);
             return lo + (hi - lo) / 2; // cannot overflow when (hi + lo) could
         }
@@ -223,7 +223,7 @@ namespace WmcSoft.Collections.Generic
                 int lo = index;
                 int hi = lo + count - 1;
                 while (lo <= hi) {
-                    int i = GetMedian(lo, hi);
+                    int i = GetMidpoint(lo, hi);
                     int c = finder(list[i]);
                     if (c == 0)
                         return i;

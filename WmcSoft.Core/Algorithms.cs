@@ -124,20 +124,32 @@ namespace WmcSoft
             return max;
         }
 
-        #region Median
+        #region Midpoint
 
-        public static int Median(int lo, int hi) {
-            var delta = hi - lo;
+        /// <summary>
+        /// Gets the mid point of 2 values without overflowing.
+        /// </summary>
+        /// <param name="x">The first value</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The midpoint value.</returns>
+        public static int Midpoint(int x, int y) {
+            var delta = y - x;
             if (delta > 0)
-                return lo + delta / 2;
-            return hi - delta / 2;
+                return x + delta / 2;
+            return y - delta / 2;
         }
 
-        public static long Median(long lo, long hi) {
-            var delta = hi - lo;
+        /// <summary>
+        /// Gets the mid point of 2 values without overflowing.
+        /// </summary>
+        /// <param name="x">The first value</param>
+        /// <param name="y">The second value.</param>
+        /// <returns>The midpoint value.</returns>
+        public static long Midpoint(long x, long y) {
+            var delta = y - x;
             if (delta > 0)
-                return lo + delta / 2;
-            return hi - delta / 2;
+                return x + delta / 2;
+            return y - delta / 2;
         }
 
         #endregion
