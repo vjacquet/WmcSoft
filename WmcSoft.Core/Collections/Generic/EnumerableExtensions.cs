@@ -117,11 +117,29 @@ namespace WmcSoft.Collections.Generic
 
         #region ElementAt
 
+        /// <summary>
+        /// Returns the element at a specified index in a sequence.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the value returned by <paramref name="selector"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to return an element from.</param>
+        /// <param name="index">The zero-based index of the element to retrieve.</param>
+        /// <param name="selector">A transform function to apply to the element.</param>
+        /// <returns>The element at the specified position in the source sequence.</returns>
         public static TResult ElementAt<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
             var result = source.ElementAt(index);
             return selector(result);
         }
 
+        /// <summary>
+        /// Returns the element at a specified index in a sequence, or a default value if the sequence is shorter.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the value returned by <paramref name="selector"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to return an element from.</param>
+        /// <param name="index">The zero-based index of the element to retrieve.</param>
+        /// <param name="selector">A transform function to apply to the element.</param>
+        /// <returns>The element at the specified position in the source sequence, or <code>default(TSource)</code> if the sequence contains less elements.</returns>
         public static TResult ElementAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
             if (source == null) {
                 // I would normally return default(TResult) but here I should be consistent with the framework.
@@ -239,12 +257,35 @@ namespace WmcSoft.Collections.Generic
 
         #region XxxIfXxx
 
+        /// <summary>
+        /// Returns the elements of the specified sequence or the type parameter's default value in a singleton collection if the sequence is null or empty.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to return a default value for if it is null or empty.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> object that contains the default value for the TSource type if source is null or empty; otherwise, source.</returns>
         public static IEnumerable<TSource> DefaultIfNullOrEmpty<TSource>(this IEnumerable<TSource> source) {
+            return DefaultIfNullOrEmpty(source, default(TSource));
+        }
+
+        /// <summary>
+        /// Returns the elements of the specified sequence or the specified value in a singleton collection if the sequence is empty.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to return a default value for if it is null or empty.</param>
+        /// <param name="defaultValue">The value to return if the sequence is null or empty.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> object that contains the default value for the TSource type if source is null or empty; otherwise, source.</returns>
+        public static IEnumerable<TSource> DefaultIfNullOrEmpty<TSource>(this IEnumerable<TSource> source, TSource defaultValue) {
             if (source == null)
-                return new SingleItemReadOnlyList<TSource>(default(TSource));
+                return new SingleItemReadOnlyList<TSource>(defaultValue);
             return source.DefaultIfEmpty();
         }
 
+        /// <summary>
+        /// Returns the elements of the specified sequence or an empty sequence if <paramref name="source"/> is null.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to return if it is not null.</param>
+        /// <returns>An empty sequence if ource is null; otherwise, source.</returns>
         public static IEnumerable<TSource> EmptyIfNull<TSource>(this IEnumerable<TSource> source) {
             if (source == null)
                 return Enumerable.Empty<TSource>();
