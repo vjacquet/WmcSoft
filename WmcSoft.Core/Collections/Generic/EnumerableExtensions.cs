@@ -297,13 +297,13 @@ namespace WmcSoft.Collections.Generic
         #region Merge, Combine, etc.
 
         /// <summary>
-        /// Gets the unique elements of the soure assuming they elemnts are already sorted.
+        ///  Returns distinct elements from a sorted sequence by using a specified <see cref="IEqualityComparer{T}"/> to compare values.
         /// </summary>
-        /// <typeparam name="T">The type of elements in the source</typeparam>
-        /// <param name="source">The sequence</param>
-        /// <param name="comparer">The equality comparer</param>
-        /// <returns>The unique elements</returns>
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer) {
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sorted sequence to remove duplicate elements from.</param>
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare values.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from the source sequence.</returns>
+        public static IEnumerable<TSource> SortedDistinct<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer) {
             using (var enumerator = source.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var current = enumerator.Current;
@@ -319,30 +319,30 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Gets the unique elements of the soure assuming they elemnts are already sorted.
+        ///  Returns distinct elements from a sorted sequence by using a specified <see cref="IComparer{T}"/> to compare values.
         /// </summary>
-        /// <typeparam name="T">The type of elements in the source</typeparam>
-        /// <param name="source">The sequence</param>
-        /// <param name="comparer">The equality comparer</param>
-        /// <returns>The unique elements</returns>
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> source, IComparer<T> comparer) {
-            return source.SortedUnique(new EqualityComparerAdapter<T>(comparer));
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sorted sequence to remove duplicate elements from.</param>
+        /// <param name="comparer">An <see cref="IComparer{T}"/> to compare values.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from the source sequence.</returns>
+        public static IEnumerable<TSource> SortedDistinct<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+            return SortedDistinct(source, new EqualityComparerAdapter<TSource>(comparer));
         }
 
         /// <summary>
-        /// Gets the unique elements of the soure assuming they elemnts are already sorted.
+        /// Returns distinct elements from a sorted sequence by using the default equality comparer to compare values.
         /// </summary>
-        /// <typeparam name="T">The type of elements in the source</typeparam>
-        /// <param name="source">The sequence</param>
-        /// <returns>The unique elements</returns>
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> source) {
-            return source.SortedUnique(EqualityComparer<T>.Default);
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sorted sequence to remove duplicate elements from.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from the source sequence.</returns>
+        public static IEnumerable<TSource> SortedDistinct<TSource>(this IEnumerable<TSource> source) {
+            return SortedDistinct(source, EqualityComparer<TSource>.Default);
         }
 
-        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator, Func<T, TGroup> factory) {
-            using (var enumerator = self.GetEnumerator()) {
+        public static IEnumerable<TGroup> SortedCombine<TSource, TGroup>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer, Func<TSource, TGroup, TGroup> accumulator, Func<TSource, TGroup> factory) {
+            using (var enumerator = source.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
-                    T current = enumerator.Current;
+                    var current = enumerator.Current;
                     var group = factory(current);
                     while (enumerator.MoveNext()) {
                         if (!comparer.Equals(current, enumerator.Current)) {
@@ -357,13 +357,13 @@ namespace WmcSoft.Collections.Generic
                 }
             }
         }
-        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator)
+        public static IEnumerable<TGroup> SortedCombine<TSource, TGroup>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer, Func<TSource, TGroup, TGroup> accumulator)
             where TGroup : new() {
-            return self.SortedCombine(comparer, accumulator, t => accumulator(t, new TGroup()));
+            return SortedCombine(source, comparer, accumulator, t => accumulator(t, new TGroup()));
         }
-        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, Func<T, TGroup, TGroup> accumulator)
+        public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> source, Func<T, TGroup, TGroup> accumulator)
             where TGroup : new() {
-            return self.SortedCombine(EqualityComparer<T>.Default, accumulator, t => accumulator(t, new TGroup()));
+            return SortedCombine(source, EqualityComparer<T>.Default, accumulator, t => accumulator(t, new TGroup()));
         }
 
         /// <summary>
@@ -426,27 +426,27 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Merges two sorted enumerable in another enumerable sorted using the default comparer. When two items are equivalent, items from first come first.
         /// </summary>
-        /// <typeparam name="T">The type of enumerated element</typeparam>
-        /// <param name="self">The first enumerable</param>
+        /// <typeparam name="TSource">The type of enumerated element</typeparam>
+        /// <param name="source">The first enumerable</param>
         /// <param name="other">The second enumerable</param>
         /// <param name="comparer">The comparer</param>
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the default comparer, the result is undefined.</remarks>
-        public static IEnumerable<T> Merge<T>(this IEnumerable<T> self, IEnumerable<T> other) {
-            return self.Merge(other, Comparer<T>.Default);
+        public static IEnumerable<TSource> Merge<TSource>(this IEnumerable<TSource> source, IEnumerable<TSource> other) {
+            return source.Merge(other, Comparer<TSource>.Default);
         }
 
         /// <summary>
         /// Combines two sorted enumerable of unique element in another enumerable sorted using the same comparer. When two items are equivalent, they are combined with the combiner.
         /// </summary>
-        /// <typeparam name="T">The type of enumerated element</typeparam>
-        /// <param name="self">The first enumerable</param>
+        /// <typeparam name="TSource">The type of enumerated element</typeparam>
+        /// <param name="source">The first enumerable</param>
         /// <param name="other">The second enumerable</param>
         /// <param name="comparer">The comparer</param>
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
-        public static IEnumerable<T> Combine<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer, Func<T, T, T> combiner) {
-            using (var enumerator1 = self.GetEnumerator())
+        public static IEnumerable<TSource> Combine<TSource>(this IEnumerable<TSource> source, IEnumerable<TSource> other, IComparer<TSource> comparer, Func<TSource, TSource, TSource> combiner) {
+            using (var enumerator1 = source.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
                 var hasValue2 = enumerator2.MoveNext();
@@ -503,15 +503,15 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="TInput">The type of enumerated element</typeparam>
         /// <typeparam name="TOutput">The type of enumerated element</typeparam>
-        /// <param name="self">The first enumerable</param>
+        /// <param name="source">The first enumerable</param>
         /// <param name="other">The second enumerable</param>
         /// <param name="comparer">The comparer</param>
         /// <param name="combiner">The combiner</param>
         /// <param name="defaultValue">The default value for the combiner when one value is missing</param>
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
-        public static IEnumerable<TOutput> Combine<TInput, TOutput>(this IEnumerable<TInput> self, IEnumerable<TInput> other, IComparer<TInput> comparer, Func<TInput, TInput, TOutput> combiner, TInput defaultValue = default(TInput)) {
-            using (var enumerator1 = self.GetEnumerator())
+        public static IEnumerable<TOutput> Combine<TInput, TOutput>(this IEnumerable<TInput> source, IEnumerable<TInput> other, IComparer<TInput> comparer, Func<TInput, TInput, TOutput> combiner, TInput defaultValue = default(TInput)) {
+            using (var enumerator1 = source.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
                 var hasValue2 = enumerator2.MoveNext();
@@ -596,11 +596,11 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Concatenates sequences by alternating their items.
         /// </summary>
-        /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
+        /// <typeparam name="TSource">The type of the elements of the input sequences.</typeparam>
         /// <param name="enumerables">The sequence of sequences</param>
         /// <returns>An IEnumerable<T> that contains the alternated elements of the input sequences.</returns>
-        public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> enumerables) {
-            var list = new List<IEnumerator<T>>(enumerables.Select(e => e.GetEnumerator()));
+        public static IEnumerable<TSource> Interleave<TSource>(this IEnumerable<IEnumerable<TSource>> enumerables) {
+            var list = new List<IEnumerator<TSource>>(enumerables.Select(e => e.GetEnumerator()));
             var i = 0;
             while (list.Count != 0) {
                 i = i % list.Count;
