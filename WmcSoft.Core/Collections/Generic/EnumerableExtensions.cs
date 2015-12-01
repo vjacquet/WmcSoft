@@ -296,8 +296,15 @@ namespace WmcSoft.Collections.Generic
 
         #region Merge, Combine, etc.
 
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IEqualityComparer<T> comparer) {
-            using (var enumerator = self.GetEnumerator()) {
+        /// <summary>
+        /// Gets the unique elements of the soure assuming they elemnts are already sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the source</typeparam>
+        /// <param name="source">The sequence</param>
+        /// <param name="comparer">The equality comparer</param>
+        /// <returns>The unique elements</returns>
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer) {
+            using (var enumerator = source.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var current = enumerator.Current;
                     while (enumerator.MoveNext()) {
@@ -310,11 +317,26 @@ namespace WmcSoft.Collections.Generic
                 }
             }
         }
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self, IComparer<T> comparer) {
-            return self.SortedUnique(new EqualityComparerAdapter<T>(comparer));
+
+        /// <summary>
+        /// Gets the unique elements of the soure assuming they elemnts are already sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the source</typeparam>
+        /// <param name="source">The sequence</param>
+        /// <param name="comparer">The equality comparer</param>
+        /// <returns>The unique elements</returns>
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> source, IComparer<T> comparer) {
+            return source.SortedUnique(new EqualityComparerAdapter<T>(comparer));
         }
-        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> self) {
-            return self.SortedUnique(EqualityComparer<T>.Default);
+
+        /// <summary>
+        /// Gets the unique elements of the soure assuming they elemnts are already sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the source</typeparam>
+        /// <param name="source">The sequence</param>
+        /// <returns>The unique elements</returns>
+        public static IEnumerable<T> SortedUnique<T>(this IEnumerable<T> source) {
+            return source.SortedUnique(EqualityComparer<T>.Default);
         }
 
         public static IEnumerable<TGroup> SortedCombine<T, TGroup>(this IEnumerable<T> self, IEqualityComparer<T> comparer, Func<T, TGroup, TGroup> accumulator, Func<T, TGroup> factory) {
@@ -343,6 +365,7 @@ namespace WmcSoft.Collections.Generic
             where TGroup : new() {
             return self.SortedCombine(EqualityComparer<T>.Default, accumulator, t => accumulator(t, new TGroup()));
         }
+
         /// <summary>
         /// Merges two sorted enumerable in another enumerable sorted using the same comparer. When two items are equivalent, items from first come first.
         /// </summary>
