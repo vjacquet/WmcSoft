@@ -28,6 +28,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements an equality comparer which, given the index of elements in a source, compare the corresponding items.
+    /// </summary>
+    /// <typeparam name="T">The type of the source's items to compare</typeparam>
     public class SourceEqualityComparer<T> : IEqualityComparer<int>
     {
         readonly IReadOnlyList<T> _list;

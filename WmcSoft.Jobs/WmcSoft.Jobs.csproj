@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Threading\QueuedJobDispatcher.cs" />
     <Compile Include="Threading\ReactorJobDispacther.cs" />
+    <Compile Include="Threading\ReflectJob.cs" />
     <Compile Include="Threading\SequenceJob.cs" />
     <Compile Include="Threading\SynchronousJobDispatcher.cs" />
     <Compile Include="Threading\WaitingJobDispatcher.cs" />
