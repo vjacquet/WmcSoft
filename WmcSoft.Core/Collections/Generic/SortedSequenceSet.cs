@@ -75,6 +75,10 @@ namespace WmcSoft.Collections.Generic
             get { return _comparer; }
         }
 
+        /// <summary>
+        /// Gets the minimum value, as defined by the comparer.
+        /// </summary>
+        /// <remarks>Returns default(T) when the set is empty.</remarks>
         public T Min {
             get {
                 if (_storage.Count == 0)
@@ -83,6 +87,10 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        /// <summary>
+        /// Gets the maximum value, as defined by the comparer.
+        /// </summary>
+        /// <remarks>Returns default(T) when the set is empty.</remarks>
         public T Max {
             get {
                 if (_storage.Count == 0)
@@ -93,8 +101,34 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// Removes all elements that match the conditions defined by the specified predicate from a set.
+        /// </summary>
+        /// <param name="match">The delegate that defines the conditions of the elements to remove.</param>
+        /// <returns>The number of elements that were removed from the set.</returns>
+        public int RemoveWhere(Predicate<T> match) {
+            return _storage.RemoveAll(match);
+        }
+
+        /// <summary>
+        /// Returns an <see cref="IEnumerable{T}"/> that iterates over the Set in reverse order.
+        /// </summary>
+        /// <returns>An enumerator that iterates over the Set in reverse order.</returns>
+        public IEnumerable<T> Reverse() {
+            return _storage.Backwards();
+        }
+
+        #endregion
+
         #region ISet<T> Membres
 
+        /// <summary>
+        /// Adds an element to the set and returns a value that indicates if it was successfully added.
+        /// </summary>
+        /// <param name="item">The element to add to the set.</param>
+        /// <returns>true if item is added to the set; otherwise, false. </returns>
         public bool Add(T item) {
             int index = _storage.BinarySearch(item, _comparer);
             if (index >= 0)
@@ -103,6 +137,10 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
+        /// <summary>
+        /// Removes all elements that are in a specified collection from the current Set.
+        /// </summary>
+        /// <param name="other">The collection of items to remove from the Set.</param>
         public void ExceptWith(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -112,6 +150,10 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        /// <summary>
+        /// Modifies the current Set so that it contains only elements that are also in a specified collection.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set.</param>
         public void IntersectWith(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -143,6 +185,11 @@ namespace WmcSoft.Collections.Generic
             _storage = tmp._storage;
         }
 
+        /// <summary>
+        /// Determines whether a Set is a proper subset of the specified collection.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set.</param>
+        /// <returns>true if the Set is a proper subset of other; otherwise, false.</returns>
         public bool IsProperSubsetOf(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -155,6 +202,11 @@ namespace WmcSoft.Collections.Generic
             return tmp.Count != 0;
         }
 
+        /// <summary>
+        /// Determines whether a Set is a proper superset of the specified collection.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set. </param>
+        /// <returns>true if the Set is a proper superset of other; otherwise, false.</returns>
         public bool IsProperSupersetOf(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -163,6 +215,11 @@ namespace WmcSoft.Collections.Generic
             return tmp.IsProperSubsetOf(this);
         }
 
+        /// <summary>
+        /// Determines whether a Set is a subset of the specified collection.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set.</param>
+        /// <returns>true if the current Set is a subset of other; otherwise, false.</returns>
         public bool IsSubsetOf(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -175,6 +232,11 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
+        /// <summary>
+        /// Determines whether a Set is a superset of the specified collection.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set. </param>
+        /// <returns>true if the Set is a superset of other; otherwise, false.</returns>
         public bool IsSupersetOf(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -183,6 +245,11 @@ namespace WmcSoft.Collections.Generic
             return tmp.IsSubsetOf(this);
         }
 
+        /// <summary>
+        /// Determines whether the current Set and a specified collection share common elements.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set.</param>
+        /// <returns>true if the Set and other share at least one common element; otherwise, false.</returns>
         public bool Overlaps(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -202,6 +269,11 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
+        /// <summary>
+        /// Determines whether the current Set and the specified collection contain the same elements.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set.</param>
+        /// <returns>true if the current Set is equal to other; otherwise, false.</returns>
         public bool SetEquals(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -225,6 +297,11 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        /// <summary>
+        /// Modifies the current Set so that it contains all elements that are present 
+        /// in either the current object or the specified collection.
+        /// </summary>
+        /// <param name="other">The collection to compare to the current Set.</param>
         public void UnionWith(IEnumerable<T> other) {
             if (other == null)
                 throw new ArgumentNullException("other");
@@ -255,14 +332,27 @@ namespace WmcSoft.Collections.Generic
             Add(item);
         }
 
-        public void Clear() {
+        /// <summary>
+        /// Removes all elements from the set.
+        /// </summary>
+        public virtual void Clear() {
             _storage.Clear();
         }
 
-        public bool Contains(T item) {
+        /// <summary>
+        /// Determines whether the set contains a specific element.
+        /// </summary>
+        /// <param name="item">The element to locate in the set.</param>
+        /// <returns>true if the set contains item; otherwise, false.</returns>
+        public virtual bool Contains(T item) {
             return _storage.BinarySearch(item, _comparer) >= 0;
         }
 
+        /// <summary>
+        /// Copies the complete Set to a compatible one-dimensional array, starting at the specified array index.
+        /// </summary>
+        /// <param name="array">A one-dimensional array that is the destination of the elements copied from the set. The array must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex) {
             _storage.CopyTo(array, arrayIndex);
         }
