@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
-    [DebuggerTypeProxy(typeof(SortedCollectionDebugView<>))]
+    [DebuggerTypeProxy(typeof(SortedSequenceDebugView<>))]
     [DebuggerDisplay("Count = {Count}")]
-    public class SortedCollection<T> : ICollection<T>
+    public class SortedSequence<T> : ICollection<T>
     {
         #region Fields
 
@@ -18,12 +18,12 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public SortedCollection(IComparer<T> comparer) {
+        public SortedSequence(IComparer<T> comparer) {
             _storage = new List<T>();
             _comparer = comparer;
         }
 
-        public SortedCollection()
+        public SortedSequence()
             : this(Comparer<T>.Default) {
         }
 
@@ -98,11 +98,11 @@ namespace WmcSoft.Collections.Generic
         #endregion
     }
 
-    internal class SortedCollectionDebugView<T>
+    internal class SortedSequenceDebugView<T>
     {
-        private SortedCollection<T> _collection;
+        private ICollection<T> _collection;
 
-        public SortedCollectionDebugView(SortedCollection<T> collection) {
+        public SortedSequenceDebugView(ICollection<T> collection) {
             if (collection == null)
                 throw new ArgumentNullException("set");
 
@@ -111,9 +111,7 @@ namespace WmcSoft.Collections.Generic
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public T[] Items {
-            get {
-                return _collection.ToArray();
-            }
+            get {                return _collection.ToArray();            }
         }
     }
 }

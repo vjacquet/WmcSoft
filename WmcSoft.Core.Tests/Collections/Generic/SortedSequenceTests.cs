@@ -4,11 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WmcSoft.Collections.Generic
 {
     [TestClass]
-    public class SortedCollectionTests
+    public class SortedSequenceTests
     {
         [TestMethod]
         public void CanAdd() {
-            var collection = new SortedCollection<char>();
+            var collection = new SortedSequence<char>();
             collection.AddRange(new []{'b', 'a', 'c'});
             var expected = "abc";
             var actual = String.Concat(collection);
@@ -17,7 +17,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CanAddWithCollision() {
-            var collection = new SortedCollection<string>(StringComparer.InvariantCultureIgnoreCase);
+            var collection = new SortedSequence<string>(StringComparer.InvariantCultureIgnoreCase);
             collection.AddRange(new[] { "b", "a", "c", "B" });
             var expected = "abBc";
             var actual = String.Concat(collection);
@@ -26,7 +26,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CanRemove() {
-            var collection = new SortedCollection<char>();
+            var collection = new SortedSequence<char>();
             collection.AddRange(new[] { 'b', 'a', 'c' });
             Assert.IsTrue(collection.Remove('a'));
             var expected = "bc";

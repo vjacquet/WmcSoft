@@ -67,8 +67,8 @@
     <Compile Include="DateSpanTests.cs" />
     <Compile Include="Globalization\BusinessCalendarTests.cs" />
     <Compile Include="IndexedAlgorithmsTests.cs" />
-    <Compile Include="Collections\Generic\SortedCollectionSetTests.cs" />
-    <Compile Include="Collections\Generic\SortedCollectionTests.cs" />
+    <Compile Include="Collections\Generic\SortedSequenceSetTests.cs" />
+    <Compile Include="Collections\Generic\SortedSequenceTests.cs" />
     <Compile Include="Collections\Generic\SingleItemListTests.cs" />
     <Compile Include="Collections\Specialized\PriorityQueueTests.cs" />
     <Compile Include="Collections\Specialized\NameValueCollectionTests.cs" />

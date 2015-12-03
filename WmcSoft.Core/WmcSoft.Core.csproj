@@ -93,8 +93,8 @@
     <Compile Include="Collections\Generic\SetUtilities.cs" />
     <Compile Include="Collections\Generic\SingleItemReadOnlyList.cs" />
     <Compile Include="Collections\Generic\SingleItemList.cs" />
-    <Compile Include="Collections\Generic\SortedCollection.cs" />
-    <Compile Include="Collections\Generic\SortedCollectionSet.cs" />
+    <Compile Include="Collections\Generic\SortedSequence.cs" />
+    <Compile Include="Collections\Generic\SortedSequenceSet.cs" />
     <Compile Include="Collections\Generic\Vouch.cs" />
     <Compile Include="Collections\SingleItemList.cs" />
     <Compile Include="Collections\Specialized\NameValueCollectionExtensions.cs" />

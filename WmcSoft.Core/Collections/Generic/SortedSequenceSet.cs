@@ -25,12 +25,19 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
-    public class SortedCollectionSet<T> : ISet<T>
+    /// <summary>
+    /// Represents a set of objects that is maintained in sorted order.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the set.</typeparam>
+    [DebuggerTypeProxy(typeof(SortedSequenceDebugView<>))]
+    [DebuggerDisplay("Count = {Count}")]
+    public class SortedSequenceSet<T> : ISet<T>
     {
         #region Fields
 
@@ -41,23 +48,22 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-
-        public SortedCollectionSet(IComparer<T> comparer) {
+        public SortedSequenceSet(IComparer<T> comparer) {
             _storage = new List<T>();
             _comparer = comparer;
         }
 
-        public SortedCollectionSet()
+        public SortedSequenceSet()
             : this(Comparer<T>.Default) {
         }
 
-        public SortedCollectionSet(IEnumerable<T> enumerable, IComparer<T> comparer)
+        public SortedSequenceSet(IEnumerable<T> enumerable, IComparer<T> comparer)
             : this(comparer) {
             _storage.AddRange(enumerable);
             _storage.Sort(comparer);
         }
 
-        public SortedCollectionSet(IEnumerable<T> enumerable)
+        public SortedSequenceSet(IEnumerable<T> enumerable)
             : this(enumerable, Comparer<T>.Default) {
         }
 
@@ -67,6 +73,22 @@ namespace WmcSoft.Collections.Generic
 
         public IComparer<T> Comparer {
             get { return _comparer; }
+        }
+
+        public T Min {
+            get {
+                if (_storage.Count == 0)
+                    return default(T);
+                return _storage[1];
+            }
+        }
+
+        public T Max {
+            get {
+                if (_storage.Count == 0)
+                    return default(T);
+                return _storage[_storage.Count - 1];
+            }
         }
 
         #endregion
@@ -113,7 +135,7 @@ namespace WmcSoft.Collections.Generic
             }
 
             // do not know anything about the enumerable
-            var tmp = new SortedCollectionSet<T>(Comparer);
+            var tmp = new SortedSequenceSet<T>(Comparer);
             foreach (var item in other) {
                 if (Contains(item))
                     tmp.Add(item);
@@ -125,7 +147,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            var tmp = new SortedCollectionSet<T>(other, Comparer);
+            var tmp = new SortedSequenceSet<T>(other, Comparer);
             foreach (var item in this) {
                 if (!tmp.Remove(item))
                     return false;
@@ -137,7 +159,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            var tmp = new SortedCollectionSet<T>(other, Comparer);
+            var tmp = new SortedSequenceSet<T>(other, Comparer);
             return tmp.IsProperSubsetOf(this);
         }
 
@@ -145,7 +167,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            var tmp = new SortedCollectionSet<T>(other, Comparer);
+            var tmp = new SortedSequenceSet<T>(other, Comparer);
             foreach (var item in this) {
                 if (!tmp.Remove(item))
                     return false;
@@ -157,7 +179,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            var tmp = new SortedCollectionSet<T>(other, Comparer);
+            var tmp = new SortedSequenceSet<T>(other, Comparer);
             return tmp.IsSubsetOf(this);
         }
 
@@ -184,7 +206,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            var tmp = new SortedCollectionSet<T>(this, Comparer);
+            var tmp = new SortedSequenceSet<T>(this, Comparer);
             foreach (var item in other) {
                 if (!tmp.Remove(item))
                     return false;
@@ -196,7 +218,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            var tmp = new SortedCollectionSet<T>(other, Comparer);
+            var tmp = new SortedSequenceSet<T>(other, Comparer);
             foreach (var item in tmp) {
                 if (!Remove(item))
                     Add(item);

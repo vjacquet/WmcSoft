@@ -46,7 +46,7 @@ namespace WmcSoft.Collections.Generic
             HasCount = true;
             IsSet = enumerable is ISet<T>;
             if (IsSet) {
-                var sortedCollectionSet = enumerable as SortedCollectionSet<T>;
+                var sortedCollectionSet = enumerable as SortedSequenceSet<T>;
                 if (sortedCollectionSet != null) {
                     IsSorted = comparer.Equals(sortedCollectionSet.Comparer);
                     return;
@@ -60,7 +60,7 @@ namespace WmcSoft.Collections.Generic
 
                 IsSorted = false;
             } else {
-                var sorted = enumerable as SortedCollection<T>;
+                var sorted = enumerable as SortedSequence<T>;
                 IsSorted = (sorted != null) && comparer.Equals(sorted.Comparer);
             }
         }
