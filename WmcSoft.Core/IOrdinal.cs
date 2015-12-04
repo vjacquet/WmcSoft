@@ -52,7 +52,7 @@ namespace WmcSoft
         #region IComparer<int> Members
 
         public int Compare(int x, int y) {
-            return checked(y - x);
+            return checked(x -y);
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace WmcSoft
         #region IComparer<DateTime> Members
 
         public int Compare(DateTime x, DateTime y) {
-            return (int)Math.Truncate((y - x).TotalDays);
+            return (int)Math.Truncate((x - y).TotalDays);
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace WmcSoft
         #region IComparer<DateTime> Members
 
         public int Compare(DateTime x, DateTime y) {
-            return (y.Year - x.Year);
+            return (x.Year - y.Year);
         }
 
         #endregion

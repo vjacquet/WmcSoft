@@ -193,9 +193,28 @@ namespace WmcSoft.Collections.Generic
 
         #region BinarySearch methods
 
+        public static int MulDiv(int number, int numerator, int denominator) {
+            return (int)(((long)number * numerator) / denominator);
+        }
+
         private static int GetMidpoint(int lo, int hi) {
             Debug.Assert(hi - lo >= 0);
             return lo + (hi - lo) / 2; // cannot overflow when (hi + lo) could
+        }
+
+        private static int DoBinarySearch<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer) {
+            while (lo <= hi) {
+                int i = GetMidpoint(lo, hi);
+                int c = comparer.Compare(list[i], value);
+                if (c == 0)
+                    return i;
+                if (c < 0) {
+                    lo = i + 1;
+                } else {
+                    hi = i - 1;
+                }
+            }
+            return ~lo;
         }
 
         /// <summary>
@@ -264,7 +283,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
         public static T BinaryFind<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
-            var found = list.BinarySearch(index, count, finder);
+            var found = BinarySearch(list, index, count, finder);
             if (found >= 0)
                 return list[found];
             return defaultValue;
@@ -279,7 +298,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
         public static T BinaryFind<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
-            return list.BinaryFind(0, list.Count, finder, defaultValue);
+            return BinaryFind(list, 0, list.Count, finder, defaultValue);
         }
 
         /// <summary>
@@ -453,6 +472,75 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region InterpolatedSearch
+
+        /// <summary>
+        /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
+        /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
+        /// if there is no larger element, the bitwise complement of Count.</returns>
+        public static int InterpolatedSearch<T>(this IReadOnlyList<T> list, int index, int count, T value, IOrdinal<T> ordinal) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (index < 0)
+                throw new ArgumentOutOfRangeException("index");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+            if ((list.Count - index) < count)
+                throw new ArgumentException("Invalid length");
+
+            try {
+                int lo = index;
+                int hi = lo + count - 1;
+                while (lo <= hi) {
+                    int D = ordinal.Compare(list[lo], list[hi]);
+                    int d = ordinal.Compare(list[lo], value);
+                    if (D == 0) {
+                        if (d < 0)
+                            return ~lo;
+                        if (d > 0)
+                            return ~hi;
+                        return lo;
+                    }
+                    int i = lo + MulDiv(d, hi - lo, D);
+                    int c = ordinal.Compare(list[i], value);
+                    switch (c) {
+                    case 0:
+                        return i;
+                    case -1:
+                        return DoBinarySearch(list, i + 1, hi, value, ordinal);
+                    case 1:
+                        return DoBinarySearch(list, lo, i - 1, value, ordinal);
+                    default:
+                        if (c == 0)
+                            return i;
+                        if (c <0) {
+                            lo = i + 1;
+                        } else {
+                            hi = i - 1;
+                        }
+                        break;
+                    }
+                }
+                return ~lo;
+            }
+            catch (Exception e) {
+                throw new InvalidOperationException("The ordinal threw an exception", e);
+            }
+        }
+
+        public static int InterpolatedSearch<T>(this IReadOnlyList<T> list, T value, IOrdinal<T> ordinal) {
+            return InterpolatedSearch(list, 0, list.Count, value, ordinal);
+        }
+
+        #endregion
+
         #region RemoveIf methods
 
         public static int RemoveIf<T>(this ICollection<T> source, Func<T, bool> predicate) {
@@ -471,6 +559,10 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static int RemoveIf<T>(this IList<T> source, Func<T, bool> predicate) {
+            var list = source as List<T>;
+            if (list != null)
+                return list.RemoveAll(x => predicate(x));
+
             int count = 0;
             for (int i = source.Count - 1; i >= 0; i--) {
                 var item = source[i];

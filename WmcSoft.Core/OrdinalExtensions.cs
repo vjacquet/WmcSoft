@@ -78,15 +78,15 @@ namespace WmcSoft
         }
 
         public static bool IsNext<T>(this IOrdinal<T> ordinal, T x, T y) {
-            return ordinal.Compare(x, y) == 1;
+            return ordinal.Compare(y, x) == 1;
         }
 
         public static bool IsPrevious<T>(this IOrdinal<T> ordinal, T x, T y) {
-            return ordinal.Compare(x, y) == -1;
+            return ordinal.Compare(y, x) == -1;
         }
 
         public static IEnumerable<R> Collate<T, R>(this IEnumerable<T> sequence, IOrdinal<T> ordinal, Func<T, T, R> factory) {
-            return ordinal.Collate(factory, sequence);
+            return Collate(ordinal,factory, sequence);
         }
 
         public static IEnumerable<R> Collate<T, R>(this IOrdinal<T> ordinal, Func<T, T, R> factory, IEnumerable<T> sequence) {

@@ -53,13 +53,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnCell() {
-            var x = new[, ,] {
+            var x = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[, ,] {
+            var y = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {99, 35, 36} },
@@ -72,7 +72,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnRank() {
-            var x = new[, ,] {
+            var x = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -91,13 +91,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnDimensions() {
-            var x = new[, ,] {
+            var x = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[, ,] {
+            var y = new[,,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -191,10 +191,16 @@ namespace WmcSoft.Collections.Generic
         [TestMethod]
         public void CheckBound() {
             var sequence = new[] { 1, 3, 5, 7 };
-            Assert.AreEqual(Tuple.Create(3,5), sequence.Bounds(Find(4)));
+            Assert.AreEqual(Tuple.Create(3, 5), sequence.Bounds(Find(4)));
             Assert.AreEqual(Tuple.Create(5, 5), sequence.Bounds(Find(5)));
             Assert.AreEqual(Tuple.Create(7, 0), sequence.Bounds(Find(9)));
             Assert.AreEqual(Tuple.Create(0, 1), sequence.Bounds(Find(-1)));
+        }
+
+        [TestMethod]
+        public void CheckInterpolatedSearch() {
+            var sequence = new[] { 1, 2, 3, 5, 7, 9, 11, 12, 23, 42, 51 };
+            Assert.AreEqual(4, sequence.InterpolatedSearch(7, new Int32Ordinal()));
         }
     }
 }
