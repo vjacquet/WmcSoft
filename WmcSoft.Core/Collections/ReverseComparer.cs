@@ -29,12 +29,15 @@ using System.Collections;
 
 namespace WmcSoft.Collections
 {
+    /// <summary>
+    /// Decorates a <see cref="IComparer"/> to exposes a method that compares two objects in reverse order.
+    /// </summary>
     [Serializable]
     public sealed class DescendingComparer : IComparer
     {
         #region Fields
 
-        IComparer comparer;
+        readonly IComparer _comparer;
 
         #endregion
 
@@ -43,7 +46,7 @@ namespace WmcSoft.Collections
         public DescendingComparer(IComparer comparer) {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
-            this.comparer = comparer;
+            _comparer = comparer;
         }
 
         #endregion
@@ -51,7 +54,7 @@ namespace WmcSoft.Collections
         #region IComparer Members
 
         public int Compare(object x, object y) {
-            return comparer.Compare(y, x);
+            return _comparer.Compare(y, x);
         }
 
         #endregion

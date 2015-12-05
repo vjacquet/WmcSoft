@@ -29,6 +29,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Decorates a <see cref="IComparer{T}"/> to exposes a method that compares two objects in descending order.
+    /// </summary>
+    /// <typeparam name="T">The type of objects to compare.</typeparam>
     [Serializable]
     public sealed class ReverseComparer<T> : IComparer<T>
     {
