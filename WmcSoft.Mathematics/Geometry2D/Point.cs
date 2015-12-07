@@ -50,9 +50,29 @@ namespace WmcSoft.Geometry2D
 
         #endregion
 
+        #region Methods
+
+        static double Distance2(double dx, double dy) {
+            return dx * dx + dy * dy;
+        }
+
+        public static int CounterClockwise(Point p0, Point p1, Point p2) {
+            var dx1 = p1.X - p0.X;
+            var dy1 = p1.Y - p0.Y;
+            var dx2 = p2.X - p0.X;
+            var dy2 = p2.Y - p0.Y;
+            if (dx1 * dy2 > dy1 * dx2) return +1;
+            if (dx1 * dy2 < dy1 * dx2) return -1;
+            if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0)) return -1;
+            if (Distance2(dx1, dy1) < Distance2(dx2, dy2)) return +1;
+            return 0;
+        }
+
+        #endregion
+
         #region Operators
 
-        public static bool operator == (Point x, Point y) {
+        public static bool operator ==(Point x, Point y) {
             return x.Equals(y);
         }
 
