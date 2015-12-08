@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using static WmcSoft.Geometry2D.Point;
 
 namespace WmcSoft.Geometry2D
 {
@@ -43,6 +44,24 @@ namespace WmcSoft.Geometry2D
 
         public Point P1 { get; }
         public Point P2 { get; }
+
+        #endregion
+
+        #region Methods
+
+        public bool Intersectwith(Segment s) {
+            return (CounterClockwise(P1, P2, s.P1) * CounterClockwise(P1, P2, s.P2) <= 0)
+                && (CounterClockwise(s.P1, s.P2, P1) * CounterClockwise(s.P1, s.P2, P2) <= 0);
+        }
+
+        /// <summary>
+        /// Compute the pseudo angle with the horizontal axis.
+        /// </summary>
+        /// <param name="s">The segment</param>
+        /// <returns>The pseudo angle with the horizontal axis.</returns>
+        public static double Theta(Segment s) {
+            return Point.Theta(s.P1, s.P2);
+        }
 
         #endregion
 

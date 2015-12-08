@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using static System.Math;
 
 namespace WmcSoft.Geometry2D
 {
@@ -66,6 +67,25 @@ namespace WmcSoft.Geometry2D
             if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0)) return -1;
             if (Distance2(dx1, dy1) < Distance2(dx2, dy2)) return +1;
             return 0;
+        }
+
+        /// <summary>
+        /// Compute the pseudo angle with the horizontal axis.
+        /// </summary>
+        /// <param name="p1">The start point of the segment</param>
+        /// <param name="p2">The end point of the segment</param>
+        /// <returns>The pseudo angle with the horizontal axis.</returns>
+        public static double Theta(Point p1, Point p2) {
+            var dx = p2.X - p1.X;
+            var ax = Abs(dx);
+            var dy = p2.Y - p1.Y;
+            var ay = Abs(dx);
+            var t = ax + ay == 0d ? 0d : dy / (ax + ay);
+            if (dx < 0d)
+                t = 2 - t;
+            else if (dy < 0d)
+                t += 4d;
+            return t * 90d;
         }
 
         #endregion

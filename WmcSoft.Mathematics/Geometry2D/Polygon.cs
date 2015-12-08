@@ -24,8 +24,10 @@
 
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Geometry2D
 {
@@ -40,7 +42,14 @@ namespace WmcSoft.Geometry2D
         #region Lifecycle
 
         public Polygon(params Point[] points) {
-            _points = (Point[])points.Clone();
+            if (points == null) throw new ArgumentNullException("points");
+            if (points.Length < 3) throw new ArgumentOutOfRangeException("points");
+
+            var n = points.Length;
+            _points = new Point[n + 2];
+            Array.Copy(points, 0, _points, 1, n);
+            _points[0] = points[n];
+            _points[n + 1] = points[1];
         }
 
         #endregion
@@ -49,7 +58,9 @@ namespace WmcSoft.Geometry2D
 
         public Point this[int index] {
             get {
-                return _points[index];
+                if (index >= Count) throw new ArgumentOutOfRangeException("index");
+
+                return _points[index - 1];
             }
         }
 
@@ -58,15 +69,18 @@ namespace WmcSoft.Geometry2D
         #region IReadOnlyList<Point> members
 
         public int Count {
-            get { return _points.Length; }
+            get { return _points.Length - 2; }
         }
 
         public IEnumerator<Point> GetEnumerator() {
-            return ((IReadOnlyList<Point>)_points).GetEnumerator();
+            var n = _points.Length - 2;
+            for (int i = 0; i < n; i++) {
+                yield return _points[i];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            return _points.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion
