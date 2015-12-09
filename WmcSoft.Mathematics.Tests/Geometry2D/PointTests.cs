@@ -16,5 +16,13 @@ namespace WmcSoft.Geometry2D
             var p2 = new Point(2d, 4d);
             Assert.AreEqual<Point>(p1, p2);
         }
+
+        [TestMethod]
+        public void CanFormat() {
+            var p1 = new Point("P1", 2d, 4d);
+            Assert.AreEqual("P1", p1.ToString("N"));
+            Assert.AreEqual("(2,4)", p1.ToString("C"));
+            Assert.AreEqual("P1 (2,4)", p1.ToString());
+        }
     }
 }
