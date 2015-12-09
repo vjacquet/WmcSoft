@@ -57,6 +57,7 @@
     <Compile Include="Arithmetics\InterpolationTests.cs" />
     <Compile Include="Arithmetics\OperationsTests.cs" />
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="Geometry2D\PointTests.cs" />
     <Compile Include="Numerics\AlgorithmsTests.cs" />
     <Compile Include="Numerics\Generic\VectorTests.cs" />
     <Compile Include="Numerics\Matrix3Tests.cs" />

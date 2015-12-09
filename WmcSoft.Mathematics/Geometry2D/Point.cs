@@ -29,7 +29,7 @@ using static System.Math;
 
 namespace WmcSoft.Geometry2D
 {
-    public struct Point : IEquatable<Point>
+    public struct Point : IEquatable<Point>, IFormattable
     {
         #region Lifecycle
 
@@ -67,6 +67,10 @@ namespace WmcSoft.Geometry2D
             if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0)) return -1;
             if (Distance2(dx1, dy1) < Distance2(dx2, dy2)) return +1;
             return 0;
+        }
+
+        public static int Clockwise(Point p0, Point p1, Point p2) {
+            return -CounterClockwise(p0, p1, p2);
         }
 
         /// <summary>
@@ -114,10 +118,8 @@ namespace WmcSoft.Geometry2D
             return X.GetHashCode() * 397 ^ Y.GetHashCode();
         }
 
-        public override string ToString() {
-            if (Name != null)
-                return $"{Name} ({X},{Y})";
-            return $"({X},{Y})";
+        public sealed override string ToString() {
+            return ToString("G", null);
         }
 
         #endregion
@@ -126,6 +128,33 @@ namespace WmcSoft.Geometry2D
 
         public bool Equals(Point other) {
             return X == other.X && Y == other.Y;
+        }
+
+        #endregion
+
+        #region IFormattable Membres
+
+        public string ToString(string format) {
+            return ToString(format, null);
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider) {
+            switch (format) {
+            case "c":
+            case "C":
+                return $"({X},{Y})";
+            case "n":
+            case "N":
+                if (Name != null)
+                    return Name;
+                goto case "C";
+            case "g":
+            case "G":
+            default:
+                if (Name != null)
+                    return $"{Name} ({X},{Y})";
+                goto case "C";
+            }
         }
 
         #endregion
