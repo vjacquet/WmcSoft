@@ -1374,25 +1374,7 @@ namespace WmcSoft.Collections.Generic
         #region ToString
 
         static TextInfo GetTextInfo(IFormatProvider formatProvider) {
-            TextInfo info;
-            CultureInfo cultureProvider = formatProvider as CultureInfo;
-            if (cultureProvider != null) {
-                return cultureProvider.TextInfo;
-            }
-
-            info = formatProvider as TextInfo;
-            if (info != null) {
-                return info;
-            }
-
-            if (formatProvider != null) {
-                info = formatProvider.GetFormat(typeof(TextInfo)) as TextInfo;
-                if (info != null) {
-                    return info;
-                }
-            }
-
-            return CultureInfo.CurrentCulture.TextInfo;
+            return formatProvider.GetFormat<TextInfo>();
         }
 
         /// <summary>
@@ -1405,7 +1387,7 @@ namespace WmcSoft.Collections.Generic
             if (enumerable == null)
                 throw new ArgumentNullException("enumerable");
 
-            TextInfo textInfo = GetTextInfo(formatProvider);
+            var textInfo = GetTextInfo(formatProvider);
             var separator = textInfo.ListSeparator;
             using (var it = enumerable.GetEnumerator()) {
                 if (it.MoveNext()) {

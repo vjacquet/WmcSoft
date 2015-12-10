@@ -25,13 +25,23 @@
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace WmcSoft
 {
     public static class FormatProviderExtensions
     {
         public static T GetFormat<T>(this IFormatProvider formatProvider) {
-            return (T)formatProvider.GetFormat(typeof(T));
+            formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
+            var result = (T)formatProvider.GetFormat(typeof(T));
+            if (result == null) {
+                if (typeof(TextInfo).IsAssignableFrom(typeof(T))) {
+                    // patch for TextInfo
+                    var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
+                    return (T)(object)cultureProvider.TextInfo;
+                }
+            }
+            return result;
         }
     }
 }

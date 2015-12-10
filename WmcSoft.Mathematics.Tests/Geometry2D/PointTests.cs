@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,10 @@ namespace WmcSoft.Geometry2D
         [TestMethod]
         public void CanFormat() {
             var p1 = new Point("P1", 2d, 4d);
-            Assert.AreEqual("P1", p1.ToString("N"));
-            Assert.AreEqual("(2,4)", p1.ToString("C"));
-            Assert.AreEqual("P1 (2,4)", p1.ToString());
+            var iv = CultureInfo.InvariantCulture;
+            Assert.AreEqual("P1", p1.ToString("N", iv));
+            Assert.AreEqual("(2,4)", p1.ToString("C", iv));
+            Assert.AreEqual("P1 (2,4)", p1.ToString(iv));
         }
     }
 }

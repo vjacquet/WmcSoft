@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using static System.Math;
 
 namespace WmcSoft.Geometry2D
@@ -138,11 +139,18 @@ namespace WmcSoft.Geometry2D
             return ToString(format, null);
         }
 
+        public string ToString(IFormatProvider formatProvider) {
+            return ToString("G", formatProvider);
+        }
+
         public string ToString(string format, IFormatProvider formatProvider) {
+            formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
+            var ti = formatProvider.GetFormat<TextInfo>() ?? CultureInfo.CurrentCulture.TextInfo;
+            var ls = ti != null ? ti.ListSeparator : ",";
             switch (format) {
             case "c":
             case "C":
-                return $"({X},{Y})";
+                return $"({X}{ls}{Y})";
             case "n":
             case "N":
                 if (Name != null)
@@ -152,7 +160,7 @@ namespace WmcSoft.Geometry2D
             case "G":
             default:
                 if (Name != null)
-                    return $"{Name} ({X},{Y})";
+                    return $"{Name} ({X}{ls}{Y})";
                 goto case "C";
             }
         }
