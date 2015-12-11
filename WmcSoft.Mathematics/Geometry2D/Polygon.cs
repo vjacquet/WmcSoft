@@ -48,8 +48,8 @@ namespace WmcSoft.Geometry2D
             var n = points.Length;
             _points = new Point[n + 2];
             Array.Copy(points, 0, _points, 1, n);
-            _points[0] = points[n];
-            _points[n + 1] = points[1];
+            _points[0] = points[n-1];
+            _points[n + 1] = points[0];
         }
 
         #endregion
@@ -62,6 +62,29 @@ namespace WmcSoft.Geometry2D
 
                 return _points[index - 1];
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public bool Inside(Point t) {
+            uint n = 0;
+            var length = Count;
+
+            var st = new Segment(t, new Point(Double.PositiveInfinity, t.Y));
+            var j = 0;
+            for (int i = 1; i <= length; i++) {
+                var sp = new Segment(_points[i], _points[i]);
+                if(!sp.Intersectwith(st)) {
+                    sp = new Segment(_points[i], _points[j]);
+                    j = i;
+                    if (sp.Intersectwith(st))
+                        n++;
+                }
+            }
+
+            return (n & 1) == 1;
         }
 
         #endregion
