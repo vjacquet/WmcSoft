@@ -25,7 +25,7 @@
 #endregion
 
 using System;
-using static WmcSoft.Geometry2D.Point;
+using static WmcSoft.Geometry2D.Helpers;
 
 namespace WmcSoft.Geometry2D
 {
@@ -44,6 +44,7 @@ namespace WmcSoft.Geometry2D
 
         public Point P1 { get; }
         public Point P2 { get; }
+        public double Length => Distance(P1, P2);
 
         #endregion
 
@@ -59,8 +60,8 @@ namespace WmcSoft.Geometry2D
         /// </summary>
         /// <param name="s">The segment</param>
         /// <returns>The pseudo angle with the horizontal axis.</returns>
-        public static double Theta(Segment s) {
-            return Point.Theta(s.P1, s.P2);
+        public double Theta() {
+            return Helpers.Theta(P1, P2);
         }
 
         #endregion
