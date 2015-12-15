@@ -59,6 +59,10 @@
     <Compile Include="Arithmetics\Operations.cs" />
     <Compile Include="DeterministicRandom.cs" />
     <Compile Include="Generators.cs" />
+    <Compile Include="Geometry2D\Helpers.cs" />
+    <Compile Include="Geometry2D\Point.cs" />
+    <Compile Include="Geometry2D\Polygon.cs" />
+    <Compile Include="Geometry2D\Segment.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="Numerics\Algorithms.cs" />
     <Compile Include="Numerics\Dimensions.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="Algebra\IRingLikeTraits.cs" />
     <None Include="Numerics\NumericsDiagram.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
