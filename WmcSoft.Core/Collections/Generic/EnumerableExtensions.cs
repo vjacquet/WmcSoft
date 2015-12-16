@@ -616,6 +616,76 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Min / Max / MinMax
+
+        public static TSource Min<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+            Comparison<TSource> comparison = comparer.Compare;
+            return Min(source, comparison);
+        }
+
+        public static TSource Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
+
+                var min = enumerator.Current;
+                while (enumerator.MoveNext()) {
+                    if (comparison(enumerator.Current, min) < 0)
+                        min = enumerator.Current;
+                }
+                return min;
+            }
+        }
+
+        public static TSource Max<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+            Comparison<TSource> comparison = comparer.Compare;
+            return Max(source, comparison);
+        }
+
+        public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
+
+                var max = enumerator.Current;
+                while (enumerator.MoveNext()) {
+                    if (comparison(enumerator.Current, max) >= 0)
+                        max = enumerator.Current;
+                }
+                return max;
+            }
+        }
+
+        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+            Comparison<TSource> comparison = comparer.Compare;
+            return MinMax(source, comparison);
+        }
+
+        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
+
+                var min = enumerator.Current;
+                var max = enumerator.Current;
+                while (enumerator.MoveNext()) {
+                    if (comparison(enumerator.Current, min) < 0)
+                        min = enumerator.Current;
+                    else if (comparison(enumerator.Current, max) >= 0)
+                        max = enumerator.Current;
+                }
+                return Tuple.Create(min, max);
+            }
+        }
+
+        #endregion
+
         #region None
 
         /// <summary>
@@ -671,7 +741,6 @@ namespace WmcSoft.Collections.Generic
             }
             return false;
         }
-
 
         /// <summary>
         /// Returns the element with the most occurences.
