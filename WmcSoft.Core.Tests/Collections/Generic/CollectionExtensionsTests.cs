@@ -208,5 +208,19 @@ namespace WmcSoft.Collections.Generic
             var sequence = new[] { "dog", "cat", "bird", "lion" };
             Assert.AreEqual(2, sequence.MinElement());
         }
+
+        [TestMethod]
+        public void CheckMaxElement() {
+            var sequence = new[] { "dog", "cat", "bird", "lion" };
+            Assert.AreEqual(3, sequence.MaxElement());
+        }
+
+        [TestMethod]
+        public void CheckMinMaxElement() {
+            var sequence = new[] { "dog", "cat", "bird", "lion" };
+            var actual = sequence.MinMaxElement();
+            Assert.AreEqual(2, actual.Item1);
+            Assert.AreEqual(3, actual.Item2);
+        }
     }
 }
