@@ -544,18 +544,34 @@ namespace WmcSoft.Collections.Generic
         #region MinElement / MaxElement / MinMaxElement
 
         public static int MinElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+            if (source == null) throw new ArgumentNullException("source");
+
             Comparison<TSource> comparison = comparer.Compare;
-            return MinElement(source, comparison);
+            return MinElement(source, 0, source.Count, comparison);
+        }
+
+        public static int MinElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            Comparison<TSource> comparison = comparer.Compare;
+            return MinElement(source, index, length, comparison);
         }
 
         public static int MinElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
             if (source == null) throw new ArgumentNullException("source");
 
+            return MinElement(source, 0, source.Count, comparison);
+        }
+
+        public static int MinElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
             if (source.Count == 0)
-                return -1;
+                return index - 1;
             var min = source[0];
             var p = 0;
-            for (int i = 1; i < source.Count; i++) {
+            length += index;
+            for (int i = index + 1; i < length; i++) {
                 if (comparison(source[i], min) < 0) {
                     min = source[p = i];
                 }
@@ -564,18 +580,34 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+            if (source == null) throw new ArgumentNullException("source");
+
             Comparison<TSource> comparison = comparer.Compare;
-            return MaxElement(source, comparison);
+            return MaxElement(source, 0, source.Count, comparison);
+        }
+
+        public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            Comparison<TSource> comparison = comparer.Compare;
+            return MaxElement(source, index, length, comparison);
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
             if (source == null) throw new ArgumentNullException("source");
 
+            return MaxElement(source, 0, source.Count, comparison);
+        }
+
+        public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
             if (source.Count == 0)
-                return -1;
+                return index - 1;
             var max = source[0];
             var p = 0;
-            for (int i = 1; i < source.Count; i++) {
+            length += index;
+            for (int i = index + 1; i < source.Count; i++) {
                 if (comparison(source[i], max) >= 0) {
                     max = source[p = i];
                 }
@@ -608,6 +640,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
 
         #region RemoveIf methods
 
