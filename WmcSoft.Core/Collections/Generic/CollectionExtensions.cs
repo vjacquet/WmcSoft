@@ -520,7 +520,7 @@ namespace WmcSoft.Collections.Generic
                     default:
                         if (c == 0)
                             return i;
-                        if (c <0) {
+                        if (c < 0) {
                             lo = i + 1;
                         } else {
                             hi = i - 1;
@@ -537,6 +537,74 @@ namespace WmcSoft.Collections.Generic
 
         public static int InterpolatedSearch<T>(this IReadOnlyList<T> list, T value, IOrdinal<T> ordinal) {
             return InterpolatedSearch(list, 0, list.Count, value, ordinal);
+        }
+
+        #endregion
+
+        #region MinElement / MaxElement / MinMaxElement
+
+        public static int MinElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+            Comparison<TSource> comparison = comparer.Compare;
+            return MinElement(source, comparison);
+        }
+
+        public static int MinElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            if (source.Count == 0)
+                return -1;
+            var min = source[0];
+            var p = 0;
+            for (int i = 1; i < source.Count; i++) {
+                if (comparison(source[i], min) < 0) {
+                    min = source[p = i];
+                }
+            }
+            return p;
+        }
+
+        public static int MaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+            Comparison<TSource> comparison = comparer.Compare;
+            return MaxElement(source, comparison);
+        }
+
+        public static int MaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            if (source.Count == 0)
+                return -1;
+            var max = source[0];
+            var p = 0;
+            for (int i = 1; i < source.Count; i++) {
+                if (comparison(source[i], max) >= 0) {
+                    max = source[p = i];
+                }
+            }
+            return p;
+        }
+
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+            Comparison<TSource> comparison = comparer.Compare;
+            return MinMaxElement(source, comparison);
+        }
+
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            if (source.Count == 0)
+                return Tuple.Create(-1, -1);
+            var min = source[0];
+            var max = source[0];
+            var p = 0;
+            var q = 0;
+            for (int i = 1; i < source.Count; i++) {
+                if (comparison(source[i], min) < 0) {
+                    min = source[p = i];
+                } else if (comparison(source[i], max) >= 0) {
+                    max = source[q = i];
+                }
+            }
+            return Tuple.Create(p, q);
         }
 
         #endregion
