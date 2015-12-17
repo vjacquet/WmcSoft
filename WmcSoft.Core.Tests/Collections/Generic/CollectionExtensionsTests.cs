@@ -202,5 +202,11 @@ namespace WmcSoft.Collections.Generic
             var sequence = new[] { 1, 2, 3, 5, 7, 9, 11, 12, 23, 42, 51 };
             Assert.AreEqual(4, sequence.InterpolatedSearch(7, new Int32Ordinal()));
         }
+
+        [TestMethod]
+        public void CheckMinElement() {
+            var sequence = new[] { "dog", "cat", "bird", "lion" };
+            Assert.AreEqual(2, sequence.MinElement());
+        }
     }
 }
