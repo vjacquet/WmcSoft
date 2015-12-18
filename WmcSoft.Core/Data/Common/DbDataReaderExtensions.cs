@@ -24,38 +24,34 @@
 
 #endregion
 
-using System;
-using System.Data;
-using System.IO;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Runtime.Serialization;
-using System.Xml;
+using WmcSoft.Data.SqlClient;
 
-namespace WmcSoft.Runtime.Serialization
+namespace WmcSoft.Data.Common
 {
-    public static class DataRecordExtensions
+    /// <summary>
+    /// Defines the extension methods to the <see cref="DbDataReader"/> class. This is a static class. 
+    /// </summary>
+    public static class DbDataReaderExtensions
     {
         #region GetObjectFromXml
 
-        public static T GetObjectFromXml<T>(this IDataRecord record, int i)
+        public static T GetObjectFromXml<T>(this DbDataReader reader, int i)
             where T : new() {
-            var xml = record.GetValue(i).ToString();
-            if (String.IsNullOrEmpty(xml))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T));
-            using (var reader = XmlReader.Create(new StringReader(xml))) {
-                return (T)serializer.ReadObject(reader);
-            }
+            var sqlClient = reader as SqlDataReader;
+            if (sqlClient != null)
+                return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i);
+            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i);
         }
 
-        public static T GetObjectFromXml<T>(this IDataRecord record, int i, IDataContractSurrogate surrogate)
+        public static T GetObjectFromXml<T>(this DbDataReader reader, int i, IDataContractSurrogate surrogate)
             where T : new() {
-            var xml = record.GetValue(i).ToString();
-            if (String.IsNullOrEmpty(xml))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T), new Type[0], Int16.MaxValue, false, true, surrogate);
-            using (var reader = XmlReader.Create(new StringReader(xml))) {
-                return (T)serializer.ReadObject(reader);
-            }
+            var sqlClient = reader as SqlDataReader;
+            if (sqlClient != null)
+                return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i, surrogate);
+            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i, surrogate);
         }
 
         #endregion
