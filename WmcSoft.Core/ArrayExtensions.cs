@@ -27,6 +27,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -206,6 +207,39 @@ namespace WmcSoft
         /// <returns>The one-dimensional, zero-based sorted Array</returns>
         public static T[] Sort<T>(this T[] array, IComparer<T> comparer) {
             Array.Sort(array, comparer);
+            return array;
+        }
+
+        public static T[] Sort<T>(this T[] array, int index, int length, Comparison<T> comparison) {
+            Array.Sort(array, index, length, Comparer<T>.Create(comparison));
+            return array;
+        }
+
+        public static T[] Sort<T>(this T[] array, int index, int length, IComparer<T> comparer) {
+            Array.Sort(array, index, length, comparer);
+            return array;
+        }
+        #endregion
+
+        #region SortBackwards methods
+
+        public static T[] SortBackwards<T>(this T[] array) {
+            SortBackwards(array, Comparer<T>.Default);
+            return array;
+        }
+
+        public static T[] SortBackwards<T>(this T[] array, Comparison<T> comparison) {
+            array.Sort((x, y) => comparison(y, x));
+            return array;
+        }
+
+        public static T[] SortBackwards<T>(this T[] array, IComparer<T> comparer) {
+            Array.Sort(array, new ReverseComparer<T>(comparer));
+            return array;
+        }
+
+        public static T[] SortBackwards<T>(this T[] array, int index, int length, IComparer<T> comparer) {
+            Array.Sort(array, index, length, new ReverseComparer<T>(comparer));
             return array;
         }
 
