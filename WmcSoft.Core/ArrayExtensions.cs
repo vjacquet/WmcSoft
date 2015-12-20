@@ -31,6 +31,9 @@ using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the array class. This is a static class.
+    /// </summary>
     public static class ArrayExtensions
     {
         #region AsEnumerable
@@ -176,7 +179,7 @@ namespace WmcSoft
         #region Sort methods
 
         /// <summary>
-        /// Sorts the elements in an entire Array using the <see cref="IComparable&lt;T&gt;"/> generic interface implementation of each element of the Array.
+        /// Sorts the elements in an entire Array using the <see cref="IComparable{T}"/> generic interface implementation of each element of the Array.
         /// </summary>
         /// <typeparam name="T">The type of the elements of the array.</typeparam>
         /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
@@ -187,11 +190,11 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Sorts the elements in an Array using the specified <see cref="Comparison&lt;T&gt;"/>.
+        /// Sorts the elements in an Array using the specified <see cref="Comparison{T}"/>.
         /// </summary>
         /// <typeparam name="T">The type of the elements of the array.</typeparam>
         /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparison">The <see cref="Comparison&lt;T&gt;"/> to use when comparing elements.</param>
+        /// <param name="comparison">The <see cref="Comparison{T}"/> to use when comparing elements.</param>
         /// <returns>The one-dimensional, zero-based sorted Array</returns>
         public static T[] Sort<T>(this T[] array, Comparison<T> comparison) {
             Array.Sort(array, comparison);
@@ -199,22 +202,38 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Sorts the elements in an Array using the specified <see cref="IComparer&lt;T&gt;"/> generic interface.
+        /// Sorts the elements in an Array using the specified <see cref="IComparer{T}"/> generic interface.
         /// </summary>
         /// <typeparam name="T">The type of the elements of the array.</typeparam>
         /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparer">The <see cref="IComparer&lt;T&gt;"/> generic interface implementation to use when comparing elements, or null to use the IComparable<T> generic interface implementation of each element.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> generic interface implementation to use when comparing elements, or null to use the IComparable<T> generic interface implementation of each element.</param>
         /// <returns>The one-dimensional, zero-based sorted Array</returns>
         public static T[] Sort<T>(this T[] array, IComparer<T> comparer) {
             Array.Sort(array, comparer);
             return array;
         }
 
+        /// <summary>
+        /// Sorts the range of elements from an array, defined by the start index and the count of elements, using the given comparison function.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The source array</param>
+        /// <param name="index">The start index</param>
+        /// <param name="length">The length of the range to sort</param>
+        /// <param name="comparer">The comparison function.</param>
         public static T[] Sort<T>(this T[] array, int index, int length, Comparison<T> comparison) {
             Array.Sort(array, index, length, Comparer<T>.Create(comparison));
             return array;
         }
 
+        /// <summary>
+        /// Sorts the range of elements from an array, defined by the start index and the count of elements, using the given comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The source array</param>
+        /// <param name="index">The start index</param>
+        /// <param name="length">The length of the range to sort</param>
+        /// <param name="comparer">The comparer object.</param>
         public static T[] Sort<T>(this T[] array, int index, int length, IComparer<T> comparer) {
             Array.Sort(array, index, length, comparer);
             return array;
@@ -223,21 +242,46 @@ namespace WmcSoft
 
         #region SortBackwards methods
 
+        /// <summary>
+        /// Sorts all the elements in the array in backwards order.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The source array</param>
         public static T[] SortBackwards<T>(this T[] array) {
             SortBackwards(array, Comparer<T>.Default);
             return array;
         }
 
+        /// <summary>
+        /// Sorts all the elements in the array in backwards order, using the given comparison.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The source array</param>
+        /// <param name="comparison">The comparison function.</param>
         public static T[] SortBackwards<T>(this T[] array, Comparison<T> comparison) {
             array.Sort((x, y) => comparison(y, x));
             return array;
         }
 
+        /// <summary>
+        /// Sorts all the elements in the array in backwards order, using the given comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The source array</param>
+        /// <param name="comparer">The comparer object.</param>
         public static T[] SortBackwards<T>(this T[] array, IComparer<T> comparer) {
             Array.Sort(array, new ReverseComparer<T>(comparer));
             return array;
         }
 
+        /// <summary>
+        /// Sorts in backwards order the range of elements from an array, defined by the start index and the count of elements, using the given comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The source array</param>
+        /// <param name="index">The start index</param>
+        /// <param name="length">The length of the range to ort</param>
+        /// <param name="comparer">The comparer object.</param>
         public static T[] SortBackwards<T>(this T[] array, int index, int length, IComparer<T> comparer) {
             Array.Sort(array, index, length, new ReverseComparer<T>(comparer));
             return array;
