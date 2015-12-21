@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Algebra;
+using static WmcSoft.Arithmetics.Operations;
 
 namespace WmcSoft.Arithmetics
 {
@@ -11,14 +12,14 @@ namespace WmcSoft.Arithmetics
         public void CheckDotProduct() {
             double[] x = { 1d, 3d, 5d };
             double[] y = { 2d, 4d, 6d };
-            Assert.AreEqual(44d, x.DotProduct(y));
+            Assert.AreEqual(44d, DotProduct(x, y));
         }
 
         [TestMethod]
         public void CheckDotProductWithDifferentLengthVectors() {
             double[] x = { 1d };
             double[] y = { 2d, 4d };
-            Assert.AreEqual(2d, x.DotProduct(y));
+            Assert.AreEqual(2d, DotProduct(x, y));
         }
 
         [TestMethod]

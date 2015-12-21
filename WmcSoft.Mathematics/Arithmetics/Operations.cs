@@ -25,10 +25,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using WmcSoft.Algebra;
 
 namespace WmcSoft.Arithmetics
 {
+    /// <summary>
+    /// Defines extension lethods on arithmetics. This is a static class.
+    /// </summary>
     public static class Operations
     {
         /// <summary>
@@ -38,8 +42,8 @@ namespace WmcSoft.Arithmetics
         /// <param name="y">The second vector</param>
         /// <returns>The dot product.</returns>
         /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
-        /// the small is padded with zeros.</remarks>
-        public static double DotProduct(this double[] x, double[] y) {
+        /// the smaller is padded with zeros.</remarks>
+        public static double DotProduct(double[] x, double[] y) {
             if (x == null || y == null)
                 return 0d;
             var length = Math.Min(x.Length, y.Length);
@@ -53,6 +57,7 @@ namespace WmcSoft.Arithmetics
         /// <summary>
         /// Compute the dot products of two vectors.
         /// </summary>
+        /// <param name="arithmetics">The arithmetics object.</param>
         /// <param name="x">The first vector</param>
         /// <param name="y">The second vector</param>
         /// <returns>The dot product.</returns>
@@ -70,7 +75,7 @@ namespace WmcSoft.Arithmetics
             return result;
         }
 
-        public static T DotProduct<T, A>(this T[] x, T[] y)
+        public static T DotProduct<T, A>(T[] x, T[] y)
             where A : IArithmetics<T>, new() {
             return DotProduct<T, A>(new A(), x, y);
         }
@@ -95,6 +100,77 @@ namespace WmcSoft.Arithmetics
             return result;
         }
 
+        /// <summary>
+        /// Compute the dot products of two enumerables.
+        /// </summary>
+        /// <param name="x">The first enumerable</param>
+        /// <param name="y">The second enumerable</param>
+        /// <returns>The dot product.</returns>
+        /// <remarks>null enumerable are consider like empty enumerable and if the two enumerables have different size, 
+        /// the smaller is padded with zeros.</remarks>
+        public static double DotProduct(IEnumerable<double> x, IEnumerable<double> y) {
+            if (x == null || y == null)
+                return 0d;
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                var result = 0d;
+                while (ex.MoveNext() && ey.MoveNext()) {
+                    result += ex.Current * ey.Current;
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Compute the dot products of two enumerables.
+        /// </summary>
+        /// <param name="arithmetics">The arithmetics object.</param>
+        /// <param name="x">The first enumerable</param>
+        /// <param name="y">The second enumerable</param>
+        /// <returns>The dot product.</returns>
+        /// <remarks>null enumerable are consider like empty enumerable and if the two enumerables have different size, 
+        /// the smaller is padded with zeros.</remarks>
+        public static T DotProduct<T, A>(this A arithmetics, IEnumerable<T> x, IEnumerable<T> y)
+            where A : IArithmetics<T> {
+            var result = arithmetics.Zero;
+            if (x == null || y == null)
+                return result;
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                while (ex.MoveNext() && ey.MoveNext()) {
+                    result = arithmetics.Add(result, arithmetics.Multiply(ex.Current, ey.Current));
+                }
+                return result;
+            }
+        }
+
+        public static T DotProduct<T, A>(IEnumerable<T> x, IEnumerable<T> y)
+            where A : IArithmetics<T>, new() {
+            return DotProduct<T, A>(new A(), x, y);
+        }
+
+        /// <summary>
+        /// Compute the dot products of two vectors.
+        /// </summary>
+        /// <param name="x">The first vector</param>
+        /// <param name="y">The second vector</param>
+        /// <returns>The dot product.</returns>
+        /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
+        /// the small is padded with zeros.</remarks>
+        public static T DotProductRing<T, R>(this R ring, IEnumerable<T> x, IEnumerable<T> y)
+            where R : IRingLike<T> {
+            var result = ring.Zero;
+            if (x == null || y == null)
+                return result;
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                while (ex.MoveNext() && ey.MoveNext()) {
+                    result = ring.Add(result, ring.Multiply(ex.Current, ey.Current));
+                }
+                return result;
+            }
+        }
+
         static bool Odd(int n) {
             return (n % 2) == 1;
         }
@@ -110,7 +186,7 @@ namespace WmcSoft.Arithmetics
             // precondition: n >= 0
             if (n == 0)
                 return x;
-            for (; ; ) {
+            for (;;) {
                 if (Odd(n)) {
                     x = group.Eval(x, y);
                     if (n == 1)
@@ -151,17 +227,17 @@ namespace WmcSoft.Arithmetics
 
         public static T PowerSemiGroup<T, G>(this T x, int n)
             where G : IGroupLike<T>, new() {
-                return PowerSemiGroup(new G(), x, n);
+            return PowerSemiGroup(new G(), x, n);
         }
 
         public static T PowerMonoid<T, G>(this T x, int n)
             where G : IGroupLike<T>, new() {
-                return PowerMonoid(new G(), x, n);
+            return PowerMonoid(new G(), x, n);
         }
 
         public static T Power<T, G>(this T x, int n)
             where G : IGroupLike<T>, new() {
-                return Power(new G(), x, n);
+            return Power(new G(), x, n);
         }
     }
 }
