@@ -58,6 +58,7 @@
     <Compile Include="Measures.cs" />
     <Compile Include="Measuring.cs" />
     <Compile Include="NeuralNetwork\ActivationFunctions.cs" />
+    <Compile Include="NeuralNetwork\Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EndPoints.cs" />
     <Compile Include="LeastSquare.cs" />
