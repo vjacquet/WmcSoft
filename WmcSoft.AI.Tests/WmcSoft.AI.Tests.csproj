@@ -54,6 +54,7 @@
     <Compile Include="FuzzyLogic\FuzzifierTests.cs" />
     <Compile Include="FuzzyLogic\FuzzyVarTests.cs" />
     <Compile Include="FuzzyLogic\MembershipFunctionTests.cs" />
+    <Compile Include="NeuralNetwork\HelpersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutoassociativeFilterTests.cs" />
     <Compile Include="SeriesTests.cs" />

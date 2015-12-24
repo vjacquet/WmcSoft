@@ -58,7 +58,7 @@ namespace WmcSoft.AI.NeuralNetwork
                 }
 
                 // append new row of all 0's except 1 at end
-                for (int i = 0; i < k-1; i++) {
+                for (int i = 0; i < k - 1; i++) {
                     matrix[k * nm1 + i] = 0d;
                 }
                 matrix[k * nm1 + k - 1] = 1d;
@@ -69,6 +69,32 @@ namespace WmcSoft.AI.NeuralNetwork
             var length = matrix.Length;
             for (int i = 0; i < length; i++) {
                 matrix[i] = 0.4d * matrix[i] + 0.5d;
+            }
+        }
+
+        /// <summary>
+        /// Returns the number of value greater than or equal to the threshold
+        /// </summary>
+        /// <param name="values">The array of values</param>
+        /// <param name="threshold">The threshold</param>
+        /// <returns>Number of values ggreater than or equal to the threshold.</returns>
+        /// <remarks>Assumes the array is sorted.</remarks>
+        public static int Count(double[] values, double threshold) {
+            var n = values.Length;
+            if (threshold > values[n - 1])
+                return 0;
+            if (threshold < values[0])
+                return n;
+            var lo = 0;
+            var hi = n - 1;
+            while (true) {
+                var mid = lo + (hi - lo) / 2;
+                if (mid == lo)
+                    return n - hi;
+                if (values[mid] < threshold)
+                    lo = mid;
+                else
+                    hi = mid;
             }
         }
     }
