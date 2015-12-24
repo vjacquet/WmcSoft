@@ -80,22 +80,10 @@ namespace WmcSoft.AI.NeuralNetwork
         /// <returns>Number of values ggreater than or equal to the threshold.</returns>
         /// <remarks>Assumes the array is sorted.</remarks>
         public static int Count(double[] values, double threshold) {
-            var n = values.Length;
-            if (threshold > values[n - 1])
-                return 0;
-            if (threshold < values[0])
-                return n;
-            var lo = 0;
-            var hi = n - 1;
-            while (true) {
-                var mid = lo + (hi - lo) / 2;
-                if (mid == lo)
-                    return n - hi;
-                if (values[mid] < threshold)
-                    lo = mid;
-                else
-                    hi = mid;
-            }
+            var i = Array.BinarySearch(values, threshold);
+            if (i < 0)
+                i = ~i;
+            return values.Length - i;
         }
     }
 }
