@@ -55,6 +55,7 @@
     <Compile Include="FuzzyLogic\IMembershipFunction.cs" />
     <Compile Include="FuzzyLogic\TrapezoidMembershipFunction.cs" />
     <Compile Include="FuzzyLogic\TriangularMembershipFunction.cs" />
+    <Compile Include="Gray.cs" />
     <Compile Include="Measures.cs" />
     <Compile Include="Measuring.cs" />
     <Compile Include="NeuralNetwork\ActivationFunctions.cs" />
