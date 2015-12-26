@@ -26,10 +26,7 @@
 
 using System;
 using System.ComponentModel;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace WmcSoft.AI.FuzzyLogic
 {
@@ -61,21 +58,19 @@ namespace WmcSoft.AI.FuzzyLogic
 
         public IFuzzyCategory Interpret(double value) {
             // compute the cumulated probability
-            double[] cumulated = new double[_list.Count];
-            double total = 0.0;
-            int index = 0;
-            foreach (IFuzzyCategory category in _list) {
+            var cumulated = new double[_list.Count];
+            var total = 0d;
+            var index = 0;
+            foreach (var category in _list) {
                 double membership = category.EvaluateMembership(value);
                 total += membership;
                 cumulated[index++] = total;
             }
 
             // find the value
-            double alea = _random.NextDouble() * total;
-            int found = Array.BinarySearch<double>(cumulated, alea);
-            return (found >= 0)
-                ? _list[found]
-                : _list[~found];
+            var alea = _random.NextDouble() * total;
+            var found = Array.BinarySearch<double>(cumulated, alea);
+            return (found >= 0) ? _list[found] : _list[~found];
         }
     }
 }

@@ -24,8 +24,6 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.AI.FuzzyLogic
 {
     public interface IFuzzyCategory

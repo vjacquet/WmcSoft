@@ -40,7 +40,7 @@ namespace WmcSoft.AI.FuzzyLogic
             MidValue = midValue;
             LowValue = lowValue;
 
-            this.displayName = displayName;
+            DisplayName = displayName;
         }
 
         #region Membres de IFuzzySet
@@ -63,14 +63,10 @@ namespace WmcSoft.AI.FuzzyLogic
         public double HighValue { get; }
 
         [DefaultValue("")]
-        public string DisplayName {
-            get { return displayName; }
-            set { displayName = value; }
-        }
-        private string displayName;
+        public string DisplayName { get; set; }
 
         public override string ToString() {
-            return displayName;
+            return DisplayName;
         }
     }
 }

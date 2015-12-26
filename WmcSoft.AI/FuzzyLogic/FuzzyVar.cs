@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 namespace WmcSoft.AI.FuzzyLogic
 {
     /// <summary>
-    /// Description résumée de FuzzyVar.
+    /// Represents a Fuzzy variable, whose value is int
     /// </summary>
     [Serializable, StructLayout(LayoutKind.Sequential)]
     public struct FuzzyVar : IComparable, IFormattable, IConvertible, IComparable<FuzzyVar>, IEquatable<FuzzyVar>
@@ -67,12 +67,12 @@ namespace WmcSoft.AI.FuzzyLogic
 
         public override bool Equals(object obj) {
             if (obj is FuzzyVar) {
-                FuzzyVar fuzzyVar = (FuzzyVar)obj;
+                var fuzzyVar = (FuzzyVar)obj;
                 if (fuzzyVar._value == _value) {
                     return true;
                 }
-                if (FuzzyVar.IsNaN(fuzzyVar)) {
-                    return FuzzyVar.IsNaN(this);
+                if (IsNaN(fuzzyVar)) {
+                    return IsNaN(this);
                 }
             }
             return false;
@@ -95,7 +95,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar Parse(string text) {
-            double value = Double.Parse(text, NumberStyles.Float | NumberStyles.AllowThousands, null);
+            var value = Double.Parse(text, NumberStyles.Float | NumberStyles.AllowThousands, null);
             if (value < 0.0f && value > 1.0f) {
                 throw new ArgumentOutOfRangeException("text");
             }
@@ -103,7 +103,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar Parse(string text, NumberStyles style) {
-            double value = Double.Parse(text, style, null);
+            var value = Double.Parse(text, style, null);
             if (value < 0.0f && value > 1.0f) {
                 throw new ArgumentOutOfRangeException("text");
             }
@@ -111,7 +111,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar Parse(string text, IFormatProvider provider) {
-            double value = Double.Parse(text, NumberStyles.Float | NumberStyles.AllowThousands, provider);
+            var value = Double.Parse(text, NumberStyles.Float | NumberStyles.AllowThousands, provider);
             if (value < 0.0f && value > 1.0f) {
                 throw new ArgumentOutOfRangeException("text");
             }
@@ -119,7 +119,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar Parse(string text, NumberStyles style, IFormatProvider provider) {
-            double value = Double.Parse(text, style, provider);
+            var value = Double.Parse(text, style, provider);
             if (value < 0.0f && value > 1.0f) {
                 throw new ArgumentOutOfRangeException("text");
             }
@@ -195,7 +195,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar operator &(FuzzyVar x, FuzzyVar y) {
-            return new FuzzyVar(System.Math.Min(x._value, y._value));
+            return new FuzzyVar(Math.Min(x._value, y._value));
         }
 
         public FuzzyVar BitwiseAnd(FuzzyVar value) {
@@ -203,7 +203,7 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public static FuzzyVar operator |(FuzzyVar x, FuzzyVar y) {
-            return new FuzzyVar(System.Math.Max(x._value, y._value));
+            return new FuzzyVar(Math.Max(x._value, y._value));
         }
 
         public FuzzyVar BitwiseOr(FuzzyVar value) {
@@ -214,7 +214,7 @@ namespace WmcSoft.AI.FuzzyLogic
             return new FuzzyVar(value);
         }
 
-        public static explicit operator double(FuzzyVar value) {
+        public static explicit operator double (FuzzyVar value) {
             return value._value;
         }
 
@@ -264,5 +264,4 @@ namespace WmcSoft.AI.FuzzyLogic
 
         #endregion
     }
-
 }
