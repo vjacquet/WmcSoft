@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using static System.Math;
 
 namespace WmcSoft.AI
 {
@@ -42,37 +43,32 @@ namespace WmcSoft.AI
         }
 
         public void Execute(double[] input, double[] output) {
-            if (input == null)
-                throw new ArgumentNullException("input");
-            if (output == null)
-                throw new ArgumentNullException("output");
-            if (output.Length != input.Length)
-                throw new InvalidOperationException();
-            if (output.Length < _work.Length)
-                throw new InvalidOperationException();
+            if (input == null) throw new ArgumentNullException("input");
+            if (output == null) throw new ArgumentNullException("output");
+            if (output.Length != input.Length) throw new InvalidOperationException();
+            if (output.Length < _work.Length) throw new InvalidOperationException();
 
             // zero
-            int i, j;
             var m = output.Length;
-            for (i = 0; i < output.Length; i++) {
+            for (var i = 0; i < output.Length; i++) {
                 output[i] = 0d;
             }
 
             // then cumulate the output
             var n = _work.Length;
             var count = m - n + 1;
-            for (i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 _evaluate(input, i, _work);
-                for (j = 0; j < n; j++) {
+                for (var j = 0; j < n; j++) {
                     output[i + j] += _work[j];
                 }
             }
 
             // and finally get the means
             if (count > 1) {
-                var lim = Math.Min(count, n);
-                for (i = 0; i < m; i++) {
-                    j = m - i;
+                var lim = Min(count, n);
+                for (var i = 0; i < m; i++) {
+                    var j = m - i;
                     if ((i + 1) < j)
                         j = i + 1;
                     if (j > lim)

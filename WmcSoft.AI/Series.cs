@@ -38,11 +38,14 @@ namespace WmcSoft.AI
             return output;
         }
 
-        public static double[] Detrend<A>(double[] input) where A : ITrendEvaluator, new() {
-            var a = new A();
+        public static double[] Detrend<TAlgorithm>(double[] input) where TAlgorithm : ITrendEvaluator, new() {
+            return Detrend(input, new TAlgorithm());
+        }
+
+        public static double[] Detrend<TAlgorithm>(double[] input, TAlgorithm algorithm) where TAlgorithm : ITrendEvaluator {
             double slope;
             double intercept;
-            a.Eval(input, out slope, out intercept);
+            algorithm.Eval(input, out slope, out intercept);
             return Detrend(input, slope, intercept);
         }
 
