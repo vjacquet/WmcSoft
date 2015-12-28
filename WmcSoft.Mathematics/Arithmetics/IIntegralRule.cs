@@ -24,45 +24,10 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.Arithmetics
 {
-    public interface IFunction<T> : IEquatable<IFunction<T>>
+    public interface IIntegralRule<T>
     {
-        T Eval(T x);
-    }
-
-    public static class FunctionExtensions
-    {
-        public static Func<T, T> AsFunc<T>(this IFunction<T> function) {
-            return function.Eval;
-        }
-
-        public static GenericFunction<T> AsFunction<T>(this Func<T,T> func) {
-            return new GenericFunction<T>(func);
-        }
-    }
-
-    public struct GenericFunction<T> : IFunction<T>
-    {
-        private readonly Func<T, T> _func;
-
-        public GenericFunction(Func<T, T> func) {
-            if (func == null) throw new ArgumentNullException("func");
-            _func = func;
-        }
-
-        public bool Equals(IFunction<T> other) {
-            if(other is GenericFunction<T>) {
-                var that = (GenericFunction<T>)other;
-                return _func.Equals(that._func);
-            }
-            return false;
-        }
-
-        public T Eval(T x) {
-            return _func(x);
-        }
+        T Integrate<TFunction>(TFunction f, T a, T b) where TFunction : IFunction<T>;
     }
 }

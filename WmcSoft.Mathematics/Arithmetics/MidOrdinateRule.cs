@@ -28,41 +28,24 @@ using System;
 
 namespace WmcSoft.Arithmetics
 {
-    public interface IFunction<T> : IEquatable<IFunction<T>>
+    public struct MidOrdinateRule : IIntegralRule<double>
     {
-        T Eval(T x);
-    }
+        private readonly int _steps;
 
-    public static class FunctionExtensions
-    {
-        public static Func<T, T> AsFunc<T>(this IFunction<T> function) {
-            return function.Eval;
+        public MidOrdinateRule(int steps) {
+            if (steps <= 0) throw new ArgumentOutOfRangeException("steps");
+            _steps = steps;
         }
 
-        public static GenericFunction<T> AsFunction<T>(this Func<T,T> func) {
-            return new GenericFunction<T>(func);
-        }
-    }
-
-    public struct GenericFunction<T> : IFunction<T>
-    {
-        private readonly Func<T, T> _func;
-
-        public GenericFunction(Func<T, T> func) {
-            if (func == null) throw new ArgumentNullException("func");
-            _func = func;
-        }
-
-        public bool Equals(IFunction<T> other) {
-            if(other is GenericFunction<T>) {
-                var that = (GenericFunction<T>)other;
-                return _func.Equals(that._func);
+        public double Integrate<TFunction>(TFunction f, double a, double b)
+            where TFunction : IFunction<double> {
+            var r = 0d;
+            var w = (b - a) / _steps;
+            for (int i = 0; i < _steps;) {
+                i++;
+                r += f.Eval(a - w / 2 + i * w);
             }
-            return false;
-        }
-
-        public T Eval(T x) {
-            return _func(x);
+            return r * w;
         }
     }
 }

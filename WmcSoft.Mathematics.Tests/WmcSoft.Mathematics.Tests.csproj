@@ -54,6 +54,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Algebra\AlgebraTests.cs" />
+    <Compile Include="Arithmetics\IntegralCalculusTests.cs" />
     <Compile Include="Arithmetics\InterpolationTests.cs" />
     <Compile Include="Arithmetics\OperationsTests.cs" />
     <Compile Include="CalculatorTests.cs" />
