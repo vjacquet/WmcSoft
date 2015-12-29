@@ -28,11 +28,11 @@ using System;
 
 namespace WmcSoft.Arithmetics
 {
-    public struct MidOrdinateRule : IIntegralRule<double>
+    public struct TrapezoidalRule : IIntegralRule<double>
     {
         private readonly int _steps;
 
-        public MidOrdinateRule(int steps) {
+        public TrapezoidalRule(int steps) {
             if (steps <= 0) throw new ArgumentOutOfRangeException("steps");
             _steps = steps;
         }
@@ -42,11 +42,10 @@ namespace WmcSoft.Arithmetics
             var r = 0d;
             var w = (b - a) / _steps;
             var w2 = w / 2d;
-            for (int i = 0; i < _steps;) {
-                i++;
-                r += f.Eval(a - w2+ i * w);
+            for (int i = 0; i < _steps; i++) {
+                r += f.Eval(a + i * w) + f.Eval(a + (i + 1) * w);
             }
-            return r * w;
+            return r*w2;
         }
     }
 }
