@@ -216,6 +216,23 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
+        /// Performs the specified action on each element of the sequence, before yield it.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements to apply the predicate to.</param>
+        /// <param name="action">A function to apply on each element.</param>
+        /// <remarks>The action is applied only on the enumerated items.</remarks>
+        public static IEnumerable<TSource> OnEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            foreach (var item in source) {
+                action(item);
+                yield return item;
+            }
+        }
+
+        /// <summary>
         /// Determines whether each element matches the condition.
         /// </summary>
         /// <typeparam name="TSource">The type of the element of the source.</typeparam>
@@ -624,7 +641,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static TSource Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -645,7 +663,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -666,7 +685,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -1135,7 +1155,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The number of elements to return.</param>
         /// <returns>A sequence that contains at most the specified number elements at the end of the input sequence.</returns>
         public static IEnumerable<TSource> Tail<TSource>(this IEnumerable<TSource> source, int count) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
             if (count <= 0)
                 return System.Linq.Enumerable.Empty<TSource>();
             if (count == 1)
@@ -1191,7 +1212,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The number of elements to return.</param>
         /// <returns>A sequence that contains at most the specified number elements not matching the predicate, at the end of the input sequence.</returns>
         public static IEnumerable<TSource> TailUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
             if (count <= 0)
                 return System.Linq.Enumerable.Empty<TSource>();
             Func<TSource, bool> unless = x => !predicate(x);
@@ -1218,7 +1240,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The number of elements to return.</param>
         /// <returns>A sequence that contains at most the specified number elements not matching the predicate, from the start of the input sequence.</returns>
         public static IEnumerable<TSource> TakeUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
             Func<TSource, bool> unless = x => !predicate(x);
             return source.Where(unless).Take(count);
         }
@@ -1347,9 +1370,12 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, DuplicatePolicy policy) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (keySelector == null)
+                throw new ArgumentNullException("keySelector");
+            if (elementSelector == null)
+                throw new ArgumentNullException("elementSelector");
 
             var d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
@@ -1375,10 +1401,14 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, Func<TElement, TSource, TElement> merger) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
-            if (merger == null) throw new ArgumentNullException("merger");
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (keySelector == null)
+                throw new ArgumentNullException("keySelector");
+            if (elementSelector == null)
+                throw new ArgumentNullException("elementSelector");
+            if (merger == null)
+                throw new ArgumentNullException("merger");
 
             var d = new Dictionary<TKey, TElement>(comparer);
             foreach (TSource item in source) {
@@ -1394,10 +1424,14 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, Func<TElement, TElement, TElement> merger) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
-            if (merger == null) throw new ArgumentNullException("merger");
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (keySelector == null)
+                throw new ArgumentNullException("keySelector");
+            if (elementSelector == null)
+                throw new ArgumentNullException("elementSelector");
+            if (merger == null)
+                throw new ArgumentNullException("merger");
 
             var d = new Dictionary<TKey, TElement>(comparer);
             foreach (TSource item in source) {
