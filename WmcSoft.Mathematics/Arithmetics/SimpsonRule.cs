@@ -28,25 +28,26 @@ using System;
 
 namespace WmcSoft.Arithmetics
 {
-    public struct TrapezoidalRule : IIntegralRule<double>
+    public struct SimpsonRule : IIntegralRule<double>
     {
         private readonly int _steps;
 
-        public TrapezoidalRule(int steps) {
+        public SimpsonRule(int steps) {
             if (steps <= 0) throw new ArgumentOutOfRangeException("steps");
             _steps = steps;
         }
 
         public double Integrate<TFunction>(TFunction f, double a, double b)
             where TFunction : IFunction<double> {
-            var r = (f.Eval(a) + f.Eval(b)) / 2d;
+            var r = 0d;
             var w = (b - a) / _steps;
-            var n = _steps - 1;
-            while (n-- > 0) {
-                a += w;
-                r += f.Eval(a);
+            var w2 = w / 2d;
+            for (int i = 0; i < _steps; ) {
+                r += f.Eval(a + i * w);
+                i++;
+                r += 4 * f.Eval(a - w2 + i * w) + f.Eval(a + i * w);
             }
-            return r * w;
+            return r * w / 6d;
         }
     }
 }
