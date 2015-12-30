@@ -208,6 +208,7 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="TSource">The type of the element of the source.</typeparam>
         /// <param name="source">The elements to apply the predicate to.</param>
         /// <param name="action">A function to apply on each element.</param>
+        /// <remarks>The function is defined even if the <paramref name="source"/> is null.</remarks>
         public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
             if (source == null)
                 return;
@@ -222,10 +223,10 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The elements to apply the predicate to.</param>
         /// <param name="action">A function to apply on each element.</param>
         /// <remarks>The action is applied only on the enumerated items.</remarks>
+        /// <remarks>The function is defined even if the <paramref name="source"/> is null.</remarks>
         public static IEnumerable<TSource> OnEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action) {
             if (source == null)
-                throw new ArgumentNullException("source");
-
+                yield break;
             foreach (var item in source) {
                 action(item);
                 yield return item;
@@ -241,6 +242,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if every element in the sequence matches the conditions defined by the specified predicate; 
         /// otherwise, false. If there are no elements, the return value is true.</returns>
         /// <remarks>The predicate is applied on each element of the sequence.</remarks>
+        /// <remarks>The function is defined even if the <paramref name="source"/> is null.</remarks>
         public static bool TrueForEach<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
             if (source == null)
                 return true;
@@ -260,6 +262,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if some element in the sequence matches the conditions defined by the specified predicate; 
         /// otherwise, false. If there are no elements, the return value is true.</returns>
         /// <remarks>The predicate is applied on each element of the sequence.</remarks>
+        /// <remarks>The function is defined even if the <paramref name="source"/> is null.</remarks>
         public static bool TrueForSome<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate) {
             if (source == null)
                 return false;
