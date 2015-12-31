@@ -58,6 +58,7 @@
     <Compile Include="Arithmetics\IntegralCalculus.cs" />
     <Compile Include="Arithmetics\LinearFunction.cs" />
     <Compile Include="Arithmetics\LinearInterpolation.cs" />
+    <Compile Include="Arithmetics\BooleRule.cs" />
     <Compile Include="Arithmetics\SimpsonRule.cs" />
     <Compile Include="Arithmetics\TrapezoidalRule.cs" />
     <Compile Include="Arithmetics\MidOrdinateRule.cs" />
