@@ -39,13 +39,13 @@ namespace WmcSoft.Arithmetics
 
         public double Integrate<TFunction>(TFunction f, double a, double b)
             where TFunction : IFunction<double> {
-            var r = 0d;
             var w = (b - a) / _steps;
             var w2 = w / 2d;
-            for (int i = 0; i < _steps; ) {
-                r += f.Eval(a + i * w);
-                i++;
-                r += 4 * f.Eval(a - w2 + i * w) + f.Eval(a + i * w);
+            var r = f.Eval(a) + f.Eval(b) + 4 * f.Eval(b - w2);
+            var n = _steps - 1;
+            while (n-- > 0) {
+                a += w;
+                r += 4 * f.Eval(a - w2) + 2d * f.Eval(a);
             }
             return r * w / 6d;
         }
