@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,11 +25,11 @@ namespace WmcSoft.Collections.Specialized
             priorityQueue.Enqueue(17);
             priorityQueue.Enqueue(7);
             priorityQueue.Enqueue(11);
-            Assert.AreEqual(17, (int)priorityQueue.Dequeue());
-            Assert.AreEqual(15, (int)priorityQueue.Dequeue());
-            Assert.AreEqual(11, (int)priorityQueue.Dequeue());
-            Assert.AreEqual(7, (int)priorityQueue.Dequeue());
-            Assert.AreEqual(3, (int)priorityQueue.Dequeue());
+            Assert.AreEqual(17, priorityQueue.Dequeue());
+            Assert.AreEqual(15, priorityQueue.Dequeue());
+            Assert.AreEqual(11, priorityQueue.Dequeue());
+            Assert.AreEqual(7, priorityQueue.Dequeue());
+            Assert.AreEqual(3, priorityQueue.Dequeue());
         }
 
         [TestMethod]

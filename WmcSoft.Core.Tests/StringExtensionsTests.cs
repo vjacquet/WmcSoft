@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.Text;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Text;
 
 namespace WmcSoft
 {
@@ -116,7 +113,7 @@ namespace WmcSoft
             var data = "abd def ghi jkl mno pqr";
             var result = data.ReplaceWord("xyz", "stu");
             Assert.AreEqual(data, result);
-            Assert.IsTrue(Object.ReferenceEquals(data, result));
+            Assert.IsTrue(ReferenceEquals(data, result));
         }
 
         [TestMethod]
