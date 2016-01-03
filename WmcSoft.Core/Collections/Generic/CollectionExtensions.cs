@@ -699,6 +699,31 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Pop
+
+        public static T Pop<T>(this IList<T> list) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (list.Count == 0)
+                throw new InvalidOperationException();
+            var last = list.Count - 1;
+            var t = list[last];
+            list.RemoveAt(last);
+            return t;
+        }
+
+        public static T Pop<T>(this IList<T> list, int index) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (list.Count == 0)
+                throw new InvalidOperationException();
+            var t = list[index];
+            list.RemoveAt(index);
+            return t;
+        }
+
+        #endregion
+
         #region RemoveIf methods
 
         public static int RemoveIf<T>(this ICollection<T> source, Func<T, bool> predicate) {
@@ -821,8 +846,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle<T>(this IList<T> list) {
-            Suffle(list, new Random());
+        public static void Shuffle<T>(this IList<T> list) {
+            Shuffle(list, new Random());
         }
 
         /// <summary>
@@ -832,7 +857,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle<T>(this IList<T> list, Random random) {
+        public static void Shuffle<T>(this IList<T> list, Random random) {
             if (list == null)
                 throw new ArgumentNullException("list");
             if (random == null)
