@@ -47,6 +47,7 @@
     <Compile Include="Algebra\RingLikeExtensions.cs" />
     <Compile Include="Arithmetics\AdditiveMultiplicativeRingAdapter.cs" />
     <Compile Include="Arithmetics\DecimalArithmetics.cs" />
+    <Compile Include="Arithmetics\DoubleMultiplicationGroup.cs" />
     <Compile Include="Arithmetics\IArithmetics.cs" />
     <Compile Include="Arithmetics\DoubleArithmetics.cs" />
     <Compile Include="Arithmetics\BigIntegerArithmetics.cs" />

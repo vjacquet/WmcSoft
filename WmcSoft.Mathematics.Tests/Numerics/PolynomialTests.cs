@@ -38,5 +38,12 @@ namespace WmcSoft.Numerics.Tests
             Assert.AreEqual(expected, actual.ToString());
         }
 
+        [TestMethod]
+        public void CanEvalPolynomials() {
+            var p = new Polynomial(1, 0, 3, -6, 2, 1);
+            var actual = p.Eval(-1d);
+            var expected = -11d;
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
