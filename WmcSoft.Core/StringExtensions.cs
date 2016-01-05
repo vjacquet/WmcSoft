@@ -124,7 +124,8 @@ namespace WmcSoft
 
             #region IReadOnlyList<char> Membres
 
-            public char this[int index] {
+            public char this[int index]
+            {
                 get { return _value[index]; }
             }
 
@@ -132,7 +133,8 @@ namespace WmcSoft
 
             #region IReadOnlyCollection<char> Membres
 
-            public int Count {
+            public int Count
+            {
                 get { return _value.Length; }
             }
 
@@ -927,6 +929,51 @@ namespace WmcSoft
                     array[j++] = mapping[found].Value;
             }
             return new String(array, 0, j);
+        }
+
+        #endregion
+
+        #region TrimStart/TrimEnd
+
+        public static string TrimStart(this string self, string prefix) {
+            return TrimStart(self, prefix, StringComparison.CurrentCulture);
+        }
+
+        public static string TrimStart(this string self, string prefix, StringComparison comparison) {
+            if (self != null && self.StartsWith(prefix, comparison))
+                return self.Substring(prefix.Length);
+            return self;
+        }
+
+        public static string TrimEnd(this string self, string suffix) {
+            return TrimEnd(self, suffix, StringComparison.CurrentCulture);
+        }
+
+        public static string TrimEnd(this string self, string suffix, StringComparison comparison) {
+            if (self != null && self.EndsWith(suffix, comparison))
+                return self.Substring(0, self.Length - suffix.Length);
+            return self;
+        }
+
+        public static string Trim(this string self, string affix) {
+            return Trim(self, affix, StringComparison.CurrentCulture);
+        }
+
+        public static string Trim(this string self, string affix, StringComparison comparison) {
+            if (self == null || self.Length < affix.Length)
+                return self;
+            var starts = self.StartsWith(affix, comparison);
+            var ends = self.EndsWith(affix, comparison);
+            if (starts & ends) {
+                if (String.Equals(self, affix, comparison))
+                    return "";
+                return self.Substring(affix.Length, self.Length - 2 * affix.Length);
+            } else if (starts) {
+                return self.Substring(affix.Length);
+            } else if (ends) {
+                return self.Substring(0, self.Length - affix.Length);
+            }
+            return self;
         }
 
         #endregion
