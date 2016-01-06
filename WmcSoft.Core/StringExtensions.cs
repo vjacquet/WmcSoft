@@ -933,33 +933,33 @@ namespace WmcSoft
 
         #endregion
 
-        #region TrimStart/TrimEnd
+        #region RemovePrefix/RemoveSuffix/RemoveAffixes
 
-        public static string TrimStart(this string self, string prefix) {
-            return TrimStart(self, prefix, StringComparison.CurrentCulture);
+        public static string RemovePrefix(this string self, string prefix) {
+            return RemovePrefix(self, prefix, StringComparison.CurrentCulture);
         }
 
-        public static string TrimStart(this string self, string prefix, StringComparison comparison) {
+        public static string RemovePrefix(this string self, string prefix, StringComparison comparison) {
             if (self != null && self.StartsWith(prefix, comparison))
                 return self.Substring(prefix.Length);
             return self;
         }
 
-        public static string TrimEnd(this string self, string suffix) {
-            return TrimEnd(self, suffix, StringComparison.CurrentCulture);
+        public static string RemoveSuffix(this string self, string suffix) {
+            return RemoveSuffix(self, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string TrimEnd(this string self, string suffix, StringComparison comparison) {
+        public static string RemoveSuffix(this string self, string suffix, StringComparison comparison) {
             if (self != null && self.EndsWith(suffix, comparison))
                 return self.Substring(0, self.Length - suffix.Length);
             return self;
         }
 
-        public static string Trim(this string self, string affix) {
-            return Trim(self, affix, StringComparison.CurrentCulture);
+        public static string RemoveAffixes(this string self, string affix) {
+            return RemoveAffixes(self, affix, StringComparison.CurrentCulture);
         }
 
-        public static string Trim(this string self, string affix, StringComparison comparison) {
+        public static string RemoveAffixes(this string self, string affix, StringComparison comparison) {
             if (self == null || self.Length < affix.Length)
                 return self;
             var starts = self.StartsWith(affix, comparison);
