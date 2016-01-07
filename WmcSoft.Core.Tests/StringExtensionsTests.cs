@@ -122,5 +122,30 @@ namespace WmcSoft
             Assert.AreEqual("y=ax+b", eq.ReplaceWord("a", "A"));
             Assert.AreEqual("y=ax+B", eq.ReplaceWord("b", "B"));
         }
+
+        [TestMethod]
+        public void CanRemovePrefix() {
+            Assert.AreEqual("defghi", "abcdefghi".RemovePrefix("abc"));
+            Assert.AreEqual("defghi", "abcdefghi".RemoveAffixes("abc"));
+        }
+
+        [TestMethod]
+        public void CanRemoveSuffix() {
+            Assert.AreEqual("abcdef", "abcdefghi".RemoveSuffix("ghi"));
+            Assert.AreEqual("abcdef", "abcdefghi".RemoveAffixes("ghi"));
+        }
+
+        [TestMethod]
+        public void CanRemoveAffixes() {
+            Assert.AreEqual("def", "abcdefghi".RemoveAffixes("abc", "ghi"));
+            Assert.AreEqual("b", "aabaa".RemoveAffixes("aa"));
+        }
+
+        [TestMethod]
+        public void CanRemoveAffixesWhenOverlaps() {
+            var expected = "";
+            var actual = "aabaa".RemoveAffixes("aab", "baa");
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

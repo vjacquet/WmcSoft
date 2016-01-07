@@ -667,9 +667,9 @@ namespace WmcSoft
             var starts = self.StartsWith(prefix, comparison);
             var ends = self.EndsWith(suffix, comparison);
             if (starts & ends) {
-                if ((prefix.Length + suffix.Length) <= self.Length)
+                if ((prefix.Length + suffix.Length) >= self.Length)
                     return "";
-                return self.Substring(prefix.Length, self.Length - prefix.Length - -suffix.Length);
+                return self.Substring(prefix.Length, self.Length - prefix.Length - suffix.Length);
             } else if (starts) {
                 return self.Substring(prefix.Length);
             } else if (ends) {
