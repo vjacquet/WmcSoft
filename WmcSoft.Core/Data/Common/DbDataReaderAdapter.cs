@@ -31,7 +31,7 @@ using System.Data.Common;
 
 namespace WmcSoft.Data.Common
 {
-    sealed class DbDataReaderAdapter : DbDataReader
+    public sealed class DbDataReaderAdapter : DbDataReader
     {
         readonly IDataReader _reader;
         bool _readOnce;
@@ -186,10 +186,10 @@ namespace WmcSoft.Data.Common
         }
 
         public override bool Read() {
-            if(!_hasData.HasValue) {
+            if (!_hasData.HasValue) {
                 _hasData = _reader.Read();
                 return _hasData.GetValueOrDefault();
-            } else if(_readOnce) {
+            } else if (_readOnce) {
                 _readOnce = false;
                 return _hasData.GetValueOrDefault();
             }

@@ -37,7 +37,8 @@ namespace WmcSoft.Data
         #region AsDbDataReader
 
         public static DbDataReader AsDbDataReader(this IDataReader reader) {
-            return new DbDataReaderAdapter(reader);
+            var db = reader as DbDataReader;
+            return db ?? new DbDataReaderAdapter(reader);
         }
 
         #endregion
