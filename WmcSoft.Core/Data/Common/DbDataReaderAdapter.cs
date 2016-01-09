@@ -34,6 +34,8 @@ namespace WmcSoft.Data.Common
     sealed class DbDataReaderAdapter : DbDataReader
     {
         readonly IDataReader _reader;
+        bool _readOnce;
+        bool? _hasData;
 
         public DbDataReaderAdapter(IDataReader reader) {
             _reader = reader;
@@ -63,7 +65,11 @@ namespace WmcSoft.Data.Common
         {
             get
             {
-                throw new NotImplementedException();
+                if (!_hasData.HasValue) {
+                    Read();
+                    _readOnce = true;
+                }
+                return _hasData.GetValueOrDefault();
             }
         }
 
@@ -174,10 +180,19 @@ namespace WmcSoft.Data.Common
         }
 
         public override bool NextResult() {
+            _hasData = null;
+            _readOnce = false;
             return _reader.NextResult();
         }
 
         public override bool Read() {
+            if(!_hasData.HasValue) {
+                _hasData = _reader.Read();
+                return _hasData.GetValueOrDefault();
+            } else if(_readOnce) {
+                _readOnce = false;
+                return _hasData.GetValueOrDefault();
+            }
             return _reader.Read();
         }
     }

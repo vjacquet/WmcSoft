@@ -40,6 +40,35 @@ namespace WmcSoft.Data
             Assert.AreEqual(3, dt.Rows.Count);
             Assert.AreEqual("two", dt.Rows[1][1]);
         }
+
+        [TestMethod]
+        public void CheckHasRowsForAdapter() {
+            var underlying = new TypeDescriptorDataReader<Model>(new[] {
+                new Model(1, "one"),
+                new Model(2, "two"),
+                new Model(3, "three"),
+            });
+            var reader = underlying.AsDbDataReader();
+            Assert.IsTrue(reader.HasRows);
+            var count = 0;
+            while (reader.Read())
+                count++;
+            Assert.AreEqual(3, count);
+        }
+
+        [TestMethod]
+        public void CheckReadForAdapter() {
+            var underlying = new TypeDescriptorDataReader<Model>(new[] {
+                new Model(1, "one"),
+                new Model(2, "two"),
+                new Model(3, "three"),
+            });
+            var reader = underlying.AsDbDataReader();
+            var count = 0;
+            while (reader.Read())
+                count++;
+            Assert.AreEqual(3, count);
+        }
     }
 
     class Model
