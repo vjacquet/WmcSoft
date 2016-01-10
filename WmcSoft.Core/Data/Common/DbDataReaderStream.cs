@@ -30,7 +30,7 @@ using System.IO;
 
 namespace WmcSoft.Data.Common
 {
-   public class DbDataReaderStream : Stream
+    public class DbDataReaderStream : Stream
     {
         readonly IDataReader _reader;
         readonly int _ordinal;
@@ -72,7 +72,7 @@ namespace WmcSoft.Data.Common
                 return _position;
             }
             set {
-                _position = value;
+                Seek(value, SeekOrigin.Begin);
             }
         }
 
@@ -80,18 +80,23 @@ namespace WmcSoft.Data.Common
         }
 
         public override long Seek(long offset, SeekOrigin origin) {
+            var length = Length;
             switch (origin) {
             case SeekOrigin.Current:
                 _position += offset;
                 break;
             case SeekOrigin.End:
-                _position = Length - offset;
+                _position = length - offset;
                 break;
             case SeekOrigin.Begin:
             default:
                 _position = offset;
                 break;
             }
+            if (_position < 0L)
+                _position = 0L;
+            else if (_position >= length)
+                _position = length - 1;
             return _position;
         }
 
