@@ -72,6 +72,7 @@
     <Compile Include="ConvertibleExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
+    <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />

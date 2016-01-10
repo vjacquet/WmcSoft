@@ -1,7 +1,7 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -25,84 +25,84 @@
 #endregion
 
 using System;
+using System.Data;
 using System.IO;
 
-namespace WmcSoft.IO
+namespace WmcSoft.Data.Common
 {
-
-    /// <summary>
-    /// Dumps the data read into another stream.
-    /// </summary>
-    public class DumpingStream : Stream
+   public class DbDataReaderStream : Stream
     {
-        readonly Stream _stream;
-        readonly Stream _dump;
+        readonly IDataReader _reader;
+        readonly int _ordinal;
+        long _position;
 
-        public DumpingStream(Stream stream, Stream dump) {
-            _stream = stream;
-            _dump = dump;
-        }
+        public DbDataReaderStream(IDataReader reader, int ordinal) {
+            if (reader == null) throw new ArgumentNullException("reader");
 
-        public override void Close() {
-            _dump.Close();
-            _stream.Close();
-            base.Close();
+            _reader = reader;
+            _ordinal = ordinal;
+            _position = 0L;
         }
 
         public override bool CanRead
         {
-            get {
-                return _stream.CanRead;
-            }
+            get { return true; }
         }
 
         public override bool CanSeek
         {
-            get {
-                return false;
-            }
+            get { return true; }
         }
 
         public override bool CanWrite
         {
-            get {
-                return false;
-            }
-        }
-
-        public override void Flush() {
-            _dump.Flush();
+            get { return false; }
         }
 
         public override long Length
         {
             get {
-                throw new NotSupportedException();
+                return _reader.GetBytes(_ordinal, 0, null, 0, 0);
             }
         }
 
         public override long Position
         {
             get {
-                throw new NotSupportedException();
+                return _position;
             }
             set {
-                throw new NotSupportedException();
+                _position = value;
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
-            int readCount = _stream.Read(buffer, offset, count);
-            _dump.Write(buffer, offset, readCount);
-            return readCount;
+        public override void Flush() {
         }
 
         public override long Seek(long offset, SeekOrigin origin) {
-            throw new NotSupportedException();
+            switch (origin) {
+            case SeekOrigin.Current:
+                _position += offset;
+                break;
+            case SeekOrigin.End:
+                _position = Length - offset;
+                break;
+            case SeekOrigin.Begin:
+            default:
+                _position = offset;
+                break;
+            }
+            return _position;
         }
 
         public override void SetLength(long value) {
             throw new NotSupportedException();
+        }
+
+        public override int Read(byte[] buffer, int offset, int count) {
+            var read = _reader.GetBytes(_ordinal, _position, buffer, offset, count);
+            _position += read;
+            return checked((int)read);
         }
 
         public override void Write(byte[] buffer, int offset, int count) {
