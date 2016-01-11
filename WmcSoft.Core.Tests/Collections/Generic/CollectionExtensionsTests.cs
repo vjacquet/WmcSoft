@@ -222,5 +222,14 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(2, actual.Item1);
             Assert.AreEqual(3, actual.Item2);
         }
+
+        [TestMethod]
+        public void CanToggle() {
+            var actual = new List<string> { "one", "two", "three" };
+            Assert.IsTrue(actual.Toggle("four"));
+            Assert.IsFalse(actual.Toggle("one"));
+            var expected = new[] { "two", "three", "four" };
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
     }
 }
