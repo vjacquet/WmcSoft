@@ -945,5 +945,23 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Toggle
+
+        /// <summary>
+        /// Removes an item if found in the collection or adds it if missing.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="item">The item</param>
+        /// <returns>false if the item was removed, true if it was added.</returns>
+        public static bool Toggle<T>(this ICollection<T> collection, T item) {
+            if (collection.Remove(item))
+                return false;
+            collection.Add(item);
+            return true;
+        }
+
+        #endregion
     }
 }
