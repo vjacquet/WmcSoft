@@ -701,6 +701,14 @@ namespace WmcSoft.Collections.Generic
 
         #region Pop
 
+        /// <summary>
+        /// Removes the last element from the list and returns it.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <exception cref="ArgumentNullException">The list is null.</exception>
+        /// <exception cref="InvalidOperationException">The list is empty.</exception>
+        /// <returns>The last element from the list.</returns>
         public static T Pop<T>(this IList<T> list) {
             if (list == null)
                 throw new ArgumentNullException("list");
@@ -712,6 +720,16 @@ namespace WmcSoft.Collections.Generic
             return t;
         }
 
+        /// <summary>
+        /// Removes the element at the specified <param name="index"/> from the list and returns it.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="index">The index of the element to remove.</param>
+        /// <exception cref="ArgumentNullException">The list is null.</exception>
+        /// <exception cref="InvalidOperationException">The list is empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><param name="index"/> is not a valid index in the <paramref name="list"/>.</exception>
+        /// <returns>The last element from the list.</returns>
         public static T Pop<T>(this IList<T> list, int index) {
             if (list == null)
                 throw new ArgumentNullException("list");

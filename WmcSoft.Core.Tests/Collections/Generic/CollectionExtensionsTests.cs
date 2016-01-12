@@ -53,13 +53,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnCell() {
-            var x = new[,,] {
+            var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[,,] {
+            var y = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {99, 35, 36} },
@@ -72,7 +72,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnRank() {
-            var x = new[,,] {
+            var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -91,13 +91,13 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckNotEqualsOnDimensions() {
-            var x = new[,,] {
+            var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
                { {41, 42, 43}, {44, 45, 46} },
             };
-            var y = new[,,] {
+            var y = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
                { {31, 32, 33}, {34, 35, 36} },
@@ -221,6 +221,29 @@ namespace WmcSoft.Collections.Generic
             var actual = sequence.MinMaxElement();
             Assert.AreEqual(2, actual.Item1);
             Assert.AreEqual(3, actual.Item2);
+        }
+
+        [TestMethod]
+        public void CanPop() {
+            var actual = new List<string> { "one", "two", "three" };
+            var expected = new[] { "one", "two" };
+            Assert.AreEqual("three", actual.Pop());
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanPopAtIndex() {
+            var actual = new List<string> { "one", "two", "three" };
+            var expected = new[] { "one", "three" };
+            Assert.AreEqual("two", actual.Pop(1));
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException), AllowDerivedTypes = true)]
+        public void CannotPopWhenIndexIsOutOfBound() {
+            var actual = new List<string> { "one", "two", "three" };
+            actual.Pop(4);
         }
 
         [TestMethod]
