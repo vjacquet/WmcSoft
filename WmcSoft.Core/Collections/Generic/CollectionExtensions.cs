@@ -444,14 +444,67 @@ namespace WmcSoft.Collections.Generic
 
         #region ElementsAt
 
-        public static IEnumerable<TSource> ElementsAt<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+        static IEnumerable<TSource> DoElementsAt<TSource>(IEnumerable<TSource> source, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TSource>();
+
+            var length = indices.Length;
+            var sorted = ((int[])indices.Clone()).Sort();
+            var buffer = new TSource[length];
+            var i = 0;
+            var count = 0;
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == sorted[i]) {
+                        buffer[Array.IndexOf(indices, sorted[i])] = enumerator.Current;
+                        if (++i == length)
+                            return buffer;
+                    }
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        static IEnumerable<TSource> DoElementsAt<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
             return indices.Select(i => source[i]);
         }
+
+        public static IEnumerable<TSource> ElementsAt<TSource>(this IEnumerable<TSource> source, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAt(readable, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return ElementsAt(list, indices);
+            return DoElementsAt(source, indices);
+        }
+
         public static IEnumerable<TSource> ElementsAt<TSource>(this IList<TSource> source, params int[] indices) {
             return indices.Select(i => source[i]);
         }
 
-        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+        static IEnumerable<TSource> DoElementsAtOrDefault<TSource>(IEnumerable<TSource> source, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TSource>();
+
+            var length = indices.Length;
+            var sorted = ((int[])indices.Clone()).Sort();
+            var buffer = new TSource[length];
+            var i = 0;
+            var count = 0;
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == sorted[i]) {
+                        var index = Array.IndexOf(indices, sorted[i]);
+                        buffer[index] = enumerator.Current;
+                        if (++i == length)
+                            break;
+                    }
+                }
+            }
+            return buffer;
+        }
+
+        static IEnumerable<TSource> DoElementsAtOrDefault<TSource>(IReadOnlyList<TSource> source, params int[] indices) {
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
                 if (0 < indice || indice >= source.Count)
@@ -460,6 +513,15 @@ namespace WmcSoft.Collections.Generic
                     yield return source[indice];
             }
         }
+
+        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IEnumerable<TSource> source, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAtOrDefault(readable, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return DoElementsAtOrDefault(list, indices);
+            return DoElementsAtOrDefault(source, indices);
+        }
+
         public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IList<TSource> source, params int[] indices) {
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
