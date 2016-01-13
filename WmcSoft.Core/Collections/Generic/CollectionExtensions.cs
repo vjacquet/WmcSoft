@@ -532,6 +532,94 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        static IEnumerable<TResult> DoElementsAt<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TResult>();
+
+            var length = indices.Length;
+            var sorted = ((int[])indices.Clone()).Sort();
+            var buffer = new TResult[length];
+            var i = 0;
+            var count = 0;
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == sorted[i]) {
+                        buffer[Array.IndexOf(indices, sorted[i])] = selector(enumerator.Current);
+                        if (++i == length)
+                            return buffer;
+                    }
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        static IEnumerable<TResult> DoElementsAt<TSource, TResult>(this IReadOnlyList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            return indices.Select(i => selector(source[i]));
+        }
+
+        public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAt(readable, selector, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return ElementsAt(list, selector, indices);
+            return DoElementsAt(source, selector, indices);
+        }
+
+        public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            return indices.Select(i => selector(source[i]));
+        }
+
+        static IEnumerable<TResult> DoElementsAtOrDefault<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TResult>();
+
+            var length = indices.Length;
+            var sorted = ((int[])indices.Clone()).Sort();
+            var buffer = new TResult[length];
+            var i = 0;
+            var count = 0;
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == sorted[i]) {
+                        var index = Array.IndexOf(indices, sorted[i]);
+                        buffer[index] = selector(enumerator.Current);
+                        if (++i == length)
+                            break;
+                    }
+                }
+            }
+            return buffer;
+        }
+
+        static IEnumerable<TResult> DoElementsAtOrDefault<TSource, TResult>(IReadOnlyList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TResult);
+                else
+                    yield return selector(source[indice]);
+            }
+        }
+
+        public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAtOrDefault(readable, selector, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return ElementsAtOrDefault(list, selector, indices);
+            return DoElementsAtOrDefault(source, selector, indices);
+        }
+
+        public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TResult);
+                else
+                    yield return selector(source[indice]);
+            }
+        }
+
         #endregion
 
         #region InterpolatedSearch
