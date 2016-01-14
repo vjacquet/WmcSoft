@@ -444,21 +444,31 @@ namespace WmcSoft.Collections.Generic
 
         #region ElementsAt
 
+        static int[] Iota(int n) {
+            var array = new int[n];
+            for (int i = 0; i < n; i++) {
+                array[i] = i;
+            }
+            return array;
+        }
+
         static IEnumerable<TSource> DoElementsAt<TSource>(IEnumerable<TSource> source, params int[] indices) {
             if (indices.Length == 0)
                 return Enumerable.Empty<TSource>();
 
             var length = indices.Length;
-            var sorted = ((int[])indices.Clone()).Sort();
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
             var buffer = new TSource[length];
             var i = 0;
             var count = 0;
+            var m = indices[sorted[i]];
             using (var enumerator = source.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
-                    if (count++ == sorted[i]) {
-                        buffer[Array.IndexOf(indices, sorted[i])] = enumerator.Current;
+                    if (count++ == m) {
+                        buffer[i] = enumerator.Current;
                         if (++i == length)
                             return buffer;
+                        m = indices[sorted[i]];
                     }
                 }
             }
@@ -487,17 +497,18 @@ namespace WmcSoft.Collections.Generic
                 return Enumerable.Empty<TSource>();
 
             var length = indices.Length;
-            var sorted = ((int[])indices.Clone()).Sort();
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
             var buffer = new TSource[length];
             var i = 0;
             var count = 0;
+            var m = indices[sorted[i]];
             using (var enumerator = source.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
-                    if (count++ == sorted[i]) {
-                        var index = Array.IndexOf(indices, sorted[i]);
-                        buffer[index] = enumerator.Current;
+                    if (count++ == m) {
+                        buffer[i] = enumerator.Current;
                         if (++i == length)
                             break;
+                        m = indices[sorted[i]];
                     }
                 }
             }
@@ -537,16 +548,18 @@ namespace WmcSoft.Collections.Generic
                 return Enumerable.Empty<TResult>();
 
             var length = indices.Length;
-            var sorted = ((int[])indices.Clone()).Sort();
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
             var buffer = new TResult[length];
             var i = 0;
             var count = 0;
+            var m = indices[sorted[i]];
             using (var enumerator = source.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
-                    if (count++ == sorted[i]) {
-                        buffer[Array.IndexOf(indices, sorted[i])] = selector(enumerator.Current);
+                    if (count++ == m) {
+                        buffer[i] = selector(enumerator.Current);
                         if (++i == length)
                             return buffer;
+                        m = indices[sorted[i]];
                     }
                 }
             }
@@ -575,17 +588,18 @@ namespace WmcSoft.Collections.Generic
                 return Enumerable.Empty<TResult>();
 
             var length = indices.Length;
-            var sorted = ((int[])indices.Clone()).Sort();
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
             var buffer = new TResult[length];
             var i = 0;
             var count = 0;
+            var m = indices[sorted[i]];
             using (var enumerator = source.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
-                    if (count++ == sorted[i]) {
-                        var index = Array.IndexOf(indices, sorted[i]);
-                        buffer[index] = selector(enumerator.Current);
+                    if (count++ == m) {
+                        buffer[i] = selector(enumerator.Current);
                         if (++i == length)
                             break;
+                        m = indices[sorted[i]];
                     }
                 }
             }
