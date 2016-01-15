@@ -50,6 +50,11 @@ namespace WmcSoft.DirectoryServices
 
         #region GetNTAccount
 
+        /// <summary>
+        /// Gets the user or group account associated with the given <see cref="DirectoryEntry"/>.
+        /// </summary>
+        /// <param name="member">The directory entry.</param>
+        /// <returns>The account value.</returns>
         public static string GetNTAccount(this DirectoryEntry member) {
             var collection = member.Properties;
             var objectSid = collection["objectSid"];

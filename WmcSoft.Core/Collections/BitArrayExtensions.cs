@@ -33,7 +33,7 @@ namespace WmcSoft.Collections
 {
     public static class BitArrayExtensions
     {
-        public static IEnumerable<TSource> Mask<TSource>(this BitArray mask, IEnumerable<TSource> x, IEnumerable<TSource> y) {
+        static IEnumerable<TSource> DoMask<TSource>(this BitArray mask, IEnumerable<TSource> x, IEnumerable<TSource> y) {
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
                 for (int i = 0; i < mask.Count; i++) {
@@ -49,10 +49,8 @@ namespace WmcSoft.Collections
             }
         }
 
-        public static TSource[] Mask<TSource>(this BitArray mask, IReadOnlyList<TSource> x, IReadOnlyList<TSource> y) {
-            if (x == null) throw new ArgumentNullException("x");
+        static TSource[] DoMask<TSource>(this BitArray mask, IReadOnlyList<TSource> x, IReadOnlyList<TSource> y) {
             if (mask.Count != x.Count) throw new ArgumentException("x");
-            if (y == null) throw new ArgumentNullException("y");
             if (mask.Count != y.Count) throw new ArgumentException("y");
 
             var result = new TSource[mask.Count];
@@ -62,12 +60,29 @@ namespace WmcSoft.Collections
             return result;
         }
 
+        public static IEnumerable<TSource> Mask<TSource>(this BitArray mask, IEnumerable<TSource> x, IEnumerable<TSource> y) {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+
+            var rx = x as IReadOnlyList<TSource>;
+            var ry = y as IReadOnlyList<TSource>;
+            if (rx != null && ry != null) return DoMask(mask, rx, ry);
+            var wx = x as IList<TSource>;
+            var wy = y as IList<TSource>;
+            if (rx != null && ry != null) return DoMask(mask, wx.AsReadOnly(), wy.AsReadOnly());
+            return DoMask(mask, x, y);
+        }
+
         public static TSource[] Mask<TSource>(this BitArray mask, IList<TSource> x, IList<TSource> y) {
-            return Mask(mask, x.AsReadOnly(), y.AsReadOnly());
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            return DoMask(mask, x.AsReadOnly(), y.AsReadOnly());
         }
 
         public static string Mask(this BitArray mask, string x, string y) {
-            return new string(Mask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            return new string(DoMask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
         }
 
         public static bool All(this BitArray bits) {
