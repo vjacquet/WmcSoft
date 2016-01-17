@@ -311,6 +311,7 @@ namespace WmcSoft
             }
             return Tuple.Create(min, max);
         }
+
         #endregion
     }
 }
