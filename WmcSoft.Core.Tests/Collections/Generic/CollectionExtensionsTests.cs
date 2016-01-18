@@ -278,5 +278,17 @@ namespace WmcSoft.Collections.Generic
             var actual = data.Select(x => x).ElementsAtOrDefault(3, 1, 4, 2).ToArray();
             CollectionAssert.AreEquivalent(expected, actual);
         }
+
+        [TestMethod]
+        public void CanPartition() {
+            var data = new[] { 1, 2, 5, 3, 4, 8, 9, 6, 7 };
+            Predicate<int> odd = e => e % 2 == 1;
+            var p = data.Partition(odd);
+            int i;
+            for (i = 0; i < p; i++)
+                Assert.IsFalse(odd(data[i]));
+            for (; i < data.Length; ++i)
+                Assert.IsTrue(odd(data[i]));
+        }
     }
 }

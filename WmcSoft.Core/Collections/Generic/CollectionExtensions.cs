@@ -863,6 +863,66 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Partition
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int Partition<T>(this IList<T> list, Predicate<T> predicate) {
+            return Partition(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int Partition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            int end = start + length - 1;
+            while (true) {
+                while (start < end && !predicate(list[start]))
+                    start++;
+                while (start < end && predicate(list[end]))
+                    end--;
+                if (start >= end)
+                    return start;
+                list.SwapItems(start++, end--);
+            }
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int StablePartition<T>(this IList<T> list, Predicate<T> predicate) {
+            return StablePartition(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            throw new NotImplementedException();
+        }
+        #endregion
+
         #region Pop
 
         /// <summary>
