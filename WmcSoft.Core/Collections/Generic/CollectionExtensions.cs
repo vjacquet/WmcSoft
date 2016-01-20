@@ -1050,6 +1050,90 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Slice
+
+        class SliceList<T> : IList<T>
+        {
+            readonly IList<T> _underlying;
+            readonly int _startIndex;
+            readonly int _length;
+
+            public SliceList(IList<T> underlying, int startIndex, int length) {
+                _underlying = underlying;
+                _startIndex = startIndex;
+                _length = length;
+            }
+
+            public T this[int index]
+            {
+                get { return _underlying[_startIndex + index]; }
+                set { _underlying[_startIndex + index] = value; }
+            }
+
+            public int Count
+            {
+                get { return _length; }
+            }
+
+            public bool IsReadOnly
+            {
+                get { return true; }
+            }
+
+            public void Add(T item) {
+                throw new NotSupportedException();
+            }
+
+            public void Clear() {
+                throw new NotSupportedException();
+            }
+
+            public bool Contains(T item) {
+                return IndexOf(item) >= 0;
+            }
+
+            public void CopyTo(T[] array, int arrayIndex) {
+                for (int i = 0; i < _length; i++) {
+                    array[arrayIndex + i] = _underlying[_startIndex + i];
+                }
+            }
+
+            public IEnumerator<T> GetEnumerator() {
+                return _underlying.Skip(_startIndex).Take(_length).GetEnumerator();
+            }
+
+            public int IndexOf(T item) {
+                var endIndex = _startIndex + _length;
+                for (int i = _startIndex; i < endIndex; i++) {
+                    if (Equals(_underlying[i], item))
+                        return i - _startIndex;
+                }
+                return -1;
+            }
+
+            public void Insert(int index, T item) {
+                throw new NotSupportedException();
+            }
+
+            public bool Remove(T item) {
+                throw new NotSupportedException();
+            }
+
+            public void RemoveAt(int index) {
+                throw new NotSupportedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+        }
+
+        public static IList<T> Slice<T>(this IList<T> list, int startIndex, int length) {
+            return new SliceList<T>(list, startIndex, length);
+        }
+
+        #endregion
+
         #region Stack & Queue
 
         public static void Push<T>(this Stack<T> stack, IEnumerable<T> items) {
