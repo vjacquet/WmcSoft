@@ -1059,6 +1059,7 @@ namespace WmcSoft.Collections.Generic
             readonly int _length;
 
             public SliceList(IList<T> underlying, int startIndex, int length) {
+
                 _underlying = underlying;
                 _startIndex = startIndex;
                 _length = length;
@@ -1093,9 +1094,15 @@ namespace WmcSoft.Collections.Generic
             }
 
             public void CopyTo(T[] array, int arrayIndex) {
-                for (int i = 0; i < _length; i++) {
-                    array[arrayIndex + i] = _underlying[_startIndex + i];
-                }
+                if (array == null) throw new ArgumentNullException("array");
+                if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex");
+                if ((array.Length - arrayIndex) > _length) throw new ArgumentException();
+
+                var count = _length;
+                var s = _startIndex;
+                var t = arrayIndex;
+                while (count-- > 0)
+                    array[t++] = _underlying[s++];
             }
 
             public IEnumerator<T> GetEnumerator() {
@@ -1129,6 +1136,10 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IList<T> Slice<T>(this IList<T> list, int startIndex, int length) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
+            if (length < 0 || startIndex > (list.Count - length)) throw new ArgumentOutOfRangeException("length");
+
             return new SliceList<T>(list, startIndex, length);
         }
 
