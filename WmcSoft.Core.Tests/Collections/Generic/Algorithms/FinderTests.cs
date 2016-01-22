@@ -16,7 +16,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
             const string t = "100111010010100010100111000111";
 
             var a = new KnuthMorrisPratt<char>(p.AsReadOnlyList(), EqualityComparer<char>.Default);
-            var actual = a.Find(t.AsReadOnlyList());
+            var actual = a.FindFirstOccurence(t.AsReadOnlyList(), 5);
             var expected = t.IndexOf(p);
             Assert.AreEqual(expected, actual);
         }
