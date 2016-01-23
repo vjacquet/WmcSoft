@@ -25,47 +25,20 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Threading;
+using System.Linq;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Globalization
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public struct CombinedCalendar : IBusinessCalendar
     {
-        #region Private fields
+        readonly IBusinessCalendar[] _calendars;
 
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+        public CombinedCalendar(params IBusinessCalendar[] calendars) {
+            _calendars = calendars;
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
-            }
-            catch { }
+        public bool IsBusinessDay(DateTime date) {
+            return _calendars.All(c => c.IsBusinessDay(date));
         }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

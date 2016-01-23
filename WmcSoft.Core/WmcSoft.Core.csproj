@@ -77,6 +77,8 @@
     <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
+    <Compile Include="Globalization\CombinedCalendar.cs" />
+    <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
     <Compile Include="Configuration\MailAddressConverter.cs" />
     <Compile Include="DateSpan.cs" />

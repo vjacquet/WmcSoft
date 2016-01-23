@@ -29,6 +29,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements a comparer based on a relation.
+    /// </summary>
+    /// <typeparam name="T">The type of elements.</typeparam>
     public sealed class RelationComparer<T> : IComparer<T>
     {
         private readonly Relation<T> _relation;

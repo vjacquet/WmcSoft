@@ -98,40 +98,4 @@ namespace WmcSoft.Globalization
             return x & y;
         }
     }
-
-    public interface IBusinessCalendar
-    {
-        bool IsBusinessDay(DateTime date);
-    }
-
-    public struct CombinedCalendar : IBusinessCalendar
-    {
-        readonly IBusinessCalendar[] _calendars;
-
-        public CombinedCalendar(params IBusinessCalendar[] calendars) {
-            _calendars = calendars;
-        }
-
-        public bool IsBusinessDay(DateTime date) {
-            return _calendars.All(c => c.IsBusinessDay(date));
-        }
-    }
-
-    public static class BusinessCalendarExtensions
-    {
-        public static DateTime AddBusinessDays<TCalendar>(this TCalendar calendar, DateTime date, int days)
-            where TCalendar : IBusinessCalendar {
-            while (days > 0) {
-                date = date.AddDays(1);
-                if (calendar.IsBusinessDay(date))
-                    days--;
-            }
-            while (days < 0) {
-                date = date.AddDays(-1);
-                if (calendar.IsBusinessDay(date))
-                    days++;
-            }
-            return date;
-        }
-    }
 }

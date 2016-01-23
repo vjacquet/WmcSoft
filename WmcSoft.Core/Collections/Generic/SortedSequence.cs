@@ -31,7 +31,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Properties
 
-        public IComparer<T> Comparer {
+        public IComparer<T> Comparer
+        {
             get { return _comparer; }
         }
 
@@ -63,11 +64,13 @@ namespace WmcSoft.Collections.Generic
             _storage.CopyTo(array, arrayIndex);
         }
 
-        public int Count {
+        public int Count
+        {
             get { return _storage.Count; }
         }
 
-        public bool IsReadOnly {
+        public bool IsReadOnly
+        {
             get { return false; }
         }
 
@@ -110,8 +113,9 @@ namespace WmcSoft.Collections.Generic
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public T[] Items {
-            get {                return _collection.ToArray();            }
+        public T[] Items
+        {
+            get { return _collection.ToArray(); }
         }
     }
 }
