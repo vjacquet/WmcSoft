@@ -28,32 +28,31 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Algorithms
 {
-    public class KnuthMorrisPratt<T> : IFinder<T>
+    public class NaiveFinder<T> : IFinder<T>
     {
         readonly IReadOnlyList<T> _pattern;
         readonly IEqualityComparer<T> _comparer;
-        readonly int[] _next;
 
-        public KnuthMorrisPratt(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer) {
+        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer) {
             _pattern = pattern;
             _comparer = comparer;
-            var length = pattern.Count;
-            _next = new int[length+1];
-            _next[0] = -1;
-            for (int i = 0, j = -1; i < length; _next[++i] = ++j) {
-                while (j >= 0 && !_comparer.Equals(pattern[i], pattern[j]))
-                    j = _next[j];
+        }
+
+        bool EqualsPattern(IReadOnlyList<T> t, int startIndex) {
+            var length =_pattern.Count;
+            for (int i = 0, j = startIndex; i < length; i++, j++) {
+                if (!_comparer.Equals(t[j], _pattern[i]))
+                    return false;
             }
+            return true;
         }
 
         public int FindFirstOccurence(IReadOnlyList<T> t, int startIndex) {
-            int i = startIndex, j = 0, m = _pattern.Count, n = t.Count;
-            for (; j < m && i < n; i++, j++) {
-                while (j >= 0 && !_comparer.Equals(t[i], _pattern[j]))
-                    j = _next[j];
+            var length = t.Count- _pattern.Count;
+            for (int i = startIndex; i < length; i++) {
+                if (EqualsPattern(t, i))
+                    return i;
             }
-            if (j == m)
-                return i - m;
             return -1;
         }
     }
