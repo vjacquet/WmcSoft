@@ -30,7 +30,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="WmcSoft.Security.Group" BaseTypeListCollapsed="true">
-    <Position X="3.75" Y="3.75" Width="1.5" />
+    <Position X="3.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACIAAgAAAAAAABBAAAAABAAAAAAAAAAAAAAEAAAQAAA=</HashCode>
       <FileName>Security\Group.cs</FileName>
@@ -48,7 +48,7 @@
   <Class Name="WmcSoft.Security.User">
     <Position X="3.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Security\User.cs</FileName>
     </TypeIdentifier>
   </Class>

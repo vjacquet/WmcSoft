@@ -44,6 +44,11 @@ namespace WmcSoft.Security
 
         #region Lifecycle
 
+        internal AccessControlEntry(Permission permission, Principal principal, UncheckedTag tag) {
+            _permission = permission;
+            _principal = principal;
+        }
+
         public AccessControlEntry(Permission permission, Principal principal) {
             if (permission == null)
                 throw new ArgumentNullException("permission");

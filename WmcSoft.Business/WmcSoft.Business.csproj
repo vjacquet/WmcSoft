@@ -208,6 +208,7 @@
     <Compile Include="Security\Principal.cs" />
     <Compile Include="Security\Role.cs" />
     <Compile Include="Security\SecurityContext.cs" />
+    <Compile Include="Security\UncheckedTag.cs" />
     <Compile Include="Security\User.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -31,7 +31,6 @@ namespace WmcSoft.Security
     public interface ISecurable
     {
         AccessControl AccessControl { get; }
-
         PermissionSet SupportedPermissions { get; }
     }
 

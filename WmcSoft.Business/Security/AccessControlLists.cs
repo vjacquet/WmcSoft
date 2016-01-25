@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,18 +55,25 @@ namespace WmcSoft.Security
 
         #region IAccessControlList Membres
 
-        public ISet<AccessControlEntry> GrantedPermissions {
+        public ISet<AccessControlEntry> GrantedPermissions
+        {
             get { return _grant; }
         }
 
-        public ISet<AccessControlEntry> DeniedPermissions {
+        public ISet<AccessControlEntry> DeniedPermissions
+        {
             get { return _deny; }
         }
 
         public void Grant(IEnumerable<Permission> permissions, params Principal[] principals) {
+            if (principals == null) throw new ArgumentNullException("principals");
+            if (principals.Any(p => p == null)) throw new ArgumentException();
+
             foreach (var p in permissions) {
+                if (p == null) continue;
+
                 for (int i = 0; i < principals.Length; i++) {
-                    var t = new AccessControlEntry(p, principals[i]);
+                    var t = new AccessControlEntry(p, principals[i], UncheckedTag.Empty);
                     _deny.Remove(t);
                     _grant.Add(t);
                 }
@@ -73,19 +81,29 @@ namespace WmcSoft.Security
         }
 
         public void Deny(IEnumerable<Permission> permissions, params Principal[] principals) {
+            if (principals == null) throw new ArgumentNullException("principals");
+            if (principals.Any(p => p == null)) throw new ArgumentException();
+
             foreach (var p in permissions) {
+                if (p == null) continue;
+
                 for (int i = 0; i < principals.Length; i++) {
-                    var t = new AccessControlEntry(p, principals[i]);
+                    var t = new AccessControlEntry(p, principals[i], UncheckedTag.Empty);
                     _grant.Remove(t);
-                    _deny.Add(new AccessControlEntry(p, principals[i]));
+                    _deny.Add(t);
                 }
             }
         }
 
         public void Revoke(IEnumerable<Permission> permissions, params Principal[] principals) {
+            if (principals == null) throw new ArgumentNullException("principals");
+            if (principals.Any(p => p == null)) throw new ArgumentException();
+
             foreach (var p in permissions) {
+                if (p == null) continue;
+
                 for (int i = 0; i < principals.Length; i++) {
-                    var t = new AccessControlEntry(p, principals[i]);
+                    var t = new AccessControlEntry(p, principals[i], UncheckedTag.Empty);
                     _grant.Remove(t);
                     _deny.Remove(t);
                 }
@@ -93,16 +111,23 @@ namespace WmcSoft.Security
         }
 
         public bool Verify(Principal principal, Permission permission) {
+            if (principal == null) throw new ArgumentNullException("principal");
+            if (permission == null)
+                return false;
+
             var acl = new HashSet<Permission>(_grant.Where(t => t.Match(principal)).Select(t => t.Permission));
             acl.ExceptWith(_deny.Where(t => t.Match(principal)).Select(t => t.Permission));
             return acl.Contains(permission);
         }
 
         public IEnumerable<Permission> Verify(Principal principal, IEnumerable<Permission> permissions) {
+            if (principal == null) throw new ArgumentNullException("principal");
+            if (permissions == null)
+                return Enumerable.Empty<Permission>();
+
             var acl = new HashSet<Permission>(_grant.Where(t => t.Match(principal)).Select(t => t.Permission));
             acl.ExceptWith(_deny.Where(t => t.Match(principal)).Select(t => t.Permission));
-            var result = acl.Intersect(permissions);
-            return result;
+            return acl.Intersect(permissions.Where(p => p != null));
         }
 
         #endregion
