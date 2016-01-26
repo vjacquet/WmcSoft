@@ -33,7 +33,6 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
 using System.Globalization;
-using System.Reflection;
 using System.Security.Permissions;
 using WmcSoft.ComponentModel.Design.Serialization;
 
@@ -48,7 +47,6 @@ namespace WmcSoft.Windows.Forms
     [Serializable]
     public class BlendFill
     {
-
         #region Lifecycle
 
         /// <summary>
@@ -77,7 +75,8 @@ namespace WmcSoft.Windows.Forms
         [RefreshProperties(RefreshProperties.Repaint)]
         [NotifyParentProperty(true)]
         [DefaultValue(BlendStyle.Vertical)]
-        public BlendStyle Style {
+        public BlendStyle Style
+        {
             get {
                 return this.style;
             }
@@ -92,7 +91,8 @@ namespace WmcSoft.Windows.Forms
         [Category("Appearance")]
         [RefreshProperties(RefreshProperties.Repaint)]
         [NotifyParentProperty(true)]
-        public Color StartColor {
+        public Color StartColor
+        {
             get {
                 return this.startColor;
             }
@@ -108,7 +108,8 @@ namespace WmcSoft.Windows.Forms
         [Category("Appearance")]
         [RefreshProperties(RefreshProperties.Repaint)]
         [NotifyParentProperty(true)]
-        public Color FinishColor {
+        public Color FinishColor
+        {
             get {
                 return this.finishColor;
             }
@@ -242,7 +243,7 @@ namespace WmcSoft.Windows.Forms
             ///   this object.
             /// </summary>
             public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) {
-                var  bf=value as string;
+                var bf = value as string;
                 if (bf != null) {
                     return BlendFillFromString(bf.Trim(), culture);
                 }

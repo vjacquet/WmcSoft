@@ -42,14 +42,14 @@ namespace WmcSoft.Windows.Forms
         private int _bottom;
 
         /// <summary>
-        /// 
+        /// Creates a BorderEdges with the value of one on all sides.
         /// </summary>
         public BorderEdges()
             : this(1) {
         }
 
         /// <summary>
-        /// Creates a BorderEdges witht he same value on all sides.
+        /// Creates a BorderEdges with the same value on all sides.
         /// </summary>
         /// <param name="value">The width</param>
         public BorderEdges(int value) {
@@ -58,7 +58,7 @@ namespace WmcSoft.Windows.Forms
         }
 
         /// <summary>
-        /// Creates a BorderEdges
+        /// Creates a BorderEdges.
         /// </summary>
         /// <param name="left">The width on the left</param>
         /// <param name="top">The width on the top</param>

@@ -59,10 +59,10 @@ namespace WmcSoft.Windows.Forms
         }
 
         protected void ForEachCell(Action<TCell> action) {
-            DataGridView.ForEach<TCell>(Index, action);
+            DataGridView.ForEach(Index, action);
         }
         protected void ForEachCell(Action<TCell, int> action) {
-            DataGridView.ForEach<TCell>(Index, action);
+            DataGridView.ForEach(Index, action);
         }
     }
 }

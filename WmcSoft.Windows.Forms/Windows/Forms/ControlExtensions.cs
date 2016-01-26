@@ -195,16 +195,14 @@ namespace WmcSoft.Windows.Forms
         public const ContentAlignment AnyBottomAlignment = ContentAlignment.BottomRight | ContentAlignment.BottomCenter | ContentAlignment.BottomLeft;
 
         public static int GetTextBaseline(this Control ctrl, ContentAlignment alignment) {
-            Rectangle clientRectangle = ctrl.ClientRectangle;
-            int num = ctrl.Font.FontFamily.GetCellAscent(ctrl.Font.Style);
-            int tmHeight = ctrl.Font.FontFamily.GetEmHeight(ctrl.Font.Style);
-            if ((alignment & AnyTopAlignment) != ((ContentAlignment)0)) {
-                return (clientRectangle.Top + num);
-            }
-            if ((alignment & AnyMiddleAlignment) != ((ContentAlignment)0)) {
-                return (((clientRectangle.Top + (clientRectangle.Height / 2)) - (tmHeight / 2)) + num);
-            }
-            return ((clientRectangle.Bottom - tmHeight) + num);
+            var clientRectangle = ctrl.ClientRectangle;
+            var tmAscent = ctrl.Font.FontFamily.GetCellAscent(ctrl.Font.Style);
+            var tmHeight = ctrl.Font.FontFamily.GetEmHeight(ctrl.Font.Style);
+            if ((alignment & AnyTopAlignment) != (ContentAlignment)0)
+                return clientRectangle.Top + tmAscent;
+            if ((alignment & AnyMiddleAlignment) != (ContentAlignment)0) 
+                return clientRectangle.Top + (clientRectangle.Height / 2) - (tmHeight / 2) + tmAscent;
+            return clientRectangle.Bottom - tmHeight + tmAscent;
         }
 
         /// <summary>

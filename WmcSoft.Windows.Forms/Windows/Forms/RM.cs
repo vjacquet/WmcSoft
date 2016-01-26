@@ -25,11 +25,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Resources;
-using System.ComponentModel;
-using System.Globalization;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -70,6 +66,5 @@ namespace WmcSoft.Windows.Forms
         public static string GetString(string name) {
             return ResourceManager.GetString(name);
         }
-
     }
 }
