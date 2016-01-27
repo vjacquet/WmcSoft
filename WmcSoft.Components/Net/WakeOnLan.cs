@@ -96,6 +96,7 @@ namespace WmcSoft.Net
         [DefaultValue(7)]
         [Localizable(false)]
         public int Port { get; set; }
+
         #endregion
 
         #region Methods
@@ -332,6 +333,4 @@ namespace WmcSoft.Net
     }
 
     #endregion
-
-
 }

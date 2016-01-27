@@ -29,17 +29,34 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// A stream decorator to report reading progress on a <see cref="BackgroundWorker"/>.
+    /// </summary>
     public class ReportProgressStream : StreamDecorator
     {
+        #region Fields
+
         readonly BackgroundWorker _worker;
         readonly long _length;
         long _read;
 
+        #endregion
+
+        #region Lifecycle
+
         public ReportProgressStream(Stream stream, BackgroundWorker worker)
+            : this(stream, stream.Length, worker) {
+        }
+
+        public ReportProgressStream(Stream stream, long length, BackgroundWorker worker)
             : base(stream) {
             _worker = worker;
-            _length = stream.Length;
+            _length = length;
         }
+
+        #endregion
+
+        #region Overrides
 
         public override int Read(byte[] buffer, int offset, int count) {
             var read = base.Read(buffer, offset, count);
@@ -49,5 +66,7 @@ namespace WmcSoft.IO
 
             return read;
         }
+
+        #endregion
     }
 }
