@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Runtime
 {
@@ -39,13 +40,64 @@ namespace WmcSoft.Runtime
     {
         #region Enumerator
 
+        class ArrayFacade : ICollection<object>
+        {
+            readonly Array _array;
+
+            public ArrayFacade(Array array) {
+                _array = array;
+            }
+
+            public int Count
+            {
+                get {
+                    return _array.Length;
+                }
+            }
+
+            bool ICollection<object>.IsReadOnly
+            {
+                get { return true; }
+            }
+
+            void ICollection<object>.Add(object item) {
+                throw new NotSupportedException();
+            }
+
+            void ICollection<object>.Clear() {
+                throw new NotSupportedException();
+            }
+
+            public bool Contains(object item) {
+                return Array.IndexOf(_array, item) >= 0;
+            }
+
+            public void CopyTo(object[] array, int arrayIndex) {
+                foreach (var item in _array) {
+                    array[arrayIndex++] = item;
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return _array.GetEnumerator();
+            }
+
+            IEnumerator<object> IEnumerable<object>.GetEnumerator() {
+                return new EnumeratorAdapter(_array.GetEnumerator());
+            }
+
+            bool ICollection<object>.Remove(object item) {
+                throw new NotSupportedException();
+            }
+        }
+
         class Enumerator : IEnumerator<object>
         {
             #region State
 
             private readonly ObjectWalker _walker;
 
-            private Object _current;
+            private object _current;
             private Stack _toWalk;
             private ObjectIDGenerator _objectIDGenerator;
 
@@ -62,7 +114,8 @@ namespace WmcSoft.Runtime
 
             #region IEnumerator Membres
 
-            public object Current {
+            public object Current
+            {
                 get { return _current; }
             }
 
@@ -74,8 +127,9 @@ namespace WmcSoft.Runtime
                 _current = _toWalk.Pop();
                 if (!IsTerminalObject(_current)) {
                     // The object does have field, schedule the object's instance fields to be enumerated.
-                    foreach (FieldInfo fi in _current.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
-                        Walk(fi.GetValue(_current));
+                    var fields = _current.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    for (int i = fields.Length - 1; i >= 0; i--) {
+                        Walk(fields[i].GetValue(_current));
                     }
                 }
                 return true;
@@ -92,33 +146,33 @@ namespace WmcSoft.Runtime
 
             #region Methods
 
+            bool IsFirstOccurrence(object data) {
+                bool firstOccurrence;
+                _objectIDGenerator.GetId(data, out firstOccurrence);
+                return firstOccurrence;
+            }
+
             /// <summary>
             /// Walk the reference of the passed-in object.
             /// </summary>
-            /// <param name="data"></param>
-            void Walk(Object data) {
-                if (data == null)
-                    return;
-
-                // Ask the ObjectIDManager if this object has been examined before.
-                bool firstOccurrence;
-                _objectIDGenerator.GetId(data, out firstOccurrence);
-
-                // If this object has been examined before, do not look at it again just return.
-                if (!firstOccurrence)
+            /// <param name="data">the object</param>
+            void Walk(object data) {
+                if (data == null || !IsFirstOccurrence(data))
                     return;
 
                 if (data.GetType().IsArray) {
-                    foreach (object item in (Array)data)
-                        Walk(item);
+                    var items = new List<object>(new ArrayFacade((Array)data));
+                    for (int i = items.Count - 1; i >= 0; i--) {
+                        Walk(items[i]);
+                    }
                 } else {
                     _toWalk.Push(data);
                 }
             }
 
             bool IsTerminalObject(object data) {
-                Type t = data.GetType();
-                return t.IsPrimitive || t.IsEnum || t.IsPointer || data is String;
+                var t = data.GetType();
+                return t.IsPrimitive || t.IsEnum || t.IsPointer || data is string;
             }
 
             #endregion
@@ -133,9 +187,9 @@ namespace WmcSoft.Runtime
 
         #endregion
 
-        #region State
+        #region Fields
 
-        object _root;
+        readonly object _root;
 
         #endregion
 
@@ -170,6 +224,5 @@ namespace WmcSoft.Runtime
         }
 
         #endregion
-
     }
 }

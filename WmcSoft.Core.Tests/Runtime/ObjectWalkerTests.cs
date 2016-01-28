@@ -52,6 +52,23 @@ namespace WmcSoft.Runtime
         }
 
         [TestMethod]
+        public void CanWalkSequentially() {
+            var root = new object[] { "one", new object[] { "two", "three", "four" }, new object[] { "five" }, "six" };
+            var expected = new List<object>() {
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "six"
+            };
+
+            var walker = new ObjectWalker(root);
+            var actual = new List<object>(walker);
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
         public void CanWalkComplexObject() {
             var root = new ComplexObject("one", "two", 3);
             root.Name = "name";
