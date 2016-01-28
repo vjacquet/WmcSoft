@@ -25,47 +25,29 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Threading;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Arithmetics
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public struct SimpsonRule : IIntegralRule<double>
     {
-        #region Private fields
+        private readonly int _steps;
 
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+        public SimpsonRule(int steps) {
+            if (steps <= 0) throw new ArgumentOutOfRangeException("steps");
+            _steps = steps;
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
+        public double Integrate<TFunction>(TFunction f, double a, double b)
+            where TFunction : IFunction<double> {
+            var w = (b - a) / _steps;
+            var w2 = w / 2d;
+            var r = f.Eval(a) + f.Eval(b) + 4 * f.Eval(b - w2);
+            var n = _steps - 1;
+            while (n-- > 0) {
+                a += w;
+                r += 4 * f.Eval(a - w2) + 2d * f.Eval(a);
             }
-            catch { }
+            return r * w / 6d;
         }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

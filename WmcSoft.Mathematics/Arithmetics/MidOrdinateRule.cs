@@ -41,9 +41,10 @@ namespace WmcSoft.Arithmetics
             where TFunction : IFunction<double> {
             var r = 0d;
             var w = (b - a) / _steps;
+            var w2 = w / 2d;
             for (int i = 0; i < _steps;) {
                 i++;
-                r += f.Eval(a - w / 2 + i * w);
+                r += f.Eval(a - w2 + i * w);
             }
             return r * w;
         }

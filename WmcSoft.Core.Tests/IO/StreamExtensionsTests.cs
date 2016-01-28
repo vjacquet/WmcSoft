@@ -10,7 +10,7 @@ namespace WmcSoft.IO
     {
         public class Progress : IProgress<long>
         {
-            readonly object _syncRoot = new Object();
+            readonly object _syncRoot = new object();
             readonly List<long> _notifications = new List<long>();
 
             #region IProgress<long> Members

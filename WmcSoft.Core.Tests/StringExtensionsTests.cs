@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.Text;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Text;
 
 namespace WmcSoft
 {
@@ -116,7 +113,7 @@ namespace WmcSoft
             var data = "abd def ghi jkl mno pqr";
             var result = data.ReplaceWord("xyz", "stu");
             Assert.AreEqual(data, result);
-            Assert.IsTrue(Object.ReferenceEquals(data, result));
+            Assert.IsTrue(ReferenceEquals(data, result));
         }
 
         [TestMethod]
@@ -124,6 +121,31 @@ namespace WmcSoft
             var eq = "y=ax+b";
             Assert.AreEqual("y=ax+b", eq.ReplaceWord("a", "A"));
             Assert.AreEqual("y=ax+B", eq.ReplaceWord("b", "B"));
+        }
+
+        [TestMethod]
+        public void CanRemovePrefix() {
+            Assert.AreEqual("defghi", "abcdefghi".RemovePrefix("abc"));
+            Assert.AreEqual("defghi", "abcdefghi".RemoveAffixes("abc"));
+        }
+
+        [TestMethod]
+        public void CanRemoveSuffix() {
+            Assert.AreEqual("abcdef", "abcdefghi".RemoveSuffix("ghi"));
+            Assert.AreEqual("abcdef", "abcdefghi".RemoveAffixes("ghi"));
+        }
+
+        [TestMethod]
+        public void CanRemoveAffixes() {
+            Assert.AreEqual("def", "abcdefghi".RemoveAffixes("abc", "ghi"));
+            Assert.AreEqual("b", "aabaa".RemoveAffixes("aa"));
+        }
+
+        [TestMethod]
+        public void CanRemoveAffixesWhenOverlaps() {
+            var expected = "";
+            var actual = "aabaa".RemoveAffixes("aab", "baa");
+            Assert.AreEqual(expected, actual);
         }
     }
 }

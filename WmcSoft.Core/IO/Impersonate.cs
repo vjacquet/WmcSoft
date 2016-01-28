@@ -27,7 +27,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Security.Permissions;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.ConstrainedExecution;
 using System.Security;

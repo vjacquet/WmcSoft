@@ -27,11 +27,22 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using WmcSoft.Data.Common;
 
 namespace WmcSoft.Data
 {
     public static class DataReaderExtensions
     {
+        #region AsDbDataReader
+
+        public static DbDataReader AsDbDataReader(this IDataReader reader) {
+            var db = reader as DbDataReader;
+            return db ?? new DbDataReaderAdapter(reader);
+        }
+
+        #endregion
+
         #region ReadXxx
 
         public static bool ReadNext<T>(this IDataReader reader, Func<IDataRecord, T> materializer, out T entity) {

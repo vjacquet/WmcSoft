@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Numerics.Tests
@@ -75,6 +74,5 @@ namespace WmcSoft.Numerics.Tests
             var actual = x + y;
             Assert.AreEqual(expected, actual);
         }
-
     }
 }

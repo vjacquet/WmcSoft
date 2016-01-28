@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,48 +24,36 @@
 
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Threading;
+using System.Collections.Generic;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Collections.Generic.Algorithms
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public class NaiveFinder<T> : IFinder<T>
     {
-        #region Private fields
+        readonly IReadOnlyList<T> _pattern;
+        readonly IEqualityComparer<T> _comparer;
 
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer) {
+            _pattern = pattern;
+            _comparer = comparer;
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
+        bool EqualsPattern(IReadOnlyList<T> t, int startIndex) {
+            var length =_pattern.Count;
+            for (int i = 0, j = startIndex; i < length; i++, j++) {
+                if (!_comparer.Equals(t[j], _pattern[i]))
+                    return false;
             }
-            catch { }
+            return true;
         }
 
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
+        public int FindFirstOccurence(IReadOnlyList<T> t, int startIndex) {
+            var length = t.Count- _pattern.Count;
+            for (int i = startIndex; i < length; i++) {
+                if (EqualsPattern(t, i))
+                    return i;
+            }
+            return -1;
         }
-
-        #endregion
     }
 }

@@ -41,23 +41,28 @@ namespace WmcSoft.Arithmetics
 
             #region IGroupLikeTraits Membres
 
-            public bool SupportIdentity {
+            public bool SupportIdentity
+            {
                 get { return true; }
             }
 
-            public bool SupportInverse {
+            public bool SupportInverse
+            {
                 get { return true; }
             }
 
-            public bool IsAssociative {
+            public bool IsAssociative
+            {
                 get { return true; }
             }
 
-            public bool IsCommutative {
+            public bool IsCommutative
+            {
                 get { return true; }
             }
 
-            public bool IsIdempotent {
+            public bool IsIdempotent
+            {
                 get { return false; }
             }
 
@@ -74,23 +79,28 @@ namespace WmcSoft.Arithmetics
 
             #region IGroupLikeTraits Membres
 
-            public bool SupportIdentity {
+            public bool SupportIdentity
+            {
                 get { return true; }
             }
 
-            public bool SupportInverse {
+            public bool SupportInverse
+            {
                 get { return _arithmetics.SupportReciprocal; }
             }
 
-            public bool IsAssociative {
+            public bool IsAssociative
+            {
                 get { return true; }
             }
 
-            public bool IsCommutative {
+            public bool IsCommutative
+            {
                 get { return true; }
             }
 
-            public bool IsIdempotent {
+            public bool IsIdempotent
+            {
                 get { return false; }
             }
 
@@ -113,7 +123,8 @@ namespace WmcSoft.Arithmetics
             return _arithmetics.Negate(x);
         }
 
-        public T Zero {
+        public T Zero
+        {
             get { return _arithmetics.Zero; }
         }
 
@@ -125,7 +136,8 @@ namespace WmcSoft.Arithmetics
             return _arithmetics.Reciprocal(x);
         }
 
-        public T One {
+        public T One
+        {
             get { return _arithmetics.One; }
         }
 
@@ -133,11 +145,13 @@ namespace WmcSoft.Arithmetics
 
         #region IRingLikeTraits Membres
 
-        public IGroupLikeTraits Addition {
+        public IGroupLikeTraits Addition
+        {
             get { return new AdditiveTraits(_arithmetics); }
         }
 
-        public IGroupLikeTraits Multiplication {
+        public IGroupLikeTraits Multiplication
+        {
             get { return new MultiplicativeTraits(_arithmetics); }
         }
 

@@ -25,47 +25,28 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Threading;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Arithmetics
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public struct TrapezoidalRule : IIntegralRule<double>
     {
-        #region Private fields
+        private readonly int _steps;
 
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+        public TrapezoidalRule(int steps) {
+            if (steps <= 0) throw new ArgumentOutOfRangeException("steps");
+            _steps = steps;
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
+        public double Integrate<TFunction>(TFunction f, double a, double b)
+            where TFunction : IFunction<double> {
+            var r = (f.Eval(a) + f.Eval(b)) / 2d;
+            var w = (b - a) / _steps;
+            var n = _steps - 1;
+            while (n-- > 0) {
+                a += w;
+                r += f.Eval(a);
             }
-            catch { }
+            return r * w;
         }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

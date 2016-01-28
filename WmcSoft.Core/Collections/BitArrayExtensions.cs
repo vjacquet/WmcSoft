@@ -33,7 +33,7 @@ namespace WmcSoft.Collections
 {
     public static class BitArrayExtensions
     {
-        public static IEnumerable<TSource> Mask<TSource>(this BitArray mask, IEnumerable<TSource> x, IEnumerable<TSource> y) {
+        static IEnumerable<TSource> DoMask<TSource>(this BitArray mask, IEnumerable<TSource> x, IEnumerable<TSource> y) {
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
                 for (int i = 0; i < mask.Count; i++) {
@@ -49,10 +49,8 @@ namespace WmcSoft.Collections
             }
         }
 
-        public static TSource[] Mask<TSource>(this BitArray mask, IReadOnlyList<TSource> x, IReadOnlyList<TSource> y) {
-            if (x == null) throw new ArgumentNullException("x");
+        static TSource[] DoMask<TSource>(this BitArray mask, IReadOnlyList<TSource> x, IReadOnlyList<TSource> y) {
             if (mask.Count != x.Count) throw new ArgumentException("x");
-            if (y == null) throw new ArgumentNullException("y");
             if (mask.Count != y.Count) throw new ArgumentException("y");
 
             var result = new TSource[mask.Count];
@@ -62,14 +60,60 @@ namespace WmcSoft.Collections
             return result;
         }
 
+        /// <summary>
+        /// Takes values from the enumerables depending on the value of the bit in the mask.
+        /// </summary>
+        /// <typeparam name="TSource">The type of elements</typeparam>
+        /// <param name="mask">The mask</param>
+        /// <param name="x">The source to get elements from when the bit is 0.</param>
+        /// <param name="y">The source to get elements from when the bit is 1.</param>
+        /// <returns>The items selected by the mask.</returns>
+        public static IEnumerable<TSource> Mask<TSource>(this BitArray mask, IEnumerable<TSource> x, IEnumerable<TSource> y) {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+
+            var rx = x as IReadOnlyList<TSource>;
+            var ry = y as IReadOnlyList<TSource>;
+            if (rx != null && ry != null) return DoMask(mask, rx, ry);
+            var wx = x as IList<TSource>;
+            var wy = y as IList<TSource>;
+            if (rx != null && ry != null) return DoMask(mask, wx.AsReadOnly(), wy.AsReadOnly());
+            return DoMask(mask, x, y);
+        }
+
+        /// <summary>
+        /// Takes values from the lists depending on the value of the bit in the mask.
+        /// </summary>
+        /// <typeparam name="TSource">The type of elements</typeparam>
+        /// <param name="mask">The mask</param>
+        /// <param name="x">The source to get elements from when the bit is 0.</param>
+        /// <param name="y">The source to get elements from when the bit is 1.</param>
+        /// <returns>The items selected by the mask.</returns>
         public static TSource[] Mask<TSource>(this BitArray mask, IList<TSource> x, IList<TSource> y) {
-            return Mask(mask, x.AsReadOnly(), y.AsReadOnly());
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            return DoMask(mask, x.AsReadOnly(), y.AsReadOnly());
         }
 
+        /// <summary>
+        /// Takes chars from the strings depending on the value of the bit in the mask.
+        /// </summary>
+        /// <typeparam name="TSource">The type of elements</typeparam>
+        /// <param name="mask">The mask</param>
+        /// <param name="x">The source to get elements from when the bit is 0.</param>
+        /// <param name="y">The source to get elements from when the bit is 1.</param>
+        /// <returns>The string whose chars were selected by the mask.</returns>
         public static string Mask(this BitArray mask, string x, string y) {
-            return new string(Mask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            return new string(DoMask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
         }
 
+        /// <summary>
+        /// Determines whether all bits are true.
+        /// </summary>
+        /// <param name="bits">The bits</param>
+        /// <returns>Returns true when all bits are true.</returns>
         public static bool All(this BitArray bits) {
             foreach (bool b in bits) {
                 if (!b)
@@ -78,6 +122,11 @@ namespace WmcSoft.Collections
             return true;
         }
 
+        /// <summary>
+        /// Determines whether any bit is true.
+        /// </summary>
+        /// <param name="bits">The bits</param>
+        /// <returns>Returns true when at least one bit is true.</returns>
         public static bool Any(this BitArray bits) {
             foreach (bool b in bits) {
                 if (b)
@@ -86,6 +135,11 @@ namespace WmcSoft.Collections
             return false;
         }
 
+        /// <summary>
+        /// Determines whether all bits are false.
+        /// </summary>
+        /// <param name="bits">The bits</param>
+        /// <returns>Returns true when all bits are false.</returns>
         public static bool None(this BitArray bits) {
             foreach (bool b in bits) {
                 if (b)
@@ -94,6 +148,12 @@ namespace WmcSoft.Collections
             return true;
         }
 
+        /// <summary>
+        /// Concatenate two bit array.
+        /// </summary>
+        /// <param name="x">The first bit array</param>
+        /// <param name="y">The second bit array</param>
+        /// <returns>The bit array produced by the concatenation</returns>
         public static BitArray Concat(this BitArray x, BitArray y) {
             var z = new BitArray(x.Length + y.Length);
             for (var i = 0; i < x.Length; i++) {
@@ -106,6 +166,12 @@ namespace WmcSoft.Collections
             return z;
         }
 
+        /// <summary>
+        /// Copies bits into another bit array
+        /// </summary>
+        /// <param name="source">The source bit array</param>
+        /// <param name="array">The destination bit array</param>
+        /// <param name="index">The index where to start the copy in the destination array</param>
         public static void CopyTo(this BitArray source, BitArray array, int index) {
             var length = source.Length;
             for (int i = 0; i < length; i++, index++) {
@@ -113,6 +179,14 @@ namespace WmcSoft.Collections
             }
         }
 
+        /// <summary>
+        /// Copies bits into another bit array
+        /// </summary>
+        /// <param name="source">The source bit array</param>
+        /// <param name="sourceIndex">The index where to start the copy in the source array</param>
+        /// <param name="array">The destination bit array</param>
+        /// <param name="destinationIndex">The index where to start the copy in the destination array</param>
+        /// <param name="length">The number of bit to copy.</param>
         public static void CopyTo(this BitArray source, int sourceIndex, BitArray array, int destinationIndex, int length) {
             while (length-- != 0) {
                 array.Set(destinationIndex++, source.Get(sourceIndex++));

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 
 namespace WmcSoft.Data
@@ -44,14 +45,16 @@ namespace WmcSoft.Data
 
         #region Lifecycle
 
-        public TypeDescriptorDataReader(IEnumerable<T> data) {
-            _properties = TypeDescriptor.GetProperties(typeof(T));
-            _data = data;
-            _enumerator = _data.GetEnumerator();
+        public TypeDescriptorDataReader(IEnumerable<T> data)
+            : this(data, TypeDescriptor.GetProperties(typeof(T))) {
         }
 
-        public TypeDescriptorDataReader(IEnumerable<T> data, Attribute[] attributes) {
-            _properties = TypeDescriptor.GetProperties(typeof(T), attributes);
+        public TypeDescriptorDataReader(IEnumerable<T> data, Attribute[] attributes)
+            : this(data, TypeDescriptor.GetProperties(typeof(T), attributes)) {
+        }
+
+        public TypeDescriptorDataReader(IEnumerable<T> data, PropertyDescriptorCollection properties) {
+            _properties = properties;
             _data = data;
             _enumerator = _data.GetEnumerator();
         }
@@ -76,9 +79,32 @@ namespace WmcSoft.Data
         }
 
         public override DataTable GetSchemaTable() {
-            var dt = new DataTable(typeof(T).Name);
+            var dt = new DataTable("SchemaTable");
+            dt.Locale = System.Globalization.CultureInfo.InvariantCulture;
+
+            dt.AddColumn<string>(SchemaTableColumn.ColumnName);
+            dt.AddColumn<int>(SchemaTableColumn.ColumnOrdinal);
+            dt.AddColumn<Type>(SchemaTableColumn.DataType);
+            dt.AddColumn<int>(SchemaTableColumn.ColumnSize, defaultValue: -1);
+            dt.AddColumn<short>(SchemaTableColumn.NumericPrecision);
+            dt.AddColumn<short>(SchemaTableColumn.NumericScale);
+            dt.AddColumn<int>(SchemaTableColumn.ProviderType);
+            dt.AddColumn<bool>(SchemaTableColumn.IsLong);
+            dt.AddColumn<bool>(SchemaTableColumn.AllowDBNull);
+            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsReadOnly, defaultValue: false);
+            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsRowVersion);
+            dt.AddColumn<bool>(SchemaTableColumn.IsUnique);
+            dt.AddColumn<bool>(SchemaTableColumn.IsKey);
+
+            int i = 0;
             foreach (var property in _properties.Cast<PropertyDescriptor>()) {
-                dt.Columns.Add(property.Name, property.PropertyType);
+                var dr = dt.NewRow();
+                dr[0] = property.Name;
+                dr[1] = i;
+                dr[2] = property.PropertyType;
+                if (property.IsReadOnly)
+                    dr[SchemaTableOptionalColumn.IsReadOnly] = true;
+                dt.Rows.Add(dr);
             }
             return dt;
         }
@@ -103,7 +129,8 @@ namespace WmcSoft.Data
 
         #region IDataRecord Membres
 
-        public override int FieldCount {
+        public override int FieldCount
+        {
             get { return _properties.Count; }
         }
 

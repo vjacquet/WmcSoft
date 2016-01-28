@@ -25,47 +25,16 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Threading;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Arithmetics
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public struct BooleRule : IIntegralRule<double>
     {
-        #region Private fields
-
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+        public double Integrate<TFunction>(TFunction f, double a, double b)
+            where TFunction : IFunction<double> {
+            var h = (b - a) / 4;
+            var r = 7d * f.Eval(a) + 32d * f.Eval(a + h) + 12d * f.Eval(a + 2d * h) + 32d * f.Eval(a + 3d * h) + 7d * f.Eval(b);
+            return 2d * h * r / 45d;
         }
-
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
-            }
-            catch { }
-        }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

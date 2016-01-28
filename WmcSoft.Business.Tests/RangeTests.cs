@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Business
 {
@@ -68,17 +65,17 @@ namespace WmcSoft.Business
 
         [TestMethod]
         public void CheckIsEmpty() {
-            Range<int> actual = new Range<int>(2, 2);
+           var actual = new Range<int>(2, 2);
 
             Assert.AreEqual(true, actual.IsEmpty);
         }
 
         [TestMethod]
         public void CheckIncludes() {
-            Range<int> actual = new Range<int>(2, 5);
-            Range<int> included = new Range<int>(3, 4);
-            Range<int> overlapped = new Range<int>(3, 7);
-            Range<int> distinct = new Range<int>(8, 10);
+            var actual = new Range<int>(2, 5);
+            var included = new Range<int>(3, 4);
+            var overlapped = new Range<int>(3, 7);
+            var distinct = new Range<int>(8, 10);
 
             Assert.IsTrue(actual.Includes(included));
             Assert.IsFalse(actual.Includes(overlapped));
@@ -89,10 +86,10 @@ namespace WmcSoft.Business
 
         [TestMethod]
         public void CheckOverlaps() {
-            Range<int> actual = new Range<int>(2, 5);
-            Range<int> included = new Range<int>(3, 4);
-            Range<int> overlapped = new Range<int>(3, 7);
-            Range<int> distinct = new Range<int>(8, 10);
+            var actual = new Range<int>(2, 5);
+            var included = new Range<int>(3, 4);
+            var overlapped = new Range<int>(3, 7);
+            var distinct = new Range<int>(8, 10);
 
             Assert.IsFalse(actual.Overlaps(included));
             Assert.IsTrue(actual.Overlaps(overlapped));
@@ -103,10 +100,10 @@ namespace WmcSoft.Business
 
         [TestMethod]
         public void CheckIsDistinct() {
-            Range<int> actual = new Range<int>(2, 5);
-            Range<int> included = new Range<int>(3, 4);
-            Range<int> overlapped = new Range<int>(3, 7);
-            Range<int> distinct = new Range<int>(8, 10);
+            var actual = new Range<int>(2, 5);
+            var included = new Range<int>(3, 4);
+            var overlapped = new Range<int>(3, 7);
+            var distinct = new Range<int>(8, 10);
 
             Assert.IsFalse(actual.IsDistinct(included));
             Assert.IsFalse(actual.IsDistinct(overlapped));

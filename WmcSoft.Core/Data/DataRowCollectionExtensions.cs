@@ -162,5 +162,28 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region DataColumnCollection
+
+        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName) {
+            return columns.Add(columnName, typeof(T));
+        }
+
+        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName, T defaultValue) {
+            var column = columns.Add(columnName, typeof(T));
+            column.DefaultValue = defaultValue;
+            return column;
+        }
+
+        public static DataColumn AddColumn<T>(this DataTable table, string columnName) {
+            return table.Columns.Add(columnName, typeof(T));
+        }
+
+        public static DataColumn AddColumn<T>(this DataTable table, string columnName, T defaultValue) {
+            var column = table.Columns.Add(columnName, typeof(T));
+            column.DefaultValue = defaultValue;
+            return column;
+        }
+
+        #endregion
     }
 }

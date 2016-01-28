@@ -57,6 +57,9 @@
     <Compile Include="CodeDom\CodeThrowNewExceptionStatement.cs" />
     <Compile Include="Collections\BitArrayExtensions.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\Generic\Algorithms\IFinder.cs" />
+    <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
+    <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
     <Compile Include="Collections\ReverseComparer.cs" />
     <Compile Include="Collections\DuplicatePolicy.cs" />
@@ -70,9 +73,13 @@
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
+    <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
+    <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
+    <Compile Include="Globalization\CombinedCalendar.cs" />
+    <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
     <Compile Include="Configuration\MailAddressConverter.cs" />
     <Compile Include="DateSpan.cs" />

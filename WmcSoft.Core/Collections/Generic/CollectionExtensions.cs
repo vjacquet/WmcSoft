@@ -444,14 +444,78 @@ namespace WmcSoft.Collections.Generic
 
         #region ElementsAt
 
-        public static IEnumerable<TSource> ElementsAt<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+        static int[] Iota(int n) {
+            var array = new int[n];
+            for (int i = 0; i < n; i++) {
+                array[i] = i;
+            }
+            return array;
+        }
+
+        static IEnumerable<TSource> DoElementsAt<TSource>(IEnumerable<TSource> source, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TSource>();
+
+            var length = indices.Length;
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
+            var buffer = new TSource[length];
+            var i = 0;
+            var count = 0;
+            var m = indices[sorted[i]];
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == m) {
+                        buffer[i] = enumerator.Current;
+                        if (++i == length)
+                            return buffer;
+                        m = indices[sorted[i]];
+                    }
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        static IEnumerable<TSource> DoElementsAt<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
             return indices.Select(i => source[i]);
         }
+
+        public static IEnumerable<TSource> ElementsAt<TSource>(this IEnumerable<TSource> source, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAt(readable, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return ElementsAt(list, indices);
+            return DoElementsAt(source, indices);
+        }
+
         public static IEnumerable<TSource> ElementsAt<TSource>(this IList<TSource> source, params int[] indices) {
             return indices.Select(i => source[i]);
         }
 
-        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IReadOnlyList<TSource> source, params int[] indices) {
+        static IEnumerable<TSource> DoElementsAtOrDefault<TSource>(IEnumerable<TSource> source, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TSource>();
+
+            var length = indices.Length;
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
+            var buffer = new TSource[length];
+            var i = 0;
+            var count = 0;
+            var m = indices[sorted[i]];
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == m) {
+                        buffer[i] = enumerator.Current;
+                        if (++i == length)
+                            break;
+                        m = indices[sorted[i]];
+                    }
+                }
+            }
+            return buffer;
+        }
+
+        static IEnumerable<TSource> DoElementsAtOrDefault<TSource>(IReadOnlyList<TSource> source, params int[] indices) {
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
                 if (0 < indice || indice >= source.Count)
@@ -460,6 +524,15 @@ namespace WmcSoft.Collections.Generic
                     yield return source[indice];
             }
         }
+
+        public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IEnumerable<TSource> source, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAtOrDefault(readable, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return DoElementsAtOrDefault(list, indices);
+            return DoElementsAtOrDefault(source, indices);
+        }
+
         public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IList<TSource> source, params int[] indices) {
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
@@ -467,6 +540,97 @@ namespace WmcSoft.Collections.Generic
                     yield return default(TSource);
                 else
                     yield return source[indice];
+            }
+        }
+
+        static IEnumerable<TResult> DoElementsAt<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TResult>();
+
+            var length = indices.Length;
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
+            var buffer = new TResult[length];
+            var i = 0;
+            var count = 0;
+            var m = indices[sorted[i]];
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == m) {
+                        buffer[i] = selector(enumerator.Current);
+                        if (++i == length)
+                            return buffer;
+                        m = indices[sorted[i]];
+                    }
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        static IEnumerable<TResult> DoElementsAt<TSource, TResult>(this IReadOnlyList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            return indices.Select(i => selector(source[i]));
+        }
+
+        public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAt(readable, selector, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return ElementsAt(list, selector, indices);
+            return DoElementsAt(source, selector, indices);
+        }
+
+        public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            return indices.Select(i => selector(source[i]));
+        }
+
+        static IEnumerable<TResult> DoElementsAtOrDefault<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (indices.Length == 0)
+                return Enumerable.Empty<TResult>();
+
+            var length = indices.Length;
+            var sorted = Iota(length).Sort(new SourceComparer<int>(indices));
+            var buffer = new TResult[length];
+            var i = 0;
+            var count = 0;
+            var m = indices[sorted[i]];
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext()) {
+                    if (count++ == m) {
+                        buffer[i] = selector(enumerator.Current);
+                        if (++i == length)
+                            break;
+                        m = indices[sorted[i]];
+                    }
+                }
+            }
+            return buffer;
+        }
+
+        static IEnumerable<TResult> DoElementsAtOrDefault<TSource, TResult>(IReadOnlyList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TResult);
+                else
+                    yield return selector(source[indice]);
+            }
+        }
+
+        public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            var readable = source as IReadOnlyList<TSource>;
+            if (readable != null) return DoElementsAtOrDefault(readable, selector, indices);
+            var list = source as IList<TSource>;
+            if (list != null) return ElementsAtOrDefault(list, selector, indices);
+            return DoElementsAtOrDefault(source, selector, indices);
+        }
+
+        public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            for (int i = 0; i < indices.Length; i++) {
+                var indice = indices[i];
+                if (0 < indice || indice >= source.Count)
+                    yield return default(TResult);
+                else
+                    yield return selector(source[indice]);
             }
         }
 
@@ -699,6 +863,109 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Partition
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int Partition<T>(this IList<T> list, Predicate<T> predicate) {
+            return Partition(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int Partition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            int end = start + length - 1;
+            while (true) {
+                while (start < end && !predicate(list[start]))
+                    start++;
+                while (start < end && predicate(list[end]))
+                    end--;
+                if (start >= end)
+                    return start;
+                list.SwapItems(start++, end--);
+            }
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int StablePartition<T>(this IList<T> list, Predicate<T> predicate) {
+            return StablePartition(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Pop
+
+        /// <summary>
+        /// Removes the last element from the list and returns it.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <exception cref="ArgumentNullException">The list is null.</exception>
+        /// <exception cref="InvalidOperationException">The list is empty.</exception>
+        /// <returns>The last element from the list.</returns>
+        public static T Pop<T>(this IList<T> list) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (list.Count == 0)
+                throw new InvalidOperationException();
+            var last = list.Count - 1;
+            var t = list[last];
+            list.RemoveAt(last);
+            return t;
+        }
+
+        /// <summary>
+        /// Removes the element at the specified <param name="index"/> from the list and returns it.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="index">The index of the element to remove.</param>
+        /// <exception cref="ArgumentNullException">The list is null.</exception>
+        /// <exception cref="InvalidOperationException">The list is empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><param name="index"/> is not a valid index in the <paramref name="list"/>.</exception>
+        /// <returns>The last element from the list.</returns>
+        public static T Pop<T>(this IList<T> list, int index) {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (list.Count == 0)
+                throw new InvalidOperationException();
+            var t = list[index];
+            list.RemoveAt(index);
+            return t;
+        }
+
+        #endregion
+
         #region RemoveIf methods
 
         public static int RemoveIf<T>(this ICollection<T> source, Func<T, bool> predicate) {
@@ -783,6 +1050,101 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Slice
+
+        class SliceList<T> : IList<T>
+        {
+            readonly IList<T> _underlying;
+            readonly int _startIndex;
+            readonly int _length;
+
+            public SliceList(IList<T> underlying, int startIndex, int length) {
+
+                _underlying = underlying;
+                _startIndex = startIndex;
+                _length = length;
+            }
+
+            public T this[int index]
+            {
+                get { return _underlying[_startIndex + index]; }
+                set { _underlying[_startIndex + index] = value; }
+            }
+
+            public int Count
+            {
+                get { return _length; }
+            }
+
+            public bool IsReadOnly
+            {
+                get { return true; }
+            }
+
+            public void Add(T item) {
+                throw new NotSupportedException();
+            }
+
+            public void Clear() {
+                throw new NotSupportedException();
+            }
+
+            public bool Contains(T item) {
+                return IndexOf(item) >= 0;
+            }
+
+            public void CopyTo(T[] array, int arrayIndex) {
+                if (array == null) throw new ArgumentNullException("array");
+                if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex");
+                if ((array.Length - arrayIndex) > _length) throw new ArgumentException();
+
+                var count = _length;
+                var s = _startIndex;
+                var t = arrayIndex;
+                while (count-- > 0)
+                    array[t++] = _underlying[s++];
+            }
+
+            public IEnumerator<T> GetEnumerator() {
+                return _underlying.Skip(_startIndex).Take(_length).GetEnumerator();
+            }
+
+            public int IndexOf(T item) {
+                var endIndex = _startIndex + _length;
+                for (int i = _startIndex; i < endIndex; i++) {
+                    if (Equals(_underlying[i], item))
+                        return i - _startIndex;
+                }
+                return -1;
+            }
+
+            public void Insert(int index, T item) {
+                throw new NotSupportedException();
+            }
+
+            public bool Remove(T item) {
+                throw new NotSupportedException();
+            }
+
+            public void RemoveAt(int index) {
+                throw new NotSupportedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+        }
+
+        public static IList<T> Slice<T>(this IList<T> list, int startIndex, int length) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
+            if (length < 0 || startIndex > (list.Count - length)) throw new ArgumentOutOfRangeException("length");
+
+            return new SliceList<T>(list, startIndex, length);
+        }
+
+        #endregion
+
         #region Stack & Queue
 
         public static void Push<T>(this Stack<T> stack, IEnumerable<T> items) {
@@ -821,8 +1183,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle<T>(this IList<T> list) {
-            Suffle(list, new Random());
+        public static void Shuffle<T>(this IList<T> list) {
+            Shuffle(list, new Random());
         }
 
         /// <summary>
@@ -832,7 +1194,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle<T>(this IList<T> list, Random random) {
+        public static void Shuffle<T>(this IList<T> list, Random random) {
             if (list == null)
                 throw new ArgumentNullException("list");
             if (random == null)
@@ -917,6 +1279,24 @@ namespace WmcSoft.Collections.Generic
                 output[i] = convert(list[i]);
             }
             return output;
+        }
+
+        #endregion
+
+        #region Toggle
+
+        /// <summary>
+        /// Removes an item if found in the collection or adds it if missing.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="item">The item</param>
+        /// <returns>false if the item was removed, true if it was added.</returns>
+        public static bool Toggle<T>(this ICollection<T> collection, T item) {
+            if (collection.Remove(item))
+                return false;
+            collection.Add(item);
+            return true;
         }
 
         #endregion

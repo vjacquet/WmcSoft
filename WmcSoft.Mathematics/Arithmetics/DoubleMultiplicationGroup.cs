@@ -25,47 +25,30 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Threading;
+using WmcSoft.Algebra;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Arithmetics
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+  public  struct DoubleMultiplicationGroup : IGroupLike<double>
     {
-        #region Private fields
+        public double Identity { get { return 1d; } }
 
-        Action _onDispose;
+        public bool IsAssociative { get { return true; } }
 
-        #endregion
+        public bool IsCommutative { get { return true; } }
 
-        #region Lifecycle
+        public bool IsIdempotent { get { return false; } }
 
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+        public bool SupportIdentity { get { return true; } }
+
+        public bool SupportInverse { get { return true; } }
+
+        public double Eval(double x, double y) {
+            return x * y;
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
-            }
-            catch { }
+        public double Inverse(double x) {
+            return 1d / x;
         }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

@@ -25,47 +25,30 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Threading;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Globalization
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public interface IBusinessCalendar
     {
-        #region Private fields
-
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
-        }
-
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
-            }
-            catch { }
-        }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
+        bool IsBusinessDay(DateTime date);
     }
+
+    public static class BusinessCalendarExtensions
+    {
+        public static DateTime AddBusinessDays<TCalendar>(this TCalendar calendar, DateTime date, int days)
+            where TCalendar : IBusinessCalendar {
+            while (days > 0) {
+                date = date.AddDays(1);
+                if (calendar.IsBusinessDay(date))
+                    days--;
+            }
+            while (days < 0) {
+                date = date.AddDays(-1);
+                if (calendar.IsBusinessDay(date))
+                    days++;
+            }
+            return date;
+        }
+    }
+
 }

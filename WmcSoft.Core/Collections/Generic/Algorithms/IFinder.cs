@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,48 +24,19 @@
 
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Threading;
+using System.Collections.Generic;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.Collections.Generic.Algorithms
 {
-    /// <summary>
-    /// Creates an Indent/Unindent scope.
-    /// </summary>
-    public sealed class TraceIndent : IDisposable
+    public interface IFinder<T>
     {
-        #region Private fields
+        int FindFirstOccurence(IReadOnlyList<T> t, int startIndex);
+    }
 
-        Action _onDispose;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent() {
-            Trace.Indent();
-            _onDispose = () => Trace.Unindent();
+    public static class FinderExtensions
+    {
+        public static int FindFirstOccurence<T>(this IFinder<T> finder, IReadOnlyList<T> t) {
+            return finder.FindFirstOccurence(t, 0);
         }
-
-        #endregion
-
-        #region IDisposable Membres
-
-        ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
-            }
-            catch { }
-        }
-
-        public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
     }
 }

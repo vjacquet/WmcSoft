@@ -927,7 +927,8 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator<T> Membres
 
-                public T Current {
+                public T Current
+                {
                     get { return _list[_offset]; }
                 }
 
@@ -942,7 +943,8 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator Membres
 
-                object IEnumerator.Current {
+                object IEnumerator.Current
+                {
                     get { return Current; }
                 }
 
@@ -986,7 +988,8 @@ namespace WmcSoft.Collections.Generic
 
             #region IReadOnlyCollection<T> Membres
 
-            public int Count {
+            public int Count
+            {
                 get { return _list.Count * _repeat; }
             }
 
@@ -1026,7 +1029,8 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator<T> Membres
 
-                public T Current {
+                public T Current
+                {
                     get { return _list[_offset]; }
                 }
 
@@ -1041,7 +1045,8 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator Membres
 
-                object IEnumerator.Current {
+                object IEnumerator.Current
+                {
                     get { return Current; }
                 }
 
@@ -1084,7 +1089,8 @@ namespace WmcSoft.Collections.Generic
 
             #region IReadOnlyCollection<T> Membres
 
-            public int Count {
+            public int Count
+            {
                 get { return _list.Count * _repeat; }
             }
 
@@ -1546,6 +1552,36 @@ namespace WmcSoft.Collections.Generic
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
         public static bool IsSorted<T>(this IEnumerable<T> enumerable) {
             return enumerable.IsSorted(Comparer<T>.Default);
+        }
+
+        /// <summary>
+        /// Check if a sequence of elements is sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="list">The sequence.</param>
+        /// <param name="comparer">The comparer</param>
+        /// <param name="startIndex">he start index.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
+        public static bool IsSorted<T>(this IList<T> list, IComparer<T> comparer, int startIndex, int length) {
+            var end = startIndex + length;
+            for (int i = startIndex + 1; i < end; i++) {
+                if (comparer.Compare(list[i - 1], list[i]) > 0)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Check if a sequence of elements is sorted, using the default comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="list">The sequence.</param>
+        /// <param name="startIndex">he start index.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
+        public static bool IsSorted<T>(this IList<T> list, int startIndex, int length) {
+            return list.IsSorted(Comparer<T>.Default, startIndex, length);
         }
 
         /// <summary>

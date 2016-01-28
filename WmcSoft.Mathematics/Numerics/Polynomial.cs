@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WmcSoft.Collections.Generic;
+using WmcSoft.Arithmetics;
 
 namespace WmcSoft.Numerics
 {
@@ -46,6 +47,7 @@ namespace WmcSoft.Numerics
 
             #endregion
         }
+
         struct Node : IComparable<Node>, IEquatable<Node>, IFormattable
         {
             public readonly int Exp;
@@ -142,8 +144,8 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
-        public int Degree { get { return _nodes == null ? 0 : _nodes[_nodes.Length - 1].Exp; } }
-        public double this[int index] { get { return _nodes.BinaryFind(d => d.Exp).Coef; } }
+        public int Degree { get { return _nodes == null ? 0 : _nodes[0].Exp; } }
+        public double this[int index] { get { return _nodes.BinaryFind(d => d.Exp - index).Coef; } }
 
         #endregion
 
@@ -249,7 +251,23 @@ namespace WmcSoft.Numerics
 
         #endregion
 
-        #region IEquatable<Vector> Membres
+        #region Methods
+
+        public double Eval(double x) {
+            if (_nodes == null)
+                return 0d;
+
+            DoubleMultiplicationGroup g;
+            var y = _nodes[0].Coef;
+            for (int i = 1; i < _nodes.Length; i++) {
+                y = g.PowerSemiGroup(x, _nodes[i - 1].Exp - _nodes[i].Exp) * y + _nodes[i].Coef;
+            }
+            return y;
+        }
+
+        #endregion
+
+        #region IEquatable<Polynomial> Membres
 
         public bool Equals(Polynomial other) {
             if (_nodes == null)
