@@ -16,26 +16,28 @@ namespace WmcSoft.Tests
         }
 
         [TestMethod]
-        public void CheckUnarySeries() {
-            var series = Generators.Series(x => x + 2, 0).GetEnumerator();
-            Assert.AreEqual(0, series.Read());
-            Assert.AreEqual(2, series.Read());
-            Assert.AreEqual(4, series.Read());
-            Assert.AreEqual(6, series.Read());
+        public void CheckUnarySequence() {
+            using (var sequence = Generators.Sequence(x => x + 2, 0).GetEnumerator()) {
+                Assert.AreEqual(0, sequence.Read());
+                Assert.AreEqual(2, sequence.Read());
+                Assert.AreEqual(4, sequence.Read());
+                Assert.AreEqual(6, sequence.Read());
+            }
         }
 
         [TestMethod]
-        public void CheckBinarySeries() {
-            var series = Generators.Series((x, y) => x + y, 0, 1).GetEnumerator();
-            Assert.AreEqual(0, series.Read());
-            Assert.AreEqual(1, series.Read());
-            Assert.AreEqual(1, series.Read());
-            Assert.AreEqual(2, series.Read());
-            Assert.AreEqual(3, series.Read());
-            Assert.AreEqual(5, series.Read());
-            Assert.AreEqual(8, series.Read());
-            Assert.AreEqual(13, series.Read());
-            Assert.AreEqual(21, series.Read());
+        public void CheckBinarySequence() {
+            using (var sequence = Generators.Sequence((x, y) => x + y, 0, 1).GetEnumerator()) {
+                Assert.AreEqual(0, sequence.Read());
+                Assert.AreEqual(1, sequence.Read());
+                Assert.AreEqual(1, sequence.Read());
+                Assert.AreEqual(2, sequence.Read());
+                Assert.AreEqual(3, sequence.Read());
+                Assert.AreEqual(5, sequence.Read());
+                Assert.AreEqual(8, sequence.Read());
+                Assert.AreEqual(13, sequence.Read());
+                Assert.AreEqual(21, sequence.Read());
+            }
         }
 
         [TestMethod]
