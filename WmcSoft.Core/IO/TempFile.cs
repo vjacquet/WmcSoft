@@ -29,19 +29,34 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Creates a temporary file that will be deleted on dispose.
+    /// </summary>
     public class TempFile : IDisposable
     {
-        private string fullPath;
+        #region Fields
+
+        private string _fullPath;
+
+        #endregion
+
+        #region lifecycle
 
         public TempFile() {
-            fullPath = Path.GetTempFileName();
+            _fullPath = Path.GetTempFileName();
         }
+
+        #endregion
+
+        #region Properties
 
         public string FullPath {
-            get { return fullPath; }
+            get { return _fullPath; }
         }
 
-        #region IDisposable Membres
+        #endregion
+
+        #region IDisposable Members
 
         public void Dispose() {
             Dispose(true);
@@ -49,7 +64,7 @@ namespace WmcSoft.IO
         }
 
         private void Dispose(bool disposing) {
-            File.Delete(fullPath);
+            File.Delete(_fullPath);
         }
 
         ~TempFile() {
@@ -61,6 +76,5 @@ namespace WmcSoft.IO
         }
 
         #endregion
-
     }
 }

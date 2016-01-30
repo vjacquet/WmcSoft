@@ -28,7 +28,7 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
-    public class FileStreamSource : IStreamSource
+    public sealed class FileStreamSource : IStreamSource
     {
         #region Fields
 

@@ -29,9 +29,18 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Creates a temporary folder that will be deleted on dispose, with all its files.
+    /// </summary>
     public class TempDirectory : IDisposable
     {
+        #region Fields
+
         private readonly string _fullPath;
+
+        #endregion
+
+        #region lifecycle
 
         public TempDirectory() {
             _fullPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -45,9 +54,15 @@ namespace WmcSoft.IO
             }
         }
 
+        #endregion
+
+        #region Properties
+
         public string FullPath {
             get { return _fullPath; }
         }
+
+        #endregion
 
         #region IDisposable Membres
 
@@ -69,6 +84,5 @@ namespace WmcSoft.IO
         }
 
         #endregion
-
     }
 }
