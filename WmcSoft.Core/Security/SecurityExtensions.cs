@@ -25,35 +25,56 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
+using System.Security.Principal;
 using System.Threading;
 
 namespace WmcSoft.Security
 {
     public static class SecurityExtensions
     {
-        public static bool IsGranted(this MemberInfo self) {
+        public static bool IsGranted(this MemberInfo self, IPrincipal principal) {
             try {
-                var principal = Thread.CurrentPrincipal;
+#pragma warning disable CS0642 // Possible mistaken empty statement
+
+                var permissions = new List<SecurityAttribute>();
                 foreach (var attribute in self.GetCustomAttributes<SecurityAttribute>(true)) {
+
                     // special case to avoid exception in trivial cases
                     var principalPermissionAttribute = attribute as PrincipalPermissionAttribute;
-                    if (principalPermissionAttribute != null) {
-                        if ((principalPermissionAttribute.Authenticated && !principal.Identity.IsAuthenticated)
-                            || (!String.IsNullOrWhiteSpace(principalPermissionAttribute.Name) && !String.Equals(principalPermissionAttribute.Name, principal.Identity.Name))
-                            || ((!String.IsNullOrWhiteSpace(principalPermissionAttribute.Role) && !principal.IsInRole(principalPermissionAttribute.Role)))) {
-                            return false;
-                        }
-                    }
-                    attribute.CreatePermission().Demand();
+                    if (principalPermissionAttribute == null)
+                        ;
+                    else if ((principalPermissionAttribute.Authenticated && !principal.Identity.IsAuthenticated)
+                        || (!String.IsNullOrWhiteSpace(principalPermissionAttribute.Name) && !String.Equals(principalPermissionAttribute.Name, principal.Identity.Name))
+                        || (!String.IsNullOrWhiteSpace(principalPermissionAttribute.Role) && !principal.IsInRole(principalPermissionAttribute.Role)))
+                        return false;
+                    permissions.Add(attribute);
                 }
+                permissions.ForEach(p => p.CreatePermission().Demand());
                 return true;
+
+#pragma warning restore CS0642 // Possible mistaken empty statement
             }
             catch (SecurityException) {
                 return false;
             }
+        }
+
+        public static bool IsGranted(this MemberInfo self) {
+            return IsGranted(self, Thread.CurrentPrincipal);
+        }
+
+        public static bool IsGranted(this IPrincipal principal, MemberInfo self) {
+            return IsGranted(self, principal);
+        }
+
+        public static IDisposable Impersonate(this IPrincipal principal) {
+            var current = Thread.CurrentPrincipal;
+            Thread.CurrentPrincipal = principal;
+            return new Disposer(() => Thread.CurrentPrincipal = current);
         }
     }
 }
