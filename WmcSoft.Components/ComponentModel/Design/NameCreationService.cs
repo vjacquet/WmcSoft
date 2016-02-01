@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
@@ -36,9 +37,20 @@ namespace WmcSoft.ComponentModel.Design
     /// </summary>
     public class NameCreationService : INameCreationService
     {
+        #region Fields
+
+        readonly IEqualityComparer<string> _comparer;
+
+        #endregion
+
         #region Lifecycle
 
-        public NameCreationService() {
+        public NameCreationService(IEqualityComparer<string> comparer) {
+            _comparer = comparer;
+        }
+
+        public NameCreationService() : this(StringComparer.InvariantCulture) {
+
         }
 
         #endregion
@@ -65,7 +77,7 @@ namespace WmcSoft.ComponentModel.Design
                 unique = true;
 
                 for (int i = 0; i < container.Components.Count; i++) {
-                    if (container.Components[i].Site.Name.Equals(candidateName)) {
+                    if (_comparer.Equals(candidateName, container.Components[i].Site.Name)) {
                         unique = false;
                         uniqueID++;
                         break;
@@ -103,7 +115,7 @@ namespace WmcSoft.ComponentModel.Design
 
         protected virtual Exception DoValidateName(string name) {
             for (int i = 0; i < name.Length; i++) {
-                UnicodeCategory uc = Char.GetUnicodeCategory(name, i);
+                var uc = Char.GetUnicodeCategory(name, i);
                 switch (uc) {
                 case UnicodeCategory.UppercaseLetter:
                 case UnicodeCategory.LowercaseLetter:
@@ -119,5 +131,4 @@ namespace WmcSoft.ComponentModel.Design
 
         #endregion
     }
-
 }
