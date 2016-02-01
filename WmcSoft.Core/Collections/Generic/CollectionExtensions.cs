@@ -892,7 +892,7 @@ namespace WmcSoft.Collections.Generic
                     start++;
                 while (start < end && predicate(list[end]))
                     end--;
-                if (start >= end)
+                if (start > end)
                     return start;
                 list.SwapItems(start++, end--);
             }
