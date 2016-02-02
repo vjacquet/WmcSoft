@@ -34,12 +34,31 @@ namespace WmcSoft.Windows.Forms
 {
     public static class ToolStripExtensions
     {
+        public static IEnumerable<T> Where<T>(this ToolStripItemCollection collection, Func<T, bool> predicate)
+            where T : ToolStripItem {
+            return collection.OfType<T>().Where(predicate);
+        }
+
+        public static T First<T>(this ToolStripItemCollection collection)
+            where T : ToolStripItem {
+            return collection.OfType<T>().First();
+        }
+
+        public static T First<T>(this ToolStripItemCollection collection, Func<T, bool> predicate)
+            where T : ToolStripItem {
+            return collection.OfType<T>().First(predicate);
+        }
+
         public static IEnumerable<ToolStripItem> Except(this ToolStripItemCollection collection, ToolStripItem item) {
             foreach (ToolStripItem i in collection) {
                 if (i != item) {
                     yield return i;
                 }
             }
+        }
+
+        public static ToolStripItem First(this ToolStripItemCollection collection) {
+            return collection.OfType<ToolStripItem>().First();
         }
     }
 }
