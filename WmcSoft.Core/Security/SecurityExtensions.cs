@@ -42,7 +42,6 @@ namespace WmcSoft.Security
 
                 var permissions = new List<SecurityAttribute>();
                 foreach (var attribute in self.GetCustomAttributes<SecurityAttribute>(true)) {
-
                     // special case to avoid exception in trivial cases
                     var principalPermissionAttribute = attribute as PrincipalPermissionAttribute;
                     if (principalPermissionAttribute == null)
