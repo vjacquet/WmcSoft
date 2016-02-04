@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -26,19 +26,18 @@
 
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace WmcSoft.Drawing
 {
-    public static class SizeExtensions
+    public static class RectangleExtensions
     {
-        public static Size Combine(Size x, Size y) {
-            var w = Math.Max(x.Width, y.Width);
-            var h = Math.Max(x.Height, y.Height);
-            return new Size(w, h);
-        }
-
-        public static Size CombineWith(this Size x, Size y) {
-            return Combine(x, y);
+        public static Rectangle PadWith(this Rectangle rectangle, Padding padding) {
+            var top = rectangle.Top + padding.Top;
+            var right = rectangle.Right - padding.Right;
+            var bottom = rectangle.Bottom - padding.Bottom;
+            var left = rectangle.Left + padding.Left;
+            return new Rectangle(left, top, right - left, bottom - top);
         }
     }
 }
