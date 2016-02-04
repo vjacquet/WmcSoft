@@ -57,6 +57,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Drawing\ColorExtensions.cs" />
+    <Compile Include="Drawing\RectangleExtensions.cs" />
     <Compile Include="Drawing\SizeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -138,8 +139,13 @@
       <DependentUpon>HeaderedPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\HeaderStrip.cs" />
+    <Compile Include="Windows\Forms\HorizontalFormLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\HorizontalFormLayoutSettings.cs" />
     <Compile Include="Windows\Forms\ISupportReadOnly.cs" />
     <Compile Include="Windows\Forms\Layout\DeckLayoutEngine.cs" />
+    <Compile Include="Windows\Forms\Layout\HorizontalFormLayoutEngine.cs" />
     <Compile Include="Windows\Forms\MandatoryImageIndexConverter.cs" />
     <Compile Include="Windows\Forms\MenuStrip.cs" />
     <Compile Include="Windows\Forms\MessageForm.cs">
@@ -225,6 +231,7 @@
     <EmbeddedResource Include="Windows\Forms\CustomProfessionalColors.bmp" />
     <EmbeddedResource Include="Windows\Forms\Design\ProfessionalColorsTab.bmp" />
     <EmbeddedResource Include="Windows\Forms\BindableListView.bmp" />
+    <EmbeddedResource Include="Windows\Forms\HorizontalFormLayoutPanel.bmp" />
     <Content Include="Windows\Forms\HeaderedPanel.png" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.fr.resx" />
     <EmbeddedResource Include="Windows\Forms\Design\Border3DSideEditor.resx" />
