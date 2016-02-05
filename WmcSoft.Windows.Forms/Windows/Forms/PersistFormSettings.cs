@@ -30,7 +30,6 @@ using System.ComponentModel.Design;
 using System.Configuration;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Security.Permissions;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -53,7 +52,8 @@ namespace WmcSoft.Windows.Forms
         #region Properties
 
         [Category("Behavior")]
-        public Form Form {
+        public Form Form
+        {
             get {
                 if (form == null && this.DesignMode == true) {
                     var designerHost = (IDesignerHost)this.GetService(typeof(IDesignerHost));
@@ -126,59 +126,57 @@ namespace WmcSoft.Windows.Forms
         #region IPersistComponentSettings Membres
 
         [Browsable(false)]
-        public FormSettings Settings {
+        public FormSettings Settings
+        {
             get {
-                if (settings == null) {
-                    settings = new FormSettings(this, settingsKey);
+                if (_settings == null) {
+                    _settings = new FormSettings(this, _settingsKey);
                 }
-                return settings;
+                return _settings;
             }
         }
-        FormSettings settings;
+        FormSettings _settings;
 
         public void LoadComponentSettings() {
-            if (!this.DesignMode) {
-                this.Settings.Reload();
+            if (!DesignMode) {
+                Settings.Reload();
             }
         }
 
         public void ResetComponentSettings() {
-            if (!this.DesignMode) {
-                this.Settings.Reset();
-                this.LoadComponentSettings();
+            if (!DesignMode) {
+                Settings.Reset();
+                LoadComponentSettings();
             }
         }
 
         public void SaveComponentSettings() {
-            if (!this.DesignMode && saveSettings) {
-                this.Settings.Save();
+            if (!DesignMode && SaveSettings) {
+                Settings.Save();
             }
         }
 
         [Category("Behavior")]
         [DefaultValue(false)]
-        public bool SaveSettings {
-            get { return saveSettings; }
-            set { saveSettings = value; }
-        }
-        private bool saveSettings = false;
+        public bool SaveSettings { get; set; }
 
         [Category("Behavior")]
-        public string SettingsKey {
+        public string SettingsKey
+        {
             get {
-                if (this.DesignMode && settingsKey == null) {
-                    return this.Site.Name;
+                if (DesignMode && _settingsKey == null) {
+                    return Site.Name;
                 }
-                return settingsKey;
+                return _settingsKey;
             }
             set {
-                settingsKey = value;
+                _settingsKey = value;
             }
         }
-        private string settingsKey = null;
+        private string _settingsKey = null;
 
         private void ResetSettingsKey() {
-            settingsKey = null;
+            _settingsKey = null;
         }
 
         #endregion
