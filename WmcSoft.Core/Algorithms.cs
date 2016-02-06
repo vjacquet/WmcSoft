@@ -32,6 +32,63 @@ namespace WmcSoft
 {
     public static class Algorithms
     {
+        #region Distances
+
+        public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y)
+            where T : IEquatable<T> {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            if (x.Count != y.Count) throw new ArgumentException();
+
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                var dist = 0;
+                while (ex.MoveNext() & ey.MoveNext()) {
+                    if (!ex.Current.Equals(ey.Current))
+                        dist++;
+                }
+                return dist;
+            }
+        }
+
+        public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, IEqualityComparer<T> comparer) {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            if (x.Count != y.Count) throw new ArgumentException();
+
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                var dist = 0;
+                while (ex.MoveNext() & ey.MoveNext()) {
+                    if (!comparer.Equals(ex.Current, ey.Current))
+                        dist++;
+                }
+                return dist;
+            }
+        }
+
+        #endregion
+
+        #region Factorial
+
+        /// <summary>
+        /// Compute n!
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static long Factorial(byte n) {
+            long result = 1;
+            if (n <= 1)
+                return 1;
+            while (n > 1)
+                result *= n--;
+            return result;
+        }
+
+        #endregion
+
+        #region GreatestCommonDivisor
+
         /// <summary>
         /// Implementation of the Euclide algorithm to compute the Greatest Common Divisor.
         /// </summary>
@@ -51,19 +108,7 @@ namespace WmcSoft
             return second;
         }
 
-        /// <summary>
-        /// Compute n!
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public static long Factorial(byte n) {
-            long result = 1;
-            if (n <= 1)
-                return 1;
-            while (n > 1)
-                result *= n--;
-            return result;
-        }
+        #endregion
 
         ///// <summary>
         ///// /
@@ -81,48 +126,6 @@ namespace WmcSoft
         //    }
         //    return Fn;
         //}
-
-        public static int Min(params int[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
-
-            var min = values[0];
-            for (int i = 1; i != values.Length; ++i) {
-                min = System.Math.Min(min, values[i]);
-            }
-            return min;
-        }
-        public static long Min(params long[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
-
-            var min = values[0];
-            for (int i = 1; i != values.Length; ++i) {
-                min = System.Math.Min(min, values[i]);
-            }
-            return min;
-        }
-
-        public static int Max(params int[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
-
-            var max = values[0];
-            for (int i = 1; i != values.Length; ++i) {
-                max = System.Math.Max(max, values[i]);
-            }
-            return max;
-        }
-        public static long Max(params long[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
-
-            var max = values[0];
-            for (int i = 1; i != values.Length; ++i) {
-                max = System.Math.Max(max, values[i]);
-            }
-            return max;
-        }
 
         #region Midpoint
 
@@ -155,6 +158,50 @@ namespace WmcSoft
         #endregion
 
         #region Min/Max
+
+        public static int Min(params int[] values) {
+            if (values.Length == 0)
+                throw new ArgumentOutOfRangeException("values");
+
+            var min = values[0];
+            for (int i = 1; i != values.Length; ++i) {
+                min = System.Math.Min(min, values[i]);
+            }
+            return min;
+        }
+
+        public static long Min(params long[] values) {
+            if (values.Length == 0)
+                throw new ArgumentOutOfRangeException("values");
+
+            var min = values[0];
+            for (int i = 1; i != values.Length; ++i) {
+                min = System.Math.Min(min, values[i]);
+            }
+            return min;
+        }
+
+        public static int Max(params int[] values) {
+            if (values.Length == 0)
+                throw new ArgumentOutOfRangeException("values");
+
+            var max = values[0];
+            for (int i = 1; i != values.Length; ++i) {
+                max = System.Math.Max(max, values[i]);
+            }
+            return max;
+        }
+
+        public static long Max(params long[] values) {
+            if (values.Length == 0)
+                throw new ArgumentOutOfRangeException("values");
+
+            var max = values[0];
+            for (int i = 1; i != values.Length; ++i) {
+                max = System.Math.Max(max, values[i]);
+            }
+            return max;
+        }
 
         public static T Min<T>(T x, T y) where T : IComparable<T> {
             return y.CompareTo(x) < 0 ? y : x;
