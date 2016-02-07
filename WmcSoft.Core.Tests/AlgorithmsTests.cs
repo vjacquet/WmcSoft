@@ -91,5 +91,10 @@ namespace WmcSoft
             Assert.AreEqual(1, mm.Item1);
             Assert.AreEqual(9, mm.Item2);
         }
+
+        [TestMethod]
+        public void CheckLevensteinDistance() {
+            Assert.AreEqual(3, Algorithms.Levenshtein("kitten", "sitting"));
+        }
     }
 }
