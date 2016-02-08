@@ -50,7 +50,7 @@ namespace WmcSoft.Benchmark
 
             var measures = benchmark.EnumerateMeasures()
                 .Repeat(benchmark.Iterations).ToList();
-            measures.Suffle(new Random(1789));
+            measures.Shuffle(new Random(1789));
 
             try {
                 benchmark.Init(args);

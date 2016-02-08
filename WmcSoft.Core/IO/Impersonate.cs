@@ -38,6 +38,7 @@ namespace WmcSoft.IO
     /// </summary>
     public class Impersonate : IDisposable
     {
+        #region internals
         sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
         {
             private SafeTokenHandle()
@@ -57,8 +58,17 @@ namespace WmcSoft.IO
 
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);
-        SafeTokenHandle safeTokenHandle;
-        WindowsImpersonationContext impersonatedUser;
+
+        #endregion
+
+        #region Fields
+
+        SafeTokenHandle _safeTokenHandle;
+        WindowsImpersonationContext _impersonatedUser;
+
+        #endregion
+
+        #region lifecycle
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Impersonate"/> class.
@@ -73,24 +83,29 @@ namespace WmcSoft.IO
             //const int LOGON32_LOGON_NETWORK_CLEARTEXT = 8;
             const int LOGON32_LOGON_NEW_CREDENTIALS = 9;
 
-            bool returnValue = LogonUser(userName, domainName, password, LOGON32_LOGON_NEW_CREDENTIALS, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+            bool returnValue = LogonUser(userName, domainName, password, LOGON32_LOGON_NEW_CREDENTIALS, LOGON32_PROVIDER_DEFAULT, out _safeTokenHandle);
             if (false == returnValue) {
                 throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
             }
-            WindowsIdentity newId = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-            impersonatedUser = newId.Impersonate();
+            var newId = new WindowsIdentity(_safeTokenHandle.DangerousGetHandle());
+            _impersonatedUser = newId.Impersonate();
         }
+
+        #endregion
+
+        #region IDisposable Members
 
         void IDisposable.Dispose() {
-            if (impersonatedUser != null) {
-                impersonatedUser.Dispose();
-                impersonatedUser = null;
+            if (_impersonatedUser != null) {
+                _impersonatedUser.Dispose();
+                _impersonatedUser = null;
             }
-            if (safeTokenHandle != null) {
-                safeTokenHandle.Dispose();
-                safeTokenHandle = null;
+            if (_safeTokenHandle != null) {
+                _safeTokenHandle.Dispose();
+                _safeTokenHandle = null;
             }
         }
-    }
 
+        #endregion
+    }
 }

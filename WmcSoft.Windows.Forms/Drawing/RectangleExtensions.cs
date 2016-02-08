@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,41 +24,20 @@
 
 #endregion
 
-using System.IO;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
-namespace WmcSoft.IO
+namespace WmcSoft.Drawing
 {
-    public sealed class FileStreamSource : IStreamSource
+    public static class RectangleExtensions
     {
-        #region Fields
-
-        readonly string _path;
-
-        #endregion
-
-        #region Lifecycle
-
-        public FileStreamSource(string path) {
-            var info = new FileInfo(path);
-            _path = info.FullName;
+        public static Rectangle PadWith(this Rectangle rectangle, Padding padding) {
+            var top = rectangle.Top + padding.Top;
+            var right = rectangle.Right - padding.Right;
+            var bottom = rectangle.Bottom - padding.Bottom;
+            var left = rectangle.Left + padding.Left;
+            return new Rectangle(left, top, right - left, bottom - top);
         }
-
-        #endregion
-
-        #region Properties
-
-        public string Path {
-            get { return _path; }
-        }
-
-        #endregion
-
-        #region IStreamSource Membres
-
-        public Stream GetStream() {
-            return File.OpenRead(_path);
-        }
-
-        #endregion
     }
 }

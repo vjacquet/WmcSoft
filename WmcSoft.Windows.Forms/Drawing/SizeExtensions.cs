@@ -36,5 +36,9 @@ namespace WmcSoft.Drawing
             var h = Math.Max(x.Height, y.Height);
             return new Size(w, h);
         }
+
+        public static Size CombineWith(this Size x, Size y) {
+            return Combine(x, y);
+        }
     }
 }

@@ -28,6 +28,10 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Defines a generalized method of returning a stream.
+    /// </summary>
+    /// <remarks>Types implementing this interface should favor composition over inheritance.</remarks>
     public interface IStreamSource
     {
         Stream GetStream();
