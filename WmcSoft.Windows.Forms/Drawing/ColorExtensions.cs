@@ -24,7 +24,6 @@
 
 #endregion
 
-using System;
 using System.Drawing;
 
 namespace WmcSoft.Drawing
