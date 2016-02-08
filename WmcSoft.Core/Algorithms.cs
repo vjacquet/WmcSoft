@@ -34,6 +34,38 @@ namespace WmcSoft
     {
         #region Distances
 
+        public static int Hamming(string x, string y) {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            if (x.Length != y.Length) throw new ArgumentException();
+
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                var dist = 0;
+                while (ex.MoveNext() & ey.MoveNext()) {
+                    if (ex.Current != ey.Current)
+                        dist++;
+                }
+                return dist;
+            }
+        }
+
+        public static int Hamming(string x, string y, IEqualityComparer<string> comparer) {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            if (x.Length != y.Length) throw new ArgumentException();
+
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                var dist = 0;
+                while (ex.MoveNext() & ey.MoveNext()) {
+                    if (!comparer.Equals(ex.Current.ToString(), ey.Current.ToString()))
+                        dist++;
+                }
+                return dist;
+            }
+        }
+
         public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y)
             where T : IEquatable<T> {
             if (x == null) throw new ArgumentNullException("x");
@@ -83,13 +115,15 @@ namespace WmcSoft
             int[] v0 = new int[t.Length + 1];
             int[] v1 = new int[t.Length + 1];
 
-            // initialize v0 (the previous row of distances)
+            // initialize v1 (the current row of distances)
             // this row is A[0][i]: edit distance for an empty s
             // the distance is just the number of characters to delete from t
             for (int i = 0; i < v0.Length; i++)
-                v0[i] = i;
+                v1[i] = i;
 
             for (int i = 0; i < s.Length; i++) {
+                Swap(ref v0, ref v1); // current becomes previous
+
                 // calculate v1 (current row distances) from the previous row v0
 
                 // first element of v1 is A[i+1][0]
@@ -101,15 +135,16 @@ namespace WmcSoft
                     var cost = (s[i] == t[j]) ? 0 : 1;
                     v1[j + 1] = Min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
                 }
-
-                // copy v1 (current row) to v0 (previous row) for next iteration
-                for (int j = 0; j < v0.Length; j++)
-                    v0[j] = v1[j];
             }
 
             return v1[t.Length];
         }
 
+        public static void Swap<T>(ref T x, ref T y) {
+            var t = x;
+            x = y;
+            y = t;
+        }
 
         #endregion
 
