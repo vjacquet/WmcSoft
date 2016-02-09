@@ -25,10 +25,11 @@
 #endregion
 
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace WmcSoft.Drawing
 {
-    public static class IconExtensions
+    public static class ImageExtensions
     {
         /// <summary>
         ///   Converts a <see cref="System.Drawing.Icon"/> to a <see cref="System.Drawing.Bitmap"/>.
@@ -55,6 +56,29 @@ namespace WmcSoft.Drawing
         /// <returns>Bitmap object.</returns>
         public static Bitmap ToBitmap(this Icon icon) {
             return ToBitmap(icon, Color.Fuchsia);
+        }
+
+        /// <summary>
+        /// Creates a negative image.
+        /// </summary>
+        /// <param name="source">The source image</param>
+        /// <returns>The negative image</returns>
+        public static Bitmap Negative(this Bitmap source) {
+            var canvas = new Bitmap(source.Width, source.Height);
+            using (var g = Graphics.FromImage(canvas)) {
+                var attr = new ImageAttributes();
+                // create the negative color matrix
+                var m = new ColorMatrix(new[] {
+                    new [] { -1f, 0f, 0f, 0f, 0f},
+                    new [] { 0f, -1f, 0f, 0f, 0f},
+                    new [] { 0f, 0f, -1f, 0f, 0f},
+                    new [] { 0f, 0f, 0f, +1f, 0f},
+                    new [] { 0f, 0f, 0f, 0f, +1f},
+                });
+                attr.SetColorMatrix(m);
+                g.DrawImage(source, new Rectangle(0, 0, source.Width, source.Height), 0, 0, source.Width, source.Height, GraphicsUnit.Pixel, attr);
+            }
+            return canvas;
         }
     }
 }
