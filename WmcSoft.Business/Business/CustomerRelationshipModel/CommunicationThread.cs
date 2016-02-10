@@ -38,12 +38,16 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     /// </summary>
     public class CommunicationThread
     {
+        public CommunicationThread() {
+            Communications = new List<Communication>();
+        }
+
         public string Topic { get; set; }
         public string BriefDescription { get; set; }
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
 
-        public ICollection<Communication> Communications { get; set; }
+        public IList<Communication> Communications { get; set; }
 
         public PartySignature CommunicationThreadTerminator { get; set; }
     }

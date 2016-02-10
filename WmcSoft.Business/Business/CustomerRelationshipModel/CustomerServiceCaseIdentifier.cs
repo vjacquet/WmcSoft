@@ -25,10 +25,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Business.CustomerRelationshipModel
 {
@@ -40,14 +36,14 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     {
         #region Fields
 
-        readonly Guid _id;
+        private readonly Guid _id;
 
         #endregion
 
         #region Lifecycle
 
-        public CustomerServiceCaseIdentifier() {
-            _id = Guid.NewGuid();
+        public CustomerServiceCaseIdentifier()
+            : this(Guid.NewGuid()) {
         }
 
         public CustomerServiceCaseIdentifier(Guid identifier) {
@@ -58,7 +54,8 @@ namespace WmcSoft.Business.CustomerRelationshipModel
 
         #region Membres de IUniqueIdentifier
 
-        public Guid Id {
+        public Guid Id
+        {
             get { return _id; }
         }
 

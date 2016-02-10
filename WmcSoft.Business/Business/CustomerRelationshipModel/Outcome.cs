@@ -39,10 +39,14 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     /// </summary>
     public class Outcome
     {
+        public Outcome() {
+        }
+
         public string Description { get; set; }
         public string Reason { get; set; }
 
-        public IList<PartySignature> OutcomeApprovers {
+        public IList<PartySignature> OutcomeApprovers
+        {
             get {
                 throw new NotImplementedException();
             }

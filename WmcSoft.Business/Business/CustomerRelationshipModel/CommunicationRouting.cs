@@ -35,7 +35,8 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     {
         #region Lifecycle
 
-        protected CommunicationRouting(PartyRole client, PartyRole supplier) : base(client, supplier) {
+        protected CommunicationRouting(PartyRole client, PartyRole supplier) 
+            : base(client, supplier) {
         }
 
         #endregion

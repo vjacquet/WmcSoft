@@ -38,7 +38,7 @@ namespace WmcSoft.Drawing
         /// <param name="color">Mask color to use as background.</param>
         /// <returns>Bitmap object.</returns>
         public static Bitmap ToBitmap(this Icon icon, Color color) {
-            var bmp = new Bitmap(icon.Width, icon.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            var bmp = new Bitmap(icon.Width, icon.Height, PixelFormat.Format32bppPArgb);
             using (var g = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color)) {
                 g.FillRectangle(brush, new Rectangle(0, 0, bmp.Width, bmp.Height));
@@ -64,21 +64,22 @@ namespace WmcSoft.Drawing
         /// <param name="source">The source image</param>
         /// <returns>The negative image</returns>
         public static Bitmap Negative(this Bitmap source) {
-            var canvas = new Bitmap(source.Width, source.Height);
-            using (var g = Graphics.FromImage(canvas)) {
-                var attr = new ImageAttributes();
-                // create the negative color matrix
-                var m = new ColorMatrix(new[] {
+            var attr = new ImageAttributes();
+            // create the negative color matrix
+            var m = new ColorMatrix(new[] {
                     new [] { -1f, 0f, 0f, 0f, 0f},
                     new [] { 0f, -1f, 0f, 0f, 0f},
                     new [] { 0f, 0f, -1f, 0f, 0f},
                     new [] { 0f, 0f, 0f, +1f, 0f},
                     new [] { 0f, 0f, 0f, 0f, +1f},
                 });
-                attr.SetColorMatrix(m);
+            attr.SetColorMatrix(m);
+
+            var bmp = new Bitmap(source.Width, source.Height);
+            using (var g = Graphics.FromImage(bmp)) {
                 g.DrawImage(source, new Rectangle(0, 0, source.Width, source.Height), 0, 0, source.Width, source.Height, GraphicsUnit.Pixel, attr);
             }
-            return canvas;
+            return bmp;
         }
     }
 }

@@ -49,6 +49,7 @@ namespace WmcSoft.Business.CustomerRelationshipModel
         }
 
         protected CustomerServiceCase(CustomerServiceCaseIdentifier identifier) {
+            CommunicationThreads = new List<CommunicationThread>();
             _identifier = identifier;
         }
 
@@ -79,7 +80,7 @@ namespace WmcSoft.Business.CustomerRelationshipModel
         public DateTime? End { get; set; }
         public bool IsOpen { get; set; }
 
-        public ICollection<CommunicationThread> CommunicationThreads { get; set; }
+        public IList<CommunicationThread> CommunicationThreads { get; set; }
 
         public virtual void CloseCase() {
             IsOpen = false;
