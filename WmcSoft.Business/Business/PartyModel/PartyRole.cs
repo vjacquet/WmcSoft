@@ -34,8 +34,8 @@ using TKey = System.Guid;
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Captures the semantics of the role played by a Party in a particular
-    /// PartyRelationship.
+    /// Captures the semantics of the role played by a <see cref="Party"/> in a particular
+    /// <see cref="PartyRelationship"/>.
     /// </summary>
     public abstract class PartyRole : DomainObject<TKey>
     {

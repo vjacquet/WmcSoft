@@ -34,8 +34,8 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="T">The type of the source's items to compare</typeparam>
     public class SourceComparer<T> : IComparer<int>
     {
-        readonly IReadOnlyList<T> _list;
-        readonly IComparer<T> _comparer;
+        private readonly IReadOnlyList<T> _list;
+        private readonly IComparer<T> _comparer;
 
         public SourceComparer(IReadOnlyList<T> list, IComparer<T> comparer = null) {
             _list = list;
