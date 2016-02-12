@@ -40,6 +40,9 @@ namespace WmcSoft
             #endregion
         };
 
+        /// <summary>
+        /// Returns a <see cref="IDisposable"/> that does nothing.
+        /// </summary>
         public static readonly IDisposable Empty = new EmptyDisposable();
     }
 }

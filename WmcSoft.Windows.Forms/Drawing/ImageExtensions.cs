@@ -29,6 +29,9 @@ using System.Drawing.Imaging;
 
 namespace WmcSoft.Drawing
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Image"/> class. This is a static class.
+    /// </summary>
     public static class ImageExtensions
     {
         /// <summary>
