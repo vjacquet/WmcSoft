@@ -36,7 +36,7 @@ using WmcSoft.Text;
 namespace WmcSoft
 {
     /// <summary>
-    /// Provides a set of static methods to extend the <see cref="String"/> class.
+    /// Provides a set of static methods to extend the <see cref="String"/> class. This is a static class.
     /// </summary>
     public static class StringExtensions
     {

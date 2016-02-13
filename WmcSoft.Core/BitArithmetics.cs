@@ -27,10 +27,13 @@
 namespace WmcSoft
 {
     /// <summary>
-    /// Formula taken from Hacker's Delight, second edition, by Henry S. Warren, Jr.
+    /// Provides a set of static methods for bit manipulation. This is a static class.
     /// </summary>
+    /// <remarks>Formula taken from Hacker's Delight, second edition, by Henry S. Warren, Jr.</remarks>
     public static class BitArithmetics
     {
+        #region Arithmetics on uint
+
         public static uint TurnOffRightMostOne(uint x) {
             return x & (x - 1);
         }
@@ -61,11 +64,13 @@ namespace WmcSoft
 
         public static int CountBits(uint x) {
             int n = 0;
-            while(x!=0) {
+            while (x != 0) {
                 ++n;
                 x &= (x - 1);
             }
             return n;
         }
+
+        #endregion
     }
 }
