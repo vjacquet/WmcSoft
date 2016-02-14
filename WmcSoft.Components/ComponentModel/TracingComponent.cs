@@ -104,6 +104,5 @@ namespace WmcSoft.ComponentModel
         }
 
         #endregion
-
     }
 }

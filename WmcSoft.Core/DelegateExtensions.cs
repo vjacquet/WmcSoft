@@ -30,6 +30,9 @@ using System.Linq;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Delegate"/> class. This is a static class.
+    /// </summary>
     public static class DelegateExtensions
     {
         static readonly Action<Delegate, object[]> wrapper = new Action<Delegate, object[]>((d, args) => d.DynamicInvoke(args));
@@ -48,6 +51,12 @@ namespace WmcSoft
             wrapper.BeginInvoke(d, args, callback, null);
         }
 
+        /// <summary>
+        /// Returns the filtered invocation list of the delegate.
+        /// </summary>
+        /// <param name="self">The delegate.</param>
+        /// <param name="predicate">The predicate the filter the invocation list.</param>
+        /// <returns>The filtered invocation list of the delegate.</returns>
         public static IEnumerable<Delegate> GetInvocationList(this Delegate self, Predicate<Delegate> predicate) {
             return self.GetInvocationList().Where(d => predicate(d));
         }
