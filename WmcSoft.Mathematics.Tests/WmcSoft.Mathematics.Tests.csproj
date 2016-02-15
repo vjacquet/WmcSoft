@@ -75,6 +75,7 @@
     <Compile Include="Statistics\QuantilesTests.cs" />
     <Compile Include="GeneratorsTests.cs" />
     <Compile Include="Int32Tests.cs" />
+    <Compile Include="TableauTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
