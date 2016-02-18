@@ -33,6 +33,9 @@ using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
 {
+    /// <summary>
+    /// Component to drop on a form to persist its settings such as its window state, its size or location.
+    /// </summary>
     [ToolboxBitmap(typeof(PersistFormSettings), "PersistFormSettings.png")]
     [DesignerCategory("Forms")]
     public class PersistFormSettings : Component, IPersistComponentSettings
