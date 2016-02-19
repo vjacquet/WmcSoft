@@ -927,7 +927,20 @@ namespace WmcSoft.Collections.Generic
         public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
             if (list == null) throw new ArgumentNullException("list");
 
-            throw new NotImplementedException();
+            var buffer = new T[length];
+            var p = start;
+            var first = 0;
+            var last = length;
+            while (first < last) {
+                var t = list[p++];
+                if (!predicate(t))
+                    buffer[first++] = t;
+                else
+                    buffer[--last] = t;
+            }
+            buffer.CopyTo(list, start, first);
+            buffer.CopyBackwardsTo(last, list, start + first, length - last);
+            return start + first;
         }
         #endregion
 

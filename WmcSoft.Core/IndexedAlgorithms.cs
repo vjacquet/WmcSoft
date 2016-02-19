@@ -1,8 +1,31 @@
-﻿using System;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft
 {
@@ -21,38 +44,40 @@ namespace WmcSoft
 
         #region CopyTo methods
 
-        public static void CopyTo<T>(this IList<T> source, T[] array, int arrayIndex, int length) {
+        public static void CopyTo<T>(this T[] source, T[] array, int arrayIndex, int length) {
+            if (source == null) throw new ArgumentNullException("source");
+            Array.Copy(source, 0, array, arrayIndex, length);
+        }
+
+        public static void CopyTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length) {
             if (source == null) throw new ArgumentNullException("source");
 
-            if (source.GetType() == typeof(T[])) {
-                Array.Copy((T[])source, 0, array, arrayIndex, length);
-            } else {
-                if (array == null) throw new ArgumentNullException("array");
-                if (length < 0) throw new ArgumentOutOfRangeException("length");
-                if (array.Length < (arrayIndex + length)) throw new ArgumentException("array");
-                if (source.Count < length) throw new ArgumentException("source");
+            if (array == null) throw new ArgumentNullException("array");
+            if (length < 0) throw new ArgumentOutOfRangeException("length");
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
+            if (source.Count < length) throw new ArgumentException("source");
 
-                for (int i = 0; i < length; i++) {
-                    array[arrayIndex++] = source[i];
-                }
+            for (int i = 0; i < length; i++) {
+                array[arrayIndex++] = source[i];
             }
         }
 
-        public static void CopyTo<T>(this IList<T> source, int sourceIndex, T[] array, int arrayIndex, int length) {
+        public static void CopyTo<T>(this T[] source, int sourceIndex, T[] array, int arrayIndex, int length) {
+            if (source == null) throw new ArgumentNullException("source");
+            Array.Copy(source, sourceIndex, array, arrayIndex, length);
+        }
+
+        public static void CopyTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length) {
             if (source == null) throw new ArgumentNullException("source");
 
-            if (source.GetType() == typeof(T[])) {
-                Array.Copy((T[])source, sourceIndex, array, arrayIndex, length);
-            } else {
-                if (array == null) throw new ArgumentNullException("array");
-                if (length < 0) throw new ArgumentOutOfRangeException("length");
-                if (array.Length < (arrayIndex + length)) throw new ArgumentException("array");
-                if (source.Count < length) throw new ArgumentException("source");
-                length += sourceIndex;
+            if (array == null) throw new ArgumentNullException("array");
+            if (length < 0) throw new ArgumentOutOfRangeException("length");
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
+            if (source.Count < length) throw new ArgumentException("source");
+            length += sourceIndex;
 
-                for (int i = sourceIndex; i < length; i++) {
-                    array[arrayIndex++] = source[i];
-                }
+            for (int i = sourceIndex; i < length; i++) {
+                array[arrayIndex++] = source[i];
             }
         }
 
@@ -60,10 +85,10 @@ namespace WmcSoft
 
         #region CopyBackwardsTo methods
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, T[] array, int arrayIndex, int length) {
+        public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length) {
             if (array == null) throw new ArgumentNullException("array");
             if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (array.Length < (arrayIndex + length)) throw new ArgumentException("array");
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
             if (source.Count < (sourceIndex + length)) throw new ArgumentException("source");
 
             for (int i = sourceIndex + length - 1; i >= sourceIndex; i--) {
@@ -71,10 +96,10 @@ namespace WmcSoft
             }
         }
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, T[] array, int arrayIndex, int length) {
+        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length) {
             if (array == null) throw new ArgumentNullException("array");
             if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (array.Length < (arrayIndex + length)) throw new ArgumentException("array");
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
             if (source.Count < length) throw new ArgumentException("source");
 
             for (int i = length - 1; i >= 0; i--) {
@@ -82,10 +107,10 @@ namespace WmcSoft
             }
         }
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, T[] array, int arrayIndex) {
+        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex) {
             if (source == null) throw new ArgumentNullException("source");
             if (array == null) throw new ArgumentNullException("array");
-            if (array.Length < arrayIndex) throw new ArgumentException("array");
+            if (array.Count < arrayIndex) throw new ArgumentException("array");
 
             for (int i = source.Count - 1; i >= 0; i--) {
                 array[arrayIndex++] = source[i];
