@@ -60,6 +60,14 @@ namespace WmcSoft.Collections
             return result;
         }
 
+        static IReadOnlyList<TSource> ReadOnly<TSource>(IEnumerable<TSource> x) {
+            var rx = x as IReadOnlyList<TSource>;
+            if (rx != null) return rx;
+            var wx = x as IList<TSource>;
+            if (wx != null) return wx.AsReadOnly();
+            return null;
+        }
+
         /// <summary>
         /// Takes values from the enumerables depending on the value of the bit in the mask.
         /// </summary>
@@ -72,12 +80,9 @@ namespace WmcSoft.Collections
             if (x == null) throw new ArgumentNullException("x");
             if (y == null) throw new ArgumentNullException("y");
 
-            var rx = x as IReadOnlyList<TSource>;
-            var ry = y as IReadOnlyList<TSource>;
+            var rx = ReadOnly(x);
+            var ry = ReadOnly(y);
             if (rx != null && ry != null) return DoMask(mask, rx, ry);
-            var wx = x as IList<TSource>;
-            var wy = y as IList<TSource>;
-            if (rx != null && ry != null) return DoMask(mask, wx.AsReadOnly(), wy.AsReadOnly());
             return DoMask(mask, x, y);
         }
 

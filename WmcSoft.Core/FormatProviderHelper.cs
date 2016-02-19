@@ -37,7 +37,7 @@ namespace WmcSoft
                 return formattable.ToString(format, CultureInfo.CurrentCulture);
             if (arg != null)
                 return arg.ToString();
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

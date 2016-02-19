@@ -25,10 +25,14 @@
 #endregion
 
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace WmcSoft.Drawing
 {
-    public static class IconExtensions
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Image"/> class. This is a static class.
+    /// </summary>
+    public static class ImageExtensions
     {
         /// <summary>
         ///   Converts a <see cref="System.Drawing.Icon"/> to a <see cref="System.Drawing.Bitmap"/>.
@@ -37,7 +41,7 @@ namespace WmcSoft.Drawing
         /// <param name="color">Mask color to use as background.</param>
         /// <returns>Bitmap object.</returns>
         public static Bitmap ToBitmap(this Icon icon, Color color) {
-            var bmp = new Bitmap(icon.Width, icon.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            var bmp = new Bitmap(icon.Width, icon.Height, PixelFormat.Format32bppPArgb);
             using (var g = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color)) {
                 g.FillRectangle(brush, new Rectangle(0, 0, bmp.Width, bmp.Height));
@@ -55,6 +59,30 @@ namespace WmcSoft.Drawing
         /// <returns>Bitmap object.</returns>
         public static Bitmap ToBitmap(this Icon icon) {
             return ToBitmap(icon, Color.Fuchsia);
+        }
+
+        /// <summary>
+        /// Creates a negative image.
+        /// </summary>
+        /// <param name="source">The source image</param>
+        /// <returns>The negative image</returns>
+        public static Bitmap Negative(this Bitmap source) {
+            var attr = new ImageAttributes();
+            // create the negative color matrix
+            var m = new ColorMatrix(new[] {
+                    new [] { -1f, 0f, 0f, 0f, 0f},
+                    new [] { 0f, -1f, 0f, 0f, 0f},
+                    new [] { 0f, 0f, -1f, 0f, 0f},
+                    new [] { 0f, 0f, 0f, +1f, 0f},
+                    new [] { 0f, 0f, 0f, 0f, +1f},
+                });
+            attr.SetColorMatrix(m);
+
+            var bmp = new Bitmap(source.Width, source.Height);
+            using (var g = Graphics.FromImage(bmp)) {
+                g.DrawImage(source, new Rectangle(0, 0, source.Width, source.Height), 0, 0, source.Width, source.Height, GraphicsUnit.Pixel, attr);
+            }
+            return bmp;
         }
     }
 }

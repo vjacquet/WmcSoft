@@ -95,6 +95,7 @@
     <Compile Include="RandomBase.cs" />
     <Compile Include="Statistics\Accumulator.cs" />
     <Compile Include="Statistics\Quantiles.cs" />
+    <Compile Include="Tableau.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

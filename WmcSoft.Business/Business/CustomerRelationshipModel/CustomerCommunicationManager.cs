@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.CustomerRelationshipModel
@@ -35,13 +36,13 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     /// </summary>
     public abstract class CustomerCommunicationManager
     {
-        public abstract CustomerServiceCaseIdentifier OpenCase(string title);
+        public abstract Task<CustomerServiceCaseIdentifier> OpenCaseAsync(string title);
 
-        public abstract CustomerServiceCase FindCase(CustomerServiceCaseIdentifier identifier);
-        public abstract CustomerServiceCase FindCase(string title);
+        public abstract Task<CustomerServiceCase> FindCaseAsync(CustomerServiceCaseIdentifier identifier);
+        public abstract Task<CustomerServiceCase> FindCaseAsync(string title);
 
-        public abstract IEnumerable<CustomerServiceCase> FindCase(DateTime? from = null, DateTime? to = null, bool isOpen = true);
-        public abstract IEnumerable<CustomerServiceCase> FindCase(Party identifier, DateTime? from = null, DateTime? to = null, bool isOpen = true);
-        public abstract IEnumerable<CustomerServiceCase> FindCase(PartyRole identifier, DateTime? from = null, DateTime? to = null, bool isOpen = true);
+        public abstract Task<IEnumerable<CustomerServiceCase>> FindCaseAsync(DateTime? from = null, DateTime? to = null, bool isOpen = true);
+        public abstract Task<IEnumerable<CustomerServiceCase>> FindCaseAsync(Party identifier, DateTime? from = null, DateTime? to = null, bool isOpen = true);
+        public abstract Task<IEnumerable<CustomerServiceCase>> FindCaseAsync(PartyRole identifier, DateTime? from = null, DateTime? to = null, bool isOpen = true);
     }
 }

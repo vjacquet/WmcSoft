@@ -24,14 +24,13 @@
 
 #endregion
 
-using System.Collections.Generic;
 using WmcSoft.Business.RuleModel;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// The Capabilities represents a collection of facts about what a 
-    /// Party is capable of doing.
+    /// <see cref="Party"/> is capable of doing.
     /// </summary>
     public interface ISupportCapabilities
     {

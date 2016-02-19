@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -25,22 +25,28 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Windows.Forms;
+using System.Collections.Generic;
 
-namespace WmcSoft.Drawing
+namespace WmcSoft
 {
-    /// <summary>
-    /// Defines the extension methods to the <see cref="Rectangle"/> struct. This is a static class.
-    /// </summary>
-    public static class RectangleExtensions
+    /// <remarks>See Knuth's TAoCP, Vol 3, Page 47.</remarks>
+    public class Tableau
     {
-        public static Rectangle PadWith(this Rectangle rectangle, Padding padding) {
-            var top = rectangle.Top + padding.Top;
-            var right = rectangle.Right - padding.Right;
-            var bottom = rectangle.Bottom - padding.Bottom;
-            var left = rectangle.Left + padding.Left;
-            return new Rectangle(left, top, right - left, bottom - top);
+        private List<List<int>> _data;
+
+        public Tableau() {
+            _data = new List<List<int>>();
+        }
+
+        public void Add(int x) {
+            var i = 0;
+            var p = x;
+            var j = _data.Count;
+        }
+
+        public int this[int i, int j]
+        {
+            get { return _data[j][i]; }
         }
     }
 }

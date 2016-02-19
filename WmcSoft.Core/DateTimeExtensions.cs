@@ -28,11 +28,19 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="DateTime"/> struct. This is a static class.
+    /// </summary>
     public static class DateTimeExtensions
     {
-        public static int WeekOfMonth(this DateTime self) {
-            int day = self.Day;
-            int dayOfWeek = (int)(new DateTime(self.Year, self.Month, 1)).DayOfWeek;
+        /// <summary>
+        /// Gets the week of the month of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>The week of the month</returns>
+        public static int WeekOfMonth(this DateTime date) {
+            int day = date.Day;
+            int dayOfWeek = (int)(new DateTime(date.Year, date.Month, 1)).DayOfWeek;
             int reminder;
             return Math.DivRem(6 + day + dayOfWeek, 7, out reminder);
         }

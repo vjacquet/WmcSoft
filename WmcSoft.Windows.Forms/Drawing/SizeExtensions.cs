@@ -29,6 +29,9 @@ using System.Drawing;
 
 namespace WmcSoft.Drawing
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Size"/> struct. This is a static class.
+    /// </summary>
     public static class SizeExtensions
     {
         public static Size Combine(Size x, Size y) {

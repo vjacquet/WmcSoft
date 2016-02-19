@@ -25,14 +25,13 @@
 #endregion
 
 using System;
-using System.Collections.Specialized;
 using System.Globalization;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
     /// Represents a geographic location at which a Party may be contacted.
-    /// It is a postal address for the Party.
+    /// It is a postal address for the <see cref="Party"/>.
     /// </summary>
     public class GeographicAddress : AddressBase
     {

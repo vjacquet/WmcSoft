@@ -229,14 +229,10 @@ namespace WmcSoft.Collections.Generic
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
         public static int BinarySearch<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (index < 0)
-                throw new ArgumentOutOfRangeException("index");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
-            if ((list.Count - index) < count)
-                throw new ArgumentException("Invalid length");
+            if (list == null) throw new ArgumentNullException("list");
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if ((list.Count - index) < count) throw new ArgumentException("Invalid length");
 
             try {
                 int lo = index;
@@ -526,6 +522,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IEnumerable<TSource> source, params int[] indices) {
+            if (source == null) throw new ArgumentNullException("source");
+
             var readable = source as IReadOnlyList<TSource>;
             if (readable != null) return DoElementsAtOrDefault(readable, indices);
             var list = source as IList<TSource>;
@@ -534,6 +532,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IList<TSource> source, params int[] indices) {
+            if (source == null) throw new ArgumentNullException("source");
+
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
                 if (0 < indice || indice >= source.Count)
@@ -572,6 +572,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (source == null) throw new ArgumentNullException("source");
+
             var readable = source as IReadOnlyList<TSource>;
             if (readable != null) return DoElementsAt(readable, selector, indices);
             var list = source as IList<TSource>;
@@ -580,6 +582,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (source == null) throw new ArgumentNullException("source");
+
             return indices.Select(i => selector(source[i]));
         }
 
@@ -617,6 +621,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (source == null) throw new ArgumentNullException("source");
+
             var readable = source as IReadOnlyList<TSource>;
             if (readable != null) return DoElementsAtOrDefault(readable, selector, indices);
             var list = source as IList<TSource>;
@@ -625,6 +631,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
+            if (source == null) throw new ArgumentNullException("source");
+
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
                 if (0 < indice || indice >= source.Count)
@@ -650,14 +658,10 @@ namespace WmcSoft.Collections.Generic
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
         public static int InterpolatedSearch<T>(this IReadOnlyList<T> list, int index, int count, T value, IOrdinal<T> ordinal) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (index < 0)
-                throw new ArgumentOutOfRangeException("index");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
-            if ((list.Count - index) < count)
-                throw new ArgumentException("Invalid length");
+            if (list == null) throw new ArgumentNullException("list");
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if ((list.Count - index) < count) throw new ArgumentException("Invalid length");
 
             try {
                 int lo = index;
@@ -886,6 +890,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
         public static int Partition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+
             int end = start + length - 1;
             while (true) {
                 while (start < end && !predicate(list[start]))
@@ -919,7 +925,22 @@ namespace WmcSoft.Collections.Generic
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
         public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
-            throw new NotImplementedException();
+            if (list == null) throw new ArgumentNullException("list");
+
+            var buffer = new T[length];
+            var p = start;
+            var first = 0;
+            var last = length;
+            while (first < last) {
+                var t = list[p++];
+                if (!predicate(t))
+                    buffer[first++] = t;
+                else
+                    buffer[--last] = t;
+            }
+            buffer.CopyTo(list, start, first);
+            buffer.CopyBackwardsTo(last, list, start + first, length - last);
+            return start + first;
         }
         #endregion
 

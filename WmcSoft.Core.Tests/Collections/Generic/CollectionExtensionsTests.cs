@@ -32,6 +32,16 @@ namespace WmcSoft.Collections.Generic
 
             Assert.AreEqual(1, list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 4)));
             Assert.AreEqual(2, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 5)));
+            Assert.AreEqual(4, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 9)));
+            Assert.AreEqual(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
+        }
+
+        [TestMethod]
+        public void CheckBinarySearchOnEmptyCollection() {
+            var list = new List<Tuple<int, string>> {
+            };
+
+            Assert.AreEqual(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
         }
 
         [TestMethod]

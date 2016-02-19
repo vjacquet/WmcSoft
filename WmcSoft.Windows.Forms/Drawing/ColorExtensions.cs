@@ -28,6 +28,9 @@ using System.Drawing;
 
 namespace WmcSoft.Drawing
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Color"/> struct. This is a static class.
+    /// </summary>
     public static class ColorExtensions
     {
         /// <summary>

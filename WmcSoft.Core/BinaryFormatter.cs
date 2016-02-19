@@ -136,20 +136,20 @@ namespace WmcSoft
             return sb.ToString();
         }
 
+        private string DoFormat(string format, object arg) {
+            if (format == null || format == "G")
+                return DoFormat("X", 4, arg);
+
+            Match match;
+            if (regex.TryMatch(format, out match))
+                return DoFormat(match.GetGroupValue("format"), match.GetGroupValue<int>("group"), arg);
+
+            return null;
+        }
+
         public string Format(string format, object arg, IFormatProvider formatProvider) {
             try {
-                string result;
-                Match match;
-
-                if (format == null || format == "G") {
-                    result = DoFormat("X", 4, arg);
-                } else if (regex.TryMatch(format, out match)) {
-                    result = DoFormat(match.GetGroupValue("format"), match.GetGroupValue<int>("group"), arg);
-                } else {
-                    result = null;
-                }
-
-                return result ?? FormatProviderHelper.HandleOtherFormats(format, arg);
+                return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
             }
             catch (FormatException e) {
                 throw new FormatException(Resources.InvalidFormatMessage.FormatWith(format), e);

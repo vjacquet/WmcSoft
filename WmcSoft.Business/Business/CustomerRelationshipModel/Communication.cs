@@ -41,7 +41,9 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     {
         #region Lifecycle
 
-        protected Communication(PartyRole client, PartyRole supplier) : base(client, supplier) {
+        protected Communication(PartyRole client, PartyRole supplier)
+            : base(client, supplier) {
+            NextCommunications = new List<Communication>();
         }
 
         #endregion
@@ -57,7 +59,7 @@ namespace WmcSoft.Business.CustomerRelationshipModel
         public AddressBase ToAddress { get; set; }
 
         public Communication PreviousCommunication { get; set; }
-        public ICollection<Communication> NextCommunications { get; set; }
+        public IList<Communication> NextCommunications { get; set; }
 
         #endregion
     }
