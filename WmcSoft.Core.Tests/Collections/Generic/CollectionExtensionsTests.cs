@@ -301,6 +301,7 @@ namespace WmcSoft.Collections.Generic
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
             Predicate<int> odd = e => e % 2 == 1;
             var p = data.Partition(odd);
+            Assert.AreEqual(4, p);
             int i;
             for (i = 0; i < p; i++)
                 Assert.IsFalse(odd(data[i]));
@@ -313,6 +314,7 @@ namespace WmcSoft.Collections.Generic
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
             Predicate<int> odd = e => e % 2 == 1;
             var p = data.StablePartition(odd);
+            Assert.AreEqual(4, p);
             int i;
             for (i = 0; i < p; i++)
                 Assert.IsFalse(odd(data[i]));
