@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -39,6 +40,8 @@ namespace WmcSoft.Collections.Generic
         #region Lifecycle
 
         public EqualityComparerAdapter(IComparer<T> comparer) {
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+
             _comparer = comparer;
         }
 
@@ -51,6 +54,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public int GetHashCode(T obj) {
+            if (obj == null)
+                return 0;
             return obj.GetHashCode();
         }
 

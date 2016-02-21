@@ -30,7 +30,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
-    public class EnumeratorAdapter : IEnumerator<object>
+    /// <summary>
+    /// Adapts an <see cref="IEnumerator"/> as an <see cref="IEnumerator{object}"/>.
+    /// </summary>
+    public sealed class EnumeratorAdapter : IEnumerator<object>
     {
         readonly IEnumerator _enumerator;
 

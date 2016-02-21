@@ -35,8 +35,8 @@ namespace WmcSoft
         #region Distances
 
         public static int Hamming(string x, string y) {
-            if (x == null) throw new ArgumentNullException("x");
-            if (y == null) throw new ArgumentNullException("y");
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
 
             using (var ex = x.GetEnumerator())
@@ -51,9 +51,10 @@ namespace WmcSoft
         }
 
         public static int Hamming(string x, string y, IEqualityComparer<string> comparer) {
-            if (x == null) throw new ArgumentNullException("x");
-            if (y == null) throw new ArgumentNullException("y");
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
 
             using (var ex = x.GetEnumerator())
             using (var ey = y.GetEnumerator()) {
@@ -68,8 +69,8 @@ namespace WmcSoft
 
         public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y)
             where T : IEquatable<T> {
-            if (x == null) throw new ArgumentNullException("x");
-            if (y == null) throw new ArgumentNullException("y");
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Count != y.Count) throw new ArgumentException();
 
             using (var ex = x.GetEnumerator())
@@ -84,9 +85,10 @@ namespace WmcSoft
         }
 
         public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, IEqualityComparer<T> comparer) {
-            if (x == null) throw new ArgumentNullException("x");
-            if (y == null) throw new ArgumentNullException("y");
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Count != y.Count) throw new ArgumentException();
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
 
             using (var ex = x.GetEnumerator())
             using (var ey = y.GetEnumerator()) {
@@ -240,7 +242,7 @@ namespace WmcSoft
 
         public static int Min(params int[] values) {
             if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
+                throw new ArgumentOutOfRangeException(nameof(values));
 
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
@@ -251,7 +253,7 @@ namespace WmcSoft
 
         public static long Min(params long[] values) {
             if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
+                throw new ArgumentOutOfRangeException(nameof(values));
 
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
@@ -262,7 +264,7 @@ namespace WmcSoft
 
         public static int Max(params int[] values) {
             if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
+                throw new ArgumentOutOfRangeException(nameof(values));
 
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
@@ -273,7 +275,7 @@ namespace WmcSoft
 
         public static long Max(params long[] values) {
             if (values.Length == 0)
-                throw new ArgumentOutOfRangeException("values");
+                throw new ArgumentOutOfRangeException(nameof(values));
 
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
