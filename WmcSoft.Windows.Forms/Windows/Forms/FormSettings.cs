@@ -35,21 +35,30 @@ namespace WmcSoft.Windows.Forms
     {
         public FormSettings(IComponent owner, string settingsKey)
             : base(owner, settingsKey) {
-            PersistFormSettings persistFormSettings = owner as PersistFormSettings;
+            var persistFormSettings = owner as PersistFormSettings;
         }
 
+        /// <summary>
+        /// The size of the form.
+        /// </summary>
         [UserScopedSetting]
         public Size Size {
             get { return (Size)this["Size"]; }
             set { this["Size"] = value; }
         }
 
+        /// <summary>
+        /// The location of the form.
+        /// </summary>
         [UserScopedSetting]
         public Point Location {
             get { return (Point)this["Location"]; }
             set { this["Location"] = value; }
         }
 
+        /// <summary>
+        /// The window state of the form.
+        /// </summary>
         [UserScopedSetting]
         public FormWindowState WindowState {
             get { return (FormWindowState)this["WindowState"]; }

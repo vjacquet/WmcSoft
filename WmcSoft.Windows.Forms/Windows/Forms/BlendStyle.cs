@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WmcSoft.ComponentModel;
-
-namespace WmcSoft.Windows.Forms
+﻿namespace WmcSoft.Windows.Forms
 {
+    /// <summary>
+    /// Blend style.
+    /// </summary>
     [RM.Description("BlendStyle")]
     public enum BlendStyle
     {

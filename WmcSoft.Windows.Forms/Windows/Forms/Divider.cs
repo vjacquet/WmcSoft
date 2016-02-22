@@ -55,6 +55,9 @@ namespace WmcSoft.Windows.Forms
             base.OnPaint(pe);
         }
 
+        /// <summary>
+        /// The orientation of the divider.
+        /// </summary>
         [DefaultValue(Orientation.Horizontal)]
         [RefreshProperties(RefreshProperties.Repaint)]
         public Orientation Orientation {

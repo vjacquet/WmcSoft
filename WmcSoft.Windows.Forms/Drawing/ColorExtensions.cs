@@ -33,10 +33,13 @@ namespace WmcSoft.Drawing
     /// </summary>
     public static class ColorExtensions
     {
+        /// <summary>
+        /// Makes the color opaque.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The same color with an alpha channel of 255.</returns>
         public static Color MakeOpaque(this Color color) {
-            if (color.A < 255)
-                return Color.FromArgb(255, color);
-            return color;
+            return Color.FromArgb(255, color);
         }
 
         /// <summary>
