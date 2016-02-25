@@ -62,6 +62,7 @@
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
     <Compile Include="Collections\Generic\EnumeratorAdapter.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
+    <Compile Include="Collections\Generic\CustomerSortComparer.cs" />
     <Compile Include="Collections\ReverseComparer.cs" />
     <Compile Include="Collections\DuplicatePolicy.cs" />
     <Compile Include="Collections\Generic\AnonymousComparer.cs" />
