@@ -63,7 +63,7 @@
     <Compile Include="Collections\Generic\SelectComparer.cs" />
     <Compile Include="Collections\Generic\EnumeratorAdapter.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
-    <Compile Include="Collections\Generic\CustomerSortComparer.cs" />
+    <Compile Include="Collections\Generic\CustomSortComparer.cs" />
     <Compile Include="Collections\ReverseComparer.cs" />
     <Compile Include="Collections\DuplicatePolicy.cs" />
     <Compile Include="Collections\Generic\AnonymousComparer.cs" />

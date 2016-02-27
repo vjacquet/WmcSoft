@@ -42,8 +42,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         public CustomSortComparer(IEqualityComparer<T> comparer, params T[] customOrder) {
-            _customOrder = customOrder;
             _comparer = comparer ?? EqualityComparer<T>.Default;
+
+            // reverse the order and the comparison so that elements not listed are at the end
+            _customOrder = (T[])customOrder.Clone();
+            Array.Reverse(_customOrder);
         }
 
         #region IComparer<T> Membres
@@ -51,7 +54,7 @@ namespace WmcSoft.Collections.Generic
         int IComparer<T>.Compare(T x, T y) {
             var ix = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, x));
             var iy = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, y));
-            return ix - iy;
+            return iy - ix;
         }
 
         #endregion
