@@ -35,23 +35,26 @@ namespace WmcSoft.Collections.Generic
     {
         #region Fields
 
-        readonly int _count;
-        readonly IEnumerable<T> _enumerable;
+        private readonly int _count;
+        private readonly IEnumerable<T> _enumerable;
+        private readonly IEqualityComparer<T> _comparer;
 
         #endregion
 
         #region Lifecycle
 
-        public ReadOnlyCollectionAdapter(IEnumerable<T> enumerable, int count) {
+        public ReadOnlyCollectionAdapter(IEnumerable<T> enumerable, int count, IEqualityComparer<T> comparer = null) {
             _enumerable = enumerable;
             _count = count;
+            _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
         #endregion
 
         #region IReadOnlyCollection<T> Members
 
-        public int Count {
+        public int Count
+        {
             get { return _count; }
         }
 
@@ -84,8 +87,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         bool ICollection<T>.Contains(T item) {
-            var comparer = EqualityComparer<T>.Default;
-            return _enumerable.Any(x => comparer.Equals(x, item));
+            return _enumerable.Any(x => _comparer.Equals(x, item));
         }
 
         void ICollection<T>.CopyTo(T[] array, int arrayIndex) {
@@ -93,7 +95,8 @@ namespace WmcSoft.Collections.Generic
                 array[arrayIndex++] = item;
         }
 
-        bool ICollection<T>.IsReadOnly {
+        bool ICollection<T>.IsReadOnly
+        {
             get { return true; }
         }
 
