@@ -22,7 +22,7 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanAdd() {
+        public void CanAddFractions() {
             var x = new Fraction(1, 4);
             var y = new Fraction(1, 6);
 
@@ -30,7 +30,7 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanSubtract() {
+        public void CanSubtractFractions() {
             var x = new Fraction(1, 4);
             var y = new Fraction(1, 6);
 
@@ -39,7 +39,7 @@ namespace WmcSoft.Numerics.Tests
 
 
         [TestMethod]
-        public void CanMultiply() {
+        public void CanMultiplyFractions() {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -47,7 +47,7 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanDivide() {
+        public void CanDivideFractions() {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -55,14 +55,14 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanCastToInt() {
+        public void CanCastFractionToInt() {
             var q = new Fraction(4, 2);
 
             Assert.AreEqual(2, (int)q);
         }
 
         [TestMethod]
-        public void CanSimplify() {
+        public void CanSimplifyFraction() {
             var x = new Fraction(2, 6);
             Assert.AreEqual(new Fraction(1, 3), x);
         }

@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
     [TestClass]
-    public class ListDictionaryTests
+    public class ListDictionaryTests : AssertDictionaryContractTests<string, int>
     {
-        [TestMethod]
-        public void CanConstructListDictionary() {
-            var dictionary = new ListDictionary<int, string>();
-            Assert.IsNotNull(dictionary);
+        protected override IDictionary<string, int> CreateDictionary() {
+            return new ListDictionary<string, int>();
+        }
+
+        protected override IEnumerable<KeyValuePair<string, int>> GetSamples() {
+            yield return new KeyValuePair<string, int>("one", 1);
+            yield return new KeyValuePair<string, int>("two", 2);
+            yield return new KeyValuePair<string, int>("three", 3);
         }
     }
 }
