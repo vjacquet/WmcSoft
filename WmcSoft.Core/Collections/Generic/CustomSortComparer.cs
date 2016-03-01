@@ -43,18 +43,16 @@ namespace WmcSoft.Collections.Generic
 
         public CustomSortComparer(IEqualityComparer<T> comparer, params T[] customOrder) {
             _comparer = comparer ?? EqualityComparer<T>.Default;
-
-            // reverse the order and the comparison so that elements not listed are at the end
-            _customOrder = (T[])customOrder.Clone();
-            Array.Reverse(_customOrder);
+            _customOrder = customOrder;
         }
 
         #region IComparer<T> Membres
 
         int IComparer<T>.Compare(T x, T y) {
-            var ix = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, x));
-            var iy = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, y));
-            return iy - ix;
+            var length = _customOrder.Length;
+            var ix = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, x)) & int.MaxValue;
+            var iy = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, y)) & int.MaxValue;
+            return ix - iy;
         }
 
         #endregion
