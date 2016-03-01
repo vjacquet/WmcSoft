@@ -58,8 +58,21 @@ namespace WmcSoft.Collections.Generic
             var samples = GetSamples().ToArray();
             foreach (var sample in samples)
                 dictionary.Add(sample);
-            Assert.IsTrue(dictionary.Remove(samples[1]));
+            var item = samples[1];
+            Assert.IsTrue(dictionary.Remove(item));
             Assert.AreEqual(samples.Length - 1, dictionary.Count);
         }
+
+        [TestMethod]
+        public void CannotRemoveItemWithDifferentValue() {
+            var dictionary = CreateDictionary();
+            var samples = GetSamples().ToArray();
+            foreach (var sample in samples)
+                dictionary.Add(sample);
+            var item = new KeyValuePair<TKey, TValue>(samples[1].Key, samples[0].Value);
+            Assert.IsFalse(dictionary.Remove(item));
+            Assert.AreEqual(samples.Length, dictionary.Count);
+        }
+
     }
 }
