@@ -25,29 +25,47 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements a comparer that calls comparer in sequence as long as they compare equals. 
+    /// </summary>
+    /// <typeparam name="T">The type of the source's items to compare</typeparam>
     [Serializable]
     public sealed class CascadingComparer<T> : IComparer<T>
+        , IEnumerable<IComparer<T>>
     {
-        readonly IComparer<T>[] comparers;
+        readonly IComparer<T>[] _comparers;
 
         public CascadingComparer(params IComparer<T>[] comparers) {
-            this.comparers = comparers;
+            _comparers = comparers;
         }
 
         #region IComparer<T> Membres
 
         public int Compare(T x, T y) {
             int result = 0;
-            for (int i = 0; i < comparers.Length; i++) {
-                result = comparers[i].Compare(x, y);
+            for (int i = 0; i < _comparers.Length; i++) {
+                result = _comparers[i].Compare(x, y);
                 if (result != 0)
                     break;
             }
             return result;
+        }
+
+        #endregion
+
+        #region IEnumerable<IComparer<T> members
+
+        IEnumerator<IComparer<T>> IEnumerable<IComparer<T>>.GetEnumerator() {
+            return ((IEnumerable<IComparer<T>>)_comparers).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return ((IEnumerable<IComparer<T>>)_comparers).GetEnumerator();
         }
 
         #endregion

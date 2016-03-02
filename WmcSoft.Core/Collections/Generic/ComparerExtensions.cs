@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -59,6 +60,23 @@ namespace WmcSoft.Collections.Generic
                     return true;
             }
             return false;
+        }
+
+        #endregion
+
+        public static IComparer<T> Reverse<T>(this IComparer<T> comparer) {
+            return new ReverseComparer<T>(comparer);
+        }
+
+        #region Then
+
+        static IEnumerable<IComparer<T>> Enumerate<T>(IComparer<T> comparer) {
+            var enumerable = comparer as IEnumerable<IComparer<T>>;
+            return enumerable ?? CollectionExtensions.AsEnumerable(comparer);
+        }
+
+        public static CascadingComparer<T> Then<T>(this IComparer<T> first, IComparer<T> second) {
+            return new CascadingComparer<T>(Enumerate(first).Concat(Enumerate(second)).ToArray());
         }
 
         #endregion

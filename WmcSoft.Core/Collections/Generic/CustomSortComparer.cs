@@ -33,7 +33,8 @@ namespace WmcSoft.Collections.Generic
     /// Implements a comparer which order items relative to their index in a given sort order.
     /// </summary>
     /// <typeparam name="T">The type of the source's items to compare</typeparam>
-    public class CustomSortComparer<T> : IComparer<T>
+    [Serializable]
+    public sealed class CustomSortComparer<T> : IComparer<T>
     {
         private readonly T[] _customOrder;
         private readonly IEqualityComparer<T> _comparer;
