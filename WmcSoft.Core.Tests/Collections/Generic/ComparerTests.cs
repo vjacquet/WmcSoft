@@ -25,5 +25,19 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(4, data[2]);
             Assert.AreEqual(8, data[3]);
         }
+
+        [TestMethod]
+        public void CheckCompareBuilder() {
+            var alicia = new Person { Name = "Alicia", Age = 11 };
+            var annabelle = new Person { Name = "Annabelle", Age = 10 };
+            var comparer = Compare.OrderOf<Person>().By(x => x.Age);
+            Assert.IsTrue(comparer.Compare(alicia, annabelle) > 0);
+        }
+    }
+
+    class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
 }

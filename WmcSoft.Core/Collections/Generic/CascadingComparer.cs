@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -38,11 +39,45 @@ namespace WmcSoft.Collections.Generic
     public sealed class CascadingComparer<T> : IComparer<T>
         , IEnumerable<IComparer<T>>
     {
+        #region Fields
+
         readonly IComparer<T>[] _comparers;
 
+        #endregion
+
+        #region Lifecycle
+
         public CascadingComparer(params IComparer<T>[] comparers) {
+            if (comparers == null) throw new ArgumentNullException("comparers");
+            if (comparers.Length == 0) throw new ArgumentException();
+
             _comparers = comparers;
         }
+
+        internal CascadingComparer(IEnumerable<IComparer<T>> comparers, IComparer<T> other) {
+            var primary = ToArray(comparers);
+            var length = primary.Length;
+            _comparers = new IComparer<T>[length + 1];
+            Array.Copy(primary, _comparers, length);
+            _comparers[length] = other;
+        }
+
+        internal CascadingComparer(IComparer<T> other, IEnumerable<IComparer<T>> comparers) {
+            var primary = ToArray(comparers);
+            var length = primary.Length;
+            _comparers = new IComparer<T>[length + 1];
+            _comparers[0] = other;
+            Array.Copy(primary, 0, _comparers, 1, length);
+        }
+
+        static IComparer<T>[] ToArray(IEnumerable<IComparer<T>> comparers) {
+            var cascading = comparers as CascadingComparer<T>;
+            if (cascading != null)
+                return cascading._comparers;
+            return comparers.ToArray();
+        }
+
+        #endregion
 
         #region IComparer<T> Membres
 
