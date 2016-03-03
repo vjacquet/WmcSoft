@@ -31,7 +31,8 @@ using System.Diagnostics;
 namespace WmcSoft.Data
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="IDataRecord"/> interface. This is a static class. 
+    /// Defines the extension methods to the <see cref="IDataRecord"/> interface.
+    /// This is a static class. 
     /// </summary>
     public static class DataRecordExtensions
     {

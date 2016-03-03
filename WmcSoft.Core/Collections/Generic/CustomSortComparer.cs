@@ -33,6 +33,7 @@ namespace WmcSoft.Collections.Generic
     /// Implements a comparer which order items relative to their index in a given sort order.
     /// </summary>
     /// <typeparam name="T">The type of the source's items to compare</typeparam>
+    /// <remarks>Elements not found in the custom order are considered greater than those that are.</remarks>
     [Serializable]
     public sealed class CustomSortComparer<T> : IComparer<T>
     {
@@ -49,11 +50,13 @@ namespace WmcSoft.Collections.Generic
 
         #region IComparer<T> Membres
 
+        private int IndexOf(T x) {
+            var found = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, x));
+            return found & int.MaxValue; // Changes -1 to int.MaxValue so missing elements are at the end.
+        }
+
         int IComparer<T>.Compare(T x, T y) {
-            var length = _customOrder.Length;
-            var ix = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, x)) & int.MaxValue;
-            var iy = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, y)) & int.MaxValue;
-            return ix - iy;
+            return IndexOf(x) - IndexOf(y);
         }
 
         #endregion
