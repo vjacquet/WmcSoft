@@ -64,6 +64,7 @@
     <Compile Include="Collections\Generic\Algorithms\FinderTests.cs" />
     <Compile Include="Collections\Generic\ComparerTests.cs" />
     <Compile Include="Collections\Generic\AssertDictionaryContractTests.cs" />
+    <Compile Include="Collections\Generic\CopyOnWriteDictionaryTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteListTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteCollectionTests.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensionsTests.cs" />

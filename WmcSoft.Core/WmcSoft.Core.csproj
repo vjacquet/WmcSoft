@@ -64,6 +64,7 @@
     <Compile Include="Collections\Generic\CompareBuilderExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerBuilder.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteCollection.cs" />
+    <Compile Include="Collections\Generic\CopyOnWriteDictionary.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
     <Compile Include="Collections\Generic\DisjoinedReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\ListDictionary.cs" />
