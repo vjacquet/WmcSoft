@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace WmcSoft.Windows.Forms
@@ -200,7 +201,7 @@ namespace WmcSoft.Windows.Forms
             var tmHeight = ctrl.Font.FontFamily.GetEmHeight(ctrl.Font.Style);
             if ((alignment & AnyTopAlignment) != (ContentAlignment)0)
                 return clientRectangle.Top + tmAscent;
-            if ((alignment & AnyMiddleAlignment) != (ContentAlignment)0) 
+            if ((alignment & AnyMiddleAlignment) != (ContentAlignment)0)
                 return clientRectangle.Top + (clientRectangle.Height / 2) - (tmHeight / 2) + tmAscent;
             return clientRectangle.Bottom - tmHeight + tmAscent;
         }
@@ -225,6 +226,24 @@ namespace WmcSoft.Windows.Forms
                 control = control.Parent;
             }
             return CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+        }
+
+        #endregion
+
+        #region SuspendRedraw
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+
+        private const int WM_SETREDRAW = 11;
+
+        public static IDisposable SuspendDrawing(this Control control) {
+            SendMessage(control.Handle, WM_SETREDRAW, false, 0);
+
+            return new Disposer(() => {
+                SendMessage(control.Handle, WM_SETREDRAW, true, 0);
+                control.Refresh();
+            });
         }
 
         #endregion
