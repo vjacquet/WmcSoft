@@ -237,13 +237,18 @@ namespace WmcSoft.Windows.Forms
 
         private const int WM_SETREDRAW = 11;
 
-        public static IDisposable SuspendDrawing(this Control control) {
-            SendMessage(control.Handle, WM_SETREDRAW, false, 0);
+        public static void ResumeDrawing(this Control control) {
+            SendMessage(control.Handle, WM_SETREDRAW, true, 0);
+            control.Refresh();
+        }
 
-            return new Disposer(() => {
-                SendMessage(control.Handle, WM_SETREDRAW, true, 0);
-                control.Refresh();
-            });
+        public static void SuspendDrawing(this Control control) {
+            SendMessage(control.Handle, WM_SETREDRAW, false, 0);
+        }
+
+        public static IDisposable SuspendDrawingScope(this Control control) {
+            SuspendDrawing(control);
+            return new Disposer(() => ResumeDrawing(control));
         }
 
         #endregion
