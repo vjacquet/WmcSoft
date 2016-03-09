@@ -230,7 +230,16 @@ namespace WmcSoft.Windows.Forms
 
         #endregion
 
-        #region SuspendRedraw
+        #region SuspendLayoutScope
+
+        public static IDisposable SuspendLayoutScope(this Control control) {
+            control.SuspendLayout();
+            return new Disposer(() => control.ResumeLayout());
+        }
+
+        #endregion
+
+        #region SuspendDrawingScope
 
         [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
