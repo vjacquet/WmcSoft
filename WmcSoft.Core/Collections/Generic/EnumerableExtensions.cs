@@ -55,38 +55,6 @@ namespace WmcSoft.Collections.Generic
 
         #region Backwards
 
-        #region BackwardsEnumerableAdapter
-
-        class BackwardsEnumerableAdapter<T> : IEnumerable<T>
-        {
-            private readonly IEnumerable<T> _enumerable;
-
-            public BackwardsEnumerableAdapter(IEnumerable<T> source) {
-                _enumerable = source;
-            }
-
-            #region IEnumerable<T> Membres
-
-            public IEnumerator<T> GetEnumerator() {
-                var stack = new Stack<T>(_enumerable);
-                while (stack.Count > 0) {
-                    yield return stack.Pop();
-                }
-            }
-
-            #endregion
-
-            #region IEnumerable Membres
-
-            IEnumerator IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
         public static IEnumerable<T> Backwards<T>(this IReadOnlyList<T> source) {
             for (int i = source.Count - 1; i >= 0; i--) {
                 yield return source[i];
@@ -110,7 +78,7 @@ namespace WmcSoft.Collections.Generic
             if (list != null)
                 return Backwards(list.AsReadOnly());
 
-            return new BackwardsEnumerableAdapter<TSource>(source);
+            return source.Reverse();
         }
 
         #endregion
