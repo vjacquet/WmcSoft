@@ -81,11 +81,25 @@ namespace WmcSoft.Windows.Forms
 
         #region Navigation
 
+        /// <summary>
+        /// Adds a new instance of a control of the specified type to the control.
+        /// </summary>
+        /// <typeparam name="T">The type of control to add</typeparam>
+        /// <param name="collection">The control.</param>
+        /// <returns>The instance that was added.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         public static T AddNew<T>(this Control control)
             where T : Control, new() {
             return AddNew<T>(control.Controls);
         }
 
+        /// <summary>
+        /// Adds a new instance of a control of the specified type to the control collection.
+        /// </summary>
+        /// <typeparam name="T">The type of control to add</typeparam>
+        /// <param name="collection">The control collection.</param>
+        /// <returns>The instance that was added.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="collection" /> is null.</exception>
         public static T AddNew<T>(this Control.ControlCollection collection)
             where T : Control, new() {
             T t; // t will be instanciated only if control is not null.
@@ -93,6 +107,55 @@ namespace WmcSoft.Windows.Forms
             return t;
         }
 
+        /// <summary>
+        /// Returns a collection of the ancestor controls of this control.
+        /// </summary>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Control"/> that contains the ancestors of this control.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned bottom-up.</remarks>
+        public static IEnumerable<Control> Ancestors(this Control control) {
+            return AncestorsOrSelf(control.Parent);
+        }
+
+        /// <summary>
+        /// Returns a collection of control that contains this control and the ancestor controls of this control.
+        /// </summary>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Control"/> that contains this control and its ancestors.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned bottom-up.</remarks>
+        public static IEnumerable<Control> AncestorsOrSelf(this Control control) {
+            if (control == null) throw new NullReferenceException();
+
+            var it = control;
+            while (it != null) {
+                yield return it;
+                it = it.Parent;
+            }
+        }
+
+        /// <summary>
+        /// Returns a collection of the ancestor controls of this control, of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of control to return.</typeparam>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> that contains this control ancestors.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned bottom-up.</remarks>
+        public static IEnumerable<T> Ancestors<T>(this Control control)
+            where T : Control {
+            return AncestorsOrSelf<T>(control.Parent);
+        }
+
+        /// <summary>
+        /// Returns a collection of controls that contains this control and the ancestor controls of this control, of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of control to return.</typeparam>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> that contains this control and its ancestors.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned bottom-up.</remarks>
         public static IEnumerable<T> AncestorsOrSelf<T>(this Control control)
               where T : Control {
             if (control == null) throw new NullReferenceException();
@@ -106,25 +169,30 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
-        public static IEnumerable<T> Ancestors<T>(this Control control)
-            where T : Control {
-            return AncestorsOrSelf<T>(control.Parent);
-        }
-
-        public static IEnumerable<Control> Ancestors(this Control control) {
-            return AncestorsOrSelf(control.Parent);
-        }
-
-        public static IEnumerable<Control> AncestorsOrSelf(this Control control) {
-            if (control == null) throw new NullReferenceException();
-
-            var it = control;
-            while (it != null) {
-                yield return it;
-                it = it.Parent;
+        /// <summary>
+        /// Returns a collection of the descendants control of this control.
+        /// </summary>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Control"/> that contains this control descendants.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned top-down.</remarks>
+        public static IEnumerable<Control> Descendants(this Control control) {
+            var stack = new Stack<Control>(control.Controls.Cast<Control>());
+            while (stack.Count > 0) {
+                var top = stack.Pop();
+                yield return top;
+                foreach (Control child in top.Controls)
+                    stack.Push(child);
             }
         }
 
+        /// <summary>
+        /// Returns a collection of control that contains this control and the descendants controls of this control.
+        /// </summary>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Control"/> that contains this control and its descendants.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned top-down.</remarks>
         public static IEnumerable<Control> DescendantsOrSelf(this Control control) {
             var stack = new Stack<Control>();
             stack.Push(control);
@@ -136,29 +204,14 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
-        public static IEnumerable<T> DescendantsOrSelf<T>(this Control control)
-            where T : Control {
-            var stack = new Stack<Control>();
-            stack.Push(control);
-            while (stack.Count > 0) {
-                Control top = stack.Pop();
-                if (top is T)
-                    yield return (T)top;
-                foreach (Control child in top.Controls)
-                    stack.Push(child);
-            }
-        }
-
-        public static IEnumerable<Control> Descendants(this Control control) {
-            var stack = new Stack<Control>(control.Controls.Cast<Control>());
-            while (stack.Count > 0) {
-                var top = stack.Pop();
-                yield return top;
-                foreach (Control child in top.Controls)
-                    stack.Push(child);
-            }
-        }
-
+        /// <summary>
+        /// Returns a collection of the descendants control of this control, of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of control to return.</typeparam>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of<typeparamref name="T"/> that contains this control descendants.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned top-down.</remarks>
         public static IEnumerable<T> Descendants<T>(this Control control)
             where T : Control {
             var controls = control.Controls.Cast<Control>();
@@ -172,6 +225,36 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
+        /// <summary>
+        /// Returns a collection of controls that contains this control and the descendants controls of this control, of the given type.
+        /// </summary>
+        /// <typeparam name="T">The type of control to return.</typeparam>
+        /// <param name="control">The control</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> that contains this control and its descendants.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <remarks>The controls are returned top-down.</remarks>
+        public static IEnumerable<T> DescendantsOrSelf<T>(this Control control)
+            where T : Control {
+            var stack = new Stack<Control>();
+            stack.Push(control);
+            while (stack.Count > 0) {
+                Control top = stack.Pop();
+                if (top is T)
+                    yield return (T)top;
+                foreach (Control child in top.Controls)
+                    stack.Push(child);
+            }
+        }
+
+        /// <summary>
+        /// Returns a collection of child controls for which the name was provided and if it is of a given type.
+        /// </summary>
+        /// <typeparam name="T">The type of control to return.</typeparam>
+        /// <param name="control">The control</param>
+        /// <param name="names">The name of the controls to find.</param>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> that contains the child controls for which the name was provided.</returns>
+        /// <remarks>The matching controls are return in the control collection order.</remarks>
         public static IEnumerable<T> FindControls<T>(this Control control, params string[] names)
             where T : Control {
             using (var enumerator = control.Controls.OfType<T>().GetEnumerator()) {
@@ -184,6 +267,12 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
+        /// <summary>
+        /// Returns true if the candidate control is an ancestor of the control, or the control itself.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="candidate">The candidate control</param>
+        /// <returns>true if the candidate control is an ancestor of the control, or the control itself, otherwise, false.</returns>
         public static bool IsAncestorOrSelf(this Control control, Control candidate) {
             if (control == null) throw new NullReferenceException();
 
