@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core\WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
 EndProject
@@ -60,6 +60,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xsv", "Tools\xsv\xsv.csproj", "{3FF610D5-3F7A-44A7-B6F6-30E0BB9741BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "Tools\xslt\xslt.csproj", "{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Windows.Forms.Tests", "WmcSoft.Windows.Forms.Tests\WmcSoft.Windows.Forms.Tests.csproj", "{7992AA64-169D-456A-9EA6-C36A8F05A6E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +161,10 @@ Global
 		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7536C962-9CBA-4E1B-B9D1-D353A6AF1D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7992AA64-169D-456A-9EA6-C36A8F05A6E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7992AA64-169D-456A-9EA6-C36A8F05A6E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7992AA64-169D-456A-9EA6-C36A8F05A6E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7992AA64-169D-456A-9EA6-C36A8F05A6E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

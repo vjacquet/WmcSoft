@@ -31,6 +31,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using WmcSoft.Collections;
 
 namespace WmcSoft.Windows.Forms
 {
@@ -181,7 +182,7 @@ namespace WmcSoft.Windows.Forms
             while (stack.Count > 0) {
                 var top = stack.Pop();
                 yield return top;
-                foreach (Control child in top.Controls)
+                foreach (Control child in top.Controls.Backwards())
                     stack.Push(child);
             }
         }
@@ -199,7 +200,7 @@ namespace WmcSoft.Windows.Forms
             while (stack.Count > 0) {
                 Control top = stack.Pop();
                 yield return top;
-                foreach (Control child in top.Controls)
+                foreach (Control child in top.Controls.Backwards())
                     stack.Push(child);
             }
         }
@@ -220,7 +221,7 @@ namespace WmcSoft.Windows.Forms
                 var top = stack.Pop();
                 if (top is T)
                     yield return (T)top;
-                foreach (Control child in top.Controls)
+                foreach (Control child in top.Controls.Backwards())
                     stack.Push(child);
             }
         }
@@ -241,7 +242,7 @@ namespace WmcSoft.Windows.Forms
                 Control top = stack.Pop();
                 if (top is T)
                     yield return (T)top;
-                foreach (Control child in top.Controls)
+                foreach (Control child in top.Controls.Backwards())
                     stack.Push(child);
             }
         }
