@@ -83,15 +83,19 @@ namespace WmcSoft.Windows.Forms
 
         public static T AddNew<T>(this Control control)
             where T : Control, new() {
-            T t = new T();
-            control.Controls.Add(t);
+            return AddNew<T>(control.Controls);
+        }
+
+        public static T AddNew<T>(this Control.ControlCollection collection)
+            where T : Control, new() {
+            T t; // t will be instanciated only if control is not null.
+            collection.Add(t = new T());
             return t;
         }
 
         public static IEnumerable<T> AncestorsOrSelf<T>(this Control control)
               where T : Control {
-            if (control == null)
-                throw new NullReferenceException();
+            if (control == null) throw new NullReferenceException();
 
             var it = control;
             while (it != null) {
@@ -112,8 +116,7 @@ namespace WmcSoft.Windows.Forms
         }
 
         public static IEnumerable<Control> AncestorsOrSelf(this Control control) {
-            if (control == null)
-                throw new NullReferenceException();
+            if (control == null) throw new NullReferenceException();
 
             var it = control;
             while (it != null) {
@@ -147,9 +150,9 @@ namespace WmcSoft.Windows.Forms
         }
 
         public static IEnumerable<Control> Descendants(this Control control) {
-            var stack = new Stack<Control>(control.Controls.OfType<Control>());
+            var stack = new Stack<Control>(control.Controls.Cast<Control>());
             while (stack.Count > 0) {
-                Control top = stack.Pop();
+                var top = stack.Pop();
                 yield return top;
                 foreach (Control child in top.Controls)
                     stack.Push(child);
@@ -158,9 +161,10 @@ namespace WmcSoft.Windows.Forms
 
         public static IEnumerable<T> Descendants<T>(this Control control)
             where T : Control {
-            var stack = new Stack<Control>(control.Controls.OfType<Control>());
+            var controls = control.Controls.Cast<Control>();
+            var stack = new Stack<Control>(controls);
             while (stack.Count > 0) {
-                Control top = stack.Pop();
+                var top = stack.Pop();
                 if (top is T)
                     yield return (T)top;
                 foreach (Control child in top.Controls)
@@ -168,14 +172,20 @@ namespace WmcSoft.Windows.Forms
             }
         }
 
-        public static IEnumerable<T> FindControls<T>(this Control self, params string[] names) where T : Control {
-            var set = new HashSet<string>(names);
-            return self.Controls.OfType<T>().Where(c => set.Remove(c.Name));
+        public static IEnumerable<T> FindControls<T>(this Control control, params string[] names)
+            where T : Control {
+            using (var enumerator = control.Controls.OfType<T>().GetEnumerator()) {
+                var set = new HashSet<string>(names);
+                while (enumerator.MoveNext()) {
+                    var c = enumerator.Current;
+                    if (set.Remove(c.Name))
+                        yield return c;
+                }
+            }
         }
 
         public static bool IsAncestorOrSelf(this Control control, Control candidate) {
-            if (control == null)
-                throw new NullReferenceException();
+            if (control == null) throw new NullReferenceException();
 
             var it = candidate;
             while (it != null) {
