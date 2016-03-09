@@ -115,7 +115,7 @@ namespace WmcSoft.Windows.Forms
         /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         /// <remarks>The controls are returned bottom-up.</remarks>
         public static IEnumerable<Control> Ancestors(this Control control) {
-            return AncestorsOrSelf(control.Parent);
+            return AncestorsAndSelf(control.Parent);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace WmcSoft.Windows.Forms
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Control"/> that contains this control and its ancestors.</returns>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         /// <remarks>The controls are returned bottom-up.</remarks>
-        public static IEnumerable<Control> AncestorsOrSelf(this Control control) {
+        public static IEnumerable<Control> AncestorsAndSelf(this Control control) {
             if (control == null) throw new NullReferenceException();
 
             var it = control;
@@ -145,7 +145,7 @@ namespace WmcSoft.Windows.Forms
         /// <remarks>The controls are returned bottom-up.</remarks>
         public static IEnumerable<T> Ancestors<T>(this Control control)
             where T : Control {
-            return AncestorsOrSelf<T>(control.Parent);
+            return AncestorsAndSelf<T>(control.Parent);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace WmcSoft.Windows.Forms
         /// <returns>An <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> that contains this control and its ancestors.</returns>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         /// <remarks>The controls are returned bottom-up.</remarks>
-        public static IEnumerable<T> AncestorsOrSelf<T>(this Control control)
+        public static IEnumerable<T> AncestorsAndSelf<T>(this Control control)
               where T : Control {
             if (control == null) throw new NullReferenceException();
 
@@ -193,7 +193,7 @@ namespace WmcSoft.Windows.Forms
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Control"/> that contains this control and its descendants.</returns>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         /// <remarks>The controls are returned top-down.</remarks>
-        public static IEnumerable<Control> DescendantsOrSelf(this Control control) {
+        public static IEnumerable<Control> DescendantsAndSelf(this Control control) {
             var stack = new Stack<Control>();
             stack.Push(control);
             while (stack.Count > 0) {
@@ -233,7 +233,7 @@ namespace WmcSoft.Windows.Forms
         /// <returns>An <see cref="IEnumerable{T}"/> of <typeparamref name="T"/> that contains this control and its descendants.</returns>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         /// <remarks>The controls are returned top-down.</remarks>
-        public static IEnumerable<T> DescendantsOrSelf<T>(this Control control)
+        public static IEnumerable<T> DescendantsAndSelf<T>(this Control control)
             where T : Control {
             var stack = new Stack<Control>();
             stack.Push(control);
