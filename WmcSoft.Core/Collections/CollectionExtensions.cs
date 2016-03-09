@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections
 {
@@ -89,6 +90,32 @@ namespace WmcSoft.Collections
             }
 
             return list;
+        }
+
+        #endregion
+
+        #region Backwards
+
+        public static IEnumerable Backwards(this IList source) {
+            for (int i = source.Count - 1; i >= 0; i--) {
+                yield return source[i];
+            }
+        }
+
+        /// <summary>
+        /// Inverts the order of the elements in a sequence.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <see cref="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to reverse.</param>
+        /// <returns>A sequence whose elements correspond to those of the input sequence in reverse order.</returns>
+        /// <remarks>Similar to <see cref="Enumerable.Reverse{TSource}(IEnumerable{TSource})"/> except that a copy 
+        /// is avoided for classes implementing <see cref="IList"/>.</remarks>
+        public static IEnumerable Backwards(this IEnumerable source) {
+            var list = source as IList;
+            if (list != null)
+                return Backwards(list);
+
+            return source.Cast<object>().Reverse();
         }
 
         #endregion
@@ -160,49 +187,6 @@ namespace WmcSoft.Collections
 
         #endregion
 
-        #region ToArray
-
-        /// <summary>
-        /// Converts a list to an array.
-        /// </summary>
-        /// <param name="source">The list</param>
-        /// <returns>An array of objets containing all the items in the collection.</returns>
-        public static object[] ToArray(this IList source) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-
-            var items = new object[source.Count];
-            source.CopyTo(items, 0);
-            return items;
-        }
-
-        /// <summary>
-        /// Convert a list to an array.
-        /// </summary>
-        /// <typeparam name="TInput">Type of the list items</typeparam>
-        /// <typeparam name="TOutput">Type of the array items.</typeparam>
-        /// <param name="source">The list</param>
-        /// <param name="convert">The converter from the input type to the output type.</param>
-        /// <returns>An array</returns>
-        /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
-        public static TOutput[] ToArray<TInput, TOutput>(this ICollection source, Converter<TInput, TOutput> convert) {
-            if (convert == null)
-                throw new ArgumentNullException("convert");
-            if (source == null)
-                return null;
-
-            var length = source.Count;
-            var output = new TOutput[length];
-            // for List implementation, for loops are slightly faster than foreach loops.
-            var i = 0;
-            foreach (var item in source) {
-                output[i++] = convert((TInput)item);
-            }
-            return output;
-        }
-
-        #endregion
-
         #region Suffle methods
 
         /// <summary>
@@ -256,6 +240,49 @@ namespace WmcSoft.Collections
             source[i] = source[j];
             source[j] = temp;
             return source;
+        }
+
+        #endregion
+
+        #region ToArray
+
+        /// <summary>
+        /// Converts a list to an array.
+        /// </summary>
+        /// <param name="source">The list</param>
+        /// <returns>An array of objets containing all the items in the collection.</returns>
+        public static object[] ToArray(this IList source) {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            var items = new object[source.Count];
+            source.CopyTo(items, 0);
+            return items;
+        }
+
+        /// <summary>
+        /// Convert a list to an array.
+        /// </summary>
+        /// <typeparam name="TInput">Type of the list items</typeparam>
+        /// <typeparam name="TOutput">Type of the array items.</typeparam>
+        /// <param name="source">The list</param>
+        /// <param name="convert">The converter from the input type to the output type.</param>
+        /// <returns>An array</returns>
+        /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
+        public static TOutput[] ToArray<TInput, TOutput>(this ICollection source, Converter<TInput, TOutput> convert) {
+            if (convert == null)
+                throw new ArgumentNullException("convert");
+            if (source == null)
+                return null;
+
+            var length = source.Count;
+            var output = new TOutput[length];
+            // for List implementation, for loops are slightly faster than foreach loops.
+            var i = 0;
+            foreach (var item in source) {
+                output[i++] = convert((TInput)item);
+            }
+            return output;
         }
 
         #endregion
