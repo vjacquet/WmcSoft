@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
@@ -55,8 +56,21 @@ namespace WmcSoft.Collections.Generic
             Assert.IsTrue(set.Add(alicia));
             Assert.IsFalse(set.Add(jessica));
         }
+
+        [TestMethod]
+        public void CanUseEqualityComparerToCompareDefaultValue() {
+            var nobody = default(Person);
+            var alicia = new Person { Name = "Alicia", Age = 11 };
+            var jessica = new Person { Name = "Jessica", Age = 11 };
+            var comparer = new EqualityComparerAdapter<Person>(Compare.OrderOf<Person>().By(x => x.Age));
+            Assert.IsTrue(comparer.Equals(alicia, jessica));
+            Assert.IsTrue(comparer.Equals(nobody, nobody));
+            Assert.IsFalse(comparer.Equals(alicia, nobody));
+            Assert.IsFalse(comparer.Equals(nobody, jessica));
+        }
     }
 
+    [DebuggerDisplay("{Name} ({Age} years old)")]
     class Person
     {
         public string Name { get; set; }

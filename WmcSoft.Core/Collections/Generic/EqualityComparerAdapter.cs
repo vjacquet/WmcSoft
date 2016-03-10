@@ -34,15 +34,17 @@ namespace WmcSoft.Collections.Generic
         #region Fields
 
         private readonly IComparer<T> _comparer;
+        private readonly Func<T, int> _hasher;
 
         #endregion
 
         #region Lifecycle
 
-        public EqualityComparerAdapter(IComparer<T> comparer) {
+        public EqualityComparerAdapter(IComparer<T> comparer, Func<T, int> hasher = null) {
             if (comparer == null) throw new ArgumentNullException(nameof(comparer));
 
             _comparer = comparer;
+            _hasher = hasher ?? Hash;
         }
 
         #endregion
@@ -54,9 +56,19 @@ namespace WmcSoft.Collections.Generic
         }
 
         public int GetHashCode(T obj) {
-            if (obj == null)
+            return _hasher(obj);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        int Hash(T obj) {
+            // We know nothing about the comparer, therefore we can deal with only two types of instances:
+            // those that compares equal to the default, and those that does not.
+            if (_comparer.Compare(obj, default(T)) == 0)
                 return 0;
-            return obj.GetHashCode();
+            return -1;
         }
 
         #endregion

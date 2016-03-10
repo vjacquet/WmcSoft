@@ -40,7 +40,7 @@ namespace WmcSoft.Collections.Generic
         private readonly IComparer<TReturn> _comparer;
 
         public SelectComparer(Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
-            _selector = selector;
+            _selector = (x) => (x != null) ? selector(x) : default(TReturn);
             _comparer = comparer ?? Comparer<TReturn>.Default;
         }
 
