@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
@@ -32,6 +33,27 @@ namespace WmcSoft.Collections.Generic
             var annabelle = new Person { Name = "Annabelle", Age = 10 };
             var comparer = Compare.OrderOf<Person>().By(x => x.Age);
             Assert.IsTrue(comparer.Compare(alicia, annabelle) > 0);
+        }
+
+        [TestMethod]
+        public void CanAdaptComparerForEquality() {
+            var alicia = new Person { Name = "Alicia", Age = 11 };
+            var annabelle = new Person { Name = "Annabelle", Age = 10 };
+            var jessica = new Person { Name = "Jessica", Age = 11 };
+            var comparer = new EqualityComparerAdapter<Person>(Compare.OrderOf<Person>().By(x => x.Age));
+            Assert.IsTrue(comparer.Equals(alicia, jessica));
+            Assert.IsFalse(comparer.Equals(alicia, annabelle));
+        }
+
+        [TestMethod]
+        public void CanUseEqualityComparerAdapterInHashSet() {
+            var alicia = new Person { Name = "Alicia", Age = 11 };
+            var annabelle = new Person { Name = "Annabelle", Age = 10 };
+            var jessica = new Person { Name = "Jessica", Age = 11 };
+            var comparer = new EqualityComparerAdapter<Person>(Compare.OrderOf<Person>().By(x => x.Age));
+            var set = new HashSet<Person>(comparer);
+            Assert.IsTrue(set.Add(alicia));
+            Assert.IsFalse(set.Add(jessica));
         }
     }
 
