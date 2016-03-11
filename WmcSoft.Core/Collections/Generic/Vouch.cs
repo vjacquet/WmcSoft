@@ -47,6 +47,10 @@ namespace WmcSoft.Collections.Generic
         public static Voucher<T> IsSet<T>(IEnumerable<T> enumerable) {
             return new Voucher<T>(true, enumerable, null);
         }
+
+        public static Voucher<T> SupportsNullArgument<T>() {
+            return new Voucher<T>(true);
+        }
     }
 
     public sealed class Voucher<T>
@@ -56,16 +60,43 @@ namespace WmcSoft.Collections.Generic
         readonly IEnumerable<T> _enumerable;
         readonly IComparer<T> _comparer;
         readonly bool _isSet;
+        readonly bool _supportsNullArgument;
 
         #endregion
 
+        internal Voucher(bool supportNullArgument) {
+            _supportsNullArgument = true;
+        }
+
         internal Voucher(bool isSet, IEnumerable<T> enumerable, IComparer<T> comparer) {
+            _supportsNullArgument = true;
             _isSet = isSet;
             _enumerable = enumerable;
             _comparer = comparer;
         }
 
-        public IComparer<T> Comparer {
+        public bool IsSet
+        {
+            get {
+                return _isSet;
+            }
+        }
+
+        public bool IsSorted
+        {
+            get {
+                return _comparer != null;
+            }
+        }
+        public bool SupportsNullArgument
+        {
+            get {
+                return _supportsNullArgument;
+            }
+        }
+
+        public IComparer<T> Comparer
+        {
             get { return _comparer; }
         }
 

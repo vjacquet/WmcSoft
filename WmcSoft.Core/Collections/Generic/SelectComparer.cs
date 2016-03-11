@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -38,6 +39,13 @@ namespace WmcSoft.Collections.Generic
     {
         private readonly Func<TSource, TReturn> _selector;
         private readonly IComparer<TReturn> _comparer;
+
+        public SelectComparer(Voucher<TSource> vouch, Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
+            Debug.Assert(vouch.SupportsNullArgument && (vouch.Comparer == null || vouch.Comparer == comparer));
+
+            _selector = selector;
+            _comparer = comparer ?? Comparer<TReturn>.Default;
+        }
 
         public SelectComparer(Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
             _selector = (x) => (x != null) ? selector(x) : default(TReturn);
