@@ -15,7 +15,7 @@ namespace WmcSoft.Windows.Forms
         }
 
         [TestMethod]
-        public void CheckDescendantsOrSelf() {
+        public void CheckDescendantsAndSelf() {
             var root = Build("A",
                 Build("B",
                     Build("C"),
@@ -31,6 +31,66 @@ namespace WmcSoft.Windows.Forms
 
             var expected = "ABCDEFGHIJK";
             var actual = String.Join("", root.DescendantsAndSelf().Select(x => x.Name));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckAncestorsAndSelf() {
+            Panel h;
+            var root = Build("A",
+                Build("B",
+                    Build("C"),
+                    Build("D")),
+                Build("E"),
+                Build("F",
+                    Build("G",
+                        h = Build("H"),
+                        Build("I")),
+                    Build("J")),
+                Build("K")
+            );
+            var expected = "HGFA";
+            var actual = String.Join("", h.AncestorsAndSelf().Select(x => x.Name));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckDescendants() {
+            var root = Build("A",
+                Build("B",
+                    Build("C"),
+                    Build("D")),
+                Build("E"),
+                Build("F",
+                    Build("G",
+                        Build("H"),
+                        Build("I")),
+                    Build("J")),
+                Build("K")
+            );
+
+            var expected = "BCDEFGHIJK";
+            var actual = String.Join("", root.Descendants().Select(x => x.Name));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckAncestors() {
+            Panel h;
+            var root = Build("A",
+                Build("B",
+                    Build("C"),
+                    Build("D")),
+                Build("E"),
+                Build("F",
+                    Build("G",
+                        h = Build("H"),
+                        Build("I")),
+                    Build("J")),
+                Build("K")
+            );
+            var expected = "GFA";
+            var actual = String.Join("", h.Ancestors().Select(x => x.Name));
             Assert.AreEqual(expected, actual);
         }
     }

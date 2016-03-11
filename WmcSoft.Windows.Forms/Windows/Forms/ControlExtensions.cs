@@ -178,7 +178,7 @@ namespace WmcSoft.Windows.Forms
         /// <exception cref="NullReferenceException">Thrown when <paramref name="control" /> is null.</exception>
         /// <remarks>The controls are returned top-down.</remarks>
         public static IEnumerable<Control> Descendants(this Control control) {
-            var stack = new Stack<Control>(control.Controls.Cast<Control>());
+            var stack = new Stack<Control>(control.Controls.Backwards().Cast<Control>());
             while (stack.Count > 0) {
                 var top = stack.Pop();
                 yield return top;
