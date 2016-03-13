@@ -24,17 +24,17 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents a Payment made in a physical amount of a Currency.
+    /// Represents a <see cref="Payment"/> made in a physical amount of a <see cref="Currency"/>.
     /// </summary>
     public class Cash : PaymentMethod
     {
+        #region Properties
+
+        // none 
+
+        #endregion
     }
 }

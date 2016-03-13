@@ -32,7 +32,8 @@ using WmcSoft.Units;
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents an amount of a specific Currency. This Currency is acceptedIn one or more CultureInfo.
+    /// Represents an amount of a specific <see cref="Currency"/>. 
+    /// This <see cref="Currency"/> is acceptedIn one or more <see cref="System.Globalization.CultureInfo"/>.
     /// </summary>
     [DebuggerDisplay("{Currency.ThreeLetterISOCode,nq} {Amount,nq}")]
     public struct Money : IComparable<Money>, IComparable, IEquatable<Money>
@@ -54,9 +55,9 @@ namespace WmcSoft.Business.Accounting
 
         #region Properties
 
-        public decimal Amount {get;        }
+        public decimal Amount { get; }
 
-        public Currency Currency {            get;        }
+        public Currency Currency { get; }
 
         #endregion
 
@@ -239,7 +240,7 @@ namespace WmcSoft.Business.Accounting
         #region IEquatable<Money> Membres
 
         public bool Equals(Money other) {
-            if (this.Currency != other.Currency)
+            if (Currency != other.Currency)
                 return false;
             return CompareTo(other) == 0;
         }
@@ -262,14 +263,14 @@ namespace WmcSoft.Business.Accounting
         static decimal GetAwayFromZeroBoundary(int decimalDigits) {
             if (decimalDigits == 2)
                 return 0.005m;
-            var boundary = 0.5m / new Decimal(System.Math.Pow(10, decimalDigits));
+            var boundary = 0.5m / (decimal)Math.Pow(10, decimalDigits);
             return boundary;
         }
 
         static decimal GetTowardsZeroBoundary(int decimalDigits) {
             if (decimalDigits == 2)
                 return 0.004m;
-            var boundary = 0.4m / new Decimal(System.Math.Pow(10, decimalDigits));
+            var boundary = 0.4m / (decimal)Math.Pow(10, decimalDigits);
             return boundary;
         }
 

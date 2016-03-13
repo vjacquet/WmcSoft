@@ -28,7 +28,7 @@
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents a PaymentCard where Payments are immediately debited
+    /// Represents a <see cref="PaymentCard"/> where <see cref="Payment"/>s are immediately debited
     /// from a source account.
     /// </summary>
     public class DebitCard : PaymentCard

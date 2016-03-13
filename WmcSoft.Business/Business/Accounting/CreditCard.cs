@@ -28,17 +28,15 @@
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents a PaymentCard that comes with a line of credit.
+    /// Represents a <see cref="PaymentCard"/> that comes with a line of credit.
     /// </summary>
     public class CreditCard : PaymentCard
     {
         #region Properties
 
         public Money CreditLimit { get; set; }
-
         public Money DailyWithdrawalLimit { get; set; }
 
         #endregion
-
     }
 }
