@@ -24,52 +24,47 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
     public static class Vouch
     {
-        public static Voucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
-            return new Voucher<T>(false, enumerable, comparer);
+        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
+            return new EnumerableVoucher<T>(false, enumerable, comparer);
         }
-        public static Voucher<T> IsSorted<T>(IEnumerable<T> enumerable) {
+        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable) {
             return IsSorted(enumerable, Comparer<T>.Default);
         }
 
-        public static Voucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
-            return new Voucher<T>(true, enumerable, comparer);
+        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
+            return new EnumerableVoucher<T>(true, enumerable, comparer);
         }
-        public static Voucher<T> IsSortedSet<T>(IEnumerable<T> enumerable) {
+        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable) {
             return IsSortedSet(enumerable, Comparer<T>.Default);
         }
 
-        public static Voucher<T> IsSet<T>(IEnumerable<T> enumerable) {
-            return new Voucher<T>(true, enumerable, null);
+        public static EnumerableVoucher<T> IsSet<T>(IEnumerable<T> enumerable) {
+            return new EnumerableVoucher<T>(true, enumerable, null);
         }
 
-        public static Voucher<T> SupportsNullArgument<T>() {
-            return new Voucher<T>(true);
+        public static SelectorVoucher<TSource, TReturn> SupportsNullArgument<TSource, TReturn>(Func<TSource, TReturn> selector) {
+            return new SelectorVoucher<TSource, TReturn>(selector, true);
         }
     }
 
-    public sealed class Voucher<T>
+    public sealed class EnumerableVoucher<T>
     {
         #region Fields
 
         readonly IEnumerable<T> _enumerable;
         readonly IComparer<T> _comparer;
         readonly bool _isSet;
-        readonly bool _supportsNullArgument;
 
         #endregion
 
-        internal Voucher(bool supportNullArgument) {
-            _supportsNullArgument = true;
-        }
-
-        internal Voucher(bool isSet, IEnumerable<T> enumerable, IComparer<T> comparer) {
-            _supportsNullArgument = true;
+        internal EnumerableVoucher(bool isSet, IEnumerable<T> enumerable, IComparer<T> comparer) {
             _isSet = isSet;
             _enumerable = enumerable;
             _comparer = comparer;
@@ -88,12 +83,6 @@ namespace WmcSoft.Collections.Generic
                 return _comparer != null;
             }
         }
-        public bool SupportsNullArgument
-        {
-            get {
-                return _supportsNullArgument;
-            }
-        }
 
         public IComparer<T> Comparer
         {
@@ -102,6 +91,31 @@ namespace WmcSoft.Collections.Generic
 
         public IEnumerator<T> GetEnumerator() {
             return _enumerable.GetEnumerator();
+        }
+    }
+
+    public sealed class SelectorVoucher<TSource, TReturn>
+    {
+        readonly Func<TSource, TReturn> _selector;
+        readonly bool _supportsNullArgument;
+
+        internal SelectorVoucher(Func<TSource, TReturn> selector, bool supportsNullArgument) {
+            _selector = selector;
+            _supportsNullArgument = supportsNullArgument;
+        }
+
+        public Func<TSource, TReturn> Selector
+        {
+            get { return _selector; }
+        }
+
+        public bool SupportsNullArgument
+        {
+            get { return _supportsNullArgument; }
+        }
+
+        public static implicit operator Func<TSource, TReturn>(SelectorVoucher<TSource, TReturn> voucher) {
+            return voucher.Selector;
         }
     }
 }
