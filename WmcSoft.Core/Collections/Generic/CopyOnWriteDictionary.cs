@@ -29,6 +29,12 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Represents a generic collection of key/value pair over a readonly underlying dictionary;
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+    /// <remarks>The underlying dictionary is copied only when the first write operation occurs.</remarks>
     public class CopyOnWriteDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _source;

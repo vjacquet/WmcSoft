@@ -29,6 +29,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Represents a generic collection over a readonly underlying collection.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the collection.</typeparam>
     public class CopyOnWriteCollection<T> : ICollection<T>
     {
         private readonly ICollection<T> _source;

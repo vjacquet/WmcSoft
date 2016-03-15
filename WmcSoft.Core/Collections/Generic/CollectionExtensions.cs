@@ -193,7 +193,7 @@ namespace WmcSoft.Collections.Generic
 
         #region BinarySearch methods
 
-        public static int MulDiv(int number, int numerator, int denominator) {
+        private static int MulDiv(int number, int numerator, int denominator) {
             return (int)(((long)number * numerator) / denominator);
         }
 

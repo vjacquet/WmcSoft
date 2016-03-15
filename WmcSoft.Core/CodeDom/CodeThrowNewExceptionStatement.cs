@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 namespace WmcSoft.CodeDom
 {
     /// <summary>
-    /// Represents a statement that throws an exception of a givent type.
+    /// Represents a statement that throws an exception of a given type.
     /// </summary>
     /// <typeparam name="T">The type of the exception.</typeparam>
     [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]

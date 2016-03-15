@@ -37,7 +37,7 @@ namespace WmcSoft.CodeDom
     /// if(arg == null) throw new ArgmentNullException("arg");
     /// </remarks>
     [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]
-    public class CodeAssertArgumentNotNulllStatement : CodeConditionStatement
+    public class CodeGuardArgumentNotNulllStatement : CodeConditionStatement
     {
         #region Private fields
 
@@ -48,11 +48,11 @@ namespace WmcSoft.CodeDom
 
         #region Lifecycle
 
-        public CodeAssertArgumentNotNulllStatement(CodeParameterDeclarationExpression parameter)
+        public CodeGuardArgumentNotNulllStatement(CodeParameterDeclarationExpression parameter)
             : this(parameter == null ? null : parameter.Name) {
         }
 
-        public CodeAssertArgumentNotNulllStatement(string argumentName) {
+        public CodeGuardArgumentNotNulllStatement(string argumentName) {
             _variable = new CodeVariableReferenceExpression(argumentName);
             _primitive = new CodePrimitiveExpression(argumentName);
             Condition = new CodeNullEqualityExpression(_variable);
