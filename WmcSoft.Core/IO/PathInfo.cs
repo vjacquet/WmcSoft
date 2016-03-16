@@ -70,12 +70,22 @@ namespace WmcSoft.IO
 
         #endregion
 
+        #region Operators
+
+        public static implicit operator PathInfo(string value) {
+            return new PathInfo(value);
+        }
+
+        #endregion
+
         #region Properties
 
-        public PathInfo Root
+        public PathInfo? Root
         {
             get {
                 var root = Path.GetPathRoot(_path);
+                if (root == "")
+                    return null;
                 return new PathInfo(root, Uninitialized);
             }
         }
@@ -97,7 +107,10 @@ namespace WmcSoft.IO
         public string Extension
         {
             get {
-                return Path.GetExtension(_path);
+                var extension = Path.GetExtension(_path);
+                if (extension == "")
+                    return null;
+                return extension;
             }
         }
 
@@ -108,6 +121,10 @@ namespace WmcSoft.IO
         public PathInfo GetFullPath() {
             var path = Path.GetFullPath(_path);
             return new PathInfo(path, Uninitialized);
+        }
+
+        public override string ToString() {
+            return _path.ToString();
         }
 
         #endregion
