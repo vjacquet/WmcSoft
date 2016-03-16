@@ -91,6 +91,7 @@
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Globalization\CombinedCalendar.cs" />
     <Compile Include="Globalization\IBusinessCalendar.cs" />
+    <Compile Include="IO\PathInfo.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
     <Compile Include="Configuration\MailAddressConverter.cs" />
