@@ -62,6 +62,22 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
+        #region EqualsAll
+
+        public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2) {
+            return comparer.Equals(reference, value1) && comparer.Equals(reference, value2);
+        }
+
+        public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, params T[] values) {
+            for (int i = 0; i < values.Length; i++) {
+                if (!comparer.Equals(reference, values[i]))
+                    return false;
+            }
+            return true;
+        }
+
+        #endregion
+
         #endregion
 
         #region Reverse

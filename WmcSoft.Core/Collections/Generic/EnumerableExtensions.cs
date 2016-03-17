@@ -677,6 +677,36 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region NthElement
+
+        public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, int n) {
+            var i = 0;
+            foreach (var element in source) {
+                if (++i % n == 0)
+                    yield return element;
+            }
+        }
+
+        public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, int n1, int n2) {
+            var i = 0;
+            foreach (var element in source) {
+                ++i;
+                if (i % n1 == 0 | i % n2 == 0)
+                    yield return element;
+            }
+        }
+
+        public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, params int[] n) {
+            var i = 0;
+            foreach (var element in source) {
+                ++i;
+                if (n.Any(x => i % x == 0))
+                    yield return element;
+            }
+        }
+
+        #endregion
+
         #region None
 
         /// <summary>

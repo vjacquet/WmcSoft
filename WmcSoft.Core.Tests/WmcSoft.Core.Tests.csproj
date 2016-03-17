@@ -89,6 +89,7 @@
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="Diagnostics\FaultTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
+    <Compile Include="IO\PathInfoTests.cs" />
     <Compile Include="IO\StreamSourceTests.cs" />
     <Compile Include="IO\SubstringReaderTests.cs" />
     <Compile Include="Linq\Expressions\DynamicTests.cs" />

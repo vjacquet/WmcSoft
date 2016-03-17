@@ -26,31 +26,36 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Collections.Generic
 {
     public sealed class KeyEqualityComparer<T, K> : IEqualityComparer<T>
     {
-        private readonly Func<T, K> _extractor;
+        private readonly Func<T, K> _selector;
         private readonly IEqualityComparer<K> _comparer;
 
-        public KeyEqualityComparer(Func<T, K> extractor, IEqualityComparer<K> comparer) {
-            if (extractor == null)
-                throw new ArgumentNullException("extractor");
+        public KeyEqualityComparer(SelectorVoucher<T, K> vouch, IEqualityComparer<K> comparer = null) {
+            Debug.Assert(vouch.SupportsNullArgument);
 
-            _extractor = extractor;
+            _selector = vouch;
             _comparer = comparer ?? EqualityComparer<K>.Default;
         }
-        public KeyEqualityComparer(Func<T, K> extractor)
-            : this(extractor, null) {
+
+        public KeyEqualityComparer(Func<T, K> selector, IEqualityComparer<K> comparer = null) {
+            if (selector == null)
+                throw new ArgumentNullException("selector");
+
+            _selector = (x) => (x != null) ? selector(x) : default(K);
+            _comparer = comparer ?? EqualityComparer<K>.Default;
         }
 
         public bool Equals(T x, T y) {
-            return _comparer.Equals(_extractor(x), _extractor(y));
+            return _comparer.Equals(_selector(x), _selector(y));
         }
 
         public int GetHashCode(T obj) {
-            return _comparer.GetHashCode(_extractor(obj));
+            return _comparer.GetHashCode(_selector(obj));
         }
     }
 }

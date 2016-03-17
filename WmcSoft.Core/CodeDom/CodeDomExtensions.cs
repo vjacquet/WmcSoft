@@ -35,7 +35,7 @@ namespace WmcSoft.CodeDom
     {
         #region FindCode
 
-        public static IEnumerable<T> FindCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter)
+        public static IEnumerable<T> FindCode<T>(this CodeStatementCollection statements, Predicate<T> predicate)
             where T : CodeObject {
             foreach (CodeStatement statement in statements) {
                 T expression = statement as T;
@@ -43,7 +43,7 @@ namespace WmcSoft.CodeDom
                 if ((expression == null) && (expressionStatement != null)) {
                     expression = expressionStatement.Expression as T;
                 }
-                if ((expression != null) && matchesFilter(expression)) {
+                if ((expression != null) && predicate(expression)) {
                     yield return expression;
                 }
             }
@@ -275,7 +275,7 @@ namespace WmcSoft.CodeDom
             }
         }
 
-        public static void Remove<T>(this CodeStatementCollection statements, Predicate<T> shouldRemove)
+        public static void Remove<T>(this CodeStatementCollection statements, Predicate<T> predicate)
             where T : CodeObject {
             var toRemove = new List<CodeStatement>();
             foreach (CodeStatement statement in statements) {
@@ -284,7 +284,7 @@ namespace WmcSoft.CodeDom
                 if (typedStatement == null && expression != null) {
                     typedStatement = expression.Expression as T;
                 }
-                if (typedStatement != null && shouldRemove(typedStatement)) {
+                if (typedStatement != null && predicate(typedStatement)) {
                     toRemove.Add(statement);
                 }
             }
@@ -294,11 +294,11 @@ namespace WmcSoft.CodeDom
             }
         }
 
-        public static void RemoveFromInitializeComponent<T>(this CodeTypeDeclaration declaration, Predicate<T> shouldRemove)
+        public static void RemoveFromInitializeComponent<T>(this CodeTypeDeclaration declaration, Predicate<T> predicate)
             where T : CodeObject {
             var initialize = FindInitializeComponent(declaration);
             if (initialize != null) {
-                Remove(initialize.Statements, shouldRemove);
+                Remove(initialize.Statements, predicate);
             }
         }
 

@@ -40,14 +40,17 @@ namespace WmcSoft.Collections.Generic
         private readonly Func<TSource, TReturn> _selector;
         private readonly IComparer<TReturn> _comparer;
 
-        public SelectComparer(Voucher<TSource> vouch, Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
-            Debug.Assert(vouch.SupportsNullArgument && (vouch.Comparer == null || vouch.Comparer == comparer));
+        public SelectComparer(SelectorVoucher<TSource, TReturn> vouch, IComparer<TReturn> comparer = null) {
+            Debug.Assert(vouch.SupportsNullArgument);
 
-            _selector = selector;
+            _selector = vouch;
             _comparer = comparer ?? Comparer<TReturn>.Default;
         }
 
         public SelectComparer(Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
+            if (selector == null)
+                throw new ArgumentNullException("selector");
+
             _selector = (x) => (x != null) ? selector(x) : default(TReturn);
             _comparer = comparer ?? Comparer<TReturn>.Default;
         }
