@@ -82,11 +82,11 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckInterleavesWithIdenticalCount() {
-            char[] s1 = { 'a', 'b', 'c'};
+            char[] s1 = { 'a', 'b', 'c' };
             char[] s2 = { 'M', 'N', 'P' };
             char[] s3 = { '1', '2', '3' };
             char[][] s = { s1, s2, s3 };
-            var actual = new String(s.Interleave().ToArray(s.Sum(i=>i.Length)));
+            var actual = new String(s.Interleave().ToArray(s.Sum(i => i.Length)));
             Assert.AreEqual("aM1bN2cP3", actual);
         }
 
@@ -111,14 +111,14 @@ namespace WmcSoft.Collections.Generic
         [TestMethod]
         public void CheckTailWhenCollectionHasLessElements() {
             var expected = new[] { 1, 2, 3, 4, 5 };
-            var actual = expected.Tail(6).ToArray(); 
+            var actual = expected.Tail(6).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void CheckTailWhenCollectionHasSameElementCount() {
             var expected = new[] { 1, 2, 3, 4, 5 };
-            var actual = expected.Tail(5).ToArray(); 
+            var actual = expected.Tail(5).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -140,7 +140,7 @@ namespace WmcSoft.Collections.Generic
         [TestMethod]
         public void CheckTailWhenEnumerableHasSameElementCount() {
             var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
-            var actual = expected.Tail(5).ToArray(); 
+            var actual = expected.Tail(5).ToArray();
             CollectionAssert.AreEqual(expected.ToArray(), actual);
         }
 
@@ -165,6 +165,14 @@ namespace WmcSoft.Collections.Generic
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 5, 6, 9 };
             var actual = collection.NthElements(3, 5).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckNthElementsN() {
+            var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var expected = new[] { 3, 5, 6, 8, 9, 10 };
+            var actual = collection.NthElements(3, 5, 8).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
     }
