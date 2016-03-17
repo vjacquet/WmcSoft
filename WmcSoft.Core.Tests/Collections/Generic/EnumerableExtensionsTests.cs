@@ -143,5 +143,21 @@ namespace WmcSoft.Collections.Generic
             var actual = expected.Tail(5).ToArray(); 
             CollectionAssert.AreEqual(expected.ToArray(), actual);
         }
+
+        [TestMethod]
+        public void CheckStride() {
+            var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var expected = new[] { 1, 4, 7 };
+            var actual = collection.Stride(3).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckNthElements() {
+            var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var expected = new[] { 3, 6, 9 };
+            var actual = collection.NthElements(3).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
