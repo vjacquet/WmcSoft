@@ -1020,6 +1020,20 @@ namespace WmcSoft.Collections.Generic
             return count;
         }
 
+        public static int RemoveIf<T>(this IList<T> source, Func<T, int, bool> predicate) {
+            int count = 0;
+            for (int i = 0; i < source.Count;) {
+                var item = source[i];
+                if (predicate(item, i)) {
+                    source.RemoveAt(i);
+                    count++;
+                } else {
+                    i++;
+                }
+            }
+            return count;
+        }
+
         #endregion
 
         #region RemoveRange methods

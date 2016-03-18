@@ -697,10 +697,14 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, params int[] n) {
+            var list = new List<int>(n);
+            list.Sort();
+            list.RemoveIf((x, index) => list.Take(Math.Max(0, index - 1)).Any(e => x % e == 0));
+
             var i = 0;
             foreach (var element in source) {
                 ++i;
-                if (n.Any(x => i % x == 0))
+                if (list.Any(x => i % x == 0))
                     yield return element;
             }
         }
