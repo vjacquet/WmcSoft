@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents Money paid by one Party to another, in return for goods or services.
+    /// Represents <see cref="Party"/> paid by one <see cref="Party"/> to another, in return for goods or services.
     /// </summary>
     public class Payment
     {
@@ -67,22 +67,22 @@ namespace WmcSoft.Business.Accounting
         }
 
         /// <summary>
-        /// The date on which the Payment was made by the payer.
+        /// The date on which the <see cref="Payment"/> was made by the payer.
         /// </summary>
         public DateTime? MadeOn { get; set; }
 
         /// <summary>
-        /// The date on which the Payment was received by the payee.
+        /// The date on which the <see cref="Payment"/> was received by the payee.
         /// </summary>
         public DateTime? ReveivedOn { get; set; }
 
         /// <summary>
-        /// The date on which the payee exepcts to receive the Payment.
+        /// The date on which the payee expects to receive the <see cref="Payment"/>.
         /// </summary>
         public DateTime? DueBy { get; set; }
 
         /// <summary>
-        /// The date on which the Payment is cleared by a banking system 
+        /// The date on which the <see cref="Payment"/> is cleared by a banking system 
         /// or other payment processing mechanism.
         /// </summary>
         public DateTime? ClearedBy { get; set; }

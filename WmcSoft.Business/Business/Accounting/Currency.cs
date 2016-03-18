@@ -33,7 +33,7 @@ using WmcSoft.Units;
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents a Metric or standard value for measuring Money.
+    /// Represents a <see cref="Metric"/> or standard value for measuring <see cref="Money"/>.
     /// </summary>
     [DebuggerDisplay("{ThreeLetterISOCode,nq}")]
     public abstract class Currency : Metric, ITemporal

@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Represents the medium by which a Payment may be made.
+    /// Represents the medium by which a <see cref="Payment"/> may be made.
     /// </summary>
     public abstract class PaymentMethod
     {
