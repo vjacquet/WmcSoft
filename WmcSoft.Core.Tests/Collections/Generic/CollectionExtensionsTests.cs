@@ -169,6 +169,33 @@ namespace WmcSoft.Collections.Generic
             CollectionAssert.AreEqual(expected, sequence);
         }
 
+        [TestMethod]
+        public void CheckRemoveIfOnLatestOnList() {
+            var sequence = new List<int> { 1, 2, 3, 4, 5 };
+            var count = sequence.RemoveIf(i => i == 5);
+            Assert.AreEqual(1, count);
+            var expected = new[] { 1, 2, 3, 4 };
+            CollectionAssert.AreEqual(expected, sequence);
+        }
+
+        [TestMethod]
+        public void CheckRemoveIfOnLatestOnCollection() {
+            var sequence = new SortedSet<int> { 1, 2, 3, 4, 5 };
+            var count = sequence.RemoveIf(i => i == 5);
+            Assert.AreEqual(1, count);
+            var expected = new[] { 1, 2, 3, 4 };
+            CollectionAssert.AreEqual(expected, sequence);
+        }
+
+        [TestMethod]
+        public void CheckIndexedRemoveIfOnLatest() {
+            var sequence = new List<int> { 1, 2, 3, 4, 5 };
+            var count = sequence.RemoveIf((x, i) => i == 4);
+            Assert.AreEqual(1, count);
+            var expected = new[] { 1, 2, 3, 4 };
+            CollectionAssert.AreEqual(expected, sequence);
+        }
+
         static Func<T, int> Find<T>(T value) where T : IComparable<T> {
             return x => -value.CompareTo(x);
         }

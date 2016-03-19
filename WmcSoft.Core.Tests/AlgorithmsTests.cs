@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft
@@ -6,6 +7,14 @@ namespace WmcSoft
     [TestClass]
     public class AlgorithmsTests
     {
+        [TestMethod]
+        public void CheckCoprimes() {
+            var collection = new[] { 3, 6, 8, 5, 8 };
+            var expected = new[] { 3, 5, 8 };
+            var actual = Algorithms.Coprimes(collection).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
         [TestMethod]
         public void CheckMidpoint() {
             var x = 20;

@@ -150,6 +150,18 @@ namespace WmcSoft
 
         #endregion
 
+        #region Coprimes
+
+        public static IReadOnlyList<int> Coprimes(params int[] values) {
+            var list = new List<int>(values);
+            list.Sort();
+            Func<int, int, bool> predicate = (x, index) => list.Take(index).Any(e => x % e == 0);
+            Collections.Generic.CollectionExtensions.RemoveIf(list, predicate);
+            return list;
+        }
+
+        #endregion
+
         #region Factorial
 
         /// <summary>
