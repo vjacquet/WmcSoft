@@ -85,12 +85,25 @@ namespace WmcSoft
             _data.Clear();
         }
 
+        private int Find(IEnumerable<int> list, int x) {
+            int index = 0;
+            foreach (var item in list) {
+                if (item < x) {
+                    index++;
+                    continue;
+                }
+                if (item == x)
+                    return index;
+                break;
+            }
+            return ~index;
+        }
+
         public bool Contains(int item) {
-            // TODO: naive implementation. Use invariant of Tableau to optimize.
             var length = _data.Count;
             for (int i = 0; i < length; i++) {
                 var row = _data[i];
-                if (row.Contains(item))
+                if (Find(row, item) >= 0)
                     return true;
             }
             return false;
