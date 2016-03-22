@@ -48,5 +48,22 @@ namespace WmcSoft
             Assert.IsTrue(t.Contains(2));
             Assert.IsFalse(t.Contains(4));
         }
+
+        [TestMethod]
+        public void CheckFind() {
+            var t = new Tableau();
+
+            t.Add(7);
+            t.Add(2);
+            t.Add(9);
+            t.Add(5);
+            t.Add(3);
+
+            int i;
+            int j;
+            Assert.IsTrue(t.Find(7, out i, out j));
+            Assert.AreEqual(2, i);
+            Assert.AreEqual(0, j);
+        }
     }
 }

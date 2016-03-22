@@ -99,12 +99,33 @@ namespace WmcSoft
             return ~index;
         }
 
+        public bool Find(int item, out int i, out int j) {
+            var length = _data.Count;
+            for (int k = 0; k < length; k++) {
+                var row = _data[k];
+                var found = Find(row, item);
+                if (found >= 0) {
+                    j = k;
+                    i = found;
+                    return true;
+                }
+                if (found == -1)
+                    break;
+            }
+            i = 0;
+            j = 0;
+            return false;
+        }
+
         public bool Contains(int item) {
             var length = _data.Count;
             for (int i = 0; i < length; i++) {
                 var row = _data[i];
-                if (Find(row, item) >= 0)
+                var found = Find(row, item);
+                if (found >= 0)
                     return true;
+                if (found == -1)
+                    return false;
             }
             return false;
         }
