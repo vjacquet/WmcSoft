@@ -273,40 +273,4 @@ namespace WmcSoft
             return new Range<T>(ordinal.Advance(range.Lower, -delta), ordinal.Advance(range.Upper, delta));
         }
     }
-
-    public class LexicographicalComparer<T> : IComparer<Range<T>>
-        where T : IComparable<T>
-    {
-        /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
-        /// <param name="x">The first range to compare.</param>
-        /// <param name="y">The second range to compare.</param>
-        /// <returns>
-        /// A signed integer that indicates the relative values of x and y, as shown in the
-        /// following table.
-        /// <list type="table">
-        /// <listheader>
-        ///   <description>Value</description>
-        ///   <description>Meaning</description>
-        /// </listheader>
-        /// <item>
-        ///   <description>Less than zero</description>
-        ///   <description> x is less than y.</description>
-        /// </item>
-        /// <item>
-        ///   <description>Zero</description>
-        ///   <description>x equals y.</description>
-        /// </item>
-        /// <item>
-        ///   <description>Greater than zero</description>
-        ///   <description>x is greater than y.</description>
-        /// </item>
-        /// </list>
-        /// </returns>
-        public int Compare(Range<T> x, Range<T> y) {
-            var r = x.Lower.CompareTo(y.Lower);
-            if (r != 0)
-                return r;
-            return x.Upper.CompareTo(y.Upper);
-        }
-    }
 }
