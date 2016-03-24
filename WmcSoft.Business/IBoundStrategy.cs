@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft
@@ -42,6 +43,30 @@ namespace WmcSoft
         public static bool IsWithinRange<S, T>(this S strategy, T value, T lower, T upper)
             where S : struct, IBoundStrategy<T> {
             return strategy.IsWithinRange(Comparer<T>.Default, value, lower, upper);
+        }
+
+        public static bool IsWithinRange<S, T>(this S strategy, T value, Range<T> range)
+            where T : IComparable<T>
+            where S : struct, IBoundStrategy<T> {
+            return strategy.IsWithinRange(Comparer<T>.Default, value, range.Lower, range.Upper);
+        }
+
+        public static bool IsWithinAnyRanges<S, T>(this S strategy, T value, params Range<T>[] ranges)
+            where T : IComparable<T>
+            where S : struct, IBoundStrategy<T> {
+            return Array.FindIndex(ranges, r => strategy.IsWithinRange(Comparer<T>.Default, value, r.Lower, r.Upper)) >= 0;
+        }
+
+        public static bool IsWithinRange<S, T>(this S strategy, Range<T> range, params T[] values)
+            where T : IComparable<T>
+            where S : struct, IBoundStrategy<T> {
+            return Array.FindIndex(values, v => strategy.IsWithinRange(Comparer<T>.Default, v, range.Lower, range.Upper)) >= 0;
+        }
+
+        public static bool AreAllWithinRange<S, T>(this S strategy, Range<T> range, params T[] values)
+            where T : IComparable<T>
+            where S : struct, IBoundStrategy<T> {
+            return Array.TrueForAll(values, v => strategy.IsWithinRange(Comparer<T>.Default, v, range.Lower, range.Upper));
         }
     }
 }

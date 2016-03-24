@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace WmcSoft
 {
     public static class RangeComparer<T>
-            where T : IComparable<T>
+        where T : IComparable<T>
     {
         class LexicographicalComparer<T> : IComparer<Range<T>>
             where T : IComparable<T>

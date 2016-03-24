@@ -33,7 +33,8 @@ namespace WmcSoft.Collections.Generic
     /// Implements a comparer using a <see cref="Func{T, T,int}"/>.
     /// </summary>
     /// <typeparam name="T">The type of element to compare.</typeparam>
-    /// <seealso cref="Comparer{T}.Create(Comparison{T})"/>
+    /// <remarks>Handles null values for the function parameters before-hand, 
+    /// when <see cref="Comparer{T}.Create(Comparison{T})"/> does not.</remarks>
     public sealed class AnonymousComparer<T> : IComparer<T>
     {
         private readonly Func<T, T, int> _comparer;
@@ -41,7 +42,6 @@ namespace WmcSoft.Collections.Generic
         public AnonymousComparer(Func<T, T, int> comparer) {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
-
             _comparer = comparer;
         }
 
