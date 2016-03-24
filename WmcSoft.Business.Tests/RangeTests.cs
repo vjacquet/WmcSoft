@@ -37,33 +37,6 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CanCompareDistinctRanges() {
-            var x = new Range<int>(2, 5);
-            var y = new Range<int>(8, 9);
-
-            Assert.IsTrue(x < y);
-            Assert.IsTrue(y > x);
-        }
-
-        [TestMethod]
-        public void CanCompareOverlappedRanges() {
-            var x = new Range<int>(2, 5);
-            var y = new Range<int>(3, 8);
-
-            Assert.IsTrue(x < y);
-            Assert.IsTrue(y > x);
-        }
-
-        [TestMethod]
-        public void CanCompareIncludedRanges() {
-            var x = new Range<int>(2, 5);
-            var y = new Range<int>(3, 4);
-
-            Assert.IsTrue(x < y);
-            Assert.IsTrue(y > x);
-        }
-
-        [TestMethod]
         public void CheckIsEmpty() {
            var actual = new Range<int>(2, 2);
 
