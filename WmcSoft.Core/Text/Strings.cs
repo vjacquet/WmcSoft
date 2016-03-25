@@ -27,7 +27,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WmcSoft.Text
 {
@@ -90,7 +89,7 @@ namespace WmcSoft.Text
         }
 
         public override string ToString() {
-            if (_value == null)
+            if (_value != null)
                 return _value;
 
             switch (Values.Length) {
