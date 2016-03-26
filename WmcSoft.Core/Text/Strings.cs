@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Text
 {
@@ -38,22 +39,10 @@ namespace WmcSoft.Text
         private static readonly string[] EmptyArray = new string[0];
         public static readonly Strings Empty = new Strings(EmptyArray);
 
-        private readonly string _value;
         private readonly string[] _values;
 
-        private Strings(string value, string[] values) {
-            _value = value;
-            _values = values;
-        }
-
-        public Strings(string value) {
-            _value = value;
-            _values = value == null ? EmptyArray : null;
-        }
-
-        public Strings(string[] values) {
-            _value = null;
-            _values = values;
+        public Strings(params string[] values) {
+            _values = values ?? EmptyArray;
         }
 
         private string[] Values { get { return _values ?? EmptyArray; } }
@@ -76,22 +65,18 @@ namespace WmcSoft.Text
 
         public int Count
         {
-            get { return _value != null ? 1 : Values.Length; }
+            get { return _values == null ? 0 : Values.Length; }
         }
 
         public string this[int index]
         {
             get {
-                if (index == 0 && _value != null)
-                    return _value;
                 return Values[index]; // throws the regular exception.
             }
         }
 
         public override string ToString() {
-            if (_value != null)
-                return _value;
-
+            var values = Values;
             switch (Values.Length) {
             case 0: return string.Empty;
             case 1: return Values[0];
@@ -100,16 +85,10 @@ namespace WmcSoft.Text
         }
 
         public string[] ToArray() {
-            if (_value != null)
-                return new[] { _value };
             return Values;
         }
 
         private int IndexOf(string item) {
-            if (_value != null) {
-                return string.Equals(_value, item, StringComparison.Ordinal) ? 0 : -1;
-            }
-
             var values = Values;
             for (int i = 0; i < values.Length; i++) {
                 if (string.Equals(values[i], item, StringComparison.Ordinal)) {
@@ -120,34 +99,14 @@ namespace WmcSoft.Text
         }
 
         private void CopyTo(string[] array, int arrayIndex) {
-            if (_value == null) {
-                var values = Values;
-                Array.Copy(values, 0, array, arrayIndex, values.Length);
+            if (_values == null)
                 return;
-            }
-
-            if (array == null)
-                throw new ArgumentNullException(nameof(array));
-            if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            if (array.Length - arrayIndex < 1)
-                throw new ArgumentException(
-                    $"'{nameof(array)}' is not long enough to copy all the items in the collection. Check '{nameof(arrayIndex)}' and '{nameof(array)}' length.");
-
-            array[arrayIndex] = _value;
+            var values = _values;
+            Array.Copy(values, 0, array, arrayIndex, values.Length);
         }
 
         public IEnumerator<string> GetEnumerator() {
-            if (_value == null) {
-                var values = Values;
-                var length = values.Length;
-                for (int i = 0; i < length; i++) {
-                    yield return values[i];
-
-                }
-            } else {
-                yield return _value;
-            }
+            return Values.Cast<string>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
@@ -156,11 +115,6 @@ namespace WmcSoft.Text
 
         public static bool IsNullOrEmpty(Strings value) {
             var values = value.Values;
-            if (values == null)
-                return true;
-            if (!String.IsNullOrEmpty(value._value))
-                return false;
-
             switch (values.Length) {
             case 0: return true;
             case 1: return string.IsNullOrEmpty(value._values[0]);
@@ -180,7 +134,7 @@ namespace WmcSoft.Text
             var values = new string[cx + cy];
             x.CopyTo(values, 0);
             y.CopyTo(values, cx);
-            return new Strings(null, values);
+            return new Strings(values);
         }
 
         public static bool Equals(Strings x, Strings y) {
@@ -240,12 +194,11 @@ namespace WmcSoft.Text
         }
 
         public override int GetHashCode() {
-            var values = Values;
-            if (values == null)
-                return _value == null ? 0 : _value.GetHashCode();
-
-            var h = values[0].GetHashCode();
-            for (var i = 1; i < values.Length; i++) {
+            if (_values == null)
+                return 0;
+            var values = _values;
+            var h = 0;
+            for (var i = 0; i < values.Length; i++) {
                 h = ((h << 5) + h) ^ values[i].GetHashCode();
             }
             return h;

@@ -26,5 +26,24 @@ namespace WmcSoft.Text
             var expected = "";
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanConcat() {
+            Strings a = "a";
+            Strings b = "b";
+            Strings c = new[] { "c", "d" };
+
+            var actual = Strings.Concat(a, b);
+            CollectionAssert.AreEqual(new[] { "a", "b" }, (string[])actual);
+
+            actual = Strings.Concat(actual, c);
+            Assert.AreEqual("a,b,c,d", (string)actual);
+        }
+
+        [TestMethod]
+        public void CanConstructStrings() {
+            var a = new Strings("a");
+            Assert.AreEqual(1, a.Count);
+        }
     }
 }
