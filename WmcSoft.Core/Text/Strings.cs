@@ -36,13 +36,43 @@ namespace WmcSoft.Text
     /// </summary>
     public struct Strings : IReadOnlyList<string>, IEquatable<Strings>, IEquatable<string>, IEquatable<string[]>
     {
+        public struct Enumerator : IEnumerator<string>
+        {
+            readonly string[] _values;
+            int index;
+
+            internal Enumerator(string[] values) {
+                _values = values;
+                index = -1;
+            }
+
+            public string Current { get { return _values[index]; } }
+
+            object IEnumerator.Current { get { return Current; } }
+
+            public void Dispose() {
+            }
+
+            public bool MoveNext() {
+                if (index < _values.Length) {
+                    ++index;
+                    return index < _values.Length;
+                }
+                return false;
+            }
+
+            public void Reset() {
+                index = -1;
+            }
+        }
+
         private static readonly string[] EmptyArray = new string[0];
         public static readonly Strings Empty = new Strings(EmptyArray);
 
         private readonly string[] _values;
 
         public Strings(params string[] values) {
-            _values = values ?? EmptyArray;
+            _values = values;
         }
 
         private string[] Values { get { return _values ?? EmptyArray; } }
@@ -65,7 +95,7 @@ namespace WmcSoft.Text
 
         public int Count
         {
-            get { return _values == null ? 0 : Values.Length; }
+            get { return _values == null ? 0 : _values.Length; }
         }
 
         public string this[int index]
@@ -88,25 +118,33 @@ namespace WmcSoft.Text
             return Values;
         }
 
-        private int IndexOf(string item) {
-            var values = Values;
-            for (int i = 0; i < values.Length; i++) {
-                if (string.Equals(values[i], item, StringComparison.Ordinal)) {
+        public int IndexOf(string item) {
+            if (_values == null)
+                return -1;
+            for (int i = 0; i < _values.Length; i++) {
+                if (string.Equals(_values[i], item, StringComparison.Ordinal)) {
                     return i;
                 }
             }
             return -1;
         }
 
-        private void CopyTo(string[] array, int arrayIndex) {
-            if (_values == null)
-                return;
-            var values = _values;
-            Array.Copy(values, 0, array, arrayIndex, values.Length);
+        public bool Contains(string item) {
+            return IndexOf(item) >= 0;
         }
 
-        public IEnumerator<string> GetEnumerator() {
-            return Values.Cast<string>().GetEnumerator();
+        public void CopyTo(string[] array, int arrayIndex) {
+            if (_values == null)
+                return;
+            Array.Copy(_values, 0, array, arrayIndex, _values.Length);
+        }
+
+        public Enumerator GetEnumerator() {
+            return new Enumerator(Values);
+        }
+
+        IEnumerator<string> IEnumerable<string>.GetEnumerator() {
+            return GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
