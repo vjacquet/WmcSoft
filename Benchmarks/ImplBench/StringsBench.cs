@@ -37,10 +37,10 @@ namespace ImplBench
     /// <summary>
     /// Compares Strings implementation with https://raw.githubusercontent.com/aspnet/Common/dev/src/Microsoft.Extensions.Primitives/StringValues.cs
     /// </summary>
-    [Benchmark(Iterations = 1000)]
+    [Benchmark(Iterations = 2000)]
     public class StringsBench
     {
-        const int Count = 8192;
+        const int Count = 8192*4;
         static readonly string[] samples = new[] { "a", "b", "c", "e", "f", "g", "h", "i", "j", "k", "l", "m", "lorem", "ipsum", "dolor", "sit", "amet" };
         static StringValues[] stringValues;
         static Strings[] strings;
@@ -65,13 +65,13 @@ namespace ImplBench
 
             var random = new Random(1664);
             for (int i = 0; i < Count; i++) {
-                var count = random.Next(20, 30);
-                if (count <= 21) {
+                var count = random.Next(90, 100);
+                if (count <= 91) {
                     var s = Sample(random);
                     stringValues[i] = new StringValues(s);
                     strings[i] = new Strings(s);
                 } else {
-                    var s = Samples(random, count - 20).ToArray();
+                    var s = Samples(random, count - 90).ToArray();
                     stringValues[i] = new StringValues(s);
                     strings[i] = new Strings(s);
                 }
