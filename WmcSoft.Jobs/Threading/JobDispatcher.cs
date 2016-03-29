@@ -45,7 +45,7 @@ namespace WmcSoft.Threading
 
         #region Internal job Classes
 
-        sealed class ThreadStartJob : IJob
+        struct ThreadStartJob : IJob
         {
             ThreadStart _start;
 
@@ -65,7 +65,7 @@ namespace WmcSoft.Threading
             #endregion
         }
 
-        class ActionJob<T> : IJob
+        struct ActionJob<T> : IJob
         {
             Action<T> _action;
 

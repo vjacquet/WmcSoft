@@ -45,7 +45,7 @@
     <Compile Include="Threading\BackgroundWorkerDispatcher.cs" />
     <Compile Include="Threading\BatchJob.cs" />
     <Compile Include="Threading\IJobInstrumentationProvider.cs" />
-    <Compile Include="Threading\NullJobInstrumentationProvider.cs" />
+    <Compile Include="Threading\JobInstrumentationProvider.cs" />
     <Compile Include="Threading\JobDispatcherDecorator.cs" />
     <Compile Include="Threading\IJob.cs" />
     <Compile Include="Threading\IJobQueue.cs" />

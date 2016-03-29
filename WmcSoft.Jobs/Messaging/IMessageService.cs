@@ -71,6 +71,5 @@ namespace WmcSoft.Messaging
         public static IJob Receive(this IMessageService messageService) {
             return messageService.Receive(Infinite);
         }
-
     }
 }

@@ -37,25 +37,35 @@ namespace WmcSoft
         /// <summary>
         /// Generic version of GetService for wich the type is inferred
         /// </summary>
-        /// <typeparam name="T">type of the service to get.</typeparam>
-        /// <param name="self">The service provider</param>
+        /// <typeparam name="T">The type of the service to get.</typeparam>
+        /// <param name="serviceProvider">The service provider</param>
         /// <returns>The service</returns>
-        public static T GetService<T>(this IServiceProvider self) where T : class {
-            return (T)self.GetService(typeof(T));
+        public static T GetService<T>(this IServiceProvider serviceProvider) where T : class {
+            return (T)serviceProvider.GetService(typeof(T));
         }
 
-        public static object GetRequiredService(this IServiceProvider self, Type serviceType) {
-            object instance = self.GetService(serviceType);
+        /// <summary>
+        /// Get the service of the specified type or throws.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider</param>
+        /// <returns>The service</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the service cannot be provided.</exception>
+        public static object GetRequiredService(this IServiceProvider serviceProvider, Type serviceType) {
+            object instance = serviceProvider.GetService(serviceType);
             if (instance == null)
                 throw new InvalidOperationException(String.Format(Resources.MissingServiceMessage, serviceType.FullName));
             return instance;
         }
 
-        public static T GetRequiredService<T>(this IServiceProvider self) where T : class {
-            object instance = self.GetService(typeof(T));
-            if (instance == null)
-                throw new InvalidOperationException(String.Format(Resources.MissingServiceMessage, typeof(T).FullName));
-            return (T)instance;
+        /// <summary>
+        /// Get the service of the specified type or throws.
+        /// </summary>
+        /// <typeparam name="T">The type of the service to get.</typeparam>
+        /// <param name="serviceProvider">The service provider</param>
+        /// <returns>The service</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the service cannot be provided.</exception>
+        public static T GetRequiredService<T>(this IServiceProvider self) {
+            return (T)GetRequiredService(self, typeof(T));
         }
     }
 }
