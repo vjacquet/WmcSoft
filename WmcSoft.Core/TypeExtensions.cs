@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -28,17 +28,30 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Type"/> class. This is a static class. 
+    /// </summary>
     public static class TypeExtensions
     {
+        /// <summary>
+        /// Returns an enumeration of the attributes of a certain type from the specified type.
+        /// </summary>
+        /// <typeparam name="A">The type of the attributes</typeparam>
+        /// <param name="type">The type to enumerate the attributes from.</param>
+        /// <returns>The enumeration of the attributes of a certain type.</returns>
         public static IEnumerable<A> GetAttributes<A>(this Type type) where A : Attribute {
             return TypeDescriptor.GetAttributes(type).OfType<A>();
         }
 
+        /// <summary>
+        /// Returns the display name of the type.
+        /// </summary>
+        /// <param name="type">The type</param>
+        /// <param name="inherit">true to search this member's inheritance chain to find the attributes; otherwise, false.</param>
+        /// <returns>The display name of the type.</returns>
         public static string GetDisplayName(this Type type, bool inherit) {
             var attributes = (DisplayNameAttribute[])type.GetCustomAttributes(typeof(DisplayNameAttribute), inherit);
             if (attributes != null && attributes.Length > 0)
@@ -46,11 +59,37 @@ namespace WmcSoft
             return type.Name;
         }
 
+        /// <summary>
+        /// Returns the description of the type.
+        /// </summary>
+        /// <param name="type">The type</param>
+        /// <param name="inherit">true to search this member's inheritance chain to find the attributes; otherwise, false.</param>
+        /// <returns>The description of the type.</returns>
         public static string GetDescription(this Type type, bool inherit) {
             var attributes = (DescriptionAttribute[])type.GetCustomAttributes(typeof(DescriptionAttribute), inherit);
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;
             return "";
+        }
+
+        /// <summary>
+        /// Returns the underlying type of the type if it is a nullable type, otherwise the type itself.
+        /// </summary>
+        /// <param name="type">The type</param>
+        /// <returns>The underlying type if the type is a nullable type, otherwise the type itself.</returns>
+        public static Type UnwrapNullableType(this Type type) {
+            return Nullable.GetUnderlyingType(type) ?? type;
+        }
+
+        /// <summary>
+        /// Returns true if the type is nullable.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>true if the type is nullable, otherwise false.</returns>
+        public static bool IsNullable(this Type type) {
+            return type.IsGenericType 
+                && !type.IsGenericTypeDefinition 
+                && ReferenceEquals(type.GetGenericTypeDefinition(), typeof(Nullable<>));
         }
     }
 }

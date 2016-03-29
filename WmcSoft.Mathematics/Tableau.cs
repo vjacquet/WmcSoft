@@ -25,28 +25,145 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents a Young Tableau of shape where N integers are stored in an 
+    /// array of left-justified rows, with Ni elements in row i, such that
+    /// the entries of each row are in increasing order from left to right, and
+    /// the entries of each column are in increasing order from top to bottom.
+    /// </summary>
     /// <remarks>See Knuth's TAoCP, Vol 3, Page 47.</remarks>
-    public class Tableau
+    public class Tableau : ICollection<int>
     {
-        private List<List<int>> _data;
+        private readonly List<List<int>> _data;
 
         public Tableau() {
             _data = new List<List<int>>();
         }
 
-        public void Add(int x) {
+        public int Count => _data.Sum(x => x.Count);
+        public bool IsReadOnly => false;
+
+        private bool IsInfinite(int i, int j) {
+            if (j >= _data.Count)
+                return true;
+            return i >= _data[j].Count;
+        }
+
+        private bool LessThan(int value, int i, int j) {
+            if (i < 0 || j < 0)
+                return false;
+            if (j >= _data.Count || i >= _data[j].Count)
+                return true;
+            return value < this[i, j];
+        }
+
+        public void Add(int item) {
+            var x = new List<int>();
+            var r = new List<int>();
             var i = 0;
-            var p = x;
             var j = _data.Count;
+            x.Add(item);
+
+            while (i < x.Count) {
+                while (LessThan(x[i], i, j - 1))
+                    j--;
+                if (!IsInfinite(i, j))
+                    x.Add(this[i, j]);
+                r.Add(j);
+                this[i, j] = x[i];
+                i++;
+            }
+        }
+
+        public void Clear() {
+            _data.Clear();
+        }
+
+        private int Find(IEnumerable<int> list, int x) {
+            int index = 0;
+            foreach (var item in list) {
+                if (item < x) {
+                    index++;
+                    continue;
+                }
+                if (item == x)
+                    return index;
+                break;
+            }
+            return ~index;
+        }
+
+        public bool Find(int item, out int i, out int j) {
+            var length = _data.Count;
+            for (int k = 0; k < length; k++) {
+                var row = _data[k];
+                var found = Find(row, item);
+                if (found >= 0) {
+                    j = k;
+                    i = found;
+                    return true;
+                }
+                if (found == -1)
+                    break;
+            }
+            i = 0;
+            j = 0;
+            return false;
+        }
+
+        public bool Contains(int item) {
+            var length = _data.Count;
+            for (int i = 0; i < length; i++) {
+                var row = _data[i];
+                var found = Find(row, item);
+                if (found >= 0)
+                    return true;
+                if (found == -1)
+                    return false;
+            }
+            return false;
+        }
+
+        public void CopyTo(int[] array, int arrayIndex) {
+            var length = _data.Count;
+            for (int i = 0; i < length; i++) {
+                var row = _data[i];
+                row.CopyTo(array, arrayIndex);
+                arrayIndex += row.Count;
+            }
+        }
+
+        public bool Remove(int item) {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<int> GetEnumerator() {
+            return _data.SelectMany(x => x).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
         public int this[int i, int j]
         {
-            get { return _data[j][i]; }
+            get {
+                return _data[j][i];
+            }
+            private set {
+                if (j == _data.Count)
+                    _data.Add(new List<int>());
+                if (i == _data[j].Count)
+                    _data[j].Add(value);
+                else
+                    _data[j][i] = value;
+            }
         }
     }
 }

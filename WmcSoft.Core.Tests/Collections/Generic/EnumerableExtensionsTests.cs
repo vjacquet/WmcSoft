@@ -175,5 +175,13 @@ namespace WmcSoft.Collections.Generic
             var actual = collection.NthElements(3, 5, 8).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckNthElementsNWithMultiples() {
+            var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var expected = new[] { 3, 5, 6, 8, 9, 10 };
+            var actual = collection.NthElements(3, 6, 5, 8).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

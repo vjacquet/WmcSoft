@@ -40,8 +40,6 @@ namespace WmcSoft
     [Serializable]
     [ImmutableObject(true)]
     public struct Range<T> :
-        IComparable,
-        IComparable<Range<T>>,
         IEquatable<Range<T>>
         where T : IComparable<T>
     {
@@ -86,7 +84,8 @@ namespace WmcSoft
 
         #region Properties
 
-        public bool IsEmpty {
+        public bool IsEmpty
+        {
             get { return Upper.CompareTo(Lower) == 0; }
         }
 
@@ -131,7 +130,7 @@ namespace WmcSoft
         public Range<T> GapBetween(Range<T> other) {
             if (Overlaps(other))
                 return Empty;
-            else if (this < other)
+            else if (Upper.CompareTo(other.Lower) < 0)
                 return new Range<T>(Upper, other.Lower);
             else
                 return new Range<T>(other.Upper, Lower);
@@ -235,76 +234,6 @@ namespace WmcSoft
 
         #endregion
 
-        #region IComparable<Range<T>> Members
-
-        /// <summary>Compares the current range with another range of the same type.</summary>
-        /// <returns>A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: 
-        /// <list type="table">
-        /// <listheader>
-        ///   <description>Value</description>
-        ///   <description>Meaning</description>
-        /// </listheader>
-        /// <item>
-        ///   <description>Less than zero</description>
-        ///   <description> This instance is less than obj.</description>
-        /// </item>
-        /// <item>
-        ///   <description>Zero</description>
-        ///   <description>This instance is equal to obj.</description>
-        /// </item>
-        /// <item>
-        ///   <description>Greater than zero</description>
-        ///   <description>This instance is greater than obj.</description>
-        /// </item>
-        /// </list>
-        /// </returns>
-        /// <param name="obj">An object to compare with this instance. </param>
-        /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
-        public int CompareTo(Range<T> other) {
-            var comparer = Comparer<T>.Default;
-            int firstCompare = comparer.Compare(Lower, other.Lower);
-            if (firstCompare == 0)
-                return comparer.Compare(Upper, other.Upper);
-            return firstCompare;
-        }
-
-        #endregion
-
-        #region IComparable Members
-
-        /// <summary>Compares the current range with another range of the same type.</summary>
-        /// <returns>A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: 
-        /// <list type="table">
-        /// <listheader>
-        ///   <description>Value</description>
-        ///   <description>Meaning</description>
-        /// </listheader>
-        /// <item>
-        ///   <description>Less than zero</description>
-        ///   <description> This instance is less than obj.</description>
-        /// </item>
-        /// <item>
-        ///   <description>Zero</description>
-        ///   <description>This instance is equal to obj.</description>
-        /// </item>
-        /// <item>
-        ///   <description>Greater than zero</description>
-        ///   <description>This instance is greater than obj.</description>
-        /// </item>
-        /// </list>
-        /// </returns>
-        /// <param name="obj">An object to compare with this instance. </param>
-        /// <exception cref="T:System.ArgumentException">obj is not the same type as this instance. </exception>
-        int IComparable.CompareTo(object obj) {
-            if (obj == null || obj.GetType() != typeof(Range<T>))
-                return 1;
-
-            var range = (Range<T>)obj;
-            return CompareTo(range);
-        }
-
-        #endregion
-
         #region Operators
 
         /// <summary>
@@ -327,46 +256,6 @@ namespace WmcSoft
             return !x.Equals(y);
         }
 
-        /// <summary>
-        /// Determines whether the first range is less than the second.
-        /// </summary>
-        /// <param name="x">The first range to compare.</param>
-        /// <param name="y">The second range to compare.</param>
-        /// <returns>true if the specified ranges are equal; otherwise, false.</returns>
-        public static bool operator <(Range<T> x, Range<T> y) {
-            return x.CompareTo(y) < 0;
-        }
-
-        /// <summary>
-        /// Determines whether the first range is less or equal than the second.
-        /// </summary>
-        /// <param name="x">The first range to compare.</param>
-        /// <param name="y">The second range to compare.</param>
-        /// <returns>true if the specified ranges are equal; otherwise, false.</returns>
-        public static bool operator <=(Range<T> x, Range<T> y) {
-            return x.CompareTo(y) <= 0;
-        }
-
-        /// <summary>
-        /// Determines whether the first range is greater than the second.
-        /// </summary>
-        /// <param name="x">The first range to compare.</param>
-        /// <param name="y">The second range to compare.</param>
-        /// <returns>true if the specified ranges are equal; otherwise, false.</returns>
-        public static bool operator >(Range<T> x, Range<T> y) {
-            return x.CompareTo(y) > 0;
-        }
-
-        /// <summary>
-        /// Determines whether the first range is less than the second.
-        /// </summary>
-        /// <param name="x">The first range to compare.</param>
-        /// <param name="y">The second range to compare.</param>
-        /// <returns>true if the specified ranges are equal; otherwise, false.</returns>
-        public static bool operator >=(Range<T> x, Range<T> y) {
-            return x.CompareTo(y) >= 0;
-        }
-
         #endregion
     }
 
@@ -380,6 +269,7 @@ namespace WmcSoft
         public static Range<T> Inflate<T, O>(this Range<T> range, int delta, O ordinal)
             where T : IComparable<T>
             where O : IOrdinal<T> {
+
             return new Range<T>(ordinal.Advance(range.Lower, -delta), ordinal.Advance(range.Upper, delta));
         }
     }
