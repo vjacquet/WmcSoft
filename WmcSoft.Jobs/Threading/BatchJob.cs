@@ -32,7 +32,6 @@ namespace WmcSoft.Threading
     [Serializable]
     public abstract class BatchJob : IJob, IDisposable
     {
-
         #region BatchJobDispatcher
 
         class BatchJobDispatcher : JobDispatcherDecorator

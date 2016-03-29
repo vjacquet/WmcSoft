@@ -38,11 +38,13 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="job">The job.</param>
         void Enqueue(IJob job);
+
         /// <summary>
         /// Dequeues the next job.
         /// </summary>
         /// <returns>A job.</returns>
         IJob Dequeue();
+
         /// <summary>
         /// Tries to dequeue the next job.
         /// </summary>
@@ -50,6 +52,7 @@ namespace WmcSoft.Threading
         /// <param name="timeout">The timeout.</param>
         /// <returns><c>true</c> if a job was dequed before the specified time elapsed; otherwise, <c>false</c>.</returns>
         bool TryDequeue(out IJob job, TimeSpan timeout);
+
         /// <summary>
         /// Clears the job queue.
         /// </summary>
