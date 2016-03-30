@@ -32,6 +32,10 @@ using WmcSoft.Data.Common;
 
 namespace WmcSoft.Data
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="IDataReader"/> interface.
+    /// This is a static class. 
+    /// </summary>
     public static class DataReaderExtensions
     {
         #region AsDbDataReader
