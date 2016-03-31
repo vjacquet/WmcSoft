@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 
 namespace WmcSoft.Data
 {
@@ -78,37 +77,24 @@ namespace WmcSoft.Data
             return GetProperty(name).GetValue(_enumerator.Current);
         }
 
-        public override DataTable GetSchemaTable() {
-            var dt = new DataTable("SchemaTable");
-            dt.Locale = System.Globalization.CultureInfo.InvariantCulture;
-
-            dt.AddColumn<string>(SchemaTableColumn.ColumnName);
-            dt.AddColumn<int>(SchemaTableColumn.ColumnOrdinal);
-            dt.AddColumn<Type>(SchemaTableColumn.DataType);
-            dt.AddColumn<int>(SchemaTableColumn.ColumnSize, defaultValue: -1);
-            dt.AddColumn<short>(SchemaTableColumn.NumericPrecision);
-            dt.AddColumn<short>(SchemaTableColumn.NumericScale);
-            dt.AddColumn<int>(SchemaTableColumn.ProviderType);
-            dt.AddColumn<bool>(SchemaTableColumn.IsLong);
-            dt.AddColumn<bool>(SchemaTableColumn.AllowDBNull);
-            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsReadOnly, defaultValue: false);
-            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsRowVersion);
-            dt.AddColumn<bool>(SchemaTableColumn.IsUnique);
-            dt.AddColumn<bool>(SchemaTableColumn.IsKey);
-
-            int i = 0;
-            foreach (var property in _properties.Cast<PropertyDescriptor>()) {
-                var dr = dt.NewRow();
-                dr[0] = property.Name;
-                dr[1] = i;
-                dr[2] = property.PropertyType;
-                if (property.IsReadOnly)
-                    dr[SchemaTableOptionalColumn.IsReadOnly] = true;
-                dt.Rows.Add(dr);
-            }
-            return dt;
+        /// <summary>
+        /// Returns a <see cref="DataRow"/> that describes one column of the <see cref="IDataReader"/>.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="i">The index of the column.</param>
+        /// <returns>A <see cref="DataRow"/> that describes one column.</returns>
+        protected override DataRow GetSchemaRow(DataTable dataTable, int i) {
+            var property = _properties[i];
+            var dr = base.GetSchemaRow(dataTable, i);
+            if (property.IsReadOnly)
+                dr[SchemaTableOptionalColumn.IsReadOnly] = true;
+            return dr;
         }
 
+        /// <summary>
+        /// Advances the <see cref="IDataReader"/> to the next record.
+        /// </summary>
+        /// <returns>true if there are more rows; otherwise, false.</returns>
         public override bool Read() {
             return _enumerator.MoveNext();
         }
@@ -129,24 +115,51 @@ namespace WmcSoft.Data
 
         #region IDataRecord Membres
 
+        /// <summary>
+        /// Gets the number of columns in the current row.
+        /// </summary>
+        /// <value>When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.</value>
         public override int FieldCount
         {
             get { return _properties.Count; }
         }
 
+        /// <summary>
+        /// Gets the data type information for the specified field.
+        /// </summary>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The data type information for the specified field.</returns>
+        /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public override Type GetFieldType(int i) {
             return _properties[i].PropertyType;
         }
 
+        /// <summary>
+        /// Gets the name for the field to find.
+        /// </summary>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The name of the field or the empty string (""), if there is no value to return.</returns>
+        /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public override string GetName(int i) {
             return _properties[i].Name;
         }
 
+        /// <summary>
+        /// Return the index of the named field.
+        /// </summary>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The index of the named field.</returns>
         public override int GetOrdinal(string name) {
             var property = GetProperty(name);
             return _properties.IndexOf(property);
         }
 
+        /// <summary>
+        /// Gets the value of the specified column.
+        /// </summary>
+        /// <param name="i">The zero-based column ordinal.</param>
+        /// <returns>The value of the column.</returns>
+        /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public override object GetValue(int i) {
             return _properties[i].GetValue(_enumerator.Current);
         }

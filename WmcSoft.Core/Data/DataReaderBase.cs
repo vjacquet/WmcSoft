@@ -26,6 +26,7 @@
 
 using System;
 using System.Data;
+using System.Data.Common;
 
 namespace WmcSoft.Data
 {
@@ -46,7 +47,8 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets a value indicating the depth of nesting for the current row.
         /// </summary>
-        public int Depth {
+        public int Depth
+        {
             get { return 0; }
         }
 
@@ -56,18 +58,50 @@ namespace WmcSoft.Data
         /// <returns>A <see cref="DataTable"/> that describes the column metadata</returns>
         /// <exception cref="InvalidOperationException">The <see cref="IDataReader"/> is closed.</exception>
         public virtual DataTable GetSchemaTable() {
-            var dt = new DataTable();
+            var dt = new DataTable("SchemaTable");
+            dt.Locale = System.Globalization.CultureInfo.InvariantCulture;
+
+            dt.AddColumn<string>(SchemaTableColumn.ColumnName);
+            dt.AddColumn<int>(SchemaTableColumn.ColumnOrdinal);
+            dt.AddColumn<Type>(SchemaTableColumn.DataType);
+            dt.AddColumn<int>(SchemaTableColumn.ColumnSize, defaultValue: -1);
+            dt.AddColumn<short>(SchemaTableColumn.NumericPrecision);
+            dt.AddColumn<short>(SchemaTableColumn.NumericScale);
+            dt.AddColumn<int>(SchemaTableColumn.ProviderType);
+            dt.AddColumn<bool>(SchemaTableColumn.IsLong);
+            dt.AddColumn<bool>(SchemaTableColumn.AllowDBNull);
+            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsReadOnly, defaultValue: false);
+            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsRowVersion);
+            dt.AddColumn<bool>(SchemaTableColumn.IsUnique);
+            dt.AddColumn<bool>(SchemaTableColumn.IsKey);
+
             var length = FieldCount;
             for (int i = 0; i < length; i++) {
-                dt.Columns.Add(GetName(i), GetFieldType(i));
+                var dr = GetSchemaRow(dt, i);
+                dt.Rows.Add(dr);
             }
             return dt;
         }
 
         /// <summary>
+        /// Returns a <see cref="DataRow"/> that describes one column of the <see cref="IDataReader"/>.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="i">The index of the column.</param>
+        /// <returns>A <see cref="DataRow"/> that describes one column.</returns>
+        protected virtual DataRow GetSchemaRow(DataTable dataTable, int i) {
+            var dr = dataTable.NewRow();
+            dr[0] = GetName(i);
+            dr[1] = i;
+            dr[2] = GetFieldType(i);
+            return dr;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the data reader is closed.
         /// </summary>
-        public bool IsClosed {
+        public bool IsClosed
+        {
             get { return _disposed; }
         }
 
@@ -88,7 +122,8 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
         /// </summary>
-        public int RecordsAffected {
+        public int RecordsAffected
+        {
             get { return -1; }
         }
 
@@ -125,7 +160,8 @@ namespace WmcSoft.Data
         /// Gets the number of columns in the current row.
         /// </summary>
         /// <value>When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.</value>
-        public abstract int FieldCount {
+        public abstract int FieldCount
+        {
             get;
         }
 
@@ -371,7 +407,8 @@ namespace WmcSoft.Data
         /// <param name="name">The name of the column to find.</param>
         /// <returns>The column with the specified name as an <see cref="System.Object"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">No column with the specified name was found.</exception>
-        public object this[string name] {
+        public object this[string name]
+        {
             get { return GetValue(name); }
         }
 
@@ -381,7 +418,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based index of the column to get.</param>
         /// <returns>The column with the specified name as an <see cref="System.Object"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public object this[int i] {
+        public object this[int i]
+        {
             get { return GetValue(i); }
         }
 
