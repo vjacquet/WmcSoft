@@ -36,7 +36,7 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Performs the job to be done.
         /// </summary>
-        /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
+        /// <param name="serviceProvider">An <see cref="Object"/> that implements <see cref="IServiceProvider"/>.</param>
         void Execute(IServiceProvider serviceProvider);
     }
 }
