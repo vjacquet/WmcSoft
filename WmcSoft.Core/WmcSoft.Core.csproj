@@ -258,7 +258,7 @@
     <Compile Include="Xml\XmlReaderExtensions.cs" />
     <Compile Include="Xml\XmlWriterDecorator.cs" />
     <Compile Include="Xml\EmptyXmlReader.cs" />
-    <Compile Include="Xml\Linq\XDocumentExtensions.cs" />
+    <Compile Include="Xml\Linq\XObjectExtensions.cs" />
     <Compile Include="Xml\XmlNodeExtensions.cs" />
     <Compile Include="Xml\XmlWriterExtensions.cs" />
     <Compile Include="Xml\XPath\DistinctXPathNodeIterator.cs" />

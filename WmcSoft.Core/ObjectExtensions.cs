@@ -25,24 +25,21 @@
 #endregion
 
 using System;
-using System.IO;
-using WmcSoft.IO;
 
 namespace WmcSoft
 {
     public static class ObjectExtensions
     {
-        public static T Clone<T>(this T self) where T : class {
-            var cloneable = self as ICloneable;
-            if (cloneable != null)
-                return (T)cloneable.Clone();
-
-            using (MemoryStream ms = new MemoryStream()) {
-                var f = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                f.Serialize(ms, self);
-                ms.Rewind();
-                return (T)f.Deserialize(ms);
-            }
+        /// <summary>
+        /// Clone the instance.
+        /// </summary>
+        /// <typeparam name="T">The type of the instance</typeparam>
+        /// <param name="self">The instance</param>
+        /// <returns>A clone of the instance.</returns>
+        /// <remarks> This extensions works better for classes implementing <see cref="ICloneable"/> explicitly.</remarks>
+        public static T Clone<T>(this T self)
+            where T : ICloneable {
+            return (T)self.Clone();
         }
     }
 }
