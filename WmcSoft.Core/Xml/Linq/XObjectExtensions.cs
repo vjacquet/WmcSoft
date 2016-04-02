@@ -53,7 +53,6 @@ namespace WmcSoft.Xml.Linq
         /// <summary>
         /// Sets the value of this attribute, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="attribute">The attribute.</param>
         /// <param name="value">The value.</param>
         /// <param name="format">
@@ -65,8 +64,7 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue<TFormattable>(this XAttribute attribute, TFormattable value, string format, IFormatProvider formatProvider = null)
-          where TFormattable : IFormattable {
+        public static void SetValue(this XAttribute attribute, IFormattable value, string format, IFormatProvider formatProvider = null) {
             attribute.SetValue(value != null ? value.ToString(format, formatProvider) : "");
         }
 
@@ -81,15 +79,13 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue<TFormattable>(this XAttribute attribute, TFormattable value, IFormatProvider formatProvider)
-          where TFormattable : IFormattable {
+        public static void SetValue(this XAttribute attribute, IFormattable value, IFormatProvider formatProvider) {
             SetValue(attribute, value, null, formatProvider);
         }
 
         /// <summary>
         /// Sets the value of this element, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="element">The element.</param>
         /// <param name="value">The value.</param>
         /// <param name="format">
@@ -101,15 +97,13 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue<TFormattable>(this XElement element, TFormattable value, string format, IFormatProvider formatProvider = null)
-          where TFormattable : IFormattable {
+        public static void SetValue(this XElement element, IFormattable value, string format, IFormatProvider formatProvider = null) {
             element.SetValue(value != null ? value.ToString(format, formatProvider) : "");
         }
 
         /// <summary>
         /// Sets the value of this element, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="element">The element.</param>
         /// <param name="value">The value.</param>
         /// <param name="formatProvider">
@@ -117,15 +111,13 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue<TFormattable>(this XElement element, TFormattable value, IFormatProvider formatProvider)
-          where TFormattable : IFormattable {
+        public static void SetValue(this XElement element, IFormattable value, IFormatProvider formatProvider) {
             SetValue(element, value, null, formatProvider);
         }
 
         /// <summary>
         /// Sets the value of an attribute, adds an attribute, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="element">The element.</param>
         /// <param name="name">An <seealso cref="XName"/> that contains the name of the attribute to change.</param>
         /// <param name="value">The value.</param>
@@ -138,15 +130,13 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetAttributeValue<TFormattable>(this XElement element, XName name, TFormattable value, string format, IFormatProvider formatProvider = null)
-          where TFormattable : IFormattable {
+        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null) {
             element.SetAttributeValue(name, value != null ? value.ToString(format, formatProvider) : null);
         }
 
         /// <summary>
         /// Sets the value of an attribute, adds an attribute, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="element">The element.</param>
         /// <param name="name">An <seealso cref="XName"/> that contains the name of the attribute to change.</param>
         /// <param name="value">The value.</param>
@@ -155,15 +145,13 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetAttributeValue<TFormattable>(this XElement element, XName name, TFormattable value, IFormatProvider formatProvider)
-          where TFormattable : IFormattable {
+        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider) {
             SetAttributeValue(element, name, value, null, formatProvider);
         }
 
         /// <summary>
         /// Sets the value of a child element, adds a child element, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="element">The element.</param>
         /// <param name="name">An <seealso cref="XName"/> that contains the name of the attribute to change.</param>
         /// <param name="value">The value.</param>
@@ -176,15 +164,13 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetElementValue<TFormattable>(this XElement element, XName name, TFormattable value, string format, IFormatProvider formatProvider = null)
-          where TFormattable : IFormattable {
+        public static void SetElementValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null) {
             element.SetElementValue(name, value != null ? value.ToString(format, formatProvider) : null);
         }
 
         /// <summary>
         /// Sets the value of a child element, adds a child element, after formating it.
         /// </summary>
-        /// <typeparam name="TFormattable">A type that implement <see cref="IFormattable"/>.</typeparam>
         /// <param name="element">The element.</param>
         /// <param name="name">An <seealso cref="XName"/> that contains the name of the attribute to change.</param>
         /// <param name="value">The value.</param>
@@ -193,8 +179,7 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetElementValue<TFormattable>(this XElement element, XName name, TFormattable value, IFormatProvider formatProvider)
-          where TFormattable : IFormattable {
+        public static void SetElementValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider) {
             SetElementValue(element, name, value, null, formatProvider);
         }
 
