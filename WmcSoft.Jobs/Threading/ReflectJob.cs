@@ -47,15 +47,14 @@ namespace WmcSoft.Threading
             constructors = new Dictionary<string, ConstructorInfo>();
         }
 
-        static ConstructorInfo GetConstructor(string typeName, IEnumerable<Type> types) {
+        static ConstructorInfo GetConstructor(string typeName, Type[] parameters) {
             lock (syncRoot) {
                 ConstructorInfo ctor;
                 if (!constructors.TryGetValue(typeName, out ctor)) {
-                    Type type = Type.GetType(typeName, true);
-                    Type[] parameters = types.ToArray();
+                    var type = Type.GetType(typeName, true);
                     ctor = type.GetConstructor(parameters);
                     if (ctor == null) {
-                        StringBuilder sb = new StringBuilder(".ctor(");
+                        var sb = new StringBuilder(".ctor(");
                         if (parameters.Length > 0) {
                             sb.Append(parameters[0].FullName);
                             for (int i = 1; i < parameters.Length; i++) {
@@ -105,11 +104,12 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Gets the job instance.
         /// </summary>
-        public IJob Instance {
+        public IJob Instance
+        {
             get {
                 if (instance == null) {
                     var type = Type.GetType(TypeName, true);
-                    var ctor = GetConstructor(TypeName, Parameters.Select(o => o.GetType()));
+                    var ctor = GetConstructor(TypeName, Array.ConvertAll(Parameters, o => o.GetType()));
                     instance = (IJob)ctor.Invoke(Parameters);
                 }
                 return instance;
