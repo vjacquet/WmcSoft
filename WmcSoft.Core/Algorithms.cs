@@ -485,6 +485,7 @@ namespace WmcSoft
         /// <param name="secondary">The secondary enumerable.</param>
         /// <param name="relation">The relation</param>
         /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns false.</returns>
+        /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
         public static IEnumerable<T> Mismatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation) {
             using (var p = primary.GetEnumerator())
             using (var s = secondary.GetEnumerator()) {
