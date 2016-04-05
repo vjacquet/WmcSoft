@@ -35,6 +35,14 @@ namespace WmcSoft.CodeDom
     {
         #region FindCode
 
+        /// <summary>
+        /// Finds the statements matching the predicate.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CodeObject"/>.</typeparam>
+        /// <param name="statements">The collection of statements to look into.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>The statements matching the predicate.</returns>
+        /// <remarks><see cref="CodeExpressionStatement"/> are traversed.</remarks>
         public static IEnumerable<T> FindCode<T>(this CodeStatementCollection statements, Predicate<T> predicate)
             where T : CodeObject {
             foreach (CodeStatement statement in statements) {
@@ -49,7 +57,15 @@ namespace WmcSoft.CodeDom
             }
         }
 
-        public static T FindFirstCode<T>(this CodeStatementCollection statements, Predicate<T> matchesFilter)
+        /// <summary>
+        /// Finds the first statement matching the predicate.
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="CodeObject"/>.</typeparam>
+        /// <param name="statements">The collection of statements to look into.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>The first statement matching the predicate.</returns>
+        /// <remarks><see cref="CodeExpressionStatement"/> are traversed.</remarks>
+        public static T FindFirstCode<T>(this CodeStatementCollection statements, Predicate<T> predicate)
             where T : CodeObject {
             foreach (CodeStatement statement in statements) {
                 T expression = statement as T;
@@ -57,7 +73,7 @@ namespace WmcSoft.CodeDom
                 if ((expression == null) && (expressionStatement != null)) {
                     expression = expressionStatement.Expression as T;
                 }
-                if ((expression != null) && matchesFilter(expression)) {
+                if ((expression != null) && predicate(expression)) {
                     return expression;
                 }
             }
@@ -101,21 +117,42 @@ namespace WmcSoft.CodeDom
 
         #region Comments
 
+        /// <summary>
+        /// Adds comments to the member.
+        /// </summary>
+        /// <typeparam name="T">The type of the member.</typeparam>
+        /// <param name="member">The member.</param>
+        /// <param name="comments">The comments</param>
+        /// <returns>The member, to allow chaining.</returns>
         public static T Comment<T>(this T member, params CodeCommentStatement[] comments)
             where T : CodeTypeMember {
             member.Comments.AddRange(comments);
             return member;
         }
 
+        /// <summary>
+        /// Adds comments to the member.
+        /// </summary>
+        /// <typeparam name="T">The type of the member.</typeparam>
+        /// <param name="member">The member.</param>
+        /// <param name="comments">The comments</param>
+        /// <returns>The member, to allow chaining.</returns>
         public static T Comment<T>(this T member, params string[] comments)
             where T : CodeTypeMember {
-            member.Comments.AddRange(comments.Select((c) => new CodeCommentStatement(c)).ToArray());
+            member.Comments.AddRange(Array.ConvertAll(comments, c => new CodeCommentStatement(c)));
             return member;
         }
 
+        /// <summary>
+        /// Adds document comments to the member.
+        /// </summary>
+        /// <typeparam name="T">The type of the member.</typeparam>
+        /// <param name="member">The member.</param>
+        /// <param name="comments">The comments</param>
+        /// <returns>The member, to allow chaining.</returns>
         public static T Document<T>(this T member, params string[] comments)
             where T : CodeTypeMember {
-            member.Comments.AddRange(comments.Select((c) => new CodeCommentStatement(c, true)).ToArray());
+            member.Comments.AddRange(Array.ConvertAll(comments, c => new CodeCommentStatement(c, true)));
             return member;
         }
 

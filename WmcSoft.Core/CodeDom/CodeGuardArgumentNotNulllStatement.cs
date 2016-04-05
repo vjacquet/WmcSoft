@@ -33,9 +33,7 @@ namespace WmcSoft.CodeDom
     /// <summary>
     /// Represents a code statement guarding a parameter against null value.
     /// </summary>
-    /// <remarks>
-    /// if(arg == null) throw new ArgmentNullException("arg");
-    /// </remarks>
+    /// <remarks>Generates <code>if(arg == null) throw new ArgmentNullException("arg");</code></remarks>
     [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]
     public class CodeGuardArgumentNotNulllStatement : CodeConditionStatement
     {
@@ -63,7 +61,8 @@ namespace WmcSoft.CodeDom
 
         #region Properties
 
-        public string ArgumentName {
+        public string ArgumentName
+        {
             get {
                 return _variable.VariableName;
             }
