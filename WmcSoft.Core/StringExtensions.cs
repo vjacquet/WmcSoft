@@ -781,6 +781,10 @@ namespace WmcSoft
             return self.Substring(0, index);
         }
 
+        public static string SubstringBeforeOrSelf(this string self, char find) {
+            return SubstringBefore(self, find) ?? self;
+        }
+
         /// <summary>
         /// Extracts the substring that precedes the <paramref name="find"/> string.
         /// </summary>
@@ -799,6 +803,10 @@ namespace WmcSoft
             return self.Substring(0, index);
         }
 
+        public static string SubstringBeforeOrSelf(this string self, string find) {
+            return SubstringBefore(self, find) ?? self;
+        }
+
         /// <summary>
         /// Extracts the substring that follows the <paramref name="find"/> char.
         /// </summary>
@@ -813,6 +821,10 @@ namespace WmcSoft
             if (index < 0)
                 return null;
             return self.Substring(index + 1);
+        }
+
+        public static string SubstringAfterOrSelf(this string self, char find) {
+            return SubstringAfter(self, find) ?? self;
         }
 
         /// <summary>
@@ -833,6 +845,10 @@ namespace WmcSoft
             return self.Substring(index + find.Length);
         }
 
+        public static string SubstringAfterOrSelf(this string self, string find) {
+            return SubstringAfter(self, find) ?? self;
+        }
+
         /// <summary>
         /// Extracts the substring between the prefix and the suffix.
         /// </summary>
@@ -843,16 +859,21 @@ namespace WmcSoft
         public static string SubstringBetween(this string self, string prefix, string suffix) {
             if (String.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
-            else if (String.IsNullOrEmpty(prefix))
-                return SubstringBefore(self, suffix);
+            else if (String.IsNullOrEmpty(suffix))
+                return SubstringAfter(self, prefix);
 
             int start = self.IndexOf(prefix, StringComparison.Ordinal);
             if (start < 0)
-                start = 0;
-            int end = self.IndexOf(suffix, StringComparison.Ordinal);
+                return null;
+            start += prefix.Length;
+            int end = self.IndexOf(suffix, start, StringComparison.Ordinal);
             if (end < 0)
-                end = self.Length;
+                return null;
             return self.Substring(start, end - start);
+        }
+
+        public static string SubstringBetweenOrSelf(this string self, string prefix, string suffix) {
+            return SubstringBetween(self, prefix, suffix) ?? self;
         }
 
         /// <summary>

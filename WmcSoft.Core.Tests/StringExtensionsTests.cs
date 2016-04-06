@@ -72,6 +72,15 @@ namespace WmcSoft
         }
 
         [TestMethod]
+        public void CheckSubstringBetween() {
+            Assert.AreEqual(null, "".SubstringBetween("q", "r"));
+            Assert.AreEqual("a-b", "a[a-b]b".SubstringBetween("[", "]"));
+            Assert.AreEqual(null, "a[a-b]b".SubstringBetween("]", "["));
+            Assert.AreEqual("a-b", "a]a-b]b".SubstringBetween("]", "]"));
+            Assert.AreEqual("", "a[]b".SubstringBetween("[", "]"));
+        }
+
+        [TestMethod]
         public void CheckLeft() {
             Assert.AreEqual("abc", "abcdef".Left(3));
             Assert.AreEqual("abc", "abc".Left(5));
