@@ -781,6 +781,12 @@ namespace WmcSoft
             return self.Substring(0, index);
         }
 
+        /// <summary>
+        /// Extracts the substring that precedes the <paramref name="find"/> char.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
         public static string SubstringBeforeOrSelf(this string self, char find) {
             return SubstringBefore(self, find) ?? self;
         }
@@ -803,6 +809,12 @@ namespace WmcSoft
             return self.Substring(0, index);
         }
 
+        /// <summary>
+        /// Extracts the substring that precedes the <paramref name="find"/> string.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
         public static string SubstringBeforeOrSelf(this string self, string find) {
             return SubstringBefore(self, find) ?? self;
         }
@@ -823,6 +835,12 @@ namespace WmcSoft
             return self.Substring(index + 1);
         }
 
+        /// <summary>
+        /// Extracts the substring that follows the <paramref name="find"/> char.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
         public static string SubstringAfterOrSelf(this string self, char find) {
             return SubstringAfter(self, find) ?? self;
         }
@@ -845,6 +863,12 @@ namespace WmcSoft
             return self.Substring(index + find.Length);
         }
 
+        /// <summary>
+        /// Extracts the substring that follows the <paramref name="find"/> string.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
         public static string SubstringAfterOrSelf(this string self, string find) {
             return SubstringAfter(self, find) ?? self;
         }
@@ -855,7 +879,7 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
-        /// <returns>The substring between the prefix and the suffix.</returns>
+        /// <returns>The substring between the prefix and the suffix, or null if the prefix or the suffix is not found.</returns>
         public static string SubstringBetween(this string self, string prefix, string suffix) {
             if (String.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
@@ -872,6 +896,13 @@ namespace WmcSoft
             return self.Substring(start, end - start);
         }
 
+        /// <summary>
+        /// Extracts the substring between the prefix and the suffix.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="prefix">The prefix.</param>
+        /// <param name="suffix">The suffix.</param>
+        /// <returns>The substring between the prefix and the suffix, or the string if the prefix or the suffix is not found.</returns>
         public static string SubstringBetweenOrSelf(this string self, string prefix, string suffix) {
             return SubstringBetween(self, prefix, suffix) ?? self;
         }

@@ -33,6 +33,9 @@ using System.Text;
 
 namespace WmcSoft.Text
 {
+    /// <summary>
+    /// Represents a lazy substring of a string.
+    /// </summary>
     public sealed class Strip : IComparable<string>, ICloneable<Strip>, IReadOnlyList<char>, IList<char>
     {
         #region Public fields
