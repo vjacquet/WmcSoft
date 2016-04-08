@@ -36,7 +36,7 @@ namespace WmcSoft.Text
     /// <summary>
     /// Represents a lazy substring of a string.
     /// </summary>
-    public sealed class Strip : IComparable<string>, ICloneable<Strip>, IReadOnlyList<char>, IList<char>
+    public sealed class Strip : IEquatable<string>, IComparable<string>, ICloneable<Strip>, IReadOnlyList<char>, IList<char>
     {
         #region Public fields
 
@@ -81,7 +81,7 @@ namespace WmcSoft.Text
             _end = startIndex + length;
         }
 
-        public static implicit operator string (Strip s) {
+        public static implicit operator string(Strip s) {
             return s == null ? null : s.ToString();
         }
 
@@ -105,7 +105,8 @@ namespace WmcSoft.Text
 
         #region String-like properties & methods
 
-        public int Length {
+        public int Length
+        {
             get { return _end - _start; }
         }
 
@@ -374,6 +375,10 @@ namespace WmcSoft.Text
             return DoEqual(_s, _end - length, value, 0, length, comparisonType);
         }
 
+        public char[] ToCharArray() {
+            return _s.ToCharArray(_start, Length);
+        }
+
         #endregion
 
         #region Overrides
@@ -406,6 +411,16 @@ namespace WmcSoft.Text
         #endregion
 
         #region Compare
+
+        public bool Equals(string other) {
+            return CompareTo(other) == 0;
+        }
+
+        public bool Equals(string other, StringComparison comparisonType) {
+            if (other == null || Length != other.Length)
+                return false;
+            return DoEqual(_s, _start, other, 0, other.Length, comparisonType);
+        }
 
         public int CompareTo(string other) {
             var culture = CultureInfo.CurrentCulture;
@@ -506,11 +521,13 @@ namespace WmcSoft.Text
 
         #region IReadOnlyList<char> Members
 
-        int IReadOnlyCollection<char>.Count {
+        int IReadOnlyCollection<char>.Count
+        {
             get { return Length; }
         }
 
-        public char this[int index] {
+        public char this[int index]
+        {
             get { return _s[_start + index]; }
         }
 
@@ -528,15 +545,18 @@ namespace WmcSoft.Text
 
         #region IList<char> Members
 
-        int ICollection<char>.Count {
+        int ICollection<char>.Count
+        {
             get { return Length; }
         }
 
-        public bool IsReadOnly {
+        public bool IsReadOnly
+        {
             get { return true; }
         }
 
-        char IList<char>.this[int index] {
+        char IList<char>.this[int index]
+        {
             get { return _s[_start + index]; }
             set { throw new NotSupportedException(); }
         }
@@ -601,6 +621,10 @@ namespace WmcSoft.Text
             if (String.IsNullOrEmpty(_s) || Length == 0)
                 return sb;
             return sb.Insert(index, _s.Substring(_start, Length));
+        }
+
+        internal StringBuilder ToStringBuilder(int capacity = 0) {
+            return new StringBuilder(_s, _start, Length, capacity);
         }
 
         #endregion

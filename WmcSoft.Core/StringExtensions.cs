@@ -605,10 +605,8 @@ namespace WmcSoft
             if (self == null || self.Length == 0)
                 return self;
 
-            StringBuilder sb = new StringBuilder(self);
-            foreach (var arg in args) {
-                sb.Replace(arg, "");
-            }
+            var sb = new StringBuilder(self);
+            sb.Remove(args);
             return sb.ToString();
         }
 
@@ -1024,11 +1022,11 @@ namespace WmcSoft
         /// <summary>
         /// Translates the chars of the <paramref name="source "/> into the corresponding chars in the <paramref name="target"/>.
         /// </summary>
-        /// <param name="self">The string.</param>
+        /// <param name="self">The array of chars.</param>
         /// <param name="source">The source chars.</param>
         /// <param name="target">The target chars.</param>
         /// <returns>The translated string.</returns>
-        public static string Translate(this string self, string source, string target) {
+        public static string Translate(this char[] self, string source, string target) {
             var normalized = target;
             if (target.Length < source.Length)
                 normalized += new String('\0', source.Length - target.Length);
@@ -1037,16 +1035,25 @@ namespace WmcSoft
                 .ToArray();
 
             var comparer = new AnonymousComparer<KeyValuePair<char, char>>((x, y) => x.Key.CompareTo(y.Key));
-            var array = self.ToCharArray();
             int j = 0;
-            for (int i = 0; i < array.Length; i++) {
-                int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(array[i], '\0'), comparer);
+            for (int i = 0; i < self.Length; i++) {
+                int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(self[i], '\0'), comparer);
                 if (found < 0)
-                    array[j++] = array[i];
+                    self[j++] = self[i];
                 else if (mapping[found].Value != '\0')
-                    array[j++] = mapping[found].Value;
+                    self[j++] = mapping[found].Value;
             }
-            return new String(array, 0, j);
+            return new String(self, 0, j);
+        }
+        /// <summary>
+        /// Translates the chars of the <paramref name="source "/> into the corresponding chars in the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="source">The source chars.</param>
+        /// <param name="target">The target chars.</param>
+        /// <returns>The translated string.</returns>
+        public static string Translate(this string self, string source, string target) {
+            return Translate(self.ToCharArray(), source, target);
         }
 
         #endregion

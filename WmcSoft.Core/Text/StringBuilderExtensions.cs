@@ -130,6 +130,23 @@ namespace WmcSoft.Text
 
         #endregion
 
+        #region Remove
+
+        /// <summary>
+        /// Removes the specified substrings from the <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="args">The substrings to remove.</param>
+        /// <returns>The string without the specified substrings.</returns>
+        public static StringBuilder Remove(this StringBuilder self, params string[] args) {
+            foreach (var arg in args) {
+                self.Replace(arg, "");
+            }
+            return self;
+        }
+
+        #endregion
+
         #region SurroundWith
 
         /// <summary>
