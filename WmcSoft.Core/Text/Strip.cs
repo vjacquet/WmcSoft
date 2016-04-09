@@ -156,8 +156,12 @@ namespace WmcSoft.Text
             return RebaseIndex(_s.IndexOfAny(anyOf, _start + startIndex, count));
         }
 
-        public int IndexOf(string value, StringComparison comparisonType) {
-            return RebaseIndex(_s.IndexOf(value, _start, Length, comparisonType));
+        public int IndexOf(string value, StringComparison comparison) {
+            return RebaseIndex(_s.IndexOf(value, _start, Length, comparison));
+        }
+
+        public int IndexOf(string value, int startIndex, StringComparison comparison) {
+            return RebaseIndex(_s.IndexOf(value, _start + startIndex, Length, comparison));
         }
 
         public int LastIndexOf(char value) {
