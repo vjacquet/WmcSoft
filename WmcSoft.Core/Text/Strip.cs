@@ -148,6 +148,14 @@ namespace WmcSoft.Text
             return RebaseIndex(_s.IndexOfAny(anyOf, _start, Length));
         }
 
+        public int IndexOfAny(char[] anyOf, int startIndex) {
+            return RebaseIndex(_s.IndexOfAny(anyOf, _start + startIndex, Length));
+        }
+
+        public int IndexOfAny(char[] anyOf, int startIndex, int count) {
+            return RebaseIndex(_s.IndexOfAny(anyOf, _start + startIndex, count));
+        }
+
         public int IndexOf(string value, StringComparison comparisonType) {
             return RebaseIndex(_s.IndexOf(value, _start, Length, comparisonType));
         }
@@ -609,6 +617,12 @@ namespace WmcSoft.Text
             if (String.IsNullOrEmpty(_s) || Length == 0)
                 return sb;
             return sb.Append(_s, _start, Length);
+        }
+
+        internal StringBuilder AppendTo(StringBuilder sb, int startIndex, int count) {
+            if (String.IsNullOrEmpty(_s) || Length == 0)
+                return sb;
+            return sb.Append(_s, _start + startIndex, count);
         }
 
         internal StringBuilder PrependTo(StringBuilder sb) {

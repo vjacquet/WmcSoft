@@ -36,6 +36,10 @@ namespace WmcSoft.Text
             return value.AppendTo(sb);
         }
 
+        public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count) {
+            return value.AppendTo(sb, startIndex, count);
+        }
+
         #endregion
 
         #region Insert
