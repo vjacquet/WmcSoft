@@ -574,25 +574,8 @@ namespace WmcSoft
             if (self == null || self.Length == 0)
                 return self;
 
-            var sb = new StringBuilder();
-            int pos = 0;
-            int count = self.Length;
-            while (true) {
-                var found = self.IndexOfAny(args, pos, count);
-                if (found < 0) {
-                    sb.Append(self, pos, count);
-                    break;
-                } else if (found == pos) {
-                    pos++;
-                    count--;
-                    continue;
-                } else {
-                    sb.Append(self, pos, found - pos);
-                    count -= found - pos + 1;
-                    pos = found + 1;
-                }
-            }
-            return sb.ToString();
+            var adapter = new StringAdapter(self);
+            return adapter.Remove(args);
         }
 
         /// <summary>
