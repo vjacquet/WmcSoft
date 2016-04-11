@@ -103,7 +103,7 @@ namespace WmcSoft.Runtime.Remoting.Services
         /// <param name="or">The <see cref="ObjRef"/> that represents the specified object.</param>
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]
         public void UnmarshaledObject(Object obj, ObjRef or) {
-            _traceSource.TraceInformation(String.Format("Tracking: An instance of {0} was unmarshaled."), obj.ToString());
+            _traceSource.TraceInformation("Tracking: An instance of {0} was unmarshaled.", obj.ToString());
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace WmcSoft.Runtime.Remoting.Services
         /// <param name="obj">The disconnected object.</param>
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]
         public void DisconnectedObject(Object obj) {
-            _traceSource.TraceInformation(String.Format("Tracking: An instance of {0} was disconnected."), obj.ToString());
+            _traceSource.TraceInformation("Tracking: An instance of {0} was disconnected.", obj.ToString());
         }
 
         #endregion

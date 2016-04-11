@@ -82,11 +82,12 @@ namespace WmcSoft.Configuration
             return Count != count;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033:nterfaceMethodsShouldBeCallableByChildTypes")]
         bool ICollection<T>.IsReadOnly {
             get { return base.IsReadOnly(); }
         }
 
-        void ICollection<T>.Clear() {
+        public void Clear() {
             BaseClear();
         }
 

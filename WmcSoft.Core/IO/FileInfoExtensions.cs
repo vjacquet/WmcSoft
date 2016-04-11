@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
 
 namespace WmcSoft.IO
 {
@@ -44,14 +43,6 @@ namespace WmcSoft.IO
             public int dwStreamNameSize;
         }
 
-        [DllImport("kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool BackupRead(SafeFileHandle hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
-
-        [DllImport("kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool BackupSeek(SafeFileHandle hFile, uint dwLowBytesToSeek, uint dwHighBytesToSeek, out uint lpdwLowByteSeeked, out uint lpdwHighByteSeeked, ref IntPtr lpContext);
-
         public static IEnumerable<FileStreamInfo> EnumerateFileStreamsInfo(this FileInfo file) {
             const int bufferSize = 4096;
             using (FileStream fs = file.OpenRead()) {
@@ -60,7 +51,7 @@ namespace WmcSoft.IO
                 try {
                     while (true) {
                         uint numRead;
-                        if (!BackupRead(fs.SafeFileHandle, buffer,
+                        if (!NativeMethods.BackupRead(fs.SafeFileHandle, buffer,
                            (uint)Marshal.SizeOf(typeof(Win32StreamID)), out numRead,
                            false, true, ref context))
                             throw new Win32Exception();
@@ -70,7 +61,7 @@ namespace WmcSoft.IO
                               Marshal.PtrToStructure(buffer, typeof(Win32StreamID));
                             string name = null;
                             if (streamID.dwStreamNameSize > 0) {
-                                if (!BackupRead(fs.SafeFileHandle, buffer,
+                                if (!NativeMethods.BackupRead(fs.SafeFileHandle, buffer,
                                      (uint)System.Math.Min(bufferSize, streamID.dwStreamNameSize),
                                      out numRead, false, true, ref context))
                                     throw new Win32Exception();
@@ -81,7 +72,7 @@ namespace WmcSoft.IO
 
                             if (streamID.Size > 0) {
                                 uint lo, hi;
-                                BackupSeek(fs.SafeFileHandle, uint.MaxValue,
+                                NativeMethods.BackupSeek(fs.SafeFileHandle, uint.MaxValue,
                                   int.MaxValue, out lo, out hi, ref context);
                             }
                         } else
@@ -91,7 +82,7 @@ namespace WmcSoft.IO
                 finally {
                     Marshal.FreeHGlobal(buffer);
                     uint numRead;
-                    if (!BackupRead(fs.SafeFileHandle, IntPtr.Zero, 0, out numRead,
+                    if (!NativeMethods.BackupRead(fs.SafeFileHandle, IntPtr.Zero, 0, out numRead,
                          true, false, ref context))
                         throw new Win32Exception();
                 }

@@ -28,36 +28,26 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Microsoft.Win32.SafeHandles;
-using System.Runtime.ConstrainedExecution;
-using System.Security;
 
 namespace WmcSoft.IO
 {
     /// <summary>
     /// Impersonates a user to allow access to network resources over CIFS.
     /// </summary>
-    public class Impersonate : IDisposable
+    public sealed class Impersonate : IDisposable
     {
         #region internals
-        sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
+
+        internal sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
         {
             private SafeTokenHandle()
                 : base(true) {
             }
 
-            [DllImport("kernel32.dll")]
-            [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-            [SuppressUnmanagedCodeSecurity]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            private static extern bool CloseHandle(IntPtr handle);
-
             protected override bool ReleaseHandle() {
-                return CloseHandle(handle);
+                return NativeMethods.CloseHandle(handle);
             }
         }
-
-        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);
 
         #endregion
 
@@ -83,7 +73,7 @@ namespace WmcSoft.IO
             //const int LOGON32_LOGON_NETWORK_CLEARTEXT = 8;
             const int LOGON32_LOGON_NEW_CREDENTIALS = 9;
 
-            bool returnValue = LogonUser(userName, domainName, password, LOGON32_LOGON_NEW_CREDENTIALS, LOGON32_PROVIDER_DEFAULT, out _safeTokenHandle);
+            bool returnValue = NativeMethods.LogonUser(userName, domainName, password, LOGON32_LOGON_NEW_CREDENTIALS, LOGON32_PROVIDER_DEFAULT, out _safeTokenHandle);
             if (false == returnValue) {
                 throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
             }
@@ -95,7 +85,7 @@ namespace WmcSoft.IO
 
         #region IDisposable Members
 
-        void IDisposable.Dispose() {
+        public void Dispose() {
             if (_impersonatedUser != null) {
                 _impersonatedUser.Dispose();
                 _impersonatedUser = null;

@@ -35,7 +35,7 @@ namespace WmcSoft.Net
     /// </summary>
     public abstract class WebClientBatch : Batch<WebClientBatch.Scope>
     {
-        public class Scope : IDisposable
+        public sealed class Scope : IDisposable
         {
             private readonly Uri _baseUri;
             private readonly string _method;

@@ -38,7 +38,7 @@ namespace WmcSoft
 
         #region Lifecycle
 
-        public Unsubscriber(Action unsubscribe)  {
+        public Unsubscriber(Action unsubscribe) {
             if (unsubscribe == null)
                 throw new ArgumentNullException("unsubscribe");
 
@@ -69,10 +69,10 @@ namespace WmcSoft
 
         ~Unsubscriber() {
             // in the finalizer only when not disposed, so _unsubscribe cannot be null
-            _unsubscribe(); 
+            _unsubscribe();
         }
 
-        void IDisposable.Dispose() {
+        public void Dispose() {
             if (_unsubscribe != null) {
                 _unsubscribe();
                 _unsubscribe = null;

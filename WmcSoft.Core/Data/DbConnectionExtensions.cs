@@ -58,6 +58,7 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="parameters">The parameters of the SQL statement or stored procedure.</param>
         /// <returns>The command.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
         public static IDbCommand CreateCommand(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
             var command = connection.CreateCommand();
             command.CommandType = commandType;
@@ -248,7 +249,7 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         public static Func<T1, T2, T3, T4, T5, T6, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
-        IDbDataParameter[] p;
+            IDbDataParameter[] p;
             var command = Prepare(6, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
             return (p0, p1, p2, p3, p4, p5) => {

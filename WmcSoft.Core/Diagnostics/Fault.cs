@@ -58,6 +58,14 @@ namespace WmcSoft.Diagnostics
 
         #region Operators
 
+        public static bool operator ==(Fault x, Fault y) {
+            return Equals(x, y);
+        }
+
+        public static bool operator !=(Fault x, Fault y) {
+            return Equals(x, y);
+        }
+
         public static implicit operator Fault(Exception x) {
             return new Fault(x);
         }
