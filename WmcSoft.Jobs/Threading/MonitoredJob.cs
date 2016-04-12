@@ -33,8 +33,8 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        public event JobMonitoringHandler Executing;
-        public event JobMonitoringHandler Executed;
+        public event JobMonitoringEventHandler Executing;
+        public event JobMonitoringEventHandler Executed;
 
         private readonly Stopwatch _stopWatch;
         private long _delayBeforeExecute;
@@ -91,12 +91,13 @@ namespace WmcSoft.Threading
         #region Overridables
 
         protected sealed override void DoExecute(IServiceProvider serviceProvider) {
-            JobMonitoringHandler handler;
-
             _delayBeforeExecute = _stopWatch.ElapsedTicks;
+            JobMonitoringEventHandler handler;
+            JobMonitoringEventArgs e = new JobMonitoringEventArgs(_decorated);
+
             handler = Executing;
             if (handler != null)
-                handler(_decorated);
+                handler(this, e);
 
             try {
                 _decorated.Execute(serviceProvider);
@@ -107,12 +108,24 @@ namespace WmcSoft.Threading
 
                 handler = Executed;
                 if (handler != null)
-                    handler(_decorated);
+                    handler(this, e);
             }
         }
 
         #endregion
     }
 
-    public delegate void JobMonitoringHandler(IJob job);
+    //public delegate void JobMonitoringHandler(IJob job);
+    public delegate void JobMonitoringEventHandler(object sender, JobMonitoringEventArgs e);
+
+    public class JobMonitoringEventArgs : EventArgs
+    {
+        private readonly IJob _job;
+
+        public JobMonitoringEventArgs(IJob job) {
+            _job = job;
+        }
+
+        public IJob Job { get; }
+    }
 }

@@ -52,9 +52,9 @@ namespace WmcSoft.Threading
                 base.Dispatch(monitored);
             }
 
-            void monitored_Executed(IJob job) {
+            void monitored_Executed(object sender, JobMonitoringEventArgs e) {
                 // unregister to prevent being called twice if dispatched again.
-                var monitored = (MonitoredJob)job;
+                var monitored = (MonitoredJob)sender;
                 monitored.Executed -= monitored_Executed;
 
                 if (0 == Interlocked.Decrement(ref _workingJobs))
