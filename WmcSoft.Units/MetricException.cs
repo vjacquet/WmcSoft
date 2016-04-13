@@ -32,6 +32,7 @@ namespace WmcSoft.Units
     /// <summary>
     /// Description résumée de MetricException.
     /// </summary>
+    [Serializable]
     public abstract class MetricException : ApplicationException
     {
         protected MetricException(string message)
