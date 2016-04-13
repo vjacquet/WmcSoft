@@ -37,7 +37,7 @@ using System.Threading;
 namespace WmcSoft.Data
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="IDbCommand"/> interface. This is a static class. 
+    /// Defines extension methods to the <see cref="IDbCommand"/> interface. This is a static class. 
     /// </summary>
     public static class DbCommandExtensions
     {

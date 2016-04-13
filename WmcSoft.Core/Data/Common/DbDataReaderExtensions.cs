@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
@@ -39,21 +40,23 @@ namespace WmcSoft.Data.Common
         #region GetObjectFromXml
 
         public static T GetObjectFromXml<T>(this DbDataReader reader, int i)
-            where T : new() {
-            var sqlClient = reader as SqlDataReader;
-            if (sqlClient != null)
-                return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i);
-            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i);
+            where T : class {
+            return GetObjectFromXml<T>(reader, i, new DataContractSerializer(typeof(T)));
         }
 
         public static T GetObjectFromXml<T>(this DbDataReader reader, int i, IDataContractSurrogate surrogate)
-            where T : new() {
-            var sqlClient = reader as SqlDataReader;
-            if (sqlClient != null)
-                return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i, surrogate);
-            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i, surrogate);
+            where T : class {
+            return GetObjectFromXml<T>(reader, i, new DataContractSerializer(typeof(T), Type.EmptyTypes, Int16.MaxValue, false, true, surrogate));
         }
 
-        #endregion
+        public static T GetObjectFromXml<T>(this DbDataReader reader, int i, XmlObjectSerializer serializer)
+            where T : class {
+            var sqlClient = reader as SqlDataReader;
+            if (sqlClient != null)
+                return SqlDataReaderExtensions.GetObjectFromXml<T>(sqlClient, i, serializer);
+            return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i, serializer);
+        }
     }
+
+    #endregion
 }
