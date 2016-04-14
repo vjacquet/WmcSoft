@@ -25,17 +25,75 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
 
 namespace WmcSoft.Collections.Specialized
 {
     public static class NameValueCollectionExtensions
     {
+        #region Conversion adapters
+
+        internal class EmptyArray<TElement>
+        {
+            public static readonly TElement[] Instance = new TElement[0];
+        }
+
+        public interface IConverter<in TInput, out TOutput>
+        {
+            TOutput Convert(TInput input);
+        }
+
+        struct TypeConverterAdapter<TOutput> : IConverter<string, TOutput>
+        {
+            private readonly TypeConverter _converter;
+
+            public TypeConverterAdapter(TypeConverter converter) {
+                if (converter == null) throw new ArgumentNullException("converter");
+                if (!converter.CanConvertFrom(typeof(string))) throw new ArgumentException("converter");
+                _converter = converter;
+            }
+
+            public TOutput Convert(string input) {
+                return (TOutput)_converter.ConvertFromInvariantString(input);
+            }
+        }
+
+        struct ConverterAdapter<TOutput> : IConverter<string, TOutput>
+        {
+            private readonly Converter<string, TOutput> _converter;
+
+            public ConverterAdapter(Converter<string, TOutput> converter) {
+                if (converter == null) throw new ArgumentNullException("converter");
+                _converter = converter;
+            }
+
+            public TOutput Convert(string input) {
+                return _converter(input);
+            }
+        }
+
+        #endregion
+
         #region GetValue(s)
+
+        static T GetValue<TConverter, T>(NameValueCollection collection, string name, TConverter converter, Func<T> defaultValue)
+            where TConverter : IConverter<string, T> {
+            var value = collection[name];
+            return (value == null) ? defaultValue() : converter.Convert(value);
+        }
+
+        static T GetValue<TConverter, T>(NameValueCollection collection, string name, TConverter converter, T defaultValue)
+            where TConverter : IConverter<string, T> {
+            var value = collection[name];
+            return (value == null) ? defaultValue : converter.Convert(value);
+        }
+
+        static T[] GetValues<TConverter, T>(NameValueCollection collection, string name, TConverter converter, T[] defaultValue)
+            where TConverter : IConverter<string, T> {
+            var values = collection.GetValues(name);
+            return (values == null) ? defaultValue : values.ConvertAll(converter.Convert);
+        }
 
         /// <summary>
         /// Gets the named value from the collection and convert it to the requested type, or returns a default value when missing.
@@ -46,14 +104,7 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="defaultValue">The default value</param>
         /// <returns>Returns the value converted to the requested type, or the defaultValue when the value is missing.</returns>
         public static T GetValue<T>(this NameValueCollection collection, string name, T defaultValue = default(T)) {
-            var value = collection[name];
-            if (value == null)
-                return defaultValue;
-            var converter = TypeDescriptor.GetConverter(typeof(T));
-            if (converter.CanConvertFrom(typeof(string))) {
-                return (T)converter.ConvertFromInvariantString(value);
-            }
-            return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            return GetValue(collection, name, new TypeConverterAdapter<T>(TypeDescriptor.GetConverter(typeof(T))), defaultValue);
         }
 
         /// <summary>
@@ -66,15 +117,32 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="defaultValue">The default value</param>
         /// <returns>Returns the value converted to the requested type, or the defaultValue when the value is missing.</returns>
         public static T GetValue<T>(this NameValueCollection collection, string name, TypeConverter converter, T defaultValue = default(T)) {
-            if (converter == null)
-                throw new ArgumentNullException("converter");
-            var value = collection[name];
-            if (value == null)
-                return defaultValue;
-            if (converter.CanConvertFrom(typeof(string))) {
-                return (T)converter.ConvertFromInvariantString(value);
-            }
-            return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            return GetValue(collection, name, new TypeConverterAdapter<T>(converter), defaultValue);
+        }
+
+        /// <summary>
+        /// Gets the named value from the collection and convert it to the requested type, or returns a default value when missing.
+        /// </summary>
+        /// <typeparam name="T">The required type</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name</param>
+        /// <param name="defaultValue">The default value generator</param>
+        /// <returns>Returns the value converted to the requested type, or the defaultValue when the value is missing.</returns>
+        public static T GetValue<T>(this NameValueCollection collection, string name, Func<T> defaultValue) {
+            return GetValue(collection, name, new TypeConverterAdapter<T>(TypeDescriptor.GetConverter(typeof(T))), defaultValue);
+        }
+
+        /// <summary>
+        /// Gets the named value from the collection and convert it to the requested type, or returns a default value when missing.
+        /// </summary>
+        /// <typeparam name="T">The required type</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name</param>
+        /// <param name="converter">The type converter to use</param>
+        /// <param name="defaultValue">The default value generator</param>
+        /// <returns>Returns the value converted to the requested type, or the defaultValue when the value is missing.</returns>
+        public static T GetValue<T>(this NameValueCollection collection, string name, TypeConverter converter, Func<T> defaultValue) {
+            return GetValue(collection, name, new TypeConverterAdapter<T>(converter), defaultValue);
         }
 
         /// <summary>
@@ -84,16 +152,8 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="collection">The collection</param>
         /// <param name="name">The name</param>
         /// <returns>Returns the values converted to the requested type.</returns>
-        public static IEnumerable<T> GetValues<T>(this NameValueCollection collection, string name) {
-            var values = collection.GetValues(name);
-            if (values != null) {
-                var converter = TypeDescriptor.GetConverter(typeof(T));
-                if (converter.CanConvertFrom(typeof(string)))
-                    return values.ConvertAll(x => (T)converter.ConvertFromInvariantString(x));
-                else
-                    return values.ConvertAll(x => (T)Convert.ChangeType(x, typeof(T), CultureInfo.InvariantCulture));
-            }
-            return Enumerable.Empty<T>();
+        public static T[] GetValues<T>(this NameValueCollection collection, string name) {
+            return GetValues(collection, name, new TypeConverterAdapter<T>(TypeDescriptor.GetConverter(typeof(T))), EmptyArray<T>.Instance);
         }
 
         /// <summary>
@@ -104,15 +164,20 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="name">The name</param>
         /// <param name="converter">The type converter to use</param>
         /// <returns>Returns the values converted to the requested type.</returns>
-        public static IEnumerable<T> GetValues<T>(this NameValueCollection collection, string name, TypeConverter converter) {
-            var values = collection.GetValues(name);
-            if (values != null) {
-                if (!converter.CanConvertFrom(typeof(string)))
-                    throw new ArgumentException("converter");
+        public static T[] GetValues<T>(this NameValueCollection collection, string name, TypeConverter converter) {
+            return GetValues(collection, name, new TypeConverterAdapter<T>(converter), EmptyArray<T>.Instance);
+        }
 
-                return values.ConvertAll(x => (T)converter.ConvertFromInvariantString(x));
-            }
-            return Enumerable.Empty<T>();
+        /// <summary>
+        /// Gets the named values from the collection and convert them to the requested type.
+        /// </summary>
+        /// <typeparam name="T">The required type</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name</param>
+        /// <param name="converter">The converter to use</param>
+        /// <returns>Returns the values converted to the requested type.</returns>
+        public static T[] GetValues<T>(this NameValueCollection collection, string name, Converter<string, T> converter) {
+            return GetValues(collection, name, new ConverterAdapter<T>(converter), EmptyArray<T>.Instance);
         }
 
         #endregion
@@ -127,7 +192,7 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="name">The name of the value</param>
         /// <returns>The value or default(T) if missing.</returns>
         public static T PopValue<T>(this NameValueCollection collection, string name) {
-            return PopValue(collection, name, default(T));
+            return PopValue(collection, name, TypeDescriptor.GetConverter(typeof(T)), default(T));
         }
 
         /// <summary>
@@ -139,10 +204,20 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value or <paramref name="defaultValue"/> if missing.</returns>
         public static T PopValue<T>(this NameValueCollection collection, string name, T defaultValue) {
-            string value = collection[name];
-            T result = (value != null)
-                ? (T)Convert.ChangeType(value, typeof(T))
-                : defaultValue;
+            return PopValue(collection, name, TypeDescriptor.GetConverter(typeof(T)), defaultValue);
+        }
+
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <param name="converter">The type converter to use</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>The value or <paramref name="defaultValue"/> if missing.</returns>
+        public static T PopValue<T>(this NameValueCollection collection, string name, TypeConverter converter, T defaultValue) {
+            var result = GetValue(collection, name, converter, defaultValue);
             collection.Remove(name);
             return result;
         }
@@ -156,10 +231,20 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="defaultValue">The default value generator</param>
         /// <returns>The value or <paramref name="defaultValue"/> if missing.</returns>
         public static T PopValue<T>(this NameValueCollection collection, string name, Func<T> defaultValue) {
-            string value = collection[name];
-            T result = (value != null)
-                ? (T)Convert.ChangeType(value, typeof(T))
-                : defaultValue();
+            return PopValue(collection, name, TypeDescriptor.GetConverter(typeof(T)), defaultValue);
+        }
+
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <param name="converter">The type converter to use</param>
+        /// <param name="defaultValue">The default value generator</param>
+        /// <returns>The value or <paramref name="defaultValue"/> if missing.</returns>
+        public static T PopValue<T>(this NameValueCollection collection, string name, TypeConverter converter, Func<T> defaultValue) {
+            var result = GetValue(collection, name, converter, defaultValue);
             collection.Remove(name);
             return result;
         }
@@ -172,15 +257,23 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="name">The name of the value</param>
         /// <returns>An enumerable of the values.</returns>
         /// <remarks>The value is removed from the <see cref="NameValueCollection"/> even if the values are not enumerated.</remarks>
-        public static IEnumerable<T> PopValues<T>(this NameValueCollection collection, string name) {
-            var values = collection.GetValues(name);
-            if (values == null || values.Length == 0)
-                yield break;
-            collection.Remove(name);
+        public static T[] PopValues<T>(this NameValueCollection collection, string name) {
+            return PopValues<T>(collection, name, TypeDescriptor.GetConverter(typeof(T)));
+        }
 
-            for (int i = 0; i < values.Length; i++) {
-                yield return (T)Convert.ChangeType(values[i], typeof(T));
-            }
+        /// <summary>
+        /// Gets the named value and then removes it from the <see cref="NameValueCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="collection">The collection</param>
+        /// <param name="name">The name of the value</param>
+        /// <param name="converter">The type converter to use</param>
+        /// <returns>An enumerable of the values.</returns>
+        /// <remarks>The value is removed from the <see cref="NameValueCollection"/> even if the values are not enumerated.</remarks>
+        public static T[] PopValues<T>(this NameValueCollection collection, string name, TypeConverter converter) {
+            var result = GetValues<T>(collection, name, converter);
+            collection.Remove(name);
+            return result;
         }
 
         #endregion

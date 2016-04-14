@@ -54,6 +54,15 @@ namespace WmcSoft
 
         #region ICustomFormatter Members
 
+        public string Format(string format, object arg, IFormatProvider formatProvider) {
+            try {
+                return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
+            }
+            catch (FormatException e) {
+                throw new FormatException(Resources.InvalidFormatMessage.FormatWith(format), e);
+            }
+        }
+
         private static byte[] ToBytes(object arg) {
             switch (Convert.GetTypeCode(arg)) {
             case TypeCode.SByte:
@@ -85,55 +94,46 @@ namespace WmcSoft
             return null;
         }
 
-        private string DoFormat(string format, int? group, object arg) {
-            byte[] bytes = ToBytes(arg);
-
-            int groupSize = 4;
-            int padding = 2;
-            Func<byte, string> converter;
-
-            switch (format) {
-            case "B":
-                groupSize = group ?? 8;
-                padding = 8;
-                converter = (b) => Convert.ToString(b, 2);
-                break;
-            case "O":
-                groupSize = group ?? 4;
-                padding = 4;
-                converter = (b) => Convert.ToString(b, 8);
-                break;
-            case "x":
-            case "X":
-                groupSize = group ?? 4;
-                converter = (b) => b.ToString(format);
-                break;
-            default:
-                return null; // should not happen
-            }
-
+        private static string Format(Func<int, string> reader, int lo, int hi, int groupSize) {
             var sb = new StringBuilder();
-            var lo = bytes.GetLowerBound(0);
-            var hi = bytes.GetUpperBound(0);
 
             if (groupSize == 0) {
                 for (int i = hi; i >= lo; i--) {
-                    var s = converter(bytes[i]);
-                    sb.Prepend(s).Prepend(new String('0', padding - s.Length));
+                    sb.Prepend(reader(i));
                 }
             } else {
                 var count = 0;
-                for (int i = hi; i >= lo; i--) {
-                    var s = converter(bytes[i]);
-                    sb.Prepend(s).Prepend(new String('0', padding - s.Length));
+                for (int i = hi; i > lo; i--) {
+                    sb.Prepend(reader(i));
 
-                    if ((++count % groupSize == 0) && i != lo) {
+                    if (++count % groupSize == 0)
                         sb.Prepend(' ');
-                    }
                 }
+                sb.Prepend(reader(lo));
             }
 
             return sb.ToString();
+        }
+
+        private static string Format(byte[] bytes, Func<byte, string> converter, int padding, int groupSize) {
+            var lo = bytes.GetLowerBound(0);
+            var hi = bytes.GetUpperBound(0);
+            return Format(i => converter(bytes[i]).PadLeft(padding, '0'), lo, hi, groupSize);
+        }
+
+        private string DoFormat(string format, int? group, object arg) {
+            var bytes = ToBytes(arg);
+
+            switch (format) {
+            case "B":
+                return Format(bytes, b => Convert.ToString(b, 2), 8, group ?? 8);
+            case "O":
+                return Format(bytes, b => Convert.ToString(b, 8), 4, group ?? 4);
+            case "x":
+            case "X":
+            default:
+                return Format(bytes, b => b.ToString(format), 2, group ?? 4);
+            }
         }
 
         private string DoFormat(string format, object arg) {
@@ -145,15 +145,6 @@ namespace WmcSoft
                 return DoFormat(match.GetGroupValue("format"), match.GetGroupValue<int>("group"), arg);
 
             return null;
-        }
-
-        public string Format(string format, object arg, IFormatProvider formatProvider) {
-            try {
-                return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
-            }
-            catch (FormatException e) {
-                throw new FormatException(Resources.InvalidFormatMessage.FormatWith(format), e);
-            }
         }
 
         #endregion

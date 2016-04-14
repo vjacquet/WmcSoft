@@ -37,22 +37,20 @@ namespace WmcSoft.Runtime.Serialization
         #region GetObjectFromXml
 
         public static T GetObjectFromXml<T>(this IDataRecord record, int i)
-            where T : new() {
-            var xml = record.GetValue(i).ToString();
-            if (String.IsNullOrEmpty(xml))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T));
-            using (var reader = XmlReader.Create(new StringReader(xml))) {
-                return (T)serializer.ReadObject(reader);
-            }
+            where T : class {
+            return GetObjectFromXml<T>(record, i, new DataContractSerializer(typeof(T)));
         }
 
         public static T GetObjectFromXml<T>(this IDataRecord record, int i, IDataContractSurrogate surrogate)
-            where T : new() {
+            where T : class {
+            return GetObjectFromXml<T>(record, i, new DataContractSerializer(typeof(T), Type.EmptyTypes, Int16.MaxValue, false, true, surrogate));
+        }
+
+        public static T GetObjectFromXml<T>(this IDataRecord record, int i, XmlObjectSerializer serializer)
+            where T : class {
             var xml = record.GetValue(i).ToString();
             if (String.IsNullOrEmpty(xml))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T), new Type[0], Int16.MaxValue, false, true, surrogate);
+                return null;
             using (var reader = XmlReader.Create(new StringReader(xml))) {
                 return (T)serializer.ReadObject(reader);
             }

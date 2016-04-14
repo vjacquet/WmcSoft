@@ -5,19 +5,35 @@ using System.Linq;
 
 namespace WmcSoft.ComponentModel
 {
+    /// <summary>
+    /// Defines extension methods to the <see cref="TypeDescriptor"/>, <see cref="PropertyDescriptor"/> or <see cref="PropertyDescriptorCollection"/> classes. 
+    /// This is a static class.
+    /// </summary>
     public static class TypeDescriptorExtensions
     {
+        static object ResolveValue(PropertyDescriptor property, object value) {
+            var type = value as Type;
+            if (type != null && property.PropertyType.IsAssignableFrom(type)) {
+                return Activator.CreateInstance(type);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Sets the values of the component.
+        /// </summary>
+        /// <param name="properties">The property descriptor collection.</param>
+        /// <param name="component">The component whose properties must be set.</param>
+        /// <param name="values">The values to set.</param>
         public static void SetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values) {
+            if (values == null || component == null)
+                return;
+
             foreach (var entry in values) {
                 var property = properties[entry.Key];
                 if (property != null) {
-                    var value = entry.Value;
-                    if (value is Type && property.PropertyType.IsAssignableFrom((Type)value)) {
-                        var instance = Activator.CreateInstance((Type)value);
-                        property.SetValue(component, instance);
-                    } else {
-                        property.SetValue(component, value);
-                    }
+                    var value = ResolveValue(property, entry.Value);
+                    property.SetValue(component, value);
                 }
             }
         }
@@ -47,7 +63,8 @@ namespace WmcSoft.ComponentModel
             return false;
         }
 
-        public static TAttribute GetMetadataAttribute<TAttribute>(this PropertyDescriptor propertyDescriptor) where TAttribute : Attribute {
+        public static TAttribute GetMetadataAttribute<TAttribute>(this PropertyDescriptor propertyDescriptor)
+            where TAttribute : Attribute {
             return propertyDescriptor.Attributes[typeof(TAttribute)] as TAttribute;
         }
     }
