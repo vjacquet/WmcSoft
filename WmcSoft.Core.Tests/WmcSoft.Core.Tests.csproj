@@ -118,6 +118,7 @@
     <Compile Include="FuncExtensionsTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />
+    <Compile Include="Xml\XPath\ObjectXPathNavigatorTests.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIteratorTests.cs" />
     <Compile Include="Xml\XPath\XPathLocatorTests.cs" />
   </ItemGroup>
@@ -136,7 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Resources\XPathLocator.xml" />
+    <None Include="Resources\XPathLocator.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
