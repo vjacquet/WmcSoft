@@ -30,7 +30,7 @@ using System.Xml;
 
 namespace WmcSoft.Xml.XPath
 {
-    public static class XPathLocator
+    static class XPathLocator
     {
         public static string GetXPathTo(XmlNode node) {
             if (node == null)
@@ -83,7 +83,7 @@ namespace WmcSoft.Xml.XPath
             }
         }
 
-        static int PositionOfElement(XmlNode node) {
+        private static int PositionOfElement(XmlNode node) {
             var position = 1;
             foreach (XmlNode child in node.ParentNode.ChildNodes) {
                 if (child == node)
@@ -94,7 +94,7 @@ namespace WmcSoft.Xml.XPath
             throw new InvalidOperationException();
         }
 
-        static int PositionOfTextNode(XmlNode node) {
+        private static int PositionOfTextNode(XmlNode node) {
             var position = 1;
             // consecutive text nodes should be merged.
             var flag = false;
