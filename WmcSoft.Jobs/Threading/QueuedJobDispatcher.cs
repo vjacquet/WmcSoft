@@ -29,7 +29,6 @@ using System.Threading;
 
 namespace WmcSoft.Threading
 {
-
     public sealed class QueuedJobDispatcher : JobDispatcher, IWaitableJobDispatcher
     {
         #region Private fields
@@ -166,5 +165,4 @@ namespace WmcSoft.Threading
 
         #endregion
     }
-
 }

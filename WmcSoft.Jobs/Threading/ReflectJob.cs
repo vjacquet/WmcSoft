@@ -52,6 +52,7 @@ namespace WmcSoft.Threading
                 ConstructorInfo ctor;
                 if (!constructors.TryGetValue(typeName, out ctor)) {
                     var type = Type.GetType(typeName, true);
+                    var parameters = types.ToArray();
                     ctor = type.GetConstructor(parameters);
                     if (ctor == null) {
                         var sb = new StringBuilder(".ctor(");
