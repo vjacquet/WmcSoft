@@ -30,6 +30,10 @@ using System.Runtime.Serialization;
 
 namespace WmcSoft.Business
 {
+    /// <summary>
+    /// Looks up instances using the map when referring to them.
+    /// </summary>
+    /// <remarks>See http://martinfowler.com/eaaCatalog/identityMap.html</remarks>
     public class IdentityMap : IIdentityMap<object, long>
     {
         #region Private

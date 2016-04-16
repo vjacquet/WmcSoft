@@ -188,6 +188,7 @@
     <Compile Include="Business\RuleModel\RuleSet.cs" />
     <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
     <Compile Include="Business\RuleModel\Variable.cs" />
+    <Compile Include="Business\UnitOfWork.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />

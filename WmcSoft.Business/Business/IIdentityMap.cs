@@ -31,6 +31,7 @@ namespace WmcSoft.Business
     /// </summary>
     /// <typeparam name="TInstance">The type of instances.</typeparam>
     /// <typeparam name="TId">The type of the identity.</typeparam>
+    /// <remarks>See http://martinfowler.com/eaaCatalog/identityMap.html </remarks>
     public interface IIdentityMap<TInstance, TId>
     {
         TId Register(TInstance instance);
