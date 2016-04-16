@@ -85,11 +85,20 @@ namespace WmcSoft
         /// Returns true if the type is nullable.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>true if the type is nullable, otherwise false.</returns>
+        /// <returns><c>true</c> if the type is nullable, otherwise <c>false</c>.</returns>
         public static bool IsNullable(this Type type) {
-            return type.IsGenericType 
-                && !type.IsGenericTypeDefinition 
+            return type.IsGenericType
+                && !type.IsGenericTypeDefinition
                 && ReferenceEquals(type.GetGenericTypeDefinition(), typeof(Nullable<>));
+        }
+
+        /// <summary>
+        /// Returns true if the is nullable or is a reference type.
+        /// </summary>
+        /// <param name="type">The type</param>
+        /// <returns><c>true</c> if the type is nullable or is a reference type, otherwise <c>false</c>.</returns>
+        public static bool AllowsNull(this Type type) {
+            return IsNullable(type) || !type.IsValueType;
         }
     }
 }

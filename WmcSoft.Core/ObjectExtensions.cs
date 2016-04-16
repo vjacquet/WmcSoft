@@ -25,24 +25,67 @@
 #endregion
 
 using System;
-using System.IO;
-using WmcSoft.IO;
+using System.ComponentModel;
 
 namespace WmcSoft
 {
     public static class ObjectExtensions
     {
-        public static T Clone<T>(this T self) where T : class {
-            var cloneable = self as ICloneable;
-            if (cloneable != null)
-                return (T)cloneable.Clone();
+        #region Clone
 
-            using (MemoryStream ms = new MemoryStream()) {
-                var f = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                f.Serialize(ms, self);
-                ms.Rewind();
-                return (T)f.Deserialize(ms);
-            }
+        /// <summary>
+        /// Clone the instance.
+        /// </summary>
+        /// <typeparam name="T">The type of the instance</typeparam>
+        /// <param name="instance">The instance</param>
+        /// <returns>A clone of the instance.</returns>
+        /// <remarks> This extensions works better for classes implementing <see cref="ICloneable"/> explicitly.</remarks>
+        public static T Clone<T>(this T instance)
+            where T : ICloneable {
+            return (T)instance.Clone();
         }
+
+        #endregion
+
+        #region ConvertTo
+
+        public static T ConvertTo<T>(this object value) {
+            return (T)ConvertTo(value, typeof(T));
+        }
+
+        public static T ConvertTo<T>(this object value, IFormatProvider provider) {
+            return (T)ConvertTo(value, typeof(T), provider);
+        }
+
+        public static object ConvertTo(this object value, Type type) {
+            return ConvertTo(value, type, System.Globalization.CultureInfo.CurrentCulture);
+        }
+
+        public static object ConvertTo(this object value, Type type, IFormatProvider provider) {
+            if (type == null) {
+                throw new ArgumentNullException("type");
+            }
+            if (value == null) {
+                if (type.AllowsNull()) {
+                    return null;
+                }
+                return Convert.ChangeType(value, type, provider);
+            }
+            type = type.UnwrapNullableType();
+            if (value.GetType() == type) {
+                return value;
+            }
+            var converter = TypeDescriptor.GetConverter(type);
+            if (converter.CanConvertFrom(value.GetType())) {
+                return converter.ConvertFrom(value);
+            }
+            converter = TypeDescriptor.GetConverter(value.GetType());
+            if (!converter.CanConvertTo(type)) {
+                throw new InvalidOperationException();
+            }
+            return converter.ConvertTo(value, type);
+        }
+
+        #endregion
     }
 }

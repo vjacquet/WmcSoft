@@ -61,11 +61,75 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot parse the XML response..
+        /// </summary>
+        internal static string CannotParseXmlResponseMessage {
+            get {
+                return ResourceManager.GetString("CannotParseXmlResponseMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The dispatcher does not support cancellation..
         /// </summary>
         internal static string DispatcherDoesntSuppportCancellation {
             get {
                 return ResourceManager.GetString("DispatcherDoesntSuppportCancellation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to stop the service nicely. Working jobs will be aborted..
+        /// </summary>
+        internal static string MustAbortWorkingJobsMessage {
+            get {
+                return ResourceManager.GetString("MustAbortWorkingJobsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many consecutive failed attempts.The thread will be stopped.
+        ///Restart the service..
+        /// </summary>
+        internal static string TooManyConsecutiveFailedAttempts {
+            get {
+                return ResourceManager.GetString("TooManyConsecutiveFailedAttempts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error: {0}..
+        /// </summary>
+        internal static string UnexceptedErrorMessage {
+            get {
+                return ResourceManager.GetString("UnexceptedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error on Startup: {0}..
+        /// </summary>
+        internal static string UnexceptedErrorOnStartupMessage {
+            get {
+                return ResourceManager.GetString("UnexceptedErrorOnStartupMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error while logging: {0}..
+        /// </summary>
+        internal static string UnexceptedErrorWhileLoggingMessage {
+            get {
+                return ResourceManager.GetString("UnexceptedErrorWhileLoggingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error..
+        /// </summary>
+        internal static string UnexpectedFaultMessage {
+            get {
+                return ResourceManager.GetString("UnexpectedFaultMessage", resourceCulture);
             }
         }
     }

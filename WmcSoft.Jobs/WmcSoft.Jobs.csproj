@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -40,12 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Messaging\IMessageService.cs" />
+    <Compile Include="Messaging\MessageQueueMessageService.cs" />
     <Compile Include="Messaging\NullMessageService.cs" />
     <Compile Include="Messaging\TraceMessageService.cs" />
     <Compile Include="Threading\BackgroundWorkerDispatcher.cs" />
     <Compile Include="Threading\BatchJob.cs" />
     <Compile Include="Threading\IJobInstrumentationProvider.cs" />
-    <Compile Include="Threading\NullJobInstrumentationProvider.cs" />
+    <Compile Include="Threading\JobInstrumentationProvider.cs" />
     <Compile Include="Threading\JobDispatcherDecorator.cs" />
     <Compile Include="Threading\IJob.cs" />
     <Compile Include="Threading\IJobQueue.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="Threading\JobExtensions.cs" />
     <Compile Include="Threading\JobQueue.cs" />
     <Compile Include="Threading\LifecycleWrappingJob.cs" />
+    <Compile Include="Threading\MessageQueueJob.cs" />
     <Compile Include="Threading\MonitoredJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

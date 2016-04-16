@@ -252,6 +252,11 @@ namespace WmcSoft
 
         #region Min/Max
 
+        /// <summary>
+        /// Returns the smaller of n 32-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The smaller of the n 32-bit signed integers.</returns>
         public static int Min(params int[] values) {
             if (values.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(values));
@@ -263,6 +268,11 @@ namespace WmcSoft
             return min;
         }
 
+        /// <summary>
+        /// Returns the smaller of n 64-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The smaller of the n 64-bit signed integers.</returns>
         public static long Min(params long[] values) {
             if (values.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(values));
@@ -274,6 +284,11 @@ namespace WmcSoft
             return min;
         }
 
+        /// <summary>
+        /// Returns the larger of n 32-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The larger of the n 32-bit signed integers.</returns>
         public static int Max(params int[] values) {
             if (values.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(values));
@@ -285,6 +300,11 @@ namespace WmcSoft
             return max;
         }
 
+        /// <summary>
+        /// Returns the larger of n 64-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The larger of the n 64-bit signed integers.</returns>
         public static long Max(params long[] values) {
             if (values.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(values));
@@ -450,6 +470,30 @@ namespace WmcSoft
                     max = args[i];
             }
             return Tuple.Create(min, max);
+        }
+
+        #endregion
+
+        #region Mismatch
+
+        /// <summary>
+        /// Returns items from the primary enumerator only when the relation with the secondary enumerator returns false.
+        /// </summary>
+        /// <typeparam name="T">The primary type.</typeparam>
+        /// <typeparam name="U">The secondary type</typeparam>
+        /// <param name="primary">The primary enumerable.</param>
+        /// <param name="secondary">The secondary enumerable.</param>
+        /// <param name="relation">The relation</param>
+        /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns false.</returns>
+        /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
+        public static IEnumerable<T> Mismatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation) {
+            using (var p = primary.GetEnumerator())
+            using (var s = secondary.GetEnumerator()) {
+                while (p.MoveNext() & s.MoveNext()) {
+                    if (!relation(p.Current, s.Current))
+                        yield return p.Current;
+                }
+            }
         }
 
         #endregion

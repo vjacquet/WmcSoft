@@ -29,16 +29,41 @@ using System.Xml;
 
 namespace WmcSoft.Xml
 {
-   public static class XmlElementExtensions
+    /// <summary>
+    /// Provides a set of static methods to extend the <see cref="XmlElement"/> derived class. This is a static class.
+    /// </summary>
+    public static class XmlElementExtensions
     {
-        public static T GetAttribute<T>(this XmlElement self, string name)
+        /// <summary>
+        /// Returns the value for the attribute with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="element">The element</param>
+        /// <param name="name">The name of the attribute to retrieve. This is a qualified name. It is matched against the <see cref="XmlNode.Name"/> property of the matching node. </param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The converted value of the specified attribute. <see cref="defaultValue"/> is returned if a matching attribute is not found or if the attribute does not have a specified or default value.</returns>
+        public static T GetAttribute<T>(this XmlElement element, string name, T defaultValue = default(T))
             where T : IConvertible {
-            var value = self.GetAttribute(name);
+            var value = element.GetAttribute(name);
+            if (string.IsNullOrEmpty(value))
+                return defaultValue;
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
-        public static T GetAttribute<T>(this XmlElement self, string localName, string namespaceURI) where T : IConvertible {
-            var value = self.GetAttribute(localName, namespaceURI);
+        /// <summary>
+        /// Returns the value for the attribute with the specified local name and namespace URI.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="element">The element.</param>
+        /// <param name="localName">The local name of the attribute to retrieve. </param>
+        /// <param name="namespaceURI">The namespace URI of the attribute to retrieve. </param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The converted value of the specified attribute. <see cref="defaultValue"/> is returned if a matching attribute is not found or if the attribute does not have a specified or default value.</returns>
+        public static T GetAttribute<T>(this XmlElement element, string localName, string namespaceURI, T defaultValue = default(T))
+            where T : IConvertible {
+            var value = element.GetAttribute(localName, namespaceURI);
+            if (string.IsNullOrEmpty(value))
+                return defaultValue;
             return (T)Convert.ChangeType(value, typeof(T));
         }
     }

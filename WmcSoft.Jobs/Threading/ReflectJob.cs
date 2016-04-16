@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -47,7 +47,7 @@ namespace WmcSoft.Threading
             constructors = new Dictionary<string, ConstructorInfo>();
         }
 
-        static ConstructorInfo GetConstructor(string typeName, IEnumerable<Type> types) {
+        static ConstructorInfo GetConstructor(string typeName, Type[] parameters) {
             lock (syncRoot) {
                 ConstructorInfo ctor;
                 if (!constructors.TryGetValue(typeName, out ctor)) {
@@ -105,11 +105,12 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Gets the job instance.
         /// </summary>
-        public IJob Instance {
+        public IJob Instance
+        {
             get {
                 if (instance == null) {
                     var type = Type.GetType(TypeName, true);
-                    var ctor = GetConstructor(TypeName, Parameters.Select(o => o.GetType()));
+                    var ctor = GetConstructor(TypeName, Array.ConvertAll(Parameters, o => o.GetType()));
                     instance = (IJob)ctor.Invoke(Parameters);
                 }
                 return instance;

@@ -93,6 +93,8 @@
     <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
+    <Compile Include="Text\IString.cs" />
+    <Compile Include="Text\StripExtensions.cs" />
     <Compile Include="Text\Strings.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
     <Compile Include="Configuration\MailAddressConverter.cs" />
@@ -258,7 +260,7 @@
     <Compile Include="Xml\XmlReaderExtensions.cs" />
     <Compile Include="Xml\XmlWriterDecorator.cs" />
     <Compile Include="Xml\EmptyXmlReader.cs" />
-    <Compile Include="Xml\Linq\XDocumentExtensions.cs" />
+    <Compile Include="Xml\Linq\XObjectExtensions.cs" />
     <Compile Include="Xml\XmlNodeExtensions.cs" />
     <Compile Include="Xml\XmlWriterExtensions.cs" />
     <Compile Include="Xml\XPath\DistinctXPathNodeIterator.cs" />

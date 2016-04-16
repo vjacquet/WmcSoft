@@ -36,6 +36,10 @@ namespace WmcSoft.Text
             return value.AppendTo(sb);
         }
 
+        public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count) {
+            return value.AppendTo(sb, startIndex, count);
+        }
+
         #endregion
 
         #region Insert
@@ -126,6 +130,23 @@ namespace WmcSoft.Text
 
         public static StringBuilder Prepend(this StringBuilder sb, Strip value) {
             return value.PrependTo(sb);
+        }
+
+        #endregion
+
+        #region Remove
+
+        /// <summary>
+        /// Removes the specified substrings from the <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="args">The substrings to remove.</param>
+        /// <returns>The string without the specified substrings.</returns>
+        public static StringBuilder Remove(this StringBuilder self, params string[] args) {
+            foreach (var arg in args) {
+                self.Replace(arg, "");
+            }
+            return self;
         }
 
         #endregion

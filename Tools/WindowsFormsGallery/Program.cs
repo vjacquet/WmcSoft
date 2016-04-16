@@ -15,7 +15,7 @@ namespace WindowsFormsGallery
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(true);
-            Application.Run(new ToolStripForm());
+            Application.Run(new FormLayoutForm());
         }
     }
 }

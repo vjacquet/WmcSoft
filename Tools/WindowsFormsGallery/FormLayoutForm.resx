@@ -112,34 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CannotParseXmlResponseMessage" xml:space="preserve">
-    <value>Cannot parse the XML response.</value>
-  </data>
-  <data name="DispatcherDoesntSuppportCancellation" xml:space="preserve">
-    <value>The dispatcher does not support cancellation.</value>
-  </data>
-  <data name="MustAbortWorkingJobsMessage" xml:space="preserve">
-    <value>Unable to stop the service nicely. Working jobs will be aborted.</value>
-  </data>
-  <data name="TooManyConsecutiveFailedAttempts" xml:space="preserve">
-    <value>Too many consecutive failed attempts.The thread will be stopped.
-Restart the service.</value>
-  </data>
-  <data name="UnexceptedErrorMessage" xml:space="preserve">
-    <value>Unexpected error: {0}.</value>
-  </data>
-  <data name="UnexceptedErrorOnStartupMessage" xml:space="preserve">
-    <value>Unexpected error on Startup: {0}.</value>
-  </data>
-  <data name="UnexceptedErrorWhileLoggingMessage" xml:space="preserve">
-    <value>Unexpected error while logging: {0}.</value>
-  </data>
-  <data name="UnexpectedFaultMessage" xml:space="preserve">
-    <value>Unexpected error.</value>
-  </data>
+  <metadata name="tracingComponent1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

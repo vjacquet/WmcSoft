@@ -574,25 +574,8 @@ namespace WmcSoft
             if (self == null || self.Length == 0)
                 return self;
 
-            var sb = new StringBuilder();
-            int pos = 0;
-            int count = self.Length;
-            while (true) {
-                var found = self.IndexOfAny(args, pos, count);
-                if (found < 0) {
-                    sb.Append(self, pos, count);
-                    break;
-                } else if (found == pos) {
-                    pos++;
-                    count--;
-                    continue;
-                } else {
-                    sb.Append(self, pos, found - pos);
-                    count -= found - pos + 1;
-                    pos = found + 1;
-                }
-            }
-            return sb.ToString();
+            var adapter = new StringAdapter(self);
+            return adapter.Remove(args);
         }
 
         /// <summary>
@@ -605,10 +588,8 @@ namespace WmcSoft
             if (self == null || self.Length == 0)
                 return self;
 
-            StringBuilder sb = new StringBuilder(self);
-            foreach (var arg in args) {
-                sb.Replace(arg, "");
-            }
+            var sb = new StringBuilder(self);
+            sb.Remove(args);
             return sb.ToString();
         }
 
@@ -782,6 +763,16 @@ namespace WmcSoft
         }
 
         /// <summary>
+        /// Extracts the substring that precedes the <paramref name="find"/> char.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
+        public static string SubstringBeforeOrSelf(this string self, char find) {
+            return SubstringBefore(self, find) ?? self;
+        }
+
+        /// <summary>
         /// Extracts the substring that precedes the <paramref name="find"/> string.
         /// </summary>
         /// <param name="self">The initial string.</param>
@@ -800,6 +791,16 @@ namespace WmcSoft
         }
 
         /// <summary>
+        /// Extracts the substring that precedes the <paramref name="find"/> string.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
+        public static string SubstringBeforeOrSelf(this string self, string find) {
+            return SubstringBefore(self, find) ?? self;
+        }
+
+        /// <summary>
         /// Extracts the substring that follows the <paramref name="find"/> char.
         /// </summary>
         /// <param name="self">The initial string.</param>
@@ -813,6 +814,16 @@ namespace WmcSoft
             if (index < 0)
                 return null;
             return self.Substring(index + 1);
+        }
+
+        /// <summary>
+        /// Extracts the substring that follows the <paramref name="find"/> char.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
+        public static string SubstringAfterOrSelf(this string self, char find) {
+            return SubstringAfter(self, find) ?? self;
         }
 
         /// <summary>
@@ -834,25 +845,47 @@ namespace WmcSoft
         }
 
         /// <summary>
+        /// Extracts the substring that follows the <paramref name="find"/> string.
+        /// </summary>
+        /// <param name="self">The initial string.</param>
+        /// <param name="find">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
+        public static string SubstringAfterOrSelf(this string self, string find) {
+            return SubstringAfter(self, find) ?? self;
+        }
+
+        /// <summary>
         /// Extracts the substring between the prefix and the suffix.
         /// </summary>
         /// <param name="self">The string.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
-        /// <returns>The substring between the prefix and the suffix.</returns>
+        /// <returns>The substring between the prefix and the suffix, or null if the prefix or the suffix is not found.</returns>
         public static string SubstringBetween(this string self, string prefix, string suffix) {
             if (String.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
-            else if (String.IsNullOrEmpty(prefix))
-                return SubstringBefore(self, suffix);
+            else if (String.IsNullOrEmpty(suffix))
+                return SubstringAfter(self, prefix);
 
             int start = self.IndexOf(prefix, StringComparison.Ordinal);
             if (start < 0)
-                start = 0;
-            int end = self.IndexOf(suffix, StringComparison.Ordinal);
+                return null;
+            start += prefix.Length;
+            int end = self.IndexOf(suffix, start, StringComparison.Ordinal);
             if (end < 0)
-                end = self.Length;
+                return null;
             return self.Substring(start, end - start);
+        }
+
+        /// <summary>
+        /// Extracts the substring between the prefix and the suffix.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="prefix">The prefix.</param>
+        /// <param name="suffix">The suffix.</param>
+        /// <returns>The substring between the prefix and the suffix, or the string if the prefix or the suffix is not found.</returns>
+        public static string SubstringBetweenOrSelf(this string self, string prefix, string suffix) {
+            return SubstringBetween(self, prefix, suffix) ?? self;
         }
 
         /// <summary>
@@ -972,11 +1005,11 @@ namespace WmcSoft
         /// <summary>
         /// Translates the chars of the <paramref name="source "/> into the corresponding chars in the <paramref name="target"/>.
         /// </summary>
-        /// <param name="self">The string.</param>
+        /// <param name="self">The array of chars.</param>
         /// <param name="source">The source chars.</param>
         /// <param name="target">The target chars.</param>
         /// <returns>The translated string.</returns>
-        public static string Translate(this string self, string source, string target) {
+        public static string Translate(this char[] self, string source, string target) {
             var normalized = target;
             if (target.Length < source.Length)
                 normalized += new String('\0', source.Length - target.Length);
@@ -985,16 +1018,25 @@ namespace WmcSoft
                 .ToArray();
 
             var comparer = new AnonymousComparer<KeyValuePair<char, char>>((x, y) => x.Key.CompareTo(y.Key));
-            var array = self.ToCharArray();
             int j = 0;
-            for (int i = 0; i < array.Length; i++) {
-                int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(array[i], '\0'), comparer);
+            for (int i = 0; i < self.Length; i++) {
+                int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(self[i], '\0'), comparer);
                 if (found < 0)
-                    array[j++] = array[i];
+                    self[j++] = self[i];
                 else if (mapping[found].Value != '\0')
-                    array[j++] = mapping[found].Value;
+                    self[j++] = mapping[found].Value;
             }
-            return new String(array, 0, j);
+            return new String(self, 0, j);
+        }
+        /// <summary>
+        /// Translates the chars of the <paramref name="source "/> into the corresponding chars in the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="source">The source chars.</param>
+        /// <param name="target">The target chars.</param>
+        /// <returns>The translated string.</returns>
+        public static string Translate(this string self, string source, string target) {
+            return Translate(self.ToCharArray(), source, target);
         }
 
         #endregion

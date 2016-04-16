@@ -56,6 +56,12 @@
     <Compile Include="ControlsForm.Designer.cs">
       <DependentUpon>ControlsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLayoutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLayoutForm.Designer.cs">
+      <DependentUpon>FormLayoutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InheritedForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ControlsForm.resx">
       <DependentUpon>ControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLayoutForm.resx">
+      <DependentUpon>FormLayoutForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InheritedForm.resx">
       <DependentUpon>InheritedForm.cs</DependentUpon>
