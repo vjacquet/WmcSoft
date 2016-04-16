@@ -26,6 +26,7 @@
 
 using System;
 using System.Net;
+using System.Security;
 using WmcSoft.IO;
 
 namespace WmcSoft.Net
@@ -48,14 +49,10 @@ namespace WmcSoft.Net
             public Uri BaseUri { get { return _baseUri; } }
             public string Method { get { return _method; } }
 
-            #region IDisposable Membres
-
             public void Dispose() {
             }
-
-            #endregion
         }
-        
+
         private readonly WebClient _webClient;
         private readonly string _method;
 
@@ -73,8 +70,7 @@ namespace WmcSoft.Net
         /// Initializes a new instance of the <see cref="WebClientBatch"/> class.
         /// </summary>
         /// <param name="webClient">The web client.</param>
-        protected WebClientBatch(WebClient webClient) {
-            _webClient = webClient;
+        protected WebClientBatch(WebClient webClient) : this(webClient, null) {
         }
 
         #region Properties
@@ -90,10 +86,17 @@ namespace WmcSoft.Net
         /// <param name="userName">Name of the user.</param>
         /// <param name="password">The password.</param>
         public void Impersonate(string domainName, string userName, string password) {
-            if (String.IsNullOrEmpty(domainName))
-                _webClient.Credentials = new NetworkCredential(userName, password);
-            else
-                _webClient.Credentials = new NetworkCredential(userName, password, domainName);
+            _webClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
+        }
+
+        /// <summary>
+        /// Impersonates the user
+        /// </summary>
+        /// <param name="domainName">Name of the domain.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <param name="password">The password.</param>
+        public void Impersonate(string domainName, string userName, SecureString password) {
+            _webClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
         }
 
         protected abstract string GetMethod(Uri uri);

@@ -34,8 +34,8 @@ namespace WmcSoft.Business
     {
         #region Private
 
-        IDictionary<long, object> _map;
-        ObjectIDGenerator _generator;
+        private readonly IDictionary<long, object> _map;
+        private readonly ObjectIDGenerator _generator;
 
         #endregion
 
