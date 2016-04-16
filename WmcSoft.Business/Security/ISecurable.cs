@@ -36,18 +36,18 @@ namespace WmcSoft.Security
 
     public static class SecurableExtensions
     {
-        public static S Grant<S>(this S securable, IEnumerable<Permission> permissions, params Principal[] principals)
-            where S : ISecurable {
+        public static TSecurable Grant<TSecurable>(this TSecurable securable, IEnumerable<Permission> permissions, params Principal[] principals)
+            where TSecurable : ISecurable {
             securable.AccessControl.Grant(permissions, principals);
             return securable;
         }
-        public static S Deny<S>(this S securable, IEnumerable<Permission> permissions, params Principal[] principals)
-            where S : ISecurable {
+        public static TSecurable Deny<TSecurable>(this TSecurable securable, IEnumerable<Permission> permissions, params Principal[] principals)
+            where TSecurable : ISecurable {
             securable.AccessControl.Deny(permissions, principals);
             return securable;
         }
-        public static S Revoke<S>(this S securable, IEnumerable<Permission> permissions, params Principal[] principals)
-            where S : ISecurable {
+        public static TSecurable Revoke<TSecurable>(this TSecurable securable, IEnumerable<Permission> permissions, params Principal[] principals)
+            where TSecurable : ISecurable {
             securable.AccessControl.Revoke(permissions, principals);
             return securable;
         }

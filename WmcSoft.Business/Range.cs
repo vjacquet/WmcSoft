@@ -39,8 +39,7 @@ namespace WmcSoft
     /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
-    public struct Range<T> :
-        IEquatable<Range<T>>
+    public struct Range<T> : IEquatable<Range<T>>
         where T : IComparable<T>
     {
         #region Special cases
@@ -110,7 +109,7 @@ namespace WmcSoft
             return other.IsLower(Upper) && other.IsUpper(Lower);
         }
 
-        public bool Includes<S>(T value, S strategy) where S : struct, IBoundStrategy<T> {
+        public bool Includes<TStrategy>(T value, TStrategy strategy) where TStrategy : IBoundStrategy<T> {
             return strategy.IsWithinRange(value, Lower, Upper);
         }
 

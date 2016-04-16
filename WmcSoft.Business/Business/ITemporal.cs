@@ -38,7 +38,11 @@ namespace WmcSoft.Business
         DateTime? ValidUntil { get; set; }
     }
 
-    public static class ITemporalExtensions
+    /// <summary>
+    /// Defines the extension methods to the <see cref="ITemporal"/> interface.
+    /// This is a static class.
+    /// </summary>
+    public static class TemporalExtensions
     {
         /// <summary>
         /// Check if the specified <see cref="ITemporal"/> is defined at the specified <see cref="DateTime"/>.
@@ -46,7 +50,7 @@ namespace WmcSoft.Business
         /// <param name="self">The temporal.</param>
         /// <param name="dateTime">The date time.</param>
         /// <returns>Returns true if the <see cref="ITemporal"/> is valid at the specified date & time.</returns>
-        public static bool IsValidOn(this ITemporal self, DateTime dateTime) {
+        public static bool IsValidOn<TTemporal>(this TTemporal self, DateTime dateTime) where TTemporal : ITemporal {
             return (self.ValidSince == null || dateTime >= self.ValidSince.GetValueOrDefault())
                 && (self.ValidUntil == null || dateTime < self.ValidUntil.GetValueOrDefault());
         }
