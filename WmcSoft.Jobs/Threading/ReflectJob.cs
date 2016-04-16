@@ -51,11 +51,11 @@ namespace WmcSoft.Threading
             lock (syncRoot) {
                 ConstructorInfo ctor;
                 if (!constructors.TryGetValue(typeName, out ctor)) {
-                    Type type = Type.GetType(typeName, true);
-                    Type[] parameters = types.ToArray();
+                    var type = Type.GetType(typeName, true);
+                    var parameters = types.ToArray();
                     ctor = type.GetConstructor(parameters);
                     if (ctor == null) {
-                        StringBuilder sb = new StringBuilder(".ctor(");
+                        var sb = new StringBuilder(".ctor(");
                         if (parameters.Length > 0) {
                             sb.Append(parameters[0].FullName);
                             for (int i = 1; i < parameters.Length; i++) {

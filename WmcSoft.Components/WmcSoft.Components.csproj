@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="ComponentModel\ServiceDependencyAttribute.cs" />
     <Compile Include="ComponentModel\ServingNestedContainer.cs" />
+    <Compile Include="ComponentModel\StringArrayConverter.cs" />
     <Compile Include="ComponentModel\TracingComponent.cs">
       <SubType>Component</SubType>
     </Compile>
