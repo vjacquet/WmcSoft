@@ -25,25 +25,21 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Xml;
 
 namespace WmcSoft.Xml.XPath
 {
-    public static class XPathLocator
+    static class XPathLocator
     {
         public static string GetXPathTo(XmlNode node) {
             if (node == null)
                 throw new ArgumentNullException("node");
 
-            var sb = new StringBuilder();
             switch (node.NodeType) {
             case XmlNodeType.None:
             case XmlNodeType.EntityReference:
             case XmlNodeType.Entity:
-            case XmlNodeType.Document:
             case XmlNodeType.DocumentType:
             case XmlNodeType.DocumentFragment:
             case XmlNodeType.Notation:
@@ -51,14 +47,33 @@ namespace WmcSoft.Xml.XPath
             case XmlNodeType.EndEntity:
             case XmlNodeType.XmlDeclaration:
                 return null;
+            case XmlNodeType.Attribute:
+                return GetXPathTo((XmlAttribute)node);
+            case XmlNodeType.Document:
+                return "/";
             }
+
+            var sb = new StringBuilder();
             NodeToXPath(node, sb);
+            return sb.ToString();
+        }
+
+        public static string GetXPathTo(XmlAttribute node) {
+            var sb = new StringBuilder();
+            NodeToXPath(node.SelectSingleNode(".."), sb);
+
+            if (node.NamespaceURI != "http://www.w3.org/2000/xmlns/")
+                sb.Append("/@").Append(node.Name);
+            else if (String.IsNullOrEmpty(node.Prefix) && node.LocalName == "xmlns")
+                sb.Append("/namespace::*[local-name()='']");
+            else
+                sb.Append("/namespace::").Append(node.LocalName);
             return sb.ToString();
         }
 
         private static void NodeToXPath(XmlNode node, StringBuilder sb) {
             if (node != null) {
-                XmlNode parentNode = node.ParentNode;
+                var parentNode = node.ParentNode;
                 if (parentNode == null) {
                     // for attributes for instance, the parent might be null
                     parentNode = node.SelectSingleNode("..");
@@ -68,17 +83,37 @@ namespace WmcSoft.Xml.XPath
             }
         }
 
+        private static int PositionOfElement(XmlNode node) {
+            var position = 1;
+            foreach (XmlNode child in node.ParentNode.ChildNodes) {
+                if (child == node)
+                    return position;
+                if ((child.NodeType == node.NodeType) && (child.Name == node.Name))
+                    position++;
+            }
+            throw new InvalidOperationException();
+        }
+
+        private static int PositionOfTextNode(XmlNode node) {
+            var position = 1;
+            // consecutive text nodes should be merged.
+            var flag = false;
+            foreach (XmlNode child in node.ParentNode.ChildNodes) {
+                if (child == node)
+                    return position;
+                var nodeType = child.NodeType;
+                if (!IsTextNode(nodeType)) {
+                    flag = false;
+                } else if (!flag) {
+                    flag = true;
+                    position++;
+                }
+            }
+            throw new InvalidOperationException();
+        }
+
         private static void AppendPathFromParent(XmlNode node, StringBuilder sb) {
             switch (node.NodeType) {
-            case XmlNodeType.Attribute:
-                if (node.NamespaceURI != "http://www.w3.org/2000/xmlns/") {
-                    sb.Append("/@").Append(node.Name);
-                } else if (String.IsNullOrEmpty(node.Prefix) && (node.LocalName == "xmlns")) {
-                    sb.Append("/namespace::*[local-name()='']");
-                } else {
-                    sb.Append("/namespace::").Append(node.LocalName);
-                }
-                return;
             case XmlNodeType.Element:
                 sb.Append('/').Append(node.Name);
                 break;
@@ -94,49 +129,27 @@ namespace WmcSoft.Xml.XPath
             case XmlNodeType.Comment:
                 sb.Append("/comment()");
                 break;
+            case XmlNodeType.Document:
+                return;
             }
 
-            XmlNode parentNode = node.ParentNode;
-            if (parentNode == null)
+            if (node.ParentNode == null)
                 return;
 
-            int count = 0;
-            int position = 0;
-            bool flag = false; // used to merge consecutive text nodes.
-            foreach (XmlNode child in parentNode.ChildNodes) {
-                if (child == node) {
-                    position = count;
-                }
-                var nodeType = child.NodeType;
-                if (IsTextNode(nodeType)) {
-                    if (IsTextNode(node.NodeType) && !flag) {
-                        count++;
-                    }
-                    flag = true;
-                } else {
-                    flag = false;
-                    if ((nodeType == node.NodeType) && (child.Name == node.Name)) {
-                        count++;
-                    }
-                }
-            }
-
-            if (count > 1) {
-                sb.Append("[").Append(++position).Append("]");
-            }
+            var position = IsTextNode(node.NodeType)
+                ? PositionOfTextNode(node)
+                : PositionOfElement(node);
+            if (position > 1)
+                sb.Append("[").Append(position).Append("]");
         }
 
         private static bool IsTextNode(XmlNodeType nt) {
-            if ((nt != XmlNodeType.SignificantWhitespace)
-                && (nt != XmlNodeType.Whitespace)
-                && (nt != XmlNodeType.Text)
-                && (nt != XmlNodeType.CDATA)) {
-                return (nt == XmlNodeType.EntityReference);
-            }
+            if (nt != XmlNodeType.SignificantWhitespace
+                && nt != XmlNodeType.Whitespace
+                && nt != XmlNodeType.Text
+                && nt != XmlNodeType.CDATA)
+                return nt == XmlNodeType.EntityReference;
             return true;
         }
-
-
     }
-
 }

@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -142,6 +143,12 @@ namespace WmcSoft
             return v1[t.Length];
         }
 
+        /// <summary>
+        /// Swaps two elements.
+        /// </summary>
+        /// <typeparam name="T">The type of element to swap.</typeparam>
+        /// <param name="x">The first parameter.</param>
+        /// <param name="y">The second parameter.</param>
         public static void Swap<T>(ref T x, ref T y) {
             var t = x;
             x = y;
@@ -155,8 +162,7 @@ namespace WmcSoft
         public static IReadOnlyList<int> Coprimes(params int[] values) {
             var list = new List<int>(values);
             list.Sort();
-            Func<int, int, bool> predicate = (x, index) => list.Take(index).Any(e => x % e == 0);
-            Collections.Generic.CollectionExtensions.RemoveIf(list, predicate);
+            CollectionExtensions.RemoveIf(list, (x, index) => list.Take(index).Any(e => x % e == 0));
             return list;
         }
 
@@ -263,7 +269,7 @@ namespace WmcSoft
 
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
-                min = System.Math.Min(min, values[i]);
+                min = Math.Min(min, values[i]);
             }
             return min;
         }
@@ -279,7 +285,7 @@ namespace WmcSoft
 
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
-                min = System.Math.Min(min, values[i]);
+                min = Math.Min(min, values[i]);
             }
             return min;
         }
@@ -295,7 +301,7 @@ namespace WmcSoft
 
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
-                max = System.Math.Max(max, values[i]);
+                max = Math.Max(max, values[i]);
             }
             return max;
         }

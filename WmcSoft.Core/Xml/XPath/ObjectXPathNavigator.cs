@@ -15,46 +15,47 @@ namespace WmcSoft.Xml.XPath
 
         class ObjectXPathProxy
         {
-            private object m_binding;
-            private string m_name;
-            private bool m_activated = false;
-            private Hashtable m_attributes = null;
-            private string[] m_attributeKeys = null;
-            private ArrayList m_elements = null;
-            private Hashtable m_elemDict = null;
-            private ObjectXPathProxy m_parent = null;
-            private XmlNameTable m_nt;
-            private static object[] m_empty = new object[0];
+            private static readonly object[] m_empty = new object[0];
 
-            public ObjectXPathProxy(object binding, XmlNameTable nt) {
-                m_binding = binding;
-                m_nt = nt;
-                m_name = GetAtomicString(binding.GetType().Name);
+            private object _binding;
+            private string _name;
+            private bool _activated = false;
+            private Hashtable _attributes = null;
+            private string[] _attributeKeys = null;
+            private ArrayList _elements = null;
+            private Hashtable _elemDict = null;
+            private ObjectXPathProxy _parent = null;
+            private readonly XmlNameTable _nt;
+
+            public ObjectXPathProxy(object binding, XmlNameTable nt)
+                : this(binding, GetName(binding), null, nt) {
             }
 
             private ObjectXPathProxy(object binding, string name, ObjectXPathProxy parent, XmlNameTable nt) {
-                m_binding = binding;
-                m_parent = parent;
-                m_nt = nt;
-                m_name = GetAtomicString(name);
+                _binding = binding;
+                _parent = parent;
+                _nt = nt;
+                _name = GetAtomicString(name);
+            }
+
+            static string GetName(object binding) {
+                if (binding == null)
+                    throw new ArgumentNullException("binding");
+                return binding.GetType().Name;
             }
 
             public string Name {
-                get {
-                    return m_name;
-                }
+                get { return _name; }
             }
 
             public ObjectXPathProxy Parent {
-                get {
-                    return m_parent;
-                }
+                get { return _parent; }
             }
 
             public string Value {
                 get {
                     if (HasText) {
-                        return CultureSafeToString(m_binding);
+                        return CultureSafeToString(_binding);
                     }
 
                     return string.Empty;
@@ -65,7 +66,7 @@ namespace WmcSoft.Xml.XPath
                 get {
                     Activate();
 
-                    return (m_attributes != null);
+                    return (_attributes != null);
                 }
             }
 
@@ -73,15 +74,14 @@ namespace WmcSoft.Xml.XPath
                 get {
                     Activate();
 
-                    return (m_elements != null) || HasText;
+                    return (_elements != null) || HasText;
                 }
             }
 
             public bool HasText {
                 get {
-                    Type t = m_binding.GetType();
-
-                    return (t.IsValueType || t == typeof(string));
+                    var t = _binding.GetType();
+                    return t.IsValueType || t == typeof(string);
                 }
             }
 
@@ -89,11 +89,9 @@ namespace WmcSoft.Xml.XPath
                 get {
                     Activate();
 
-                    if (m_attributeKeys != null) {
-                        return m_attributeKeys;
-                    } else {
-                        return m_empty;
-                    }
+                    if (_attributeKeys != null)
+                        return _attributeKeys;
+                    return m_empty;
                 }
             }
 
@@ -102,8 +100,8 @@ namespace WmcSoft.Xml.XPath
 
                 Activate();
 
-                if (m_attributes != null) {
-                    v = (string)m_attributes[name];
+                if (_attributes != null) {
+                    v = (string)_attributes[name];
                 }
 
                 return (v != null) ? v : string.Empty;
@@ -113,8 +111,8 @@ namespace WmcSoft.Xml.XPath
                 get {
                     Activate();
 
-                    if (m_elements != null) {
-                        return m_elements;
+                    if (_elements != null) {
+                        return _elements;
                     } else {
                         return m_empty;
                     }
@@ -125,90 +123,86 @@ namespace WmcSoft.Xml.XPath
                 get {
                     Activate();
 
-                    return m_elemDict;
+                    return _elemDict;
                 }
             }
 
             public void AddSpecialName(string key, string val) {
                 Activate();
 
-                if (m_attributes == null) {
-                    m_attributes = new Hashtable();
+                if (_attributes == null) {
+                    _attributes = new Hashtable();
                 }
 
-                m_attributes["*" + key] = val;
+                _attributes["*" + key] = val;
 
-                m_attributeKeys = new string[m_attributes.Count];
-                m_attributes.Keys.CopyTo(m_attributeKeys, 0);
+                _attributeKeys = new string[_attributes.Count];
+                _attributes.Keys.CopyTo(_attributeKeys, 0);
             }
 
             private void Activate() {
-                if (m_activated) {
+                if (_activated)
                     return;
-                }
 
                 lock (this) {
-                    if (m_activated) {
+                    if (_activated)
                         return;
-                    }
 
-                    if (m_binding is ValueType || m_binding is string) {
+                    if (_binding is ValueType || _binding is string) {
                         // no attributes or children
-                    } else if (m_binding is IDictionary) {
+                    } else if (_binding is IDictionary) {
                         ActivateDictionary();
-                    } else if (m_binding is ICollection) {
+                    } else if (_binding is ICollection) {
                         ActivateCollection();
                     } else {
                         ActivateSimple();
                     }
 
-                    m_activated = true;
+                    _activated = true;
                 }
             }
 
             private void ActivateCollection() {
-                ArrayList elements = new ArrayList();
+                var elements = new ArrayList();
 
-                foreach (object val in (ICollection)m_binding) {
-                    if (val == null) {
+                foreach (object val in (ICollection)_binding) {
+                    if (val == null)
                         continue;
-                    }
-
-                    elements.Add(new ObjectXPathProxy(val, val.GetType().Name, this, m_nt));
+                    elements.Add(new ObjectXPathProxy(val, val.GetType().Name, this, _nt));
                 }
 
-                m_elements = (elements.Count != 0) ? elements : null;
+                _elements = (elements.Count != 0) ? elements : null;
             }
 
             private void ActivateDictionary() {
                 ArrayList elements = new ArrayList();
 
-                m_elemDict = new Hashtable();
+                _elemDict = new Hashtable();
 
-                foreach (DictionaryEntry entry in (IDictionary)m_binding) {
+                foreach (DictionaryEntry entry in (IDictionary)_binding) {
                     if (entry.Value == null) {
                         continue;
                     }
 
-                    ObjectXPathProxy item = new ObjectXPathProxy(entry.Value, entry.Value.GetType().Name, this, m_nt);
+                    ObjectXPathProxy item = new ObjectXPathProxy(entry.Value, entry.Value.GetType().Name, this, _nt);
 
                     elements.Add(item);
 
                     item.AddSpecialName("key", entry.Key.ToString());
 
-                    m_elemDict[entry.Key.ToString()] = item;
+                    _elemDict[entry.Key.ToString()] = item;
                 }
 
-                m_elements = (elements.Count != 0) ? elements : null;
+                _elements = (elements.Count != 0) ? elements : null;
             }
 
             private void ActivateSimple() {
                 Hashtable attributes = new Hashtable();
                 ArrayList elements = new ArrayList();
 
-                foreach (PropertyInfo pi in m_binding.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
+                foreach (PropertyInfo pi in _binding.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                     // get the value
-                    object value = pi.GetValue(m_binding, m_empty);
+                    object value = pi.GetValue(_binding, m_empty);
 
                     if (value == null) {
                         continue;
@@ -237,26 +231,21 @@ namespace WmcSoft.Xml.XPath
                     if (str != null) {
                         attributes.Add(GetAtomicString(pi.Name), str);
                     } else {
-                        elements.Add(new ObjectXPathProxy(value, pi.Name, this, m_nt));
+                        elements.Add(new ObjectXPathProxy(value, pi.Name, this, _nt));
                     }
                 }
 
-                m_attributes = (attributes.Count != 0) ? attributes : null;
-                m_elements = (elements.Count != 0) ? elements : null;
+                _attributes = (attributes.Count != 0) ? attributes : null;
+                _elements = (elements.Count != 0) ? elements : null;
 
-                if (m_attributes != null) {
-                    m_attributeKeys = new string[m_attributes.Count];
-                    m_attributes.Keys.CopyTo(m_attributeKeys, 0);
+                if (_attributes != null) {
+                    _attributeKeys = new string[_attributes.Count];
+                    _attributes.Keys.CopyTo(_attributeKeys, 0);
                 }
             }
 
             private string GetAtomicString(string v) {
-                string s;
-                s = m_nt.Get(v);
-                if (s == null) {
-                    s = m_nt.Add(v);
-                }
-                return s;
+                return _nt.Add(v);
             }
 
             private string CultureSafeToString(object obj) {
@@ -294,12 +283,14 @@ namespace WmcSoft.Xml.XPath
         #endregion
 
         #region Member fields
+
         private ObjectXPathProxy m_docElem = null;
         private ObjectXPathProxy m_currentElem = null;
         private XPathNodeType m_nodeType = XPathNodeType.Root;
         private IList m_values = null;
         private int m_valueIndex = -1;
         private XmlNameTable m_nt = new NameTable();
+
         #endregion
 
         #region Constructor
@@ -323,15 +314,12 @@ namespace WmcSoft.Xml.XPath
         public override bool HasAttributes {
             get {
                 switch (m_nodeType) {
-                    case XPathNodeType.Element: {
-                            // does the element have attributes?
-                            return m_currentElem.HasAttributes;
-                        }
-
-                    default: {
-                            // nothing has attributes except elements
-                            return false;
-                        }
+                case XPathNodeType.Element:
+                    // does the element have attributes?
+                    return m_currentElem.HasAttributes;
+                default:
+                    // nothing has attributes except elements
+                    return false;
                 }
             }
         }
@@ -339,21 +327,16 @@ namespace WmcSoft.Xml.XPath
         public override bool HasChildren {
             get {
                 switch (m_nodeType) {
-                    case XPathNodeType.Element: {
-                            // does the element have children?
-                            return m_currentElem.HasChildren;
-                        }
-
-                    case XPathNodeType.Root: {
-                            // the root always has at least one child
-                            // (for the object the navigator was built from)
-                            return true;
-                        }
-
-                    default: {
-                            // nothing else has children
-                            return false;
-                        }
+                case XPathNodeType.Element:
+                    // does the element have children?
+                    return m_currentElem.HasChildren;
+                case XPathNodeType.Root:
+                    // the root always has at least one child
+                    // (for the object the navigator was built from)
+                    return true;
+                default:
+                    // nothing else has children
+                    return false;
                 }
             }
         }
@@ -373,25 +356,17 @@ namespace WmcSoft.Xml.XPath
         public override string Name {
             get {
                 switch (m_nodeType) {
-                    case XPathNodeType.Element: {
-                            return m_currentElem.Name;
-                        }
-
-                    case XPathNodeType.Attribute: {
-                            if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
-                                string s = (string)m_values[m_valueIndex];
-
-                                if (s[0] == '*') {
-                                    s = s.Substring(1);
-                                }
-
-                                return s;
-                            }
-
-                            break;
-                        }
+                case XPathNodeType.Element:
+                    return m_currentElem.Name;
+                case XPathNodeType.Attribute:
+                    if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
+                        string s = (string)m_values[m_valueIndex];
+                        if (s[0] == '*')
+                            s = s.Substring(1);
+                        return s;
+                    }
+                    break;
                 }
-
                 return string.Empty;
             }
         }
@@ -399,19 +374,14 @@ namespace WmcSoft.Xml.XPath
         public override string NamespaceURI {
             get {
                 switch (m_nodeType) {
-                    case XPathNodeType.Attribute: {
-                            if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
-                                string s = (string)m_values[m_valueIndex];
-
-                                if (s[0] == '*') {
-                                    return "urn:ObjectXPathNavigator";
-                                }
-                            }
-
-                            break;
-                        }
+                case XPathNodeType.Attribute:
+                    if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
+                        string s = (string)m_values[m_valueIndex];
+                        if (s[0] == '*')
+                            return "urn:ObjectXPathNavigator";
+                    }
+                    break;
                 }
-
                 return string.Empty;
             }
         }
@@ -427,19 +397,15 @@ namespace WmcSoft.Xml.XPath
         public override string Prefix {
             get {
                 switch (m_nodeType) {
-                    case XPathNodeType.Attribute: {
-                            if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
-                                string s = (string)m_values[m_valueIndex];
-
-                                if (s[0] == '*') {
-                                    return "oxp";
-                                }
-                            }
-
-                            break;
+                case XPathNodeType.Attribute:
+                    if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
+                        string s = (string)m_values[m_valueIndex];
+                        if (s[0] == '*') {
+                            return "oxp";
                         }
+                    }
+                    break;
                 }
-
                 return string.Empty;
             }
         }
@@ -447,22 +413,16 @@ namespace WmcSoft.Xml.XPath
         public override string Value {
             get {
                 switch (m_nodeType) {
-                    case XPathNodeType.Element: {
-                            return m_currentElem.Value;
-                        }
-
-                    case XPathNodeType.Attribute: {
-                            if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
-                                return m_currentElem.GetAttributeValue((string)m_values[m_valueIndex]);
-                            }
-                            break;
-                        }
-
-                    case XPathNodeType.Text: {
-                            goto case XPathNodeType.Element;
-                        }
+                case XPathNodeType.Element:
+                    return m_currentElem.Value;
+                case XPathNodeType.Attribute:
+                    if (m_valueIndex >= 0 && m_valueIndex < m_values.Count) {
+                        return m_currentElem.GetAttributeValue((string)m_values[m_valueIndex]);
+                    }
+                    break;
+                case XPathNodeType.Text:
+                    goto case XPathNodeType.Element;
                 }
-
                 return string.Empty;
             }
         }
@@ -490,7 +450,6 @@ namespace WmcSoft.Xml.XPath
                     return m_currentElem.GetAttributeValue(localName);
                 }
             }
-
             return string.Empty;
         }
 
@@ -499,11 +458,10 @@ namespace WmcSoft.Xml.XPath
         }
 
         public override bool IsDescendant(XPathNavigator nav) {
-            if (nav is ObjectXPathNavigator) {
-                ObjectXPathNavigator otherNav = (ObjectXPathNavigator)nav;
-
+            var otherNav = nav as ObjectXPathNavigator;
+            if (otherNav != null) {
                 // if they're in different graphs, they're not the same
-                if (this.m_docElem != otherNav.m_docElem) {
+                if (m_docElem != otherNav.m_docElem) {
                     return false;
                 }
 
@@ -560,7 +518,6 @@ namespace WmcSoft.Xml.XPath
 
                 return true;
             }
-
             return false;
         }
 
@@ -604,19 +561,19 @@ namespace WmcSoft.Xml.XPath
 
         public override bool MoveToFirst() {
             switch (m_nodeType) {
-                case XPathNodeType.Element: {
-                        m_valueIndex = 0;
-                        return true;
-                    }
+            case XPathNodeType.Element: {
+                    m_valueIndex = 0;
+                    return true;
+                }
 
-                case XPathNodeType.Attribute: {
-                        m_valueIndex = 0;
-                        return true;
-                    }
+            case XPathNodeType.Attribute: {
+                    m_valueIndex = 0;
+                    return true;
+                }
 
-                case XPathNodeType.Text: {
-                        return true;
-                    }
+            case XPathNodeType.Text: {
+                    return true;
+                }
             }
 
             return false;
@@ -750,10 +707,6 @@ namespace WmcSoft.Xml.XPath
                 return false;
             }
 
-            if (m_nodeType != XPathNodeType.Element) {
-                return false;
-            }
-
             ObjectXPathProxy parent = m_currentElem.Parent;
 
             if (parent == null) {
@@ -800,6 +753,5 @@ namespace WmcSoft.Xml.XPath
         }
 
         #endregion
-
     }
 }

@@ -26,6 +26,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Services;
@@ -58,42 +59,15 @@ namespace WmcSoft.Runtime.Remoting.Services
         /// <param name="obj">The object that has been marshaled.</param>
         /// <param name="or">The <see cref="ObjRef"/> that results from marshaling and represents the specified object.</param>
         [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]
-        public void MarshaledObject(Object obj, ObjRef or) {
-            var sb = new StringBuilder();
+        public void MarshaledObject(object obj, ObjRef or) {
+            var writer = new Writer("Tracking: An instance of {0} was marshaled.", obj);
 
-            // Notify the user of the marshal event.
-            sb.AppendFormat("Tracking: An instance of {0} was marshaled.", obj.ToString())
-                .AppendLine();
+            writer.Write("  ChannelUri: ", or.ChannelInfo);
+            writer.Write("  EnvoyInfo: ", or.EnvoyInfo);
+            writer.Write("  TypeInfo: ", or.TypeInfo);
+            writer.Write("  URI: ", or.URI);
 
-            // Print the channel information.
-            if (or.ChannelInfo != null) {
-                // Iterate over ChannelData.
-                foreach (object data in or.ChannelInfo.ChannelData) {
-                    ChannelDataStore channelDataStore = data as ChannelDataStore;
-                    if (channelDataStore != null) {
-                        // Print the URIs from the ChannelDataStore objects.
-                        string[] uris = (channelDataStore).ChannelUris;
-                        foreach (string uri in uris)
-                            sb.Append("  ChannelUri: ").AppendLine(uri);
-                    }
-                }
-            }
-
-            // Print the envoy information.
-            if (or.EnvoyInfo != null)
-                sb.Append("  EnvoyInfo: ").AppendLine(or.EnvoyInfo.ToString());
-
-            // Print the type information.
-            if (or.TypeInfo != null) {
-                sb.Append("  TypeInfo: ").AppendLine(or.TypeInfo.ToString());
-                sb.Append("  TypeName: ").AppendLine(or.TypeInfo.TypeName);
-            }
-
-            // Print the URI.
-            if (or.URI != null)
-                sb.Append("  URI: ").AppendLine(or.URI.ToString());
-
-            _traceSource.TraceInformation(sb.ToString());
+            _traceSource.TraceInformation(writer.ToString());
         }
 
         /// <summary>
@@ -102,8 +76,8 @@ namespace WmcSoft.Runtime.Remoting.Services
         /// <param name="obj">The unmarshalled object.</param>
         /// <param name="or">The <see cref="ObjRef"/> that represents the specified object.</param>
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]
-        public void UnmarshaledObject(Object obj, ObjRef or) {
-            _traceSource.TraceInformation(String.Format("Tracking: An instance of {0} was unmarshaled."), obj.ToString());
+        public void UnmarshaledObject(object obj, ObjRef or) {
+            _traceSource.TraceInformation("Tracking: An instance of {0} was unmarshaled.", obj.ToString());
         }
 
         /// <summary>
@@ -111,8 +85,50 @@ namespace WmcSoft.Runtime.Remoting.Services
         /// </summary>
         /// <param name="obj">The disconnected object.</param>
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]
-        public void DisconnectedObject(Object obj) {
-            _traceSource.TraceInformation(String.Format("Tracking: An instance of {0} was disconnected."), obj.ToString());
+        public void DisconnectedObject(object obj) {
+            _traceSource.TraceInformation("Tracking: An instance of {0} was disconnected.", obj.ToString());
+        }
+
+        #endregion
+
+        #region Helpers
+
+        struct Writer
+        {
+            readonly StringBuilder sb;
+
+            public Writer(string format, object arg0) {
+                sb = new StringBuilder(string.Format(format, arg0));
+            }
+
+            void WriteLine(string prefix, string text) {
+                sb.Append(prefix).AppendLine(text);
+            }
+
+            public void Write(string prefix, IChannelInfo channelInfo) {
+                if (channelInfo == null)
+                    return;
+                var query = channelInfo.ChannelData.OfType<ChannelDataStore>().SelectMany(ds => ds.ChannelUris);
+                foreach (var uri in query) {
+                    WriteLine(prefix, uri);
+                }
+            }
+
+            public void Write(string prefix, IRemotingTypeInfo typeInfo) {
+                if (typeInfo == null)
+                    return;
+                WriteLine(prefix, typeInfo + " (" + typeInfo.TypeName + ")");
+            }
+
+            public void Write(string prefix, object value) {
+                if (value == null)
+                    return;
+                WriteLine(prefix, value.ToString());
+            }
+
+            public override string ToString() {
+                return sb.ToString();
+            }
         }
 
         #endregion

@@ -35,7 +35,7 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     /// <typeparam name="TSource">The type of the source's items to compare.</typeparam>
     /// <typeparam name="TReturn">The type of the value returned by the selector.</typeparam>
-    public class SelectComparer<TSource, TReturn> : IComparer<TSource>
+    public struct SelectComparer<TSource, TReturn> : IComparer<TSource>
     {
         private readonly Func<TSource, TReturn> _selector;
         private readonly IComparer<TReturn> _comparer;

@@ -7,29 +7,19 @@ namespace WmcSoft.Data.SqlClient
     public static class SqlDataReaderExtensions
     {
         public static T GetObjectFromXml<T>(this SqlDataReader reader, int i)
-            where T : new() {
-            if (reader.IsDBNull(i))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T));
-            using (var xml = reader.GetSqlXml(i).CreateReader()) {
-                return (T)serializer.ReadObject(xml);
-            }
+            where T : class {
+            return GetObjectFromXml<T>(reader, i, new DataContractSerializer(typeof(T)));
         }
 
         public static T GetObjectFromXml<T>(this SqlDataReader reader, int i, IDataContractSurrogate surrogate)
-            where T : new() {
-            if (reader.IsDBNull(i))
-                return new T();
-            var serializer = new DataContractSerializer(typeof(T), new Type[0], Int16.MaxValue, false, true, surrogate);
-            using (var xml = reader.GetSqlXml(i).CreateReader()) {
-                return (T)serializer.ReadObject(xml);
-            }
+            where T : class {
+            return GetObjectFromXml<T>(reader, i, new DataContractSerializer(typeof(T), Type.EmptyTypes, Int16.MaxValue, false, true, surrogate));
         }
 
         public static T GetObjectFromXml<T>(this SqlDataReader reader, int i, XmlObjectSerializer serializer)
-            where T : new() {
+            where T : class {
             if (reader.IsDBNull(i))
-                return new T();
+                return null;
             using (var xml = reader.GetSqlXml(i).CreateReader()) {
                 return (T)serializer.ReadObject(xml);
             }

@@ -71,6 +71,14 @@ namespace WmcSoft
 
         #region Operators
 
+        public static bool operator ==(Expected<T> x, Expected<T> y) {
+            return Equals(x, y);
+        }
+
+        public static bool operator !=(Expected<T> x, Expected<T> y) {
+            return Equals(x, y);
+        }
+
         public static bool operator !(Expected<T> x) {
             return x.IsFaulted;
         }

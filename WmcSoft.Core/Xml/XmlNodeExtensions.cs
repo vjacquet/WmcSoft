@@ -135,6 +135,10 @@ namespace WmcSoft.Xml
             return XPathLocator.GetXPathTo(self);
         }
 
+        public static string GetXPath(this XmlAttribute self) {
+            return XPathLocator.GetXPathTo(self);
+        }
+
         public static XmlNode InsertBefore(this XmlNode self, XmlNode node) {
             return self.ParentNode.InsertBefore(node, self);
         }

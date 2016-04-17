@@ -96,8 +96,14 @@ namespace WmcSoft.Data
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose() {
-            _underlying.Dispose();
+        public void Dispose() {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                _underlying.Dispose();
+            }
         }
 
         /// <summary>

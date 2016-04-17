@@ -35,10 +35,9 @@ namespace WmcSoft.Net
             var scheme = absoluteUri.Scheme.ToLowerInvariant();
             if (scheme == "ftp")
                 return WebRequestMethods.Ftp.UploadFile;
-            else if (scheme == "file")
+            if (scheme == "file")
                 return WebRequestMethods.File.UploadFile;
-            else
-                return WebRequestMethods.Http.Put;
+            return WebRequestMethods.Http.Put;
         }
     }
 }

@@ -33,12 +33,12 @@ namespace WmcSoft.Threading
     /// <summary>
     /// Provides a container for services stored in a thread static dictionary, so each calling thread access only its own version.
     /// </summary>
-    public class ThreadStaticServiceContainer : IServiceContainer
+    public sealed class ThreadStaticServiceContainer : IServiceContainer, IDisposable
     {
         #region Private fields
 
-        IDictionary<Type, ServiceCreatorCallback> callbacks;
-        IServiceContainer serviceContainer;
+        private IDictionary<Type, ServiceCreatorCallback> _callbacks;
+        private readonly ServiceContainer _serviceContainer;
 
         [ThreadStatic]
         static IDictionary<ThreadStaticServiceContainer, IServiceContainer> threadStaticContainers;
@@ -51,7 +51,7 @@ namespace WmcSoft.Threading
         /// Initializes a new instance of the <see cref="ThreadStaticServiceContainer"/> class.
         /// </summary>
         public ThreadStaticServiceContainer() {
-            serviceContainer = new ServiceContainer();
+            _serviceContainer = new ServiceContainer();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         public ThreadStaticServiceContainer(IServiceProvider serviceProvider) {
-            serviceContainer = new ServiceContainer(serviceProvider);
+            _serviceContainer = new ServiceContainer(serviceProvider);
         }
 
         #endregion
@@ -69,17 +69,18 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Gets the thread local static container.
         /// </summary>
-        protected IServiceContainer ThreadLocalStaticContainer {
+        private IServiceContainer ThreadLocalStaticContainer
+        {
             get {
                 if (threadStaticContainers == null) {
                     threadStaticContainers = new Dictionary<ThreadStaticServiceContainer, IServiceContainer>();
                 }
                 IServiceContainer serviceContainer;
                 if (!threadStaticContainers.TryGetValue(this, out serviceContainer)) {
-                    serviceContainer = new ServiceContainer(this.serviceContainer);
+                    serviceContainer = new ServiceContainer(this._serviceContainer);
                     lock (serviceContainer) {
-                        if (callbacks != null) {
-                            foreach (var callback in callbacks) {
+                        if (_callbacks != null) {
+                            foreach (var callback in _callbacks) {
                                 serviceContainer.AddService(callback.Key, callback.Value, false);
                             }
                         }
@@ -102,14 +103,14 @@ namespace WmcSoft.Threading
         /// <param name="promote"><c>true</c> to promote this request to any parent service containers; otherwise, <c>false</c>.</param>
         public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote) {
             if (!promote) {
-                lock (serviceContainer) {
-                    if (callbacks == null) {
-                        callbacks = new Dictionary<Type, ServiceCreatorCallback>();
+                lock (_serviceContainer) {
+                    if (_callbacks == null) {
+                        _callbacks = new Dictionary<Type, ServiceCreatorCallback>();
                     }
-                    callbacks.Add(serviceType, callback);
+                    _callbacks.Add(serviceType, callback);
                 }
             } else {
-                serviceContainer.AddService(serviceType, callback, true);
+                _serviceContainer.AddService(serviceType, callback, true);
             }
         }
         /// <summary>
@@ -127,7 +128,7 @@ namespace WmcSoft.Threading
         /// <param name="serviceInstance">An instance of the service type to add. This object must implement or inherit from the type indicated by the <paramref name="serviceType"/> parameter.</param>
         /// <param name="promote"><c>true</c> to promote this request to any parent service containers; otherwise, <c>false</c>.</param>
         public void AddService(Type serviceType, object serviceInstance, bool promote) {
-            serviceContainer.AddService(serviceType, serviceInstance, promote);
+            _serviceContainer.AddService(serviceType, serviceInstance, promote);
         }
         /// <summary>
         /// Adds the specified service to the service container.
@@ -144,12 +145,12 @@ namespace WmcSoft.Threading
         /// <param name="serviceType">The type of service to remove.</param>
         /// <param name="promote"><c>true</c> to promote this request to any parent service containers; otherwise, <c>false</c>.</param>
         public void RemoveService(Type serviceType, bool promote) {
-            if (!promote && callbacks == null) {
-                lock (serviceContainer) {
-                    callbacks.Remove(serviceType);
+            if (!promote && _callbacks == null) {
+                lock (_serviceContainer) {
+                    _callbacks.Remove(serviceType);
                 }
             }
-            serviceContainer.RemoveService(serviceType, promote);
+            _serviceContainer.RemoveService(serviceType, promote);
         }
         /// <summary>
         /// Removes the specified service type from the service container.
@@ -177,5 +178,9 @@ namespace WmcSoft.Threading
         }
 
         #endregion
+
+        public void Dispose() {
+            _serviceContainer.Dispose();
+        }
     }
 }

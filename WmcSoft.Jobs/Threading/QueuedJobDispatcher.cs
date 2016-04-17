@@ -33,11 +33,11 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        Thread[] _threads;
-        IJobQueue _jobs;
+        readonly Thread[] _threads;
+        readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
+        readonly IJobQueue _jobs;
 
         private int _workingJobs;
-        ManualResetEvent _onIdle = new ManualResetEvent(false);
         long continuationTicks;
 
         #endregion
@@ -63,7 +63,7 @@ namespace WmcSoft.Threading
             if (threadCount < 1)
                 throw new ArgumentOutOfRangeException("threadCount");
 
-            this._jobs = this.GetService<IJobQueue>() ?? new JobQueue();
+            _jobs = this.GetService<IJobQueue>() ?? new JobQueue();
 
             _threads = new Thread[threadCount];
             for (int i = 0; i < threadCount; i++) {
@@ -136,7 +136,7 @@ namespace WmcSoft.Threading
                     _threads[i] = null;
                 }
             }
-
+            _onIdle.Close();
             base.Dispose(disposing);
         }
 

@@ -30,198 +30,134 @@ using System.Security.Cryptography;
 
 namespace WmcSoft.Security.Cryptography
 {
-	/// <summary>Converts a <see cref="T:System.Security.Cryptography.CryptoStream"></see> using Uuencode.</summary>
-	/// <remarks>See http://en.wikipedia.org/wiki/Uuencode for more details.</remarks>
-	[ComVisible(true)]
-	public class UUDecodeTransform : ICryptoTransform, IDisposable
-	{
-		#region Lifecycle
+    /// <summary>Converts a <see cref="CryptoStream"></see> using Uuencode.</summary>
+    /// <remarks>See http://en.wikipedia.org/wiki/Uuencode for more details.</remarks>
+    [ComVisible(true)]
+    public class UUDecodeTransform : ICryptoTransform, IDisposable
+    {
+        #region Lifecycle
 
-		/// <summary>Initializes a new instance of the <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> class. </summary>
-		public UUDecodeTransform()
-		{
-		}
+        /// <summary>Initializes a new instance of the <see cref="ToBase64Transform"></see> class. </summary>
+        public UUDecodeTransform() {
+        }
 
-		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Security.Cryptography.ToBase64Transform"></see>.</summary>
-		~UUDecodeTransform()
-		{
-			this.Dispose(false);
-		}
+        /// <summary>Releases the unmanaged resources used by the <see cref="ToBase64Transform"></see>.</summary>
+        ~UUDecodeTransform() {
+            Dispose(false);
+        }
 
-		/// <summary>Releases the unmanaged resources used by the <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> and optionally releases the managed resources.</summary>
-		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-			}
-		}
+        /// <summary>Releases the unmanaged resources used by the <see cref="ToBase64Transform"></see> and optionally releases the managed resources.</summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        protected virtual void Dispose(bool disposing) {
+        }
 
-		void IDisposable.Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-		#endregion
+        #endregion
 
-		#region Behavioral Properties
+        #region Behavioral Properties
 
-		/// <summary>Gets a value indicating whether the current transform can be reused.</summary>
-		/// <returns>Always true.</returns>
-		public virtual bool CanReuseTransform
-		{
-			get
-			{
-				return true;
-			}
-		}
+        /// <summary>Gets a value indicating whether the current transform can be reused.</summary>
+        /// <returns>Always true.</returns>
+        public virtual bool CanReuseTransform {
+            get { return true; }
+        }
 
-		/// <summary>Gets a value that indicates whether multiple blocks can be transformed.</summary>
-		/// <returns>Always false.</returns>
-		public bool CanTransformMultipleBlocks
-		{
-			get
-			{
-				return false;
-			}
-		}
+        /// <summary>Gets a value that indicates whether multiple blocks can be transformed.</summary>
+        /// <returns>Always false.</returns>
+        public bool CanTransformMultipleBlocks {
+            get { return false; }
+        }
 
-		/// <summary>Gets the input block size.</summary>
-		/// <returns>The size of the input data blocks in bytes.</returns>
-		public int InputBlockSize
-		{
-			get
-			{
-				return 4;
-			}
-		}
+        /// <summary>Gets the input block size.</summary>
+        /// <returns>The size of the input data blocks in bytes.</returns>
+        public int InputBlockSize {
+            get { return 4; }
+        }
 
-		/// <summary>Gets the output block size.</summary>
-		/// <returns>The size of the output data blocks in bytes.</returns>
-		public int OutputBlockSize
-		{
-			get
-			{
-				return 3;
-			}
-		}
+        /// <summary>Gets the output block size.</summary>
+        /// <returns>The size of the output data blocks in bytes.</returns>
+        public int OutputBlockSize {
+            get { return 3; }
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		/// <summary>Converts the specified region of the input byte array to base 64 and copies the isBusy to the specified region of the output byte array.</summary>
-		/// <returns>The number of bytes written.</returns>
-		/// <param name="outputBuffer">The output to which to write the isBusy. </param>
-		/// <param name="inputBuffer">The input to compute to base 64. </param>
-		/// <param name="inputOffset">The offset into the input byte array from which to begin using data. </param>
-		/// <param name="outputOffset">The offset into the output byte array from which to begin writing data. </param>
-		/// <param name="inputCount">The number of bytes in the input byte array to use as data. </param>
-		/// <exception cref="T:System.Security.Cryptography.CryptographicException">The data size is not valid. </exception>
-		/// <exception cref="T:System.ObjectDisposedException">The current <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> has already been disposed. </exception>
-		public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
-		{
-			if (inputBuffer == null)
-			{
-				throw new ArgumentNullException("inputBuffer");
-			}
-			if (inputOffset < 0)
-			{
-				throw new ArgumentOutOfRangeException("inputOffset");
-			}
-			if ((inputCount < 0) || (inputCount > inputBuffer.Length))
-			{
-				throw new ArgumentOutOfRangeException("inputCount");
-			}
-			if ((inputBuffer.Length - inputCount) < inputOffset)
-			{
-				throw new ArgumentOutOfRangeException("inputOffset");
-			}
+        /// <summary>Converts the specified region of the input byte array to base 64 and copies the isBusy to the specified region of the output byte array.</summary>
+        /// <returns>The number of bytes written.</returns>
+        /// <param name="outputBuffer">The output to which to write the isBusy. </param>
+        /// <param name="inputBuffer">The input to compute to base 64. </param>
+        /// <param name="inputOffset">The offset into the input byte array from which to begin using data. </param>
+        /// <param name="outputOffset">The offset into the output byte array from which to begin writing data. </param>
+        /// <param name="inputCount">The number of bytes in the input byte array to use as data. </param>
+        /// <exception cref="T:System.Security.Cryptography.CryptographicException">The data size is not valid. </exception>
+        /// <exception cref="T:System.ObjectDisposedException">The current <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> has already been disposed. </exception>
+        public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {
+            if (inputBuffer == null) throw new ArgumentNullException("inputBuffer");
+            if (inputOffset < 0) throw new ArgumentOutOfRangeException("inputOffset");
+            if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException("inputCount");
+            if ((inputBuffer.Length - inputCount) < inputOffset) throw new ArgumentOutOfRangeException("inputOffset");
 
-			if (inputCount < this.InputBlockSize)
-			{
-				return 0;
-			}
+            if (inputCount < InputBlockSize) {
+                return 0;
+            }
 
-			// uudecode
-			byte[] array = new byte[3] {
-				(byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4),
-				(byte)(((inputBuffer[1] - 0x20) << 4 & 0xFF) | (inputBuffer[2] - 0x20) >> 2),
-				(byte)(((inputBuffer[2] - 0x20) << 6 & 0xFF) | (inputBuffer[3] - 0x20))
-			};
+            // uudecode
+            var array = new byte[] {
+                (byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4),
+                (byte)(((inputBuffer[1] - 0x20) << 4 & 0xFF) | (inputBuffer[2] - 0x20) >> 2),
+                (byte)(((inputBuffer[2] - 0x20) << 6 & 0xFF) | (inputBuffer[3] - 0x20))
+            };
 
-			Buffer.BlockCopy(array, 0, outputBuffer, outputOffset, array.Length);
-			return array.Length;
-		}
+            Buffer.BlockCopy(array, 0, outputBuffer, outputOffset, array.Length);
+            return array.Length;
+        }
 
-		/// <summary>Converts the specified region of the specified byte array to base 64.</summary>
-		/// <returns>The computed base 64 conversion.</returns>
-		/// <param name="inputBuffer">The input to convert to base 64. </param>
-		/// <param name="inputOffset">The offset into the byte array from which to begin using data. </param>
-		/// <param name="inputCount">The number of bytes in the byte array to use as data. </param>
-		/// <exception cref="T:System.ObjectDisposedException">The current <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> has already been disposed. </exception>
-		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-		{
-			if (inputBuffer == null)
-			{
-				throw new ArgumentNullException("inputBuffer");
-			}
-			if (inputOffset < 0)
-			{
-				throw new ArgumentOutOfRangeException("inputOffset");
-			}
-			if ((inputCount < 0) || (inputCount > inputBuffer.Length))
-			{
-				throw new ArgumentOutOfRangeException("inputCount");
-			}
-			if ((inputBuffer.Length - inputCount) < inputOffset)
-			{
-				throw new ArgumentOutOfRangeException("inputOffset");
-			}
-			if (inputCount == 1)
-			{
-				throw new ArgumentOutOfRangeException("inputCount");
-			}
+        /// <summary>Converts the specified region of the specified byte array to base 64.</summary>
+        /// <returns>The computed base 64 conversion.</returns>
+        /// <param name="inputBuffer">The input to convert to base 64. </param>
+        /// <param name="inputOffset">The offset into the byte array from which to begin using data. </param>
+        /// <param name="inputCount">The number of bytes in the byte array to use as data. </param>
+        /// <exception cref="T:System.ObjectDisposedException">The current <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> has already been disposed. </exception>
+        public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {
+            if (inputBuffer == null) throw new ArgumentNullException("inputBuffer");
+            if (inputOffset < 0) throw new ArgumentOutOfRangeException("inputOffset");
+            if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException("inputCount");
+            if ((inputBuffer.Length - inputCount) < inputOffset) throw new ArgumentOutOfRangeException("inputOffset");
+            if (inputCount == 1) throw new ArgumentOutOfRangeException("inputCount");
 
-			// uudecode
-			byte[] array;
+            // uudecode
+            switch (inputCount) {
+            case 2:
+                return new byte[] {
+                    (byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4)
+                };
+            case 3:
+                return new byte[] {
+                    (byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4),
+                    (byte)(((inputBuffer[1] - 0x20) << 4 & 0xFF) | (inputBuffer[2] - 0x20) >> 2)
+                };
+            case 4:
+                return new byte[] {
+                    (byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4),
+                    (byte)(((inputBuffer[1] - 0x20) << 4 & 0xFF) | (inputBuffer[2] - 0x20) >> 2),
+                    (byte)(((inputBuffer[2] - 0x20) << 6 & 0xFF) | (inputBuffer[3] - 0x20))
+                };
+            default:
+                return new byte[0];
+            }
+        }
 
-			switch (inputCount)
-			{
-				case 2:
-					array = new byte[1] {
-						(byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4)
-					};
-					break;
-				case 3:
-					array = new byte[2] {
-						(byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4),
-						(byte)(((inputBuffer[1] - 0x20) << 4 & 0xFF) | (inputBuffer[2] - 0x20) >> 2)
-					};
-					break;
-				case 4:
-					array = new byte[3] {
-						(byte)(((inputBuffer[0] - 0x20) << 2)        | (inputBuffer[1] - 0x20) >> 4),
-						(byte)(((inputBuffer[1] - 0x20) << 4 & 0xFF) | (inputBuffer[2] - 0x20) >> 2),
-						(byte)(((inputBuffer[2] - 0x20) << 6 & 0xFF) | (inputBuffer[3] - 0x20))
-					};
-					break;
-				default:
-					array = new byte[0];
-					break;
-			}
+        /// <summary>Releases all resources used by the <see cref="ToBase64Transform"></see>.</summary>
+        public void Clear() {
+            Dispose();
+        }
 
-			return array;
-		}
-
-		/// <summary>Releases all resources used by the <see cref="T:System.Security.Cryptography.ToBase64Transform"></see>.</summary>
-		public void Clear()
-		{
-			((IDisposable)this).Dispose();
-		}
-
-		#endregion
-
-	}
+        #endregion
+    }
 }

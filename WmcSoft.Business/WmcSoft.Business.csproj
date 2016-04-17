@@ -71,6 +71,8 @@
     <Compile Include="Business\DomainObject.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
+    <Compile Include="Business\IdentityMap.cs" />
+    <Compile Include="Business\IIdentityMap.cs" />
     <Compile Include="Business\InventoryModel\CapacityManager.cs" />
     <Compile Include="Business\InventoryModel\Inventory.cs" />
     <Compile Include="Business\InventoryModel\Reservation.cs" />
@@ -186,6 +188,7 @@
     <Compile Include="Business\RuleModel\RuleSet.cs" />
     <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
     <Compile Include="Business\RuleModel\Variable.cs" />
+    <Compile Include="Business\UnitOfWork.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />

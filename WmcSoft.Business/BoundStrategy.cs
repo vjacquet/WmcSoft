@@ -60,7 +60,7 @@ namespace WmcSoft
             }
         }
 
-        public sealed class UpperExclusiveStrategy : IBoundStrategy<T>
+        public struct UpperExclusiveStrategy : IBoundStrategy<T>
         {
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) <= 0)

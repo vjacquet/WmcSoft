@@ -39,7 +39,10 @@ namespace WmcSoft.Collections.Specialized
     [ComVisible(true)]
     public class PriorityQueue<T> : IReadOnlyCollection<T>, ICloneable<PriorityQueue<T>>
     {
-        const int DEFAULT_CAPACITY = 16;
+        const int MaxCapacity = 0X7FEFFFFE;
+        const int DefaultCapacity = 16;
+
+        static readonly T[] _emptyStorage = new T[0];
 
         #region Class PriorityQueueEnumerator
 
@@ -58,7 +61,8 @@ namespace WmcSoft.Collections.Specialized
 
             #region IEnumerator<T> Members
 
-            public T Current {
+            public T Current
+            {
                 get {
                     if (_index < 1) {
                         throw new InvalidOperationException();
@@ -85,7 +89,8 @@ namespace WmcSoft.Collections.Specialized
                 _index = 0;
             }
 
-            object IEnumerator.Current {
+            object IEnumerator.Current
+            {
                 get {
                     return Current;
                 }
@@ -118,7 +123,8 @@ namespace WmcSoft.Collections.Specialized
                 _heap = heap;
             }
 
-            public override int Capacity {
+            public override int Capacity
+            {
                 get {
                     lock (_heap.SyncRoot) {
                         return _heap.Capacity;
@@ -155,7 +161,8 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override int Count {
+            public override int Count
+            {
                 get {
                     lock (_heap.SyncRoot) {
                         return _heap.Count;
@@ -181,11 +188,9 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-
-            public override bool IsSynchronized {
-                get {
-                    return true;
-                }
+            public override bool IsSynchronized
+            {
+                get { return true; }
             }
 
             public override T Peek() {
@@ -194,16 +199,15 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override object SyncRoot {
-                get {
-                    return _heap.SyncRoot;
-                }
+            public override object SyncRoot
+            {
+                get { return _heap.SyncRoot; }
             }
 
         }
         #endregion
 
-        IComparer<T> _comparer;
+        readonly IComparer<T> _comparer;
         T[] _items;
         int _count;
         int _version;
@@ -216,7 +220,7 @@ namespace WmcSoft.Collections.Specialized
         /// the specified IComparer interface.
         /// </summary>
         public PriorityQueue()
-            : this(Comparer<T>.Default, DEFAULT_CAPACITY) {
+            : this(Comparer<T>.Default, 0) {
         }
 
         /// <summary>
@@ -226,7 +230,7 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="comparer"></param>
         public PriorityQueue(IComparer<T> comparer)
-            : this(comparer, 16) {
+            : this(comparer, 0) {
         }
 
         /// <summary>
@@ -258,11 +262,10 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="comparer"></param>
         /// <param name="initialCapacity"></param>
         public PriorityQueue(IComparer<T> comparer, int initialCapacity) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
-            if (initialCapacity < 0)
-                throw new ArgumentOutOfRangeException("initialCapacity");
-            _items = new T[initialCapacity + 1];
+            if (comparer == null) throw new ArgumentNullException("comparer");
+            if (initialCapacity < 0) throw new ArgumentOutOfRangeException("initialCapacity");
+
+            _items = initialCapacity == 0 ? _emptyStorage : new T[initialCapacity + 1];
             _comparer = comparer;
         }
 
@@ -275,17 +278,18 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="collection"></param>
         /// <param name="comparer"></param>
         public PriorityQueue(ICollection<T> collection, IComparer<T> comparer) {
-            if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            if (collection == null) throw new ArgumentNullException("collection");
+            if (comparer == null) throw new ArgumentNullException("comparer");
+
             _comparer = comparer;
             if (collection.Count == 0) {
-                _items = new T[DEFAULT_CAPACITY];
+                _items = _emptyStorage;
             } else {
                 _items = new T[collection.Count + 1];
                 foreach (T item in collection) {
-                    Enqueue(item);
+                    if (item == null) throw new ArgumentNullException("value");
+
+                    DoEnqueue(item);
                 }
             }
         }
@@ -293,11 +297,13 @@ namespace WmcSoft.Collections.Specialized
 
         #region Membres de ICollection
 
-        public virtual bool IsSynchronized {
+        public virtual bool IsSynchronized
+        {
             get { return false; }
         }
 
-        public virtual int Count {
+        public virtual int Count
+        {
             get { return _count; }
         }
 
@@ -305,7 +311,8 @@ namespace WmcSoft.Collections.Specialized
             Array.Copy(_items, 1, array, index, _count);
         }
 
-        public virtual object SyncRoot {
+        public virtual object SyncRoot
+        {
             get { return this; }
         }
 
@@ -338,16 +345,18 @@ namespace WmcSoft.Collections.Specialized
 
         #endregion
 
-        public virtual void Enqueue(T value) {
-            if (value == null)
-                throw new ArgumentNullException("value");
-
-            ++_version;
-
-            int index = ++_count;
-            EnsureCapacity(index + 1);
+        private void DoEnqueue(T value) {
+            var index = ++_count;
             _items[index] = value;
             ReorganizeDownUp(index);
+        }
+
+        public virtual void Enqueue(T value) {
+            if (value == null) throw new ArgumentNullException("value");
+
+            ++_version;
+            EnsureCapacity(_count + 1);
+            DoEnqueue(value);
         }
 
         void ReorganizeDownUp(int index) {
@@ -413,35 +422,43 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Capacity {
+        public virtual int Capacity
+        {
             get {
-                return _items.Length - 1;
+                return Math.Max(0, _items.Length - 1);
             }
             set {
-                if (value != _items.Length) {
+                var capacity = Math.Max(0, _items.Length - 1);
+                if (value != capacity) {
                     if (value < _count) {
                         throw new ArgumentOutOfRangeException("value");
                     }
-                    if (value > 0) {
-                        T[] array = new T[value];
-                        if (_count > 0) {
-                            Array.Copy(_items, 0, array, 0, _count);
-                        }
-                        _items = array;
+                    if (value == 0) {
+                        _items = _emptyStorage;
                     } else {
-                        _items = new T[DEFAULT_CAPACITY];
+                        GrowCapacity(value);
                     }
                 }
             }
         }
 
+        private void GrowCapacity(int value) {
+            var array = new T[value];
+            if (_count > 0) {
+                Array.Copy(_items, 0, array, 0, _count);
+            }
+            _items = array;
+        }
+
         private void EnsureCapacity(int min) {
-            if (_items.Length < min) {
-                int capacity = (_items.Length == 0) ? DEFAULT_CAPACITY : (_items.Length * 2);
-                if (capacity < min) {
-                    capacity = min;
-                }
-                this.Capacity = capacity;
+            var length = _items.Length - 1;
+            if (length < min) {
+                int capacity = length == -1 ? DefaultCapacity : length * 2;
+                // Allow the list to grow to maximum possible capacity (~2G elements) before encountering overflow.
+                // Note that this check works even when _items.Length overflowed thanks to the (uint) cast
+                if ((uint)capacity > MaxCapacity) capacity = MaxCapacity;
+                if (capacity < min) capacity = min;
+                GrowCapacity(capacity);
             }
         }
 

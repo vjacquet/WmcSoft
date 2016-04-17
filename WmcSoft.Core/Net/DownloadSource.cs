@@ -35,8 +35,8 @@ namespace WmcSoft.Net
     {
         #region Fields
 
-        readonly WebClient _webClient;
-        readonly Uri _uri;
+        private readonly WebClient _webClient;
+        private readonly Uri _uri;
 
         #endregion
 
@@ -59,15 +59,11 @@ namespace WmcSoft.Net
         #region IStreamSource Membres
 
         public Stream GetStream() {
-            var uri = _uri.IsAbsoluteUri
-                ? _uri
-                : new Uri(new Uri(WebClient.BaseAddress), _uri);
-            return GetStream(uri);
+            return GetStream(_uri);
         }
 
         protected virtual Stream GetStream(Uri uri) {
             return _webClient.OpenRead(uri);
-
         }
 
         #endregion

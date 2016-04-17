@@ -31,103 +31,78 @@ using System.Resources;
 
 namespace WmcSoft.Units
 {
-	/// <summary>
-	/// Description résumée de RM.
-	/// </summary>
-	[DebuggerStepThrough]
-	internal sealed class RM
-	{
-		internal const string InvalidScaleFactorException = "InvalidScaleFactorException";
-		internal const string IncompatibleMetricException = "IncompatibleMetricException";
-		internal const string EquivalentUnitException = "EquivalentUnitException";
-		internal const string DuplicateConversionException = "DuplicateConversionException";
-		internal const string NotAUnitException = "NotAUnitException";
+    /// <summary>
+    /// Description résumée de RM.
+    /// </summary>
+    [DebuggerStepThrough]
+    internal sealed class RM
+    {
+        internal const string InvalidScaleFactorException = "InvalidScaleFactorException";
+        internal const string IncompatibleMetricException = "IncompatibleMetricException";
+        internal const string EquivalentUnitException = "EquivalentUnitException";
+        internal const string DuplicateConversionException = "DuplicateConversionException";
+        internal const string NotAUnitException = "NotAUnitException";
 
-		static ResourceManager rm;
+        static readonly ResourceManager rm;
 
-		static ResourceManager GetManager()
-		{
-			if(rm == null)
-			{
-				lock(typeof(RM))
-				{
-					if(rm == null)
-					{
-						rm = new ResourceManager(typeof(RM));
-					}
-				}
-			}
-			return rm;
-		}
+        static RM() {
+            rm = new ResourceManager(typeof(RM));
+        }
 
-		public static string GetString(string name)
-		{
-			return GetString(name, (CultureInfo)null);
-		}
+        public static string GetString(string name) {
+            return GetString(name, (CultureInfo)null);
+        }
 
-		public static string GetString(string name, CultureInfo culture)
-		{
-			return GetManager().GetString(name, culture);
-		}
+        public static string GetString(string name, CultureInfo culture) {
+            return rm.GetString(name, culture);
+        }
 
-		public static string Format(string name, params object[] args)
-		{
-			return Format(name, (CultureInfo)null, args);
-		}
+        public static string Format(string name, params object[] args) {
+            return Format(name, (CultureInfo)null, args);
+        }
 
-		public static string Format(string name, CultureInfo culture, params object[] args)
-		{
-			return String.Format(GetManager().GetString(name, culture), args);
-		}
+        public static string Format(string name, CultureInfo culture, params object[] args) {
+            return String.Format(rm.GetString(name, culture), args);
+        }
 
-		public static string GetName(string name)
-		{
-			return GetName(name, (CultureInfo)null);
-		}
+        public static string GetName(string name) {
+            return GetName(name, (CultureInfo)null);
+        }
 
-		public static string GetName(string name, CultureInfo culture)
-		{
-			return GetManager().GetString(String.Format("{0}.Name", name), culture);
-		}
+        public static string GetName(string name, CultureInfo culture) {
+            return rm.GetString(string.Format("{0}.Name", name), culture);
+        }
 
-		public static string GetDefinition(string name)
-		{
-			return GetDefinition(name, (CultureInfo)null);
-		}
+        public static string GetDefinition(string name) {
+            return GetDefinition(name, (CultureInfo)null);
+        }
 
-		public static string GetDefinition(string name, CultureInfo culture)
-		{
-			return GetManager().GetString(String.Format("{0}.Definition", name), culture);
-		}
+        public static string GetDefinition(string name, CultureInfo culture) {
+            return rm.GetString(String.Format("{0}.Definition", name), culture);
+        }
 
-		public static string GetSymbol(string name)
-		{
-			return GetSymbol(name, (CultureInfo)null);
-		}
+        public static string GetSymbol(string name) {
+            return GetSymbol(name, (CultureInfo)null);
+        }
 
-		public static string GetSymbol(string name, CultureInfo culture)
-		{
-			return GetManager().GetString(String.Format("{0}.Symbol", name), culture);
-		}
+        public static string GetSymbol(string name, CultureInfo culture) {
+            return rm.GetString(String.Format("{0}.Symbol", name), culture);
+        }
 
-		public static string FormatSIPrefixName(int power, string name)
-		{
-			return FormatSIPrefixName(power, name, (CultureInfo)null);
-		}
+        public static string FormatSIPrefixName(int power, string name) {
+            return FormatSIPrefixName(power, name, (CultureInfo)null);
+        }
 
-		public static string FormatSIPrefixName(int power, string name, CultureInfo culture)
-		{
-			return GetManager().GetString(String.Format("SIPrefix.10^{0}", power), culture) + name;
-		}
+        public static string FormatSIPrefixName(int power, string name, CultureInfo culture) {
+            return rm.GetString(String.Format("SIPrefix.10^{0}", power), culture) + name;
+        }
 
-		public static string FormatSIPrefixSymbol(int power, string name)
-		{
-			return FormatSIPrefixSymbol(power, name, (CultureInfo)null);
-		}
+        public static string FormatSIPrefixSymbol(int power, string name) {
+            return FormatSIPrefixSymbol(power, name, (CultureInfo)null);
+        }
 
-		public static string FormatSIPrefixSymbol(int power, string name, CultureInfo culture)
-		{
-			return GetManager().GetString(String.Format("SIPrefixSymbol.10^{0}", power), culture) + name;
-		}
-	}
+        public static string FormatSIPrefixSymbol(int power, string name, CultureInfo culture) {
+            return rm.GetString(String.Format("SIPrefixSymbol.10^{0}", power), culture) + name;
+        }
+    }
 }

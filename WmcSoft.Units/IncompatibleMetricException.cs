@@ -32,6 +32,7 @@ namespace WmcSoft.Units
     /// <summary>
     /// Description résumée de IncompatibleMetricException.
     /// </summary>
+    [Serializable]
     public class IncompatibleMetricException : MetricException
     {
         public IncompatibleMetricException()

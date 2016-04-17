@@ -1,4 +1,4 @@
-#region Licence
+ï»¿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -24,27 +24,17 @@
 
 #endregion
 
-using System;
-using System.Runtime.Serialization;
-
-namespace WmcSoft.Units
+namespace WmcSoft.Business
 {
     /// <summary>
-    /// Description résumée de MetricException.
+    /// Looks up instances using the map when referring to them.
     /// </summary>
-    [Serializable]
-    public abstract class MetricException : ApplicationException
+    /// <typeparam name="TInstance">The type of instances.</typeparam>
+    /// <typeparam name="TId">The type of the identity.</typeparam>
+    /// <remarks>See http://martinfowler.com/eaaCatalog/identityMap.html </remarks>
+    public interface IIdentityMap<TInstance, TId>
     {
-        protected MetricException(string message)
-            : base(message) {
-        }
-
-        protected MetricException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
-        }
-
-        protected MetricException(string message, Exception innerException)
-            : base(message, innerException) {
-        }
+        TId Register(TInstance instance);
+        TInstance Get(TId id);
     }
 }
