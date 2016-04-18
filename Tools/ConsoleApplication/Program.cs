@@ -65,7 +65,6 @@ namespace ConsoleApplication
 
                 backgroundWorker.DoWork += (sender, e) => {
                     throw new NotImplementedException();
-
                 };
 
                 backgroundWorker.RunWorkerAsync();
@@ -75,6 +74,5 @@ namespace ConsoleApplication
         }
 
         #endregion
-
     }
 }
