@@ -29,12 +29,12 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements methods to support the comparison of instances for equality.
+    /// </summary>
+    /// <typeparam name="T">The type of the instances.</typeparam>
     public sealed class AnonymousEqualityComparer<T> : IEqualityComparer<T>
     {
-        static int Zero(T x) {
-            return 0;
-        }
-
         private readonly Func<T, T, bool> _equals;
         private readonly Func<T, int> _getHashCode;
 
@@ -43,7 +43,7 @@ namespace WmcSoft.Collections.Generic
                 throw new ArgumentNullException("equals");
 
             _equals = equals;
-            _getHashCode = getHashCode ?? Zero;
+            _getHashCode = getHashCode ?? GetDefaultHashCode;
         }
 
         public bool Equals(T x, T y) {
@@ -52,6 +52,12 @@ namespace WmcSoft.Collections.Generic
 
         public int GetHashCode(T obj) {
             return _getHashCode(obj);
+        }
+
+        private int GetDefaultHashCode(T x) {
+            if (Equals(x, default(T)))
+                return 0;
+            return 1;
         }
     }
 }
