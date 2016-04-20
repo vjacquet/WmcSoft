@@ -31,6 +31,10 @@ namespace WmcSoft.Collections.Generic
 {
     public sealed class AnonymousEqualityComparer<T> : IEqualityComparer<T>
     {
+        static int Zero(T x) {
+            return 0;
+        }
+
         private readonly Func<T, T, bool> _equals;
         private readonly Func<T, int> _getHashCode;
 
@@ -39,7 +43,7 @@ namespace WmcSoft.Collections.Generic
                 throw new ArgumentNullException("equals");
 
             _equals = equals;
-            _getHashCode = getHashCode ?? EqualityComparer<T>.Default.GetHashCode;
+            _getHashCode = getHashCode ?? Zero;
         }
 
         public bool Equals(T x, T y) {
