@@ -41,9 +41,7 @@ namespace WmcSoft.Text
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
         public static StringBuilder Append(this StringBuilder sb, Strip value) {
-            if (value == null)
-                return sb;
-            return value.AppendTo(sb);
+            return (value ?? Strip.Null).AppendTo(sb);
         }
 
         /// <summary>
@@ -62,7 +60,7 @@ namespace WmcSoft.Text
         ///   -or- Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.
         /// </exception>
         public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count) {
-            return value.AppendTo(sb, startIndex, count);
+            return (value ?? Strip.Null).AppendTo(sb, startIndex, count);
         }
 
         #endregion

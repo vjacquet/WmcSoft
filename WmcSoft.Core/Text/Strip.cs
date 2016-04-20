@@ -40,7 +40,7 @@ namespace WmcSoft.Text
     {
         #region Public fields
 
-        static readonly Strip Null = new Strip();
+        internal static readonly Strip Null = new Strip();
         public static readonly Strip Empty = new Strip(String.Empty, 0, 0);
 
         #endregion
@@ -618,14 +618,10 @@ namespace WmcSoft.Text
         // The following are internal because, for convenience, they are exposed as extensions on StringBuilder
         // Making the private fields internal was not an option to protect the encapsulation of the type.
         internal StringBuilder AppendTo(StringBuilder sb) {
-            if (String.IsNullOrEmpty(_s) || Length == 0)
-                return sb;
             return sb.Append(_s, _start, Length);
         }
 
         internal StringBuilder AppendTo(StringBuilder sb, int startIndex, int count) {
-            if (String.IsNullOrEmpty(_s) || Length == 0)
-                return sb;
             return sb.Append(_s, _start + startIndex, count);
         }
 
