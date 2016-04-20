@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Text;
 
 namespace WmcSoft.Text
@@ -32,12 +33,91 @@ namespace WmcSoft.Text
     {
         #region Append
 
+        /// <summary>
+        /// Appends a copy of the specified <see cref="Strip"/> to this instance.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="value">The <see cref="Strip"/> to append.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
         public static StringBuilder Append(this StringBuilder sb, Strip value) {
-            return value.AppendTo(sb);
+            return (value ?? Strip.Null).AppendTo(sb);
         }
 
+        /// <summary>
+        /// Appends a copy of a specified substring to this instance.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="value">The <see cref="Strip"/> that contains the substring to append.</param>
+        /// <param name="startIndex">The starting position of the substring within <paramref name="value"/>.</param>
+        /// <param name="count">The number of characters in <paramref name="value"/> to append.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///   <paramref name="count"/> less than zero.
+        ///   -or- <paramref name="startIndex"/> less than zero.
+        ///   -or- <paramref name="startIndex"/> + <paramref name="count"/> is
+        ///   greater than the length of value.
+        ///   -or- Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.
+        /// </exception>
         public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count) {
-            return value.AppendTo(sb, startIndex, count);
+            return (value ?? Strip.Null).AppendTo(sb, startIndex, count);
+        }
+
+        #endregion
+
+        #region AppendJoin
+
+        /// <summary>
+        /// Appends all the elements of an object array, using the specified separator between each element.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
+        /// <param name="parts">An array that contains the elements to concatenate.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
+        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, object[] parts) {
+            if (parts.Length > 0) {
+                sb.Append(parts[0]);
+                for (int i = 1; i < parts.Length; i++) {
+                    sb.Append(separator).Append(parts[i]);
+                }
+            }
+            return sb;
+        }
+
+        /// <summary>
+        /// Appends all the elements of a string array, using the specified separator between each element.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
+        /// <param name="parts">An array that contains the elements to concatenate.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
+        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, string[] parts) {
+            if (parts.Length > 0) {
+                sb.Append(parts[0]);
+                for (int i = 1; i < parts.Length; i++) {
+                    sb.Append(separator).Append(parts[i]);
+                }
+            }
+            return sb;
+        }
+
+        /// <summary>
+        /// Appends all the elements of a string array, using the specified separator between each element.
+        /// </summary>
+        /// <typeparam name="T">The type of element to convert before inserting them.</typeparam>
+        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
+        /// <param name="parts">An array that contains the elements to concatenate.</param>
+        /// <param name="converter">The converter from the type <typeparamref name="T"/> to string.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
+        public static StringBuilder AppendJoin<T>(this StringBuilder sb, string separator, T[] parts, Converter<T, string> converter) {
+            if (parts.Length > 0) {
+                sb.Append(converter(parts[0]));
+                for (int i = 1; i < parts.Length; i++) {
+                    sb.Append(separator).Append(converter(parts[i]));
+                }
+            }
+            return sb;
         }
 
         #endregion
