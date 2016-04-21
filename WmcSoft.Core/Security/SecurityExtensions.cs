@@ -37,11 +37,11 @@ namespace WmcSoft.Security
     public static class SecurityExtensions
     {
         static bool InvalidIdentity(PrincipalPermissionAttribute attribute, IIdentity identity) {
-            return String.IsNullOrWhiteSpace(attribute.Name) || String.Equals(attribute.Name, identity.Name);
+            return !String.IsNullOrWhiteSpace(attribute.Name) && !String.Equals(attribute.Name, identity.Name);
         }
 
         static bool InvalidRole(PrincipalPermissionAttribute attribute, IPrincipal principal) {
-            return principal.IsInRole(attribute.Role);
+            return !principal.IsInRole(attribute.Role);
         }
 
         public static bool IsGranted(this MemberInfo self, IPrincipal principal) {
