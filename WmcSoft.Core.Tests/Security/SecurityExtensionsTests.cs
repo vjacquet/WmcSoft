@@ -14,7 +14,7 @@ namespace WmcSoft.Security
             Assert.IsFalse(method.IsGranted());
 
             var admin = new GenericPrincipal(new GenericIdentity("admin"), new string[] { "Administrator" });
-            admin.IsGranted(method);
+            Assert.IsTrue(admin.IsGranted(method));
         }
 
         [TestMethod]
@@ -23,6 +23,12 @@ namespace WmcSoft.Security
             var admin = new GenericPrincipal(new GenericIdentity("admin"), new string[] { "Administrator" });
             using (admin.Impersonate()) {
                 Assert.IsTrue(method.IsGranted());
+
+                var attr = new PrincipalPermissionAttribute(SecurityAction.Assert) {
+                    Authenticated = true,
+                    Role = "Administrator"
+                };
+                attr.CreatePermission().Demand();
             }
         }
     }

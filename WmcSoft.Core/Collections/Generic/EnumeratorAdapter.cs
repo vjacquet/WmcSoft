@@ -33,7 +33,7 @@ namespace WmcSoft.Collections.Generic
     /// <summary>
     /// Adapts an <see cref="IEnumerator"/> as an <see cref="IEnumerator{object}"/>.
     /// </summary>
-    public sealed class EnumeratorAdapter : IEnumerator<object>
+    public struct EnumeratorAdapter : IEnumerator<object>
     {
         readonly IEnumerator _enumerator;
 

@@ -58,8 +58,8 @@ namespace WmcSoft.DirectoryServices
         public static string GetNTAccount(this DirectoryEntry member) {
             var collection = member.Properties;
             var objectSid = collection["objectSid"];
-            var value = objectSid.Value;
-            var identifier = new SecurityIdentifier((byte[])value, 0);
+            var value = (byte[])objectSid.Value;
+            var identifier = new SecurityIdentifier(value, 0);
             return identifier.Translate(typeof(NTAccount)).ToString();
         }
 

@@ -48,17 +48,9 @@ namespace WmcSoft.Runtime
                 _array = array;
             }
 
-            public int Count
-            {
-                get {
-                    return _array.Length;
-                }
-            }
+            public int Count { get { return _array.Length; } }
 
-            bool ICollection<object>.IsReadOnly
-            {
-                get { return true; }
-            }
+            bool ICollection<object>.IsReadOnly { get { return true; } }
 
             void ICollection<object>.Add(object item) {
                 throw new NotSupportedException();
@@ -82,7 +74,7 @@ namespace WmcSoft.Runtime
                 return _array.GetEnumerator();
             }
 
-            IEnumerator<object> IEnumerable<object>.GetEnumerator() {
+            public IEnumerator<object> GetEnumerator() {
                 return new EnumeratorAdapter(_array.GetEnumerator());
             }
 
