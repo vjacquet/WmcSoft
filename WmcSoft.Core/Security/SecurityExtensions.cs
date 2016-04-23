@@ -36,23 +36,37 @@ namespace WmcSoft.Security
 {
     public static class SecurityExtensions
     {
+        static bool InvalidIdentity(PrincipalPermissionAttribute attribute, IIdentity identity) {
+            return !String.IsNullOrWhiteSpace(attribute.Name) && !String.Equals(attribute.Name, identity.Name);
+        }
+
+        static bool InvalidRole(PrincipalPermissionAttribute attribute, IPrincipal principal) {
+            return !principal.IsInRole(attribute.Role);
+        }
+
         public static bool IsGranted(this MemberInfo self, IPrincipal principal) {
             try {
 #pragma warning disable CS0642 // Possible mistaken empty statement
 
-                var permissions = new List<SecurityAttribute>();
+                var identity = principal.Identity;
+                var permissions = new List<IPermission>();
                 foreach (var attribute in self.GetCustomAttributes<SecurityAttribute>(true)) {
                     // special case to avoid exception in trivial cases
                     var principalPermissionAttribute = attribute as PrincipalPermissionAttribute;
                     if (principalPermissionAttribute == null)
                         ;
-                    else if ((principalPermissionAttribute.Authenticated && !principal.Identity.IsAuthenticated)
-                        || (!String.IsNullOrWhiteSpace(principalPermissionAttribute.Name) && !String.Equals(principalPermissionAttribute.Name, principal.Identity.Name))
-                        || (!String.IsNullOrWhiteSpace(principalPermissionAttribute.Role) && !principal.IsInRole(principalPermissionAttribute.Role)))
+                    else if (principalPermissionAttribute.Authenticated && !identity.IsAuthenticated)
                         return false;
-                    permissions.Add(attribute);
+                    else if (InvalidIdentity(principalPermissionAttribute, identity) || InvalidRole(principalPermissionAttribute, principal))
+                        return false;
+
+                    permissions.Add(attribute.CreatePermission());
                 }
-                permissions.ForEach(p => p.CreatePermission().Demand());
+
+                using (principal.Impersonate()) {
+                    permissions.ForEach(p => p.Demand());
+                }
+
                 return true;
 
 #pragma warning restore CS0642 // Possible mistaken empty statement

@@ -37,11 +37,11 @@ namespace WmcSoft.Reflection
             return TypeDescriptor.GetProperties(memberInfo.DeclaringType)[memberInfo.Name].GetMetadataAttribute<TAttribute>();
         }
 
-        public static IEnumerable<T> GetCustomAttributes<T>(this MemberInfo element, bool inherit = true) where T : Attribute {
-            return (IEnumerable<T>)Attribute.GetCustomAttributes(element, typeof(T), inherit);
+        public static TAttribute[] GetCustomAttributes<TAttribute>(this MemberInfo element, bool inherit = true) where TAttribute : Attribute {
+            return (TAttribute[])Attribute.GetCustomAttributes(element, typeof(TAttribute), inherit);
         }
-        public static IEnumerable<T> GetCustomAttributes<T>(this Type type, bool inherit = true) where T : Attribute {
-            return (IEnumerable<T>)Attribute.GetCustomAttributes(type, typeof(T), inherit);
+        public static TAttribute[] GetCustomAttributes<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
+            return (TAttribute[])Attribute.GetCustomAttributes(type, typeof(TAttribute), inherit);
         }
 
         #endregion
