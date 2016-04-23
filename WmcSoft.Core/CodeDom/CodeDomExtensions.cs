@@ -31,6 +31,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.CodeDom
 {
+    /// <summary>
+    /// Defines extension methods to the code dom.
+    /// This is a static class. 
+    /// </summary>
     public static class CodeDomExtensions
     {
         #region FindCode

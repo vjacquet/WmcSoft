@@ -27,10 +27,11 @@ namespace WmcSoft.Reflection
         #region GetCustomAttributes / GetMetadataAttribute
 
         public static TAttribute GetCustomAttribute<TAttribute>(this MemberInfo memberInfo, bool inherit = true) where TAttribute : Attribute {
-            return memberInfo.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().FirstOrDefault();
+            return memberInfo.GetCustomAttributes<TAttribute>(inherit).FirstOrDefault();
         }
+
         public static TAttribute GetCustomAttribute<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
-            return type.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().FirstOrDefault();
+            return type.GetCustomAttributes<TAttribute>(inherit).FirstOrDefault();
         }
 
         public static TAttribute GetMetadataAttribute<TAttribute>(this MemberInfo memberInfo) where TAttribute : Attribute {
@@ -40,6 +41,7 @@ namespace WmcSoft.Reflection
         public static TAttribute[] GetCustomAttributes<TAttribute>(this MemberInfo element, bool inherit = true) where TAttribute : Attribute {
             return (TAttribute[])Attribute.GetCustomAttributes(element, typeof(TAttribute), inherit);
         }
+
         public static TAttribute[] GetCustomAttributes<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
             return (TAttribute[])Attribute.GetCustomAttributes(type, typeof(TAttribute), inherit);
         }

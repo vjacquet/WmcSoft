@@ -37,11 +37,12 @@ namespace WmcSoft.ComponentModel.Design
         private readonly ArrayList _selectedComponents;
 
         public SelectionService(IServiceProvider serviceProvider, object rootComponent) {
-            this._rootComponent = rootComponent;
+            _rootComponent = rootComponent;
 
             _selectedComponents = new ArrayList();
-            if (rootComponent != null)
+            if (rootComponent != null) {
                 _selectedComponents.Add(rootComponent);
+            }
 
             // Subscribe to the ComponentRemoved event
             if (serviceProvider != null) {
@@ -57,43 +58,38 @@ namespace WmcSoft.ComponentModel.Design
         }
 
         public event EventHandler SelectionChanging {
-            add { this.Events.AddHandler(SelectionChangingEvent, value); }
-            remove { this.Events.RemoveHandler(SelectionChangingEvent, value); }
+            add { Events.AddHandler(SelectionChangingEvent, value); }
+            remove { Events.RemoveHandler(SelectionChangingEvent, value); }
         }
-        private static readonly object SelectionChangingEvent = new Object();
+        private static readonly object SelectionChangingEvent = new object();
 
         /// <summary>
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnSelectionChanging(EventArgs e) {
-            EventHandler handler = (EventHandler)this.events[SelectionChangingEvent];
-            if (handler != null) {
-                handler(this, e);
-            }
+            ((EventHandler)_events[SelectionChangingEvent])?.Invoke(this, e);
         }
 
         public event EventHandler SelectionChanged {
-            add { this.Events.AddHandler(SelectionChangedEvent, value); }
-            remove { this.Events.RemoveHandler(SelectionChangedEvent, value); }
+            add { Events.AddHandler(SelectionChangedEvent, value); }
+            remove { Events.RemoveHandler(SelectionChangedEvent, value); }
         }
-        private static readonly object SelectionChangedEvent = new Object();
+        private static readonly object SelectionChangedEvent = new object();
 
         /// <summary>
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnSelectionChanged(EventArgs e) {
-            EventHandler handler = (EventHandler)this.events[SelectionChangedEvent];
-            if (handler != null) {
-                handler(this, e);
-            }
+            ((EventHandler)_events[SelectionChangedEvent])?.Invoke(this, e);
         }
 
         public object PrimarySelection {
             get {
-                if (_selectedComponents.Count > 0)
+                if (_selectedComponents.Count > 0) {
                     return _selectedComponents[0];
+                }
                 return null;
             }
         }
@@ -210,15 +206,15 @@ namespace WmcSoft.ComponentModel.Design
 
         protected EventHandlerList Events {
             get {
-                if (this.events == null) {
-                    this.events = new EventHandlerList();
+                if (_events == null) {
+                    _events = new EventHandlerList();
                 }
-                return this.events;
+                return _events;
             }
         }
 
         [NonSerialized]
-        private EventHandlerList events;
+        private EventHandlerList _events;
 
         #endregion
     }

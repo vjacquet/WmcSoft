@@ -33,7 +33,7 @@ namespace WmcSoft.Collections
     /// Decorates a <see cref="IComparer"/> to exposes a method that compares two objects in reverse order.
     /// </summary>
     [Serializable]
-    public sealed class DescendingComparer : IComparer
+    public sealed class ReverseComparer : IComparer
     {
         #region Fields
 
@@ -43,9 +43,10 @@ namespace WmcSoft.Collections
 
         #region Lifecycle
 
-        public DescendingComparer(IComparer comparer) {
+        public ReverseComparer(IComparer comparer) {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
+
             _comparer = comparer;
         }
 
