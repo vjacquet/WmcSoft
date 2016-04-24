@@ -35,7 +35,7 @@ namespace WmcSoft.ComponentModel.Design
     {
         #region Fields
 
-        static readonly object Removed = new Object();
+        static readonly object Removed = new object();
 
         readonly IDictionaryService _dictionaryService;
         readonly Hashtable _changes;
@@ -55,7 +55,7 @@ namespace WmcSoft.ComponentModel.Design
 
         public object GetValue(object key) {
             var value = _changes[key] ?? _dictionaryService.GetValue(key);
-            if (Object.ReferenceEquals(Removed, value))
+            if (ReferenceEquals(Removed, value))
                 return null;
             return value;
         }
@@ -78,7 +78,7 @@ namespace WmcSoft.ComponentModel.Design
 
         public void AcceptChanges() {
             foreach (DictionaryEntry dictionaryEntry in _changes) {
-                var value = Object.ReferenceEquals(Removed, dictionaryEntry.Value) ? null : dictionaryEntry.Value;
+                var value = ReferenceEquals(Removed, dictionaryEntry.Value) ? null : dictionaryEntry.Value;
                 _dictionaryService.SetValue(dictionaryEntry.Key, value);
             }
         }
