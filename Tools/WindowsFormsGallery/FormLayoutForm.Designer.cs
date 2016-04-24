@@ -36,6 +36,10 @@ namespace WindowsFormsGallery
             this.horizontalFormLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // tracingComponent1
+            // 
+            this.tracingComponent1.TraceSource = "Controls";
+            // 
             // horizontalFormLayoutPanel1
             // 
             this.horizontalFormLayoutPanel1.AutoScroll = true;
