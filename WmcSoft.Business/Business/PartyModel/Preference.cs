@@ -70,5 +70,4 @@ namespace WmcSoft.Business.PartyModel
 
         #endregion
     }
-
 }

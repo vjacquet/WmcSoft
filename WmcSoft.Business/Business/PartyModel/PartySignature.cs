@@ -37,10 +37,10 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Properties
 
-        public PartyIdentifier PartyIdentifier { get; set; }
-        public string Authentication { get; set; }
-        public DateTime When { get; set; }
-        public string Reason { get; set; }
+        public virtual PartyIdentifier PartyIdentifier { get; set; }
+        public virtual string Authentication { get; set; }
+        public virtual DateTime When { get; set; }
+        public virtual string Reason { get; set; }
 
         #endregion
     }

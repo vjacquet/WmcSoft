@@ -55,13 +55,13 @@ namespace WmcSoft.Business.PartyModel
 
         #region Properties
 
-        public DateTime DateOfBirth { get; set; }
-        public DateTime? DateOfDeath { get; set; }
-        public PersonName PersonName { get; set; }
-        public ICollection<PersonName> OtherPersonNames { get; private set; }
-        public Gender Gender { get; set; }
-        public Ethnicity Ethnicity { get; set; }
-        public BodyMetrics BodyMetrics { get; set; }
+        public virtual DateTime DateOfBirth { get; set; }
+        public virtual DateTime? DateOfDeath { get; set; }
+        public virtual PersonName PersonName { get; set; }
+        public virtual ICollection<PersonName> OtherPersonNames { get; private set; }
+        public virtual Gender Gender { get; set; }
+        public virtual Ethnicity Ethnicity { get; set; }
+        public virtual BodyMetrics BodyMetrics { get; set; }
 
         #endregion
     }

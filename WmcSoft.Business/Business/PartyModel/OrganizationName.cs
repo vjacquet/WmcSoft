@@ -49,15 +49,15 @@ namespace WmcSoft.Business.PartyModel
 
         #region Properties
 
-        public string Name { get; set; }
-        public OrganizationalNameUse Use { get; set; }
+        public virtual string Name { get; set; }
+        public virtual OrganizationalNameUse Use { get; set; }
 
         #endregion
 
         #region ITemporal Members
 
-        public DateTime? ValidSince { get; set; }
-        public DateTime? ValidUntil { get; set; }
+        public virtual DateTime? ValidSince { get; set; }
+        public virtual DateTime? ValidUntil { get; set; }
 
         #endregion
 
