@@ -57,15 +57,7 @@ namespace WmcSoft.Business.RuleModel
 
         /// <remarks/>
         [XmlAttribute("name", DataType = "ID")]
-        public string Name {
-            get {
-                return this.name;
-            }
-            set {
-                this.name = value;
-            }
-        }
-        string name;
+        public string Name { get; set; }
 
         #region Membres de IRuleEvaluator
 
@@ -103,13 +95,13 @@ namespace WmcSoft.Business.RuleModel
                                 _stack.Push(new Proposition(!PopProposition().Value));
                                 break;
                             case "AND":
-                                _stack.Push(new Proposition(PopProposition().Value && PopProposition().Value));
+                                _stack.Push(new Proposition(PopProposition().Value & PopProposition().Value));
                                 break;
                             case "OR":
-                                _stack.Push(new Proposition(PopProposition().Value || PopProposition().Value));
+                                _stack.Push(new Proposition(PopProposition().Value | PopProposition().Value));
                                 break;
                             case "XOR":
-                                _stack.Push(new Proposition(PopProposition().Value != PopProposition().Value));
+                                _stack.Push(new Proposition(PopProposition().Value ^ PopProposition().Value));
                                 break;
                             case "EQUALTO":
                                 _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) == 0));
