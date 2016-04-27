@@ -31,7 +31,6 @@ namespace WmcSoft.Xml
 {
     public class EmptyXmlReader : XmlReader
     {
-
         #region Lifecycle
 
         public EmptyXmlReader() {
@@ -48,15 +47,15 @@ namespace WmcSoft.Xml
         }
 
         public override string GetAttribute(int i) {
-            return String.Empty;
+            return string.Empty;
         }
 
         public override string GetAttribute(string name) {
-            return String.Empty;
+            return string.Empty;
         }
 
         public override string GetAttribute(string localName, string namespaceURI) {
-            return String.Empty;
+            return string.Empty;
         }
 
         public bool HasLineInfo() {
@@ -64,7 +63,7 @@ namespace WmcSoft.Xml
         }
 
         public override string LookupNamespace(string prefix) {
-            return String.Empty;
+            return string.Empty;
         }
 
         public override void MoveToAttribute(int i) {
@@ -110,138 +109,93 @@ namespace WmcSoft.Xml
         #region Properties
 
         public override int AttributeCount {
-            get {
-                return 0;
-            }
+            get { return 0; }
         }
 
         public override string BaseURI {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override bool CanReadBinaryContent {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool CanReadValueChunk {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool CanResolveEntity {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override int Depth {
-            get {
-                return 0;
-            }
+            get { return 0; }
         }
 
         public override bool EOF {
-            get {
-                return true;
-            }
+            get { return true; }
         }
 
         public override bool HasValue {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsDefault {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsEmptyElement {
-            get {
-                return true;
-            }
+            get { return true; }
         }
 
         public override string this[string name, string namespaceURI] {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override string this[string name] {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override string this[int i] {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override string LocalName {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override string Name {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override string NamespaceURI {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override XmlNameTable NameTable {
-            get {
-                return null;
-            }
+            get { return null; }
         }
 
         public override XmlNodeType NodeType {
-            get {
-                return XmlNodeType.None;
-            }
+            get { return XmlNodeType.None; }
         }
 
         public override string Prefix {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override ReadState ReadState {
-            get {
-                return ReadState.EndOfFile;
-            }
+            get { return ReadState.EndOfFile; }
         }
 
         public override string Value {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         public override string XmlLang {
-            get {
-                return String.Empty;
-            }
+            get { return string.Empty; }
         }
 
         #endregion
     }
-
 }

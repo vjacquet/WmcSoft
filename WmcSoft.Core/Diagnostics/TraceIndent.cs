@@ -53,10 +53,7 @@ namespace WmcSoft.Diagnostics
         #region IDisposable Membres
 
         ~TraceIndent() {
-            try {
-                _onDispose(); // here only when dispose was not called.
-            }
-            catch { }
+            Debug.Assert(_onDispose == null, "Dispose should have been called.");
         }
 
         public void Dispose() {
