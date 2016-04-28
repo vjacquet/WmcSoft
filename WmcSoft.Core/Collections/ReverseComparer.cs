@@ -37,7 +37,7 @@ namespace WmcSoft.Collections
     {
         #region Fields
 
-        readonly IComparer _comparer;
+        private readonly IComparer _comparer;
 
         #endregion
 

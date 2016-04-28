@@ -33,13 +33,14 @@ namespace WmcSoft.IO
     {
         #region Fields
 
-        readonly Func<Stream> _func;
+        private readonly Func<Stream> _func;
 
         #endregion
 
         #region Lifecycle
 
-        public AnonymousStreamSource(Func<Stream> opener) {
+        public AnonymousStreamSource(Func<Stream> opener)
+        {
             _func = opener;
         }
 
@@ -47,7 +48,8 @@ namespace WmcSoft.IO
 
         #region IStreamSource Membres
 
-        public Stream GetStream() {
+        public Stream GetStream()
+        {
             return _func();
         }
 
