@@ -14,27 +14,27 @@ namespace WmcSoft
             }
 
             protected override string GetLocalizedString(string value) {
-                return RM.GetString(value);
+                return GetString(value);
             }
         }
 
         internal class DescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public DescriptionAttribute(string resourceName)
-                : base(RM.GetString(resourceName)) {
+                : base(GetString(resourceName)) {
             }
         }
 
         internal class DisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
         {
             public DisplayNameAttribute(string resourceName)
-                : base(RM.GetString(resourceName)) {
+                : base(GetString(resourceName)) {
             }
         }
 
         private static readonly ResourceManager ResourceManager;
         static RM() {
-            ResourceManager = new System.Resources.ResourceManager(typeof(RM));
+            ResourceManager = new ResourceManager(typeof(RM));
         }
 
         public static string GetString(string name) {

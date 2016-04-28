@@ -32,7 +32,7 @@ namespace WmcSoft
     public static class RangeComparer<T>
         where T : IComparable<T>
     {
-        struct LexicographicalComparer : IComparer<Range<T>>
+        public struct LexicographicalComparer : IComparer<Range<T>>
         {
             public int Compare(Range<T> x, Range<T> y) {
                 var r = x.Lower.CompareTo(y.Lower);
@@ -42,6 +42,6 @@ namespace WmcSoft
             }
         }
 
-        public static readonly IComparer<Range<T>> Lexicographical = new LexicographicalComparer();
+        public static readonly LexicographicalComparer Lexicographical = new LexicographicalComparer();
     }
 }

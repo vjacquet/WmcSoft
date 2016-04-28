@@ -86,6 +86,13 @@ namespace WmcSoft
 
         #region Then
 
+        /// <summary>
+        /// Executes an action then another using the same argument.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <param name="action">The first action to execute.</param>
+        /// <param name="then">The second action to execute.</param>
+        /// <returns>An action performing both actions.</returns>
         public static Action<T> Then<T>(this Action<T> action, Action<T> then) {
             return delegate (T obj) {
                 action(obj);
@@ -97,6 +104,13 @@ namespace WmcSoft
 
         #region Unless
 
+        /// <summary>
+        /// Executes the action unless the condition is <c>true</c>.
+        /// </summary>
+        /// <typeparam name="T">The type of argument for the action and the condition.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="condition">The condition.</param>
+        /// <returns>An action that combines testing the condition and executing the action.</returns>
         public static Action<T> Unless<T>(this Action<T> action, Predicate<T> condition) {
             return delegate (T obj) {
                 if (!condition(obj))
@@ -108,6 +122,28 @@ namespace WmcSoft
 
         #region Using
 
+        /// <summary>
+        /// Surrounds the action by a using statement.
+        /// </summary>
+        /// <typeparam name="T">The type of argument for the action.</typeparam>
+        /// <param name="action">The action</param>
+        /// <returns>An action</returns>
+        public static Action<T> Using<T>(this Action<T> action)
+            where T : IDisposable {
+            return delegate (T obj) {
+                using (obj) {
+                    action(obj);
+                }
+            };
+        }
+
+        /// <summary>
+        /// Surrounds the action by a using statement.
+        /// </summary>
+        /// <typeparam name="T">The type of argument for the action.</typeparam>
+        /// <param name="action">The action</param>
+        /// <param name="usedBy">The instance of IDisposable</param>
+        /// <returns>An action</returns>
         public static Action<T> Using<T>(this Action<T> action, IDisposable usedBy) {
             return delegate (T obj) {
                 using (usedBy) {
@@ -116,6 +152,13 @@ namespace WmcSoft
             };
         }
 
+        /// <summary>
+        /// Surrounds the action by a using statement.
+        /// </summary>
+        /// <typeparam name="T">The type of argument for the action.</typeparam>
+        /// <param name="action">The action</param>
+        /// <param name="usedBy">A function returning an <see cref="IDisposable"/>.</param>
+        /// <returns>An action</returns>
         public static Action<T> Using<T>(this Action<T> action, Func<T, IDisposable> usedBy) {
             return delegate (T obj) {
                 using (usedBy(obj)) {
