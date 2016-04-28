@@ -42,6 +42,9 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Compares the lower bound then the upper bounds.
+        /// </summary>
         public static readonly LexicographicalComparer Lexicographical = new LexicographicalComparer();
     }
 }
