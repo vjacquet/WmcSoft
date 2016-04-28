@@ -119,8 +119,7 @@ namespace WmcSoft.Data
         /// Gets the number of columns in the current row.
         /// </summary>
         /// <value>When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.</value>
-        public override int FieldCount
-        {
+        public override int FieldCount {
             get { return _properties.Count; }
         }
 

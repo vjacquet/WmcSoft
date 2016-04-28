@@ -36,6 +36,10 @@ namespace WindowsFormsGallery
             this.horizontalFormLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // tracingComponent1
+            // 
+            this.tracingComponent1.TraceSource = "Controls";
+            // 
             // horizontalFormLayoutPanel1
             // 
             this.horizontalFormLayoutPanel1.AutoScroll = true;
@@ -65,6 +69,7 @@ namespace WindowsFormsGallery
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(398, 26);
             this.textBox2.TabIndex = 1;
+            this.textBox2.Text = "text 2";
             // 
             // FormLayoutForm
             // 

@@ -33,7 +33,9 @@ namespace WmcSoft.CodeDom
     /// <summary>
     /// Represents an inequality against null.
     /// </summary>
-    [Serializable, ComVisible(true), ClassInterface(ClassInterfaceType.AutoDispatch)]
+    [Serializable]
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
     public class CodeNullInequalityExpression : CodeBinaryOperatorExpression
     {
         public CodeNullInequalityExpression(CodeExpression expression)

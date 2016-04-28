@@ -24,10 +24,6 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>

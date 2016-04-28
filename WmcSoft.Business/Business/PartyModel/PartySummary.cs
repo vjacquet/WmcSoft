@@ -24,12 +24,6 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
@@ -38,24 +32,16 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class PartySummary
     {
-        #region Lifetime
-
         public PartySummary(PartyIdentifier partyIdentifier, PartyRoleIdentifier roleIdentifier) {
             PartyIdentifier = partyIdentifier;
             RoleIdentifier = roleIdentifier;
         }
 
-        #endregion
-
-        #region Properties
-
-        public PartyIdentifier PartyIdentifier { get; }
-        public PartyRoleIdentifier RoleIdentifier { get; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string TelephoneNumber { get; set; }
-        public string Email { get; set; }
-
-        #endregion
+        public virtual PartyIdentifier PartyIdentifier { get; set; }
+        public virtual PartyRoleIdentifier RoleIdentifier { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Address { get; set; }
+        public virtual string TelephoneNumber { get; set; }
+        public virtual string Email { get; set; }
     }
 }

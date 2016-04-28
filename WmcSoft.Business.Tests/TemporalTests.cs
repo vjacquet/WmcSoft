@@ -67,6 +67,5 @@ namespace WmcSoft.Business
             Assert.IsTrue(sample.IsValidOn(new DateTime(1973, 5, 2)));
             Assert.IsTrue(sample.IsValidOn(new DateTime(2003, 5, 2)));
         }
-
     }
 }

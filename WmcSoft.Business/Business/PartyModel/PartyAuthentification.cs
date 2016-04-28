@@ -32,11 +32,7 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public abstract class PartyAuthentication
     {
-        #region Properties
-
         public abstract string AuthenticationType { get; }
-
-        #endregion
 
         public abstract void Authenticate(PartySignature signature);
     }

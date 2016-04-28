@@ -61,8 +61,7 @@ namespace WmcSoft.CodeDom
 
         #region Properties
 
-        public string ArgumentName
-        {
+        public string ArgumentName {
             get {
                 return _variable.VariableName;
             }

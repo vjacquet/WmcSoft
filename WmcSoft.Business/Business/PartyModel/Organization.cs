@@ -53,7 +53,7 @@ namespace WmcSoft.Business.PartyModel
 
         #region Properties
 
-        public OrganizationName OrganizationName { get; set; }
+        public virtual OrganizationName OrganizationName { get; set; }
         public virtual ICollection<OrganizationName> OtherOrganizationNames { get; private set; }
 
         #endregion

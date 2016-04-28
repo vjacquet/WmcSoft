@@ -68,8 +68,8 @@ namespace WmcSoft.Business.PartyModel
 
         #region ITemporal Members
 
-        public DateTime? ValidSince { get; set; }
-        public DateTime? ValidUntil { get; set; }
+        public virtual DateTime? ValidSince { get; set; }
+        public virtual DateTime? ValidUntil { get; set; }
 
         #endregion
     }

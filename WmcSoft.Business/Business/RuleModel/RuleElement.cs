@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace WmcSoft.Business.RuleModel
@@ -56,7 +55,7 @@ namespace WmcSoft.Business.RuleModel
         public abstract string TypeName { get; }
 
         public override int GetHashCode() {
-            return String.IsNullOrWhiteSpace(Name) ? 0 : Name.GetHashCode();
+            return string.IsNullOrWhiteSpace(Name) ? 0 : Name.GetHashCode();
         }
 
         public override bool Equals(object obj) {
