@@ -28,6 +28,9 @@ using System;
 
 namespace WmcSoft.Business
 {
+    /// <summary>
+    /// Provides properties and methods to manage autorization.
+    /// </summary>
     public interface IAuthorizable
     {
         string AuthorizedBy { get; set; }
@@ -42,7 +45,11 @@ namespace WmcSoft.Business
     public static class AuthorizableExtensions
     {
         public static bool IsAuthorized(this IAuthorizable authorizable) {
-            return authorizable.AuthorizedOn.HasValue;
+            return IsAuthorized(authorizable, DateTime.Now);
+        }
+
+        public static bool IsAuthorized(this IAuthorizable authorizable, DateTime since) {
+            return since >= authorizable.AuthorizedOn;
         }
     }
 }

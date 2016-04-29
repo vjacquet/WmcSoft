@@ -26,28 +26,29 @@
 
 using System;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace WmcSoft
 {
     static class Helpers
     {
         public static int Hash(string value) {
-            if (String.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
                 return 0;
             return value.GetHashCode();
         }
 
         public static string GetTraitDisplayName(Type type) {
-            var attributes = (DisplayNameAttribute[])type.GetCustomAttributes(typeof(DisplayNameAttribute), true);
-            if (attributes != null && attributes.Length > 0)
-                return attributes[0].DisplayName;
+            var attr = type.GetCustomAttribute<DisplayNameAttribute>(true);
+            if (attr != null)
+                return attr.DisplayName;
             return null;
         }
 
         public static string GetTraitDescription(Type type) {
-            var attributes = (DescriptionAttribute[])type.GetCustomAttributes(typeof(DescriptionAttribute), true);
-            if (attributes != null && attributes.Length > 0)
-                return attributes[0].Description;
+            var attr = type.GetCustomAttribute<DescriptionAttribute>(true);
+            if (attr != null)
+                return attr.Description;
             return null;
         }
     }
