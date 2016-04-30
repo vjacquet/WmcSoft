@@ -44,8 +44,10 @@ namespace WmcSoft.Business
 
     public static class AuthorizableExtensions
     {
+        public static Func<DateTime> Now = () => DateTime.Now;
+
         public static bool IsAuthorized(this IAuthorizable authorizable) {
-            return IsAuthorized(authorizable, DateTime.Now);
+            return IsAuthorized(authorizable, Now());
         }
 
         public static bool IsAuthorized(this IAuthorizable authorizable, DateTime since) {
