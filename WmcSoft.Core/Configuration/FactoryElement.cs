@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
 
@@ -33,6 +34,8 @@ namespace WmcSoft.Configuration
     [DebuggerDisplay("{Name,nq} => {TypeName,nq}")]
     public abstract class FactoryElement<T> : ConfigurationElement
     {
+        private readonly NameValueCollection _parameters = new NameValueCollection(StringComparer.Ordinal);
+
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
         public string Name {
             get { return (string)this["name"]; }
@@ -45,16 +48,21 @@ namespace WmcSoft.Configuration
             set { this["type"] = value; }
         }
 
+        public NameValueCollection Parameters {
+            get { return _parameters; }
+        }
+
+        protected override bool OnDeserializeUnrecognizedAttribute(string name, string value) {
+            //return base.OnDeserializeUnrecognizedAttribute(name, value);
+            Parameters[name] = value;
+            return true;
+        }
+
         Type ResolveType() {
             return Type.GetType(TypeName, true, true);
         }
 
-        public T CreateInstance() {
-            var type = ResolveType();
-            return (T)Activator.CreateInstance(type);
-        }
-
-        public T CreateInstance(params object[] args) {
+        public virtual T CreateInstance(params object[] args) {
             var type = ResolveType();
             return (T)Activator.CreateInstance(type, args);
         }

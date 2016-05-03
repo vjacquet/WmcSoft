@@ -48,7 +48,7 @@ namespace WmcSoft.Configuration
 
         public new MailPolicy this[string name] {
             get {
-                return this.OfType<MailPolicy>()
+                return this.Cast<MailPolicy>()
                     .SingleOrDefault(t => t.Name == name);
             }
         }
