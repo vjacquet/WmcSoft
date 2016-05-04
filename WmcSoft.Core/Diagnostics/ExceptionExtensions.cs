@@ -109,7 +109,7 @@ namespace WmcSoft.Diagnostics
         /// <param name="context">The context.</param>
         /// <returns>The given exception.</returns>
         public static Exception CaptureContext(this Exception exception, object context) {
-            return exception.CaptureContext(DataKeyConverter.Default, context);
+            return CaptureContext(exception, DataKeyConverter.Default, context);
         }
 
         public static Exception RemoveCapturedEntry<K>(this Exception exception, K converter, string name, bool crawlInnerExceptions = false)

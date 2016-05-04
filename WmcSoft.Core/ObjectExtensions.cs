@@ -26,6 +26,12 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Runtime.Serialization;
+using WmcSoft.IO;
+
+using Cloner = System.Runtime.Serialization.Formatters.Binary.BinaryFormatter;
 
 namespace WmcSoft
 {
@@ -41,8 +47,17 @@ namespace WmcSoft
         /// <returns>A clone of the instance.</returns>
         /// <remarks> This extensions works better for classes implementing <see cref="ICloneable"/> explicitly.</remarks>
         public static T Clone<T>(this T instance)
-            where T : ICloneable {
-            return (T)instance.Clone();
+            where T : class {
+            var cloneable = instance as ICloneable;
+            if (cloneable != null)
+                return (T)cloneable.Clone();
+
+            using (MemoryStream ms = new MemoryStream()) {
+                var f = new Cloner(null, new StreamingContext(StreamingContextStates.Clone));
+                f.Serialize(ms, instance);
+                ms.Rewind();
+                return (T)f.Deserialize(ms);
+            }
         }
 
         #endregion
@@ -53,37 +68,44 @@ namespace WmcSoft
             return (T)ConvertTo(value, typeof(T));
         }
 
-        public static T ConvertTo<T>(this object value, IFormatProvider provider) {
-            return (T)ConvertTo(value, typeof(T), provider);
+        public static T ConvertTo<T>(this object value, CultureInfo culture) {
+            return (T)ConvertTo(value, typeof(T), culture);
         }
 
-        public static object ConvertTo(this object value, Type type) {
-            return ConvertTo(value, type, System.Globalization.CultureInfo.CurrentCulture);
+        public static object ConvertTo(this object value, Type destinationType) {
+            return ConvertTo(value, destinationType, CultureInfo.CurrentCulture);
         }
 
-        public static object ConvertTo(this object value, Type type, IFormatProvider provider) {
-            if (type == null) {
-                throw new ArgumentNullException("type");
-            }
+        /// <summary>
+        /// Converts the given value object to the specified type, using the arguments.
+        /// </summary>
+        /// <param name="value">The <see cref="object"/> to convert.</param>
+        /// <param name="destinationType">The <see cref="Type"/> to convert the value parameter to.</param>
+        /// <param name="culture">A <see cref="CultureInfo"/>. If <c>null</c> is passed, the current culture is assumed.</param>
+        /// <returns>An <see cref="object"/> that represents the converted value.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> parameter is null.</exception>
+        /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
+        public static object ConvertTo(this object value, Type destinationType, CultureInfo culture) {
+            if (destinationType == null) throw new ArgumentNullException("type");
+
             if (value == null) {
-                if (type.AllowsNull()) {
+                if (destinationType.AllowsNull())
                     return null;
-                }
-                return Convert.ChangeType(value, type, provider);
+                return Convert.ChangeType(value, destinationType, culture);
             }
-            type = type.UnwrapNullableType();
-            if (value.GetType() == type) {
+
+            var sourceType = value.GetType();
+
+            destinationType = destinationType.UnwrapNullableType();
+            if (destinationType.IsAssignableFrom(sourceType))
                 return value;
-            }
-            var converter = TypeDescriptor.GetConverter(type);
-            if (converter.CanConvertFrom(value.GetType())) {
-                return converter.ConvertFrom(value);
-            }
-            converter = TypeDescriptor.GetConverter(value.GetType());
-            if (!converter.CanConvertTo(type)) {
-                throw new InvalidOperationException();
-            }
-            return converter.ConvertTo(value, type);
+
+            var converter = TypeDescriptor.GetConverter(destinationType);
+            if (converter.CanConvertFrom(sourceType))
+                return converter.ConvertFrom(null, culture, value);
+
+            converter = TypeDescriptor.GetConverter(sourceType);
+            return converter.ConvertTo(null, culture, value, destinationType);
         }
 
         #endregion

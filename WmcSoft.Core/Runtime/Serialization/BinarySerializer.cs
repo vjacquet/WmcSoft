@@ -25,6 +25,7 @@
 #endregion
 
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace WmcSoft.Runtime.Serialization
 {
@@ -37,6 +38,10 @@ namespace WmcSoft.Runtime.Serialization
         #endregion
 
         #region Lifecycle
+
+        public BinarySerializer(ISurrogateSelector selector, StreamingContext context) {
+            _serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(selector, context);
+        }
 
         public BinarySerializer() {
             _serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
