@@ -52,7 +52,7 @@ namespace WmcSoft
             if (cloneable != null)
                 return (T)cloneable.Clone();
 
-            using (MemoryStream ms = new MemoryStream()) {
+            using (var ms = new MemoryStream()) {
                 var f = new Cloner(null, new StreamingContext(StreamingContextStates.Clone));
                 f.Serialize(ms, instance);
                 ms.Rewind();
@@ -85,6 +85,7 @@ namespace WmcSoft
         /// <returns>An <see cref="object"/> that represents the converted value.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> parameter is null.</exception>
         /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
+        /// <remarks>This method eagerly tries to convert the value.</remarks>
         public static object ConvertTo(this object value, Type destinationType, CultureInfo culture) {
             if (destinationType == null) throw new ArgumentNullException("type");
 
@@ -94,11 +95,14 @@ namespace WmcSoft
                 return Convert.ChangeType(value, destinationType, culture);
             }
 
-            var sourceType = value.GetType();
-
             destinationType = destinationType.UnwrapNullableType();
+            var sourceType = value.GetType();
             if (destinationType.IsAssignableFrom(sourceType))
                 return value;
+
+            var convertible = value as IConvertible;
+            if (convertible != null)
+                return convertible.ToType(destinationType, culture);
 
             var converter = TypeDescriptor.GetConverter(destinationType);
             if (converter.CanConvertFrom(sourceType))
