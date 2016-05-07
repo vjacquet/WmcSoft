@@ -33,7 +33,8 @@ using WmcSoft.Data.SqlClient;
 namespace WmcSoft.Data.Common
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="DbDataReader"/> class. This is a static class. 
+    /// Defines the extension methods to the <see cref="DbDataReader"/> class.
+    /// This is a static class. 
     /// </summary>
     public static class DbDataReaderExtensions
     {

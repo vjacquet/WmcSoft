@@ -48,8 +48,10 @@ namespace WmcSoft.Runtime.Serialization
 
         public static T GetObjectFromXml<T>(this IDataRecord record, int i, XmlObjectSerializer serializer)
             where T : class {
-            var xml = record.GetValue(i).ToString();
-            if (String.IsNullOrEmpty(xml))
+            if (record.IsDBNull(i))
+                return null;
+            var xml = Convert.ToString(record.GetValue(i));
+            if (string.IsNullOrEmpty(xml))
                 return null;
             using (var reader = XmlReader.Create(new StringReader(xml))) {
                 return (T)serializer.ReadObject(reader);

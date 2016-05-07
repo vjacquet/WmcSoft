@@ -4,6 +4,10 @@ using System.Runtime.Serialization;
 
 namespace WmcSoft.Data.SqlClient
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="SqlDataReader"/> class.
+    /// This is a static class. 
+    /// </summary>
     public static class SqlDataReaderExtensions
     {
         public static T GetObjectFromXml<T>(this SqlDataReader reader, int i)

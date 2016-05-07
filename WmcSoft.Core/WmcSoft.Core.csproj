@@ -216,8 +216,6 @@
     <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\CustomAttributeProviderExtensions.cs" />
     <Compile Include="Reflection\DocumentationLoader.cs" />
-    <Compile Include="Reflection\IReflectVisitor.cs" />
-    <Compile Include="Reflection\ReflectExhibition.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
     <Compile Include="Reflection\ReflectionVisitor.cs" />
