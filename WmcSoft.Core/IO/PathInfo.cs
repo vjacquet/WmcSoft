@@ -29,11 +29,13 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
-    public struct PathInfo
+    /// <summary>
+    /// Represents a file path.
+    /// </summary>
+    public struct PathInfo : IFormattable
     {
         struct UninitializedTag { }
         static readonly UninitializedTag Uninitialized = default(UninitializedTag);
-
 
         #region Fields
 
@@ -124,7 +126,26 @@ namespace WmcSoft.IO
         }
 
         public override string ToString() {
-            return _path.ToString();
+            return _path;
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider) {
+            switch(format) {
+            case "f":
+            case "F":
+                return FileName;
+            case "p":
+            case "P":
+                return Path.GetFullPath(_path);
+            case "x":
+            case "X":
+                return Extension;
+            case "n":
+            case "N":
+                return FileNameWithoutExtension;
+            default:
+                return _path;
+            }
         }
 
         #endregion
