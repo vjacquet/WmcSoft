@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.IO.MockStream" Collapsed="true">
+    <Position X="11.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgGAAAAABgAAAAAAAABAAAAAEIACA=</HashCode>
+      <FileName>IO\MockStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.IO.MirroringStream">
+    <Position X="7.25" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAIAQQAAwGACAAABgAAAQAAAAAAAAAAGIQCA=</HashCode>
+      <FileName>IO\MirroringStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.IO.CloseBarrierStream" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>IO\CloseBarrierStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.IO.ConstrainedStreamDecorator" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQQAAgEAAAAABgAAAAAAAAAAAAAAEIQCA=</HashCode>
+      <FileName>IO\ConstrainedStreamDecorator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.IO.DumpingStream">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgGAAAAABwAAAAAAAAAAAAAAGIADA=</HashCode>
+      <FileName>IO\DumpingStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.IO.AnonymousStreamSource" BaseTypeListCollapsed="true">
+    <Position X="16" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\AnonymousStreamSource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.IO.FileStreamSource" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAIAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\FileStreamSource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.IO.FlushingStream" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAGAAAA=</HashCode>
+      <FileName>IO\FlushingStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.IO.StreamDecorator" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAQQAAwGAAAAABgAAAQAAAAAAAAAAGISCA=</HashCode>
+      <FileName>IO\StreamDecorator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.IO.Stream" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="WmcSoft.IO.IStreamSource" Collapsed="true">
+    <Position X="14.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IO\IStreamSource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

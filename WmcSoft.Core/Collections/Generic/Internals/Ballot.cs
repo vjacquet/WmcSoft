@@ -32,13 +32,16 @@ namespace WmcSoft.Collections.Generic.Internals
 {
     internal class Ballot<T> : IEnumerable<KeyValuePair<T, int>>
     {
+        /// <summary>
+        /// Indirection to enable voting to "null".
+        /// </summary>
         [DebuggerDisplay("{Candidate,nq}")]
-        class Paper
+        struct Paper
         {
-            public T Candidate { get; set; }
+            public T Candidate;
         }
 
-        class CandidateComparer : IEqualityComparer<Paper>
+        struct CandidateComparer : IEqualityComparer<Paper>
         {
             private readonly IEqualityComparer<T> _equalityComparer;
 
@@ -101,9 +104,7 @@ namespace WmcSoft.Collections.Generic.Internals
         }
 
         public bool HasVotes {
-            get {
-                return _votes.Count > 0;
-            }
+            get { return _votes.Count > 0; }
         }
 
         #region IEnumerable<KeyValuePair<T,int>> Membres

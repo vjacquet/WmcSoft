@@ -286,6 +286,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="IO\Streams.cd" />
     <None Include="Linq\Expressions\DynamicDiagram.cd" />
     <None Include="Xml\XPath\ReflectNavigator.cd" />
   </ItemGroup>

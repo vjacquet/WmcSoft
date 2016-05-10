@@ -45,7 +45,6 @@ namespace WmcSoft.IO
 
         #region Lifecycle
 
-
         private PathInfo(string value, UninitializedTag tag) {
             _path = value;
         }
