@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,9 +33,12 @@ namespace WmcSoft.Collections.Generic.Internals
 {
     internal class Ballot<T> : IEnumerable<KeyValuePair<T, int>>
     {
-        /// <summary>
-        /// Indirection to enable voting to "null".
-        /// </summary>
+        #region Utility classes
+
+        // Paper enables voting to "null", because this value is not allowed by default on Dictionary.
+        // CandidateComparer compares the Candidate on the Paper
+        // Score has a Rank to allow stability: on ties, the first presented element wins.
+
         [DebuggerDisplay("{Candidate,nq}")]
         struct Paper
         {
@@ -65,38 +69,38 @@ namespace WmcSoft.Collections.Generic.Internals
         [DebuggerDisplay("#{Count,nq} (Rank {Rank,nq})")]
         class Score
         {
-            public int Rank;
-            public int Count;
+            public int Count; // higher is better
+            public int Rank;  // lower is better
         }
 
-        class ScoresComparer : IComparer<Score>
+        struct ScoresComparer : IComparer<Score>, IComparer<KeyValuePair<Paper, Score>>
         {
             public static ScoresComparer Default = new ScoresComparer();
 
-            #region IComparer<Votes> Membres
-
-            public int Compare(Score x, Score y) {
-                var score = y.Count - x.Count;
-                if (score == 0)
-                    return x.Rank - y.Rank;
-                return score;
+            public int Compare(KeyValuePair<Paper, Score> x, KeyValuePair<Paper, Score> y) {
+                return Compare(x.Value, y.Value);
             }
 
-            #endregion
+            public int Compare(Score x, Score y) {
+                var score = x.Count - y.Count;
+                if (score != 0)
+                    return score;
+                return y.Rank - x.Rank;
+            }
         }
 
-        private readonly IDictionary<Paper, Score> _votes;
-        private Paper _finder;
+        #endregion
+
+        private readonly Dictionary<Paper, Score> _votes;
 
         public Ballot(IEqualityComparer<T> equalityComparer = null) {
             _votes = new Dictionary<Paper, Score>(new CandidateComparer(equalityComparer));
-            _finder = new Paper();
         }
 
         public void Vote(T candidate) {
-            _finder.Candidate = candidate;
+            var finder = new Paper { Candidate = candidate };
             Score score;
-            if (_votes.TryGetValue(_finder, out score)) {
+            if (_votes.TryGetValue(finder, out score)) {
                 score.Count++;
             } else {
                 _votes.Add(new Paper { Candidate = candidate }, new Score { Rank = _votes.Count, Count = 1 });
@@ -107,10 +111,14 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return _votes.Count > 0; }
         }
 
+        public T GetWinner() {
+            return _votes.Max(ScoresComparer.Default).Key.Candidate;
+        }
+
         #region IEnumerable<KeyValuePair<T,int>> Membres
 
         public IEnumerator<KeyValuePair<T, int>> GetEnumerator() {
-            return _votes.OrderBy(v => v.Value, ScoresComparer.Default)
+            return _votes.OrderByDescending(v => v.Value, ScoresComparer.Default)
                 .Select(v => new KeyValuePair<T, int>(v.Key.Candidate, v.Value.Count))
                 .GetEnumerator();
         }

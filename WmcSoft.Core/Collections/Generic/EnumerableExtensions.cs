@@ -781,7 +781,7 @@ namespace WmcSoft.Collections.Generic
                 do {
                     ballot.Vote(enumerator.Current);
                 } while (enumerator.MoveNext());
-                return ballot.First().Key;
+                return ballot.GetWinner();
             }
         }
 
@@ -811,7 +811,7 @@ namespace WmcSoft.Collections.Generic
                         continue;
                     ballot.Vote(enumerator.Current);
                 } while (enumerator.MoveNext());
-                return ballot.First().Key;
+                return ballot.GetWinner();
             }
         }
 
@@ -837,7 +837,7 @@ namespace WmcSoft.Collections.Generic
                 } while (enumerator.MoveNext());
                 if (!ballot.HasVotes)
                     return default(TSource);
-                return ballot.First().Key;
+                return ballot.GetWinner();
             }
         }
 
@@ -869,7 +869,7 @@ namespace WmcSoft.Collections.Generic
                 } while (enumerator.MoveNext());
                 if (!ballot.HasVotes)
                     return default(TSource);
-                return ballot.First().Key;
+                return ballot.GetWinner();
             }
         }
 

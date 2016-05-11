@@ -28,13 +28,13 @@ namespace WmcSoft.Collections.Generic
             string[] array;
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
-            Assert.AreEqual("A", array.ElectedOrDefault(s => !String.IsNullOrEmpty(s)));
+            Assert.AreEqual("A", array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" };
-            Assert.AreEqual("B", array.ElectedOrDefault(s => !String.IsNullOrEmpty(s)));
+            Assert.AreEqual("B", array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
-            Assert.AreEqual("A", array.ElectedOrDefault(s => !String.IsNullOrEmpty(s)));
+            Assert.AreEqual("A", array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
         }
 
         [TestMethod]
