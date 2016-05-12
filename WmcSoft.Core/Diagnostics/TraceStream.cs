@@ -33,7 +33,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Decorates a stream to trace the calls on methods to a specified trace source.
     /// </summary>
-    /// <remarks>Trace are done at the TraceEventType.Information level.</remarks>
+    /// <remarks>Trace are done at the <see cref="TraceEventType.Information"/> level.</remarks>
     public class TraceStream : Stream
     {
         #region Private fields

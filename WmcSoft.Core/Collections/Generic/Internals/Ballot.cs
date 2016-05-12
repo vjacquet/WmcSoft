@@ -33,11 +33,11 @@ namespace WmcSoft.Collections.Generic.Internals
 {
     internal class Ballot<T> : IEnumerable<KeyValuePair<T, int>>
     {
-        #region Utility classes
-
         // Paper enables voting to "null", because this value is not allowed by default on Dictionary.
         // CandidateComparer compares the Candidate on the Paper
         // Score has a Rank to allow stability: on ties, the first presented element wins.
+
+        #region Utility classes
 
         [DebuggerDisplay("{Candidate,nq}")]
         struct Paper

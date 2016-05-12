@@ -34,7 +34,7 @@ namespace WmcSoft.Diagnostics
 {
     public static class ExceptionExtensions
     {
-        static IEnumerable<DictionaryEntry> DoCrawlData<K>(this Exception exception, K converter)
+        static IEnumerable<DictionaryEntry> DoCrawlData<K>(Exception exception, K converter)
             where K : IDataKeyConverter {
             while (exception != null) {
                 foreach (DictionaryEntry entry in exception.Data) {
@@ -45,7 +45,7 @@ namespace WmcSoft.Diagnostics
             }
         }
 
-        static IEnumerable<DictionaryEntry> DoCrawlUniqueData<K>(this Exception exception, K converter)
+        static IEnumerable<DictionaryEntry> DoCrawlUniqueData<K>(Exception exception, K converter)
            where K : IDataKeyConverter {
             var set = new HashSet<object>();
             while (exception != null) {
