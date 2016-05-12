@@ -25,39 +25,28 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Collections.Generic.Internals
 {
-    sealed class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>, ICollection<TOutput>
+    sealed class ConvertingCollectionAdapter<TInput, TOutput> : IReadOnlyCollection<TOutput>, ICollection<TOutput>
     {
-        private readonly IReadOnlyList<TInput> _list;
+        private readonly IReadOnlyCollection<TInput> _collection;
         private readonly Converter<TInput, TOutput> _convert;
 
-        public ConvertingListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (converter == null)
-                throw new ArgumentNullException("convert");
+        public ConvertingCollectionAdapter(IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter) {
+            if (collection == null) throw new ArgumentNullException("collection");
+            if (converter == null) throw new ArgumentNullException("convert");
 
-            _list = list;
+            _collection = collection;
             _convert = converter;
         }
-
-        #region IReadOnlyList<TOutput> Membres
-
-        public TOutput this[int index] {
-            get { return _convert(_list[index]); }
-        }
-
-        #endregion
 
         #region IReadOnlyCollection<TOutput> Membres
 
         public int Count {
-            get { return _list.Count; }
+            get { return _collection.Count; }
         }
 
         #endregion
@@ -65,7 +54,7 @@ namespace WmcSoft.Collections.Generic
         #region IEnumerable<TOutput> Membres
 
         public IEnumerator<TOutput> GetEnumerator() {
-            return _list.Select(i => _convert(i)).GetEnumerator();
+            return _collection.Select(i => _convert(i)).GetEnumerator();
         }
 
         #endregion
@@ -90,13 +79,12 @@ namespace WmcSoft.Collections.Generic
 
         public bool Contains(TOutput item) {
             var comparer = EqualityComparer<TOutput>.Default;
-            return _list.Any(x => comparer.Equals(_convert(x), item));
+            return _collection.Any(x => comparer.Equals(_convert(x), item));
         }
 
         public void CopyTo(TOutput[] array, int arrayIndex) {
-            var length = _list.Count;
-            for (int i = 0; i != length; i++)
-                array[arrayIndex + i] = _convert(_list[i]);
+            foreach (var item in _collection)
+                array[arrayIndex++] = _convert(item);
         }
 
         public bool IsReadOnly {
