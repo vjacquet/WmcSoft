@@ -40,6 +40,45 @@ namespace WmcSoft
     /// <remarks>See Knuth's TAoCP, Vol 3, Page 47.</remarks>
     public class Tableau : ICollection<int>
     {
+        public const int Infinity = Int32.MaxValue;
+
+        struct Band
+        {
+            int[] _storage;
+            int _count;
+
+            public Band(int capacity) {
+                _count = 0;
+                _storage = new int[capacity];
+            }
+
+            public int this[int index]
+            {
+                get {
+                    return _storage[index];
+                }
+                set {
+                    if (index >= _count) {
+                        if (_count == 0) {
+                            _count = 4;
+                            _storage = new int[_count];
+                        } else {
+                            _count *= 2;
+
+                            var storage = new int[_count];
+                            Array.Copy(_storage, storage, _storage.Length);
+                            _storage = storage;
+                        }
+                    }
+                    _storage[index] = value;
+                }
+            }
+
+            public override string ToString() {
+                return string.Join(" ", _storage.Select(i => i == Infinity ? "∞" : i.ToString()));
+            }
+        }
+
         private readonly List<List<int>> _data;
 
         public Tableau() {
@@ -49,6 +88,9 @@ namespace WmcSoft
         public int Count => _data.Sum(x => x.Count);
         public bool IsReadOnly => false;
 
+        private bool IsZero(int i, int j) {
+            return i <= 0 | j <= 0;
+        }
         private bool IsInfinite(int i, int j) {
             if (j >= _data.Count)
                 return true;
@@ -64,6 +106,9 @@ namespace WmcSoft
         }
 
         public void Add(int item) {
+            if (item <= 0 || item == Infinity)
+                throw new ArgumentOutOfRangeException("item");
+
             var x = new List<int>();
             var r = new List<int>();
             var i = 0;
@@ -79,6 +124,30 @@ namespace WmcSoft
                 this[i, j] = x[i];
                 i++;
             }
+        }
+
+        public bool Remove(int item) {
+            if (item <= 0 || item == Infinity)
+                throw new ArgumentOutOfRangeException("item");
+
+            int i, j;
+            if (!Find(item, out i, out j))
+                return false;
+
+            var x = new Band();
+            var r = new Band();
+
+            x[i + 1] = Infinity;
+            do {
+                while (this[i, j + 1] < x[i + 1])
+                    j++;
+                x[i] = this[i, j];
+                r[i] = j;
+                this[i, j] = x[i + 1];
+            }
+            while (i-- > 0);
+
+            return true;
         }
 
         public void Clear() {
@@ -100,6 +169,9 @@ namespace WmcSoft
         }
 
         public bool Find(int item, out int i, out int j) {
+            if (item <= 0 || item == Infinity)
+                throw new ArgumentOutOfRangeException("item");
+
             var length = _data.Count;
             for (int k = 0; k < length; k++) {
                 var row = _data[k];
@@ -118,6 +190,9 @@ namespace WmcSoft
         }
 
         public bool Contains(int item) {
+            if (item <= 0 || item == Infinity)
+                throw new ArgumentOutOfRangeException("item");
+
             var length = _data.Count;
             for (int i = 0; i < length; i++) {
                 var row = _data[i];
@@ -139,10 +214,6 @@ namespace WmcSoft
             }
         }
 
-        public bool Remove(int item) {
-            throw new NotImplementedException();
-        }
-
         public IEnumerator<int> GetEnumerator() {
             return _data.SelectMany(x => x).GetEnumerator();
         }
@@ -154,6 +225,10 @@ namespace WmcSoft
         public int this[int i, int j]
         {
             get {
+                if (i < 0 || j < 0)
+                    return 0;
+                if (j >= _data.Count || i >= _data[j].Count)
+                    return Infinity;
                 return _data[j][i];
             }
             private set {

@@ -28,25 +28,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Collections.Generic.Internals
 {
-    sealed class ReadOnlyCollectionToCollectionAdapter<T> : ICollection<T>, IReadOnlyCollection<T>
+    sealed class ReadOnlyCollectionFacade<T> : IReadOnlyCollection<T>, ICollection<T>
     {
         #region fields
 
-        readonly IReadOnlyCollection<T> _collection;
+        readonly ICollection<T> _collection;
 
         #endregion
 
         #region Lifecycle
 
-        public ReadOnlyCollectionToCollectionAdapter(IReadOnlyCollection<T> collection) {
+        public ReadOnlyCollectionFacade(ICollection<T> collection) {
             _collection = collection;
         }
 
         #endregion
 
-        #region ICollection<T> Membres
+        #region ICollection<T> Members
 
         public void Add(T item) {
             throw new NotSupportedException();
@@ -57,17 +57,13 @@ namespace WmcSoft.Collections.Generic
         }
 
         public bool Contains(T item) {
-            return _collection.Contains(item);
+            var comparer = EqualityComparer<T>.Default;
+            return _collection.Any(x => comparer.Equals(x, item));
         }
 
         public void CopyTo(T[] array, int arrayIndex) {
-            foreach (var item in _collection) {
+            foreach (var item in _collection)
                 array[arrayIndex++] = item;
-            }
-        }
-
-        public int Count {
-            get { return _collection.Count; }
         }
 
         public bool IsReadOnly {
@@ -76,6 +72,14 @@ namespace WmcSoft.Collections.Generic
 
         public bool Remove(T item) {
             throw new NotSupportedException();
+        }
+
+        #endregion
+
+        #region IReadOnlyCollection<T> Membres
+
+        public int Count {
+            get { return _collection.Count; }
         }
 
         #endregion

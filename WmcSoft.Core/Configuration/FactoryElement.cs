@@ -53,7 +53,6 @@ namespace WmcSoft.Configuration
         }
 
         protected override bool OnDeserializeUnrecognizedAttribute(string name, string value) {
-            //return base.OnDeserializeUnrecognizedAttribute(name, value);
             Parameters[name] = value;
             return true;
         }

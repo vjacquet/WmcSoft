@@ -36,6 +36,40 @@ namespace WmcSoft
         }
 
         [TestMethod]
+        public void CanRemoveObliqueElement() {
+            var t = new Tableau();
+            t.Add(7);
+            t.Add(2);
+            t.Add(9);
+            t.Add(5);
+            t.Add(3);
+
+            t.Remove(9);
+
+            Assert.AreEqual(2, t[0, 0]);
+            Assert.AreEqual(3, t[0, 1]);
+            Assert.AreEqual(5, t[1, 0]);
+            Assert.AreEqual(7, t[2, 0]);
+        }
+
+        [TestMethod]
+        public void CanRemoveCornerElement() {
+            var t = new Tableau();
+            t.Add(7);
+            t.Add(2);
+            t.Add(9);
+            t.Add(5);
+            t.Add(3);
+
+            t.Remove(2);
+
+            Assert.AreEqual(3, t[0, 0]);
+            Assert.AreEqual(9, t[0, 1]);
+            Assert.AreEqual(5, t[1, 0]);
+            Assert.AreEqual(7, t[2, 0]);
+        }
+
+        [TestMethod]
         public void CheckContains() {
             var t = new Tableau();
 
