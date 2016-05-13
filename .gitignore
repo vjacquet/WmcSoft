@@ -181,11 +181,3 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
-/WmcSoft.Windows.Forms/Windows/Forms/Thumbs.db
-/Tools/WmcSoft.VisualStudio/VisualStudio/IVsGeneratorProgress.zip
-/WmcSoft.Components/Thumbs.db
-/WmcSoft.Components/Drawing/HSLColor.bak
-/Tools/WindowsFormsGallery/HorizontalFormLayoutPanel.zip
-/WmcSoft.VC.db
-/WmcSoft.Business/Business/RuleModel/validate.bat
-/WmcSoft.Business/Business/RuleModel/Copy.xslt

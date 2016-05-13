@@ -26,7 +26,7 @@
 
 using System.Collections.Generic;
 
-namespace WmcSoft.Collections.Generic.Internals
+namespace WmcSoft.Collections.Generic
 {
     sealed class ReadOnlyListFacade<T> : IReadOnlyList<T>
     {

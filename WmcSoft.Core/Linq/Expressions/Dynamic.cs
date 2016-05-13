@@ -10,7 +10,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using System.Runtime.Serialization;
 
 namespace System.Linq.Dynamic
 {
@@ -153,13 +152,11 @@ namespace System.Linq.Dynamic
             this.type = type;
         }
 
-        public string Name
-        {
+        public string Name {
             get { return name; }
         }
 
-        public Type Type
-        {
+        public Type Type {
             get { return type; }
         }
     }
@@ -388,35 +385,21 @@ namespace System.Linq.Dynamic
         }
     }
 
-    [Serializable]
     public sealed class ParseException : Exception
     {
-        readonly int _position;
+        int position;
 
         public ParseException(string message, int position)
             : base(message) {
-            _position = position;
+            this.position = position;
         }
 
-#pragma warning disable CS0628 // New protected member declared in sealed class
-        protected ParseException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
-            _position = info.GetInt32("position");
-        }
-#pragma warning restore CS0628 // New protected member declared in sealed class
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            base.GetObjectData(info, context);
-            info.AddValue("position", _position);
-        }
-
-        public int Position
-        {
-            get { return _position; }
+        public int Position {
+            get { return position; }
         }
 
         public override string ToString() {
-            return string.Format(Res.ParseExceptionFormat, Message, _position);
+            return string.Format(Res.ParseExceptionFormat, Message, position);
         }
     }
 
@@ -669,13 +652,13 @@ namespace System.Linq.Dynamic
 
 #pragma warning disable 0219
         public IEnumerable<DynamicOrdering> ParseOrdering() {
-            var orderings = new List<DynamicOrdering>();
+            List<DynamicOrdering> orderings = new List<DynamicOrdering>();
             while (true) {
-                var expr = ParseExpression();
-                var ascending = true;
-                if (TokenIdentifierIs("asc", "ascending")) {
+                Expression expr = ParseExpression();
+                bool ascending = true;
+                if (TokenIdentifierIs("asc") || TokenIdentifierIs("ascending")) {
                     NextToken();
-                } else if (TokenIdentifierIs("desc", "descending")) {
+                } else if (TokenIdentifierIs("desc") || TokenIdentifierIs("descending")) {
                     NextToken();
                     ascending = false;
                 }
@@ -2005,10 +1988,7 @@ namespace System.Linq.Dynamic
         bool TokenIdentifierIs(string id) {
             return token.id == TokenId.Identifier && String.Equals(id, token.text, StringComparison.OrdinalIgnoreCase);
         }
-        bool TokenIdentifierIs(string id1, string id2) {
-            return token.id == TokenId.Identifier
-                && (String.Equals(id1, token.text, StringComparison.OrdinalIgnoreCase) || String.Equals(id2, token.text, StringComparison.OrdinalIgnoreCase));
-        }
+
         string GetIdentifier() {
             ValidateToken(TokenId.Identifier, Res.IdentifierExpected);
             string id = token.text;
