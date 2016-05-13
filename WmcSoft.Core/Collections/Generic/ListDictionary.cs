@@ -28,9 +28,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements a generic collection of key/value pairs using a list.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     public class ListDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         #region Private fields
@@ -70,8 +76,7 @@ namespace WmcSoft.Collections.Generic
 
         #region IDictionary<TKey, TValue> members
 
-        public TValue this[TKey key]
-        {
+        public TValue this[TKey key] {
             get {
                 var found = IndexOfKey(key);
                 if (found < 0)
@@ -87,28 +92,20 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public int Count
-        {
+        public int Count {
             get { return _storage.Count; }
         }
 
-        public bool IsReadOnly
-        {
+        public bool IsReadOnly {
             get { return false; }
         }
 
-        public ICollection<TKey> Keys
-        {
-            get {
-                return new ReadOnlyCollectionAdapter<TKey>(_storage.Select(p => p.Key), _storage.Count, _comparer);
-            }
+        public ICollection<TKey> Keys {
+            get { return new ReadOnlyCollectionAdapter<TKey>(_storage.Select(p => p.Key), _storage.Count, _comparer); }
         }
 
-        public ICollection<TValue> Values
-        {
-            get {
-                return new ReadOnlyCollectionAdapter<TValue>(_storage.Select(p => p.Value), _storage.Count);
-            }
+        public ICollection<TValue> Values {
+            get { return new ReadOnlyCollectionAdapter<TValue>(_storage.Select(p => p.Value), _storage.Count); }
         }
 
         public void Add(KeyValuePair<TKey, TValue> item) {

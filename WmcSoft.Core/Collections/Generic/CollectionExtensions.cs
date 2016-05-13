@@ -187,7 +187,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A read only list</returns>
         /// <remarks>Conversion are done "on demand" and are not cached.</remarks>
         public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
-            return new ConvertingListAdapter<TInput, TOutput>(list, converter);
+            return new ConvertingReadOnlyListAdapter<TInput, TOutput>(list, converter);
         }
 
         #endregion

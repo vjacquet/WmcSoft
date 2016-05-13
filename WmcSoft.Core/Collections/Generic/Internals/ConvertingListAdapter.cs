@@ -30,12 +30,12 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
-    sealed class ConvertingListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>, ICollection<TOutput>
+    sealed class ConvertingReadOnlyListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>, ICollection<TOutput>
     {
         private readonly IReadOnlyList<TInput> _list;
         private readonly Converter<TInput, TOutput> _convert;
 
-        public ConvertingListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
+        public ConvertingReadOnlyListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
             if (list == null) throw new ArgumentNullException("list");
             if (converter == null) throw new ArgumentNullException("convert");
 

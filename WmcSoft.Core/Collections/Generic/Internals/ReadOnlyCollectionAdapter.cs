@@ -29,7 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Collections.Generic.Internals
 {
     sealed class ReadOnlyCollectionAdapter<T> : IReadOnlyCollection<T>, ICollection<T>
     {
