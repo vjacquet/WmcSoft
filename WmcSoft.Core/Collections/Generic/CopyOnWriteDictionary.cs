@@ -54,15 +54,11 @@ namespace WmcSoft.Collections.Generic
             : this(dictionary, dictionary.Comparer) {
         }
 
-        private IDictionary<TKey, TValue> Readable
-        {
-            get {
-                return _inner;
-            }
+        private IDictionary<TKey, TValue> Readable {
+            get { return _inner; }
         }
 
-        private IDictionary<TKey, TValue> Writtable
-        {
+        private IDictionary<TKey, TValue> Writtable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new Dictionary<TKey, TValue>(_source, _comparer);
@@ -70,43 +66,25 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public ICollection<TKey> Keys
-        {
-            get {
-                return Readable.Keys;
-            }
+        public ICollection<TKey> Keys {
+            get { return Readable.Keys; }
         }
 
-        public ICollection<TValue> Values
-        {
-            get {
-                return Readable.Values;
-            }
+        public ICollection<TValue> Values {
+            get { return Readable.Values; }
         }
 
-        public int Count
-        {
-            get {
-                return Readable.Count;
-            }
+        public int Count {
+            get { return Readable.Count; }
         }
 
-        public bool IsReadOnly
-        {
-            get {
-                return false;
-            }
+        public bool IsReadOnly {
+            get { return false; }
         }
 
-        public TValue this[TKey key]
-        {
-            get {
-                return Readable[key];
-            }
-
-            set {
-                Writtable[key] = value;
-            }
+        public TValue this[TKey key] {
+            get { return Readable[key]; }
+            set { Writtable[key] = value; }
         }
 
         public bool ContainsKey(TKey key) {

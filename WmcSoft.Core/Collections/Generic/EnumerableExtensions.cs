@@ -468,7 +468,7 @@ namespace WmcSoft.Collections.Generic
                     }
                 }
 
-            NoMoreValue1:
+                NoMoreValue1:
                 // first is empty, consume all second
                 while (hasValue2) {
                     yield return enumerator2.Current;
@@ -476,7 +476,7 @@ namespace WmcSoft.Collections.Generic
                 }
                 yield break;
 
-            NoMoreValue2:
+                NoMoreValue2:
                 // second is empty, consume all first
                 while (hasValue1) {
                     yield return enumerator1.Current;
@@ -533,7 +533,7 @@ namespace WmcSoft.Collections.Generic
                     }
                 }
 
-            NoMoreValue1:
+                NoMoreValue1:
                 // first is empty, consume all second
                 while (hasValue2) {
                     yield return combiner(defaultValue, enumerator2.Current);
@@ -541,7 +541,7 @@ namespace WmcSoft.Collections.Generic
                 }
                 yield break;
 
-            NoMoreValue2:
+                NoMoreValue2:
                 // second is empty, consume all first
                 while (hasValue1) {
                     yield return combiner(enumerator1.Current, defaultValue);
@@ -925,8 +925,7 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator<T> Membres
 
-                public T Current
-                {
+                public T Current {
                     get { return _list[_offset]; }
                 }
 
@@ -941,8 +940,7 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator Membres
 
-                object IEnumerator.Current
-                {
+                object IEnumerator.Current {
                     get { return Current; }
                 }
 
@@ -986,8 +984,7 @@ namespace WmcSoft.Collections.Generic
 
             #region IReadOnlyCollection<T> Membres
 
-            public int Count
-            {
+            public int Count {
                 get { return _list.Count * _repeat; }
             }
 
@@ -1027,8 +1024,7 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator<T> Membres
 
-                public T Current
-                {
+                public T Current {
                     get { return _list[_offset]; }
                 }
 
@@ -1043,8 +1039,7 @@ namespace WmcSoft.Collections.Generic
 
                 #region IEnumerator Membres
 
-                object IEnumerator.Current
-                {
+                object IEnumerator.Current {
                     get { return Current; }
                 }
 
@@ -1087,8 +1082,7 @@ namespace WmcSoft.Collections.Generic
 
             #region IReadOnlyCollection<T> Membres
 
-            public int Count
-            {
+            public int Count {
                 get { return _list.Count * _repeat; }
             }
 
@@ -1488,14 +1482,13 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <param name="enumerable">The enumerable.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public static string ToString<T>(this IEnumerable<T> enumerable, string format, IFormatProvider formatProvider = null)
             where T : IFormattable {
-            if (enumerable == null)
-                throw new ArgumentNullException("enumerable");
+            if (enumerable == null) throw new ArgumentNullException("enumerable");
 
             var textInfo = GetTextInfo(formatProvider);
             var separator = textInfo.ListSeparator;

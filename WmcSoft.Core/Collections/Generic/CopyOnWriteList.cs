@@ -42,15 +42,11 @@ namespace WmcSoft.Collections.Generic
             _inner = _source = list;
         }
 
-        private IList<T> Readable
-        {
-            get {
-                return _inner;
-            }
+        private IList<T> Readable {
+            get { return _inner; }
         }
 
-        private IList<T> Writtable
-        {
+        private IList<T> Writtable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new List<T>(_source);
@@ -58,28 +54,17 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public int Count
-        {
-            get {
-                return Readable.Count;
-            }
+        public int Count {
+            get { return Readable.Count; }
         }
 
-        public bool IsReadOnly
-        {
-            get {
-                return false;
-            }
+        public bool IsReadOnly {
+            get { return false; }
         }
 
-        public T this[int index]
-        {
-            get {
-                return Readable[index];
-            }
-            set {
-                Writtable[index] = value;
-            }
+        public T this[int index] {
+            get { return Readable[index]; }
+            set { Writtable[index] = value; }
         }
 
         public int IndexOf(T item) {

@@ -38,14 +38,6 @@ namespace WmcSoft.Configuration
     [ConfigurationCollection(typeof(MailPolicy), CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
     public class MailPolicyCollection : ConfigurationElementCollection<MailPolicy>
     {
-        public MailPolicyCollection() {
-        }
-
-
-        protected override ConfigurationElement CreateNewElement() {
-            return new MailPolicy();
-        }
-
         public new MailPolicy this[string name] {
             get {
                 return this.Cast<MailPolicy>()
