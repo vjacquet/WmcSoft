@@ -88,10 +88,12 @@
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
+    <Compile Include="Diagnostics\DebugBench.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Globalization\CombinedCalendar.cs" />
     <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IConverter.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />

@@ -27,7 +27,8 @@
  namespace WmcSoft
 {
     /// <summary>
-    /// Defines a generalized strategy to convert values from a given input type to a given output type.
+    /// Defines a generalized strategy to convert values from a given input type 
+    /// to a given output type.
     /// </summary>
     public interface IConverter<TInput, TOutput>
     {
