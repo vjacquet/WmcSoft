@@ -75,7 +75,7 @@ namespace WmcSoft.Diagnostics
             where K : IDataKeyConverter {
             var frame = new StackFrame(1);
             var method = frame.GetMethod();
-            var key = converter.ToKey("caller");
+            var key = converter.ConvertTo("caller");
             exception.Data[key] = method.Name + " of " + method.DeclaringType.FullName;
             return exception;
         }
@@ -94,7 +94,7 @@ namespace WmcSoft.Diagnostics
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(context)) {
                 var value = descriptor.GetValue(context);
                 var stringify = value != null && !descriptor.PropertyType.IsSerializable;
-                var key = converter.ToKey(descriptor.Name);
+                var key = converter.ConvertTo(descriptor.Name);
                 exception.Data[key] = stringify
                     ? value.ToString()
                     : value;
@@ -114,7 +114,7 @@ namespace WmcSoft.Diagnostics
 
         public static Exception RemoveCapturedEntry<K>(this Exception exception, K converter, string name, bool crawlInnerExceptions = false)
             where K : IDataKeyConverter {
-            var key = converter.ToKey(name);
+            var key = converter.ConvertTo(name);
             do {
                 exception.Data.Remove(key);
             } while (crawlInnerExceptions && (exception = exception.InnerException) != null);
@@ -126,7 +126,7 @@ namespace WmcSoft.Diagnostics
 
         public static object GetCapturedEntry<K>(this Exception exception, K converter, string name, bool crawlInnerExceptions = false)
             where K : IDataKeyConverter {
-            var key = converter.ToKey(name);
+            var key = converter.ConvertTo(name);
             do {
                 var value = exception.Data[key];
                 if (value != null)

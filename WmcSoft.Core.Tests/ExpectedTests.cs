@@ -46,7 +46,7 @@ namespace WmcSoft
         [TestMethod]
         public void CheckDataKeyConverterWithPrefixes() {
             var converter = DataKeyConverter.Basic.WithPrefix("own.").WithPrefix("my.");
-            var actual = converter.ToKey("key");
+            var actual = converter.ConvertTo("key");
             Assert.AreEqual("my.own.key", actual);
         }
 

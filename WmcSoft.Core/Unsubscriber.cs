@@ -39,15 +39,13 @@ namespace WmcSoft
         #region Lifecycle
 
         public Unsubscriber(Action unsubscribe) {
-            if (unsubscribe == null)
-                throw new ArgumentNullException("unsubscribe");
+            if (unsubscribe == null) throw new ArgumentNullException("unsubscribe");
 
             _unsubscribe = unsubscribe;
         }
 
         public Unsubscriber(IDisposable unsubscribe) {
-            if (unsubscribe == null)
-                throw new ArgumentNullException("unsubscribe");
+            if (unsubscribe == null) throw new ArgumentNullException("unsubscribe");
 
             _unsubscribe = () => unsubscribe.Dispose();
         }

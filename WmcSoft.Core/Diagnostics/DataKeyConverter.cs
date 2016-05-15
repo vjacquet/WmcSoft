@@ -29,29 +29,30 @@ using System.Collections;
 
 namespace WmcSoft.Diagnostics
 {
+    /// <summary>
+    /// Defines strategies to convert value to key to <see cref="Exception"/>'s <see cref="Exception.Data"/> property keys.
+    /// This is a static class.
+    /// </summary>
     public static class DataKeyConverter
     {
         #region Internals
 
-        struct BasicKeyConverter : IDataKeyConverter
+        public struct BasicKeyConverter : IDataKeyConverter
         {
             #region IKeyConverter Membres
 
-            public object ToKey(string name) {
+            public object ConvertTo(string name) {
                 return name;
             }
 
-            public string FromKey(object key) {
-                var name = key as string;
-                if (name != null)
-                    return name;
-                return null;
+            public string ConvertFrom(object key) {
+                return key as string;
             }
 
             #endregion
         }
 
-        struct PreventConflictKeyConverter : IDataKeyConverter
+        public struct PreventConflictKeyConverter : IDataKeyConverter
         {
             [Serializable]
             sealed class NoKeyConflict
@@ -84,11 +85,11 @@ namespace WmcSoft.Diagnostics
 
             #region IKeyConverter Membres
 
-            public object ToKey(string name) {
+            public object ConvertTo(string name) {
                 return new NoKeyConflict(name);
             }
 
-            public string FromKey(object key) {
+            public string ConvertFrom(object key) {
                 var name = key as NoKeyConflict;
                 if (name != null) {
                     return name.ToString();
@@ -99,7 +100,7 @@ namespace WmcSoft.Diagnostics
             #endregion
         }
 
-        struct PrefixedKeyConverter : IDataKeyConverter
+        public struct PrefixedKeyConverter : IDataKeyConverter
         {
             internal readonly IDataKeyConverter _converter;
             internal readonly string _prefix;
@@ -111,12 +112,12 @@ namespace WmcSoft.Diagnostics
 
             #region IKeyConverter Membres
 
-            public object ToKey(string name) {
-                return _converter.ToKey(_prefix + name);
+            public object ConvertTo(string name) {
+                return _converter.ConvertTo(_prefix + name);
             }
 
-            public string FromKey(object key) {
-                var name = _converter.FromKey(key);
+            public string ConvertFrom(object key) {
+                var name = _converter.ConvertFrom(key);
                 if (name == null || !name.StartsWith(_prefix))
                     return null;
                 return name.Substring(_prefix.Length);
@@ -134,10 +135,10 @@ namespace WmcSoft.Diagnostics
         }
 
         public static IDataKeyConverter Default { get; set; }
-        public static IDataKeyConverter Basic { get; private set; }
-        public static IDataKeyConverter PreventConflict { get; private set; }
+        public static BasicKeyConverter Basic { get; private set; }
+        public static PreventConflictKeyConverter PreventConflict { get; private set; }
 
-        public static IDataKeyConverter WithPrefix(this IDataKeyConverter converter, string prefix) {
+        public static PrefixedKeyConverter WithPrefix(this IDataKeyConverter converter, string prefix) {
             if (converter is PrefixedKeyConverter) {
                 // decorating a PrefixedKeyConverter by another one would invert the prefixes.
                 // and it is better to concatenate only onces.
@@ -148,10 +149,11 @@ namespace WmcSoft.Diagnostics
         }
 
         public static bool IsSupported(this IDataKeyConverter converter, object key) {
-            return converter.FromKey(key) != null;
+            return converter.ConvertFrom(key) != null;
         }
+
         public static bool IsSupported(this IDataKeyConverter converter, DictionaryEntry entry) {
-            return converter.FromKey(entry.Key) != null;
+            return IsSupported(converter, entry.Key);
         }
     }
 }
