@@ -44,15 +44,12 @@ namespace WmcSoft.Threading
         private int _changed;
         private readonly IEqualityComparer<T> _comparer;
 
-        public Register(T value, IEqualityComparer<T> comparer) {
+        public Register(T value = default(T), IEqualityComparer<T> comparer = null) {
             _value = value;
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
         public Register(IEqualityComparer<T> comparer) : this(default(T), comparer) {
-        }
-
-        public Register(T value = default(T)) : this(value, null) {
         }
 
         /// <summary>
