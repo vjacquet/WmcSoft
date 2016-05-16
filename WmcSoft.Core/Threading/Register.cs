@@ -31,7 +31,8 @@ using System.Threading;
 namespace WmcSoft.Threading
 {
     /// <summary>
-    /// Utility class to store values and and keep track of wether it changed or not.
+    /// Utility class to store values and and keep track of wether it changed 
+    /// since he last time it was checked.
     /// </summary>
     /// <typeparam name="T">The type of the value to store.</typeparam>
     [DebuggerDisplay("{_value,nq}{_changed==1 ? \"*\" : \"\",nq}")]
@@ -74,7 +75,7 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns>The dirty flag</returns>
-        public bool TryGetChanges(out T value) {
+        public bool TryGetChanged(out T value) {
             value = _value;
             var changed = Interlocked.CompareExchange(ref _changed, 0, 1);
             return changed == 1;
