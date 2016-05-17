@@ -47,7 +47,7 @@ namespace WmcSoft
         /// <param name="func">The action</param>
         /// <param name="args">The arguments</param>
         /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
-        public static void ApplyEach<T, TResult>(this Action<T> action, params T[] args) {
+        public static void ApplyEach<T>(this Action<T> action, params T[] args) {
             int i = 0;
             try {
                 var results = new TResult[args.Length];
@@ -69,7 +69,7 @@ namespace WmcSoft
         /// <param name="args">The arguments</param>
         /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
         /// <returns>The array of exception, in the order of the arguments.</returns>
-        public static Exception[] TryEach<T, TResult>(this Action<T> action, params T[] args) {
+        public static Exception[] TryEach<T>(this Action<T> action, params T[] args) {
             var results = new Exception[args.Length];
             for (int i = 0; i < args.Length; i++) {
                 try {
@@ -98,6 +98,58 @@ namespace WmcSoft
                 action(obj);
                 then(obj);
             };
+        }
+
+        #endregion
+
+        #region Pack/Unpack
+
+        public static Action<Tuple<T1, T2>> Pack<T1, T2>(this Action<T1, T2> action) {
+            return t => action(t.Item1, t.Item2);
+        }
+
+        public static Action<T1, T2> Unpack<T1, T2>(this Action<Tuple<T1, T2>> action) {
+            return (t1, t2) => action(Tuple.Create(t1, t2));
+        }
+
+        public static Action<Tuple<T1, T2, T3>> Pack<T1, T2, T3>(this Action<T1, T2, T3> action) {
+            return t => action(t.Item1, t.Item2, t.Item3);
+        }
+
+        public static Action<T1, T2, T3> Unpack<T1, T2, T3>(this Action<Tuple<T1, T2, T3>> action) {
+            return (t1, t2, t3) => action(Tuple.Create(t1, t2, t3));
+        }
+
+        public static Action<Tuple<T1, T2, T3, T4>> Pack<T1, T2, T3, T4>(this Action<T1, T2, T3, T4> action) {
+            return t => action(t.Item1, t.Item2, t.Item3, t.Item4);
+        }
+
+        public static Action<T1, T2, T3, T4> Unpack<T1, T2, T3, T4>(this Action<Tuple<T1, T2, T3, T4>> action) {
+            return (t1, t2, t3, t4) => action(Tuple.Create(t1, t2, t3, t4));
+        }
+
+        public static Action<Tuple<T1, T2, T3, T4, T5>> Pack<T1, T2, T3, T4, T5>(this Action<T1, T2, T3, T4, T5> action) {
+            return t => action(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5);
+        }
+
+        public static Action<T1, T2, T3, T4, T5> Unpack<T1, T2, T3, T4, T5>(this Action<Tuple<T1, T2, T3, T4, T5>> action) {
+            return (t1, t2, t3, t4, t5) => action(Tuple.Create(t1, t2, t3, t4, t5));
+        }
+
+        public static Action<Tuple<T1, T2, T3, T4, T5, T6>> Pack<T1, T2, T3, T4, T5, T6>(this Action<T1, T2, T3, T4, T5, T6> action) {
+            return t => action(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6);
+        }
+
+        public static Action<T1, T2, T3, T4, T5, T6> Unpack<T1, T2, T3, T4, T5, T6>(this Action<Tuple<T1, T2, T3, T4, T5, T6>> action) {
+            return (t1, t2, t3, t4, t5, t6) => action(Tuple.Create(t1, t2, t3, t4, t5, t6));
+        }
+
+        public static Action<Tuple<T1, T2, T3, T4, T5, T6, T7>> Pack<T1, T2, T3, T4, T5, T6, T7>(this Action<T1, T2, T3, T4, T5, T6, T7> action) {
+            return t => action(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7);
+        }
+
+        public static Action<T1, T2, T3, T4, T5, T6, T7> Unpack<T1, T2, T3, T4, T5, T6, T7>(this Action<Tuple<T1, T2, T3, T4, T5, T6, T7>> action) {
+            return (t1, t2, t3, t4, t5, t6, t7) => action(Tuple.Create(t1, t2, t3, t4, t5, t6, t7));
         }
 
         #endregion
