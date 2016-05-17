@@ -114,6 +114,58 @@ namespace WmcSoft
 
         #endregion
 
+        #region Pack/Unpack
+
+        public static Func<Tuple<T1, T2>, TResult> Pack<T1, T2, TResult>(this Func<T1, T2, TResult> func) {
+            return t => func(t.Item1, t.Item2);
+        }
+
+        public static Func<T1, T2, TResult> Unpack<T1, T2, TResult>(this Func<Tuple<T1, T2>, TResult> func) {
+            return (t1, t2) => func(Tuple.Create(t1, t2));
+        }
+
+        public static Func<Tuple<T1, T2, T3>, TResult> Pack<T1, T2, T3, TResult>(this Func<T1, T2, T3, TResult> func) {
+            return t => func(t.Item1, t.Item2, t.Item3);
+        }
+
+        public static Func<T1, T2, T3, TResult> Unpack<T1, T2, T3, TResult>(this Func<Tuple<T1, T2, T3>, TResult> func) {
+            return (t1, t2, t3) => func(Tuple.Create(t1, t2, t3));
+        }
+
+        public static Func<Tuple<T1, T2, T3, T4>, TResult> Pack<T1, T2, T3, T4, TResult>(this Func<T1, T2, T3, T4, TResult> func) {
+            return t => func(t.Item1, t.Item2, t.Item3, t.Item4);
+        }
+
+        public static Func<T1, T2, T3, T4, TResult> Unpack<T1, T2, T3, T4, TResult>(this Func<Tuple<T1, T2, T3, T4>, TResult> func) {
+            return (t1, t2, t3, t4) => func(Tuple.Create(t1, t2, t3, t4));
+        }
+
+        public static Func<Tuple<T1, T2, T3, T4, T5>, TResult> Pack<T1, T2, T3, T4, T5, TResult>(this Func<T1, T2, T3, T4, T5, TResult> func) {
+            return t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5);
+        }
+
+        public static Func<T1, T2, T3, T4, T5, TResult> Unpack<T1, T2, T3, T4, T5, TResult>(this Func<Tuple<T1, T2, T3, T4, T5>, TResult> func) {
+            return (t1, t2, t3, t4, t5) => func(Tuple.Create(t1, t2, t3, t4, t5));
+        }
+
+        public static Func<Tuple<T1, T2, T3, T4, T5, T6>, TResult> Pack<T1, T2, T3, T4, T5, T6, TResult>(this Func<T1, T2, T3, T4, T5, T6, TResult> func) {
+            return t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6);
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, TResult> Unpack<T1, T2, T3, T4, T5, T6, TResult>(this Func<Tuple<T1, T2, T3, T4, T5, T6>, TResult> func) {
+            return (t1, t2, t3, t4, t5, t6) => func(Tuple.Create(t1, t2, t3, t4, t5, t6));
+        }
+
+        public static Func<Tuple<T1, T2, T3, T4, T5, T6, T7>, TResult> Pack<T1, T2, T3, T4, T5, T6, T7, TResult>(this Func<T1, T2, T3, T4, T5, T6, T7, TResult> func) {
+            return t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7);
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, T7, TResult> Unpack<T1, T2, T3, T4, T5, T6, T7, TResult>(this Func<Tuple<T1, T2, T3, T4, T5, T6, T7>, TResult> func) {
+            return (t1, t2, t3, t4, t5, t6, t7) => func(Tuple.Create(t1, t2, t3, t4, t5, t6, t7));
+        }
+
+        #endregion
+
         #region Shield
 
         /// <summary>
