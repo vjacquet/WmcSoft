@@ -31,22 +31,36 @@ using System.Diagnostics;
 
 namespace WmcSoft.Configuration
 {
-    [DebuggerDisplay("{Name,nq} => {TypeName,nq}")]
+    [DebuggerDisplay("{Name,nq} => {Type,nq}")]
     public abstract class FactoryElement<T> : ConfigurationElement
     {
         private readonly NameValueCollection _parameters = new NameValueCollection(StringComparer.Ordinal);
 
-        [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
+        protected override ConfigurationPropertyCollection Properties {
+            get {
+                var properties = base.Properties;
+                if (!properties.Contains("name"))
+                    properties.Add(new ConfigurationProperty("name", typeof(string), null, ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey));
+                if (!properties.Contains("type"))
+                    properties.Add(new ConfigurationProperty("type", typeof(Type), typeof(T), new TypeNameConverter(), new SubclassTypeValidator(typeof(T)), ConfigurationPropertyOptions.IsRequired));
+                return properties;
+            }
+        }
+
         public string Name {
             get { return (string)this["name"]; }
             set { this["name"] = value; }
         }
 
-        [ConfigurationProperty("type", IsRequired = true)]
-        public string TypeName {
-            get { return (string)this["type"]; }
+        public Type Type {
+            get { return (Type)this["type"]; }
             set { this["type"] = value; }
         }
+
+        //public string TypeName {
+        //    get { return (string)this["type"]; }
+        //    set { this["type"] = value; }
+        //}
 
         public NameValueCollection Parameters {
             get { return _parameters; }
@@ -57,12 +71,12 @@ namespace WmcSoft.Configuration
             return true;
         }
 
-        Type ResolveType() {
-            return Type.GetType(TypeName, true, true);
-        }
+        //Type ResolveType() {
+        //    return Type.GetType(TypeName, true, true);
+        //}
 
         public virtual T CreateInstance(params object[] args) {
-            var type = ResolveType();
+            var type = Type;
             return (T)Activator.CreateInstance(type, args);
         }
     }

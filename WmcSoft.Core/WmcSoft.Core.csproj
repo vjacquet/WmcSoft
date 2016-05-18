@@ -88,6 +88,10 @@
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
+    <Compile Include="Diagnostics\Checkpoints\CheckpointBase.cs" />
+    <Compile Include="Diagnostics\Checkpoints\CheckpointResult.cs" />
+    <Compile Include="Diagnostics\Checkpoints\CheckpointResultType.cs" />
+    <Compile Include="Diagnostics\Checkpoints\ICheckpoint.cs" />
     <Compile Include="Diagnostics\DebugBench.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Globalization\CombinedCalendar.cs" />
