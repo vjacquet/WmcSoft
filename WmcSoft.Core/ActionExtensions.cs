@@ -50,7 +50,6 @@ namespace WmcSoft
         public static void ApplyEach<T>(this Action<T> action, params T[] args) {
             int i = 0;
             try {
-                var results = new TResult[args.Length];
                 for (; i < args.Length; i++) {
                     action(args[i]);
                 }
