@@ -93,9 +93,11 @@
     <Compile Include="Diagnostics\Checkpoints\CheckpointResultType.cs" />
     <Compile Include="Diagnostics\Checkpoints\ICheckpoint.cs" />
     <Compile Include="Diagnostics\DebugBench.cs" />
+    <Compile Include="Diagnostics\Sentries\AggregateSentry.cs" />
     <Compile Include="Diagnostics\Sentries\ISentry.cs" />
     <Compile Include="Diagnostics\Sentries\SentryBase.cs" />
     <Compile Include="Diagnostics\Sentries\SentryStatus.cs" />
+    <Compile Include="Diagnostics\Sentries\TraceSentry.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Globalization\CombinedCalendar.cs" />
     <Compile Include="Globalization\IBusinessCalendar.cs" />
@@ -296,6 +298,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Diagnostics\Sentries\SentriesDiagram.cd" />
     <None Include="IO\Streams.cd" />
     <None Include="Linq\Expressions\DynamicDiagram.cd" />
     <None Include="Xml\XPath\ReflectNavigator.cd" />
