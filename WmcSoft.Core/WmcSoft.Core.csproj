@@ -93,6 +93,9 @@
     <Compile Include="Diagnostics\Checkpoints\CheckpointResultType.cs" />
     <Compile Include="Diagnostics\Checkpoints\ICheckpoint.cs" />
     <Compile Include="Diagnostics\DebugBench.cs" />
+    <Compile Include="Diagnostics\Sentries\ISentry.cs" />
+    <Compile Include="Diagnostics\Sentries\SentryBase.cs" />
+    <Compile Include="Diagnostics\Sentries\SentryStatus.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Globalization\CombinedCalendar.cs" />
     <Compile Include="Globalization\IBusinessCalendar.cs" />
