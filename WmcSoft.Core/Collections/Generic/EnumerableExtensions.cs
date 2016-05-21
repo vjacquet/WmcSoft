@@ -1358,25 +1358,14 @@ namespace WmcSoft.Collections.Generic
 
         #region ToDictionary
 
-        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, DuplicatePolicy policy) {
-            return ToDictionary(source, keySelector, SpecialFunctions<TSource>.Identity, null, policy);
+        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, DuplicatePolicy policy, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer = null) {
+            return ToDictionary(source, policy, keySelector, SpecialFunctions<TSource>.Identity, comparer);
         }
 
-        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, DuplicatePolicy policy) {
-            return ToDictionary(source, keySelector, SpecialFunctions<TSource>.Identity, comparer, policy);
-        }
-
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, DuplicatePolicy policy) {
-            return ToDictionary(source, keySelector, elementSelector, null, policy);
-        }
-
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, DuplicatePolicy policy) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (keySelector == null)
-                throw new ArgumentNullException("keySelector");
-            if (elementSelector == null)
-                throw new ArgumentNullException("elementSelector");
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, DuplicatePolicy policy, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer = null) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
 
             var d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
@@ -1401,15 +1390,20 @@ namespace WmcSoft.Collections.Generic
             return d;
         }
 
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, Func<TElement, TSource, TElement> merger) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (keySelector == null)
-                throw new ArgumentNullException("keySelector");
-            if (elementSelector == null)
-                throw new ArgumentNullException("elementSelector");
-            if (merger == null)
-                throw new ArgumentNullException("merger");
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TElement, TElement> merger, IEqualityComparer<TKey> comparer=null) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (merger == null) throw new ArgumentNullException("merger");
+
+            return ToDictionary(source, keySelector, elementSelector, (x, y) => merger(x, elementSelector(y)), comparer);
+        }
+
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TSource, TElement> merger, IEqualityComparer<TKey> comparer=null) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (merger == null) throw new ArgumentNullException("merger");
 
             var d = new Dictionary<TKey, TElement>(comparer);
             foreach (TSource item in source) {
@@ -1419,29 +1413,6 @@ namespace WmcSoft.Collections.Generic
                     d.Add(selector, elementSelector(item));
                 } else {
                     d[selector] = merger(element, item);
-                }
-            }
-            return d;
-        }
-
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer, Func<TElement, TElement, TElement> merger) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (keySelector == null)
-                throw new ArgumentNullException("keySelector");
-            if (elementSelector == null)
-                throw new ArgumentNullException("elementSelector");
-            if (merger == null)
-                throw new ArgumentNullException("merger");
-
-            var d = new Dictionary<TKey, TElement>(comparer);
-            foreach (TSource item in source) {
-                var selector = keySelector(item);
-                TElement element;
-                if (!d.TryGetValue(selector, out element)) {
-                    d.Add(selector, elementSelector(item));
-                } else {
-                    d[selector] = merger(element, elementSelector(item));
                 }
             }
             return d;
