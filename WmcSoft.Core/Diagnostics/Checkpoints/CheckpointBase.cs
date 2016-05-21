@@ -42,6 +42,9 @@ namespace WmcSoft.Diagnostics.Checkpoints
         public virtual int MinimumLevel { get { return 0; } }
 
         public CheckpointResult Verify(int level) {
+            if (level < MinimumLevel)
+                return Skipped();
+
             try {
                 return DoVerify(level);
             }
@@ -56,6 +59,10 @@ namespace WmcSoft.Diagnostics.Checkpoints
         protected abstract CheckpointResult DoVerify(int level);
 
         #region Helpers
+
+        protected CheckpointResult Skipped() {
+            return new CheckpointResult(CheckpointResultType.Info, "Skipped");
+        }
 
         protected CheckpointResult Success() {
             return new CheckpointResult(CheckpointResultType.Success, null);

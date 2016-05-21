@@ -30,7 +30,8 @@ using WmcSoft.Properties;
 namespace WmcSoft
 {
     /// <summary>
-    /// 
+    /// Defines the extension methods to the <see cref="IServiceProvider"/> interface.
+    /// This is a static class.
     /// </summary>
     public static class ServiceProviderExtensions
     {
@@ -50,10 +51,10 @@ namespace WmcSoft
         /// <param name="serviceProvider">The service provider</param>
         /// <returns>The service</returns>
         /// <exception cref="InvalidOperationException">Thrown when the service cannot be provided.</exception>
-        public static object GetRequiredService(this IServiceProvider serviceProvider, Type serviceType) {
+        public static object RequireService(this IServiceProvider serviceProvider, Type serviceType) {
             object instance = serviceProvider.GetService(serviceType);
             if (instance == null)
-                throw new InvalidOperationException(String.Format(Resources.MissingServiceMessage, serviceType.FullName));
+                throw new InvalidOperationException(string.Format(Resources.MissingServiceMessage, serviceType.FullName));
             return instance;
         }
 
@@ -64,8 +65,8 @@ namespace WmcSoft
         /// <param name="serviceProvider">The service provider</param>
         /// <returns>The service</returns>
         /// <exception cref="InvalidOperationException">Thrown when the service cannot be provided.</exception>
-        public static T GetRequiredService<T>(this IServiceProvider self) {
-            return (T)GetRequiredService(self, typeof(T));
+        public static T RequireService<T>(this IServiceProvider self) {
+            return (T)RequireService(self, typeof(T));
         }
     }
 }
