@@ -11,21 +11,22 @@ namespace WmcSoft
     public class DisposableTests
     {
         [TestMethod]
-        public void CanInitializeDisposableBin() {
-            bool aIsDisposed = false;
-            bool bIsDisposed = false;
-            var a = new Disposer(() => aIsDisposed = true);
-            var b = new Disposer(() => bIsDisposed = true);
-
-            Assert.IsFalse(aIsDisposed);
-            Assert.IsFalse(bIsDisposed);
+        public void CheckDisposableStackDisposeInReverseOrder() {
+            int a = 0;
+            int b = 0;
+            int c = 0;
+            int sequence = 0;
 
             var bin = new DisposableStack {
-                a, b
+                new Disposer(() => a = ++sequence),
+                new Disposer(() => b = ++sequence),
+                new Disposer(() => c = ++sequence),
             };
+            bin.Dispose();
 
-            Assert.IsTrue(aIsDisposed);
-            Assert.IsTrue(bIsDisposed);
+            Assert.AreEqual(1, c);
+            Assert.AreEqual(2, b);
+            Assert.AreEqual(3, a);
         }
     }
 }
