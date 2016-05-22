@@ -29,7 +29,8 @@ using System;
 namespace WmcSoft
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="DateTime"/> struct. This is a static class.
+    /// Defines the extension methods to the <see cref="DateTime"/> struct.
+    /// This is a static class.
     /// </summary>
     public static class DateTimeExtensions
     {

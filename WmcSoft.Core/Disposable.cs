@@ -32,17 +32,25 @@ namespace WmcSoft
     {
         class EmptyDisposable : IDisposable
         {
-            #region IDisposable Membres
-
             void IDisposable.Dispose() {
             }
-
-            #endregion
         };
 
         /// <summary>
         /// Returns a <see cref="IDisposable"/> that does nothing.
         /// </summary>
         public static readonly IDisposable Empty = new EmptyDisposable();
+
+        #region Extensions
+
+        public static void Push(this DisposableStack disposables, Action action) {
+            disposables.Push(new Disposer(action));
+        }
+
+        public static void Push(this DisposableSet disposables, Action action) {
+            disposables.Push(new Disposer(action));
+        }
+
+        #endregion
     }
 }

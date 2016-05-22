@@ -30,32 +30,21 @@ using System.Threading;
 namespace WmcSoft
 {
     /// <summary>
-    /// Executes the Action on Dispose.
+    /// Executes the <see cref="Action"/> on Dispose.
     /// </summary>
+    /// <remarks>Dispose must be called. The action is not executed in the finalizer.</remarks>
     public sealed class Disposer : IDisposable
     {
-        #region Fields
-
-        Action _action;
-
-        #endregion
-
-        #region Lifecycle
+        private Action _action;
 
         public Disposer(Action action) {
             _action = action;
         }
-
-        #endregion
-
-        #region IDisposable Membres
 
         public void Dispose() {
             var action = Interlocked.Exchange(ref _action, null);
             if (action != null)
                 action();
         }
-
-        #endregion
     }
 }

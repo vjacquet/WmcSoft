@@ -32,7 +32,7 @@ namespace WmcSoft
     /// <summary>
     /// Stack disposables to Dispose them in reverse order. 
     /// </summary>
-    /// <remarks>An IDisposable is added only once.</remarks>
+    /// <remarks>An <see cref="IDisposable"/> is added only once.</remarks>
     public class DisposableSet : IDisposable
     {
         readonly HashSet<IDisposable> _set;
@@ -59,7 +59,9 @@ namespace WmcSoft
 
         protected virtual void Dispose(bool disposing) {
             while (_stack.Count != 0) {
-                _stack.Pop().Dispose();
+                var disposable = _stack.Pop();
+                _set.Remove(disposable);
+                disposable.Dispose();
             }
         }
     }
