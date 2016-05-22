@@ -24,39 +24,15 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
+ using System;
 
 namespace WmcSoft
 {
     /// <summary>
-    /// Stack disposables to Dispose them in reverse order.
+    /// Represents a container of <see cref="IDisposable"/>.
     /// </summary>
-    public class DisposableStack : IDisposableBin
+    public interface IDisposableBin : IDisposable
     {
-        readonly Stack<IDisposable> _stack;
-
-        public DisposableStack() {
-            _stack = new Stack<IDisposable>();
-        }
-
-        ~DisposableStack() {
-            Dispose(false);
-        }
-
-        public void Dispose() {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public void Push(IDisposable disposable) {
-            _stack.Push(disposable);
-        }
-
-        protected virtual void Dispose(bool disposing) {
-            while (_stack.Count != 0) {
-                _stack.Pop().Dispose();
-            }
-        }
+        void Push(IDisposable disposable);
     }
 }

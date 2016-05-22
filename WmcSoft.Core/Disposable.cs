@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Extensions and helpers for <see cref="IDisposable"/>.
+    /// This is a static class.
+    /// </summary>
     public static class Disposable
     {
         class EmptyDisposable : IDisposable
@@ -43,12 +47,8 @@ namespace WmcSoft
 
         #region Extensions
 
-        public static void Push(this DisposableStack disposables, Action action) {
-            disposables.Push(new Disposer(action));
-        }
-
-        public static void Push(this DisposableSet disposables, Action action) {
-            disposables.Push(new Disposer(action));
+        public static void Push(this IDisposableBin bin, Action action) {
+            bin.Push(new Disposer(action));
         }
 
         #endregion

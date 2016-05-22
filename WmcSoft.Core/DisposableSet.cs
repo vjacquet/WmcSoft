@@ -33,7 +33,7 @@ namespace WmcSoft
     /// Stack disposables to Dispose them in reverse order. 
     /// </summary>
     /// <remarks>An <see cref="IDisposable"/> is added only once.</remarks>
-    public class DisposableSet : IDisposable
+    public class DisposableSet : IDisposableBin
     {
         readonly HashSet<IDisposable> _set;
         readonly Stack<IDisposable> _stack;

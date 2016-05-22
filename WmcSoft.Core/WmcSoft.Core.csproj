@@ -105,6 +105,7 @@
     <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IConverter.cs" />
+    <Compile Include="IDisposableBin.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
