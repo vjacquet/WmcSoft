@@ -39,7 +39,7 @@ namespace WmcSoft.ComponentModel.Design
 
         protected void DeclareConverter<T, C>() where C : TypeConverter, new() {
             var provider = new ConverterOverrideTypeDescriptionProvider<T, C>();
-            _disposables.Push(TypeDescriptorScope.AddProvider(provider, typeof(T)));
+            _disposables.Add(TypeDescriptorScope.AddProvider(provider, typeof(T)));
         }
 
         protected override void Dispose(bool disposing) {

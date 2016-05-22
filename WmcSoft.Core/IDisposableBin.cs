@@ -24,15 +24,16 @@
 
 #endregion
 
- using System;
+using System;
+using System.Collections.Generic;
 
 namespace WmcSoft
 {
     /// <summary>
     /// Represents a container of <see cref="IDisposable"/>.
     /// </summary>
-    public interface IDisposableBin : IDisposable
+    public interface IDisposableBin : IDisposable, IEnumerable<IDisposable>
     {
-        void Push(IDisposable disposable);
+        void Add(IDisposable disposable);
     }
 }

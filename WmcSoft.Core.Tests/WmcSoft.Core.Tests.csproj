@@ -74,6 +74,7 @@
     <Compile Include="ConvertibleExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
+    <Compile Include="DisposableTests.cs" />
     <Compile Include="Globalization\BusinessCalendarTests.cs" />
     <Compile Include="IndexedAlgorithmsTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceSetTests.cs" />

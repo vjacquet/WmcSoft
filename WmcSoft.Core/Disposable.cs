@@ -48,7 +48,7 @@ namespace WmcSoft
         #region Extensions
 
         public static void Push(this IDisposableBin bin, Action action) {
-            bin.Push(new Disposer(action));
+            bin.Add(new Disposer(action));
         }
 
         #endregion

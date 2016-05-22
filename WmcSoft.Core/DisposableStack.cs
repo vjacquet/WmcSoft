@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft
@@ -49,7 +50,7 @@ namespace WmcSoft
             GC.SuppressFinalize(this);
         }
 
-        public void Push(IDisposable disposable) {
+        public void Add(IDisposable disposable) {
             _stack.Push(disposable);
         }
 
@@ -57,6 +58,14 @@ namespace WmcSoft
             while (_stack.Count != 0) {
                 _stack.Pop().Dispose();
             }
+        }
+
+        public IEnumerator<IDisposable> GetEnumerator() {
+            return _stack.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return _stack.GetEnumerator();
         }
     }
 }
