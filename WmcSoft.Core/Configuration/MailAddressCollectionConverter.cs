@@ -52,7 +52,7 @@ namespace WmcSoft.Configuration
             var collection = value as MailAddressCollection;
             if (collection == null || collection.Count == 0)
                 return "";
-            return collection.ConvertAll(a => a.Address).Join(",");
+            return collection.ToString();
         }
     }
 }
