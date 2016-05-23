@@ -28,20 +28,22 @@ using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
-using System.Linq;
 using System.Net.Mail;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Configuration
 {
+    /// <summary>
+    /// Configuration converter to <see cref="MailAddressCollection"/>
+    /// </summary>
+    /// <remarks>Multiple e-mail addresses must be separated with a comma character (see <https://tools.ietf.org/html/rfc2822>).</remarks>
     public sealed class MailAddressCollectionConverter : ConfigurationConverterBase
     {
         public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data) {
             var collection = new MailAddressCollection();
             if (data != null) {
-                var addresses = data.ToString().Split(';');
-                foreach (var address in addresses) {
-                    collection.Add(new MailAddress(address));
-                }
+                var addresses = data.ToString();
+                collection.Add(addresses);
             }
             return collection;
         }
@@ -50,7 +52,7 @@ namespace WmcSoft.Configuration
             var collection = value as MailAddressCollection;
             if (collection == null || collection.Count == 0)
                 return "";
-            return collection.Select(a => a.Address).Join(";");
+            return collection.ConvertAll(a => a.Address).Join(",");
         }
     }
 }

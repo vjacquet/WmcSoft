@@ -57,11 +57,6 @@ namespace WmcSoft.Configuration
             set { this["type"] = value; }
         }
 
-        //public string TypeName {
-        //    get { return (string)this["type"]; }
-        //    set { this["type"] = value; }
-        //}
-
         public NameValueCollection Parameters {
             get { return _parameters; }
         }
@@ -70,10 +65,6 @@ namespace WmcSoft.Configuration
             Parameters[name] = value;
             return true;
         }
-
-        //Type ResolveType() {
-        //    return Type.GetType(TypeName, true, true);
-        //}
 
         public virtual T CreateInstance(params object[] args) {
             var type = Type;
