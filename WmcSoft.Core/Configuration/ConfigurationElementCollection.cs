@@ -27,6 +27,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using WmcSoft.Collections.Generic;
 using WmcSoft.Reflection;
 
 namespace WmcSoft.Configuration
@@ -59,8 +60,7 @@ namespace WmcSoft.Configuration
 
         protected virtual object GetElementKey(T element) {
             return element.ElementInformation.Properties.Cast<PropertyInformation>()
-                .Where(p => p.IsKey)
-                .Single();
+                .Single(p => p.IsKey);
         }
         protected sealed override object GetElementKey(ConfigurationElement element) {
             return GetElementKey((T)element);
@@ -99,10 +99,13 @@ namespace WmcSoft.Configuration
 
         #region IEnumerable<T> Membres
 
-        public new IEnumerator<T> GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+            return GetEnumerator();
+        }
+
+        public new EnumeratorAdapter<T> GetEnumerator() {
             var enumerator = base.GetEnumerator();
-            while (enumerator.MoveNext())
-                yield return (T)enumerator.Current;
+            return new EnumeratorAdapter<T>(enumerator);
         }
 
         #endregion

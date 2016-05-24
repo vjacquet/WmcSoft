@@ -75,7 +75,7 @@ namespace WmcSoft.Runtime
             }
 
             public IEnumerator<object> GetEnumerator() {
-                return new EnumeratorAdapter(_array.GetEnumerator());
+                return new EnumeratorAdapter<object>(_array.GetEnumerator());
             }
 
             bool ICollection<object>.Remove(object item) {

@@ -33,7 +33,7 @@ namespace WmcSoft.Collections.Generic
     /// <summary>
     /// Adapts an <see cref="IEnumerator"/> as an <see cref="IEnumerator{object}"/>.
     /// </summary>
-    public struct EnumeratorAdapter : IEnumerator<object>
+    public struct EnumeratorAdapter<T> : IEnumerator<T>
     {
         readonly IEnumerator _enumerator;
 
@@ -41,9 +41,12 @@ namespace WmcSoft.Collections.Generic
             _enumerator = enumerator;
         }
 
-        public object Current
-        {
+        object IEnumerator.Current {
             get { return _enumerator.Current; }
+        }
+
+        public T Current {
+            get { return (T)_enumerator.Current; }
         }
 
         public void Dispose() {

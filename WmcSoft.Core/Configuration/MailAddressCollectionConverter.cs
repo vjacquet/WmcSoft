@@ -29,7 +29,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
 using System.Net.Mail;
-using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Configuration
 {
