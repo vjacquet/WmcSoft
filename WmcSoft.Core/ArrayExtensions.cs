@@ -60,6 +60,31 @@ namespace WmcSoft
 
         #endregion
 
+        #region Flatten
+
+        public static T[] Flatten<T>(this T[][] jagged) {
+            var count = 0;
+            var length = jagged.Length;
+            for (int i = 0; i < length; i++) {
+                var cell = jagged[i];
+                if (cell != null)
+                    count += cell.Length;
+            }
+
+            var index = 0;
+            var result = new T[count];
+            for (int i = 0; i < length; i++) {
+                var cell = jagged[i];
+                if (cell != null) {
+                    Array.Copy(cell, 0, result, index, cell.Length);
+                    index += cell.Length;
+                }
+            }
+            return result;
+        }
+
+        #endregion
+  
         #region Multidimensional
 
         public static bool StructuralEqual<T>(this T[] x, T[] y, IEqualityComparer<T> comparer = null) {

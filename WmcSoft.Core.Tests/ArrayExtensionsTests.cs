@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Collections.Generic;
 
@@ -49,8 +47,16 @@ namespace WmcSoft
         [TestMethod]
         public void CheckToMultiDimensional() {
             var expected = new[,] { { 1, 2 }, { 3, 4 } };
-            var array = new int[][] { new []{ 1, 2 }, new []{ 3, 4 } };
+            var array = new int[][] { new[] { 1, 2 }, new[] { 3, 4 } };
             var actual = array.ToMultiDimensional();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckFlatten() {
+            var expected = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var array = new int[][] { new[] { 1, 2 }, null, new[] { 3, 4 }, new[] { 5 }, new[] { 6, 7, 8, 9 } };
+            var actual = array.Flatten();
             CollectionAssert.AreEqual(expected, actual);
         }
     }
