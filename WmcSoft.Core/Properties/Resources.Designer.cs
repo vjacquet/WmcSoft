@@ -61,20 +61,11 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The key &quot;{0}&quot; is missing from the appSettings section..
+        ///   Looks up a localized string similar to The key &apos;{0}&apos; is missing from the appSettings section..
         /// </summary>
         internal static string AppSettingsCheckpointKeyIsMissingError {
             get {
                 return ResourceManager.GetString("AppSettingsCheckpointKeyIsMissingError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check appSettings for keys [{0}]..
-        /// </summary>
-        internal static string AppSettingsCheckpointName {
-            get {
-                return ResourceManager.GetString("AppSettingsCheckpointName", resourceCulture);
             }
         }
         
@@ -142,20 +133,11 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot load the configuration section..
+        ///   Looks up a localized string similar to Cannot load the configuration section &apos;{0}&apos;..
         /// </summary>
         internal static string ConfigurationCheckpointCannotLoadSection {
             get {
                 return ResourceManager.GetString("ConfigurationCheckpointCannotLoadSection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check loading configuration section &quot;{0}&quot;..
-        /// </summary>
-        internal static string ConfigurationCheckpointName {
-            get {
-                return ResourceManager.GetString("ConfigurationCheckpointName", resourceCulture);
             }
         }
         
@@ -241,7 +223,7 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unrecognized attribute &quot;{0}&quot;..
+        ///   Looks up a localized string similar to Unrecognized attribute &apos;{0}&apos;..
         /// </summary>
         internal static string UnrecognizedAttributeFormat {
             get {
@@ -250,7 +232,7 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unrecognized element &quot;{0}&quot;..
+        ///   Looks up a localized string similar to Unrecognized element &apos;{0}&apos;..
         /// </summary>
         internal static string UnrecognizedElementFormat {
             get {

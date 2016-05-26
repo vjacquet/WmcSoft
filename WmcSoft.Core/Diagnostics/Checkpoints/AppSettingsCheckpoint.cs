@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -45,8 +46,13 @@ namespace WmcSoft.Diagnostics.Checkpoints
             return '"' + string.Join(separator, keys) + '"';
         }
 
-        public AppSettingsCheckpoint(params string[] keys)
-            : base(string.Format(Resources.AppSettingsCheckpointName, Format(keys))) {
+        public AppSettingsCheckpoint(string key) : base(key) {
+        }
+
+        public AppSettingsCheckpoint(string name, params string[] keys)
+            : base(name) {
+            if (keys == null || keys.Length == 0) throw new ArgumentException("keys");
+            _keys = keys;
         }
 
         protected override CheckpointResult DoVerify(int level) {

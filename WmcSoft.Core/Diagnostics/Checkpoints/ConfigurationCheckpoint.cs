@@ -36,9 +36,13 @@ namespace WmcSoft.Diagnostics.Checkpoints
     {
         private readonly string _sectionName;
 
-        public ConfigurationCheckpoint(string sectionName)
-            : base(string.Format(Resources.ConfigurationCheckpointName, sectionName)) {
+        public ConfigurationCheckpoint(string name, string sectionName)
+            : base(name) {
             _sectionName = sectionName;
+        }
+
+        public ConfigurationCheckpoint(string sectionName)
+            : this(sectionName, sectionName) {
         }
 
         /// <summary>
@@ -53,7 +57,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
             try {
                 var section = ConfigurationManager.GetSection(_sectionName);
                 if (section == null)
-                    return Error(Resources.ConfigurationCheckpointCannotLoadSection);
+                    return Error(Resources.ConfigurationCheckpointCannotLoadSection, _sectionName);
             }
             catch (ConfigurationErrorsException exception) {
                 var result = Success();

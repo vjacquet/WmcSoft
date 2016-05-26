@@ -89,9 +89,11 @@
     <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
+    <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\CheckpointBase.cs" />
     <Compile Include="Diagnostics\Checkpoints\CheckpointResult.cs" />
     <Compile Include="Diagnostics\Checkpoints\CheckpointResultType.cs" />
+    <Compile Include="Diagnostics\Checkpoints\ConfigurationCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\ICheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\PredicateCheckpoint.cs" />
     <Compile Include="Diagnostics\DebugBench.cs" />
@@ -301,6 +303,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Diagnostics\Checkpoints\CheckpointsDiagram.cd" />
     <None Include="Diagnostics\Sentries\SentriesDiagram.cd" />
     <None Include="IO\Streams.cd" />
     <None Include="Linq\Expressions\DynamicDiagram.cd" />
