@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 using WmcSoft.Properties;
 
 namespace WmcSoft.Diagnostics.Checkpoints
@@ -38,6 +39,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
     public class AppSettingsCheckpoint : CheckpointBase
     {
         private readonly string[] _keys;
+        private readonly Func<string, bool> _predicate = k => !string.IsNullOrWhiteSpace(k);
 
         static string Format(string[] keys) {
             if (keys == null || keys.Length == 0)
@@ -47,6 +49,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
         }
 
         public AppSettingsCheckpoint(string key) : base(key) {
+            _keys = new[] { key };
         }
 
         public AppSettingsCheckpoint(string name, params string[] keys)
@@ -56,8 +59,9 @@ namespace WmcSoft.Diagnostics.Checkpoints
         }
 
         protected override CheckpointResult DoVerify(int level) {
+            var appSettings = ConfigurationManager.AppSettings;
             var missing = new HashSet<string>(_keys);
-            missing.ExceptWith(ConfigurationManager.AppSettings.AllKeys);
+            missing.ExceptWith(appSettings.AllKeys.Where(k => _predicate(appSettings.Get(k))));
 
             var result = Success();
             foreach (var key in missing) {
