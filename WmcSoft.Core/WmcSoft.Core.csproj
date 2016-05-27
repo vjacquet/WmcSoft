@@ -104,6 +104,7 @@
     <Compile Include="Diagnostics\Sentries\TraceSentry.cs" />
     <Compile Include="Globalization\BusinessCalendar.cs" />
     <Compile Include="Globalization\CombinedCalendar.cs" />
+    <Compile Include="Globalization\CultureInfoExtensions.cs" />
     <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IConverter.cs" />

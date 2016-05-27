@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.Linq;
 using WmcSoft.Properties;
 
@@ -40,13 +39,6 @@ namespace WmcSoft.Diagnostics.Checkpoints
     {
         private readonly string[] _keys;
         private readonly Func<string, bool> _predicate = k => !string.IsNullOrWhiteSpace(k);
-
-        static string Format(string[] keys) {
-            if (keys == null || keys.Length == 0)
-                return null;
-            var separator = '"' + CultureInfo.CurrentCulture.TextInfo.ListSeparator + '"';
-            return '"' + string.Join(separator, keys) + '"';
-        }
 
         public AppSettingsCheckpoint(string key) : base(key) {
             _keys = new[] { key };
