@@ -38,7 +38,7 @@ namespace WmcSoft.Business
 
         [TestMethod]
         public void CheckIsEmpty() {
-           var actual = new Range<int>(2, 2);
+            var actual = new Range<int>(2, 2);
 
             Assert.AreEqual(true, actual.IsEmpty);
         }
@@ -83,6 +83,19 @@ namespace WmcSoft.Business
             Assert.IsFalse(overlapped.IsDistinct(actual));
             Assert.IsTrue(actual.IsDistinct(distinct));
             Assert.IsTrue(distinct.IsDistinct(actual));
+        }
+
+        [TestMethod]
+        public void CheckIntersect() {
+            //  0    5   10   15   20
+            //  !....!....!....!....!
+            //    a  b  c d    e
+            int a = 2, b = 5, c = 8, d = 10, e = 15;
+
+            Assert.AreEqual(Range<int>.Empty, Range<int>.Intersect(new Range<int>(a, b), new Range<int>(c, d)));
+            Assert.AreEqual(new Range<int>(c, d), Range<int>.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
+            Assert.AreEqual(new Range<int>(b, b), Range<int>.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
+            Assert.AreEqual(new Range<int>(b, d), Range<int>.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
         }
     }
 }

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using static WmcSoft.Algorithms;
 
 namespace WmcSoft
 {
@@ -83,8 +84,7 @@ namespace WmcSoft
 
         #region Properties
 
-        public bool IsEmpty
-        {
+        public bool IsEmpty {
             get { return Upper.CompareTo(Lower) == 0; }
         }
 
@@ -101,8 +101,7 @@ namespace WmcSoft
         }
 
         public bool IsAdjacent(Range<T> other) {
-            return Upper.CompareTo(other.Lower) == 0
-                || Lower.CompareTo(other.Upper) == 0;
+            return Upper.CompareTo(other.Lower) == 0 || Lower.CompareTo(other.Upper) == 0;
         }
 
         public bool Includes(Range<T> other) {
@@ -118,8 +117,7 @@ namespace WmcSoft
         }
 
         public bool Overlaps(Range<T> other) {
-            return (IsLower(other.Upper) && Includes(other.Lower))
-            || (IsUpper(other.Lower) && Includes(other.Upper));
+            return IsLower(other.Upper) && Includes(other.Lower) || IsUpper(other.Lower) && Includes(other.Upper);
         }
 
         public bool IsDistinct(Range<T> other) {
@@ -174,6 +172,12 @@ namespace WmcSoft
             if (!IsContiguous(list))
                 return false;
             return Equals(Merge(list));
+        }
+
+        public static Range<T> Intersect(Range<T> x, Range<T> y) {
+            if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
+                return Empty;
+            return new Range<T>(Max(x.Lower, y.Lower), Min(x.Upper, y.Upper));
         }
 
         #endregion
