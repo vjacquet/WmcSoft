@@ -51,7 +51,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -75,6 +77,7 @@
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
     <Compile Include="DisposableTests.cs" />
+    <Compile Include="FormatProviderExtensionsTests.cs" />
     <Compile Include="Globalization\BusinessCalendarTests.cs" />
     <Compile Include="IndexedAlgorithmsTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceSetTests.cs" />
