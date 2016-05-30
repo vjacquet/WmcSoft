@@ -201,6 +201,35 @@ namespace WmcSoft
 
         #endregion
 
+        #region Rotate
+
+        /// <summary>
+        /// Performs a left rotation on the <paramref name="source"/>, moving the <paramref name="n"/> first elements of the specified range 
+        /// at the end.
+        /// </summary>
+        /// <typeparam name="T">The type of the elemets</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="n">The number of elements to move</param>
+        /// <param name="startIndex">The start index of the range</param>
+        /// <param name="length">The length of the range</param>
+        /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
+        public static int Rotate<T>(this T[] source, int n, int startIndex, int length) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (length < 0) throw new ArgumentOutOfRangeException("length");
+            if (n < 0) throw new ArgumentOutOfRangeException("n");
+            if (n > length) throw new ArgumentException("n");
+            if (source.Length < (startIndex + length)) throw new ArgumentException("source");
+
+            var temp = new T[n];
+            Array.Copy(source, startIndex, temp, 0, n);
+            Array.Copy(source, startIndex + n, source, startIndex, length - n);
+            startIndex += length - n;
+            Array.Copy(temp, 0, source, startIndex, n);
+            return startIndex;
+        }
+
+        #endregion
+
         #region Sort methods
 
         /// <summary>

@@ -130,7 +130,7 @@ namespace WmcSoft
         /// <param name="n">The number of elements to move</param>
         /// <param name="startIndex">The start index of the range</param>
         /// <param name="length">The length of the range</param>
-        /// <returns>The new position of the first element</returns>
+        /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
         public static int Rotate<T>(this IList<T> source, int n, int startIndex, int length) {
             if (source == null) throw new ArgumentNullException("source");
             if (length < 0) throw new ArgumentOutOfRangeException("length");
