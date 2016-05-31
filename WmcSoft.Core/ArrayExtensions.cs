@@ -28,6 +28,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using WmcSoft.Collections.Generic;
+using System.Collections;
 
 namespace WmcSoft
 {
@@ -84,7 +85,56 @@ namespace WmcSoft
         }
 
         #endregion
-  
+
+        #region GetEnumerator
+
+        public struct RangeEnumerator<T> : IEnumerator<T>
+        {
+            private readonly T[] _storage;
+            private int _begin;
+            private int _end;
+
+            public RangeEnumerator(T[] array, int startIndex, int length) {
+                if (array == null) throw new ArgumentNullException("array");
+                if (length < 0) throw new ArgumentOutOfRangeException("length");
+                if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
+                if (array.Length < (startIndex + length)) throw new ArgumentException("array");
+
+                _storage = array;
+                _begin = startIndex;
+                _end = startIndex + length;
+            }
+
+            public void Dispose() {
+            }
+
+            public bool MoveNext() {
+                if (_begin < _end) {
+                    _begin++;
+                    return true;
+                }
+                return false;
+            }
+
+            public void Reset() {
+                throw new NotImplementedException();
+            }
+
+            public T Current {
+                get { return _storage[_begin]; }
+            }
+
+            object IEnumerator.Current {
+                get { return Current; }
+            }
+        }
+
+        public static RangeEnumerator<T> GetEnumerator<T>(this T[] array, int startIndex, int length) {
+            return new RangeEnumerator<T>(array, startIndex, length);
+        }
+
+        #endregion
+
         #region Multidimensional
 
         public static bool StructuralEqual<T>(this T[] x, T[] y, IEqualityComparer<T> comparer = null) {
@@ -203,6 +253,29 @@ namespace WmcSoft
 
         #region Rotate
 
+        public static int UngardedRotate<T>(this T[] source, int n, int startIndex, int length) {
+            if (n == 0)
+                return startIndex;
+
+            if (n < 0) {
+                n = -n;
+                var temp = new T[n];
+                // rotate left
+                Array.Copy(source, startIndex, temp, 0, n);
+                Array.Copy(source, startIndex + n, source, startIndex, length - n);
+                startIndex += length - n;
+                Array.Copy(temp, 0, source, startIndex, n);
+            } else {
+                var temp = new T[n];
+                // rotate right
+                Array.Copy(source, startIndex + length - n, temp, 0, n);
+                Array.Copy(source, startIndex, source, startIndex + n, length - n);
+                Array.Copy(temp, 0, source, startIndex, n);
+                startIndex += n;
+            }
+            return startIndex;
+        }
+
         /// <summary>
         /// Performs a left rotation on the <paramref name="source"/>, moving the <paramref name="n"/> first elements of the specified range 
         /// at the end.
@@ -216,16 +289,26 @@ namespace WmcSoft
         public static int Rotate<T>(this T[] source, int n, int startIndex, int length) {
             if (source == null) throw new ArgumentNullException("source");
             if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (n < 0) throw new ArgumentOutOfRangeException("n");
-            if (n > length) throw new ArgumentException("n");
             if (source.Length < (startIndex + length)) throw new ArgumentException("source");
+            if (n > length || -n > length) throw new ArgumentException("n");
 
-            var temp = new T[n];
-            Array.Copy(source, startIndex, temp, 0, n);
-            Array.Copy(source, startIndex + n, source, startIndex, length - n);
-            startIndex += length - n;
-            Array.Copy(temp, 0, source, startIndex, n);
-            return startIndex;
+            return UngardedRotate(source, n, startIndex, length);
+        }
+
+        /// <summary>
+        /// Performs a left rotation on the <paramref name="source"/>, moving the <paramref name="n"/> first elements of the specified range 
+        /// at the end.
+        /// </summary>
+        /// <typeparam name="T">The type of the elemets</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="n">The number of elements to move</param>
+        /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
+        public static int Rotate<T>(this T[] source, int n) {
+            if (source == null) throw new ArgumentNullException("source");
+            var length = source.Length;
+            if (n > length || -n > length) throw new ArgumentException("n");
+
+            return UngardedRotate(source, n, 0, length);
         }
 
         #endregion

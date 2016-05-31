@@ -40,6 +40,13 @@ namespace WmcSoft
             }
         }
 
+        static internal void UncheckedCopyBackwards<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
+            var end = sourceIndex + length;
+            for (int i = sourceIndex + length - 1, j = destinationIndex + length - 1; i >= sourceIndex; i--, j--) {
+                destination[j] = source[i];
+            }
+        }
+
         #endregion
 
         #region CopyTo methods
@@ -121,6 +128,29 @@ namespace WmcSoft
 
         #region Rotate
 
+        public static int UngardedRotate<T>(this IList<T> source, int n, int startIndex, int length) {
+            if (n == 0)
+                return startIndex;
+
+            if (n < 0) {
+                n = -n;
+                var temp = new T[n];
+                // rotate left
+                UncheckedCopy(source, startIndex, temp, 0, n);
+                UncheckedCopy(source, startIndex + n, source, startIndex, length - n);
+                startIndex += length - n;
+                UncheckedCopy(temp, 0, source, startIndex, n);
+            } else {
+                var temp = new T[n];
+                // rotate right
+                UncheckedCopy(source , startIndex+ length - n, temp, 0, n);
+                UncheckedCopyBackwards(source, startIndex, source, startIndex + n, length - n);
+                UncheckedCopy(temp, 0, source, startIndex, n);
+                startIndex += n;
+            }
+            return startIndex;
+        }
+
         /// <summary>
         /// Performs a left rotation on the <paramref name="source"/>, moving the <paramref name="n"/> first elements of the specified range 
         /// at the end.
@@ -134,16 +164,10 @@ namespace WmcSoft
         public static int Rotate<T>(this IList<T> source, int n, int startIndex, int length) {
             if (source == null) throw new ArgumentNullException("source");
             if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (n < 0) throw new ArgumentOutOfRangeException("n");
-            if (n > length) throw new ArgumentException("n");
             if (source.Count < (startIndex + length)) throw new ArgumentException("source");
+            if (n > length || -n > length) throw new ArgumentException("n");
 
-            var temp = new T[n];
-            UncheckedCopy(source, startIndex, temp, 0, n);
-            UncheckedCopy(source, startIndex + n, source, startIndex, length - n);
-            startIndex += length - n;
-            UncheckedCopy(temp, 0, source, startIndex, n);
-            return startIndex;
+            return UngardedRotate(source, n, startIndex, length);
         }
 
         /// <summary>
@@ -155,9 +179,12 @@ namespace WmcSoft
         /// <returns>The new position of the first element</returns>
         public static int Rotate<T>(this IList<T> source, int n) {
             if (source == null) throw new ArgumentNullException("source");
+            var length = source.Count;
+            if (n > length || -n > length) throw new ArgumentException("n");
 
-            return Rotate(source, n, 0, source.Count);
+            return UngardedRotate(source, n, 0, length);
         }
+
         #endregion
 
         #region SwapItems methods
