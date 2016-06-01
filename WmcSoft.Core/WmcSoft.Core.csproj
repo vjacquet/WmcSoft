@@ -83,6 +83,7 @@
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
+    <Compile Include="Collections\Specialized\GapList.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
