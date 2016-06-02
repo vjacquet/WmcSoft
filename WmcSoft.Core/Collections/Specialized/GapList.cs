@@ -35,8 +35,8 @@ namespace WmcSoft.Collections.Specialized
     {
         // *************........................*******
         // ^            ^                       ^      ^
-        // 0     _gapStartIndex                 |     capacity
-        //                               _gapEndIndex
+        // 0            |                       |     capacity
+        //       _gapStartIndex          _gapEndIndex
 
         private static readonly T[] Empty = new T[0];
         private const int DefaultCapacity = 4;

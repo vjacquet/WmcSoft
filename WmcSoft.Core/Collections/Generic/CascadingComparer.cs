@@ -120,12 +120,12 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<IComparer<T> members
 
-        IEnumerator<IComparer<T>> IEnumerable<IComparer<T>>.GetEnumerator() {
+        public IEnumerator<IComparer<T>> GetEnumerator() {
             return ((IEnumerable<IComparer<T>>)_comparers).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            return ((IEnumerable<IComparer<T>>)_comparers).GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion
