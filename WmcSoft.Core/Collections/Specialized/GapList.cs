@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -92,6 +93,37 @@ namespace WmcSoft.Collections.Specialized
             if (gap < grow) {
                 Capacity = Math.Max(Count + gap, _storage.Length == 0 ? DefaultCapacity : _storage.Length * 2);
             }
+        }
+
+        public int Position {
+            get {
+                return _gapStartIndex;
+            }
+            set {
+                Seek(value, SeekOrigin.Begin);
+            }
+        }
+
+        public int Seek(int offset, SeekOrigin origin) {
+            var count = Count;
+            switch (origin) {
+            case SeekOrigin.Begin:
+                break;
+            case SeekOrigin.Current:
+                offset = _gapStartIndex + offset;
+                break;
+            case SeekOrigin.End:
+                offset = count - offset;
+                break;
+            default:
+                goto case SeekOrigin.Current;
+            }
+            if (offset < 0)
+                offset = 0;
+            else if (offset > Count)
+                offset = count;
+            Seek(offset);
+            return _gapStartIndex;
         }
 
         void Seek(int position) {
