@@ -41,6 +41,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
             if (checkpoint == null) throw new ArgumentNullException("checkpoint");
             return checkpoint.Name;
         }
+
         public RebindCheckpoint(ICheckpoint checkpoint, int minimumLevel, Func<int, int> binder)
             : base(ExtractName(checkpoint)) {
             if (binder == null) throw new ArgumentNullException("binder");
@@ -51,7 +52,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
         }
 
         public override int MinimumLevel {
-            get { return _minimumLevel; }
+            get { return Math.Min(_minimumLevel, _base.MinimumLevel); }
         }
 
         protected override CheckpointResult DoVerify(int level) {
