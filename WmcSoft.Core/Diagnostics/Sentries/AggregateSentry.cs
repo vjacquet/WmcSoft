@@ -40,6 +40,7 @@ namespace WmcSoft.Diagnostics.Sentries
             public SentryStatusAggregator Add(ISentry sentry) {
                 return Add(sentry.Status);
             }
+
             public SentryStatusAggregator Add(SentryStatus value) {
                 switch (value) {
                 case SentryStatus.Success:
