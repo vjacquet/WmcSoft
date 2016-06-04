@@ -24,6 +24,8 @@
 
 #endregion
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -110,7 +112,40 @@ namespace WmcSoft.Security
 
         #region IEnumerable<Permission> Members
 
-        public IEnumerator<Permission> GetEnumerator() {
+        public struct Enumerator : IEnumerator<Permission>
+        {
+            private readonly HashSet<Permission>.Enumerator _enumerator;
+
+            internal Enumerator(HashSet<Permission>.Enumerator enumerator) {
+                _enumerator = enumerator;
+            }
+
+            public Permission Current {
+                get { return _enumerator.Current; }
+            }
+
+            object IEnumerator.Current {
+                get { return _enumerator.Current; }
+            }
+
+            public void Dispose() {
+                _enumerator.Dispose();
+            }
+
+            public bool MoveNext() {
+                return _enumerator.MoveNext();
+            }
+
+            public void Reset() {
+                ((IEnumerator<Permission>)_enumerator).Reset();
+            }
+        }
+
+        public Enumerator GetEnumerator() {
+            return new Enumerator(_permissions.GetEnumerator());
+        }
+
+        IEnumerator<Permission> IEnumerable<Permission>.GetEnumerator() {
             return _permissions.GetEnumerator();
         }
 
