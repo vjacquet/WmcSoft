@@ -32,7 +32,7 @@ namespace WmcSoft.Geometry2D
     {
         private readonly double[] _knots;
 
-        public BSpline(int p, params double[] knots) {
+        public BSpline(params double[] knots) {
             _knots = knots;
         }
 
