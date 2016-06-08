@@ -33,17 +33,14 @@ namespace WmcSoft
     /// that object to be reclaimed by garbage collection.
     /// </summary>
     /// <typeparam name="T">The type of the weak reference.</typeparam>
-    public class Weak<T> where T : class
+    public class WeakReference<T> : WeakReference where T : class
     {
-        private readonly WeakReference _weak;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Weak{T}"/> class, referencing the
         /// specified object.
         /// </summary>
         /// <param name="target">The object to track or null.</param>
-        public Weak(T target = null) {
-            _weak = new WeakReference(target);
+        public WeakReference(T target = null) : base(target) {
         }
 
         /// Initializes a new instance of the System.WeakReference class, referencing the
@@ -52,8 +49,7 @@ namespace WmcSoft
         /// <param name="target">An object to track.</param>
         /// <param name="trackResurrection">Indicates when to stop tracking the object. If true, the object is tracked 
         /// after finalization; if false, the object is only tracked until finalization.</param>
-        public Weak(T target, bool trackResurrection) {
-            _weak = new WeakReference(target, trackResurrection);
+        public WeakReference(T target, bool trackResurrection) : base(target, trackResurrection) {
         }
 
         /// <summary>
@@ -64,24 +60,9 @@ namespace WmcSoft
         /// This exception can be thrown while setting this property if the value is a null reference 
         /// or if the object has been finalized during the set operation.
         /// </exception>
-        public T Target {
-            get { return (T)_weak.Target; }
-            set { _weak.Target = value; }
-        }
-
-        /// <summary>Gets an indication whether the object referenced by the current <see cref="Weak{T}"/>
-        /// object is tracked after it is finalized.
-        /// </summary>
-        public bool TrackResurrection {
-            get { return _weak.TrackResurrection; }
-        }
-
-        /// <summary>
-        /// Gets an indication whether the object referenced by the current <see cref="Weak{T}"/>
-        /// object has been garbage collected.
-        /// </summary>
-        public bool IsAlive {
-            get { return _weak.IsAlive; }
+        public new T Target {
+            get { return (T)base.Target; }
+            set { base.Target = value; }
         }
     }
 }

@@ -122,6 +122,7 @@
     <Compile Include="IntExtensionsTests.cs" />
     <Compile Include="OrdinalExtensionsTests.cs" />
     <Compile Include="FuncExtensionsTests.cs" />
+    <Compile Include="WeakReferenceTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />
     <Compile Include="Xml\XPath\ObjectXPathNavigatorTests.cs" />
