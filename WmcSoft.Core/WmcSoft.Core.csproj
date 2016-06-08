@@ -275,6 +275,7 @@
     <Compile Include="Threading\ThinEvent.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="Unsubscriber.cs" />
+    <Compile Include="Weak.cs" />
     <Compile Include="Xml\XmlElementExtensions.cs" />
     <Compile Include="Xml\XmlReaderDecorator.cs" />
     <Compile Include="Xml\XmlReaderExtensions.cs" />
