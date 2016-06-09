@@ -124,8 +124,7 @@ namespace WmcSoft
 
             #region IReadOnlyList<char> Membres
 
-            public char this[int index]
-            {
+            public char this[int index] {
                 get { return _value[index]; }
             }
 
@@ -133,8 +132,7 @@ namespace WmcSoft
 
             #region IReadOnlyCollection<char> Membres
 
-            public int Count
-            {
+            public int Count {
                 get { return _value.Length; }
             }
 
@@ -408,6 +406,32 @@ namespace WmcSoft
 
         #region Glob
 
+        private static bool Glob(string value, int startIndex, string pattern, int p) {
+            while (pattern.Length != p) {
+                switch (pattern[p]) {
+                case '?':
+                    break;
+                case '*':
+                    for (int i = value.Length; i >= p; i--) {
+                        if (Glob(value, i, pattern, startIndex + 1)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                default:
+                    if (value.Length == startIndex || char.ToUpper(pattern[p]) != char.ToUpper(value[startIndex])) {
+                        return false;
+                    }
+                    break;
+                }
+
+                p++;
+                startIndex++;
+            }
+
+            return value.Length == startIndex;
+        }
+
         /// <summary>
         /// Match a string against a "glob" pattern.
         /// </summary>
@@ -416,32 +440,7 @@ namespace WmcSoft
         /// <returns>True if the value match the pattern; otherwise false.</returns>
         public static bool Glob(this string value, string pattern) {
             // <https://en.wikipedia.org/wiki/Glob_%28programming%29>
-            int pos = 0;
-
-            while (pattern.Length != pos) {
-                switch (pattern[pos]) {
-                case '?':
-                    break;
-
-                case '*':
-                    for (int i = value.Length; i >= pos; i--) {
-                        if (Glob(value.Substring(i), pattern.Substring(pos + 1))) {
-                            return true;
-                        }
-                    }
-                    return false;
-
-                default:
-                    if (value.Length == pos || char.ToUpper(pattern[pos]) != char.ToUpper(value[pos])) {
-                        return false;
-                    }
-                    break;
-                }
-
-                pos++;
-            }
-
-            return value.Length == pos;
+            return Glob(value, 0, pattern, 0);
         }
 
         #endregion

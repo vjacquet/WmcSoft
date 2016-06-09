@@ -163,6 +163,7 @@ namespace WmcSoft
             Assert.IsTrue("abaaba".Glob("ab*a"));
             Assert.IsTrue("abaaba".Glob("ab*ba"));
             Assert.IsTrue("abaaba".Glob("*aba"));
+            Assert.IsFalse("abaaba".Glob("abaabac"));
         }
     }
 }
