@@ -156,5 +156,13 @@ namespace WmcSoft
             var actual = "aabaa".RemoveAffixes("aab", "baa");
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckGlob() {
+            Assert.IsTrue("abaaba".Glob("a?aaba"));
+            Assert.IsTrue("abaaba".Glob("ab*a"));
+            Assert.IsTrue("abaaba".Glob("ab*ba"));
+            Assert.IsTrue("abaaba".Glob("*aba"));
+        }
     }
 }

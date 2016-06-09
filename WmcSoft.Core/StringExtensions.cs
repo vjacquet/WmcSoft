@@ -406,6 +406,46 @@ namespace WmcSoft
 
         #endregion
 
+        #region Glob
+
+        /// <summary>
+        /// Match a string against a "glob" pattern.
+        /// </summary>
+        /// <param name="value">The string</param>
+        /// <param name="pattern"></param>
+        /// <returns>True if the value match the pattern; otherwise false.</returns>
+        public static bool Glob(this string value, string pattern) {
+            // <https://en.wikipedia.org/wiki/Glob_%28programming%29>
+            int pos = 0;
+
+            while (pattern.Length != pos) {
+                switch (pattern[pos]) {
+                case '?':
+                    break;
+
+                case '*':
+                    for (int i = value.Length; i >= pos; i--) {
+                        if (Glob(value.Substring(i), pattern.Substring(pos + 1))) {
+                            return true;
+                        }
+                    }
+                    return false;
+
+                default:
+                    if (value.Length == pos || char.ToUpper(pattern[pos]) != char.ToUpper(value[pos])) {
+                        return false;
+                    }
+                    break;
+                }
+
+                pos++;
+            }
+
+            return value.Length == pos;
+        }
+
+        #endregion
+
         #region Join
 
         /// <summary>
