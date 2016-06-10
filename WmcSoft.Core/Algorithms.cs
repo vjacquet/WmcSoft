@@ -68,6 +68,23 @@ namespace WmcSoft
             }
         }
 
+        public static int Hamming(string x, string y, IEqualityComparer<char> comparer) {
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
+            if (x.Length != y.Length) throw new ArgumentException();
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+
+            using (var ex = x.GetEnumerator())
+            using (var ey = y.GetEnumerator()) {
+                var dist = 0;
+                while (ex.MoveNext() & ey.MoveNext()) {
+                    if (!comparer.Equals(ex.Current, ey.Current))
+                        dist++;
+                }
+                return dist;
+            }
+        }
+
         public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y)
             where T : IEquatable<T> {
             if (x == null) throw new ArgumentNullException(nameof(x));
