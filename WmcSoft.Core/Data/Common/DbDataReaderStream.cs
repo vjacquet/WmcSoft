@@ -30,6 +30,9 @@ using System.IO;
 
 namespace WmcSoft.Data.Common
 {
+    /// <summary>
+    /// Exposes the bytes of a <see cref="IDataReader"/> field as a <see cref="Stream"/>.
+    /// </summary>
     public class DbDataReaderStream : Stream
     {
         readonly IDataReader _reader;
@@ -44,36 +47,25 @@ namespace WmcSoft.Data.Common
             _position = 0L;
         }
 
-        public override bool CanRead
-        {
+        public override bool CanRead {
             get { return true; }
         }
 
-        public override bool CanSeek
-        {
+        public override bool CanSeek {
             get { return true; }
         }
 
-        public override bool CanWrite
-        {
+        public override bool CanWrite {
             get { return false; }
         }
 
-        public override long Length
-        {
-            get {
-                return _reader.GetBytes(_ordinal, 0, null, 0, 0);
-            }
+        public override long Length {
+            get { return _reader.GetBytes(_ordinal, 0, null, 0, 0); }
         }
 
-        public override long Position
-        {
-            get {
-                return _position;
-            }
-            set {
-                Seek(value, SeekOrigin.Begin);
-            }
+        public override long Position {
+            get { return _position; }
+            set { Seek(value, SeekOrigin.Begin); }
         }
 
         public override void Flush() {
