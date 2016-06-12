@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace WmcSoft
 {
@@ -52,8 +53,7 @@ namespace WmcSoft
                 _storage = new int[capacity];
             }
 
-            public int this[int index]
-            {
+            public int this[int index] {
                 get {
                     return _storage[index];
                 }
@@ -222,8 +222,7 @@ namespace WmcSoft
             return GetEnumerator();
         }
 
-        public int this[int i, int j]
-        {
+        public int this[int i, int j] {
             get {
                 if (i < 0 || j < 0)
                     return 0;
@@ -239,6 +238,18 @@ namespace WmcSoft
                 else
                     _data[j][i] = value;
             }
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+            for (int i = 0; i < _data.Count; i++) {
+                var length = _data[i].Count;
+                for (int j = 0; j < length; j++) {
+                    sb.AppendFormat("{0, 5}", _data[i][j]);
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
     }
 }
