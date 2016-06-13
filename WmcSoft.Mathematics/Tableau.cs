@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -39,8 +40,67 @@ namespace WmcSoft
     /// the entries of each column are in increasing order from top to bottom.
     /// </summary>
     /// <remarks>See Knuth's TAoCP, Vol 3, Page 47.</remarks>
+    [DebuggerTypeProxy(typeof(Tableau.DebugView))]
+    [DebuggerDisplay("{DebugView.Flatten(ToString()),nq}")]
     public class Tableau : ICollection<int>
     {
+        public class DebugView
+        {
+            public class RowView
+            {
+                private readonly int[] _data;
+                public RowView(int count) {
+                    _data = new int[count];
+                }
+
+                public int this[int index] {
+                    get { return _data[index]; }
+                    set { _data[index] = value; }
+                }
+
+                public override string ToString() {
+                    var sb = new StringBuilder();
+                    for (int i = 0; i < _data.Length; i++) {
+                        sb.AppendFormat("{0, 5}", _data[i]);
+                    }
+                    return sb.ToString();
+                }
+            }
+
+            private readonly Tableau _tableau;
+
+            public DebugView(Tableau tableau) {
+                _tableau = tableau;
+            }
+
+            public static string Flatten(string value) {
+                return '{' + value.Replace("\r\n", "|") + '}';
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public RowView[] Rows {
+                get {
+                    if (_tableau._data.Count == 0) {
+                        return new RowView[0];
+                    }
+
+                    var columns = _tableau._data.Count;
+                    var rows = new RowView[_tableau._data[0].Count];
+                    for (int i = 0; i < rows.Length; i++) {
+                        while (_tableau._data[columns - 1].Count <= i)
+                            --columns;
+
+                        var row = new RowView(columns);
+                        rows[i] = row;
+                        for (int j = 0; j < columns; j++) {
+                            row[j] = _tableau._data[j][i];
+                        }
+                    }
+                    return rows;
+                }
+            }
+        }
+
         public const int Infinity = Int32.MaxValue;
 
         struct Band
@@ -241,13 +301,22 @@ namespace WmcSoft
         }
 
         public override string ToString() {
+            if (_data.Count == 0) {
+                return "";
+            }
+
             var sb = new StringBuilder();
-            for (int i = 0; i < _data.Count; i++) {
-                var length = _data[i].Count;
-                for (int j = 0; j < length; j++) {
-                    sb.AppendFormat("{0, 5}", _data[i][j]);
+            var columns = _data.Count;
+            var length = _data[0].Count;
+            for (int i = 0; i < length; i++) {
+                while (_data[columns - 1].Count <= i)
+                    --columns;
+                if (i > 0)
+                    sb.AppendLine();
+                var row = new int[columns];
+                for (int j = 0; j < columns; j++) {
+                    sb.AppendFormat("{0, 5}", _data[j][i]);
                 }
-                sb.AppendLine();
             }
             return sb.ToString();
         }
