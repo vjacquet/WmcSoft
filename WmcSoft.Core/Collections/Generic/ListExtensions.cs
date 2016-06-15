@@ -106,7 +106,6 @@ namespace WmcSoft.Collections.Generic
             public void Insert(int index, T item) {
                 if (index < 0 || index > Count)
                     throw new ArgumentOutOfRangeException();
-                index += _startIndex;
                 _base.Insert(_startIndex + index, item);
                 _endIndex++;
             }
@@ -128,7 +127,9 @@ namespace WmcSoft.Collections.Generic
             }
 
             public void Clear() {
-                _endIndex = _startIndex;
+                while (_endIndex > _startIndex) {
+                    _base.RemoveAt(--_endIndex);
+                }
             }
 
             public bool Contains(T item) {
