@@ -49,7 +49,7 @@ namespace WmcSoft.Collections.Generic
         private IList<T> Writtable {
             get {
                 if (ReferenceEquals(_inner, _source))
-                    _inner = new List<T>(_source);
+                    _inner = new List<T>(_source); // copy
                 return _inner;
             }
         }

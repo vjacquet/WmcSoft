@@ -25,7 +25,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -34,6 +36,181 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class ListExtensions
     {
+        #region IndexOf
+
+        static int DoIndexOf<T>(this IList<T> list, T value, int startIndex, int endIndex) {
+            var comparer = EqualityComparer<T>.Default;
+            for (int i = startIndex; i < endIndex; i++) {
+                if (comparer.Equals(list[i], value))
+                    return i;
+            }
+            return -1;
+        }
+
+        public static int IndexOf<T>(this IList<T> list, T value, int startIndex, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
+            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
+
+            return DoIndexOf(list, value, startIndex, startIndex + count);
+        }
+
+        #endregion
+
+        #region Sublist
+
+        class SublistAdapter<T> : IList<T>
+        {
+            private readonly IList<T> _base;
+            private int _startIndex;
+            private int _endIndex;
+
+            public SublistAdapter(IList<T> list, int startIndex, int count) {
+                _base = list;
+                _startIndex = startIndex;
+                _endIndex = _startIndex + count;
+            }
+
+            static int Clamp(int x, int min, int max) {
+                if (x < min)
+                    return min;
+                if (x > max)
+                    return max;
+                return x;
+            }
+
+            public int Count {
+                get {
+                    return Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex);
+                }
+            }
+
+            public bool IsReadOnly {
+                get { return _base.IsReadOnly; }
+            }
+
+            public T this[int index] {
+                get { return _base[_startIndex + index]; }
+                set { _base[_startIndex + index] = value; }
+            }
+
+            public int IndexOf(T item) {
+                var comparer = EqualityComparer<T>.Default;
+                for (int i = _startIndex; i < _endIndex; i++) {
+                    if (comparer.Equals(_base[i], item))
+                        return i - _startIndex;
+                }
+                return -1;
+            }
+
+            public void Insert(int index, T item) {
+                if (index < 0 || index > Count)
+                    throw new ArgumentOutOfRangeException();
+                index += _startIndex;
+                _base.Insert(_startIndex + index, item);
+                _endIndex++;
+            }
+
+            private void DoRemoveAt(int index) {
+                _base.RemoveAt(_startIndex + index);
+                _endIndex--;
+            }
+
+            public void RemoveAt(int index) {
+                if (index < 0 || index > Count)
+                    throw new ArgumentOutOfRangeException();
+                DoRemoveAt(index);
+            }
+
+            public void Add(T item) {
+                _base.Insert(_endIndex, item);
+                _endIndex++;
+            }
+
+            public void Clear() {
+                _endIndex = _startIndex;
+            }
+
+            public bool Contains(T item) {
+                return IndexOf(item) >= 0;
+            }
+
+            public void CopyTo(T[] array, int arrayIndex) {
+                var count = Count;
+                if (count > 0)
+                    _base.CopyTo(_startIndex, array, arrayIndex, count);
+            }
+
+            public bool Remove(T item) {
+                var index = IndexOf(item);
+                if (index < 0)
+                    return false;
+                DoRemoveAt(index);
+                return true;
+            }
+
+            public IEnumerator<T> GetEnumerator() {
+                return _base.Skip(_startIndex).Take(Count).GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+        }
+
+        public static IList<T> Sublist<T>(this IList<T> list, int startIndex, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
+            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
+
+            return new SublistAdapter<T>(list, startIndex, count);
+        }
+
+        class ReadOnlySublistAdapter<T> : IReadOnlyList<T>
+        {
+            private readonly IReadOnlyList<T> _base;
+            private readonly int _startIndex;
+            private readonly int _endIndex;
+
+            public ReadOnlySublistAdapter(IReadOnlyList<T> list, int startIndex, int count) {
+                _base = list;
+                _startIndex = startIndex;
+                _endIndex = _startIndex + count;
+            }
+
+            public int Count {
+                get { return _endIndex - _startIndex; }
+            }
+
+            public T this[int index] {
+                get {
+                    if (index < _startIndex || index >= _endIndex)
+                        throw new IndexOutOfRangeException();
+                    return _base[_startIndex + index];
+                }
+            }
+
+            public IEnumerator<T> GetEnumerator() {
+                return _base.Skip(_startIndex).Take(Count).GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+        }
+
+        public static IReadOnlyList<T> ReadOnlySublist<T>(this IReadOnlyList<T> list, int startIndex, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
+            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
+
+            return new ReadOnlySublistAdapter<T>(list, startIndex, count);
+        }
+
+        #endregion
+
+        #region SortBackwards
+
         /// <summary>
         /// Sorts all the elements in the list in backwards order.
         /// </summary>
@@ -74,5 +251,7 @@ namespace WmcSoft.Collections.Generic
         public static void SortBackwards<T>(this List<T> source, int index, int count, IComparer<T> comparer) {
             source.Sort(index, count, new ReverseComparer<T>(comparer));
         }
+
+        #endregion
     }
 }
