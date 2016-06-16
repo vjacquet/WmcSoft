@@ -750,9 +750,7 @@ namespace WmcSoft
         #region StartsWith & EndsWith
 
         public static bool StartsWith(this string self, char c) {
-            if (String.IsNullOrEmpty(self))
-                return false;
-            return self.StartsWith(Char.ToString(c));
+            return StartsWith(self, c, StringComparison.CurrentCulture);
         }
         public static bool StartsWith(this string self, char c, StringComparison comparison) {
             if (String.IsNullOrEmpty(self))
@@ -765,10 +763,23 @@ namespace WmcSoft
             return self.StartsWith(Char.ToString(c), ignoreCase, culture);
         }
 
-        public static bool EndsWith(this string self, char c) {
+        public static bool StartsWithAny(this string self, params string[] prefixes) {
+            return StartsWithAny(self, StringComparison.CurrentCulture, prefixes);
+        }
+        public static bool StartsWithAny(this string self, StringComparison comparison, params string[] prefixes) {
             if (String.IsNullOrEmpty(self))
                 return false;
-            return self.EndsWith(Char.ToString(c));
+            if (prefixes == null || prefixes.Length == 0)
+                return true;
+            for (int i = 0; i < prefixes.Length; i++) {
+                if (self.StartsWith(prefixes[i], comparison))
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool EndsWith(this string self, char c) {
+            return EndsWith(self, c, StringComparison.CurrentCulture);
         }
         public static bool EndsWith(this string self, char c, StringComparison comparison) {
             if (String.IsNullOrEmpty(self))
@@ -779,6 +790,21 @@ namespace WmcSoft
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.EndsWith(Char.ToString(c), ignoreCase, culture);
+        }
+
+        public static bool EndsWithAny(this string self, params string[] suffixes) {
+            return EndsWithAny(self, StringComparison.CurrentCulture, suffixes);
+        }
+        public static bool EndsWithAny(this string self, StringComparison comparison, params string[] suffixes) {
+            if (String.IsNullOrEmpty(self))
+                return false;
+            if (suffixes == null || suffixes.Length == 0)
+                return true;
+            for (int i = 0; i < suffixes.Length; i++) {
+                if (self.EndsWith(suffixes[i], comparison))
+                    return true;
+            }
+            return false;
         }
 
         #endregion
