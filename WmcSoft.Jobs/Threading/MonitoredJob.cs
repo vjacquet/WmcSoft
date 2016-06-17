@@ -33,9 +33,6 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        public event JobMonitoringEventHandler Executing;
-        public event JobMonitoringEventHandler Executed;
-
         private readonly Stopwatch _stopWatch;
         private long _delayBeforeExecute;
         private long _totalTime;
@@ -56,7 +53,7 @@ namespace WmcSoft.Threading
 
         #endregion
 
-        #region  properties
+        #region Properties
 
         /// <summary>
         /// Gets the time to begin execution.
@@ -88,12 +85,19 @@ namespace WmcSoft.Threading
 
         #endregion
 
+        #region Events
+
+        public event JobMonitoringEventHandler Executing;
+        public event JobMonitoringEventHandler Executed;
+
+        #endregion
+
         #region Overridables
 
         protected sealed override void DoExecute(IServiceProvider serviceProvider) {
             _delayBeforeExecute = _stopWatch.ElapsedTicks;
-            JobMonitoringEventHandler handler;
             JobMonitoringEventArgs e = new JobMonitoringEventArgs(_decorated);
+            JobMonitoringEventHandler handler;
 
             handler = Executing;
             if (handler != null)
