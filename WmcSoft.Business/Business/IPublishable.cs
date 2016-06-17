@@ -57,7 +57,7 @@ namespace WmcSoft.Business
             publishable.ModerationStatus = ModerationStatus.Approved;
         }
 
-        public static void Unpublish<P>(this IPublishable publishable) {
+        public static void Unpublish(this IPublishable publishable) {
             publishable.ModerationStatus = ModerationStatus.Draft;
         }
 
