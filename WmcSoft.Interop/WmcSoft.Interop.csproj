@@ -58,6 +58,7 @@
     <Compile Include="Interop\IProfferService.cs" />
     <Compile Include="Interop\IServiceProvider.cs" />
     <Compile Include="Interop\Kernel.cs" />
+    <Compile Include="Interop\Shell.cs" />
     <Compile Include="IO\Com2ManagedStreamAdapater.cs" />
     <Compile Include="Interop\TextObjectModel\TextObjectModel.cs" />
     <Compile Include="Interop\TextObjectModel\TextServ.cs" />
