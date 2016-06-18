@@ -25,12 +25,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Interop
 {
@@ -142,21 +139,26 @@ namespace WmcSoft.Interop
         [PreserveSig]
         void Free(IntPtr pv);
 
-        // This method returns the size, in bytes, of a memory block
-        // previously
-        // allocated with IMalloc::Alloc or IMalloc::Realloc.
-        // Return value: The size of the allocated memory block in bytes.
+        /// <summary>
+        /// This method returns the size, in bytes, of a memory block
+        /// previously allocated with IMalloc::Alloc or IMalloc::Realloc.
+        /// </summary>
+        /// <param name="pv">Pointer to the memory block for which the size is requested.</param>
+        /// <returns>The size of the allocated memory block in bytes.</returns>
         [PreserveSig]
-        UInt32 GetSize(IntPtr pv); // Pointer to the memory block for which the size is
-        // requested.
+        UInt32 GetSize(IntPtr pv);
 
-        // This method determines whether this allocator was used to allocate
-        // the specified block of memory.
-        // Return value: 1 - allocated 0 - not allocated by this IMalloc Instance.
+        /// <summary>
+        /// This method determines whether this allocator was used to allocate the specified block of memory.
+        /// </summary>
+        /// <param name="pv">Pointer to the memory block</param>
+        /// <returns>1 - allocated 0 - not allocated by this IMalloc Instance.</returns>
         [PreserveSig]
-        Int16 DidAlloc(IntPtr pv); // Pointer to the memory block
+        Int16 DidAlloc(IntPtr pv);
 
-        // Minimizes the heap by releasing unused memory to the operating system.
+        /// <summary>
+        /// Minimizes the heap by releasing unused memory to the operating system.
+        /// </summary>
         [PreserveSig]
         void HeapMinimize();
     }
@@ -169,59 +171,45 @@ namespace WmcSoft.Interop
     [Guid("000214E6-0000-0000-C000-000000000046")]
     internal interface IShellFolder
     {
-        int ParseDisplayName(
-            IntPtr hwnd,
+        int ParseDisplayName(IntPtr hwnd,
             IntPtr pbc,
-            String pszDisplayName,
+            string pszDisplayName,
             out UInt32 pchEaten,
             out IntPtr ppidl,
             ref UInt32 pdwAttributes);
 
-        int EnumObjects(
-            IntPtr hwnd,
-            ESHCONTF grfFlags,
-            out IntPtr ppenumIDList);
+        int EnumObjects(IntPtr hwnd, ESHCONTF grfFlags, out IntPtr ppenumIDList);
 
-        int BindToObject(
-            IntPtr pidl,
-            IntPtr pbc,
-            [In] ref Guid riid,
-            out IntPtr ppv);
+        int BindToObject(IntPtr pidl, IntPtr pbc, [In] ref Guid riid, out IntPtr ppv);
 
-        int BindToStorage(
-            IntPtr pidl,
-            IntPtr pbc,
-            [In] ref Guid riid,
-            out IntPtr ppv);
+        int BindToStorage(IntPtr pidl, IntPtr pbc, [In] ref Guid riid, out IntPtr ppv);
 
         [PreserveSig]
-        Int32 CompareIDs(
-        Int32 lParam,
-        IntPtr pidl1,
-        IntPtr pidl2);
+        Int32 CompareIDs(Int32 lParam, IntPtr pidl1, IntPtr pidl2);
 
-        int CreateViewObject(
-            IntPtr hwndOwner,
-            [In] ref Guid riid,
-            out IntPtr ppv);
+        int CreateViewObject(IntPtr hwndOwner, [In] ref Guid riid, out IntPtr ppv);
 
-        /*      this version is good if cidl is one
-    * void GetAttributesOf(             UInt32 cidl,
-                ref IntPtr apidl,
-                ref ESFGAO rgfInOut);
-    */
-        int GetAttributesOf(
-            UInt32 cidl,
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)]
-        IntPtr[] apidl,
+        /* this version is good if cidl is one
+         * void GetAttributesOf(UInt32 cidl, ref IntPtr apidl, ref ESFGAO rgfInOut);
+         */
+        int GetAttributesOf(UInt32 cidl, 
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl,
             ref ESFGAO rgfInOut);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hwndOwner"></param>
+        /// <param name="cidl">number of IntPtr's in incoming array</param>
+        /// <param name="apidl"></param>
+        /// <param name="riid"></param>
+        /// <param name="rgfReserved"></param>
+        /// <param name="ppv"></param>
+        /// <returns></returns>
         [PreserveSig]
-        int GetUIObjectOf(
-            IntPtr hwndOwner,
-            UInt32 cidl,    // number of IntPtr's in incoming array
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]
-        IntPtr[] apidl,
+        int GetUIObjectOf(IntPtr hwndOwner,
+            UInt32 cidl,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl,
             [In] ref Guid riid,
             UInt32 rgfReserved,
             out IntPtr ppv);
@@ -236,15 +224,11 @@ namespace WmcSoft.Interop
               out IntPtr ppv);
            */
 
-        int GetDisplayNameOf(
-            IntPtr pidl,
-            ESHGDN uFlags,
-            out STRRET pName);
+        int GetDisplayNameOf(IntPtr pidl, ESHGDN uFlags, out STRRET pName);
 
-        int SetNameOf(
-            IntPtr hwnd,
+        int SetNameOf(IntPtr hwnd,
             IntPtr pidl,
-            String pszName,
+            string pszName,
             ESHCONTF uFlags,
             out IntPtr ppidlOut);
     }
@@ -286,9 +270,9 @@ namespace WmcSoft.Interop
 
     internal enum ESTRRET : int
     {
-        eeRRET_WSTR = 0x0000,            // Use STRRET.pOleStr
+        eeRRET_WSTR = 0x0000,      // Use STRRET.pOleStr
         STRRET_OFFSET = 0x0001,    // Use STRRET.uOffset to Ansi
-        STRRET_CSTR = 0x0002            // Use STRRET.cStr
+        STRRET_CSTR = 0x0002       // Use STRRET.cStr
     }
 
     // this works too...from Unions.cs
@@ -315,18 +299,16 @@ namespace WmcSoft.Interop
 
     internal class Guid_IShellFolder
     {
-        public static Guid IID_IShellFolder =
-            new Guid("{000214E6-0000-0000-C000-000000000046}");
+        public static Guid IID_IShellFolder = new Guid("{000214E6-0000-0000-C000-000000000046}");
     }
-    [ComImportAttribute()]
-    [GuidAttribute("BB2E617C-0920-11d1-9A0B-00C04FC2D6C1")]
-    [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+
+    [ComImport]
+    [Guid("BB2E617C-0920-11d1-9A0B-00C04FC2D6C1")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IExtractImage
     {
         [PreserveSig]
-        int GetLocation(
-            [Out, MarshalAs(UnmanagedType.LPWStr)]
-                StringBuilder pszPathBuffer,
+        int GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer,
             int cch,
             ref int pdwPriority,
             ref SIZE prgSize,
@@ -334,8 +316,7 @@ namespace WmcSoft.Interop
             ref int pdwFlags);
 
         [PreserveSig]
-        int Extract(
-            out IntPtr phBmpThumbnail);
+        int Extract(out IntPtr phBmpThumbnail);
     }
 
     [StructLayout(LayoutKind.Sequential)]
