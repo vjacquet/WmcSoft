@@ -114,6 +114,7 @@
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
+    <Compile Include="SemVer.cs" />
     <Compile Include="Text\IString.cs" />
     <Compile Include="Text\StripExtensions.cs" />
     <Compile Include="Text\Strings.cs" />
@@ -276,6 +277,7 @@
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="Unsubscriber.cs" />
     <Compile Include="UriExtensions.cs" />
+    <Compile Include="VersionExtensions.cs" />
     <Compile Include="WeakReference.cs" />
     <Compile Include="Xml\XmlElementExtensions.cs" />
     <Compile Include="Xml\XmlReaderDecorator.cs" />
