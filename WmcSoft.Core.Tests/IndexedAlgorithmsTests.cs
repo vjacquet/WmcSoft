@@ -23,11 +23,20 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckRotate() {
+        public void CheckRotateLeft() {
             var expected = new[] { 4, 5, 6, 7, 8, 9, 1, 2, 3 };
             var actual = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var startIndex = actual.Rotate(3);
+            var startIndex = actual.Rotate(-3);
             Assert.AreEqual(6, startIndex);
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckRotateRight() {
+            var expected = new[] { 7, 8, 9, 1, 2, 3,4, 5, 6,  };
+            var actual = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var startIndex = actual.Rotate(3);
+            Assert.AreEqual(3, startIndex);
             CollectionAssert.AreEqual(expected, actual);
         }
     }
