@@ -31,7 +31,7 @@ namespace WmcSoft
     /// <summary>
     /// Represent a version when using semantic versioning.
     /// </summary>
-    public sealed class SemVer : ICloneable<SemVer>, IComparable<SemVer>, IEquatable<SemVer>
+    public sealed class SemVer : ICloneable<SemVer>, IComparable<SemVer>, IEquatable<SemVer>, IComparable
     {
         private readonly Version _version;
 
@@ -76,13 +76,22 @@ namespace WmcSoft
         }
 
         public int CompareTo(SemVer other) {
-            if (other == null)
+            if (ReferenceEquals(other, null))
                 return 1;
             return _version.CompareTo(other._version);
         }
 
+        int IComparable.CompareTo(object obj) {
+            if (obj == null)
+                return 1;
+            var other = obj as SemVer;
+            if (ReferenceEquals(other, null))
+                throw new ArgumentException("obj");
+            return _version.CompareTo(other._version);
+        }
+
         public bool Equals(SemVer other) {
-            if (other == null)
+            if (ReferenceEquals(other, null))
                 return false;
             return _version.Equals(other._version);
         }
@@ -105,6 +114,40 @@ namespace WmcSoft
 
         public static SemVer operator ++(SemVer value) {
             return value.Increment();
+        }
+
+        public static bool operator <(SemVer x, SemVer y) {
+            if (ReferenceEquals(x, null))
+                return !ReferenceEquals(y, null);
+            return x.CompareTo(y) < 0;
+        }
+
+        public static bool operator >=(SemVer x, SemVer y) {
+            if (ReferenceEquals(x, null))
+                return ReferenceEquals(y, null);
+            return x.CompareTo(y) >= 0;
+        }
+
+        public static bool operator >(SemVer x, SemVer y) {
+            if (ReferenceEquals(x, null))
+                return false;
+            return x.CompareTo(y) > 0;
+        }
+
+        public static bool operator <=(SemVer x, SemVer y) {
+            if (ReferenceEquals(x, null))
+                return ReferenceEquals(y, null);
+            return x.CompareTo(y) <= 0;
+        }
+
+        public static bool operator ==(SemVer x, SemVer y) {
+            if (ReferenceEquals(x, null))
+                return ReferenceEquals(y, null);
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(SemVer x, SemVer y) {
+            return !(x == y);
         }
     }
 }

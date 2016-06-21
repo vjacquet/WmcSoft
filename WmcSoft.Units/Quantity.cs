@@ -194,53 +194,37 @@ namespace WmcSoft.Units
         }
 
         public static bool operator >=(Quantity x, Quantity y) {
-            if (((object)x) != null)
-                return x.CompareTo(y) >= 0;
-            else if (y == null)
-                return true;
-            return false;
+            return x.CompareTo(y) >= 0;
         }
 
         public static bool operator >(Quantity x, Quantity y) {
-            if (((object)x) != null)
-                return x.CompareTo(y) > 0;
-            return false;
+            return x.CompareTo(y) > 0;
         }
 
         public static bool operator <=(Quantity x, Quantity y) {
-            if (((object)x) != null)
-                return x.CompareTo(y) <= 0;
-            return false;
+            return x.CompareTo(y) <= 0;
         }
 
         public static bool operator <(Quantity x, Quantity y) {
-            if (((object)x) != null)
-                return x.CompareTo(y) < 0;
-            else if (y != null)
-                return true;
-            return false;
+            return x.CompareTo(y) < 0;
         }
 
         public static bool operator ==(Quantity x, Quantity y) {
-            if (((object)x) != null)
-                return ((IComparable)x).CompareTo(y) == 0;
-            return (((object)y) == null);
+            return ((IComparable)x).CompareTo(y) == 0;
         }
 
         public static bool operator !=(Quantity x, Quantity y) {
-            if (((object)x) != null)
-                return x.CompareTo(y) != 0;
-            return (((object)y) != null);
+            return x.CompareTo(y) != 0;
         }
 
         public override bool Equals(object obj) {
             if (obj == null)
                 return false;
-            return this.CompareTo((Quantity)obj) == 0;
+            return CompareTo((Quantity)obj) == 0;
         }
 
         public override int GetHashCode() {
-            return this._amount.GetHashCode() ^ this._metric.GetHashCode();
+            return _amount.GetHashCode() ^ _metric.GetHashCode();
         }
 
         #endregion
