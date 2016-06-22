@@ -117,9 +117,9 @@ namespace WmcSoft
         }
 
         public static bool operator <(SemVer x, SemVer y) {
-            if (ReferenceEquals(x, null))
-                return !ReferenceEquals(y, null);
-            return x.CompareTo(y) < 0;
+            if (ReferenceEquals(y, null))
+                return false;
+            return y.CompareTo(x) > 0;
         }
 
         public static bool operator >=(SemVer x, SemVer y) {
