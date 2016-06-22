@@ -113,6 +113,7 @@
     <Compile Include="Runtime\ObjectWalkerTests.cs" />
     <Compile Include="IO\StreamExtensionsTests.cs" />
     <Compile Include="Security\SecurityExtensionsTests.cs" />
+    <Compile Include="SemVerTests.cs" />
     <Compile Include="Text\EncoderBestFitFallbackTests.cs" />
     <Compile Include="Text\StringsTests.cs" />
     <Compile Include="Text\StripTests.cs" />
