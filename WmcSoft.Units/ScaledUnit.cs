@@ -26,6 +26,7 @@
 
 using System;
 using System.Diagnostics;
+using WmcSoft.Units.Properties;
 
 namespace WmcSoft.Units
 {
@@ -56,18 +57,15 @@ namespace WmcSoft.Units
         }
 
         public ScaledUnit(string name, string symbol, string definition, decimal scaleFactor, Unit reference) {
-            if (reference == null)
-                throw new ArgumentNullException("reference");
-            if (name == null)
-                throw new ArgumentNullException("name");
-            if (scaleFactor <= Decimal.Zero)
-                throw new ArgumentException(RM.GetString(RM.InvalidScaleFactorException), "scaleFactor");
+            if (reference == null) throw new ArgumentNullException("reference");
+            if (name == null) throw new ArgumentNullException("name");
+            if (scaleFactor <= Decimal.Zero) throw new ArgumentException(Resources.InvalidScaleFactorException, "scaleFactor");
 
             _reference = reference;
-            this._symbol = symbol ?? name;
-            this._name = name;
-            this._definition = definition;
-            this._scaleFactor = scaleFactor;
+            _symbol = symbol ?? name;
+            _name = name;
+            _definition = definition;
+            _scaleFactor = scaleFactor;
 
             UnitConverter.RegisterUnit(this);
         }

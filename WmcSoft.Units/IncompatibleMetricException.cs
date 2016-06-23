@@ -26,6 +26,7 @@
 
 using System;
 using System.Runtime.Serialization;
+using WmcSoft.Units.Properties;
 
 namespace WmcSoft.Units
 {
@@ -55,7 +56,7 @@ namespace WmcSoft.Units
         public static string DefaultMessage {
             get {
                 if (_defaultMessage == null) {
-                    _defaultMessage = RM.GetString(RM.IncompatibleMetricException);
+                    _defaultMessage = Resources.IncompatibleMetricException;
                 }
                 return _defaultMessage;
             }

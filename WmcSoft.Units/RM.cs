@@ -37,12 +37,6 @@ namespace WmcSoft.Units
     [DebuggerStepThrough]
     internal sealed class RM
     {
-        internal const string InvalidScaleFactorException = "InvalidScaleFactorException";
-        internal const string IncompatibleMetricException = "IncompatibleMetricException";
-        internal const string EquivalentUnitException = "EquivalentUnitException";
-        internal const string DuplicateConversionException = "DuplicateConversionException";
-        internal const string NotAUnitException = "NotAUnitException";
-
         static readonly ResourceManager rm;
 
         static RM() {

@@ -117,21 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IncompatibleMetricException" xml:space="preserve">
-    <value>Both Quantity objets must be in the same Metric.</value>
-  </data>
-  <data name="InvalidScaleFactorException" xml:space="preserve">
-    <value>The scale factor must be strictly positive.</value>
-  </data>
-  <data name="EquivalentUnitException" xml:space="preserve">
-    <value>The scale factor must not be 1.</value>
-  </data>
-  <data name="DuplicateConversionException" xml:space="preserve">
-    <value>A conversion from "{0}" to "{1}" already exists.</value>
-  </data>
-  <data name="NotAUnitException" xml:space="preserve">
-    <value>The Metric of the quantity is not a Unit.</value>
-  </data>
   <data name="Kilogram.Name" xml:space="preserve">
     <value>kilogram</value>
   </data>

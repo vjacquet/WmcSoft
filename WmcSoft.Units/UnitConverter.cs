@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using WmcSoft.Units.Properties;
 
 namespace WmcSoft.Units
 {
@@ -65,7 +66,7 @@ namespace WmcSoft.Units
                 table[target] = convert;
                 return true;
             } else if (throwOnDuplicates) {
-                throw new ArgumentException(RM.Format(RM.DuplicateConversionException, source, target));
+                throw new ArgumentException(string.Format(Resources.DuplicateConversionException, source, target));
             }
             return false;
         }
@@ -116,19 +117,19 @@ namespace WmcSoft.Units
         }
 
         public static Quantity Convert(Quantity quantity, Unit target) {
-            if (quantity.Metric == (Metric)target)
+            if (quantity.Metric == target)
                 return quantity;
 
             var source = quantity.Metric as Unit;
             if (source == null)
-                throw new ArgumentException(RM.GetString(RM.NotAUnitException), "quantity");
+                throw new ArgumentException(Resources.NotAUnitException, "quantity");
 
             RegisterUnit(source);
             RegisterUnit(target);
 
             Hashtable table;
             if (unitConversions.TryGetValue(source, out table)) {
-                ConvertCallback callback = table[target] as ConvertCallback;
+                var callback = table[target] as ConvertCallback;
                 if (callback != null) {
                     return new Quantity(callback(quantity.Amount), target);
                 }
@@ -195,7 +196,7 @@ namespace WmcSoft.Units
         }
 
         public static UnitConversion Compose(UnitConversion x, UnitConversion y) {
-            if (x.Target != y.Source) throw new ArgumentException("The target of the first conversion must match the source of the second.");
+            if (x.Target != y.Source) throw new ArgumentException(string.Format(Resources.InvalidUnitConversionPath, x.Target, y.Source));
 
             if (x.Source == y.Target)
                 return new IdentityConversion(x.Source);
