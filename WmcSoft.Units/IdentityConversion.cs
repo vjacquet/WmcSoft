@@ -26,7 +26,7 @@
 
 namespace WmcSoft.Units
 {
-    class IdentityConversion : UnitConversion
+    sealed class IdentityConversion : UnitConversion
     {
         public IdentityConversion(Unit unit)
             : base(unit, unit) {

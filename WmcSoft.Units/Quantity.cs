@@ -87,8 +87,7 @@ namespace WmcSoft.Units
         }
 
         public static Quantity operator +(Quantity x, Quantity y) {
-            if (x.Metric != y.Metric)
-                throw new IncompatibleMetricException();
+            if (x.Metric != y.Metric) throw new IncompatibleMetricException();
             return new Quantity(x._amount + y._amount, x.Metric);
         }
 
@@ -97,8 +96,7 @@ namespace WmcSoft.Units
         }
 
         public static Quantity operator -(Quantity x, Quantity y) {
-            if (x.Metric != y.Metric)
-                throw new IncompatibleMetricException();
+            if (x.Metric != y.Metric) throw new IncompatibleMetricException();
             return new Quantity(x._amount - y._amount, x.Metric);
         }
 
@@ -257,7 +255,6 @@ namespace WmcSoft.Units
         }
 
         #endregion
-
     }
 
     /// <summary>
@@ -265,7 +262,7 @@ namespace WmcSoft.Units
     /// </summary>
     /// <typeparam name="M">The metric</typeparam>
     public struct Quantity<M> : IComparable<Quantity<M>>, IComparable, IEquatable<Quantity<M>>
-        where M : Metric
+        where M : Metric, new ()
     {
         #region Fields
 
@@ -294,7 +291,7 @@ namespace WmcSoft.Units
         }
 
         public static implicit operator Quantity(Quantity<M> that) {
-            return new Quantity(that._amount, Activator.CreateInstance<M>());
+            return new Quantity(that._amount, new M());
         }
 
         public static explicit operator decimal(Quantity<M> that) {

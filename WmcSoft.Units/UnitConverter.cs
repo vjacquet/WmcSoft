@@ -195,13 +195,13 @@ namespace WmcSoft.Units
         }
 
         public static UnitConversion Compose(UnitConversion x, UnitConversion y) {
-            if (x.Target != y.Source)
-                throw new ArgumentException("y");
+            if (x.Target != y.Source) throw new ArgumentException("The target of the first conversion must match the source of the second.");
+
             if (x.Source == y.Target)
                 return new IdentityConversion(x.Source);
 
             // performs double dispatch
-            var factory = typeof(UnitConverter).GetMethod("DoCompose", BindingFlags.Static | BindingFlags.NonPublic, Type.DefaultBinder, new [] { x.GetType(), y.GetType() }, new ParameterModifier[0]);
+            var factory = typeof(UnitConverter).GetMethod("DoCompose", BindingFlags.Static | BindingFlags.NonPublic, Type.DefaultBinder, new[] { x.GetType(), y.GetType() }, new ParameterModifier[0]);
             if (factory != null)
                 return (UnitConversion)factory.Invoke(null, new[] { x, y });
 

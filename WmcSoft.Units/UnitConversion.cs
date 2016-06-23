@@ -67,5 +67,17 @@ namespace WmcSoft.Units
         public abstract decimal ConvertBack(decimal value);
 
         #endregion
+
+        #region Helpers
+
+        internal static bool CanMakePath(params UnitConversion[] conversions) {
+            for (int i = 1; i < conversions.Length; i++) {
+                if (conversions[i - 1].Target != conversions[i].Source)
+                    return false;
+            }
+            return true;
+        }
+
+        #endregion
     }
 }
