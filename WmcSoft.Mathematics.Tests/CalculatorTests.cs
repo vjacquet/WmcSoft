@@ -9,7 +9,6 @@ namespace WmcSoft.Tests
     [TestClass]
     public class CalculatorTests
     {
-
         public class StringifierVisitor : ExpressionVisitor
         {
             StringBuilder _sb;
@@ -65,7 +64,6 @@ namespace WmcSoft.Tests
 
         public class DerivativeVisitor : ExpressionVisitor
         {
-
         }
 
         [TestMethod]

@@ -115,6 +115,15 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect type. Expecting {0} but received {1}.&quot;.
+        /// </summary>
+        internal static string ComparisonIncorrectTypeFormat {
+            get {
+                return ResourceManager.GetString("ComparisonIncorrectTypeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Component {0} must be sited in a container in order to function properly..
         /// </summary>
         internal static string ComponentNotSited {

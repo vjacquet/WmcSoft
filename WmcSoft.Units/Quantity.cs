@@ -191,28 +191,24 @@ namespace WmcSoft.Units
             return value / divider;
         }
 
-        public static bool operator >=(Quantity x, Quantity y) {
-            return x.CompareTo(y) >= 0;
+        public static bool operator ==(Quantity x, Quantity y) {
+            return ((IComparable)x).CompareTo(y) == 0;
         }
-
-        public static bool operator >(Quantity x, Quantity y) {
-            return x.CompareTo(y) > 0;
-        }
-
-        public static bool operator <=(Quantity x, Quantity y) {
-            return x.CompareTo(y) <= 0;
+        public static bool operator !=(Quantity x, Quantity y) {
+            return x.CompareTo(y) != 0;
         }
 
         public static bool operator <(Quantity x, Quantity y) {
             return x.CompareTo(y) < 0;
         }
-
-        public static bool operator ==(Quantity x, Quantity y) {
-            return ((IComparable)x).CompareTo(y) == 0;
+        public static bool operator <=(Quantity x, Quantity y) {
+            return x.CompareTo(y) <= 0;
         }
-
-        public static bool operator !=(Quantity x, Quantity y) {
-            return x.CompareTo(y) != 0;
+        public static bool operator >(Quantity x, Quantity y) {
+            return x.CompareTo(y) > 0;
+        }
+        public static bool operator >=(Quantity x, Quantity y) {
+            return x.CompareTo(y) >= 0;
         }
 
         public override bool Equals(object obj) {

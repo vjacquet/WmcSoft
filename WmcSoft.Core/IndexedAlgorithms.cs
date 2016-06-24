@@ -33,14 +33,14 @@ namespace WmcSoft
     {
         #region Helpers
 
-        static internal void UncheckedCopy<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
+        static internal void UnguardedCopy<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
             var end = sourceIndex + length;
             for (int i = sourceIndex, j = destinationIndex; i < end; i++, j++) {
                 destination[j] = source[i];
             }
         }
 
-        static internal void UncheckedCopyBackwards<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
+        static internal void UnguardedCopyBackwards<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
             var end = sourceIndex + length;
             for (int i = sourceIndex + length - 1, j = destinationIndex + length - 1; i >= sourceIndex; i--, j--) {
                 destination[j] = source[i];
@@ -128,24 +128,23 @@ namespace WmcSoft
 
         #region Rotate
 
-        public static int UngardedRotate<T>(this IList<T> source, int n, int startIndex, int length) {
+        public static int UnguardedRotate<T>(this IList<T> source, int n, int startIndex, int length) {
             if (n == 0)
                 return startIndex;
 
+            var temp = new T[n];
             if (n < 0) {
-                n = -n;
-                var temp = new T[n];
                 // rotate left
-                UncheckedCopy(source, startIndex, temp, 0, n);
-                UncheckedCopy(source, startIndex + n, source, startIndex, length - n);
+                n = -n;
+                UnguardedCopy(source, startIndex, temp, 0, n);
+                UnguardedCopy(source, startIndex + n, source, startIndex, length - n);
                 startIndex += length - n;
-                UncheckedCopy(temp, 0, source, startIndex, n);
+                UnguardedCopy(temp, 0, source, startIndex, n);
             } else {
-                var temp = new T[n];
                 // rotate right
-                UncheckedCopy(source , startIndex+ length - n, temp, 0, n);
-                UncheckedCopyBackwards(source, startIndex, source, startIndex + n, length - n);
-                UncheckedCopy(temp, 0, source, startIndex, n);
+                UnguardedCopy(source, startIndex + length - n, temp, 0, n);
+                UnguardedCopyBackwards(source, startIndex, source, startIndex + n, length - n);
+                UnguardedCopy(temp, 0, source, startIndex, n);
                 startIndex += n;
             }
             return startIndex;
@@ -167,7 +166,7 @@ namespace WmcSoft
             if (source.Count < (startIndex + length)) throw new ArgumentException("source");
             if (n > length || -n > length) throw new ArgumentException("n");
 
-            return UngardedRotate(source, n, startIndex, length);
+            return UnguardedRotate(source, n, startIndex, length);
         }
 
         /// <summary>
@@ -182,7 +181,7 @@ namespace WmcSoft
             var length = source.Count;
             if (n > length || -n > length) throw new ArgumentException("n");
 
-            return UngardedRotate(source, n, 0, length);
+            return UnguardedRotate(source, n, 0, length);
         }
 
         #endregion

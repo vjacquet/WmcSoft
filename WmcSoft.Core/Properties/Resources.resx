@@ -135,6 +135,9 @@
   <data name="CantLoadType" xml:space="preserve">
     <value>Could not load type {0}.</value>
   </data>
+  <data name="ComparisonIncorrectTypeFormat" xml:space="preserve">
+    <value>Incorrect type. Expecting {0} but received {1}."</value>
+  </data>
   <data name="ComponentNotSited" xml:space="preserve">
     <value>Component {0} must be sited in a container in order to function properly.</value>
   </data>

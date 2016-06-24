@@ -32,6 +32,10 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class Compare
     {
+        internal static int CombineHashCodes(int h1, int h2) {
+            return (((h1 << 5) + h1) ^ h2);
+        }
+
         public static ComparerBuilder<T> OrderOf<T>() {
             return ComparerBuilder<T>.Default;
         }

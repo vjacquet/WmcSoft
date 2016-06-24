@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using static WmcSoft.Collections.Generic.Compare;
 
 namespace WmcSoft.Text
 {
@@ -92,13 +93,11 @@ namespace WmcSoft.Text
             return value.ToArray();
         }
 
-        public int Count
-        {
+        public int Count {
             get { return _values == null ? 0 : _values.Length; }
         }
 
-        public string this[int index]
-        {
+        public string this[int index] {
             get {
                 return Values[index]; // throws the regular exception.
             }
@@ -216,7 +215,7 @@ namespace WmcSoft.Text
 
         public override bool Equals(object obj) {
             if (obj == null)
-                return Equals(this, Strings.Empty);
+                return Equals(this, strings.Empty);
 
             if (obj is string)
                 return Equals(this, (string)obj);
@@ -231,12 +230,12 @@ namespace WmcSoft.Text
         }
 
         public override int GetHashCode() {
-            if (_values == null)
+            if (Count == 0)
                 return 0;
             var values = _values;
-            var h = 0;
-            for (var i = 0; i < values.Length; i++) {
-                h = ((h << 5) + h) ^ values[i].GetHashCode();
+            var h = values[0].GetHashCode();
+            for (var i = 1; i < values.Length; i++) {
+                h = CombineHashCodes(h, values[i].GetHashCode());
             }
             return h;
         }
