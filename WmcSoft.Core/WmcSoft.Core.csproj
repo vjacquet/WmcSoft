@@ -113,6 +113,7 @@
     <Compile Include="IDisposableBin.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
+    <Compile Include="Pair.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="SemVer.cs" />
     <Compile Include="Text\IString.cs" />
