@@ -215,7 +215,7 @@ namespace WmcSoft.Text
 
         public override bool Equals(object obj) {
             if (obj == null)
-                return Equals(this, strings.Empty);
+                return Equals(this, Strings.Empty);
 
             if (obj is string)
                 return Equals(this, (string)obj);
