@@ -67,6 +67,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteDictionary.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
     <Compile Include="Collections\Generic\DisjoinedReadOnlyDictionary.cs" />
+    <Compile Include="Collections\Generic\OnDemandDictionary.cs" />
     <Compile Include="Collections\Generic\ListDictionary.cs" />
     <Compile Include="Collections\Generic\SelectComparer.cs" />
     <Compile Include="Collections\Generic\EnumeratorAdapter.cs" />

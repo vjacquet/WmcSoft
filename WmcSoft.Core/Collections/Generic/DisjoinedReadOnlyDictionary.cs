@@ -30,6 +30,12 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements a <see cref="IDictionary{TKey, TValue}"/> for which the keys and values are stored in 
+    /// two separate arrays.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     public class DisjoinedReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         private readonly TKey[] _keys;
