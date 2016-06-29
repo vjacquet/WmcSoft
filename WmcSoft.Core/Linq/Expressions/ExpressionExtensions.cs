@@ -32,6 +32,45 @@ namespace WmcSoft.Linq.Expressions
 {
     public static class ExpressionExtensions
     {
+        public static MethodCallExpression Call(this Expression expression, string methodName, Type[] typeArguments, params Expression[] arguments) {
+            // guard against null, this extensions should not be used for static members
+            if (expression == null) throw new ArgumentNullException("expression");
+
+            return Expression.Call(expression, methodName, typeArguments, arguments);
+        }
+
+        public static MethodCallExpression Call(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, null, arguments);
+        }
+
+        public static MethodCallExpression Call<T>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T) }, arguments);
+        }
+
+        public static MethodCallExpression Call<T1, T2>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2) }, arguments);
+        }
+
+        public static MethodCallExpression Call<T1, T2, T3>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3) }, arguments);
+        }
+
+        public static MethodCallExpression Call<T1, T2, T3, T4>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, arguments);
+        }
+
+        public static MethodCallExpression Call<T1, T2, T3, T4, T5>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5) }, arguments);
+        }
+
+        public static MethodCallExpression Call<T1, T2, T3, T4, T5, T6>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6) }, arguments);
+        }
+
+        public static MethodCallExpression Call<T1, T2, T3, T4, T5, T6, T7>(this Expression expression, string methodName, params Expression[] arguments) {
+            return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7) }, arguments);
+        }
+
         public static MemberExpression Field(this Expression expression, string fieldName) {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException("expression");
