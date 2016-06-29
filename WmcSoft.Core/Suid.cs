@@ -25,32 +25,45 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace WmcSoft
 {
     public struct Suid : IFormattable, IComparable, IComparable<Suid>, IEquatable<Suid>
     {
-        static Regex _validator = new Regex("^[A-Za-z0-9_-]{22}$");
-
+        static readonly char[] _encoding = new char[]{
+            '0','1','2','3','4','5','6','7', '8','9',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+            '-','_'
+        };
+        static Regex _validator = new Regex("^[A-Za-z0-9_-]{21}[0GWm]$");
         public static readonly Suid Empty = new Suid(Guid.Empty);
 
-        readonly string _storage;
+        readonly byte[] _storage;
 
-        private Suid(string g, PiecewiseConstruct tag) {
+        private Suid(byte[] g, PiecewiseConstruct tag) {
             _storage = g;
         }
 
         public Suid(string g) {
             if (g == null) throw new ArgumentNullException("g");
 
-            _storage = (g.Length != 22 || !_validator.IsMatch(g))
-                ? Encode(new Guid(g))
-                : g;
+            _storage = (g.Length == 22 && _validator.IsMatch(g))
+                ? Decode(g)
+                : new Guid(g).ToByteArray();
         }
 
         public Suid(Guid guid) {
-            _storage = Encode(guid);
+            _storage = guid.ToByteArray();
+        }
+
+        public Suid(params byte[] bytes) {
+            if (bytes == null) throw new ArgumentNullException("bytes");
+            if (bytes.Length > 16) throw new ArgumentException("bytes");
+            _storage = new byte[16];
+            Array.Copy(bytes, _storage, bytes.Length);
         }
 
         public static Suid NewSuid() {
@@ -66,7 +79,9 @@ namespace WmcSoft
         }
 
         public static bool IsValid(string input) {
-            return input != null && input.Length == 22 && _validator.IsMatch(input);
+            return input != null
+                && input.Length == 22
+                && _validator.IsMatch(input);
         }
 
         public static Suid Parse(string input) {
@@ -85,17 +100,18 @@ namespace WmcSoft
                     result = Empty;
                     return false;
                 }
-                input = Encode(guid);
+                result = new Suid(guid);
+            } else {
+                result = new Suid(Decode(input), PiecewiseConstruct.Tag);
             }
-            result = new Suid(input, PiecewiseConstruct.Tag);
             return true;
         }
 
         public string ToString(string format, IFormatProvider formatProvider) {
             if (format == null || format == "G" || format == "g")
-                return _storage ?? Empty._storage;
+                return Encode(_storage ?? Empty._storage);
 
-            var guid = Decode(_storage);
+            var guid = new Guid(_storage);
             return guid.ToString(format, formatProvider);
         }
 
@@ -116,16 +132,17 @@ namespace WmcSoft
         }
 
         public bool Equals(Suid other) {
-            var x = _storage ?? Empty._storage;
-            var y = other._storage ?? Empty._storage;
-            return x == y;
+            return CompareTo(other) == 0;
         }
 
         public int CompareTo(Suid other) {
             var x = _storage ?? Empty._storage;
             var y = other._storage ?? Empty._storage;
-
-            return StringComparer.InvariantCulture.Compare(x, y);
+            int i = 0;
+            var result = x[0].CompareTo(y[0]);
+            while (result == 0 && ++i < 16)
+                result = x[i].CompareTo(y[i]);
+            return result;
         }
 
         public int CompareTo(object obj) {
@@ -138,16 +155,51 @@ namespace WmcSoft
 
         #region Helpers
 
-        static Guid Decode(string value) {
-            value = value.Replace('-', '+').Replace('_', '/');
-            byte[] buffer = Convert.FromBase64String(value + "==");
-            return new Guid(buffer);
+        static byte Decode(char c) {
+            unchecked {
+                if (c <= '9')
+                    return (c == '-') ? (byte)62 : (byte)(c - '0');
+                if (c <= 'Z')
+                    return (byte)(c - 'A' + 10);
+                if (c == '_')
+                    return (byte)63;
+                return (byte)(c - 'a' + 36);
+            }
         }
 
-        static string Encode(Guid guid) {
-            string encoded = Convert.ToBase64String(guid.ToByteArray());
-            encoded = encoded.Replace('+', '-').Replace('/', '_');
-            return encoded.Substring(0, 22);
+        static byte[] Decode(string value) {
+            unchecked {
+                var bytes = new byte[16];
+                Debug.Assert(value.Length == 22);
+                byte a, b, c, d;
+                for (int i = 0, j = 0; i < 20; i += 4, j += 3) {
+                    a = Decode(value[i]);
+                    b = Decode(value[i + 1]);
+                    c = Decode(value[i + 2]);
+                    d = Decode(value[i + 3]);
+                    bytes[j] = (byte)((a << 2) | (b >> 4));
+                    bytes[j + 1] = (byte)(b << 4 | c >> 2);
+                    bytes[j + 2] = (byte)(c << 6 | d);
+                }
+                a = Decode(value[20]);
+                b = Decode(value[21]);
+                bytes[15] = (byte)((a << 2) | (b >> 4));
+                return bytes;
+            }
+        }
+
+        static string Encode(byte[] bytes) {
+            var chars = new char[22];
+
+            for (int i = 0, j = 0; i < 15; i += 3, j += 4) {
+                chars[j] = _encoding[(bytes[i] & 0xfc) >> 2];
+                chars[j + 1] = _encoding[((bytes[i] & 0x03) << 4) | ((bytes[i + 1] & 0xf0) >> 4)];
+                chars[j + 2] = _encoding[((bytes[i + 1] & 0x0f) << 2) | ((bytes[i + 2] & 0xc0) >> 6)];
+                chars[j + 3] = _encoding[(bytes[i + 2] & 0x3f)];
+            }
+            chars[20] = _encoding[(bytes[15] & 0xfc) >> 2];
+            chars[21] = _encoding[(bytes[15] & 0x03) << 4];
+            return new string(chars);
         }
 
         #endregion
