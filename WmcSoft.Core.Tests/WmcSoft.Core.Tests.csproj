@@ -116,6 +116,7 @@
     <Compile Include="IO\StreamExtensionsTests.cs" />
     <Compile Include="Security\SecurityExtensionsTests.cs" />
     <Compile Include="SemVerTests.cs" />
+    <Compile Include="SuidTests.cs" />
     <Compile Include="Text\EncoderBestFitFallbackTests.cs" />
     <Compile Include="Text\StringsTests.cs" />
     <Compile Include="Text\StripTests.cs" />
