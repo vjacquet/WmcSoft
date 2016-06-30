@@ -6,13 +6,18 @@ namespace WmcSoft
     [TestClass]
     public class SuidTests
     {
+        static bool IsValid(string input) {
+            Suid dummy;
+            return Suid.TryParseExact(input, "S", out dummy);
+        }
+
         [TestMethod]
         public void CanParseStraightSuid() {
-            Assert.IsTrue(Suid.IsValid("AAAAAAAAAAAAAAAAAAAAA0"));
-            Assert.IsTrue(Suid.IsValid("AaBb0123456789-_AAAAA0"));
-            Assert.IsFalse(Suid.IsValid("AAAAAAàAAAAAAAAAAAAAA0"));
-            Assert.IsFalse(Suid.IsValid("AAA)AAAAAAAAAAAAAAAAA0"));
-            Assert.IsFalse(Suid.IsValid("AAAAAAAA+AAAAAAAAAAAA0"));
+            Assert.IsTrue(IsValid("AAAAAAAAAAAAAAAAAAAAA0"));
+            Assert.IsTrue(IsValid("AaBb0123456789-_AAAAA0"));
+            Assert.IsFalse(IsValid("AAAAAAàAAAAAAAAAAAAAA0"));
+            Assert.IsFalse(IsValid("AAA)AAAAAAAAAAAAAAAAA0"));
+            Assert.IsFalse(IsValid("AAAAAAAA+AAAAAAAAAAAA0"));
         }
 
         [TestMethod]
@@ -54,7 +59,6 @@ namespace WmcSoft
                     bytes[15] = (byte)i;
                     var s = new Suid(bytes);
                     var expected = s.ToString();
-                    Assert.IsTrue(Suid.IsValid(expected));
                     var actual = new Suid(expected).ToString();
                     Assert.AreEqual(expected, actual);
                 }
