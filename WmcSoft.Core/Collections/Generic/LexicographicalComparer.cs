@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -29,12 +29,8 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
-    /// <summary>
-    /// Decorates a <see cref="IComparer{T}"/> to exposes a method that compares two objects in descending order.
-    /// </summary>
-    /// <typeparam name="T">The type of objects to compare.</typeparam>
     [Serializable]
-    public sealed class ReverseComparer<T> : IComparer<T>
+    public sealed class LexicographicalComparer<T> : IComparer<IEnumerable<T>>
     {
         #region Fields
 
@@ -44,7 +40,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public ReverseComparer(IComparer<T> comparer) {
+        public LexicographicalComparer(IComparer<T> comparer) {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
             _comparer = comparer;
@@ -54,10 +50,27 @@ namespace WmcSoft.Collections.Generic
 
         #region IComparer Members
 
-        public int Compare(T x, T y) {
-            return _comparer.Compare(y, x);
-        }
+        public int Compare(IEnumerable<T> x, IEnumerable<T> y) {
+            using (var enumerator1 = x.GetEnumerator())
+            using (var enumerator2 = y.GetEnumerator()) {
+                var hasValue1 = enumerator1.MoveNext();
+                var hasValue2 = enumerator2.MoveNext();
 
-        #endregion
+                while (hasValue1 & hasValue2) {
+                    int comparison = _comparer.Compare(enumerator1.Current, enumerator2.Current);
+                    if (comparison != 0)
+                        return comparison;
+                    hasValue1 = enumerator1.MoveNext();
+                    hasValue2 = enumerator2.MoveNext();
+                }
+                if (hasValue1)
+                    return 1;
+                if (hasValue2)
+                    return -1;
+                return 0;
+            }
+
+            #endregion
+        }
     }
 }

@@ -68,6 +68,23 @@ namespace WmcSoft.Collections.Generic
             Assert.IsFalse(comparer.Equals(alicia, nobody));
             Assert.IsFalse(comparer.Equals(nobody, jessica));
         }
+
+        [TestMethod]
+        public void CanCompareLexicographically() {
+            int[] a = { 1, 2, 3, 4 };
+            int[] b = { 1, 2, 3, 4, 5 };
+            int[] c = { 4, 3, 2, 1 };
+
+            var comparer = Comparer<int>.Default.Lexicographical();
+
+            Assert.IsTrue(comparer.Compare(a, a) == 0);
+            Assert.IsTrue(comparer.Compare(a, b) < 0);
+            Assert.IsTrue(comparer.Compare(b, a) > 0);
+            Assert.IsTrue(comparer.Compare(b, c) < 0);
+            Assert.IsTrue(comparer.Compare(c, b) > 0);
+            Assert.IsTrue(comparer.Compare(a, c) < 0);
+            Assert.IsTrue(comparer.Compare(c, a) > 0);
+        }
     }
 
     [DebuggerDisplay("{Name} ({Age} years old)")]

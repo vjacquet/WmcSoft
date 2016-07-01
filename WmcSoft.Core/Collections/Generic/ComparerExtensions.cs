@@ -79,6 +79,14 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Lexicographical
+
+        public static IComparer<IEnumerable<T>> Lexicographical<T>(this IComparer<T> comparer) {
+            return new LexicographicalComparer<T>(comparer);
+        }
+
+        #endregion
+
         #region Reverse
 
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer) {
