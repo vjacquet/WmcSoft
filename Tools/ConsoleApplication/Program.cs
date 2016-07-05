@@ -23,7 +23,7 @@ namespace ConsoleApplication
         static void Main(string[] args) {
             var traceSource = new TraceSource("Program");
 
-            using (new TraceSession(typeof(Program))) {
+            using (new TraceSession(traceSource, typeof(Program))) {
                 // reading arguments & inputs
                 var inputs = new List<string>();
                 for (int i = 0; i < args.Length; i++) {
@@ -33,7 +33,7 @@ namespace ConsoleApplication
                     if (arg.FirstOrDefault().BinaryAny(OptionMarks)) {
                         switch (arg[1]) {
                         case 'v':
-                            //program.Verbose = true;
+                            traceSource.Switch.Level = SourceLevels.Verbose;
                             break;
                         default:
                             Console.Error.WriteLines(Properties.Resources.Usage.Split('\r', '\n'));
@@ -56,7 +56,7 @@ namespace ConsoleApplication
                     waitHandle.Set();
                 };
 
-                Console.CancelKeyPress += delegate(object sender, ConsoleCancelEventArgs e) {
+                Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
                     if (!backgroundWorker.CancellationPending) {
                         backgroundWorker.CancelAsync();
                         e.Cancel = true;
@@ -64,6 +64,7 @@ namespace ConsoleApplication
                 };
 
                 backgroundWorker.DoWork += (sender, e) => {
+                    traceSource.TraceVerbose(0, "Working...");
                     throw new NotImplementedException();
                 };
 
