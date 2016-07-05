@@ -31,6 +31,13 @@ namespace WmcSoft.Diagnostics
 {
     public static class TraceSourceExtensions
     {
+        public static void TraceVerbose(this TraceSource traceSource, int id, string message) {
+            traceSource.TraceEvent(TraceEventType.Verbose, id, message);
+        }
+        public static void TraceVerbose(this TraceSource traceSource, int id, string format, params object[] args) {
+            traceSource.TraceEvent(TraceEventType.Verbose, id, format, args);
+        }
+
         public static void TraceWarning(this TraceSource traceSource, int id) {
             traceSource.TraceEvent(TraceEventType.Warning, id);
         }
@@ -49,6 +56,16 @@ namespace WmcSoft.Diagnostics
         }
         public static void TraceError(this TraceSource traceSource, int id, string format, params object[] args) {
             traceSource.TraceEvent(TraceEventType.Error, id, format, args);
+        }
+
+        public static void TraceCritical(this TraceSource traceSource, int id) {
+            traceSource.TraceEvent(TraceEventType.Critical, id);
+        }
+        public static void TraceCritical(this TraceSource traceSource, int id, string message) {
+            traceSource.TraceEvent(TraceEventType.Critical, id, message);
+        }
+        public static void TraceCritical(this TraceSource traceSource, int id, string format, params object[] args) {
+            traceSource.TraceEvent(TraceEventType.Critical, id, format, args);
         }
 
         #region TraceXxxBlock methods
