@@ -111,7 +111,7 @@ namespace WmcSoft
         }
 
         int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
-            return CombineHashCodes(comparer.GetHashCode(Item1), comparer.GetHashCode(Item2));
+            return CombineHashCodes(comparer, Item1, Item2);
         }
 
         int IStructuralComparable.CompareTo(object other, IComparer comparer) {
