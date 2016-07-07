@@ -36,7 +36,7 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        [Ignore/* code is not ready*/] 
+        [Ignore/* code is not ready*/]
         public void CanRemoveObliqueElement() {
             var t = new Tableau();
             t.Add(7);
