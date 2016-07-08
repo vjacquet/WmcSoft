@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using static System.Math;
 
 namespace WmcSoft.Collections.Generic
@@ -31,9 +32,19 @@ namespace WmcSoft.Collections.Generic
     public class TreeNode<T>
     {
         public TreeNode<T> Parent { get; private set; }
-        public TreeNode<T> FirstChild { get; private set; }
         public TreeNode<T> FollowingSibling { get; private set; }
         public TreeNode<T> PrecedingSibling { get; private set; }
+        public TreeNode<T> FirstChild { get; private set; }
+        public TreeNode<T> LastChild {
+            get {
+                if (FirstChild == null)
+                    return null;
+                return FirstChild.PrecedingSibling;
+            }
+        }
+        public T Value { get; set; }
+
+        public bool IsLeaf { get { return FirstChild == null; } }
 
         public int Weight {
             get {
@@ -57,6 +68,74 @@ namespace WmcSoft.Collections.Generic
                 }
                 return n + 1;
             }
+        }
+
+        public TreeNode<T> InsertBefore(T value) {
+            var node = new TreeNode<T> {
+                Parent = Parent,
+                PrecedingSibling = PrecedingSibling,
+                FollowingSibling = this,
+                Value = value,
+            };
+            PrecedingSibling = node;
+            return node;
+        }
+
+        public TreeNode<T> InsertAfter(T value) {
+            var node = new TreeNode<T> {
+                Parent = Parent,
+                PrecedingSibling = this,
+                FollowingSibling = FollowingSibling,
+                Value = value,
+            };
+            FollowingSibling = node;
+            return node;
+        }
+
+        private TreeNode<T> AddEmpty(T value) {
+            var node = new TreeNode<T> {
+                Parent = this,
+                Value = value,
+            };
+            node.PrecedingSibling = node;
+            node.FollowingSibling = node;
+            FirstChild = node;
+            return node;
+        }
+        public TreeNode<T> Append(T value) {
+            var head = FirstChild;
+            if (head == null)
+                return AddEmpty(value);
+            var tail = LastChild;
+            var node = new TreeNode<T> {
+                Parent = this,
+                Value = value,
+                PrecedingSibling = tail,
+                FollowingSibling = tail.FollowingSibling,
+            };
+            tail.FollowingSibling = node;
+            return node;
+        }
+
+        public TreeNode<T> Preprend(T value) {
+            var head = FirstChild;
+            if (head == null)
+                return AddEmpty(value);
+            var node = new TreeNode<T> {
+                Parent = this,
+                Value = value,
+                PrecedingSibling = head.PrecedingSibling,
+                FollowingSibling = head,
+            };
+            head.PrecedingSibling = node;
+            FirstChild = node;
+            return node;
+        }
+
+        public bool Remove(T value) {
+            if (FirstChild == null)
+                return false;
+            throw new NotImplementedException();
         }
     }
 }

@@ -74,6 +74,7 @@
     <Compile Include="Collections\Generic\ListDictionaryTests.cs" />
     <Compile Include="Collections\Generic\ListExtensionsTests.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionaryTests.cs" />
+    <Compile Include="Collections\Generic\TreeTests.cs" />
     <Compile Include="Collections\Specialized\GapListTests.cs" />
     <Compile Include="Configuration\FactoryElementTests.cs" />
     <Compile Include="ConvertibleExtensionsTests.cs" />

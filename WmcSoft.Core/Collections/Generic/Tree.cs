@@ -24,10 +24,18 @@
 
 #endregion
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace WmcSoft.Collections.Generic
 {
-    public class Tree<T>
+    public class Tree<T> : IEnumerable<T>
     {
+        public Tree(T value) {
+            Root = new TreeNode<T> { Value = value };
+        }
+
         public TreeNode<T> Root { get; private set; }
 
         public int Weight {
@@ -44,6 +52,16 @@ namespace WmcSoft.Collections.Generic
                     return 0;
                 return Root.Height;
             }
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            if (Root == null)
+                return Enumerable.Empty<T>().GetEnumerator();
+            return ((IEnumerable<T>)Root).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
     }
 }
