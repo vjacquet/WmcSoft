@@ -5,9 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
-    /// <summary>
-    /// Summary description for TreeTests
-    /// </summary>
     [TestClass]
     public class TreeTests
     {
