@@ -50,8 +50,14 @@ namespace WmcSoft
             GC.SuppressFinalize(this);
         }
 
-        public void Add(IDisposable disposable) {
+        /// <summary>
+        /// Adds a disposable to the stack.
+        /// </summary>
+        /// <param name="disposable">The disposable</param>
+        /// <returns>Always <code>true</code></returns>
+        public bool Add(IDisposable disposable) {
             _stack.Push(disposable);
+            return true;
         }
 
         protected virtual void Dispose(bool disposing) {
@@ -65,7 +71,7 @@ namespace WmcSoft
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            return _stack.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

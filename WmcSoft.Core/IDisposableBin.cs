@@ -34,6 +34,6 @@ namespace WmcSoft
     /// </summary>
     public interface IDisposableBin : IDisposable, IEnumerable<IDisposable>
     {
-        void Add(IDisposable disposable);
+        bool Add(IDisposable disposable);
     }
 }

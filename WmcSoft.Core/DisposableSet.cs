@@ -53,9 +53,17 @@ namespace WmcSoft
             GC.SuppressFinalize(this);
         }
 
-        public void Add(IDisposable disposable) {
-            if (_set.Add(disposable))
+        /// <summary>
+        /// Adds a disposable to the set.
+        /// </summary>
+        /// <param name="disposable">The disposable.</param>
+        /// <returns><code>true</code> if the disposable is not already in the set.</returns>
+        public bool Add(IDisposable disposable) {
+            if (_set.Add(disposable)) {
                 _stack.Push(disposable);
+                return true;
+            }
+            return false;
         }
 
         protected virtual void Dispose(bool disposing) {
