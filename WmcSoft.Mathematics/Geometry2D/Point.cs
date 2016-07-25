@@ -77,7 +77,7 @@ namespace WmcSoft.Geometry2D
             return X.GetHashCode() * 397 ^ Y.GetHashCode();
         }
 
-        public sealed override string ToString() {
+        public override string ToString() {
             return ToString("G", null);
         }
 
