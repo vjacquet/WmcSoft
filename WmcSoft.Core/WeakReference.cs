@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace WmcSoft
 {
@@ -33,6 +34,7 @@ namespace WmcSoft
     /// that object to be reclaimed by garbage collection.
     /// </summary>
     /// <typeparam name="T">The type of the weak reference.</typeparam>
+    [Serializable]
     public class WeakReference<T> : WeakReference where T : class
     {
         /// <summary>
@@ -50,6 +52,9 @@ namespace WmcSoft
         /// <param name="trackResurrection">Indicates when to stop tracking the object. If true, the object is tracked 
         /// after finalization; if false, the object is only tracked until finalization.</param>
         public WeakReference(T target, bool trackResurrection) : base(target, trackResurrection) {
+        }
+
+        protected WeakReference(SerializationInfo info, StreamingContext context) : base(info, context) {
         }
 
         /// <summary>

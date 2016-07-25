@@ -943,6 +943,7 @@ namespace WmcSoft.Collections.Generic
             buffer.CopyBackwardsTo(last, list, start + first, length - last);
             return start + first;
         }
+
         #endregion
 
         #region Pop
@@ -1101,19 +1102,16 @@ namespace WmcSoft.Collections.Generic
                 _length = length;
             }
 
-            public T this[int index]
-            {
+            public T this[int index] {
                 get { return _underlying[_startIndex + index]; }
                 set { _underlying[_startIndex + index] = value; }
             }
 
-            public int Count
-            {
+            public int Count {
                 get { return _length; }
             }
 
-            public bool IsReadOnly
-            {
+            public bool IsReadOnly {
                 get { return true; }
             }
 

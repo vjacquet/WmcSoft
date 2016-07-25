@@ -34,7 +34,7 @@ namespace WmcSoft
     /// </summary>
     public static class Disposable
     {
-        class EmptyDisposable : IDisposable
+        sealed class EmptyDisposable : IDisposable
         {
             void IDisposable.Dispose() {
             }

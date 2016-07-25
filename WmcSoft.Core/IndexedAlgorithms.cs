@@ -194,7 +194,8 @@ namespace WmcSoft
         /// <param name="list">The list.</param>
         /// <param name="i">The item at the <paramref name="i"/> index.</param>
         /// <param name="j">The item at the <paramref name="j"/> index.</param>
-        public static void SwapItems<T>(this IList<T> list, int i, int j) {
+        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
+        public static void SwapItems<T>(this T[] list, int i, int j) {
             T temp = list[i];
             list[i] = list[j];
             list[j] = temp;
