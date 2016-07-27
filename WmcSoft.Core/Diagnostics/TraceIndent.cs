@@ -37,7 +37,7 @@ namespace WmcSoft.Diagnostics
     {
         #region Private fields
 
-        Action _onDispose;
+        int _disposed;
 
         #endregion
 
@@ -45,7 +45,6 @@ namespace WmcSoft.Diagnostics
 
         public TraceIndent() {
             Trace.Indent();
-            _onDispose = () => Trace.Unindent();
         }
 
         #endregion
@@ -53,14 +52,16 @@ namespace WmcSoft.Diagnostics
         #region IDisposable Membres
 
         ~TraceIndent() {
-            Debug.Assert(_onDispose == null, "Dispose should have been called.");
+            Trace.TraceError("TraceIndent.Dispose should have been called.");
         }
 
         public void Dispose() {
-            var action = Interlocked.Exchange(ref _onDispose, null);
-            Debug.Assert(action != null, "Dispose must be called once.");
-            action();
-            GC.SuppressFinalize(this);
+            if (Interlocked.Increment(ref _disposed) == 1) {
+                Trace.Unindent();
+                GC.SuppressFinalize(this);
+            }
+
+            Debug.Assert(_disposed == 1, "Dispose must be called once.");
         }
 
         #endregion
