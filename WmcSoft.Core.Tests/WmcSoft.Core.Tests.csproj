@@ -80,6 +80,7 @@
     <Compile Include="ConvertibleExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
+    <Compile Include="Diagnostics\Sentries\AggregatedSentyTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />
     <Compile Include="Globalization\BusinessCalendarTests.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="IntExtensionsTests.cs" />
     <Compile Include="OrdinalExtensionsTests.cs" />
     <Compile Include="FuncExtensionsTests.cs" />
+    <Compile Include="Text\TrieTests.cs" />
     <Compile Include="WeakReferenceTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />

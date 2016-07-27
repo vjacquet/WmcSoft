@@ -26,9 +26,13 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace WmcSoft.Diagnostics.Sentries
 {
+    /// <summary>
+    /// Represents a sentry that observe and aggregate the status of other sentries.
+    /// </summary>
     public class AggregateSentry : SentryBase, IObserver<SentryStatus>, IDisposable
     {
         #region Utility classes
@@ -104,15 +108,23 @@ namespace WmcSoft.Diagnostics.Sentries
         void IObserver<SentryStatus>.OnCompleted() {
         }
 
+        ~AggregateSentry() {
+            Dispose(false);
+        }
+
         public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
             UnsubscribeAll();
         }
 
         private void UnsubscribeAll() {
             var length = _sentries.Length;
             for (int i = 0; i < length; i++) {
-                var disposer = _unsubscribers[i];
-                _unsubscribers[i] = null;
+                var disposer = Interlocked.Exchange(ref _unsubscribers[i], null);
                 disposer?.Dispose();
             }
         }
