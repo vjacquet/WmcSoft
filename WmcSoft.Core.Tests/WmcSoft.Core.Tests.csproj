@@ -81,6 +81,7 @@
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
     <Compile Include="Diagnostics\Sentries\AggregatedSentyTests.cs" />
+    <Compile Include="Diagnostics\TraceIndentTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />
     <Compile Include="Globalization\BusinessCalendarTests.cs" />
