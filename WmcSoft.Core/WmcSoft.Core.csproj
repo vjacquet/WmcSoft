@@ -119,6 +119,7 @@
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
+    <Compile Include="Symbol.cs" />
     <Compile Include="Text\Trie.cs" />
     <Compile Include="Triple.cs" />
     <Compile Include="Pair.cs" />
