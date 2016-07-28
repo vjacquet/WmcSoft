@@ -1,5 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.IO;
+
+using Cloner = System.Runtime.Serialization.Formatters.Binary.BinaryFormatter;
 
 namespace WmcSoft
 {
@@ -21,6 +26,20 @@ namespace WmcSoft
 
             Assert.AreNotEqual(x, y);
             Assert.AreEqual((string)x, (string)y);
+        }
+
+        [TestMethod]
+        public void CanRoundTripSymbol() {
+            using (var ms = new MemoryStream()) {
+                Symbol<int> x = "symbol";
+
+                var f = new Cloner(null, new StreamingContext(StreamingContextStates.Clone));
+                f.Serialize(ms, x);
+                ms.Rewind();
+                var y = (Symbol<int>)f.Deserialize(ms);
+
+                Assert.AreEqual(x, y);
+            }
         }
     }
 }
