@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 using System.Xml;
 
 namespace WmcSoft
@@ -33,7 +34,8 @@ namespace WmcSoft
     /// Represents a family of symbols.
     /// </summary>
     /// <typeparam name="T">The type of the</typeparam>
-    public struct Symbol<T> : IEquatable<Symbol<T>>
+    [Serializable]
+    public struct Symbol<T> : IEquatable<Symbol<T>>, ISerializable
     {
         static readonly NameTable nt = new NameTable();
 
@@ -75,6 +77,14 @@ namespace WmcSoft
 
         public override string ToString() {
             return value ?? "";
+        }
+
+        private Symbol(SerializationInfo info, StreamingContext context)
+            : this((string)info.GetValue("symbol", typeof(string))) {
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("symbol", value, typeof(string));
         }
     }
 }
