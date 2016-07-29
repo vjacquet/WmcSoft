@@ -33,7 +33,7 @@ namespace WmcSoft
     /// <summary>
     /// Represents a family of symbols.
     /// </summary>
-    /// <typeparam name="T">The type of the</typeparam>
+    /// <typeparam name="T">The type of the family.</typeparam>
     [Serializable]
     public struct Symbol<T> : IEquatable<Symbol<T>>, ISerializable
     {
@@ -59,7 +59,7 @@ namespace WmcSoft
         }
 
         public override bool Equals(object obj) {
-            if (obj == null || obj.GetType() != GetType())
+            if (obj == null || obj.GetType() != typeof(Symbol<T>))
                 return false;
             return Equals((Symbol<T>)obj);
         }

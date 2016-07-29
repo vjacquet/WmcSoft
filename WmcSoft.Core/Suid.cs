@@ -81,8 +81,8 @@ namespace WmcSoft
         /// <exception cref="ArgumentNullException"><paramref name="b"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException"><paramref name="b"/> is not 16 bytes long.</exception>
         public Suid(params byte[] b) {
-            if (b == null) throw new ArgumentNullException("bytes");
-            if (b.Length != 16) throw new ArgumentException("bytes");
+            if (b == null) throw new ArgumentNullException("b");
+            if (b.Length != 16) throw new ArgumentException("b");
             _storage = new byte[16];
             Array.Copy(b, _storage, b.Length);
         }

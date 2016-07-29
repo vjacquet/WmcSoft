@@ -22,8 +22,8 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        private Matrix3(NumericsUtilities.UninitializedTag tag) {
-            _storage = new double[N * N];
+        private Matrix3(NumericsUtilities.UninitializedTag tag)
+            : this(tag, new double[N * N]) {
         }
 
         private Matrix3(NumericsUtilities.UninitializedTag tag, double[] storage) {

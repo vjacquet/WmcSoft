@@ -47,6 +47,8 @@ namespace WmcSoft.Arithmetics
             if (x == null || y == null)
                 return 0d;
             var length = Math.Min(x.Length, y.Length);
+            if (length == 0)
+                return 0d;
             var result = x[0] * y[0];
             for (int i = 1; i < length; i++) {
                 result += x[i] * y[i];
@@ -68,6 +70,8 @@ namespace WmcSoft.Arithmetics
             if (x == null || y == null)
                 return arithmetics.Zero;
             var length = Math.Min(x.Length, y.Length);
+            if (length == 0)
+                return arithmetics.Zero;
             var result = arithmetics.Multiply(x[0], y[0]);
             for (int i = 1; i < length; i++) {
                 result = arithmetics.Add(result, arithmetics.Multiply(x[i], y[i]));
@@ -93,6 +97,8 @@ namespace WmcSoft.Arithmetics
             if (x == null || y == null)
                 return ring.Zero;
             var length = Math.Min(x.Length, y.Length);
+            if (length == 0)
+                return ring.Zero;
             var result = ring.Multiply(x[0], y[0]);
             for (int i = 1; i < length; i++) {
                 result = ring.Add(result, ring.Multiply(x[i], y[i]));
