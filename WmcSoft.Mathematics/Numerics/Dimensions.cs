@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Numerics
 {
@@ -60,6 +61,10 @@ namespace WmcSoft.Numerics
         }
 
         #region Methods
+
+        public int GetCardinality() {
+            return _dimensions.Aggregate(1, (x, y) => x * y);
+        }
 
         public int GetDimension(int i) {
             if (_dimensions == null)

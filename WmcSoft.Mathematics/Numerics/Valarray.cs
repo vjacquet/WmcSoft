@@ -30,14 +30,17 @@ using System.Linq;
 
 namespace WmcSoft.Numerics
 {
+    /// <summary>
+    /// Represents an array of values.
+    /// </summary>
     [Serializable]
     public sealed class Valarray : IEnumerable<double>, ICloneable<Valarray>, IEquatable<Valarray>
     {
-        public static Valarray Empty;
+        public static Valarray Empty = new Valarray(0);
 
         #region Private utilities
 
-        class Writer
+        sealed class Writer
         {
             int _i;
             double[] _data;
@@ -76,7 +79,7 @@ namespace WmcSoft.Numerics
             }
         }
 
-        class SegmentEnumerator : IEnumerator<double>
+        sealed class SegmentEnumerator : IEnumerator<double>
         {
             int _length;
             double[] _data;
@@ -139,10 +142,12 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        private Valarray(Dimensions dimensions) {
+        private Valarray(Dimensions dimensions, double[] data) {
             _dimensions = dimensions;
-            var length = dimensions.Aggregate(1, (x, y) => x * y);
-            _data = new double[length];
+            _data = data;
+        }
+        private Valarray(Dimensions dimensions)
+            : this(dimensions, new double[dimensions.GetCardinality()]) {
         }
 
         private Valarray(int[] dimensions)
@@ -158,6 +163,8 @@ namespace WmcSoft.Numerics
         }
 
         public Valarray(int n) {
+            if (n < 0) throw new ArgumentNullException("n");
+
             _dimensions = new Dimensions(n);
             _data = new double[n];
         }
@@ -170,9 +177,20 @@ namespace WmcSoft.Numerics
             }
         }
 
+        /// <summary>
+        /// Creates a new one-dimensional array <see cref="Valarray"/> with the given values.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <remarks>The <see cref="Valarray"/> takes ownership of the values, it does not copy them.</remarks>
         public Valarray(params double[] values) {
-            _dimensions = new Dimensions(values.Length);
-            _data = values;
+            if (values == null) throw new ArgumentNullException("values");
+            if (values.Length == 0) {
+                _dimensions = Empty._dimensions;
+                _data = Empty._data;
+            } else {
+                _dimensions = new Dimensions(values.Length);
+                _data = values;
+            }
         }
 
         /// <summary>
@@ -209,9 +227,28 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
+        /// <summary>
+        /// The number of dimensions of the <see cref="Valarray"/>.
+        /// </summary>
         public int Rank { get { return _dimensions.Count; } }
+
+        /// <summary>
+        /// The dimensions of the <see cref="Valarray"/>.
+        /// </summary>
         public Dimensions Size { get { return _dimensions; } }
+
+        /// <summary>
+        /// The number of values in the <see cref="Valarray"/>.
+        /// </summary>
         public int Cardinality { get { return _data == null ? 0 : _data.Length; } }
+
+        /// <summary>
+        /// The value at the specified coordinates.
+        /// </summary>
+        /// <param name="indices">The indice of the target value, in every dimension</param>
+        /// <returns>The value</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The rank of the <paramref name="indices"/> does not match the rank of the <see cref="Valarray"/>.</exception>
+        /// <remarks>Negative and out of range indices are handled throw modulo arithmetics.</remarks>
         public double this[params int[] indices] {
             get {
                 var index = _dimensions.GetIndex(indices);
@@ -282,6 +319,12 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Applies the unary operation to each elements and puts the result in a new <see cref="Valarray"/>
+        /// with the same shape.
+        /// </summary>
+        /// <param name="op">The unary operation.</param>
+        /// <returns>A new <see cref="Valarray"/>.</returns>
         public Valarray Map(Func<double, double> op) {
             if (Rank == 0)
                 return Clone();
@@ -294,6 +337,11 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        /// <summary>
+        /// Applies inplace the unary operation to each elements
+        /// </summary>
+        /// <param name="op">The unary operation.</param>
+        /// <returns>The current <see cref="Valarray"/>.</returns>
         public Valarray Transform(Func<double, double> op) {
             if (Rank > 0) {
                 var length = _data.Length;
@@ -429,12 +477,7 @@ namespace WmcSoft.Numerics
         #region ICloneable<Valarray> Membres
 
         public Valarray Clone() {
-            var clone = new Valarray();
-            clone._dimensions = _dimensions;
-            if (_dimensions.Count > 0) {
-                clone._data = (double[])_data.Clone();
-            }
-            return clone;
+            return new Valarray(_dimensions, (double[])_data.Clone());
         }
 
         #endregion
