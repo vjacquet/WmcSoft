@@ -116,7 +116,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Merges a dictionary with another one, eventually overriding the existing values.
+        /// Modifies the <paramref name="dictionary"/> to contain all elements that are present in itself, the specified dictionary, or both.
         /// </summary>
         /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
         /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
@@ -124,7 +124,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="dictionary">The source dictionary.</param>
         /// <param name="other">The other dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
-        public static TDictionary MergeWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
+        public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
             where TDictionary : IDictionary<TKey, TValue> {
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
@@ -137,7 +137,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Merges a dictionary with another one, eventually merging the existing values.
+        /// Modifies the <paramref name="dictionary"/> to contain all elements that are present in itself, the specified dictionary, 
+        /// or both by merging the existing values.
         /// </summary>
         /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
         /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
@@ -146,7 +147,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The other dictionary.</param>
         /// <param name="merger">A function to combine the values when the key exists in both dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
-        public static TDictionary MergeWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, Func<TValue, TValue, TValue> merger)
+        public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, Func<TValue, TValue, TValue> merger)
             where TDictionary : IDictionary<TKey, TValue> {
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
