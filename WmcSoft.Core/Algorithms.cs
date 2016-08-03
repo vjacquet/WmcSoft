@@ -161,6 +161,19 @@ namespace WmcSoft
         }
 
         /// <summary>
+        /// Assigns a new value to an element and returns the old one..
+        /// </summary>
+        /// <typeparam name="T">The type of element to assign.</typeparam>
+        /// <param name="obj">The element.</param>
+        /// <param name="value">The new value.</param>
+        /// <returns>The old value.</returns>
+        public static T Exchange<T>(ref T obj, T value) {
+            var t = obj;
+            obj = value;
+            return t;
+        }
+
+        /// <summary>
         /// Swaps two elements.
         /// </summary>
         /// <typeparam name="T">The type of element to swap.</typeparam>
@@ -176,6 +189,11 @@ namespace WmcSoft
 
         #region Coprimes
 
+        /// <summary>
+        /// Returns the coprimes elements.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <returns>The coprimes.</returns>
         public static IReadOnlyList<int> Coprimes(params int[] values) {
             var list = new List<int>(values);
             list.Sort();
@@ -339,18 +357,48 @@ namespace WmcSoft
             return max;
         }
 
+        /// <summary>
+        /// Returns the smaller of two instances of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of two instances.</returns>
         public static T Min<T>(T x, T y) where T : IComparable<T> {
             return y.CompareTo(x) < 0 ? y : x;
         }
 
+        /// <summary>
+        /// Returns the smaller of n instances of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of n instances.</returns>
         public static T Min<T>(params T[] args) where T : IComparable<T> {
             return args.Min();
         }
 
+        /// <summary>
+        /// Returns the smaller of two instances of <typeparamref name="T"/>, using a <see cref="Comparison{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparison">The comparison.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of two instances.</returns>
         public static T Min<T>(Comparison<T> comparison, T x, T y) {
             return comparison(y, x) < 0 ? y : x;
         }
 
+        /// <summary>
+        /// Returns the smaller of n instances of <typeparamref name="T"/>, using a <see cref="Comparison{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparison">The comparison.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of n instances.</returns>
         public static T Min<T>(Comparison<T> comparison, params T[] args) {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
@@ -363,10 +411,26 @@ namespace WmcSoft
             return min;
         }
 
+        /// <summary>
+        /// Returns the smaller of two instances of <typeparamref name="T"/>, using a <see cref="Relation{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="relation">The relation.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of two instances.</returns>
         public static T Min<T>(Relation<T> relation, T x, T y) {
             return relation(y, x) ? y : x;
         }
 
+        /// <summary>
+        /// Returns the smaller of n instances of <typeparamref name="T"/>, using a <see cref="Relation{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="relation">The relation.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of n instances.</returns>
         public static T Min<T>(Relation<T> relation, params T[] args) {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
@@ -379,28 +443,74 @@ namespace WmcSoft
             return min;
         }
 
+        /// <summary>
+        /// Returns the smaller of two instances of <typeparamref name="T"/>, using a <see cref="IComparer{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparer">The comparer.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of two instances.</returns>
         public static T Min<T>(IComparer<T> comparer, T x, T y) {
             Comparison<T> comparison = comparer.Compare;
             return Min(comparison, x, y);
         }
 
+        /// <summary>
+        /// Returns the smaller of n instances of <typeparamref name="T"/>, using a <see cref="IComparer{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparer">The comparer.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The smaller of n instances.</returns>
         public static T Min<T>(IComparer<T> comparer, params T[] args) {
             Comparison<T> comparison = comparer.Compare;
             return Min(comparison, args);
         }
 
-        public static T Max<T>(params T[] args) where T : IComparable<T> {
-            return args.Max();
-        }
-
+        /// <summary>
+        /// Returns the larger of two instances of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of two instances.</returns>
         public static T Max<T>(T x, T y) where T : IComparable<T> {
             return y.CompareTo(x) < 0 ? x : y;
         }
 
+        /// <summary>
+        /// Returns the larger of n instances of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of n instances.</returns>
+        public static T Max<T>(params T[] args) where T : IComparable<T> {
+            return args.Max();
+        }
+
+        /// <summary>
+        /// Returns the larger of two instances of <typeparamref name="T"/>, using a <see cref="Comparison{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparison">The comparison.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of two instances.</returns>
         public static T Max<T>(Comparison<T> comparison, T x, T y) {
             return comparison(y, x) < 0 ? x : y;
         }
 
+        /// <summary>
+        /// Returns the larger of n instances of <typeparamref name="T"/>, using a <see cref="Comparison{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparison">The comparison.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of n instances.</returns>
         public static T Max<T>(Comparison<T> comparison, params T[] args) {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
@@ -413,10 +523,26 @@ namespace WmcSoft
             return max;
         }
 
+        /// <summary>
+        /// Returns the larger of two instances of <typeparamref name="T"/>, using a <see cref="Relation{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="relation">The relation.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of two instances.</returns>
         public static T Max<T>(Relation<T> relation, T x, T y) {
             return relation(y, x) ? x : y;
         }
 
+        /// <summary>
+        /// Returns the larger of n instances of <typeparamref name="T"/>, using a <see cref="Relation{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="relation">The relation.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of n instances.</returns>
         public static T Max<T>(Relation<T> relation, params T[] args) {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
@@ -429,21 +555,44 @@ namespace WmcSoft
             return max;
         }
 
+        /// <summary>
+        /// Returns the larger of two instances of <typeparamref name="T"/>, using a <see cref="IComparer{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparer">The comparer.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of two instances.</returns>
         public static T Max<T>(IComparer<T> comparer, T x, T y) {
             Comparison<T> comparison = comparer.Compare;
             return Max(comparison, x, y);
         }
 
+        /// <summary>
+        /// Returns the larger of n instances of <typeparamref name="T"/>, using a <see cref="IComparer{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparer">The comparer.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The larger of n instances.</returns>
         public static T Max<T>(IComparer<T> comparer, params T[] args) {
             Comparison<T> comparison = comparer.Compare;
             return Max(comparison, args);
         }
 
-        public static Tuple<T, T> MinMax<T>(params T[] args) where T : IComparable<T> {
+        /// <summary>
+        /// Returns the smaller and larger of n instances of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The pair of the smaller and larger of n instances.</returns>
+        public static Pair<T> MinMax<T>(params T[] args) where T : IComparable<T> {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
             if (args.Length == 1)
-                return Tuple.Create(args[0], args[0]);
+                return Pair.Create(args[0], args[0]);
 
             var min = args[0];
             var max = args[0];
@@ -453,14 +602,22 @@ namespace WmcSoft
                 else if (args[i].CompareTo(max) >= 0)
                     max = args[i];
             }
-            return Tuple.Create(min, max);
+            return Pair.Create(min, max);
         }
 
-        public static Tuple<T, T> MinMax<T>(Comparison<T> comparison, params T[] args) {
+        /// <summary>
+        /// Returns the smaller and larger of n instances of <typeparamref name="T"/>, using a <see cref="Comparison{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparison">The comparison.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The pair of the smaller and larger of n instances.</returns>
+        public static Pair<T> MinMax<T>(Comparison<T> comparison, params T[] args) {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
             if (args.Length == 1)
-                return Tuple.Create(args[0], args[0]);
+                return Pair.Create(args[0], args[0]);
 
             var min = args[0];
             var max = args[0];
@@ -470,19 +627,22 @@ namespace WmcSoft
                 else if (comparison(args[i], max) >= 0)
                     max = args[i];
             }
-            return Tuple.Create(min, max);
+            return Pair.Create(min, max);
         }
 
-        public static Tuple<T, T> MinMax<T>(IComparer<T> comparer, params T[] args) {
-            Comparison<T> comparison = comparer.Compare;
-            return MinMax(comparison, args);
-        }
-
-        public static Tuple<T, T> MinMax<T>(Relation<T> relation, params T[] args) {
+        /// <summary>
+        /// Returns the smaller and larger of n instances of <typeparamref name="T"/>, using a <see cref="Relation{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="relation">The relation.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The pair of the smaller and larger of n instances.</returns>
+        public static Pair<T> MinMax<T>(Relation<T> relation, params T[] args) {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
             if (args.Length == 1)
-                return Tuple.Create(args[0], args[0]);
+                return Pair.Create(args[0], args[0]);
 
             var min = args[0];
             var max = args[0];
@@ -492,7 +652,20 @@ namespace WmcSoft
                 else if (relation(max, args[i]))
                     max = args[i];
             }
-            return Tuple.Create(min, max);
+            return Pair.Create(min, max);
+        }
+
+        /// <summary>
+        /// Returns the smaller and larger of n instances of <typeparamref name="T"/>, using a <see cref="IComparer{T}"/> .
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="comparer">The comparer.</param>
+        /// <param name="x">The first instance.</param>
+        /// <param name="y">The second instance</param>
+        /// <returns>The pair of the smaller and larger of n instances.</returns>
+        public static Pair<T> MinMax<T>(IComparer<T> comparer, params T[] args) {
+            Comparison<T> comparison = comparer.Compare;
+            return MinMax(comparison, args);
         }
 
         #endregion

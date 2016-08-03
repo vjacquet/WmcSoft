@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -108,6 +109,54 @@ namespace WmcSoft.Collections.Generic
                 foreach (var entry in other) {
                     TValue existing;
                     if (dictionary.TryGetValue(entry.Key, out existing) && comparer.Equals(existing, entry.Value)) {
+                        dictionary.Remove(entry.Key);
+                    }
+                }
+            }
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Modifies the <paramref name="dictionary"/> to contain all elements that are present in both dictionaries.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <typeparam name="TDictionary">The type of the dictionary source dictionary, for chaining.</typeparam>
+        /// <param name="dictionary">The source dictionary.</param>
+        /// <param name="other">The other dictionary.</param>
+        /// <returns>The <paramref name="dictionary"/>.</returns>
+        public static TDictionary IntersectWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
+            where TDictionary : IDictionary<TKey, TValue> {
+            if (dictionary == null)
+                throw new ArgumentNullException("dictionary");
+            if (other != null) {
+                foreach (var key in dictionary.Keys.ToArray()) {
+                    if (!other.ContainsKey(key))
+                        dictionary.Remove(key);
+                }
+            }
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Modifies the <paramref name="dictionary"/> to contain all elements that are present in both dictionaries by merging the values.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <typeparam name="TDictionary">The type of the dictionary source dictionary, for chaining.</typeparam>
+        /// <param name="dictionary">The source dictionary.</param>
+        /// <param name="other">The other dictionary.</param>
+        /// <returns>The <paramref name="dictionary"/>.</returns>
+        public static TDictionary IntersectWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, Func<TValue, TValue, TValue> merger)
+            where TDictionary : IDictionary<TKey, TValue> {
+            if (dictionary == null)
+                throw new ArgumentNullException("dictionary");
+            if (other != null) {
+                foreach (var entry in dictionary.ToArray()) {
+                    TValue existing;
+                    if (other.TryGetValue(entry.Key, out existing)) {
+                        dictionary[entry.Key] = merger(entry.Value, existing);
+                    } else {
                         dictionary.Remove(entry.Key);
                     }
                 }

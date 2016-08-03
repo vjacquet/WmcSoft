@@ -1199,7 +1199,7 @@ namespace WmcSoft.Collections.Generic
             var start = startIndex;
             var end = startIndex + length - 1;
             while (start < end) {
-                list.SwapItems(start, end);
+                SwapItems(list, start, end);
             }
         }
 
