@@ -79,7 +79,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="dictionary">The source dictionary.</param>
         /// <param name="other">The other dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
-        public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
+        public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other)
             where TDictionary : IDictionary<TKey, TValue> {
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
@@ -101,7 +101,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The other dictionary.</param>
         /// <param name="comparer">A function to combine the values when the key exists in both dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
-        public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, IEqualityComparer<TValue> comparer)
+        public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other, IEqualityComparer<TValue> comparer)
             where TDictionary : IDictionary<TKey, TValue> {
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
@@ -173,7 +173,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="dictionary">The source dictionary.</param>
         /// <param name="other">The other dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
-        public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
+        /// <remarks>When the key exists in both dictionary, the value is overwritten.</remarks>
+        public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other)
             where TDictionary : IDictionary<TKey, TValue> {
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
@@ -196,7 +197,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The other dictionary.</param>
         /// <param name="merger">A function to combine the values when the key exists in both dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
-        public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, Func<TValue, TValue, TValue> merger)
+        public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other, Func<TValue, TValue, TValue> merger)
             where TDictionary : IDictionary<TKey, TValue> {
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");

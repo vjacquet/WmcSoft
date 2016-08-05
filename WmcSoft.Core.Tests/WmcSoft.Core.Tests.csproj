@@ -69,6 +69,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteDictionaryTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteListTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteCollectionTests.cs" />
+    <Compile Include="Collections\Generic\DictionaryExtensionsTests.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensionsTests.cs" />
     <Compile Include="Collections\Generic\CollectionExtensionsTests.cs" />
     <Compile Include="Collections\Generic\ListDictionaryTests.cs" />
