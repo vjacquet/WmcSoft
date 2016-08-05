@@ -148,23 +148,11 @@ namespace WmcSoft.Xml
         }
 
         public static int IndexOf(this XmlNode self) {
-            int index = 0;
-            foreach (XmlNode node in self.ParentNode.ChildNodes) {
-                if (self == node)
-                    return index;
-                index++;
-            }
-            return -1;
+            return IndexOf(self.ParentNode.ChildNodes, self);
         }
 
         public static int IndexOf(this XmlNode self, XmlNode child) {
-            int index = 0;
-            foreach (XmlNode node in self.ChildNodes) {
-                if (child == node)
-                    return index;
-                index++;
-            }
-            return -1;
+            return IndexOf(self.ChildNodes, child);
         }
 
         public static int IndexOf(this XmlNodeList self, XmlNode child) {
@@ -175,6 +163,106 @@ namespace WmcSoft.Xml
                 index++;
             }
             return -1;
+        }
+
+        /// <summary>
+        /// Selects a list of nodes matching the XPath expression.
+        /// </summary>
+        /// <param name="node">The current node.</param>
+        /// <param name="xpath">The XPath expression.</param>
+        /// <returns>An <see cref="XmlNodeList"/> containing a collection of nodes matching the XPath query, once removed from the document.</returns>
+        /// <exception cref="XPathException">The XPath expression contains a prefix.</exception>
+        public static XmlNodeList RemoveNodes(this XmlNode node, string xpath) {
+            var list = node.SelectNodes(xpath);
+            DetachAll(list);
+            return list;
+        }
+
+        /// <summary>
+        /// Selects a list of nodes matching the XPath expression. Any prefixes found in
+        /// the XPath expression are resolved using the supplied System.Xml.XmlNamespaceManager.
+        /// </summary>
+        /// <param name="node">The current node.</param>
+        /// <param name="xpath">The XPath expression.</param>
+        /// <param name="nsmgr">An <see cref="XmlNamespaceManager"/> to use for resolving namespaces for prefixes in the XPath expression.</param>
+        /// <returns>An <see cref="XmlNodeList"/> containing a collection of nodes matching the XPath query, once removed from the document.</returns>
+        /// <exception cref="XPathException">The XPath expression contains a prefix which is not defined in the XmlNamespaceManager.</exception>
+        public static XmlNodeList RemoveNodes(this XmlNode node, string xpath, XmlNamespaceManager nsmgr) {
+            var list = node.SelectNodes(xpath, nsmgr);
+            DetachAll(list);
+            return list;
+        }
+
+        public static bool Detach(this XmlAttribute attr) {
+            var owner = attr.OwnerElement;
+            if (owner != null) {
+                owner.Attributes.Remove(attr);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool Detach(this XmlNode node) {
+            if (node.ParentNode != null) {
+                node.ParentNode.RemoveChild(node);
+                return true;
+            }
+
+            switch (node.NodeType) {
+            case XmlNodeType.None:
+                break;
+            case XmlNodeType.Element:
+                break;
+            case XmlNodeType.Attribute:
+                return Detach((XmlAttribute)node);
+            case XmlNodeType.Text:
+                break;
+            case XmlNodeType.CDATA:
+                break;
+            case XmlNodeType.EntityReference:
+                break;
+            case XmlNodeType.Entity:
+                break;
+            case XmlNodeType.ProcessingInstruction:
+                break;
+            case XmlNodeType.Comment:
+                break;
+            case XmlNodeType.Document:
+                break;
+            case XmlNodeType.DocumentType:
+                break;
+            case XmlNodeType.DocumentFragment:
+                break;
+            case XmlNodeType.Notation:
+                break;
+            case XmlNodeType.Whitespace:
+                break;
+            case XmlNodeType.SignificantWhitespace:
+                break;
+            case XmlNodeType.EndElement:
+                break;
+            case XmlNodeType.EndEntity:
+                break;
+            case XmlNodeType.XmlDeclaration:
+                break;
+            default:
+                break;
+            }
+
+            return false;
+        }
+
+        public static void DetachAt(this XmlNodeList list, int index) {
+            var node = list[index];
+            Detach(node);
+        }
+
+        public static void DetachAll(this XmlNodeList list) {
+            var length = list.Count;
+            for (int i = 0; i < length; i++) {
+                var node = list[i];
+                Detach(node);
+            }
         }
     }
 }
