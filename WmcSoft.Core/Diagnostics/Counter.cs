@@ -68,6 +68,14 @@ namespace WmcSoft.Diagnostics
         }
 
         /// <summary>
+        /// Resets the counter.
+        /// </summary>
+        /// <returns>Returns the tally before the reset.</returns>
+        public int Reset() {
+            return Interlocked.Exchange(ref _count, 0);
+        }
+
+        /// <summary>
         /// Returns a string that represents the current counter.
         /// </summary>
         /// <returns>A string that represents the current counter.</returns>
