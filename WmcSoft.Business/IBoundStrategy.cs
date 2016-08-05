@@ -36,6 +36,7 @@ namespace WmcSoft
     public interface IBoundStrategy<T>
     {
         bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper);
+        int Compare(IComparer<T> comparer, T value, T lower, T upper);
     }
 
     public static class BoundStrategyExtensions
@@ -67,6 +68,17 @@ namespace WmcSoft
             where T : IComparable<T>
             where TStrategy : IBoundStrategy<T> {
             return Array.TrueForAll(values, v => strategy.IsWithinRange(Comparer<T>.Default, v, range.Lower, range.Upper));
+        }
+
+        public static int Compare<TStrategy, T>(this TStrategy strategy, T value, T lower, T upper)
+        where TStrategy : IBoundStrategy<T> {
+            return strategy.Compare(Comparer<T>.Default, value, lower, upper);
+        }
+
+        public static int Compare<TStrategy, T>(this TStrategy strategy, T value, Range<T> range)
+            where T : IComparable<T>
+            where TStrategy : IBoundStrategy<T> {
+            return strategy.Compare(Comparer<T>.Default, value, range.Lower, range.Upper);
         }
     }
 }

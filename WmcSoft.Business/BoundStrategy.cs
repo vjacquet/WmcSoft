@@ -42,6 +42,14 @@ namespace WmcSoft
                 return (comparer.Compare(lower, value) <= 0)
                     && (comparer.Compare(value, upper) <= 0);
             }
+
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+                if (comparer.Compare(value, lower) < 0)
+                    return -1;
+                if (comparer.Compare(upper, value) < 0)
+                    return 1;
+                return 0;
+            }
         }
 
         public struct ExclusiveStrategy : IBoundStrategy<T>
@@ -49,6 +57,14 @@ namespace WmcSoft
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) < 0)
                     && (comparer.Compare(value, upper) < 0);
+            }
+
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+                if (comparer.Compare(value, lower) <= 0)
+                    return -1;
+                if (comparer.Compare(upper, value) <= 0)
+                    return 1;
+                return 0;
             }
         }
 
@@ -58,6 +74,14 @@ namespace WmcSoft
                 return (comparer.Compare(lower, value) < 0)
                     && (comparer.Compare(value, upper) <= 0);
             }
+
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+                if (comparer.Compare(value, lower) <= 0)
+                    return -1;
+                if (comparer.Compare(upper, value) < 0)
+                    return 1;
+                return 0;
+            }
         }
 
         public struct UpperExclusiveStrategy : IBoundStrategy<T>
@@ -65,6 +89,14 @@ namespace WmcSoft
             public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
                 return (comparer.Compare(lower, value) <= 0)
                     && (comparer.Compare(value, upper) < 0);
+            }
+
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+                if (comparer.Compare(value, lower) < 0)
+                    return -1;
+                if (comparer.Compare(upper, value) <= 0)
+                    return 1;
+                return 0;
             }
         }
 
@@ -93,6 +125,10 @@ namespace WmcSoft
 
         public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
             return _underlying.IsWithinRange(comparer, value, lower, upper);
+        }
+
+        public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+            return _underlying.Compare(comparer, value, lower, upper);
         }
 
         #endregion
