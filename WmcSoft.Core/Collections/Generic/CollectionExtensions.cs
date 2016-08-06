@@ -871,18 +871,83 @@ namespace WmcSoft.Collections.Generic
         #region Partition
 
         /// <summary>
-        /// Implements a stable partition of the list 
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static int FindPartitionPoint<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            return FindPartitionPoint(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static int FindPartitionPoint<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            int end = start + length - 1;
+            while (start < end && !predicate(list[start]))
+                start++;
+            while (start < end && predicate(list[end]))
+                end--;
+            if (start == end)
+                return start;
+            return -1;
+        }
+
+        /// <summary>
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static bool IsPartitioned<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            return FindPartitionPoint(list, 0, list.Count, predicate) >= 0;
+        }
+
+        /// <summary>
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static bool IsPartitioned<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            return FindPartitionPoint(list, start, length, predicate) >= 0;
+        }
+
+        /// <summary>
+        /// Implements a partition of the list 
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
         /// <param name="list">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
         public static int Partition<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+
             return Partition(list, 0, list.Count, predicate);
         }
 
         /// <summary>
-        /// Implements a stable partition of the list 
+        /// Implements a partition of the list 
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
         /// <param name="list">The list</param>
