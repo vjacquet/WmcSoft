@@ -60,6 +60,7 @@
     <Compile Include="Collections\Generic\Algorithms\IFinder.cs" />
     <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
+    <Compile Include="Collections\Generic\Bag.cs" />
     <Compile Include="Collections\Generic\Compare.cs" />
     <Compile Include="Collections\Generic\CompareBuilderExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerBuilder.cs" />
