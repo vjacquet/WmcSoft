@@ -38,8 +38,7 @@ namespace WmcSoft.Collections.Generic
     {
         #region IndexOf
 
-        static int DoIndexOf<T>(this IList<T> list, T value, int startIndex, int endIndex) {
-            var comparer = EqualityComparer<T>.Default;
+        static int UnguardedIndexOf<T>(IList<T> list, T value, int startIndex, int endIndex, IEqualityComparer<T> comparer) {
             for (int i = startIndex; i < endIndex; i++) {
                 if (comparer.Equals(list[i], value))
                     return i;
@@ -52,7 +51,8 @@ namespace WmcSoft.Collections.Generic
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
 
-            return DoIndexOf(list, value, startIndex, startIndex + count);
+            var comparer = EqualityComparer<T>.Default;
+            return UnguardedIndexOf(list, value, startIndex, startIndex + count, comparer);
         }
 
         #endregion

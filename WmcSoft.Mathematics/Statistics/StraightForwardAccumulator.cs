@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using static System.Math;
 
 namespace WmcSoft.Statistics
 {
@@ -94,11 +95,10 @@ namespace WmcSoft.Statistics
         }
 
         public void Remove(double value) {
-            if (_count == 0)
-                throw new InvalidOperationException();
+            if (_count == 0) throw new InvalidOperationException();
             if (_count == 1) {
-                if (!_sum.Equals(value))
-                    throw new ArgumentOutOfRangeException("value");
+                if (!_sum.Equals(value)) throw new ArgumentOutOfRangeException("value");
+
                 Reset();
                 return;
             }
@@ -109,11 +109,10 @@ namespace WmcSoft.Statistics
         }
 
         public void Remove(StraightForwardAccumulator accumulator) {
-            if (_count < accumulator._count)
-                throw new InvalidOperationException();
+            if (_count < accumulator._count) throw new InvalidOperationException();
             if (_count == accumulator._count) {
-                if (!_sum.Equals(accumulator._sum))
-                    throw new ArgumentOutOfRangeException("accumulator");
+                if (!_sum.Equals(accumulator._sum)) throw new ArgumentOutOfRangeException("accumulator");
+
                 Reset();
                 return;
             }
@@ -140,8 +139,8 @@ namespace WmcSoft.Statistics
                 return SquaredMean - mean * mean;
             }
         }
-        public double Sigma { get { return Math.Sqrt(Variance); } }
-        public double ErrorEstimate { get { return Sigma / Math.Sqrt(_count); } }
+        public double Sigma { get { return Sqrt(Variance); } }
+        public double ErrorEstimate { get { return Sigma / Sqrt(_count); } }
 
         #endregion
     }
