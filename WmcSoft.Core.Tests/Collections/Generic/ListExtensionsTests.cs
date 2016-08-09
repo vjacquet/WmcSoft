@@ -9,6 +9,17 @@ namespace WmcSoft.Collections.Generic
     public class ListExtensionsTests
     {
         [TestMethod]
+        public void CheckIndexOfList() {
+            var data = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            Assert.AreEqual(0, data.IndexOf(new[] { 0, 1, 2, 3 }));
+            Assert.AreEqual(3, data.IndexOf(new[] { 3, 4, 5 }));
+            Assert.AreEqual(-1, data.IndexOf(new[] { 3, 5, 4 }));
+            Assert.AreEqual(7, data.IndexOf(new[] { 7, 8, 9 }));
+            Assert.AreEqual(-1, data.IndexOf(new[] { 7, 8, 9, 10 }));
+        }
+
+        [TestMethod]
         public void CheckIndexOfPartial() {
             var data = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 

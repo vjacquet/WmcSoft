@@ -36,6 +36,19 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class ListExtensions
     {
+        #region Equals
+
+        static bool UnguardedStartsWith<T>(IList<T> list, IReadOnlyList<T> value, int startIndex, IEqualityComparer<T> comparer) {
+            var count = value.Count;
+            for (int i = 0; i < count; i++, startIndex++) {
+                if (!comparer.Equals(list[startIndex], value[i]))
+                    return false;
+            }
+            return true;
+        }
+
+        #endregion
+
         #region IndexOf
 
         static int UnguardedIndexOf<T>(IList<T> list, T value, int startIndex, int endIndex, IEqualityComparer<T> comparer) {
@@ -53,6 +66,49 @@ namespace WmcSoft.Collections.Generic
 
             var comparer = EqualityComparer<T>.Default;
             return UnguardedIndexOf(list, value, startIndex, startIndex + count, comparer);
+        }
+
+        static int UnguardedIndexOf<T>(IList<T> list, IReadOnlyList<T> value, int startIndex, int endIndex, IEqualityComparer<T> comparer) {
+            endIndex -= value.Count - 1;
+            if (endIndex < 0)
+                return -1;
+
+            while ((startIndex = UnguardedIndexOf(list, value[0], startIndex, endIndex, comparer)) >= 0) {
+                if (UnguardedStartsWith(list, value, startIndex, comparer))
+                    return startIndex;
+                startIndex++;
+            }
+            return -1;
+        }
+
+        public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value, int startIndex, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
+            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
+            if (value == null) throw new ArgumentNullException("value");
+
+            switch (value.Count) {
+            case 0:
+                return -1;
+            case 1:
+                return UnguardedIndexOf(list, value[0], startIndex, startIndex + count, EqualityComparer<T>.Default);
+            default:
+                return UnguardedIndexOf(list, value, startIndex, startIndex + count, EqualityComparer<T>.Default);
+            }
+        }
+
+        public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (value == null) throw new ArgumentNullException("value");
+
+            switch (value.Count) {
+            case 0:
+                return -1;
+            case 1:
+                return UnguardedIndexOf(list, value[0], 0, list.Count, EqualityComparer<T>.Default);
+            default:
+                return UnguardedIndexOf(list, value, 0, list.Count, EqualityComparer<T>.Default);
+            }
         }
 
         #endregion
