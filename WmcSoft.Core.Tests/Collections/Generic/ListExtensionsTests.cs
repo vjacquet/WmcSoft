@@ -162,5 +162,16 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(3, actual[5]);
             CollectionAssert.AreEqual(expected, actual.ToArray());
         }
+
+        [TestMethod]
+        public void CanFindRotationPoint() {
+            var list= new[] { 1, 2, 3, 4, 5, 6 };
+            var target = new[] { 3, 4, 5, 6, 1, 2 };
+
+            Assert.AreEqual(4, list.FindRotationPoint(target));
+
+            list.Rotate(4);
+            CollectionAssert.AreEqual(target, list);
+        }
     }
 }
