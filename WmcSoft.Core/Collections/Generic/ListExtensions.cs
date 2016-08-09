@@ -113,6 +113,59 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Repeat
+
+        class RepeatedList<T> : IReadOnlyList<T>
+        {
+            readonly IList<T> _list;
+            readonly int _count;
+
+            public RepeatedList(IList<T> list, int times) {
+                _list = list;
+                _count = _list.Count * times;
+            }
+
+            public T this[int index] {
+                get {
+                    if (index < 0 || index >= _count) throw new IndexOutOfRangeException();
+                    return _list[index % _list.Count];
+                }
+            }
+
+            public int Count {
+                get { return _count; }
+            }
+
+            public IEnumerator<T> GetEnumerator() {
+                var times = _count / _list.Count;
+                while (times != 0) {
+                    foreach (var item in _list)
+                        yield return item;
+                    times--;
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+        }
+
+        public static IReadOnlyList<T> Repeat<T>(this IList<T> source, int count) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (count < 0) throw new ArgumentOutOfRangeException("count");
+
+            switch (count) {
+            case 0:
+                return new T[0];
+            case 1:
+                return source.AsReadOnly();
+            default:
+                return new RepeatedList<T>(source, count);
+            }
+        }
+
+        #endregion
+
         #region Sublist
 
         class SublistAdapter<T> : IList<T>

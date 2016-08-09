@@ -152,5 +152,15 @@ namespace WmcSoft.Collections.Generic
             var actual = data.ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckRepeat() {
+            var data = new[] { 1, 2, 3 };
+            var expected = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
+            var actual = data.Repeat(3);
+            Assert.AreEqual(9, actual.Count);
+            Assert.AreEqual(3, actual[5]);
+            CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
     }
 }
