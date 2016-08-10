@@ -36,12 +36,14 @@ namespace WmcSoft
             var result = (T)formatProvider.GetFormat(typeof(T));
             if (result == null) {
                 if (typeof(TextInfo).IsAssignableFrom(typeof(T))) {
-                    // patch for TextInfo
                     var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
                     return (T)(object)cultureProvider.TextInfo;
                 } else if (typeof(RegionInfo).IsAssignableFrom(typeof(T))) {
                     var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
                     return (T)(object)new RegionInfo(cultureProvider.LCID);
+                } else if (typeof(Calendar).IsAssignableFrom(typeof(T))) {
+                    var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
+                    return (T)(object)cultureProvider.Calendar;
                 }
             }
             return result;

@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace WmcSoft
 {
@@ -44,6 +45,57 @@ namespace WmcSoft
             int dayOfWeek = (int)(new DateTime(date.Year, date.Month, 1)).DayOfWeek;
             int reminder;
             return Math.DivRem(6 + day + dayOfWeek, 7, out reminder);
+        }
+
+        /// <summary>
+        /// Gets the first day of the month of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>The first day of the month</returns>
+        public static DateTime FirstDayOfMonth(this DateTime date) {
+            return new DateTime(date.Year, date.Month, 1);
+        }
+
+        /// <summary>
+        /// Gets the last day of the month of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>The last day of the month</returns>
+        public static DateTime LastDayOfMonth(this DateTime date) {
+            var year = date.Year;
+            var month = date.Month;
+            return new DateTime(year, month, DateTime.DaysInMonth(year, month));
+        }
+
+        static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider) {
+            var dateTimeFormatInfo = formatProvider.GetFormat<DateTimeFormatInfo>();
+            DayOfWeek firstDayOfWeek = dateTimeFormatInfo.FirstDayOfWeek;
+            DayOfWeek dayOfWeek = date.DayOfWeek;
+            var delta = firstDayOfWeek - dayOfWeek;
+            if (delta > 0)
+                delta -= 7;
+            return date.Date.AddDays(delta);
+        }
+
+        /// <summary>
+        /// Gets the first day of the week of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <param name="formatProvider">The format provider to retrieve <see cref="DateTimeFormatInfo.FirstDayOfWeek"/>.</param>
+        /// <returns>The first day of the week</returns>
+        public static DateTime FirstDayOfWeek(this DateTime date, IFormatProvider formatProvider = null) {
+            return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Gets the last day of the week of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <param name="formatProvider">The format provider to retrieve <see cref="DateTimeFormatInfo.FirstDayOfWeek"/>.</param>
+        /// <returns>The last day of the week</returns>
+        public static DateTime LastDayOfWeek(this DateTime date, IFormatProvider formatProvider = null) {
+            return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture)
+                .AddDays(6);
         }
     }
 }
