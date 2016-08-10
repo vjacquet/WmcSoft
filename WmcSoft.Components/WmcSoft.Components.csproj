@@ -106,6 +106,7 @@
     <Compile Include="ComponentModel\TypeDescriptorScope.cs" />
     <Compile Include="ComponentModel\TypeResolver.cs" />
     <Compile Include="Drawing\HSLColor.cs" />
+    <Compile Include="Drawing\ImageExtensions.cs" />
     <Compile Include="IO\ReportProgressStream.cs" />
     <Compile Include="Net\WakeOnLan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
