@@ -25,29 +25,11 @@
 #endregion
 
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace WmcSoft.Drawing
 {
-    public static class ImageExtensions
+    public abstract class ImageTransformation : ITransformation<Image, Image>
     {
-        public static Bitmap ToBitmap(this Image image, bool preserveResolution = true) {
-            return ToBitmap(image, image.Width, image.Height, preserveResolution);
-        }
-
-        public static Bitmap ToBitmap(this Image image, int width, int height, bool preserveResolution = true) {
-            var indexed = (image.PixelFormat & PixelFormat.Indexed) == PixelFormat.Indexed;
-            var bitmap = new Bitmap(width, height, indexed ? PixelFormat.Format32bppArgb : image.PixelFormat);
-            if (preserveResolution)
-                bitmap.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-            using (var graphics = Graphics.FromImage(bitmap)) {
-                if (indexed)
-                    graphics.Clear(Color.White);
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.DrawImage(image, 0, 0, width, height);
-            }
-            return bitmap;
-        }
+        public abstract Image Apply(Image image);
     }
 }
