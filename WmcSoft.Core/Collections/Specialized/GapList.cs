@@ -239,9 +239,7 @@ namespace WmcSoft.Collections.Specialized
         public void RemoveAt(int index) {
             Seek(index + 1);
             _gapStartIndex--;
-#if DEBUG
-            _storage[_gapStartIndex] = default(T);
-#endif
+            _storage[_gapStartIndex] = default(T); // no loitering
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

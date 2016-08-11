@@ -60,7 +60,7 @@
   <ItemGroup>
     <Compile Include="ArrayExtensionsTests.cs" />
     <Compile Include="Asserts\GetHashCodeAsserts.cs" />
-    <Compile Include="BinaryFormatterTests.cs" />
+    <Compile Include="ByteFormatterTests.cs" />
     <Compile Include="BitArithmeticsTests.cs" />
     <Compile Include="Collections\BitArrayExtensionsTests.cs" />
     <Compile Include="Collections\Generic\Algorithms\FinderTests.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteDictionaryTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteListTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteCollectionTests.cs" />
+    <Compile Include="Collections\Generic\DictionaryExtensionsTests.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensionsTests.cs" />
     <Compile Include="Collections\Generic\CollectionExtensionsTests.cs" />
     <Compile Include="Collections\Generic\ListDictionaryTests.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="ConvertibleExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
+    <Compile Include="Diagnostics\CounterTests.cs" />
     <Compile Include="Diagnostics\Sentries\AggregatedSentyTests.cs" />
     <Compile Include="Diagnostics\TraceIndentTests.cs" />
     <Compile Include="DisposableTests.cs" />

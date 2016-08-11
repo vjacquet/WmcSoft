@@ -9,6 +9,17 @@ namespace WmcSoft.Collections.Generic
     public class ListExtensionsTests
     {
         [TestMethod]
+        public void CheckIndexOfList() {
+            var data = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            Assert.AreEqual(0, data.IndexOf(new[] { 0, 1, 2, 3 }));
+            Assert.AreEqual(3, data.IndexOf(new[] { 3, 4, 5 }));
+            Assert.AreEqual(-1, data.IndexOf(new[] { 3, 5, 4 }));
+            Assert.AreEqual(7, data.IndexOf(new[] { 7, 8, 9 }));
+            Assert.AreEqual(-1, data.IndexOf(new[] { 7, 8, 9, 10 }));
+        }
+
+        [TestMethod]
         public void CheckIndexOfPartial() {
             var data = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -140,6 +151,27 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 5, 6 };
             var actual = data.ToArray();
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckRepeat() {
+            var data = new[] { 1, 2, 3 };
+            var expected = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
+            var actual = data.Repeat(3);
+            Assert.AreEqual(9, actual.Count);
+            Assert.AreEqual(3, actual[5]);
+            CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
+
+        [TestMethod]
+        public void CanFindRotationPoint() {
+            var list= new[] { 1, 2, 3, 4, 5, 6 };
+            var target = new[] { 3, 4, 5, 6, 1, 2 };
+
+            Assert.AreEqual(4, list.FindRotationPoint(target));
+
+            list.Rotate(4);
+            CollectionAssert.AreEqual(target, list);
         }
     }
 }

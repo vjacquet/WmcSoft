@@ -117,31 +117,6 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region AsEnumerable
-
-        /// <summary>
-        /// Lift the source element as en enumerable.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the element of source</typeparam>
-        /// <param name="source">the source element</param>
-        /// <returns>An enumerable on the source</returns>
-        public static IEnumerable<TSource> AsEnumerable<TSource>(TSource source) {
-            yield return source;
-        }
-
-        /// <summary>
-        /// Lift the source element as en enumerable.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the element of source</typeparam>
-        /// <param name="source">the source element</param>
-        /// <returns>An enumerable on the source, or an empty enumerable when the source is null</returns>
-        public static IEnumerable<TSource> AsEnumerable<TSource>(TSource? source) where TSource : struct {
-            if (source.HasValue)
-                yield return source.GetValueOrDefault();
-        }
-
-        #endregion
-
         #region AsReadOnly
 
         /// <summary>
@@ -870,29 +845,75 @@ namespace WmcSoft.Collections.Generic
 
         #region Partition
 
-        /// <summary>
-        /// Implements a stable partition of the list 
-        /// </summary>
-        /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="predicate">Thre predicate</param>
-        /// <returns>The partition point</returns>
-        public static int Partition<T>(this IList<T> list, Predicate<T> predicate) {
-            return Partition(list, 0, list.Count, predicate);
+        static int UnguardedFindPartitionPoint<T>(IList<T> list, int start, int length, Predicate<T> predicate) {
+            int end = start + length - 1;
+            while (start < end && !predicate(list[start]))
+                start++;
+            while (start < end && predicate(list[end]))
+                end--;
+            if (start == end)
+                return start;
+            return -1;
         }
 
         /// <summary>
-        /// Implements a stable partition of the list 
+        /// Returns the partition point of the list if the list is partitionned.
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
         /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static int FindPartitionPoint<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return UnguardedFindPartitionPoint(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
         /// <param name="start">The start index of the sequence</param>
         /// <param name="length">The length of the sequence</param>
+        /// <param name="list">The list</param>
         /// <param name="predicate">Thre predicate</param>
-        /// <returns>The partition point</returns>
-        public static int Partition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static int FindPartitionPoint<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
             if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
 
+            return UnguardedFindPartitionPoint(list, start, length, predicate);
+        }
+
+        /// <summary>
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static bool IsPartitioned<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return UnguardedFindPartitionPoint(list, 0, list.Count, predicate) >= 0;
+        }
+
+        /// <summary>
+        /// Returns the partition point of the list if the list is partitionned.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
+        public static bool IsPartitioned<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            return FindPartitionPoint(list, start, length, predicate) >= 0;
+        }
+
+        static int UnguardedPartition<T>(IList<T> list, int start, int length, Predicate<T> predicate) {
             int end = start + length - 1;
             while (true) {
                 while (start < end && !predicate(list[start]))
@@ -903,6 +924,36 @@ namespace WmcSoft.Collections.Generic
                     return start;
                 list.SwapItems(start++, end--);
             }
+        }
+
+        /// <summary>
+        /// Implements a partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int Partition<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return UnguardedPartition(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Implements a partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int Partition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return UnguardedPartition(list, start, length, predicate);
         }
 
         /// <summary>
@@ -957,10 +1008,9 @@ namespace WmcSoft.Collections.Generic
         /// <exception cref="InvalidOperationException">The list is empty.</exception>
         /// <returns>The last element from the list.</returns>
         public static T Pop<T>(this IList<T> list) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (list.Count == 0)
-                throw new InvalidOperationException();
+            if (list == null) throw new ArgumentNullException("list");
+            if (list.Count == 0) throw new InvalidOperationException();
+
             var last = list.Count - 1;
             var t = list[last];
             list.RemoveAt(last);
@@ -978,10 +1028,9 @@ namespace WmcSoft.Collections.Generic
         /// <exception cref="ArgumentOutOfRangeException"><param name="index"/> is not a valid index in the <paramref name="list"/>.</exception>
         /// <returns>The last element from the list.</returns>
         public static T Pop<T>(this IList<T> list, int index) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (list.Count == 0)
-                throw new InvalidOperationException();
+            if (list == null) throw new ArgumentNullException("list");
+            if (list.Count == 0) throw new InvalidOperationException();
+
             var t = list[index];
             list.RemoveAt(index);
             return t;
@@ -1199,7 +1248,7 @@ namespace WmcSoft.Collections.Generic
             var start = startIndex;
             var end = startIndex + length - 1;
             while (start < end) {
-                list.SwapItems(start, end);
+                SwapItems(list, start, end);
             }
         }
 

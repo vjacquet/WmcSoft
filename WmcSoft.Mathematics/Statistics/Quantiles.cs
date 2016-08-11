@@ -88,7 +88,7 @@ namespace WmcSoft.Statistics
         #region IEnumerable Membres
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return ((System.Collections.IEnumerable)_values).GetEnumerator();
+            return _values.GetEnumerator();
         }
 
         #endregion

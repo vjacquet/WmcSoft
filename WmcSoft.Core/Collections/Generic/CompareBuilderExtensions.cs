@@ -57,7 +57,7 @@ namespace WmcSoft.Collections.Generic
 
         static IEnumerable<IComparer<T>> Enumerate<T>(IComparer<T> comparer) {
             var enumerable = comparer as IEnumerable<IComparer<T>>;
-            return enumerable ?? CollectionExtensions.AsEnumerable(comparer);
+            return enumerable ?? EnumerableExtensions.AsEnumerable(comparer);
         }
 
         #endregion

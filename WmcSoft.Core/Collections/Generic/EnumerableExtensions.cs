@@ -37,6 +37,31 @@ namespace WmcSoft.Collections.Generic
 {
     public static class EnumerableExtensions
     {
+        #region AsEnumerable
+
+        /// <summary>
+        /// Lift the source element as en enumerable.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of source</typeparam>
+        /// <param name="source">the source element</param>
+        /// <returns>An enumerable on the source</returns>
+        public static IEnumerable<TSource> AsEnumerable<TSource>(TSource source) {
+            yield return source;
+        }
+
+        /// <summary>
+        /// Lift the source element as en enumerable.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of source</typeparam>
+        /// <param name="source">the source element</param>
+        /// <returns>An enumerable on the source, or an empty enumerable when the source is null</returns>
+        public static IEnumerable<TSource> AsEnumerable<TSource>(TSource? source) where TSource : struct {
+            if (source.HasValue)
+                yield return source.GetValueOrDefault();
+        }
+
+        #endregion
+
         #region AsReadOnlyCollection
 
         /// <summary>
@@ -79,6 +104,24 @@ namespace WmcSoft.Collections.Generic
                 return Backwards(list.AsReadOnly());
 
             return source.Reverse();
+        }
+
+        #endregion
+
+        #region Discretize
+
+        public static IEnumerable<int> Discretize<T>(this IEnumerable<T> source, params T[] bounds) {
+            return Discretize(source, Comparer<T>.Default, bounds);
+        }
+
+        public static IEnumerable<int> Discretize<T>(this IEnumerable<T> source, IComparer<T> comparer, params T[] bounds) {
+            foreach (var item in source) {
+                var index = Array.BinarySearch(bounds, item, comparer);
+                if (index < 0)
+                    yield return ~index;
+                else
+                    yield return index + 1;
+            }
         }
 
         #endregion
@@ -1390,7 +1433,7 @@ namespace WmcSoft.Collections.Generic
             return d;
         }
 
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TElement, TElement> merger, IEqualityComparer<TKey> comparer=null) {
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TElement, TElement> merger, IEqualityComparer<TKey> comparer = null) {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
             if (elementSelector == null) throw new ArgumentNullException("elementSelector");
@@ -1399,7 +1442,7 @@ namespace WmcSoft.Collections.Generic
             return ToDictionary(source, keySelector, elementSelector, (x, y) => merger(x, elementSelector(y)), comparer);
         }
 
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TSource, TElement> merger, IEqualityComparer<TKey> comparer=null) {
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TSource, TElement> merger, IEqualityComparer<TKey> comparer = null) {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
             if (elementSelector == null) throw new ArgumentNullException("elementSelector");

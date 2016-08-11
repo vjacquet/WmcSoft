@@ -106,6 +106,12 @@
     <Compile Include="ComponentModel\TypeDescriptorScope.cs" />
     <Compile Include="ComponentModel\TypeResolver.cs" />
     <Compile Include="Drawing\HSLColor.cs" />
+    <Compile Include="Drawing\ImageExtensions.cs" />
+    <Compile Include="Drawing\CropTransformation.cs" />
+    <Compile Include="Drawing\Pipeline.cs" />
+    <Compile Include="Drawing\ResizeTransformation.cs" />
+    <Compile Include="Drawing\RotateTransformation.cs" />
+    <Compile Include="Drawing\ImageTransformation.cs" />
     <Compile Include="IO\ReportProgressStream.cs" />
     <Compile Include="Net\WakeOnLan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CommandLine\CommandLine.cd" />
+    <None Include="Drawing\ImageTransformation.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CommandLine\CommandLine.resx">

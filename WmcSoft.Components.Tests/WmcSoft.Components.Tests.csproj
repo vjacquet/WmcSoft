@@ -67,6 +67,7 @@
     <Compile Include="ComponentModel\Design\DictionaryServiceTests.cs" />
     <Compile Include="ComponentModel\EventBarrierTests.cs" />
     <Compile Include="Drawing\HSLColorTests.cs" />
+    <Compile Include="Drawing\ImageExtensionsTests.cs" />
     <Compile Include="Net\IPAdressTypeConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Windows\Forms\ToolStripForm.cs">

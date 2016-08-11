@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft
@@ -36,6 +37,44 @@ namespace WmcSoft
 
             actual = new DateTime(2009, 11, 1);
             Assert.AreEqual(1, actual.WeekOfMonth());
+        }
+
+        [TestMethod]
+        public void CanFindFirstDayOfWeek() {
+            var date = new DateTime(2016, 08, 10);
+            var info = new DateTimeFormatInfo {
+                FirstDayOfWeek = DayOfWeek.Monday,
+            };
+            var expected = new DateTime(2016, 08, 08);
+            var actual = date.FirstDayOfWeek(info);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanFindLastDayOfWeek() {
+            var date = new DateTime(2016, 08, 10);
+            var info = new DateTimeFormatInfo {
+                FirstDayOfWeek = DayOfWeek.Monday,
+            };
+            var expected = new DateTime(2016, 08, 14);
+            var actual = date.LastDayOfWeek(info);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanFindFirstDayOfMonth() {
+            var date = new DateTime(2016, 08, 10);
+            var expected = new DateTime(2016, 08, 01);
+            var actual = date.FirstDayOfMonth();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanFindLastDayOfMonth() {
+            var date = new DateTime(2016, 02, 10);
+            var expected = new DateTime(2016, 02, 29);
+            var actual = date.LastDayOfMonth();
+            Assert.AreEqual(expected, actual);
         }
     }
 }

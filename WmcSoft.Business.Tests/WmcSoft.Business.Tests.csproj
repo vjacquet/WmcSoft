@@ -74,6 +74,7 @@
     <Compile Include="ProductModel\FurnitureModel.cs" />
     <Compile Include="ProductModel\FurnitureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BoundStrategyTests.cs" />
     <Compile Include="RangeTests.cs" />
     <Compile Include="RuleModel\RuleModelTests.cs" />
     <Compile Include="Security\Command.cs" />

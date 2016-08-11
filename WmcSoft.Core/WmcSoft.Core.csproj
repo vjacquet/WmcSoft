@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
-    <Compile Include="BinaryFormatter.cs" />
+    <Compile Include="ByteFormatter.cs" />
     <Compile Include="BitArithmetics.cs" />
     <Compile Include="CodeDom\CodeGuardArgumentNotNulllStatement.cs" />
     <Compile Include="CodeDom\CodeDomExtensions.cs" />
@@ -60,6 +60,7 @@
     <Compile Include="Collections\Generic\Algorithms\IFinder.cs" />
     <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
+    <Compile Include="Collections\Generic\Bag.cs" />
     <Compile Include="Collections\Generic\Compare.cs" />
     <Compile Include="Collections\Generic\CompareBuilderExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerBuilder.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Diagnostics\Checkpoints\ICheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\PredicateCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\RebindCheckpoint.cs" />
+    <Compile Include="Diagnostics\Counter.cs" />
     <Compile Include="Diagnostics\DebugBench.cs" />
     <Compile Include="Diagnostics\Sentries\AggregateSentry.cs" />
     <Compile Include="Diagnostics\Sentries\ISentry.cs" />
@@ -118,8 +120,10 @@
     <Compile Include="IDisposableBin.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
+    <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Symbol.cs" />
+    <Compile Include="Text\ITrie.cs" />
     <Compile Include="Text\Trie.cs" />
     <Compile Include="Triple.cs" />
     <Compile Include="Pair.cs" />

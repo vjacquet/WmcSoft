@@ -186,6 +186,10 @@ namespace WmcSoft
 
         #endregion
 
+        #region StablePartition
+
+        #endregion
+
         #region SwapItems methods
 
         /// <summary>

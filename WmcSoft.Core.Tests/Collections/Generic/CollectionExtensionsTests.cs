@@ -337,6 +337,25 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
+        public void CannotFindPartitionPointWhenNotPartitioned() {
+            var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
+            Predicate<int> odd = e => e % 2 == 1;
+            var actual = data.FindPartitionPoint(odd);
+
+            Assert.AreEqual(-1, actual);
+        }
+
+        [TestMethod]
+        public void CanFindPartitionPointWhenPartitioned() {
+            var data = new[] { 2, 4, 6, 7, 8, 1, 3, 9 };
+            Predicate<int> odd = e => e % 2 == 1;
+            var expected = data.Partition(odd);
+            var actual = data.FindPartitionPoint(odd);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void CanStablePartition() {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
             Predicate<int> odd = e => e % 2 == 1;

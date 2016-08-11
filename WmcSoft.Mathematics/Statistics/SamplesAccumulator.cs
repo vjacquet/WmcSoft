@@ -30,11 +30,11 @@ namespace WmcSoft.Statistics
 {
     /// <summary>
     /// Computes Sum, Mean, Variance and other statical entities in linear time of the measures.
-    /// The measures are the complete population.
+    /// The measures are considered as a sample of a larger population.
     /// </summary>
     /// <remarks>This implementation is less susceptible to roundoff error than the
     /// straightforward implementation (see Robert Sedgewick & Kevin Wayne, Algorithms, Fourth edition, Page 118).</remarks>
-    public class Accumulator : IAccumulator
+    public class SamplesAccumulator : IAccumulator
     {
         #region Fields
 
@@ -46,10 +46,10 @@ namespace WmcSoft.Statistics
 
         #region Lifecycle
 
-        public Accumulator() {
+        public SamplesAccumulator() {
         }
 
-        public Accumulator(params double[] values)
+        public SamplesAccumulator(params double[] values)
             : this() {
             for (int i = 0; i < values.Length; i++) {
                 Add(values[i]);
@@ -76,7 +76,7 @@ namespace WmcSoft.Statistics
             get {
                 if (_count < 2)
                     return 0d;
-                return _s / _count;
+                return _s / (_count - 1);
             }
         }
 

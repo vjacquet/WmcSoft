@@ -183,5 +183,13 @@ namespace WmcSoft.Collections.Generic
             var actual = collection.NthElements(3, 6, 5, 8).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckDiscretize() {
+            var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
+            var actual = data.Discretize(51, 91, 151, 231, 331, 451).ToArray();
+            var expected = new[] { 0, 0, 0, 1, 5, 6, 4, 6 };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
