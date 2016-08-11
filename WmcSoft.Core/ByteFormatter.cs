@@ -35,10 +35,10 @@ using WmcSoft.Text.RegularExpressions;
 
 namespace WmcSoft
 {
-    public class BinaryFormatter : IFormatProvider, ICustomFormatter
+    public class ByteFormatter : IFormatProvider, ICustomFormatter
     {
         static readonly Regex regex;
-        static BinaryFormatter() {
+        static ByteFormatter() {
             regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
         }
 
