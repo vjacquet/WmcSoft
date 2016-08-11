@@ -190,3 +190,6 @@ FakesAssemblies/
 /WmcSoft.Business/Business/RuleModel/validate.bat
 /WmcSoft.Business/Business/RuleModel/Copy.xslt
 /WmcSoft.VC.VC.opendb
+/Tools/ConsoleApplication/my.config
+/WmcSoft.Core/Threading/SingleThreadSynchronizationContext.cs
+/WmcSoft.Jobs/ProactorJobDispatcher.cs

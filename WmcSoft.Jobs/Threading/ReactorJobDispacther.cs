@@ -36,7 +36,7 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Dispatches the specified job.
         /// </summary>
-        /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
+        /// <param name="job">An <see cref="Object"/> that implements <see cref="IJob"/>.</param>
         public override void Dispatch(IJob job) {
             if (job == null) {
                 throw new ArgumentNullException("job");
