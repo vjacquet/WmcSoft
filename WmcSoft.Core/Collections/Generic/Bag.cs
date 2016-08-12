@@ -116,10 +116,6 @@ namespace WmcSoft.Collections.Generic
             _storage.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<T> GetEnumerator() {
-            return _storage.GetEnumerator();
-        }
-
         public bool Remove(T item) {
             var index = _storage.IndexOf(item);
             if (index < 0)
@@ -130,8 +126,12 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        public IEnumerator<T> GetEnumerator() {
             return _storage.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
         public T Pick() {

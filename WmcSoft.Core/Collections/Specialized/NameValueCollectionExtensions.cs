@@ -39,6 +39,7 @@ namespace WmcSoft.Collections.Specialized
             public static readonly TElement[] Instance = new TElement[0];
         }
 
+        // TODO: Shouldn't we use Converter<in TInput, out TOutput> instead ?
         public interface IConverter<in TInput, out TOutput>
         {
             TOutput Convert(TInput input);
@@ -76,6 +77,8 @@ namespace WmcSoft.Collections.Specialized
         #endregion
 
         #region GetValue(s)
+
+        // TODO: Deal with conversions failure: If cannot convert (TryConvert ?), should we use default value?
 
         static T GetValue<TConverter, T>(NameValueCollection collection, string name, TConverter converter, Func<T> defaultValue)
             where TConverter : IConverter<string, T> {
