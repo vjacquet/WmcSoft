@@ -25,11 +25,13 @@
 #endregion
 
 using System.Drawing;
+using static System.Math;
 
 namespace WmcSoft.Drawing
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="Color"/> struct. This is a static class.
+    /// Defines the extension methods to the <see cref="Color"/> struct.
+    /// This is a static class.
     /// </summary>
     public static class ColorExtensions
     {
@@ -59,10 +61,10 @@ namespace WmcSoft.Drawing
         /// <param name="percentage">Percentage to scale it, between 0 and 1.</param>
         /// <returns>New color object.</returns>
         public static Color Scale(this Color color, double d) {
-            var r = Clamp(color.R * d);
-            var g = Clamp(color.G * d);
-            var b = Clamp(color.B * d);
-            return Color.FromArgb(color.A, r, g, b);
+            var R = Clamp(color.R * d);
+            var G = Clamp(color.G * d);
+            var B = Clamp(color.B * d);
+            return Color.FromArgb(color.A, R, G, B);
         }
 
         static int Clamp(double value) {
@@ -82,6 +84,24 @@ namespace WmcSoft.Drawing
         /// <returns>New color object.</returns>
         public static Color Scale(this Color color, int percentage) {
             return color.Scale(percentage / 100d);
+        }
+
+        static float F(int channel) {
+            var c = channel / 255f;
+            return c <= 0.03928f ? c / 12.92f : (float)Pow((c + 0.055d) / 1.055d, 2.4d);
+        }
+
+        /// <summary>
+        /// Computes the relative luminance of the specified color
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The relative lumnance.</returns>
+        /// <remarks>See <http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef>.</remarks>
+        public static float GetRelativeLuminance(this Color color) {
+            var R = F(color.R);
+            var G = F(color.G);
+            var B = F(color.B);
+            return 0.2126f * R + 0.7152f * G + 0.0722f * B;
         }
     }
 }

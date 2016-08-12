@@ -61,6 +61,7 @@
     <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
     <Compile Include="Collections\Generic\Bag.cs" />
+    <Compile Include="Collections\Generic\BagSet.cs" />
     <Compile Include="Collections\Generic\Compare.cs" />
     <Compile Include="Collections\Generic\CompareBuilderExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerBuilder.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
     <Compile Include="Collections\Generic\DisjoinedReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\Forest.cs" />
+    <Compile Include="Collections\Generic\Internals\ContiguousStorage.cs" />
     <Compile Include="Collections\Generic\LexicographicalComparer.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionary.cs" />
     <Compile Include="Collections\Generic\ListDictionary.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
     <Compile Include="Collections\Specialized\GapList.cs" />
+    <Compile Include="Collections\Specialized\Graph.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />

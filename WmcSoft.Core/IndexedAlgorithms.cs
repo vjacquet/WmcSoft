@@ -126,6 +126,41 @@ namespace WmcSoft
 
         #endregion
 
+        #region Exchange
+
+        /// <summary>
+        /// Replaces the value at the index with a new <paramref name="value"/> and returns the old value. 
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="source">The source list</param>
+        /// <param name="value">The new value.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>The old value at the specified index.</returns>
+        public static T Exchange<T>(this IList<T> source, T value, int index) {
+            var temp = source[index];
+            source[index] = value;
+            return temp;
+        }
+
+        /// <summary>
+        /// Replaces the value at the first index, pushes its old value to the second index and then returns
+        /// its old value.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="source">The source list</param>
+        /// <param name="value">The new value.</param>
+        /// <param name="index1">The first index.</param>
+        /// <param name="index2">The second index.</param>
+        /// <returns>The old value at the second index.</returns>
+        public static T Exchange<T>(this IList<T> source, int index1, int index2, T value) {
+            var temp = source[index2];
+            source[index2] = source[index1];
+            source[index1] = value;
+            return temp;
+        }
+
+        #endregion
+
         #region Rotate
 
         public static int UnguardedRotate<T>(this IList<T> source, int n, int startIndex, int length) {
