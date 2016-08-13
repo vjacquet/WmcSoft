@@ -27,6 +27,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -36,64 +38,79 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="T">The type of the elements in the bag.</typeparam>
     public class Bag<T> : ICollection<T>
     {
-        #region RandomAdapter class
+        #region Enumerator
 
-        class RandomAdapter : Random
+        public struct Enumerator : IEnumerator<T>
         {
-            public override int Next(int minValue, int maxValue) {
-                return maxValue;
+            private Bag<T> _bag;
+            private int _version;
+            private int _index;
+            private T _current;
+
+            internal Enumerator(Bag<T> bag) {
+                _bag = bag;
+                _index = 0;
+                _version = bag._version;
+                _current = default(T);
             }
 
-            public override int Next(int maxValue) {
-                return maxValue;
+            public T Current { get { return _current; } }
+
+            object IEnumerator.Current { get { return Current; } }
+
+            public void Dispose() {
             }
 
-            public override int Next() {
-                throw new NotSupportedException();
+            public bool MoveNext() {
+                CheckVersion();
+
+                if (_index < _bag._count) {
+                    _current = _bag._storage[_index];
+                    _index++;
+                    return true;
+                }
+
+                _index = _bag._count + 1;
+                _current = default(T);
+                return false;
             }
 
-            public override void NextBytes(byte[] buffer) {
-                throw new NotSupportedException();
+            public void Reset() {
+                _index = 0;
+                _current = default(T);
             }
 
-            public override double NextDouble() {
-                throw new NotSupportedException();
+            void CheckVersion() {
+                if (_version != _bag._version)
+                    throw new InvalidOperationException();
             }
         }
-
-        static readonly Random Default = new RandomAdapter();
 
         #endregion
 
-        private readonly List<T> _storage;
-        private readonly Random _random;
+        protected T[] _storage;
+        protected int _count;
+        private int _version;
 
-        public Bag() : this(Default) {
+        public Bag() {
+            _storage = ContiguousStorage<T>.Empty;
         }
 
-        public Bag(int capacity) : this(capacity, Default) {
+        public Bag(int capacity) {
+            if (capacity < 0) throw new ArgumentOutOfRangeException("capacity");
+
+            _storage = (capacity == 0)
+                ? ContiguousStorage<T>.Empty
+                : new T[capacity];
         }
 
-        public Bag(IEnumerable<T> collection) : this(collection, Default) {
-        }
-
-        public Bag(Random random) {
-            _storage = new List<T>();
-            _random = random;
-        }
-
-        public Bag(int capacity, Random random) {
-            _storage = new List<T>(capacity);
-            _random = random;
-        }
-
-        public Bag(IEnumerable<T> collection, Random random) {
-            _storage = new List<T>(collection);
-            _random = random;
+        public Bag(IEnumerable<T> collection) {
+            _storage = collection.ToArray();
+            _count = _storage.Length;
         }
 
         public int Count {
-            get { return _storage.Count; }
+            get { return _count; }
         }
 
         public bool IsReadOnly {
@@ -101,46 +118,47 @@ namespace WmcSoft.Collections.Generic
         }
 
         public void Add(T item) {
-            _storage.Add(item);
+            if (_count == _storage.Length)
+                ContiguousStorage<T>.Reserve(ref _storage, 1);
+            _storage[_count++] = item;
+            Changed();
         }
 
         public void Clear() {
-            _storage.Clear();
+            _count = 0;
         }
 
         public bool Contains(T item) {
-            return _storage.Contains(item);
+            return Array.IndexOf(_storage, item, 0, _count) >= 0;
         }
 
         public void CopyTo(T[] array, int arrayIndex) {
-            _storage.CopyTo(array, arrayIndex);
+            _storage.CopyTo(array, arrayIndex, _count);
         }
 
         public bool Remove(T item) {
-            var index = _storage.IndexOf(item);
+            var index = Array.IndexOf(_storage, item, 0, _count);
             if (index < 0)
                 return false;
-            var last = Count - 1;
-            _storage[index] = _storage[last];
-            _storage.RemoveAt(last);
+            var last = --_count;
+            _storage.Exchange(default(T), last, index);
             return true;
         }
 
-        public IEnumerator<T> GetEnumerator() {
-            return _storage.GetEnumerator();
+        Enumerator GetEnumerator() {
+            return new Enumerator(this);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+            return GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        public T Pick() {
-            var last = Count - 1;
-            var index = _random.Next(last);
-            var item = _storage[index];
-            _storage[index] = _storage[last];
-            _storage.RemoveAt(last);
-            return item;
+        protected void Changed() {
+            ++_version;
         }
     }
 }

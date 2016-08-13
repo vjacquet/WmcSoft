@@ -35,7 +35,7 @@ namespace WmcSoft.Drawing
     public static class ImageExtensions
     {
         /// <summary>
-        ///   Converts a <see cref="System.Drawing.Icon"/> to a <see cref="System.Drawing.Bitmap"/>.
+        ///   Converts a <see cref="Icon"/> to a <see cref="Bitmap"/>.
         /// </summary>
         /// <param name="icon">Icon to convert.</param>
         /// <param name="color">Mask color to use as background.</param>
@@ -53,7 +53,7 @@ namespace WmcSoft.Drawing
         }
 
         /// <summary>
-        ///   Converts a <see cref="System.Drawing.Icon"/> to a <see cref="System.Drawing.Bitmap"/>.
+        ///   Converts a <see cref="Icon"/> to a <see cref="Bitmap"/>.
         /// </summary>
         /// <param name="icon">Icon to convert.</param>
         /// <returns>Bitmap object.</returns>

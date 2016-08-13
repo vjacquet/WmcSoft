@@ -75,10 +75,9 @@ namespace WmcSoft.Collections.Generic.Internals
         /// </summary>
         /// <param name="items">The array of items to grow.</param>
         /// <param name="n">The extra space to reserve.</param>
-        /// <param name="count">The count of items.</param>
-        /// <remarks>Expects n > 0 && count >= 0.</remarks>
-        public static void Reserve(ref T[] items, int n, int count) {
-            Debug.Assert(n > 0 && count >= 0);
+        /// <remarks>Expects n > 0</remarks>
+        public static void Reserve(ref T[] items, int n) {
+            Debug.Assert(n > 0);
 
             var length = items.Length;
             n += length;
@@ -87,7 +86,7 @@ namespace WmcSoft.Collections.Generic.Internals
             if ((uint)capacity > MaxArrayLength) capacity = MaxArrayLength;
             if (capacity < n) capacity = n;
 
-            Resize(ref items, capacity, count);
+            Resize(ref items, capacity, length);
         }
 
         /// <summary>

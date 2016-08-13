@@ -24,8 +24,8 @@
 
 #endregion
 
-using System;
 using System.Drawing;
+using static System.Math;
 
 namespace WmcSoft.Drawing
 {
@@ -35,8 +35,8 @@ namespace WmcSoft.Drawing
     public static class SizeExtensions
     {
         public static Size Combine(Size x, Size y) {
-            var w = Math.Max(x.Width, y.Width);
-            var h = Math.Max(x.Height, y.Height);
+            var w = Max(x.Width, y.Width);
+            var h = Max(x.Height, y.Height);
             return new Size(w, h);
         }
 

@@ -152,7 +152,7 @@ namespace WmcSoft
         /// <param name="index1">The first index.</param>
         /// <param name="index2">The second index.</param>
         /// <returns>The old value at the second index.</returns>
-        public static T Exchange<T>(this IList<T> source, int index1, int index2, T value) {
+        public static T Exchange<T>(this IList<T> source, T value, int index1, int index2) {
             var temp = source[index2];
             source[index2] = source[index1];
             source[index1] = value;
