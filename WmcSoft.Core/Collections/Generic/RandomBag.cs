@@ -89,11 +89,7 @@ namespace WmcSoft.Collections.Generic
 
         public T Pick() {
             var last = Count - 1;
-            var index = _random.Next(last);
-            var item = _storage.Exchange(default(T), last, index);
-            --_count;
-            Changed();
-            return item;
+            return PopAt(_random.Next(last));
         }
     }
 }

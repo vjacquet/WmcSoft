@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Collections.Generic.Internals;
 
@@ -88,8 +89,8 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        protected T[] _storage;
-        protected int _count;
+        private T[] _storage;
+        private int _count;
         private int _version;
 
         public Bag() {
@@ -121,7 +122,7 @@ namespace WmcSoft.Collections.Generic
             if (_count == _storage.Length)
                 ContiguousStorage<T>.Reserve(ref _storage, 1);
             _storage[_count++] = item;
-            Changed();
+            _version++;
         }
 
         public void Clear() {
@@ -140,8 +141,10 @@ namespace WmcSoft.Collections.Generic
             var index = Array.IndexOf(_storage, item, 0, _count);
             if (index < 0)
                 return false;
-            var last = --_count;
-            _storage.Exchange(default(T), last, index);
+            _version++;
+            --_count;
+            _storage[index] = _storage[_count];
+            _storage[_count] = default(T);
             return true;
         }
 
@@ -157,8 +160,13 @@ namespace WmcSoft.Collections.Generic
             return GetEnumerator();
         }
 
-        protected void Changed() {
-            ++_version;
+        protected T PopAt(int index) {
+            Debug.Assert(index < _count);
+
+            var item = _storage.Exchange(default(T), _count - 1, index);
+            _version++;
+            _count--;
+            return item;
         }
     }
 }
