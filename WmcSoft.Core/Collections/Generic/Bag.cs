@@ -100,9 +100,9 @@ namespace WmcSoft.Collections.Generic
         public Bag(int capacity) {
             if (capacity < 0) throw new ArgumentOutOfRangeException("capacity");
 
-            _storage = (capacity == 0)
-                ? ContiguousStorage<T>.Empty
-                : new T[capacity];
+            _storage = (capacity != 0)
+                ? new T[capacity]
+                : ContiguousStorage<T>.Empty;
         }
 
         public Bag(IEnumerable<T> collection) {
@@ -164,8 +164,9 @@ namespace WmcSoft.Collections.Generic
             Debug.Assert(index < _count);
 
             var item = _storage.Exchange(default(T), _count - 1, index);
-            _version++;
+            // strong guarantee when the index is not valid
             _count--;
+            _version++;
             return item;
         }
     }

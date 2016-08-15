@@ -30,15 +30,15 @@ using WmcSoft.Collections.Generic;
 namespace WmcSoft.Collections.Specialized
 {
     /// <summary>
-    /// Represents an undirected graph.
+    /// Represents a directed graph.
     /// </summary>
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
-    public class Graph
+    public class Digraph
     {
         private readonly Bag<int>[] _adj;
         private int _edges;
 
-        public Graph(int vertices) {
+        public Digraph(int vertices) {
             _adj = new Bag<int>[vertices];
             for (int i = 0; i < _adj.Length; i++) {
                 _adj[i] = new Bag<int>();
@@ -50,12 +50,11 @@ namespace WmcSoft.Collections.Specialized
 
         public void Connect(int v, int w) {
             _adj[v].Add(w);
-            _adj[w].Add(v);
             ++_edges;
         }
 
         public void Disconnect(int v, int w) {
-            while (_adj[v].Remove(w) & _adj[w].Remove(v))
+            while (_adj[v].Remove(w))
                 --_edges;
         }
 
