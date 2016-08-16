@@ -36,7 +36,7 @@ namespace WmcSoft
     /// Stores a range of objects within a single object. This class is useful to use as the
     /// T of a list.
     /// </summary>
-    /// <remarks>This class is immutable.</remarks>
+    /// <remarks>The default bounding strategy is <see cref="BoundStrategy{T}.UpperExclusive"/>.</remarks>
     /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
@@ -113,7 +113,7 @@ namespace WmcSoft
         }
 
         public bool Includes(T value) {
-            return Includes(value, BoundStrategy<T>.Inclusive);
+            return Includes(value, BoundStrategy<T>.UpperExclusive);
         }
 
         public bool Overlaps(Range<T> other) {
@@ -198,7 +198,7 @@ namespace WmcSoft
             builder.Append(Lower);
             builder.Append(", ");
             builder.Append(Upper);
-            builder.Append(']');
+            builder.Append(')');
             return builder.ToString();
         }
 
