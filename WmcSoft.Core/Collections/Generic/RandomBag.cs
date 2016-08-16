@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Represents a bag of items.
+    /// Represents a bag of items for which items are enumerated in random order.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the bag.</typeparam>
     public class RandomBag<T> : Bag<T>
@@ -90,6 +90,13 @@ namespace WmcSoft.Collections.Generic
         public T Pick() {
             var last = Count - 1;
             return PopAt(_random.Next(last));
+        }
+
+        public override Enumerator GetEnumerator() {
+            var array = new T[Count];
+            CopyTo(array, 0);
+            array.Suffle(_random);
+            return new Bag<T>.Enumerator(this, array, array.Length);
         }
     }
 }

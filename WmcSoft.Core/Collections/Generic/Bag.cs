@@ -49,12 +49,21 @@ namespace WmcSoft.Collections.Generic
         public struct Enumerator : IEnumerator<T>
         {
             private readonly Bag<T> _bag;
+            private readonly T[] _storage;
+            private readonly int _count;
             private int _index;
             private readonly int _version;
             private T _current;
 
-            internal Enumerator(Bag<T> bag) {
+            internal Enumerator(Bag<T> bag) : this(bag, bag._storage, bag._count) {
+            }
+
+            internal Enumerator(Bag<T> bag, T[] storage, int count) {
+                if (count > storage.Length) throw new ArgumentOutOfRangeException(nameof(count));
+
                 _bag = bag;
+                _storage = storage;
+                _count = count;
                 _index = 0;
                 _version = bag._version;
                 _current = default(T);
@@ -65,8 +74,8 @@ namespace WmcSoft.Collections.Generic
 
             public bool MoveNext() {
                 var bag = _bag;
-                if (_version == bag._version && ((uint)_index < (uint)bag._count)) {
-                    _current = bag._storage[_index];
+                if (_version == bag._version && ((uint)_index < (uint)_count)) {
+                    _current = _storage[_index];
                     _index++;
                     return true;
                 }
@@ -76,7 +85,7 @@ namespace WmcSoft.Collections.Generic
             private bool MoveNextRare() {
                 if (_version != _bag._version)
                     throw new InvalidOperationException();
-                _index = _bag._count + 1;
+                _index = _count + 1;
                 _current = default(T);
                 return false;
             }
@@ -85,7 +94,7 @@ namespace WmcSoft.Collections.Generic
 
             object IEnumerator.Current {
                 get {
-                    if (_index == 0 | _index > _bag._count)
+                    if (_index == 0 | _index > _count)
                         throw new InvalidOperationException();
                     return Current;
                 }
@@ -239,7 +248,7 @@ namespace WmcSoft.Collections.Generic
             return removed;
         }
 
-        public Enumerator GetEnumerator() {
+        public virtual Enumerator GetEnumerator() {
             return new Enumerator(this);
         }
 

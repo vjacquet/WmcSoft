@@ -8,7 +8,7 @@ using WmcSoft.Collections.Generic;
 
 namespace ImplBench
 {
-    [Benchmark(Iterations = 3000)]
+    [Benchmark(Iterations = 2000)]
     public class BagBench
     {
         const int Count = 4096;
@@ -27,8 +27,8 @@ namespace ImplBench
                 var list = new List<int>(count);
                 while (count-- > 0)
                     list.Add(random.Next(16 * i, 256 * i));
-                lists[i] = new List<int>(list);
                 bags[i] = new Bag<int>(list);
+                lists[i] = new List<int>(list);
             }
         }
 
