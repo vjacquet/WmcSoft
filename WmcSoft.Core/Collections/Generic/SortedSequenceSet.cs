@@ -34,7 +34,7 @@ namespace WmcSoft.Collections.Generic
     /// Represents a set of objects that is maintained in sorted order.
     /// </summary>
     /// <typeparam name="T">The type of elements in the set.</typeparam>
-    [DebuggerTypeProxy(typeof(SortedSequenceDebugView<>))]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {Count}")]
     public class SortedSequenceSet<T> : ISet<T>
     {

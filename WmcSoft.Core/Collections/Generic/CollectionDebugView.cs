@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,30 +24,32 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
+using System.Linq;
 
-namespace WmcSoft.Benchmark
+namespace WmcSoft.Collections.Generic
 {
-    [DebuggerDisplay("Name = {Name,nq}")]
-    public class ReflectedMeasureDescriptor : IMeasureDescriptor
+    internal class CollectionDebugView<T>
     {
-        readonly MethodInfo _method;
+        private readonly ICollection<T> _collection;
 
-        public ReflectedMeasureDescriptor(MethodInfo method) {
-            _method = method;
+        public CollectionDebugView(ICollection<T> collection) {
+            if (collection == null)
+                throw new ArgumentNullException("set");
+
+            _collection = collection;
         }
 
-        #region IMeasureDescriptor Membres
-
-        public string Name {
-            get { return _method.Name; }
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public T[] Items {
+            get {
+                var array = new T[_collection.Count];
+                _collection.CopyTo(array, 0);
+                return array;
+            }
         }
-
-        public void Invoke() {
-            _method.Invoke(null, null);
-        }
-
-        #endregion
     }
+
 }

@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,28 +24,39 @@
 
 #endregion
 
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace WmcSoft.Benchmark
 {
-    [DebuggerDisplay("Name = {Name,nq}")]
-    public class ReflectedMeasureDescriptor : IMeasureDescriptor
+    public class TypesBenchmarkDiscovery : IEnumerable<IBenchmarkDescriptor>
     {
-        readonly MethodInfo _method;
+        private readonly Type[] _types;
 
-        public ReflectedMeasureDescriptor(MethodInfo method) {
-            _method = method;
+        public TypesBenchmarkDiscovery(params Type[] types) {
+            _types = types;
         }
 
-        #region IMeasureDescriptor Membres
+        #region IEnumerable<IBenchmarkDescriptor> Membres
 
-        public string Name {
-            get { return _method.Name; }
+        public IEnumerator<IBenchmarkDescriptor> GetEnumerator() {
+            foreach (var type in _types) {
+                var benchmark = type.GetCustomAttributes(typeof(BenchmarkAttribute), false).Cast<BenchmarkAttribute>().FirstOrDefault();
+                if (benchmark == null)
+                    continue;
+
+                yield return new ReflectedBenchmarkDescriptor(type);
+            }
         }
 
-        public void Invoke() {
-            _method.Invoke(null, null);
+        #endregion
+
+        #region IEnumerable Membres
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
         #endregion

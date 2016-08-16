@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using WmcSoft.Collections.Generic.Internals;
 
@@ -37,15 +38,19 @@ namespace WmcSoft.Collections.Generic
     /// Represents a bag of items.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the bag.</typeparam>
-    public class Bag<T> : ICollection<T>
+    [Serializable]
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    public class Bag<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         #region Enumerator
 
+        [Serializable]
         public struct Enumerator : IEnumerator<T>
         {
-            private Bag<T> _bag;
-            private int _version;
+            private readonly Bag<T> _bag;
             private int _index;
+            private readonly int _version;
             private T _current;
 
             internal Enumerator(Bag<T> bag) {
@@ -55,41 +60,49 @@ namespace WmcSoft.Collections.Generic
                 _current = default(T);
             }
 
-            public T Current { get { return _current; } }
-
-            object IEnumerator.Current { get { return Current; } }
-
             public void Dispose() {
             }
 
             public bool MoveNext() {
-                CheckVersion();
-
-                if (_index < _bag._count) {
-                    _current = _bag._storage[_index];
+                var bag = _bag;
+                if (_version == bag._version && ((uint)_index < (uint)bag._count)) {
+                    _current = bag._storage[_index];
                     _index++;
                     return true;
                 }
+                return MoveNextRare();
+            }
 
+            private bool MoveNextRare() {
+                if (_version != _bag._version)
+                    throw new InvalidOperationException();
                 _index = _bag._count + 1;
                 _current = default(T);
                 return false;
             }
 
-            public void Reset() {
-                _index = 0;
-                _current = default(T);
+            public T Current { get { return _current; } }
+
+            object IEnumerator.Current {
+                get {
+                    if (_index == 0 | _index > _bag._count)
+                        throw new InvalidOperationException();
+                    return Current;
+                }
             }
 
-            void CheckVersion() {
+            void IEnumerator.Reset() {
                 if (_version != _bag._version)
                     throw new InvalidOperationException();
+                _index = 0;
+                _current = default(T);
             }
         }
 
         #endregion
 
         private T[] _storage;
+        [ContractPublicPropertyName("Count")]
         private int _count;
         private int _version;
 
@@ -226,7 +239,7 @@ namespace WmcSoft.Collections.Generic
             return removed;
         }
 
-        Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator() {
             return new Enumerator(this);
         }
 
