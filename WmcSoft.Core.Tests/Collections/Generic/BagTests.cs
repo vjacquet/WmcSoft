@@ -17,7 +17,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveFrombag() {
+        public void CanRemoveFromBag() {
             var bag = new Bag<int>() { 1, 2, 3, 4, 5, 6 };
             Assert.AreEqual(6, bag.Count);
 
@@ -27,12 +27,32 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
+        public void CanRemoveAllFromBag() {
+            var bag = new Bag<int>() { 8, 1, 2, 7, 3, 4, 5, 6 };
+
+            var expected = new[] { 1, 2, 3 };
+            var removed = bag.RemoveAll(i => i >= 4);
+            var actual = bag.ToArray();
+            Assert.AreEqual(5, removed);
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
         public void CanEnumerateBag() {
             var bag = new Bag<int>() { 1, 2, 3, 4, 5, 6 };
 
             var expected = new[] { 1, 2, 3 };
             var actual = bag.Where(i => i < 4).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanAddNullItems() {
+            var bag = new Bag<string> { "a", "b", null, "d", "e" };
+
+            Assert.IsTrue(bag.Contains("a"));
+            Assert.IsFalse(bag.Contains("c"));
+            Assert.IsTrue(bag.Contains(null));
         }
     }
 }
