@@ -294,14 +294,11 @@ namespace WmcSoft
         #region Min/Max
 
         /// <summary>
-        /// Returns the smaller of n 32-bit signed integers.
+        /// Returns the smaller of n 32-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The smaller of the n 32-bit signed integers.</returns>
-        public static int Min(params int[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static int UnguardedMin(params int[] values) {
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 min = Math.Min(min, values[i]);
@@ -310,14 +307,11 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns the smaller of n 64-bit signed integers.
+        /// Returns the smaller of n 64-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The smaller of the n 64-bit signed integers.</returns>
-        public static long Min(params long[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static long UnguardedMin(params long[] values) {
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 min = Math.Min(min, values[i]);
@@ -326,14 +320,11 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns the larger of n 32-bit signed integers.
+        /// Returns the larger of n 32-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The larger of the n 32-bit signed integers.</returns>
-        public static int Max(params int[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static int UnguardedMax(params int[] values) {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 max = Math.Max(max, values[i]);
@@ -342,19 +333,72 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns the larger of n 64-bit signed integers.
+        /// Returns the larger of n 64-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The larger of the n 64-bit signed integers.</returns>
-        public static long Max(params long[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static long UnguardedMax(params long[] values) {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 max = System.Math.Max(max, values[i]);
             }
             return max;
+        }
+
+        /// <summary>
+        /// Returns the smaller of n 32-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The smaller of the n 32-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static int Min(params int[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMin(values);
+        }
+
+        /// <summary>
+        /// Returns the smaller of n 64-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The smaller of the n 64-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static long Min(params long[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMin(values);
+        }
+
+        /// <summary>
+        /// Returns the larger of n 32-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The larger of the n 32-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static int Max(params int[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMax(values);
+        }
+
+        /// <summary>
+        /// Returns the larger of n 64-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The larger of the n 64-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static long Max(params long[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMax(values);
         }
 
         /// <summary>

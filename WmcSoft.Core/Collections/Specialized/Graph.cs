@@ -24,8 +24,10 @@
 
 #endregion
 
-using System.Collections.Generic;
+using System.Diagnostics;
 using WmcSoft.Collections.Generic;
+
+using static System.Math;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -55,12 +57,47 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public void Disconnect(int v, int w) {
-            while (_adj[v].Remove(w) & _adj[w].Remove(v))
-                --_edges;
+            var nw = _adj[v].RemoveAll(x => x == w);
+            var nv = _adj[w].RemoveAll(x => x == v);
+            Debug.Assert(nv == nw);
+            _edges -= nv;
         }
 
-        public IEnumerable<int> Adjacents(int v) {
-            return _adj[v];
+        public ReadOnlyBag<int> Adjacents(int v) {
+            return new ReadOnlyBag<int>(_adj[v]);
         }
+
+        #region Helpers
+
+        public int Degree(int v) {
+            return _adj[v].Count;
+        }
+
+        public int MaxDegree() {
+            if (_adj.Length == 0)
+                return 0;
+
+            var degree = Degree(0);
+            for (int i = 1; i < _adj.Length; i++) {
+                degree = Max(degree, Degree(i));
+            }
+            return degree;
+        }
+
+        public double AvgDegree() {
+            return 2d * Edges / Vertices;
+        }
+
+        public int NumberOfSelfLoops() {
+            int count = 0;
+            for (int v = 0; v < _adj.Length; v++) {
+                foreach (var w in _adj[v])
+                    if (v == w)
+                        count++;
+            }
+            return count / 2;
+        }
+
+        #endregion
     }
 }

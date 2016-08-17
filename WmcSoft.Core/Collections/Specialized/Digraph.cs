@@ -54,12 +54,22 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public void Disconnect(int v, int w) {
-            while (_adj[v].Remove(w))
-                --_edges;
+            var n = _adj[v].RemoveAll(x => x == w);
+            _edges -= n;
         }
 
         public IEnumerable<int> Adjacents(int v) {
-            return _adj[v];
+            return new ReadOnlyBag<int>(_adj[v]);
+        }
+
+        public Digraph Reverse() {
+            var digraph = new Digraph(Vertices);
+            for (int v = 0; v < _adj.Length; v++) {
+                foreach (var w in _adj[v])
+                    digraph._adj[w].Add(v);
+            }
+            digraph._edges = _edges;
+            return digraph;
         }
     }
 }
