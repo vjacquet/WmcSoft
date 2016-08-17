@@ -34,5 +34,12 @@ namespace WmcSoft.Collections.Specialized
         public static DepthFirstSearchAlgorithm DepthFirstSearch(this Graph graph, int s) {
             return new DepthFirstSearchAlgorithm(graph, s);
         }
+
+        /// <summary>
+        /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
+        /// </summary>
+        public static DepthFirstPathsAlgorithm DepthFirstPaths(this Graph graph, int s ) {
+            return new DepthFirstPathsAlgorithm(graph, s);
+        }
     }
 }

@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -37,7 +36,7 @@ namespace WmcSoft.Collections.Generic
 
         public CollectionDebugView(ICollection<T> collection) {
             if (collection == null)
-                throw new ArgumentNullException("set");
+                throw new ArgumentNullException(nameof(collection));
 
             _collection = collection;
         }
@@ -51,5 +50,4 @@ namespace WmcSoft.Collections.Generic
             }
         }
     }
-
 }

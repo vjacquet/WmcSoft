@@ -24,7 +24,9 @@
 
 #endregion
 
+using System;
 using System.Diagnostics;
+using System.Text;
 using WmcSoft.Collections.Generic;
 
 using static System.Math;
@@ -35,8 +37,29 @@ namespace WmcSoft.Collections.Specialized
     /// Represents an undirected graph.
     /// </summary>
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
+    [DebuggerDisplay("Vertices={Vertices,nq}, Edges={Edges,nq}")]
+    [DebuggerTypeProxy(typeof(Graph.DebugView))]
     public class Graph
     {
+        internal class DebugView
+        {
+            private readonly Graph _graph;
+
+            public DebugView(Graph graph) {
+                if (graph == null)
+                    throw new ArgumentNullException("collection");
+
+                _graph=graph;
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public Bag<int>[] Items {
+                get {
+                    return _graph._adj;
+                }
+            }
+        }
+
         private readonly Bag<int>[] _adj;
         private int _edges;
 
@@ -65,6 +88,19 @@ namespace WmcSoft.Collections.Specialized
 
         public ReadOnlyBag<int> Adjacents(int v) {
             return new ReadOnlyBag<int>(_adj[v]);
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0} vertices, {1} edges", Vertices, Edges);
+            sb.AppendLine();
+            for (int v = 0; v < _adj.Length; v++) {
+                sb.AppendFormat("{0}:", v);
+                foreach (var w in _adj[v])
+                    sb.Append(' ').Append(w);
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
 
         #region Helpers
