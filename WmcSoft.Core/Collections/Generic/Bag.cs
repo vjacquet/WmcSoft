@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading;
 using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
@@ -41,7 +42,7 @@ namespace WmcSoft.Collections.Generic
     [Serializable]
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    public class Bag<T> : ICollection<T>, IReadOnlyCollection<T>
+    public class Bag<T> : ICollection<T>, IReadOnlyCollection<T>, ICollection
     {
         #region Enumerator
 
@@ -161,6 +162,22 @@ namespace WmcSoft.Collections.Generic
             get { return false; }
         }
 
+        object ICollection.SyncRoot {
+            get {
+                if (_syncRoot == null)
+                    Interlocked.CompareExchange<object>(ref _syncRoot, new object(), null);
+                return _syncRoot;
+            }
+        }
+        [NonSerialized]
+        private object _syncRoot;
+
+        bool ICollection.IsSynchronized {
+            get {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Adds an item to the <see cref="Bag{T}"/>.
         /// </summary>
@@ -202,6 +219,10 @@ namespace WmcSoft.Collections.Generic
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex) {
             _storage.CopyTo(array, arrayIndex, _count);
+        }
+
+        void ICollection.CopyTo(Array array, int index) {
+            _storage.CopyTo(array, index);
         }
 
         /// <summary>

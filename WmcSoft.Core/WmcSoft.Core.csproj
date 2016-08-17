@@ -76,6 +76,7 @@
     <Compile Include="Collections\Generic\OnDemandDictionary.cs" />
     <Compile Include="Collections\Generic\ListDictionary.cs" />
     <Compile Include="Collections\Generic\RandomBag.cs" />
+    <Compile Include="Collections\Generic\ReadOnlyBag.cs" />
     <Compile Include="Collections\Generic\SelectComparer.cs" />
     <Compile Include="Collections\Generic\EnumeratorAdapter.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
@@ -93,9 +94,13 @@
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
+    <Compile Include="Collections\Specialized\DepthFirstSearchAlgorithm.cs" />
     <Compile Include="Collections\Specialized\GapList.cs" />
     <Compile Include="Collections\Specialized\Digraph.cs" />
     <Compile Include="Collections\Specialized\Graph.cs" />
+    <Compile Include="Collections\Specialized\GraphExtensions.cs" />
+    <Compile Include="Collections\Specialized\WeightedDigraph.cs" />
+    <Compile Include="Collections\Specialized\WeightedGraph.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
