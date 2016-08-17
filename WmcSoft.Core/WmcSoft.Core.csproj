@@ -94,6 +94,7 @@
     <Compile Include="Collections\Generic\CountingEnumerator.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
+    <Compile Include="Collections\Specialized\BreathFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstSearchAlgorithm.cs" />
     <Compile Include="Collections\Specialized\GapList.cs" />

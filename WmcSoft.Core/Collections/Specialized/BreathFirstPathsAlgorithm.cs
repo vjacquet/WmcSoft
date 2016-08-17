@@ -32,14 +32,15 @@ namespace WmcSoft.Collections.Specialized
     /// <summary>
     /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
     /// </summary>
-    /// <remarks>The operation is performed in time proportional to the sum of their degree.</remarks>
-    public struct DepthFirstPathsAlgorithm
+    /// <remarks>The operation is performed in time proportional to 
+    /// <see cref="Graph.Vertices"/>+<see cref="Graph.Edges"/> in the worst case.</remarks>
+    public struct BreathFirstPathsAlgorithm
     {
         private readonly bool[] _marked;
         private readonly int[] _edgeTo;
         private readonly int _s;
 
-        public DepthFirstPathsAlgorithm(Graph graph, int s) {
+        public BreathFirstPathsAlgorithm(Graph graph, int s) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
             _marked = new bool[graph.Vertices];
@@ -62,12 +63,18 @@ namespace WmcSoft.Collections.Specialized
             return path;
         }
 
-        private void Process(Graph graph, int v) {
-            _marked[v] = true;
-            foreach (var w in graph.Adjacents(v)) {
-                if (!_marked[w]) {
-                    _edgeTo[w] = v;
-                    Process(graph, w);
+        private void Process(Graph graph, int s) {
+            var q = new Queue<int>();
+            _marked[s] = true;
+            q.Enqueue(s);
+            while (q.Count > 0) {
+                var v = q.Dequeue();
+                foreach (var w in graph.Adjacents(v)) {
+                    if (!_marked[w]) {
+                        _edgeTo[w] = v;
+                        _marked[w] = true;
+                        q.Enqueue(w);
+                    }
                 }
             }
         }

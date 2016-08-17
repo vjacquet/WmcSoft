@@ -38,8 +38,15 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
         /// </summary>
-        public static DepthFirstPathsAlgorithm DepthFirstPaths(this Graph graph, int s ) {
+        public static DepthFirstPathsAlgorithm DepthFirstPaths(this Graph graph, int s) {
             return new DepthFirstPathsAlgorithm(graph, s);
+        }
+
+        /// <summary>
+        /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
+        /// </summary>
+        public static BreathFirstPathsAlgorithm BreathFirstPaths(this Graph graph, int s) {
+            return new BreathFirstPathsAlgorithm(graph, s);
         }
     }
 }

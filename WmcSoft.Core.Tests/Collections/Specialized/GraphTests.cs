@@ -59,7 +59,7 @@ namespace WmcSoft.Collections.Specialized
             CheckDepthFirstSearch(graph, 9, false, 9, 10, 11, 12);
         }
 
-        public void CheckDepthFirstPaths(DepthFirstPathsAlgorithm paths, int v, params int[] expected) {
+        public void CheckPaths(DepthFirstPathsAlgorithm paths, int v, params int[] expected) {
             CollectionAssert.AreEqual(paths.PathTo(v).ToList(), expected);
         }
 
@@ -68,12 +68,29 @@ namespace WmcSoft.Collections.Specialized
             var graph = TinyCG();
 
             var paths = graph.DepthFirstPaths(0);
-            CheckDepthFirstPaths(paths, 0, 0);
-            CheckDepthFirstPaths(paths, 1, 0, 2, 1);
-            CheckDepthFirstPaths(paths, 2, 0, 2);
-            CheckDepthFirstPaths(paths, 3, 0, 2, 3);
-            CheckDepthFirstPaths(paths, 4, 0, 2, 3, 4);
-            CheckDepthFirstPaths(paths, 5, 0, 2, 3, 5);
+            CheckPaths(paths, 0, 0);
+            CheckPaths(paths, 1, 0, 2, 1);
+            CheckPaths(paths, 2, 0, 2);
+            CheckPaths(paths, 3, 0, 2, 3);
+            CheckPaths(paths, 4, 0, 2, 3, 4);
+            CheckPaths(paths, 5, 0, 2, 3, 5);
+        }
+
+        public void CheckPaths(BreathFirstPathsAlgorithm paths, int v, params int[] expected) {
+            CollectionAssert.AreEqual(paths.PathTo(v).ToList(), expected);
+        }
+
+        [TestMethod]
+        public void CheckBreathFirstPaths() {
+            var graph = TinyCG();
+
+            var paths = graph.BreathFirstPaths(0);
+            CheckPaths(paths, 0, 0);
+            CheckPaths(paths, 1, 0, 1);
+            CheckPaths(paths, 2, 0, 2);
+            CheckPaths(paths, 3, 0, 2, 3);
+            CheckPaths(paths, 4, 0, 2, 4);
+            CheckPaths(paths, 5, 0, 5);
         }
     }
 }
