@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Drawing;
 using static System.Math;
 
@@ -102,6 +103,37 @@ namespace WmcSoft.Drawing
             var G = F(color.G);
             var B = F(color.B);
             return 0.2126f * R + 0.7152f * G + 0.0722f * B;
+        }
+
+        /// <summary>
+        /// Computes the monochrome luminance of the specified color
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The relative lumnance.</returns>
+        /// <remarks>Uses the NTSC formula  Y = .299*r + .587*g + .114*b.</remarks>
+        public static double GetLuminance(this Color color) {
+            return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B;
+        }
+
+        /// <summary>
+        /// Returns a gray version of this color.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The gray version of the color.</returns>
+        public static Color ToGray(this Color color) {
+            int y = (int)(Round(GetLuminance(color)));   // round to nearest int
+            Color gray = Color.FromArgb(y, y, y);
+            return gray;
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when the <paramref name="color"/> is compatible with the <paramref name="other"/> color.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <param name="other">The other color.</param>
+        /// <returns><c>true</c> when the two colors are compatible; otherwise, <c>false</c>.</returns>
+        public static bool IsCompatibleWith(this Color color, Color other) {
+            return Abs(GetLuminance(color) - GetLuminance(other)) >= 128.0;
         }
     }
 }
