@@ -94,7 +94,7 @@ namespace WmcSoft.Collections.Generic
         /// </listheader>
         /// <item>
         ///   <description>Less than zero</description>
-        ///   <description> x is less than y.</description>
+        ///   <description>x is less than y.</description>
         /// </item>
         /// <item>
         ///   <description>Zero</description>

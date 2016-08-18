@@ -92,5 +92,19 @@ namespace WmcSoft.Collections.Specialized
             CheckPaths(paths, 4, 0, 2, 4);
             CheckPaths(paths, 5, 0, 5);
         }
+
+        public void CheckComponents(ConnectedComponentsAlgorithm cc, int id, params int[] expected) {
+            CollectionAssert.AreEqual(cc.Components(id).ToList(), expected);
+        }
+
+        [TestMethod]
+        public void CheckConnectedComponents() {
+            var graph = TinyG();
+
+            var cc = graph.ConnectedComponents();
+            CheckComponents(cc, 0, 0, 1, 2, 3, 4, 5, 6);
+            CheckComponents(cc, 1, 7, 8);
+            CheckComponents(cc, 2, 9, 10, 11, 12);
+        }
     }
 }

@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace WmcSoft.Diagnostics
@@ -32,7 +33,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Represents a Named counter.
     /// </summary>
-    public sealed class Counter
+    public sealed class Counter : IComparable<Counter>
     {
         readonly string _name;
         int _count;
@@ -81,6 +82,41 @@ namespace WmcSoft.Diagnostics
         /// <returns>A string that represents the current counter.</returns>
         public override string ToString() {
             return _count + " (" + _name + ')';
+        }
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type and returns
+        /// an integer that indicates whether the current instance precedes, follows, or
+        /// occurs in the same position in the sort order as the other object.
+        /// </summary>
+        /// <param name="other">An object to compare with this instance.</param>
+        /// <returns>
+        /// A signed integer that indicates the relative values of counters being compared, as shown in the
+        /// following table.
+        /// <list type="table">
+        /// <listheader>
+        ///   <description>Value</description>
+        ///   <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        ///   <description>Less than zero</description>
+        ///   <description> This instance's value is less than <paramref name="other"/>'s value.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Zero</description>
+        ///   <description>This instance's value equals <paramref name="other"/>'s value.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Greater than zero</description>
+        ///   <description>This instance's value is greater than <paramref name="other"/>'s value.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public int CompareTo(Counter other) {
+            if (other == null)
+                return 1;
+
+            return Comparer<int>.Default.Compare(_count, other._count);
         }
     }
 }

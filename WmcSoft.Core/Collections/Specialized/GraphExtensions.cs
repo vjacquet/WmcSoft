@@ -48,5 +48,12 @@ namespace WmcSoft.Collections.Specialized
         public static BreathFirstPathsAlgorithm BreathFirstPaths(this Graph graph, int s) {
             return new BreathFirstPathsAlgorithm(graph, s);
         }
+
+        /// <summary>
+        /// Divides the vertices into equivalence classes (the connected components).
+        /// </summary>
+        public static ConnectedComponentsAlgorithm ConnectedComponents(this Graph graph) {
+            return new ConnectedComponentsAlgorithm(graph);
+        }
     }
 }
