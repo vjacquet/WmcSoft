@@ -95,8 +95,10 @@
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
     <Compile Include="Collections\Specialized\BreathFirstPathsAlgorithm.cs" />
+    <Compile Include="Collections\Specialized\BipartiteAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\ConnectedComponentsAlgorithm.cs" />
+    <Compile Include="Collections\Specialized\CycleAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstSearchAlgorithm.cs" />
     <Compile Include="Collections\Specialized\GapList.cs" />
     <Compile Include="Collections\Specialized\Digraph.cs" />

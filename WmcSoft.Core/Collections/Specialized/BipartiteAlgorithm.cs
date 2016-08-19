@@ -30,53 +30,40 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Specialized
 {
     /// <summary>
-    /// Marks all the vertices connected to a given source.
+    /// Checks if the <see cref="Graph"/> is bipartite.
     /// </summary>
-    /// <remarks>The operation is performed in time proportional to the sum of their degree.</remarks>
-    public struct DepthFirstSearchAlgorithm
+    public struct BipartiteAlgorithm
     {
         private readonly bool[] _marked;
-        private int _count;
+        private readonly bool[] _color;
+        private bool _isBipartite;
 
-        /// <summary>
-        /// Single-source reachability constructor.
-        /// </summary>
-        /// <param name="graph">The graph.</param>
-        /// <param name="s">The source.</param>
-        public DepthFirstSearchAlgorithm(Graph graph, int s) {
+        public BipartiteAlgorithm(Graph graph) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
             _marked = new bool[graph.Vertices];
-            _count = 0;
-            Process(graph, s);
-        }
-
-        /// <summary>
-        /// Multi-source reachability constructor.
-        /// </summary>
-        /// <param name="graph">The graph.</param>
-        /// <param name="sources">The sources.</param>
-        public DepthFirstSearchAlgorithm(Graph graph, IEnumerable<int> sources) {
-            if (graph == null) throw new ArgumentNullException(nameof(graph));
-            if (sources == null) throw new ArgumentNullException(nameof(sources));
-
-            _marked = new bool[graph.Vertices];
-            _count = 0;
-            foreach (var s in sources)
+            _color = new bool[graph.Vertices];
+            _isBipartite = true;
+            for (int s = 0; s < graph.Vertices; s++) {
                 if (!_marked[s])
                     Process(graph, s);
+            }
         }
 
-        public bool this[int w] { get { return _marked[w]; } }
-
-        public int Count { get { return _count; } }
+        public bool IsBipartite {
+            get { return _isBipartite; }
+        }
 
         private void Process(Graph graph, int v) {
             _marked[v] = true;
-            _count++;
-            foreach (var w in graph.Adjacents(v))
-                if (!_marked[w])
+            foreach (var w in graph.Adjacents(v)) {
+                if (!_marked[w]) {
+                    _color[w] = !_color[v];
                     Process(graph, w);
+                } else if (_color[w] == _color[v]) {
+                    _isBipartite = false; // explores the complete graph eventhough we know the ansswer...
+                }
+            }
         }
     }
 }

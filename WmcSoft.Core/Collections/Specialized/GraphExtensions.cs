@@ -24,6 +24,8 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace WmcSoft.Collections.Specialized
 {
     public static class GraphExtensions
@@ -33,6 +35,13 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         public static DepthFirstSearchAlgorithm DepthFirstSearch(this Graph graph, int s) {
             return new DepthFirstSearchAlgorithm(graph, s);
+        }
+
+        /// <summary>
+        /// Marks all the vertices connected to a given set of sources.
+        /// </summary>
+        public static DepthFirstSearchAlgorithm DepthFirstSearch(this Graph graph, IEnumerable<int> sources) {
+            return new DepthFirstSearchAlgorithm(graph, sources);
         }
 
         /// <summary>
@@ -54,6 +63,22 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         public static ConnectedComponentsAlgorithm ConnectedComponents(this Graph graph) {
             return new ConnectedComponentsAlgorithm(graph);
+        }
+
+        /// <summary>
+        /// Checks if the <paramref name="graph"/> has a cycle.
+        /// </summary>
+        public static bool HasCycle(this Graph graph) {
+            var a = new CycleAlgorithm(graph);
+            return a.HasCycle;
+        }
+
+        /// <summary>
+        /// Checks if the <paramref name="graph"/> is bipartite.
+        /// </summary>
+        public static bool IsBipartite(this Graph graph) {
+            var a = new BipartiteAlgorithm(graph);
+            return a.IsBipartite;
         }
     }
 }
