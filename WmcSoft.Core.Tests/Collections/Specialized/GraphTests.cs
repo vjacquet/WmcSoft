@@ -28,16 +28,15 @@ namespace WmcSoft.Collections.Specialized
         }
 
         static Graph TinyCG() {
-            // RS Bag are in Lifo order so reverse the input to get the same graph.
             var g = new Graph(6);
-            g.Connect(0, 2);
-            g.Connect(3, 5);
-            g.Connect(3, 4);
-            g.Connect(0, 1);
-            g.Connect(1, 2);
-            g.Connect(2, 3);
-            g.Connect(2, 4);
             g.Connect(0, 5);
+            g.Connect(2, 4);
+            g.Connect(2, 3);
+            g.Connect(1, 2);
+            g.Connect(0, 1);
+            g.Connect(3, 4);
+            g.Connect(3, 5);
+            g.Connect(0, 2);
             return g;
         }
 

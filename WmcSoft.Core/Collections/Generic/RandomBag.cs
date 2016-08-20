@@ -96,7 +96,7 @@ namespace WmcSoft.Collections.Generic
             var array = new T[Count];
             CopyTo(array, 0);
             array.Suffle(_random);
-            return new Bag<T>.Enumerator(this, array, array.Length);
+            return new Bag<T>.Enumerator(this, array);
         }
     }
 }
