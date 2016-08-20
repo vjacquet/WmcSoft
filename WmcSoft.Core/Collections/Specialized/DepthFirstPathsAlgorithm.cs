@@ -39,11 +39,11 @@ namespace WmcSoft.Collections.Specialized
         private readonly int[] _edgeTo;
         private readonly int _s;
 
-        public DepthFirstPathsAlgorithm(Graph graph, int s) {
+        public DepthFirstPathsAlgorithm(IGraph graph, int s) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
-            _marked = new bool[graph.Vertices];
-            _edgeTo = new int[graph.Vertices];
+            _marked = new bool[graph.VerticeCount];
+            _edgeTo = new int[graph.VerticeCount];
             _s = s;
             Process(graph, s);
         }
@@ -62,7 +62,7 @@ namespace WmcSoft.Collections.Specialized
             return path;
         }
 
-        private void Process(Graph graph, int v) {
+        private void Process(IGraph graph, int v) {
             _marked[v] = true;
             foreach (var w in graph.Adjacents(v)) {
                 if (!_marked[w]) {

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using WmcSoft.Collections.Generic;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -35,7 +36,8 @@ namespace WmcSoft.Collections.Specialized
     /// Represents an edge weighted directed graph.
     /// </summary>
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
-    public class WeightedDigraph
+    [DebuggerDisplay("Vertices={VerticeCount,nq}, Edges={EdgeCount,nq}")]
+    public class WeightedDigraph : IWeightedGraph<WeightedDigraph.Edge>
     {
         public struct Edge : IComparable<Edge>
         {
@@ -58,7 +60,7 @@ namespace WmcSoft.Collections.Specialized
             }
 
             public override string ToString() {
-                return string.Format("{0}->{1} {2}", _to, _from, Weight);
+                return string.Format("{0}→{1} {2}", _to, _from, Weight);
             }
         }
 
@@ -72,21 +74,41 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public int Vertices { get { return _adj.Length; } }
-        public int Edges { get { return _edges; } }
+        public int VerticeCount { get { return _adj.Length; } }
+        public int EdgeCount { get { return _edges; } }
 
         public void Connect(int v, int w, double weight) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+            if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
+
             _adj[v].Add(new Edge(v, w, weight));
             ++_edges;
         }
 
         public void Disconnect(int v, int w) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+            if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
+
             var n = _adj[v].RemoveAll(x => x._to == w);
             _edges -= n;
         }
 
-        public ReadOnlyBag<Edge> Adjacents(int v) {
+        public ReadOnlyBag<Edge> Edges(int v) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+
             return new ReadOnlyBag<Edge>(_adj[v]);
         }
+
+        #region IWeightedGraph implementation
+
+        IReadOnlyCollection<Edge> IWeightedGraph<Edge>.Edges(int v) {
+            return Edges(v);
+        }
+
+        public IReadOnlyCollection<int> Adjacents(int v) {
+            return new ConvertingCollectionAdapter<Edge, int>(Edges(v), e => e.To);
+        }
+
+        #endregion
     }
 }

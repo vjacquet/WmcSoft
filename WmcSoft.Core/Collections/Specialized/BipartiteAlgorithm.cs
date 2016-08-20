@@ -38,13 +38,13 @@ namespace WmcSoft.Collections.Specialized
         private readonly bool[] _color;
         private bool _isBipartite;
 
-        public BipartiteAlgorithm(Graph graph) {
+        public BipartiteAlgorithm(IGraph graph) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
-            _marked = new bool[graph.Vertices];
-            _color = new bool[graph.Vertices];
+            _marked = new bool[graph.VerticeCount];
+            _color = new bool[graph.VerticeCount];
             _isBipartite = true;
-            for (int s = 0; s < graph.Vertices; s++) {
+            for (int s = 0; s < graph.VerticeCount; s++) {
                 if (!_marked[s])
                     Process(graph, s);
             }
@@ -54,7 +54,7 @@ namespace WmcSoft.Collections.Specialized
             get { return _isBipartite; }
         }
 
-        private void Process(Graph graph, int v) {
+        private void Process(IGraph graph, int v) {
             _marked[v] = true;
             foreach (var w in graph.Adjacents(v)) {
                 if (!_marked[w]) {

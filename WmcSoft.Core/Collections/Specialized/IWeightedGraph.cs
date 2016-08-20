@@ -24,43 +24,15 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
     /// <summary>
-    /// Checks if the <see cref="Graph"/> has a cycle.
+    /// Represents a weighted graph.
     /// </summary>
-    public struct CycleAlgorithm
+    public interface IWeightedGraph<TEgde> : IGraph
     {
-        private readonly bool[] _marked;
-        private bool _hasCycle;
-
-        public CycleAlgorithm(IGraph graph) {
-            if (graph == null) throw new ArgumentNullException(nameof(graph));
-
-            _marked = new bool[graph.VerticeCount];
-            _hasCycle = false;
-            for (int s = 0; s < graph.VerticeCount; s++) {
-                if (!_marked[s])
-                    Process(graph, s, s);
-            }
-        }
-
-        public bool HasCycle {
-            get { return _hasCycle; }
-        }
-
-        private void Process(IGraph graph, int v, int u) {
-            _marked[v] = true;
-            foreach (var w in graph.Adjacents(v)) {
-                if (!_marked[w]) {
-                    Process(graph, w, v);
-                } else if (w != u) {
-                    _hasCycle = true; // explores the complete graph eventhough we know the ansswer...
-                }
-            }
-        }
+        IReadOnlyCollection<TEgde> Edges(int v);
     }
 }

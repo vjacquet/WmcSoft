@@ -43,10 +43,10 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="graph">The graph.</param>
         /// <param name="s">The source.</param>
-        public DepthFirstSearchAlgorithm(Graph graph, int s) {
+        public DepthFirstSearchAlgorithm(IGraph graph, int s) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
-            _marked = new bool[graph.Vertices];
+            _marked = new bool[graph.VerticeCount];
             _count = 0;
             Process(graph, s);
         }
@@ -56,11 +56,11 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="graph">The graph.</param>
         /// <param name="sources">The sources.</param>
-        public DepthFirstSearchAlgorithm(Graph graph, IEnumerable<int> sources) {
+        public DepthFirstSearchAlgorithm(IGraph graph, IEnumerable<int> sources) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
             if (sources == null) throw new ArgumentNullException(nameof(sources));
 
-            _marked = new bool[graph.Vertices];
+            _marked = new bool[graph.VerticeCount];
             _count = 0;
             foreach (var s in sources)
                 if (!_marked[s])
@@ -71,7 +71,7 @@ namespace WmcSoft.Collections.Specialized
 
         public int Count { get { return _count; } }
 
-        private void Process(Graph graph, int v) {
+        private void Process(IGraph graph, int v) {
             _marked[v] = true;
             _count++;
             foreach (var w in graph.Adjacents(v))

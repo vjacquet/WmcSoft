@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using WmcSoft.Collections.Generic;
@@ -37,9 +38,9 @@ namespace WmcSoft.Collections.Specialized
     /// Represents an undirected graph.
     /// </summary>
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
-    [DebuggerDisplay("Vertices={Vertices,nq}, Edges={Edges,nq}")]
-    [DebuggerTypeProxy(typeof(Graph.DebugView))]
-    public class Graph
+    [DebuggerDisplay("Vertices={VerticeCount,nq}, Edges={EdgeCount,nq}")]
+    [DebuggerTypeProxy(typeof(DebugView))]
+    public class Graph : IGraph
     {
         internal class DebugView
         {
@@ -49,7 +50,7 @@ namespace WmcSoft.Collections.Specialized
                 if (graph == null)
                     throw new ArgumentNullException("collection");
 
-                _graph=graph;
+                _graph = graph;
             }
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
@@ -70,16 +71,22 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public int Vertices { get { return _adj.Length; } }
-        public int Edges { get { return _edges; } }
+        public int VerticeCount { get { return _adj.Length; } }
+        public int EdgeCount { get { return _edges; } }
 
         public void Connect(int v, int w) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+            if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
+
             _adj[v].Add(w);
             _adj[w].Add(v);
             ++_edges;
         }
 
         public void Disconnect(int v, int w) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+            if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
+
             var nw = _adj[v].RemoveAll(x => x == w);
             var nv = _adj[w].RemoveAll(x => x == v);
             Debug.Assert(nv == nw);
@@ -87,12 +94,14 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public ReadOnlyBag<int> Adjacents(int v) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+
             return new ReadOnlyBag<int>(_adj[v]);
         }
 
         public override string ToString() {
             var sb = new StringBuilder();
-            sb.AppendFormat("{0} vertices, {1} edges", Vertices, Edges);
+            sb.AppendFormat("{0} vertices, {1} edges", VerticeCount, EdgeCount);
             sb.AppendLine();
             for (int v = 0; v < _adj.Length; v++) {
                 sb.AppendFormat("{0}:", v);
@@ -121,7 +130,7 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public double AvgDegree() {
-            return 2d * Edges / Vertices;
+            return 2d * EdgeCount / VerticeCount;
         }
 
         public int NumberOfSelfLoops() {
@@ -132,6 +141,14 @@ namespace WmcSoft.Collections.Specialized
                         count++;
             }
             return count / 2;
+        }
+
+        #endregion
+
+        #region IGraph implementation
+
+        IReadOnlyCollection<int> IGraph.Adjacents(int v) {
+            return Adjacents(v);
         }
 
         #endregion

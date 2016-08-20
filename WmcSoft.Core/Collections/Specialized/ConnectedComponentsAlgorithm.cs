@@ -38,13 +38,13 @@ namespace WmcSoft.Collections.Specialized
         private readonly int[] _ids;
         private int _count;
 
-        public ConnectedComponentsAlgorithm(Graph graph) {
+        public ConnectedComponentsAlgorithm(IGraph graph) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
-            _marked = new bool[graph.Vertices];
-            _ids = new int[graph.Vertices];
+            _marked = new bool[graph.VerticeCount];
+            _ids = new int[graph.VerticeCount];
             _count = 0;
-            for (int s = 0; s < graph.Vertices; s++) {
+            for (int s = 0; s < graph.VerticeCount; s++) {
                 if (!_marked[s]) {
                     Process(graph, s);
                     _count++;
@@ -70,7 +70,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private void Process(Graph graph, int v) {
+        private void Process(IGraph graph, int v) {
             _marked[v] = true;
             _ids[v] = _count;
             foreach (var w in graph.Adjacents(v))

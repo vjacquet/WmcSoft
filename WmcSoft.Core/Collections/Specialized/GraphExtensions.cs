@@ -33,42 +33,42 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// Marks all the vertices connected to a given source.
         /// </summary>
-        public static DepthFirstSearchAlgorithm DepthFirstSearch(this Graph graph, int s) {
+        public static DepthFirstSearchAlgorithm DepthFirstSearch(this IGraph graph, int s) {
             return new DepthFirstSearchAlgorithm(graph, s);
         }
 
         /// <summary>
         /// Marks all the vertices connected to a given set of sources.
         /// </summary>
-        public static DepthFirstSearchAlgorithm DepthFirstSearch(this Graph graph, IEnumerable<int> sources) {
+        public static DepthFirstSearchAlgorithm DepthFirstSearch(this IGraph graph, IEnumerable<int> sources) {
             return new DepthFirstSearchAlgorithm(graph, sources);
         }
 
         /// <summary>
         /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
         /// </summary>
-        public static DepthFirstPathsAlgorithm DepthFirstPaths(this Graph graph, int s) {
+        public static DepthFirstPathsAlgorithm DepthFirstPaths(this IGraph graph, int s) {
             return new DepthFirstPathsAlgorithm(graph, s);
         }
 
         /// <summary>
         /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
         /// </summary>
-        public static BreathFirstPathsAlgorithm BreathFirstPaths(this Graph graph, int s) {
+        public static BreathFirstPathsAlgorithm BreathFirstPaths(this IGraph graph, int s) {
             return new BreathFirstPathsAlgorithm(graph, s);
         }
 
         /// <summary>
         /// Divides the vertices into equivalence classes (the connected components).
         /// </summary>
-        public static ConnectedComponentsAlgorithm ConnectedComponents(this Graph graph) {
+        public static ConnectedComponentsAlgorithm ConnectedComponents(this IGraph graph) {
             return new ConnectedComponentsAlgorithm(graph);
         }
 
         /// <summary>
         /// Checks if the <paramref name="graph"/> has a cycle.
         /// </summary>
-        public static bool HasCycle(this Graph graph) {
+        public static bool HasCycle(this IGraph graph) {
             var a = new CycleAlgorithm(graph);
             return a.HasCycle;
         }
@@ -76,7 +76,7 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// Checks if the <paramref name="graph"/> is bipartite.
         /// </summary>
-        public static bool IsBipartite(this Graph graph) {
+        public static bool IsBipartite(this IGraph graph) {
             var a = new BipartiteAlgorithm(graph);
             return a.IsBipartite;
         }

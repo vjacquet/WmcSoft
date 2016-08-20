@@ -45,9 +45,9 @@ namespace WmcSoft.Collections.Specialized
 
         void CheckDepthFirstSearch(Graph graph, int v, bool connected, params int[] expected) {
             var marked = graph.DepthFirstSearch(v);
-            Assert.AreEqual(connected, marked.Count == graph.Vertices);
+            Assert.AreEqual(connected, marked.Count == graph.VerticeCount);
 
-            var connections = Enumerable.Range(0, graph.Vertices).Where(i => marked[i]).ToList();
+            var connections = Enumerable.Range(0, graph.VerticeCount).Where(i => marked[i]).ToList();
             CollectionAssert.AreEquivalent(connections, expected);
         }
 

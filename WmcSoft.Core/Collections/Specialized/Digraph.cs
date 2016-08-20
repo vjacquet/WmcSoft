@@ -24,7 +24,9 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
@@ -33,8 +35,29 @@ namespace WmcSoft.Collections.Specialized
     /// Represents a directed graph.
     /// </summary>
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
-    public class Digraph
+    [DebuggerDisplay("Vertices={VerticeCount,nq}, Edges={EdgeCount,nq}")]
+    [DebuggerTypeProxy(typeof(DebugView))]
+    public class Digraph : IGraph
     {
+        internal class DebugView
+        {
+            private readonly Digraph _graph;
+
+            public DebugView(Digraph graph) {
+                if (graph == null)
+                    throw new ArgumentNullException("collection");
+
+                _graph = graph;
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public Bag<int>[] Items {
+                get {
+                    return _graph._adj;
+                }
+            }
+        }
+
         private readonly Bag<int>[] _adj;
         private int _edges;
 
@@ -45,25 +68,33 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public int Vertices { get { return _adj.Length; } }
-        public int Edges { get { return _edges; } }
+        public int VerticeCount { get { return _adj.Length; } }
+        public int EdgeCount { get { return _edges; } }
 
         public void Connect(int v, int w) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+            if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
+
             _adj[v].Add(w);
             ++_edges;
         }
 
         public void Disconnect(int v, int w) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+            if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
+
             var n = _adj[v].RemoveAll(x => x == w);
             _edges -= n;
         }
 
-        public IEnumerable<int> Adjacents(int v) {
+        public ReadOnlyBag<int> Adjacents(int v) {
+            if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
+
             return new ReadOnlyBag<int>(_adj[v]);
         }
 
         public Digraph Reverse() {
-            var digraph = new Digraph(Vertices);
+            var digraph = new Digraph(VerticeCount);
             for (int v = 0; v < _adj.Length; v++) {
                 foreach (var w in _adj[v])
                     digraph._adj[w].Add(v);
@@ -71,5 +102,13 @@ namespace WmcSoft.Collections.Specialized
             digraph._edges = _edges;
             return digraph;
         }
+
+        #region IGraph implementation
+
+        IReadOnlyCollection<int> IGraph.Adjacents(int v) {
+            return Adjacents(v);
+        }
+
+        #endregion
     }
 }
