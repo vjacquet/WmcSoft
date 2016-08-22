@@ -47,18 +47,12 @@ namespace WmcSoft.Collections.Specialized
             private readonly Graph _graph;
 
             public DebugView(Graph graph) {
-                if (graph == null)
-                    throw new ArgumentNullException("collection");
-
+                if (graph == null) throw new ArgumentNullException("collection");
                 _graph = graph;
             }
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public Bag<int>[] Items {
-                get {
-                    return _graph._adj;
-                }
-            }
+            public Bag<int>[] Items { get { return _graph._adj; } }
         }
 
         private readonly Bag<int>[] _adj;

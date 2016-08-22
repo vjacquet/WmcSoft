@@ -37,8 +37,23 @@ namespace WmcSoft.Collections.Specialized
     /// </summary>
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
     [DebuggerDisplay("Vertices={VerticeCount,nq}, Edges={EdgeCount,nq}")]
+    [DebuggerTypeProxy(typeof(DebugView))]
     public class WeightedGraph : IWeightedGraph<WeightedGraph.Edge>
     {
+        internal class DebugView
+        {
+            private readonly WeightedGraph _graph;
+
+            public DebugView(WeightedGraph graph) {
+                if (graph == null) throw new ArgumentNullException("collection");
+                _graph = graph;
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public Bag<Edge>[] Items { get { return _graph._adj; } }
+        }
+
+        [DebuggerDisplay("{ToString(), nq}")]
         public struct Edge : IComparable<Edge>
         {
             internal readonly int _v;
