@@ -42,9 +42,9 @@ namespace WmcSoft.Collections.Specialized
     {
         internal class DebugView
         {
-            private readonly WeightedGraph _graph;
+            private readonly WeightedDigraph _graph;
 
-            public DebugView(WeightedGraph graph) {
+            public DebugView(WeightedDigraph graph) {
                 if (graph == null) throw new ArgumentNullException("collection");
                 _graph = graph;
             }
