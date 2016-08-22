@@ -140,6 +140,7 @@
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
+    <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\ITrie.cs" />
     <Compile Include="Text\Trie.cs" />

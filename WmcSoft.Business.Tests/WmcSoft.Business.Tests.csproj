@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Accounting\MoneyTests.cs" />
     <Compile Include="AutorizableTests.cs" />
+    <Compile Include="GatewayResultTests.cs" />
     <Compile Include="PartyModel\BusinessExtensions.cs" />
     <Compile Include="PartyModel\FamilyLikeModel.cs" />
     <Compile Include="PartyModel\FamilyLikePartyRoleTests.cs">
