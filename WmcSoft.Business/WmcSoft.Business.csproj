@@ -189,6 +189,7 @@
     <Compile Include="Business\RuleModel\UnexpectedElementException.cs" />
     <Compile Include="Business\RuleModel\Variable.cs" />
     <Compile Include="Business\UnitOfWork.cs" />
+    <Compile Include="GatewayError.cs" />
     <Compile Include="GatewayResult.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IBoundStrategy.cs" />

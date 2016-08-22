@@ -95,12 +95,4 @@ namespace WmcSoft
 
         #endregion
     }
-
-    [DebuggerDisplay("Code={Code,nq}")]
-    [Serializable]
-    public class GatewayError
-    {
-        public string Code { get; set; }
-        public string Description { get; set; }
-    }
 }
