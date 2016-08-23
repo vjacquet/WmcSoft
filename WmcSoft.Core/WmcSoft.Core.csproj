@@ -108,6 +108,7 @@
     <Compile Include="Collections\Specialized\Graph.cs" />
     <Compile Include="Collections\Specialized\GraphExtensions.cs" />
     <Compile Include="Collections\Specialized\IDirectedGraph.cs" />
+    <Compile Include="Collections\Specialized\IGraphBuilder.cs" />
     <Compile Include="Collections\Specialized\IWeightedGraph.cs" />
     <Compile Include="Collections\Specialized\IGraph.cs" />
     <Compile Include="Collections\Specialized\TopologicalAlgorithm.cs" />

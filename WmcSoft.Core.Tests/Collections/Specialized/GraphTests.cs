@@ -40,6 +40,39 @@ namespace WmcSoft.Collections.Specialized
             return g;
         }
 
+        class JobNames
+        {
+            public int Algorithms = 0;
+            public int Databases = 1;
+            public int IntroductionToCS = 2;
+            public int AdvancedProgramming = 3;
+            public int ComputationalBiology = 4;
+            public int ScientificComputing = 5;
+            public int TheoricalCS = 6;
+            public int LinearAlgebra = 7;
+            public int Calculus = 8;
+            public int ArtificialInterlligence = 9;
+            public int Robotics = 10;
+            public int MachineLearning = 11;
+            public int NeuralNetworks = 12;
+        }
+
+
+        static Digraph Jobs() {
+            var g = new Digraph(13);
+            var j = new JobNames();
+            g.Connect(j.Algorithms, j.TheoricalCS, j.Databases, j.ScientificComputing);
+            g.Connect(j.IntroductionToCS, j.AdvancedProgramming, j.Algorithms);
+            g.Connect(j.AdvancedProgramming, j.ScientificComputing);
+            g.Connect(j.ScientificComputing, j.ComputationalBiology);
+            g.Connect(j.TheoricalCS, j.ComputationalBiology, j.ArtificialInterlligence);
+            g.Connect(j.LinearAlgebra, j.TheoricalCS);
+            g.Connect(j.Calculus, j.LinearAlgebra);
+            g.Connect(j.ArtificialInterlligence, j.NeuralNetworks, j.Robotics, j.MachineLearning);
+            g.Connect(j.MachineLearning, j.NeuralNetworks);
+            return g;
+        }
+
         #endregion
 
         void CheckDepthFirstSearch(Graph graph, int v, bool connected, params int[] expected) {
@@ -104,6 +137,32 @@ namespace WmcSoft.Collections.Specialized
             CheckComponents(cc, 0, 0, 1, 2, 3, 4, 5, 6);
             CheckComponents(cc, 1, 7, 8);
             CheckComponents(cc, 2, 9, 10, 11, 12);
+        }
+
+        [TestMethod]
+        public void CheckTopological() {
+            var graph = Jobs();
+            var topological = graph.Topological();
+            var j = new JobNames();
+
+            var expected = new int[] {
+                j.Calculus,
+                j.LinearAlgebra,
+                j.IntroductionToCS,
+                j.AdvancedProgramming,
+                j.Algorithms,
+                j.TheoricalCS,
+                j.ArtificialInterlligence,
+                j.Robotics,
+                j.MachineLearning,
+                j.NeuralNetworks,
+                j.Databases,
+                j.ScientificComputing,
+                j.ComputationalBiology,
+            };
+            var actual = topological.Order.ToArray();
+
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }

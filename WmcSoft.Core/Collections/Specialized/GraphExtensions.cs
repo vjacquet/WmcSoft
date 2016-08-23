@@ -91,5 +91,13 @@ namespace WmcSoft.Collections.Specialized
         public static TopologicalAlgorithm Topological(this IDirectedGraph graph) {
             return new TopologicalAlgorithm(graph);
         }
+
+        public static TGraph Connect<TGraph>(this TGraph graph, int v, params int[] w)
+            where TGraph : IGraphBuilder {
+            for (int i = 0; i < w.Length; i++) {
+                graph.Connect(v, w[i]);
+            }
+            return graph;
+        }
     }
 }
