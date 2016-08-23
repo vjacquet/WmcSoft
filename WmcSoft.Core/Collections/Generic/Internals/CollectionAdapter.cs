@@ -27,23 +27,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
-    sealed class ReadOnlyCollectionAdapter<T> : IReadOnlyCollection<T>
+    sealed class CollectionAdapter<T> : IReadOnlyCollection<T>, ICollection<T>
     {
         #region Fields
 
         private readonly int _count;
         private readonly IEnumerable<T> _enumerable;
+        private readonly IEqualityComparer<T> _comparer;
 
         #endregion
 
         #region Lifecycle
 
-        public ReadOnlyCollectionAdapter(int count, IEnumerable<T> enumerable) {
+        public CollectionAdapter(int count, IEnumerable<T> enumerable, IEqualityComparer<T> comparer = null) {
             _enumerable = enumerable;
             _count = count;
+            _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
         #endregion
@@ -69,6 +72,36 @@ namespace WmcSoft.Collections.Generic.Internals
 
         IEnumerator IEnumerable.GetEnumerator() {
             return _enumerable.GetEnumerator();
+        }
+
+        #endregion
+
+        #region ICollection<T> Members
+
+        void ICollection<T>.Add(T item) {
+            throw new NotSupportedException();
+        }
+
+        void ICollection<T>.Clear() {
+            throw new NotSupportedException();
+        }
+
+        bool ICollection<T>.Contains(T item) {
+            return _enumerable.Any(x => _comparer.Equals(x, item));
+        }
+
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex) {
+            foreach (var item in _enumerable)
+                array[arrayIndex++] = item;
+        }
+
+        bool ICollection<T>.IsReadOnly
+        {
+            get { return true; }
+        }
+
+        bool ICollection<T>.Remove(T item) {
+            throw new NotSupportedException();
         }
 
         #endregion

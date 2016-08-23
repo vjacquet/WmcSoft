@@ -71,6 +71,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
     <Compile Include="Collections\Generic\DisjoinedReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\Forest.cs" />
+    <Compile Include="Collections\Generic\Internals\ReadOnlyCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\Internals\ContiguousStorage.cs" />
     <Compile Include="Collections\Generic\LexicographicalComparer.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionary.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Collections\Generic\SourceEqualityComparer.cs" />
     <Compile Include="Collections\Specialized\BreathFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\BipartiteAlgorithm.cs" />
+    <Compile Include="Collections\Specialized\DepthFirstOrderAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DirectedCycleAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\ConnectedComponentsAlgorithm.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Collections\Specialized\IDirectedGraph.cs" />
     <Compile Include="Collections\Specialized\IWeightedGraph.cs" />
     <Compile Include="Collections\Specialized\IGraph.cs" />
+    <Compile Include="Collections\Specialized\TopologicalAlgorithm.cs" />
     <Compile Include="Collections\Specialized\WeightedDigraph.cs" />
     <Compile Include="Collections\Specialized\WeightedGraph.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
@@ -161,7 +164,7 @@
     <Compile Include="IndexedAlgorithms.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
-    <Compile Include="Collections\Generic\Internals\ReadOnlyCollectionAdapter.cs" />
+    <Compile Include="Collections\Generic\Internals\CollectionAdapter.cs" />
     <Compile Include="Collections\Generic\SourceComparer.cs" />
     <Compile Include="Collections\ReadOnlyCollectionOfObjectAdapter.cs" />
     <Compile Include="Collections\Generic\Internals\ConvertingCollectionAdapter.cs" />

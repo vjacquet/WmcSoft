@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,53 +24,34 @@
 
 #endregion
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
-namespace WmcSoft.Collections.Generic.Internals
+namespace WmcSoft.Collections.Specialized
 {
-    sealed class ReadOnlyCollectionAdapter<T> : IReadOnlyCollection<T>
+    public class TopologicalAlgorithm
     {
-        #region Fields
+        private readonly IReadOnlyCollection<int> _order;
 
-        private readonly int _count;
-        private readonly IEnumerable<T> _enumerable;
-
-        #endregion
-
-        #region Lifecycle
-
-        public ReadOnlyCollectionAdapter(int count, IEnumerable<T> enumerable) {
-            _enumerable = enumerable;
-            _count = count;
+        public TopologicalAlgorithm(IDirectedGraph graph) {
+            var finder = graph.Cycle();
+            if (!finder.HasCycle) {
+                var dfs = new DepthFirstOrderAlgorithm(graph);
+                _order = dfs.ReversePostOrder;
+            } else {
+                _order = null;
+            }
         }
 
-        #endregion
-
-        #region IReadOnlyCollection<T> Members
-
-        public int Count
-        {
-            get { return _count; }
+        public IReadOnlyCollection<int> Order {
+            get {
+                return _order;
+            }
         }
 
-        #endregion
-
-        #region IEnumerable<T> Members
-
-        public IEnumerator<T> GetEnumerator() {
-            return _enumerable.GetEnumerator();
+        public bool IsDag {
+            get {
+                return _order != null;
+            }
         }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return _enumerable.GetEnumerator();
-        }
-
-        #endregion
     }
 }

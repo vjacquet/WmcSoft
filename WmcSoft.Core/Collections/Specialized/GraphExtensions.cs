@@ -87,5 +87,9 @@ namespace WmcSoft.Collections.Specialized
         public static DirectedCycleAlgorithm Cycle(this IDirectedGraph graph) {
             return new DirectedCycleAlgorithm(graph);
         }
+
+        public static TopologicalAlgorithm Topological(this IDirectedGraph graph) {
+            return new TopologicalAlgorithm(graph);
+        }
     }
 }

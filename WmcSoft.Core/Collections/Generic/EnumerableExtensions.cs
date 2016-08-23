@@ -25,13 +25,13 @@
 #endregion
 
 using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using WmcSoft.Collections.Generic.Internals;
-using System.Collections;
 using System.Globalization;
+using System.Linq;
 using System.Text;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -73,17 +73,21 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The decorated enumerable</returns>
         /// <remarks>For optimization, the function does not guard against wrong count.</remarks>
         public static IReadOnlyCollection<T> AsReadOnlyCollection<T>(this IEnumerable<T> source, int count) {
-            return new ReadOnlyCollectionAdapter<T>(source, count);
+            return new CollectionAdapter<T>(count, source);
         }
 
         #endregion
 
         #region Backwards
 
-        public static IEnumerable<T> Backwards<T>(this IReadOnlyList<T> source) {
+        static IEnumerable<T> EnumerateBackwards<T>(IReadOnlyList<T> source) {
             for (int i = source.Count - 1; i >= 0; i--) {
                 yield return source[i];
             }
+        }
+
+        public static IReadOnlyCollection<T> Backwards<T>(this IReadOnlyList<T> source) {
+            return new ReadOnlyCollectionAdapter<T>(source.Count, EnumerateBackwards(source));
         }
 
         /// <summary>
