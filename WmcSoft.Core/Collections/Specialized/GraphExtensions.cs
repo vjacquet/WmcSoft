@@ -80,5 +80,12 @@ namespace WmcSoft.Collections.Specialized
             var a = new BipartiteAlgorithm(graph);
             return a.IsBipartite;
         }
+
+        /// <summary>
+        /// Returns the <paramref name="graph"/> directed cycles.
+        /// </summary>
+        public static DirectedCycleAlgorithm Cycle(this IDirectedGraph graph) {
+            return new DirectedCycleAlgorithm(graph);
+        }
     }
 }
