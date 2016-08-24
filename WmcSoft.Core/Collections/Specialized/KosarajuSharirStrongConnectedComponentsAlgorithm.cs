@@ -29,22 +29,20 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    /// <summary>
-    /// Divides the vertices into equivalence classes (the connected components).
-    /// </summary>
-    public struct ConnectedComponentsAlgorithm
+    public struct KosarajuSharirStrongConnectedComponentsAlgorithm
     {
         private readonly bool[] _marked;
         private readonly int[] _ids;
         private readonly int _count;
 
-        public ConnectedComponentsAlgorithm(IGraph graph) {
+        public KosarajuSharirStrongConnectedComponentsAlgorithm(IDirectedGraph graph) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
             _marked = new bool[graph.VerticeCount];
             _ids = new int[graph.VerticeCount];
             _count = 0;
-            for (int s = 0; s < graph.VerticeCount; s++) {
+            var dfs = new DepthFirstOrderAlgorithm(graph.Reverse());
+            foreach (int s in dfs.ReversePostOrder) {
                 if (!_marked[s]) {
                     Process(graph, s);
                     _count++;

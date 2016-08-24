@@ -24,13 +24,18 @@
 
 #endregion
 
-namespace WmcSoft.Collections.Specialized
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WmcSoft.Text
 {
     /// <summary>
-    /// Marker for directed graphs.
+    /// 
     /// </summary>
-    public interface IDirectedGraph : IGraph
+    public class Alphabet
     {
-        IDirectedGraph Reverse();
     }
 }

@@ -114,6 +114,16 @@ namespace WmcSoft.Collections.Specialized
             return new ReadOnlyBag<Edge>(_adj[v]);
         }
 
+        public WeightedDigraph Reverse() {
+            var digraph = new WeightedDigraph(VerticeCount);
+            for (int v = 0; v < _adj.Length; v++) {
+                foreach (var e in _adj[v])
+                    digraph.Connect(e.To, e.From, e.Weight);
+            }
+            digraph._edges = _edges;
+            return digraph;
+        }
+
         #region IWeightedGraph implementation
 
         IReadOnlyCollection<Edge> IWeightedGraph<Edge>.Edges(int v) {
@@ -122,6 +132,10 @@ namespace WmcSoft.Collections.Specialized
 
         public IReadOnlyCollection<int> Adjacents(int v) {
             return new ConvertingCollectionAdapter<Edge, int>(Edges(v), e => e.To);
+        }
+
+        IDirectedGraph IDirectedGraph.Reverse() {
+            return Reverse();
         }
 
         #endregion

@@ -30,6 +30,8 @@ namespace WmcSoft.Collections.Specialized
 {
     public static class GraphExtensions
     {
+        #region Algorithms
+
         /// <summary>
         /// Marks all the vertices connected to a given source.
         /// </summary>
@@ -92,6 +94,14 @@ namespace WmcSoft.Collections.Specialized
             return new TopologicalAlgorithm(graph);
         }
 
+        public static KosarajuSharirStrongConnectedComponentsAlgorithm StrongConnectedComponents(this IDirectedGraph graph) {
+            return new KosarajuSharirStrongConnectedComponentsAlgorithm(graph);
+        }
+
+        #endregion
+
+        #region Connect
+
         public static TGraph Connect<TGraph>(this TGraph graph, int v, params int[] w)
             where TGraph : IGraphBuilder {
             for (int i = 0; i < w.Length; i++) {
@@ -99,5 +109,7 @@ namespace WmcSoft.Collections.Specialized
             }
             return graph;
         }
+
+        #endregion
     }
 }
