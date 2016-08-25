@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -41,8 +42,6 @@ namespace WmcSoft.Collections.Specialized
     {
         const int MaxCapacity = 0X7FEFFFFE;
         const int DefaultCapacity = 16;
-
-        static readonly T[] _emptyStorage = new T[0];
 
         #region Class PriorityQueueEnumerator
 
@@ -143,7 +142,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override bool Contains(object value) {
+            public override bool Contains(T value) {
                 lock (_heap.SyncRoot) {
                     return _heap.Contains(value);
                 }
@@ -253,11 +252,10 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="comparer"></param>
         /// <param name="initialCapacity"></param>
         public PriorityQueue(IComparer<T> comparer, int initialCapacity) {
-            if (comparer == null) throw new ArgumentNullException("comparer");
             if (initialCapacity < 0) throw new ArgumentOutOfRangeException("initialCapacity");
 
-            _items = initialCapacity == 0 ? _emptyStorage : new T[initialCapacity + 1];
-            _comparer = comparer;
+            _comparer = comparer ?? Comparer<T>.Default;
+            _items = initialCapacity == 0 ? ContiguousStorage<T>.Empty : new T[initialCapacity + 1];
         }
 
         /// <summary>
@@ -270,11 +268,10 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="comparer"></param>
         public PriorityQueue(ICollection<T> collection, IComparer<T> comparer) {
             if (collection == null) throw new ArgumentNullException("collection");
-            if (comparer == null) throw new ArgumentNullException("comparer");
 
-            _comparer = comparer;
+            _comparer = comparer ?? Comparer<T>.Default;
             if (collection.Count == 0) {
-                _items = _emptyStorage;
+                _items = ContiguousStorage<T>.Empty;
             } else {
                 _items = new T[collection.Count + 1];
                 foreach (T item in collection) {
@@ -284,6 +281,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
         }
+
         #endregion
 
         #region Membres de ICollection
@@ -337,6 +335,34 @@ namespace WmcSoft.Collections.Specialized
 
         #endregion
 
+        bool Prioritized(T x, T y) {
+            return _comparer.Compare(x, y) < 0;
+        }
+
+        void ReorganizeDownUp(int index) {
+            var value = _items[index];
+            while (index > 1 && Prioritized(_items[index / 2], value)) {
+                _items[index] = _items[index / 2];
+                index /= 2;
+            }
+            _items[index] = value;
+        }
+
+        void ReorganizeUpDown(int index) {
+            var value = _items[index];
+            var half = _count / 2;
+            while (index <= half) {
+                var i = index * 2;
+                if (i < _count && Prioritized(_items[i], _items[i + 1]))
+                    ++i;
+                if (Prioritized(_items[i], value))
+                    break;
+                _items[index] = _items[i];
+                index = i;
+            }
+            _items[index] = value;
+        }
+
         private void DoEnqueue(T value) {
             var index = ++_count;
             _items[index] = value;
@@ -349,15 +375,6 @@ namespace WmcSoft.Collections.Specialized
             ++_version;
             EnsureCapacity(_count + 1);
             DoEnqueue(value);
-        }
-
-        void ReorganizeDownUp(int index) {
-            T value = _items[index];
-            while (index >= 2 && _comparer.Compare(_items[index / 2], value) <= 0) {
-                _items[index] = _items[index / 2];
-                index /= 2;
-            }
-            _items[index] = value;
         }
 
         public virtual T Dequeue() {
@@ -373,21 +390,6 @@ namespace WmcSoft.Collections.Specialized
             return value;
         }
 
-        void ReorganizeUpDown(int index) {
-            int i;
-            T value = _items[index];
-            while (index <= (_count / 2)) {
-                i = index * 2;
-                if (i < _count && _comparer.Compare(_items[i], _items[i + 1]) < 0)
-                    ++i;
-                if (_comparer.Compare(value, _items[i]) >= 0)
-                    break;
-                _items[index] = _items[i];
-                index = i;
-            }
-            _items[index] = value;
-        }
-
         public virtual T Peek() {
             if (_count < 1)
                 throw new InvalidOperationException();
@@ -395,19 +397,15 @@ namespace WmcSoft.Collections.Specialized
             return _items[1];
         }
 
-        public virtual bool Contains(object value) {
+        public virtual bool Contains(T value) {
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            for (int i = 1; i <= _count; ++i) {
-                if (value.Equals(_items[i])) {
-                    return true;
-                }
-            }
-            return false;
+            return Array.IndexOf(_items, value, 1) >= 0;
         }
 
         public virtual void Clear() {
+            ContiguousStorage<T>.Fill(_items, 1, _count);
             _count = 0;
         }
 
@@ -425,7 +423,7 @@ namespace WmcSoft.Collections.Specialized
                         throw new ArgumentOutOfRangeException("value");
                     }
                     if (value == 0) {
-                        _items = _emptyStorage;
+                        _items = ContiguousStorage<T>.Empty;
                     } else {
                         GrowCapacity(value);
                     }

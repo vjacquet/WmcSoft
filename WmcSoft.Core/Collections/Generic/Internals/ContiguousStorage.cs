@@ -35,7 +35,7 @@ namespace WmcSoft.Collections.Generic.Internals
     /// <typeparam name="T">The type of stored items.</typeparam>
     internal static class ContiguousStorage<T>
     {
-        const int MaxArrayLength = 0X7FEFFFFF; // taken from http://referencesource.microsoft.com/#mscorlib/system/array.cs,2d2b551eabe74985
+        public const int MaxArrayLength = 0X7FEFFFFF; // taken from http://referencesource.microsoft.com/#mscorlib/system/array.cs,2d2b551eabe74985
         const int DefaultCapacity = 4;
         const int QuarterOfDefaultCapacity = 1;
 
@@ -100,6 +100,12 @@ namespace WmcSoft.Collections.Generic.Internals
                 if (count <= length / 4)
                     Resize(ref items, Math.Min(length / 2, count * 2), count);
             }
+        }
+
+        public static void Fill(T[] items, int startIndex, int count, T value=default(T)) {
+            var endIndex = startIndex + count;
+            while (startIndex < endIndex)
+                items[startIndex++] = value;
         }
     }
 }
