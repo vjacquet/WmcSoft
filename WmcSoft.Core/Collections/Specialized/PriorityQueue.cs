@@ -47,13 +47,13 @@ namespace WmcSoft.Collections.Specialized
         #region Class PriorityQueueEnumerator
 
         [Serializable]
-        class PriorityQueueEnumerator : IEnumerator<T>
+        public struct Enumerator : IEnumerator<T>
         {
             readonly PriorityQueue<T> _priorityQueue;
             readonly int _version;
             int _index;
 
-            public PriorityQueueEnumerator(PriorityQueue<T> heap) {
+            public Enumerator(PriorityQueue<T> heap) {
                 _priorityQueue = heap;
                 _version = heap._version;
                 _index = 0;
@@ -61,8 +61,7 @@ namespace WmcSoft.Collections.Specialized
 
             #region IEnumerator<T> Members
 
-            public T Current
-            {
+            public T Current {
                 get {
                     if (_index < 1) {
                         throw new InvalidOperationException();
@@ -89,11 +88,8 @@ namespace WmcSoft.Collections.Specialized
                 _index = 0;
             }
 
-            object IEnumerator.Current
-            {
-                get {
-                    return Current;
-                }
+            object IEnumerator.Current {
+                get { return Current; }
             }
 
             public bool MoveNext() {
@@ -108,7 +104,6 @@ namespace WmcSoft.Collections.Specialized
             }
 
             #endregion
-
         }
 
         #endregion
@@ -123,8 +118,7 @@ namespace WmcSoft.Collections.Specialized
                 _heap = heap;
             }
 
-            public override int Capacity
-            {
+            public override int Capacity {
                 get {
                     lock (_heap.SyncRoot) {
                         return _heap.Capacity;
@@ -161,8 +155,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override int Count
-            {
+            public override int Count {
                 get {
                     lock (_heap.SyncRoot) {
                         return _heap.Count;
@@ -182,14 +175,13 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override IEnumerator<T> GetEnumerator() {
+            public override Enumerator GetEnumerator() {
                 lock (_heap.SyncRoot) {
                     return _heap.GetEnumerator();
                 }
             }
 
-            public override bool IsSynchronized
-            {
+            public override bool IsSynchronized {
                 get { return true; }
             }
 
@@ -199,8 +191,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override object SyncRoot
-            {
+            public override object SyncRoot {
                 get { return _heap.SyncRoot; }
             }
 
@@ -297,13 +288,11 @@ namespace WmcSoft.Collections.Specialized
 
         #region Membres de ICollection
 
-        public virtual bool IsSynchronized
-        {
+        public virtual bool IsSynchronized {
             get { return false; }
         }
 
-        public virtual int Count
-        {
+        public virtual int Count {
             get { return _count; }
         }
 
@@ -311,8 +300,7 @@ namespace WmcSoft.Collections.Specialized
             Array.Copy(_items, 1, array, index, _count);
         }
 
-        public virtual object SyncRoot
-        {
+        public virtual object SyncRoot {
             get { return this; }
         }
 
@@ -320,8 +308,12 @@ namespace WmcSoft.Collections.Specialized
 
         #region Membres de IEnumerable
 
-        public virtual IEnumerator<T> GetEnumerator() {
-            return new PriorityQueueEnumerator(this);
+        public virtual Enumerator GetEnumerator() {
+            return new Enumerator(this);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+            return GetEnumerator();
         }
 
         #endregion
@@ -422,8 +414,7 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// 
         /// </summary>
-        public virtual int Capacity
-        {
+        public virtual int Capacity {
             get {
                 return Math.Max(0, _items.Length - 1);
             }
@@ -466,7 +457,7 @@ namespace WmcSoft.Collections.Specialized
             if (heap == null) {
                 throw new ArgumentNullException("heap");
             }
-            return new PriorityQueue<T>.SyncPriorityQueue(heap);
+            return new SyncPriorityQueue(heap);
         }
 
         #region IEnumerable Members
