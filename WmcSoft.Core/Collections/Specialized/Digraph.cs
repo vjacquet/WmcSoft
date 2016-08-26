@@ -65,18 +65,6 @@ namespace WmcSoft.Collections.Specialized
         public int VerticeCount { get { return _adj.Length; } }
         public int EdgeCount { get { return _edges; } }
 
-        int IGraph.VerticeCount {
-            get {
-                throw new NotImplementedException();
-            }
-        }
-
-        int IGraph.EdgeCount {
-            get {
-                throw new NotImplementedException();
-            }
-        }
-
         public void Connect(int v, int w) {
             if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
             if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
