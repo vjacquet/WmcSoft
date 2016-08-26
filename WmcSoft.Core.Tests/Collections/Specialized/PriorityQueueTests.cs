@@ -71,6 +71,16 @@ namespace WmcSoft.Collections.Specialized
         }
 
         [TestMethod]
+        public void CheckCopyTo() {
+            var list = new List<int> { 15, 3, 17, 7, 11 };
+            var priorityQueue = new PriorityQueue<int>(list);
+            var actual = new int[5];
+            priorityQueue.CopyTo(actual, 0);
+            var expected = new[] { 17, 15, 11, 7, 3 };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void CheckChangingWhileEnumerating() {
             var priorityQueue = new PriorityQueue<int>();

@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using WmcSoft.Collections.Generic;
 using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Specialized
@@ -38,7 +39,7 @@ namespace WmcSoft.Collections.Specialized
     /// <typeparam name="T">The type of the element in the priority queue.</typeparam>
     [Serializable]
     [ComVisible(true)]
-    public class PriorityQueue<T> : IReadOnlyCollection<T>, ICloneable<PriorityQueue<T>>
+    public class PriorityQueue<T> : IReadOnlyCollection<T>, ICloneable<PriorityQueue<T>>, ICollection
     {
         const int MaxCapacity = 0X7FEFFFFE;
         const int DefaultCapacity = 16;
@@ -49,9 +50,9 @@ namespace WmcSoft.Collections.Specialized
         public struct Enumerator : IEnumerator<T>
         {
             readonly PriorityQueue<T> _priorityQueue;
+            readonly int _version;
             PriorityQueue<T> _clone;
             T _current;
-            readonly int _version;
 
             public Enumerator(PriorityQueue<T> heap) {
                 _priorityQueue = heap;
@@ -60,24 +61,10 @@ namespace WmcSoft.Collections.Specialized
                 _current = default(T);
             }
 
-            #region IEnumerator<T> Members
-
-            public T Current {
-                get {
-                    return _current;
-                }
-            }
-
-            #endregion
-
-            #region IDisposable Members
+            public T Current { get { return _current; } }
 
             public void Dispose() {
             }
-
-            #endregion
-
-            #region Membres de IEnumerator
 
             public void Reset() {
                 if (_version != _priorityQueue._version)
@@ -104,8 +91,6 @@ namespace WmcSoft.Collections.Specialized
                 }
                 return false;
             }
-
-            #endregion
         }
 
         #endregion
@@ -151,7 +136,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override void CopyTo(Array array, int index) {
+            public override void CopyTo(T[] array, int index) {
                 lock (_heap.SyncRoot) {
                     _heap.CopyTo(array, index);
                 }
@@ -420,8 +405,13 @@ namespace WmcSoft.Collections.Specialized
             get { return _count; }
         }
 
-        public virtual void CopyTo(Array array, int index) {
+        void ICollection.CopyTo(Array array, int index) {
+            CopyTo((T[])array, index);
+        }
+
+        public virtual void CopyTo(T[] array, int index) {
             Array.Copy(_items, 1, array, index, _count);
+            array.InsertionSort(index + 1, _count - 1, _comparer.Reverse());
         }
 
         public virtual object SyncRoot {
