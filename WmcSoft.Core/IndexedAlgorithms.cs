@@ -161,7 +161,7 @@ namespace WmcSoft
 
         #endregion
 
-        #region InsertionSort 
+        #region InsertionSort
 
         public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer) {
             var endIndex = index + length;

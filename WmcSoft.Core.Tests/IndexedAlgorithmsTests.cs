@@ -33,10 +33,26 @@ namespace WmcSoft
 
         [TestMethod]
         public void CheckRotateRight() {
-            var expected = new[] { 7, 8, 9, 1, 2, 3,4, 5, 6,  };
+            var expected = new[] { 7, 8, 9, 1, 2, 3, 4, 5, 6, };
             var actual = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var startIndex = actual.Rotate(3);
             Assert.AreEqual(3, startIndex);
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckInsertionSort() {
+            var expected = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var actual = new[] { 7, 8, 9, 1, 2, 3, 4, 5, 6 };
+            actual.InsertionSort();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckPartialInsertionSort() {
+            var expected = new[] { 7, 1, 2, 3, 4, 5, 8, 9, 6 };
+            var actual = new[] { 7, 8, 9, 1, 2, 3, 4, 5, 6 };
+            actual.InsertionSort(1, 7);
             CollectionAssert.AreEqual(expected, actual);
         }
     }
