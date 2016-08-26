@@ -43,29 +43,28 @@ namespace WmcSoft.Collections.Specialized
         const int MaxCapacity = 0X7FEFFFFE;
         const int DefaultCapacity = 16;
 
-        #region Class PriorityQueueEnumerator
+        #region Class Enumerator
 
         [Serializable]
         public struct Enumerator : IEnumerator<T>
         {
             readonly PriorityQueue<T> _priorityQueue;
+            PriorityQueue<T> _clone;
+            T _current;
             readonly int _version;
-            int _index;
 
             public Enumerator(PriorityQueue<T> heap) {
                 _priorityQueue = heap;
+                _clone = _priorityQueue.Clone();
                 _version = heap._version;
-                _index = 0;
+                _current = default(T);
             }
 
             #region IEnumerator<T> Members
 
             public T Current {
                 get {
-                    if (_index < 1) {
-                        throw new InvalidOperationException();
-                    }
-                    return _priorityQueue._items[_index];
+                    return _current;
                 }
             }
 
@@ -81,22 +80,26 @@ namespace WmcSoft.Collections.Specialized
             #region Membres de IEnumerator
 
             public void Reset() {
-                if (_version != _priorityQueue._version) {
+                if (_version != _priorityQueue._version)
                     throw new InvalidOperationException();
-                }
-                _index = 0;
+                _clone = _priorityQueue.Clone();
+                _current = default(T);
             }
 
             object IEnumerator.Current {
-                get { return Current; }
+                get {
+                    if (_version != _priorityQueue._version || _clone.Count != _priorityQueue.Count)
+                        throw new InvalidOperationException();
+                    return _current;
+                }
             }
 
             public bool MoveNext() {
-                if (_version != _priorityQueue._version) {
+                if (_version != _priorityQueue._version)
                     throw new InvalidOperationException();
-                }
-                if (_index < _priorityQueue._count) {
-                    ++_index;
+
+                if (_clone.Count > 0) {
+                    _current = _clone.Dequeue();
                     return true;
                 }
                 return false;
@@ -284,57 +287,6 @@ namespace WmcSoft.Collections.Specialized
 
         #endregion
 
-        #region Membres de ICollection
-
-        public virtual bool IsSynchronized {
-            get { return false; }
-        }
-
-        public virtual int Count {
-            get { return _count; }
-        }
-
-        public virtual void CopyTo(Array array, int index) {
-            Array.Copy(_items, 1, array, index, _count);
-        }
-
-        public virtual object SyncRoot {
-            get { return this; }
-        }
-
-        #endregion
-
-        #region Membres de IEnumerable
-
-        public virtual Enumerator GetEnumerator() {
-            return new Enumerator(this);
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        #region ICloneable<T> Members
-
-        public virtual PriorityQueue<T> Clone() {
-            var clone = new PriorityQueue<T>(_count);
-            clone._count = _count;
-            Array.Copy(_items, 1, clone._items, 1, _count);
-            return clone;
-        }
-
-        #endregion
-
-        #region Membres de ICloneable
-
-        object ICloneable.Clone() {
-            return Clone();
-        }
-
-        #endregion
-
         bool Prioritized(T x, T y) {
             return _comparer.Compare(x, y) < 0;
         }
@@ -458,10 +410,57 @@ namespace WmcSoft.Collections.Specialized
             return new SyncPriorityQueue(heap);
         }
 
+        #region ICollection Members
+
+        public virtual bool IsSynchronized {
+            get { return false; }
+        }
+
+        public virtual int Count {
+            get { return _count; }
+        }
+
+        public virtual void CopyTo(Array array, int index) {
+            Array.Copy(_items, 1, array, index, _count);
+        }
+
+        public virtual object SyncRoot {
+            get { return this; }
+        }
+
+        #endregion
+
         #region IEnumerable Members
+
+        public virtual Enumerator GetEnumerator() {
+            return new Enumerator(this);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+            return GetEnumerator();
+        }
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region ICloneable<T> Members
+
+        public virtual PriorityQueue<T> Clone() {
+            var clone = new PriorityQueue<T>(_count);
+            clone._count = _count;
+            Array.Copy(_items, 1, clone._items, 1, _count);
+            return clone;
+        }
+
+        #endregion
+
+        #region ICloneable Members
+
+        object ICloneable.Clone() {
+            return Clone();
         }
 
         #endregion
