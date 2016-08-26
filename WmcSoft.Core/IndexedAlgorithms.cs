@@ -161,6 +161,64 @@ namespace WmcSoft
 
         #endregion
 
+        #region InsertionSort 
+
+        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer) {
+            var endIndex = index + length;
+            for (int i = index + 1; i < endIndex; i++) {
+                var value = source[i];
+                int j = i;
+                while (j > index && comparer.Compare(value, source[j - 1]) < 0) {
+                    source[j] = source[j - 1];
+                    --j;
+                }
+                source[j] = value;
+            }
+        }
+
+        public static void InsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer) {
+            UnguardedInsertionSort(source, index, length, comparer ?? Comparer<T>.Default);
+        }
+
+        public static void InsertionSort<T>(this IList<T> source, int index, int length) {
+            UnguardedInsertionSort(source, index, length, Comparer<T>.Default);
+        }
+
+        public static void InsertionSort<T>(this IList<T> source, IComparer<T> comparer) {
+            UnguardedInsertionSort(source, 0, source.Count, comparer ?? Comparer<T>.Default);
+        }
+
+        public static void InsertionSort<T>(this IList<T> source) {
+            UnguardedInsertionSort(source, 0, source.Count, Comparer<T>.Default);
+        }
+
+        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation) {
+            var endIndex = index + length;
+            for (int i = index + 1; i < endIndex; i++) {
+                var value = source[i];
+                int j = i;
+                while (j > index && relation(value, source[j - 1])) {
+                    source[j] = source[j - 1];
+                    --j;
+                }
+                source[j] = value;
+            }
+        }
+
+        public static void InsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation) {
+            if (relation == null) throw new ArgumentNullException(nameof(relation));
+
+            UnguardedInsertionSort(source, index, length, relation);
+        }
+
+        public static void InsertionSort<T>(this IList<T> source, Relation<T> relation) {
+            if (relation == null) throw new ArgumentNullException(nameof(relation));
+
+            UnguardedInsertionSort(source, 0, source.Count, relation);
+        }
+
+        #endregion
+
         #region Rotate
 
         public static int UnguardedRotate<T>(this IList<T> source, int n, int startIndex, int length) {
