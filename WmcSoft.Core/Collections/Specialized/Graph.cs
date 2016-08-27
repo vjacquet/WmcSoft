@@ -47,7 +47,7 @@ namespace WmcSoft.Collections.Specialized
             private readonly Graph _graph;
 
             public DebugView(Graph graph) {
-                if (graph == null) throw new ArgumentNullException("collection");
+                if (graph == null) throw new ArgumentNullException(nameof(graph));
                 _graph = graph;
             }
 

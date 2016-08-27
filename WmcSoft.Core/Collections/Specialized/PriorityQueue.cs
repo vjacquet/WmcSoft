@@ -67,23 +67,20 @@ namespace WmcSoft.Collections.Specialized
             }
 
             public void Reset() {
-                if (_version != _priorityQueue._version)
-                    throw new InvalidOperationException();
+                if (_version != _priorityQueue._version) throw new InvalidOperationException();
                 _clone = _priorityQueue.Clone();
                 _current = default(T);
             }
 
             object IEnumerator.Current {
                 get {
-                    if (_version != _priorityQueue._version || _clone.Count != _priorityQueue.Count)
-                        throw new InvalidOperationException();
+                    if (_version != _priorityQueue._version || _clone.Count != _priorityQueue.Count) throw new InvalidOperationException();
                     return _current;
                 }
             }
 
             public bool MoveNext() {
-                if (_version != _priorityQueue._version)
-                    throw new InvalidOperationException();
+                if (_version != _priorityQueue._version) throw new InvalidOperationException();
 
                 if (_clone.Count > 0) {
                     _current = _clone.Dequeue();
