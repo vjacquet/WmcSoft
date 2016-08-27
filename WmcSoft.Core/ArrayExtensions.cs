@@ -101,8 +101,8 @@ namespace WmcSoft
                 if (array.Length < (startIndex + length)) throw new ArgumentException("array");
 
                 _storage = array;
-                _begin = startIndex;
-                _end = startIndex + length;
+                _begin = startIndex - 1;
+                _end = startIndex + length - 1;
             }
 
             public void Dispose() {
