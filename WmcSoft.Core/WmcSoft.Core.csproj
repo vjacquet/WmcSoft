@@ -73,6 +73,7 @@
     <Compile Include="Collections\Generic\Forest.cs" />
     <Compile Include="Collections\Generic\Internals\ReadOnlyCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\Internals\ContiguousStorage.cs" />
+    <Compile Include="Collections\Generic\IOrderedDictionary.cs" />
     <Compile Include="Collections\Generic\LexicographicalComparer.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionary.cs" />
     <Compile Include="Collections\Generic\ListDictionary.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Symbol.cs" />
+    <Compile Include="Text\Alphabet.cs" />
     <Compile Include="Text\ITrie.cs" />
     <Compile Include="Text\Trie.cs" />
     <Compile Include="Triple.cs" />
