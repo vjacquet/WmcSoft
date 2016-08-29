@@ -24,6 +24,8 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft
 {
     /// <summary>
@@ -69,6 +71,20 @@ namespace WmcSoft
                 x &= (x - 1);
             }
             return n;
+        }
+
+        #endregion
+
+        #region Lb
+
+        public static int Lb(int x) {
+            if (x < 0) throw new ArgumentOutOfRangeException(nameof(x));
+
+            var lb = 0;
+            for (int i = x - 1; i > 0; i /= 2) {
+                lb++;
+            }
+            return lb;
         }
 
         #endregion
