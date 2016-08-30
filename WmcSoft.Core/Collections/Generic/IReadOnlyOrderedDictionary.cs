@@ -28,10 +28,34 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
-    public interface IOrderedDictionary<TKey, TValue> : IReadOnlyOrderedDictionary<TKey, TValue>
+    public interface IReadOnlyOrderedDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
-        void RemoveMin();
+        KeyValuePair<TKey, TValue> Min { get; }
 
-        void RemoveMax();
+        KeyValuePair<TKey, TValue> Max { get; }
+
+        /// <summary>
+        /// Largest key less than or equal to <paramref name="key"/>.
+        /// </summary>
+        KeyValuePair<TKey, TValue> Floor(TKey key);
+
+        /// <summary>
+        /// Smallest key greater than or equal to <paramref name="key"/>.
+        /// </summary>
+        KeyValuePair<TKey, TValue> Ceiling(TKey key);
+
+        /// <summary>
+        /// Number of keys less than <paramref name="key"/>.
+        /// </summary>
+        int Rank(TKey key);
+
+        /// <summary>
+        /// Key of rank <paramref name="k"/>.
+        /// </summary>
+        KeyValuePair<TKey, TValue> Select(int k);
+
+        int CountBetween(TKey lo, TKey hi);
+
+        IReadOnlyCollection<KeyValuePair<TKey, TValue>> EnumerateBetween(TKey lo, TKey hi);
     }
 }
