@@ -32,8 +32,8 @@ namespace WmcSoft.Text
     public interface ITrie<TLetter, TValue> : IDictionary<IReadOnlyList<TLetter>, TValue>
         where TLetter : struct, IEquatable<TLetter>
     {
-        int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> sequence);
-        IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> sequence);
-        IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> sequence);
+        int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> query);
+        IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix);
+        IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> pattern);
     }
 }

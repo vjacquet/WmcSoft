@@ -122,6 +122,29 @@ namespace WmcSoft.Text
             }
         }
 
+        void Collect(Node x, List<TLetter> prefix, IReadOnlyList<TLetter?> pattern, Queue<IReadOnlyList<TLetter>> results) {
+            if (x == null) return;
+            var d = prefix.Count;
+            if (d == pattern.Count) {
+                if (x.HasValue)
+                    results.Enqueue(prefix.ToList());
+                return;
+            }
+            var p = pattern[d];
+            if (!p.HasValue) {
+                foreach (var c in x) {
+                    prefix.Add(c);
+                    Collect(x[c], prefix, pattern, results);
+                    prefix.RemoveAt(prefix.Count - 1);
+                }
+            } else {
+                var c = p.GetValueOrDefault();
+                prefix.Add(c);
+                Collect(x[c], prefix, pattern, results);
+                prefix.RemoveAt(prefix.Count - 1);
+            }
+        }
+
         public TValue this[IReadOnlyList<TLetter> key] {
             get {
                 TValue value;
@@ -182,29 +205,31 @@ namespace WmcSoft.Text
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> sequence) {
+        public IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix) {
             var results = new Queue<IReadOnlyList<TLetter>>();
-            var x = Locate(_root, sequence, 0);
+            Collect(_root, prefix.ToList(), results);
             return results;
         }
 
-        public int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> sequence) {
-            return GetLengthLongestPrefixOf(_root, sequence, 0, -1);
+        public int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> query) {
+            return GetLengthLongestPrefixOf(_root, query, 0, -1);
         }
 
-        int GetLengthLongestPrefixOf(Node x, IReadOnlyList<TLetter> sequence, int d, int length) {
+        int GetLengthLongestPrefixOf(Node x, IReadOnlyList<TLetter> query, int d, int length) {
             if (x == null)
                 return length;
             if (x.HasValue)
                 length = d;
-            if (d == sequence.Count)
+            if (d == query.Count)
                 return length;
-            var c = sequence[d];
-            return GetLengthLongestPrefixOf(x[c], sequence, d + 1, length);
+            var c = query[d];
+            return GetLengthLongestPrefixOf(x[c], query, d + 1, length);
         }
 
-        public IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> sequence) {
-            throw new NotImplementedException();
+        public IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> pattern) {
+            var results = new Queue<IReadOnlyList<TLetter>>();
+            Collect(_root, new List<TLetter>(), pattern, results);
+            return results;
         }
 
         public bool Remove(KeyValuePair<IReadOnlyList<TLetter>, TValue> item) {
