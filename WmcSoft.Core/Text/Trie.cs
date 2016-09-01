@@ -56,7 +56,10 @@ namespace WmcSoft.Text
 
             public TValue Value {
                 get { return _value; }
-                set { _value = value; }
+                set {
+                    _hasValue = true;
+                    _value = value;
+                }
             }
 
             public bool Reset() {
@@ -73,8 +76,15 @@ namespace WmcSoft.Text
             }
 
             public Node this[TLetter index] {
-                get { return _nodes[index]; }
-                set { _nodes[index] = value; }
+                get {
+                    Node node;
+                    if (_nodes.TryGetValue(index, out node))
+                        return node;
+                    return null;
+                }
+                set {
+                    _nodes[index] = value;
+                }
             }
 
             public IEnumerator<TLetter> GetEnumerator() {
@@ -98,7 +108,8 @@ namespace WmcSoft.Text
         }
 
         Node Put(Node x, IReadOnlyList<TLetter> key, int d, TValue value, bool add) {
-            if (x == null) return new Node();
+            if (x == null)
+                x = new Node();
             if (d == key.Count) {
                 if (!x.HasValue)
                     _count++;
