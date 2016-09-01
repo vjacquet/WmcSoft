@@ -218,7 +218,8 @@ namespace WmcSoft.Text
 
         public IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix) {
             var results = new Queue<IReadOnlyList<TLetter>>();
-            Collect(_root, prefix.ToList(), results);
+            var node = Locate(_root, prefix, 0);
+            Collect(node, prefix.ToList(), results);
             return results;
         }
 
