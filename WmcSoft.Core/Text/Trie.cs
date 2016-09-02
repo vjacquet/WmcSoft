@@ -71,6 +71,15 @@ namespace WmcSoft.Text
                 return false;
             }
 
+            public bool ResetIf(TValue value) {
+                if (_hasValue && EqualityComparer<TValue>.Default.Equals(_value, value)) {
+                    _hasValue = false;
+                    _value = default(TValue);
+                    return true;
+                }
+                return false;
+            }
+
             public bool IsEmpty {
                 get { return !_hasValue && _nodes.Count == 0; }
             }
@@ -100,6 +109,7 @@ namespace WmcSoft.Text
 
         private Node _root;
         private int _count;
+        private int _version;
 
         Node Locate(Node x, IReadOnlyList<TLetter> key, int d) {
             if (x == null || d == key.Count) return x;
@@ -115,12 +125,23 @@ namespace WmcSoft.Text
                     _count++;
                 else if (add)
                     throw new ArgumentException(nameof(key));
+                _version++;
                 x.Value = value;
                 return x;
             }
             var c = key[d];
             x[c] = Put(x[c], key, d + 1, value, add);
             return x;
+        }
+
+        void Collect(Node x, List<TLetter> prefix, Queue<KeyValuePair<IReadOnlyList<TLetter>, TValue>> results) {
+            if (x == null) return;
+            if (x.HasValue) results.Enqueue(new KeyValuePair<IReadOnlyList<TLetter>, TValue>(prefix.ToArray(), x.Value));
+            foreach (var c in x) {
+                prefix.Add(c);
+                Collect(x[c], prefix, results);
+                prefix.RemoveAt(prefix.Count - 1);
+            }
         }
 
         void Collect(Node x, List<TLetter> prefix, Queue<IReadOnlyList<TLetter>> results) {
@@ -213,7 +234,9 @@ namespace WmcSoft.Text
         }
 
         public IEnumerator<KeyValuePair<IReadOnlyList<TLetter>, TValue>> GetEnumerator() {
-            throw new NotImplementedException();
+            var results = new Queue<KeyValuePair<IReadOnlyList<TLetter>, TValue>>();
+            Collect(_root, new List<TLetter>(), results);
+            return results.GetEnumerator();
         }
 
         public IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix) {
@@ -245,23 +268,26 @@ namespace WmcSoft.Text
         }
 
         public bool Remove(KeyValuePair<IReadOnlyList<TLetter>, TValue> item) {
-            throw new NotImplementedException();
+            var comparer = EqualityComparer<TValue>.Default;
+            var count = _count;
+            _root = Remove(_root, item.Key, 0, x => x.ResetIf(item.Value));
+            return count != _count;
         }
 
         public bool Remove(IReadOnlyList<TLetter> key) {
             var count = _count;
-            _root = Remove(_root, key, 0);
+            _root = Remove(_root, key, 0, x => x.Reset());
             return count != _count;
         }
 
-        Node Remove(Node x, IReadOnlyList<TLetter> key, int d) {
+        Node Remove(Node x, IReadOnlyList<TLetter> key, int d, Func<Node, bool> disposer) {
             if (x == null) return null;
             if (d == key.Count) {
-                if (x.Reset())
+                if (disposer(x))
                     _count--;
             } else {
                 var c = key[d];
-                x[c] = Remove(x[c], key, d + 1);
+                x[c] = Remove(x[c], key, d + 1, disposer);
             }
 
             // remove subtrie rooted at x if it is completely empty

@@ -64,10 +64,54 @@ namespace WmcSoft.Text
             var expected = new[] { "she", "shells", "shore" };
             CollectionAssert.AreEquivalent(expected, actual);
         }
+
+        [TestMethod]
+        public void CanMatch() {
+            var trie = new Trie<char, int> {
+                { "she", 0 },
+                { "sells", 1 },
+                { "sea", 2 },
+                { "shells", 3 },
+                { "by", 4 },
+                { "the", 5 },
+                { "shore", 7 },
+            };
+
+            var actual = trie.Match(".he").ToArray();
+            var expected = new[] { "she", "the" };
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanEnumerateTrie() {
+            var expected = new Dictionary<string, int>{
+                { "she", 0 },
+                { "sells", 1 },
+                { "sea", 2 },
+                { "shells", 3 },
+                { "by", 4 },
+                { "the", 5 },
+                { "shore", 7 },
+            };
+            var trie = new Trie<char, int> {
+                { "she", 0 },
+                { "sells", 1 },
+                { "sea", 2 },
+                { "shells", 3 },
+                { "by", 4 },
+                { "the", 5 },
+                { "shore", 7 },
+            };
+            var actual = trie.Select(p => new KeyValuePair<string, int>(new string(p.Key.ToArray()), p.Value)).ToList();
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
     }
 
     public static class TrieExtensions
     {
+        public static void Add<T>(this IDictionary<char[], T> trie, string key, T value) {
+            trie.Add(key.ToCharArray(), value);
+        }
         public static void Add<T>(this Trie<char, T> trie, string key, T value) {
             trie.Add(key.AsReadOnlyList(), value);
         }
@@ -82,6 +126,11 @@ namespace WmcSoft.Text
 
         public static IEnumerable<string> GetKeysWithPrefix<T>(this Trie<char, T> trie, string key) {
             return trie.GetKeysWithPrefix(key.AsReadOnlyList())
+                .Select(s => new string(s.ToArray()));
+        }
+
+        public static IEnumerable<string> Match<T>(this Trie<char, T> trie, string key) {
+            return trie.Match(key.Select(c => c == '.' ? (char?)null : (char?)c).ToList())
                 .Select(s => new string(s.ToArray()));
         }
     }
