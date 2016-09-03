@@ -55,5 +55,13 @@ namespace WmcSoft
             actual.InsertionSort(1, 7);
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckKeyCountingSort() {
+            var expected = new[] { 10, 11, 21, 23, 33, 47, 54, 50 };
+            var actual = new[] { 10, 21, 23, 54, 11, 47, 33, 50 };
+            actual.KeyIndexCountingSort(i => i / 10, 9);
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

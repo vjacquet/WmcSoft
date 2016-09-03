@@ -206,15 +206,51 @@ namespace WmcSoft
         }
 
         public static void InsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (relation == null) throw new ArgumentNullException(nameof(relation));
 
             UnguardedInsertionSort(source, index, length, relation);
         }
 
         public static void InsertionSort<T>(this IList<T> source, Relation<T> relation) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (relation == null) throw new ArgumentNullException(nameof(relation));
 
             UnguardedInsertionSort(source, 0, source.Count, relation);
+        }
+
+        #endregion
+
+        #region KeyIndexCountingSort
+
+        static void UnguardedKeyIndexCountingSort<T, TCounter>(IList<T> source, Func<T, int> keySelector, TCounter counters)
+            where TCounter : IList<int> {
+            var length = source.Count;
+            var aux = new T[length];
+            source.CopyTo(aux, 0);
+
+            // compute frequencies
+            for (int i = 0; i < length; i++)
+                counters[keySelector(aux[i]) + 1]++;
+
+            // transforms count to indices
+            var maxKey = counters.Count - 1;
+            for (int i = 2; i < maxKey; i++)
+                counters[i] += counters[i - 1];
+
+            // distributes the records back to the source
+            for (int i = 0; i < length; i++)
+                source[counters[keySelector(aux[i])]++] = aux[i];
+        }
+
+        /// <remarks>The sort is stable.</remarks>
+        public static void KeyIndexCountingSort<T>(this IList<T> source, Func<T, int> keySelector, int maxKey) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (maxKey <= 0 || maxKey > UInt16.MaxValue) throw new ArgumentOutOfRangeException(nameof(maxKey));
+
+            var counters = new int[maxKey + 1];
+            UnguardedKeyIndexCountingSort(source, keySelector, counters);
         }
 
         #endregion
