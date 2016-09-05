@@ -34,6 +34,24 @@ namespace WmcSoft.Runtime.Serialization
 {
     public static class DataRecordExtensions
     {
+        #region GetObjectFromBinary
+
+        public static T GetObjectFromXml<T>(this IDataRecord record, int i, BinarySerializer<T> serializer)
+            where T : class {
+            if (record.IsDBNull(i))
+                return null;
+
+            var length = record.GetBytes(i, 0, null, 0, 0);
+            var buffer = new byte[length];
+            length = record.GetBytes(i, 0, buffer, 0, checked((int)length));
+
+            using (var ms = new MemoryStream(buffer)) {
+                return serializer.Deserialize(ms);
+            }
+        }
+
+        #endregion
+
         #region GetObjectFromXml
 
         public static T GetObjectFromXml<T>(this IDataRecord record, int i)
@@ -55,6 +73,18 @@ namespace WmcSoft.Runtime.Serialization
                 return null;
             using (var reader = XmlReader.Create(new StringReader(xml))) {
                 return (T)serializer.ReadObject(reader);
+            }
+        }
+
+        public static T GetObjectFromXml<T>(this IDataRecord record, int i, XmlSerializer<T> serializer)
+            where T : class {
+            if (record.IsDBNull(i))
+                return null;
+            var xml = Convert.ToString(record.GetValue(i));
+            if (string.IsNullOrEmpty(xml))
+                return null;
+            using (var reader = XmlReader.Create(new StringReader(xml))) {
+                return serializer.Deserialize(reader);
             }
         }
 

@@ -55,6 +55,11 @@ namespace WmcSoft.Runtime.Serialization
             return (T)_serializer.Deserialize(stream);
         }
 
+        /// <summary>
+        /// Deserializes an instance of <typeparamref name="T"/> from the specified <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream from which to deserialize the instance.</param>
+        /// <returns>The instance.</returns>
         public T Deserialize(Stream stream) {
             return DoDeserialize(stream);
         }
@@ -63,8 +68,13 @@ namespace WmcSoft.Runtime.Serialization
             _serializer.Serialize(stream, value);
         }
 
-        public void Serialize(Stream stream, T value) {
-            DoSerialize(stream, value);
+        /// <summary>
+        ///  Serializes the instance to the given <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream to which the <paramref name="instance"/> is to be serialized.</param>
+        /// <param name="instance">The value to serialize.</param>
+        public void Serialize(Stream stream, T instance) {
+            DoSerialize(stream, instance);
         }
 
         #endregion
