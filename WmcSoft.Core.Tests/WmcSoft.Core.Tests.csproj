@@ -130,6 +130,7 @@
     <Compile Include="Text\EncoderBestFitFallbackTests.cs" />
     <Compile Include="Text\StringsTests.cs" />
     <Compile Include="Text\StripTests.cs" />
+    <Compile Include="Text\SuffixArrayTests.cs" />
     <Compile Include="Text\TokenizerTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="ExpectedTests.cs" />

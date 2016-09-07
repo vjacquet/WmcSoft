@@ -156,6 +156,7 @@
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />
     <Compile Include="Text\ITrie.cs" />
+    <Compile Include="Text\SuffixArray.cs" />
     <Compile Include="Text\Trie.cs" />
     <Compile Include="Triple.cs" />
     <Compile Include="Pair.cs" />
