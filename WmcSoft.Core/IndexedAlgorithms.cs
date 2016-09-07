@@ -221,6 +221,67 @@ namespace WmcSoft
 
         #endregion
 
+        #region Iota
+
+        public static void Iota(this IList<short> source) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            var length = checked((short)source.Count);
+            for (short i = 0; i < length; i++) {
+                source[i] = i;
+            }
+        }
+
+        public static void Iota(this IList<int> source) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            var length = source.Count;
+            for (int i = 0; i < length; i++) {
+                source[i] = i;
+            }
+        }
+
+        public static void Iota(this IList<long> source) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            var length = source.Count;
+            for (int i = 0; i < length; i++) {
+                source[i] = i;
+            }
+        }
+
+        public static void Iota(this IList<short> source, short startValue, short step = 1) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            var length = checked((short)source.Count);
+            for (short i = 0; i < length; i++) {
+                source[i] = startValue;
+                startValue += step;
+            }
+        }
+
+        public static void Iota(this IList<int> source, int startValue, int step = 1) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            var length = source.Count;
+            for (int i = 0; i < length; i++) {
+                source[i] = startValue;
+                startValue += step;
+            }
+        }
+
+        public static void Iota(this IList<long> source, long startValue, long step = 1) {
+            if (source == null) throw new ArgumentNullException("source");
+
+            var length = source.Count;
+            for (int i = 0; i < length; i++) {
+                source[i] = startValue;
+                startValue += step;
+            }
+        }
+
+        #endregion
+
         #region KeyIndexCountingSort
 
         static void UnguardedKeyIndexCountingSort<T, TCounter>(IList<T> source, Func<T, int> keySelector, TCounter counters)
