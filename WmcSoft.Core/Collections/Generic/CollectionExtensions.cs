@@ -178,25 +178,32 @@ namespace WmcSoft.Collections.Generic
             return lo + (hi - lo) / 2; // cannot overflow when (hi + lo) could
         }
 
-        private static int DoBinarySearch<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer) {
+        private static int UnguardedBinarySearch<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer) {
             while (lo <= hi) {
-                int i = GetMidpoint(lo, hi);
-                int c = comparer.Compare(list[i], value);
-                if (c == 0)
-                    return i;
-                if (c < 0) {
-                    lo = i + 1;
-                } else {
-                    hi = i - 1;
-                }
+                int mid = GetMidpoint(lo, hi);
+                int cmp = comparer.Compare(list[mid], value);
+                if (cmp < 0) lo = mid + 1;
+                else if (cmp > 0) hi = mid - 1;
+                else return mid;
             }
             return ~lo;
+        }
+
+        private static int UnguardedBinaryRank<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer) {
+            while (lo <= hi) {
+                int mid = GetMidpoint(lo, hi);
+                int cmp = comparer.Compare(list[mid], value);
+                if (cmp < 0) lo = mid + 1;
+                else if (cmp > 0) hi = mid - 1;
+                else return mid;
+            }
+            return lo;
         }
 
         /// <summary>
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
-        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <typeparam name="T">The type of elements in the list</typeparam>
         /// <param name="list">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
@@ -214,15 +221,11 @@ namespace WmcSoft.Collections.Generic
                 int lo = index;
                 int hi = lo + count - 1;
                 while (lo <= hi) {
-                    int i = GetMidpoint(lo, hi);
-                    int c = finder(list[i]);
-                    if (c == 0)
-                        return i;
-                    if (c < 0) {
-                        lo = i + 1;
-                    } else {
-                        hi = i - 1;
-                    }
+                    int mid = GetMidpoint(lo, hi);
+                    int cmp = finder(list[mid]);
+                    if (cmp < 0) lo = mid + 1;
+                    else if (cmp > 0) hi = mid - 1;
+                    else return mid;
                 }
                 return ~lo;
             }
@@ -234,7 +237,7 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
-        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <typeparam name="T">The type of elements in the list</typeparam>
         /// <param name="list">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
@@ -375,6 +378,59 @@ namespace WmcSoft.Collections.Generic
             }
             var equivalent = list[found];
             return Tuple.Create(equivalent, equivalent);
+        }
+
+        /// <summary>
+        /// Computes the number of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for which the <paramref name="finder"/> returns a negative value.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The number of elements for which the finder returns a negative value.</returns>
+        public static int BinaryRank<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if ((list.Count - index) < count) throw new ArgumentException("Invalid length");
+
+            try {
+                int lo = index;
+                int hi = lo + count - 1;
+                while (lo <= hi) {
+                    int mid = GetMidpoint(lo, hi);
+                    int cmp = finder(list[mid]);
+                    if (cmp < 0) lo = mid + 1;
+                    else if (cmp > 0) hi = mid - 1;
+                    else return mid;
+                }
+                return lo;
+            }
+            catch (Exception e) {
+                throw new InvalidOperationException("The finder threw an exception", e);
+            }
+        }
+
+        /// <summary>
+        /// Computes the number of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for which the <paramref name="finder"/> returns a negative value.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list</typeparam>
+        /// <param name="list">The sorted list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The number of elements for which the finder returns a negative value.</returns>
+        public static int BinaryRank<T>(this IReadOnlyList<T> list, Func<T, int> finder) {
+            return BinaryRank(list, 0, list.Count, finder);
+        }
+
+        public static int BinaryRank<T>(this IReadOnlyList<T> list, T value) {
+            return BinaryRank(list, value, Comparer<T>.Default);
+        }
+
+        public static int BinaryRank<T>(this IReadOnlyList<T> list, T value, IComparer<T> comparer) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            return UnguardedBinaryRank(list, 0, list.Count, value, comparer ?? Comparer<T>.Default);
         }
 
         #endregion
@@ -646,29 +702,23 @@ namespace WmcSoft.Collections.Generic
                     int D = ordinal.Compare(list[lo], list[hi]);
                     int d = ordinal.Compare(list[lo], value);
                     if (D == 0) {
-                        if (d < 0)
-                            return ~lo;
-                        if (d > 0)
-                            return ~hi;
+                        if (d < 0) return ~lo;
+                        else if (d > 0) return ~hi;
                         return lo;
                     }
                     int i = lo + MulDiv(d, hi - lo, D);
-                    int c = ordinal.Compare(list[i], value);
-                    switch (c) {
+                    int cmp = ordinal.Compare(list[i], value);
+                    switch (cmp) {
                     case 0:
                         return i;
                     case -1:
-                        return DoBinarySearch(list, i + 1, hi, value, ordinal);
+                        return UnguardedBinarySearch(list, i + 1, hi, value, ordinal);
                     case 1:
-                        return DoBinarySearch(list, lo, i - 1, value, ordinal);
+                        return UnguardedBinarySearch(list, lo, i - 1, value, ordinal);
                     default:
-                        if (c == 0)
-                            return i;
-                        if (c < 0) {
-                            lo = i + 1;
-                        } else {
-                            hi = i - 1;
-                        }
+                        if (cmp < 0) lo = i + 1;
+                        else if (cmp > 0) hi = i - 1;
+                        else return i;
                         break;
                     }
                 }
