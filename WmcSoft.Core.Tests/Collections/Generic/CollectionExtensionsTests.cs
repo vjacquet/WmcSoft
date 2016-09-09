@@ -357,7 +357,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CanStablePartition() {
-            var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
+            var data = new[] { 2, 1, 3, 4, 6, 7, 8, 9, 11 };
             Predicate<int> odd = e => e % 2 == 1;
             var p = data.StablePartition(odd);
             Assert.AreEqual(4, p);

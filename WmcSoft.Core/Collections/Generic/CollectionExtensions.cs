@@ -1006,30 +1006,7 @@ namespace WmcSoft.Collections.Generic
             return UnguardedPartition(list, start, length, predicate);
         }
 
-        /// <summary>
-        /// Implements a stable partition of the list 
-        /// </summary>
-        /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="predicate">Thre predicate</param>
-        /// <returns>The partition point</returns>
-        public static int StablePartition<T>(this IList<T> list, Predicate<T> predicate) {
-            return StablePartition(list, 0, list.Count, predicate);
-        }
-
-        /// <summary>
-        /// Implements a stable partition of the list 
-        /// </summary>
-        /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="start">The start index of the sequence</param>
-        /// <param name="length">The length of the sequence</param>
-        /// <param name="predicate">Thre predicate</param>
-        /// <returns>The partition point</returns>
-        public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
-
-            var buffer = new T[length];
+        private static int UnguardedStablePartition<T>(this IList<T> list, T[] buffer, int start, int length, Predicate<T> predicate) {
             var p = start;
             var first = 0;
             var last = length;
@@ -1043,6 +1020,53 @@ namespace WmcSoft.Collections.Generic
             buffer.CopyTo(list, start, first);
             buffer.CopyBackwardsTo(last, list, start + first, length - last);
             return start + first;
+
+        }
+
+        private static int UnguardedStablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            int offset = start;
+            int end = start + length - 1;
+            while (start < end && !predicate(list[start]))
+                start++;
+            while (start < end && predicate(list[end]))
+                end--;
+
+            if (start < end) {
+                length = end - start + 1;
+                var buffer = new T[length];
+                offset += UnguardedStablePartition(list, buffer, start, length, predicate);
+            }
+            return offset;
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int StablePartition<T>(this IList<T> list, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return UnguardedStablePartition(list, 0, list.Count, predicate);
+        }
+
+        /// <summary>
+        /// Implements a stable partition of the list 
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="list">The list</param>
+        /// <param name="start">The start index of the sequence</param>
+        /// <param name="length">The length of the sequence</param>
+        /// <param name="predicate">Thre predicate</param>
+        /// <returns>The partition point</returns>
+        public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
+            if (list == null) throw new ArgumentNullException("list");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return UnguardedStablePartition(list, start, length, predicate);
         }
 
         #endregion
