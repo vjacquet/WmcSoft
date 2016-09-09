@@ -39,16 +39,16 @@ namespace WmcSoft
             _version = version;
         }
 
-        public SemVer(int major, int minor, int patch) {
+        public SemVer(int major, int minor = 0, int patch = 0) {
             _version = new Version(major, minor, patch);
         }
 
         public SemVer(Version version) {
             if (version == null) throw new ArgumentNullException("version");
-            if (version.Revision == 0)
-                _version = version;
-            else
-                _version = new Version(version.Major, version.Minor, version.Build);
+
+            _version = (version.Revision != 0)
+                ? new Version(version.Major, version.Minor, version.Build)
+                : version;
         }
 
         public int Major { get { return _version.Major; } }
@@ -84,6 +84,7 @@ namespace WmcSoft
         int IComparable.CompareTo(object obj) {
             if (obj == null)
                 return 1;
+
             var other = obj as SemVer;
             if (ReferenceEquals(other, null))
                 throw new ArgumentException("obj");
