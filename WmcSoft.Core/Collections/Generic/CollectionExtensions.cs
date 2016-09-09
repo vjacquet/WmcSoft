@@ -1020,7 +1020,6 @@ namespace WmcSoft.Collections.Generic
             buffer.CopyTo(list, start, first);
             buffer.CopyBackwardsTo(last, list, start + first, length - last);
             return start + first;
-
         }
 
         private static int UnguardedStablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
