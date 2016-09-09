@@ -27,12 +27,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Text
 {
-    public class SuffixArray : IEnumerable<string>
+    public class SuffixArray : IReadOnlyList<string>
     {
         #region Comparer
+
+        struct SuffixComparable : IComparable<int>
+        {
+            public readonly string Key;
+            public readonly string Value;
+            public readonly StringComparison Comparison;
+
+            public SuffixComparable(string key, string value, StringComparison comparison) {
+                Key = key;
+                Value = value;
+                Comparison = comparison;
+            }
+
+            public int CompareTo(int other) {
+                var length = Math.Min(Key.Length, Value.Length - other);
+                var result= String.Compare(Key, 0, Value, other, length, Comparison);
+                if (result == 0)
+                    return Comparer<int>.Default.Compare(Key.Length, Value.Length - other);
+                return result;
+            }
+        }
 
         struct SuffixComparer : IComparer<int>
         {
@@ -78,6 +100,16 @@ namespace WmcSoft.Text
             Array.Sort(_suffixes, comparer);
         }
 
+        public int Count { get { return _suffixes.Length; } }
+
+        public string this[int index] {
+            get { return _value.Substring(_suffixes[index]); }
+        }
+
+        public int GetLengthOf(int index) {
+            return _value.Length - _suffixes[index];
+        }
+
         public IEnumerator<string> GetEnumerator() {
             var length = _suffixes.Length;
             for (int i = 0; i < length; i++) {
@@ -87,6 +119,28 @@ namespace WmcSoft.Text
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        int Mismatch(int x, int y) {
+            var length = _value.Length - Math.Max(x, y);
+            for (int i = 0; i < length; i++) {
+                if (String.Compare(_value, x, _value, y, 1, _comparison) != 0)
+                    return i;
+                x++;
+                y++;
+            }
+            return length;
+        }
+
+        public int Mismatch(int index) {
+            if (index < 1 || index >= _value.Length) throw new ArgumentOutOfRangeException(nameof(index));
+
+            return Mismatch(_suffixes[index], _suffixes[index - 1]);
+        }
+
+        public int Rank(string key) {
+            var finder = new SuffixComparable(key, _value, _comparison);
+            return _suffixes.BinaryRank(x => -finder.CompareTo(x));
         }
     }
 }
