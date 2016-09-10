@@ -127,37 +127,78 @@ namespace WmcSoft
         /// <returns>From <https://en.wikipedia.org/wiki/Levenshtein_distance></returns>
         public static int Levenshtein(string s, string t) {
             // degenerate cases
-            if (s == t) return 0;
-            if (s.Length == 0) return t.Length;
-            if (t.Length == 0) return s.Length;
+            if (s == t)
+                return 0;
+            if (string.IsNullOrEmpty(s))
+                return t == null ? 0 : t.Length;
+            if (string.IsNullOrEmpty(t))
+                return s.Length;
 
-            // create two work vectors of integer distances
-            int[] v0 = new int[t.Length + 1];
-            int[] v1 = new int[t.Length + 1];
+            var m = s.Length;
+            var n = t.Length;
+            var d = new int[2, n + 1];
+            for (int j = 1; j <= n; j++) {
+                d[0, j] = j;
+            }
 
-            // initialize v1 (the current row of distances)
-            // this row is A[0][i]: edit distance for an empty s
-            // the distance is just the number of characters to delete from t
-            for (int i = 0; i < v0.Length; i++)
-                v1[i] = i;
+            var r = 0;
+            for (int i = 1; i <= m; i++) {
+                var pr = r;
+                r = (r + 1) % 2;
+                d[r, 0] = i;
 
-            for (int i = 0; i < s.Length; i++) {
-                Swap(ref v0, ref v1); // current becomes previous
-
-                // calculate v1 (current row distances) from the previous row v0
-
-                // first element of v1 is A[i+1][0]
-                //   edit distance is delete (i+1) chars from s to match empty t
-                v1[0] = i + 1;
-
-                // use formula to fill in the rest of the row
-                for (int j = 0; j < t.Length; j++) {
-                    var cost = (s[i] == t[j]) ? 0 : 1;
-                    v1[j + 1] = Min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+                var cost = (s[0] == t[0]) ? 0 : 1;
+                d[r, 1] = Min(d[pr, 1] + 1, d[r, 0] + 1, d[pr, 0] + cost);
+                for (int j = 2; j <= n; j++) {
+                    cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
+                    var min = Min(d[pr, j] + 1, d[r, j - 1] + 1, d[pr, j - 1] + cost);
+                    d[r, j] = min;
                 }
             }
 
-            return v1[t.Length];
+            return d[r, n];
+        }
+
+        /// <summary>
+        /// Computes the Damerau-Levenshtein distance of two strings.
+        /// </summary>
+        /// <param name="s">The first string</param>
+        /// <param name="t">The second string</param>
+        /// <returns>From <https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance></returns>
+        public static int DamerauLevenshtein(string s, string t) {
+            // degenerate cases
+            if (s == t)
+                return 0;
+            if (string.IsNullOrEmpty(s))
+                return t == null ? 0 : t.Length;
+            if (string.IsNullOrEmpty(t))
+                return s.Length;
+
+            var m = s.Length;
+            var n = t.Length;
+            var d = new int[3, n + 1];
+            for (int j = 1; j <= n; j++) {
+                d[0, j] = j;
+            }
+
+            var r = 0;
+            for (int i = 1; i <= m; i++) {
+                var pr = r;
+                r = (r + 1) % 3;
+                d[r, 0] = i;
+
+                var cost = (s[0] == t[0]) ? 0 : 1;
+                d[r, 1] = Min(d[pr, 1] + 1, d[r, 0] + 1, d[pr, 0] + cost);
+                for (int j = 2; j <= n; j++) {
+                    cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
+                    var min = Min(d[pr, j] + 1, d[r, j - 1] + 1, d[pr, j - 1] + cost);
+                    if (i > 1 && s[i - 1] == t[j - 2] && s[i - 2] == t[j - 1])
+                        min = Min(min, d[(r + 1) % 3, j - 2] + 1);
+                    d[r, j] = min;
+                }
+            }
+
+            return d[r, n];
         }
 
         /// <summary>

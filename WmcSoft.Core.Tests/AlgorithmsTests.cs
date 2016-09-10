@@ -102,8 +102,14 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckLevensteinDistance() {
+        public void CheckLevenshteinDistance() {
             Assert.AreEqual(3, Algorithms.Levenshtein("kitten", "sitting"));
+        }
+
+        [TestMethod]
+        public void CheckDamereauLevenshteinDistance() {
+            Assert.AreEqual(3, Algorithms.DamerauLevenshtein("kitten", "sitting"));
+            Assert.AreEqual(1, Algorithms.DamerauLevenshtein("kitten", "iktten"));
         }
     }
 }
