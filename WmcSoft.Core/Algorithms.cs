@@ -35,40 +35,47 @@ namespace WmcSoft
     {
         #region Distances
 
+        /// <summary>
+        /// Computes the number of positions at which the bits of the two numbers are different.
+        /// </summary>
+        /// <param name="x">The first number.</param>
+        /// <param name="y">The second number.</param>
+        /// <returns>The number of positions at which the bits of <paramref name="x"/> and <paramref name="y"/> are different.</returns>
+        public static int Hamming(uint x, uint y) {
+            var v = x ^ y;
+            var dist = 0;
+            while (v != 0) {
+                dist++;
+                v &= v - 1;// clear the bit
+            }
+            return dist;
+        }
+
+        /// <summary>
+        /// Computes the number of positions at which the chars of the two string of equal length are different.
+        /// </summary>
+        /// <param name="x">The first string.</param>
+        /// <param name="y">The second string.</param>
+        /// <returns>The number of positions at which the chars of <paramref name="x"/> and <paramref name="y"/> are different.</returns>
+        /// <remarks>The chars are compared bytewise.</remarks>
+        /// <exception cref="ArgumentNullException">Either <paramref name="x"/> pr <paramref name="y"/> is null.</exception>
+        /// <exception cref="ArgumentException">The two strings have different length.</exception>
         public static int Hamming(string x, string y) {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
 
-            using (var ex = x.GetEnumerator())
-            using (var ey = y.GetEnumerator()) {
-                var dist = 0;
-                while (ex.MoveNext() & ey.MoveNext()) {
-                    if (ex.Current != ey.Current)
-                        dist++;
-                }
-                return dist;
+            var length = x.Length;
+            var dist = 0;
+            for (int i = 0; i < length; i++) {
+                if (string.CompareOrdinal(x, i, y, i, 1) != 0)
+                    dist++;
             }
+            return dist;
         }
 
-        public static int Hamming(string x, string y, IEqualityComparer<string> comparer) {
-            if (x == null) throw new ArgumentNullException(nameof(x));
-            if (y == null) throw new ArgumentNullException(nameof(y));
-            if (x.Length != y.Length) throw new ArgumentException();
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
-
-            using (var ex = x.GetEnumerator())
-            using (var ey = y.GetEnumerator()) {
-                var dist = 0;
-                while (ex.MoveNext() & ey.MoveNext()) {
-                    if (!comparer.Equals(ex.Current.ToString(), ey.Current.ToString()))
-                        dist++;
-                }
-                return dist;
-            }
-        }
-
-        public static int Hamming(string x, string y, IEqualityComparer<char> comparer) {
+        public static int Hamming<TComparer>(string x, string y, TComparer comparer)
+            where TComparer : IEqualityComparer<char> {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
@@ -102,7 +109,8 @@ namespace WmcSoft
             }
         }
 
-        public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, IEqualityComparer<T> comparer) {
+        public static int Hamming<T, TComparer>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, TComparer comparer)
+            where TComparer : IEqualityComparer<T> {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Count != y.Count) throw new ArgumentException();
@@ -125,6 +133,7 @@ namespace WmcSoft
         /// <param name="s">The first string</param>
         /// <param name="t">The second string</param>
         /// <returns>From <https://en.wikipedia.org/wiki/Levenshtein_distance></returns>
+        /// <remarks>To use different weight for insertions, deletions and transposition, check <https://en.wikipedia.org/wiki/Edit_distance>.</remarks>
         public static int Levenshtein(string s, string t) {
             // degenerate cases
             if (s == t)

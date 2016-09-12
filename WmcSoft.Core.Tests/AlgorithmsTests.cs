@@ -102,6 +102,18 @@ namespace WmcSoft
         }
 
         [TestMethod]
+        public void CheckHammingDistanceForUInt32() {
+            //Assert.AreEqual(2, Algorithms.Hamming(0b01011101, 0b01001001));
+            Assert.AreEqual(2, Algorithms.Hamming(0x5d, 0x49));
+        }
+
+        [TestMethod]
+        public void CheckHammingDistanceForStrings() {
+            Assert.AreEqual(3, Algorithms.Hamming("karolin", "kathrin"));
+            Assert.AreEqual(3, Algorithms.Hamming("karolin", "kerstin"));
+        }
+
+        [TestMethod]
         public void CheckLevenshteinDistance() {
             Assert.AreEqual(3, Algorithms.Levenshtein("kitten", "sitting"));
         }
