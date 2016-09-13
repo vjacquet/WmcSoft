@@ -31,33 +31,36 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Check equality on two arrays.
+    /// Check equality on the shape of two arrays.
     /// </summary>
-    /// <typeparam name="T">The type of values in the arrays.</typeparam>
-    public class ArrayEqualityComparer<T> : IEqualityComparer<Array>
+    public struct ArrayShapeEqualityComparer : IEqualityComparer<Array>
     {
-        readonly IEqualityComparer<T> _comparer;
-
-        public ArrayEqualityComparer(IEqualityComparer<T> comparer) {
-            _comparer = comparer;
-        }
-        public ArrayEqualityComparer()
-            : this(EqualityComparer<T>.Default) {
-        }
-
-        #region IEqualityComparer<Array> Membres
+        public static readonly ArrayShapeEqualityComparer Default;
 
         public bool Equals(Array x, Array y) {
-            if (!ArrayShapeEqualityComparer.Default.Equals(x, y))
+            if (x == y)
+                return true;
+            if (x == null)
                 return false;
 
-            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>(), _comparer);
+            if (x.Rank != y.Rank || x.Length != y.Length)
+                return false;
+            var length = x.Rank;
+            for (int i = 0; i < length; i++) {
+                if (x.GetUpperBound(i) != y.GetUpperBound(i) || x.GetUpperBound(i) != y.GetUpperBound(i))
+                    return false;
+            }
+            return true;
+        }
+
+        static int GetDimensionHashCode(Array obj, int i) {
+            return Compare.CombineHashCodes(obj.GetLowerBound(i), obj.GetUpperBound(i));
         }
 
         public int GetHashCode(Array obj) {
-            return obj.GetHashCode();
+            if (obj == null)
+                return 0;
+            return Compare.CombineHashCodes(obj.Rank, obj.Length, GetDimensionHashCode(obj, 0), GetDimensionHashCode(obj, obj.Rank - 1));
         }
-
-        #endregion
     }
 }

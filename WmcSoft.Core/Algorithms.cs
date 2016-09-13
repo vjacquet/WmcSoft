@@ -46,7 +46,7 @@ namespace WmcSoft
             var dist = 0;
             while (v != 0) {
                 dist++;
-                v &= v - 1;// clear the bit
+                v &= v - 1; // clear the bit
             }
             return dist;
         }

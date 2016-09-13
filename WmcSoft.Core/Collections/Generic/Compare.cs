@@ -35,11 +35,16 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class Compare
     {
+        #region HashCodes
+
         internal static int CombineHashCodes(int h1, int h2) {
             return (((h1 << 5) + h1) ^ h2);
         }
         internal static int CombineHashCodes(int h1, int h2, int h3) {
             return CombineHashCodes(CombineHashCodes(h1, h2), h3);
+        }
+        internal static int CombineHashCodes(int h1, int h2, int h3, int h4) {
+            return CombineHashCodes(CombineHashCodes(h1, h2), CombineHashCodes(h3, h4));
         }
 
         internal static int CombineHashCodes(IEqualityComparer comparer, object obj1, object obj2) {
@@ -55,6 +60,8 @@ namespace WmcSoft.Collections.Generic
         internal static int CombineHashCodes<T>(IEqualityComparer<T> comparer, T obj1, T obj2, T obj3) {
             return CombineHashCodes(comparer.GetHashCode(obj1), comparer.GetHashCode(obj2), comparer.GetHashCode(obj3));
         }
+
+        #endregion
 
         public static ComparerBuilder<T> OrderOf<T>() {
             return ComparerBuilder<T>.Default;
