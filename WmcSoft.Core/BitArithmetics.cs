@@ -91,10 +91,22 @@ namespace WmcSoft
 
         #region Gray encoding
 
+        /// <summary>
+        /// Converts an unsigned binary number to reflected binary Gray code.
+        /// </summary>
+        /// <param name="i">The number.</param>
+        /// <returns>The encoded number.</returns>
+        /// <remarks>See https://en.wikipedia.org/wiki/Gray_code for more information.</remarks>
         public static uint ToGray(uint i) {
             return i ^ (i >> 1);
         }
 
+        /// <summary>
+        /// converts a reflected binary Gray code number to a binary number.
+        /// </summary>
+        /// <param name="i">The encoded number.</param>
+        /// <returns>The number.</returns>
+        /// <remarks>See https://en.wikipedia.org/wiki/Gray_code for more information.</remarks>
         public static uint FromGray(uint i) {
             i ^= i >> 16;
             i ^= i >> 8;
