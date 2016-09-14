@@ -36,22 +36,6 @@ namespace WmcSoft
         #region Distances
 
         /// <summary>
-        /// Computes the number of positions at which the bits of the two numbers are different.
-        /// </summary>
-        /// <param name="x">The first number.</param>
-        /// <param name="y">The second number.</param>
-        /// <returns>The number of positions at which the bits of <paramref name="x"/> and <paramref name="y"/> are different.</returns>
-        public static int Hamming(uint x, uint y) {
-            var v = x ^ y;
-            var dist = 0;
-            while (v != 0) {
-                dist++;
-                v &= v - 1; // clear the bit
-            }
-            return dist;
-        }
-
-        /// <summary>
         /// Computes the number of positions at which the chars of the two string of equal length are different.
         /// </summary>
         /// <param name="x">The first string.</param>

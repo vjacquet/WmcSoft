@@ -53,5 +53,21 @@ namespace WmcSoft
             uint x = 0xC8; // 1010 1000;
             Assert.AreEqual(3, CountBits(x));
         }
+
+        [TestMethod]
+        public void CheckBitwiseHammingDistance() {
+            //Assert.AreEqual(2, Algorithms.Hamming(0b01011101, 0b01001001));
+            Assert.AreEqual(2, Hamming(0x5d, 0x49));
+        }
+
+        [TestMethod]
+        public void CheckGrayConversions() {
+            var a = ToGray(31);
+            var b = ToGray(32);
+
+            Assert.AreEqual(31u, FromGray(a));
+            Assert.AreEqual(32u, FromGray(b));
+            Assert.AreEqual(1, Hamming(a, b));
+        }
     }
 }
