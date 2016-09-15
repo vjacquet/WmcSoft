@@ -40,7 +40,8 @@ namespace WmcSoft.Collections.Generic
         private readonly T[] _customOrder;
         private readonly IEqualityComparer<T> _comparer;
 
-        public CustomSortComparer(params T[] customOrder) : this(null, customOrder) {
+        public CustomSortComparer(params T[] customOrder)
+            : this(EqualityComparer<T>.Default, customOrder) {
         }
 
         public CustomSortComparer(IEqualityComparer<T> comparer, params T[] customOrder) {
@@ -48,17 +49,18 @@ namespace WmcSoft.Collections.Generic
             _customOrder = customOrder;
         }
 
-        #region IComparer<T> Membres
+        public CustomSortComparer(IComparer<T> comparer, params T[] customOrder) {
+            _comparer = new EqualityComparerAdapter<T>(comparer ?? Comparer<T>.Default);
+            _customOrder = customOrder;
+        }
 
         private int IndexOf(T x) {
             var found = Array.FindIndex(_customOrder, _ => _comparer.Equals(_, x));
             return found & int.MaxValue; // Changes -1 to int.MaxValue so missing elements are at the end.
         }
 
-        int IComparer<T>.Compare(T x, T y) {
+        public int Compare(T x, T y) {
             return IndexOf(x) - IndexOf(y);
         }
-
-        #endregion
     }
 }
