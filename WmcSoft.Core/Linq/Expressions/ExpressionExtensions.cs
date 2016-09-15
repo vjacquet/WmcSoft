@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace WmcSoft.Linq.Expressions
@@ -34,7 +33,7 @@ namespace WmcSoft.Linq.Expressions
     {
         public static MethodCallExpression Call(this Expression expression, string methodName, Type[] typeArguments, params Expression[] arguments) {
             // guard against null, this extensions should not be used for static members
-            if (expression == null) throw new ArgumentNullException("expression");
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Call(expression, methodName, typeArguments, arguments);
         }
@@ -73,41 +72,40 @@ namespace WmcSoft.Linq.Expressions
 
         public static MemberExpression Field(this Expression expression, string fieldName) {
             // guard against null, this extensions should not be used for static members
-            if (expression == null) throw new ArgumentNullException("expression");
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Field(expression, fieldName);
         }
 
         public static MemberExpression Property(this Expression expression, string propertyName) {
             // guard against null, this extensions should not be used for static members
-            if (expression == null) throw new ArgumentNullException("expression");
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Property(expression, propertyName);
         }
 
         public static IndexExpression Property(this Expression expression, string propertyName, params Expression[] arguments) {
             // guard against null, this extensions should not be used for static members
-            if (expression == null) throw new ArgumentNullException("expression");
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Property(expression, propertyName, arguments);
         }
 
         public static MemberExpression PropertyOrField(this Expression expression, string propertyOrFieldName) {
             // guard against null, this extensions should not be used for static members
-            if (expression == null) throw new ArgumentNullException("expression");
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.PropertyOrField(expression, propertyOrFieldName);
         }
 
         public static MemberExpression FollowPropertyOrField(this Expression expression, string propertyOrFieldPath) {
             // guard against null, this extensions should not be used for static members
-            if (expression == null) throw new ArgumentNullException("expression");
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
 
-            if (propertyOrFieldPath == null)
-                throw new ArgumentException("propertyOrFieldPath");
+            if (propertyOrFieldPath == null) throw new ArgumentNullException(nameof(propertyOrFieldPath));
             var parts = propertyOrFieldPath.Split('.');
-            if (parts.Length == 0)
-                throw new ArgumentException("propertyOrFieldPath");
+            if (parts.Length == 0) throw new ArgumentException(nameof(propertyOrFieldPath));
+
             var member = Expression.PropertyOrField(expression, parts[0]);
             for (int i = 1; i < parts.Length; i++) {
                 member = Expression.PropertyOrField(member, parts[i]);
