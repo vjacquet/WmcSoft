@@ -25,56 +25,155 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static WmcSoft.BitArithmetics;
 
 namespace WmcSoft.AI
 {
     /// <summary>
-    /// Gray representation of integers, which differs only by one bit when incrementing.
+    /// Gray representation of byte, which differs only by one bit when incrementing.
     /// </summary>
-    public struct Gray
+    public struct Gray8
     {
-        static readonly byte[] GrayCodeTable;
-        static Gray() {
-            GrayCodeTable = new byte[256];
-            for (int i = 0; i < 256; i++) {
-                GrayCodeTable[i] = ToGray(i);
-            }
-        }
-
-        static byte ToGray(int i) {
-            var gray = (uint)i;
-            var sum = 0u;
-            var bit = 128u;
-            var parity = false;
-            while (bit != 0) {
-                if ((bit & gray) != 0)
-                    parity = !parity;
-                if (parity)
-                    sum |= bit;
-                bit >>= 1;
-            }
-            return (byte)sum;
-        }
-
         byte _value;
 
-        public Gray(int n) {
-            if (n <= 0 || n > 255)
-                throw new ArgumentOutOfRangeException("n");
-            _value = GrayCodeTable[n];
+        public Gray8(byte n) {
+            _value = ToGray(n);
         }
 
-        public static implicit operator Gray(int n) {
-            return new Gray(n);
+        public static implicit operator Gray8(int n) {
+            return new Gray8(checked((byte)n));
         }
 
-        public static explicit operator double (Gray g) {
-            var n = Array.IndexOf(GrayCodeTable, g._value);
-            return (n - 127.5d) * 0.0392d;
+        //public static explicit operator double(Gray8 g) {
+        //    var n = Array.IndexOf(GrayCodeTable, g._value);
+        //    return (n - 127.5d) * 0.0392d;
+        //}
+
+        public Gray8 Increment() {
+            var x = FromGray(_value);
+            return new Gray8(ToGray(++x));
+        }
+
+        public Gray8 Decrement() {
+            var x = FromGray(_value);
+            return new Gray8(ToGray(--x));
+        }
+
+        public static Gray8 operator ++(Gray8 x) {
+            return x.Increment();
+        }
+
+        public static Gray8 operator --(Gray8 x) {
+            return x.Decrement();
+        }
+
+        public override string ToString() {
+            return Convert.ToString(_value, 2).PadLeft(8, '0');
+        }
+
+        static byte ToGray(byte x) {
+            uint i = x;
+            i ^= i >> 1;
+            return checked((byte)i);
+        }
+
+        static byte FromGray(byte x) {
+            uint i = x;
+            i ^= i >> 4;
+            i ^= i >> 2;
+            i ^= i >> 1;
+            return checked((byte)i);
+        }
+    }
+
+    /// <summary>
+    /// Gray representation of short, which differs only by one bit when incrementing.
+    /// </summary>
+    public struct Gray16
+    {
+        ushort _value;
+
+        public Gray16(ushort n) {
+            _value = ToGray(n);
+        }
+
+        public static implicit operator Gray16(int n) {
+            return new Gray16(checked((ushort)n));
+        }
+
+        public Gray16 Increment() {
+            var x = FromGray(_value);
+            return new Gray16(ToGray(++x));
+        }
+
+        public Gray16 Decrement() {
+            var x = FromGray(_value);
+            return new Gray16(ToGray(--x));
+        }
+
+        public static Gray16 operator ++(Gray16 x) {
+            return x.Increment();
+        }
+
+        public static Gray16 operator --(Gray16 x) {
+            return x.Decrement();
+        }
+
+        public override string ToString() {
+            return Convert.ToString(_value, 2).PadLeft(16, '0');
+        }
+
+        static ushort ToGray(ushort x) {
+            uint i = x;
+            i ^= i >> 1;
+            return checked((ushort)i);
+        }
+
+        static ushort FromGray(ushort x) {
+            uint i = x;
+            i ^= i >> 8;
+            i ^= i >> 4;
+            i ^= i >> 2;
+            i ^= i >> 1;
+            return checked((ushort)i);
+        }
+    }
+
+    /// <summary>
+    /// Gray representation of integer, which differs only by one bit when incrementing.
+    /// </summary>
+    public struct Gray32
+    {
+        uint _value;
+
+        public Gray32(uint n) {
+            _value = ToGray(n);
+        }
+
+        public static implicit operator Gray32(uint n) {
+            return new Gray32(n);
+        }
+
+        public Gray32 Increment() {
+            var x = FromGray(_value);
+            return new Gray32(ToGray(++x));
+        }
+
+        public Gray32 Decrement() {
+            var x = FromGray(_value);
+            return new Gray32(ToGray(--x));
+        }
+
+        public static Gray32 operator ++(Gray32 x) {
+            return x.Increment();
+        }
+
+        public static Gray32 operator --(Gray32 x) {
+            return x.Decrement();
+        }
+
+        public override string ToString() {
+            return Convert.ToString(_value, 2).PadLeft(32, '0');
         }
     }
 }

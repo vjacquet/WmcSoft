@@ -52,7 +52,6 @@ namespace WmcSoft.Collections.Generic
 
             var array = (T[])knownValues.Clone();
             Array.Sort(array, comparer);
-
             _hasher = x => Hash(x, array);
         }
 
@@ -86,7 +85,6 @@ namespace WmcSoft.Collections.Generic
                 return Math.Abs(knownValues[found].GetHashCode());
             return -1;
         }
-
 
         #endregion
     }
