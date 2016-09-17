@@ -376,7 +376,11 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public List<T>.Enumerator GetEnumerator() {
+            return _storage.GetEnumerator();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
             return _storage.GetEnumerator();
         }
 

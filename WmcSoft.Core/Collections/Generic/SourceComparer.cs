@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -32,22 +33,21 @@ namespace WmcSoft.Collections.Generic
     /// Implements a comparer which, given the index of elements in a source, compare the corresponding items.
     /// </summary>
     /// <typeparam name="T">The type of the source's items to compare</typeparam>
+    /// <remarks>The comparison will throw if the compared ints are not index of the list.</remarks>
     public struct SourceComparer<T> : IComparer<int>
     {
         private readonly IReadOnlyList<T> _list;
         private readonly IComparer<T> _comparer;
 
         public SourceComparer(IReadOnlyList<T> list, IComparer<T> comparer = null) {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
             _list = list;
             _comparer = comparer ?? Comparer<T>.Default;
         }
 
-        #region IComparer<int> Membres
-
-        int IComparer<int>.Compare(int x, int y) {
+        public int Compare(int x, int y) {
             return _comparer.Compare(_list[x], _list[y]);
         }
-
-        #endregion
     }
 }
