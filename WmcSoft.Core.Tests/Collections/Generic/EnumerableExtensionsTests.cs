@@ -191,5 +191,19 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 0, 0, 0, 1, 5, 6, 4, 6 };
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckAtLeast() {
+            var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
+            Assert.IsFalse(data.AtLeast(2, i => i < 10));
+            Assert.IsTrue(data.AtLeast(2, i => i > 100));
+        }
+
+        [TestMethod]
+        public void CheckAtMost() {
+            var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
+            Assert.IsTrue(data.AtMost(2, i => i < 10));
+            Assert.IsFalse(data.AtMost(2, i => i > 100));
+        }
     }
 }

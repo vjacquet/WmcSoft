@@ -62,13 +62,103 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region AtLeast / AtMost
+
+        /// <summary>
+        /// Determines whether a sequence contains at least <paramref name="n"/> elements.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The <see cref="IEnumerable{T}"/> to check.</param>
+        /// <param name="n">The expected number of elements.</param>
+        /// <returns><c>true</c> if the sequence contains at least <paramref name="n"/> elements; otherwise, <c>false</c>.</returns>
+        public static bool AtLeast<TSource>(this IEnumerable<TSource> source, int n) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (n == Int32.MaxValue) throw new ArgumentOutOfRangeException(nameof(n));
+
+            var traits = new EnumerableTraits<TSource>(source);
+            if (traits.HasCount)
+                return traits.Count >= n;
+            var count = 0;
+            foreach (var item in source) {
+                if (count++ > n)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether at least <paramref name="n"/> elements of a sequence satisfy a condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
+        /// <param name="n">The expected number of elements.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns><c>true</c> if at least <paramref name="n"/> elements in the source sequence pass the test in the specified predicate; otherwise, <c>false</c>.</returns>
+        public static bool AtLeast<TSource>(this IEnumerable<TSource> source, int n, Func<TSource, bool> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (n == Int32.MaxValue) throw new ArgumentOutOfRangeException(nameof(n));
+
+            var count = 0;
+            foreach (var item in source.Where(predicate)) {
+                if (count++ > n)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a sequence contains at most <paramref name="n"/> elements.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The <see cref="IEnumerable{T}"/> to check.</param>
+        /// <param name="n">The expected number of elements.</param>
+        /// <returns><c>true</c> if the sequence contains at most <paramref name="n"/> elements; otherwise, <c>false</c>.</returns>
+        public static bool AtMost<TSource>(this IEnumerable<TSource> source, int n) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (n == Int32.MaxValue) throw new ArgumentOutOfRangeException(nameof(n));
+
+            var traits = new EnumerableTraits<TSource>(source);
+            if (traits.HasCount)
+                return traits.Count <= n;
+            var count = 0;
+            foreach (var item in source) {
+                if (count++ > n)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether at most <paramref name="n"/> elements of a sequence satisfy a condition.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
+        /// <param name="n">The expected number of elements.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns><c>true</c> if at most <paramref name="n"/> elements in the source sequence pass the test in the specified predicate; otherwise, <c>false</c>.</returns>
+        public static bool AtMost<TSource>(this IEnumerable<TSource> source, int n, Func<TSource, bool> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (n == Int32.MaxValue) throw new ArgumentOutOfRangeException(nameof(n));
+
+            var count = 0;
+            foreach (var item in source.Where(predicate)) {
+                if (count++ > n)
+                    return false;
+            }
+            return true;
+        }
+
+        #endregion
+
         #region AsReadOnlyCollection
 
         /// <summary>
         /// Returns an enumerable optimized for functions requiring a Count
         /// </summary>
         /// <typeparam name="T">The type of elements</typeparam>
-        /// <param name="source">The count of items</param>
+        /// <param name="source">The sequence of items</param>
         /// <param name="count">The count of items.</param>
         /// <returns>The decorated enumerable</returns>
         /// <remarks>For optimization, the function does not guard against wrong count.</remarks>
@@ -114,10 +204,26 @@ namespace WmcSoft.Collections.Generic
 
         #region Discretize
 
+        /// <summary>
+        /// Categorize the source's elements in buckets delimited by the specified <paramref name="bounds"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The sequence of items</param>
+        /// <param name="bounds">The buckets boundaries.</param>
+        /// <returns>The corresponding sequence of buckets index.</returns>
+        /// <remarks>The bounds are left inclusive and right exclusive. Items less than bounds[0] are in the bucket 0, items equals to bounds[i-1] and less than bounds[i] are in bucket <c>i</c>.</remarks>
         public static IEnumerable<int> Discretize<T>(this IEnumerable<T> source, params T[] bounds) {
             return Discretize(source, Comparer<T>.Default, bounds);
         }
 
+        /// <summary>
+        /// Categorize the source's elements in buckets delimited by the specified <paramref name="bounds"/>, comparing using <paramref name="comparer"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The sequence of items</param>
+        /// <param name="bounds">The buckets boundaries.</param>
+        /// <param name="comparer">The comparer.</param>
+        /// <returns>The corresponding sequence of buckets index.</returns>
         public static IEnumerable<int> Discretize<T>(this IEnumerable<T> source, IComparer<T> comparer, params T[] bounds) {
             foreach (var item in source) {
                 var index = Array.BinarySearch(bounds, item, comparer);
