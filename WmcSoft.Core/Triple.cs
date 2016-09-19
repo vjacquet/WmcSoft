@@ -44,7 +44,7 @@ namespace WmcSoft
     /// Represents a Triple of two instances of the same type.
     /// </summary>
     /// <typeparam name="T">The type of the instances.</typeparam>
-    /// <remarks>This class mimics <see cref="Tuple{T1, T2}"/> where T1 = T2.</remarks>
+    /// <remarks>This class mimics <see cref="Tuple{T1, T2, T3}"/> where T1 = T2 = T3.</remarks>
     [Serializable]
     public sealed class Triple<T> : IStructuralEquatable, IStructuralComparable, IComparable, IEquatable<Triple<T>>, IComparable<Triple<T>>
     {

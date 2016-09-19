@@ -58,7 +58,7 @@ namespace WmcSoft.Linq
         /// <param name="source">The <see cref="IQueryable{TSource}"/> to check for emptiness.</param>
         /// <returns>true if the source sequence is empty; otherwise, false.</returns>
         public static bool None<TSource>(this IQueryable<TSource> source) {
-            return !source.Any();
+            return !Queryable.Any(source);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace WmcSoft.Linq
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns>true if no element in the source sequence pass the test in the specified predicate, or if the sequence is empty; otherwise, false.</returns>
         public static bool None<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) {
-            return !source.Any(predicate);
+            return !Queryable.Any(source, predicate);
         }
 
         #endregion

@@ -106,9 +106,9 @@ namespace WmcSoft
             where T : struct
             where TResult : struct {
             return x => {
-                if (!x.HasValue)
-                    return default(TResult);
-                return func(x.GetValueOrDefault());
+                if (x.HasValue)
+                    return func(x.GetValueOrDefault());
+                return default(TResult);
             };
         }
 

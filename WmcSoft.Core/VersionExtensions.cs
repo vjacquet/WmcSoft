@@ -30,21 +30,24 @@ namespace WmcSoft
 {
     public static class VersionExtensions
     {
-        public static bool Satisfies(this Version version, string range) {
+        public static bool Satisfies(this SemVer version, string range) {
+            if (version == null) throw new ArgumentNullException(nameof(version));
+            if (range == null) throw new ArgumentNullException(nameof(range));
+         
             // see <https://github.com/npm/node-semver/blob/master/semver.js>
             throw new NotImplementedException();
         }
 
         public static bool Statisfies(this Version version, Predicate<Version> predicate) {
-            if (version == null) throw new ArgumentNullException("version");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (version == null) throw new ArgumentNullException(nameof(version));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return predicate(version);
         }
 
         public static bool Statisfies(this SemVer version, Predicate<SemVer> predicate) {
-            if (version == null) throw new ArgumentNullException("version");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (version == null) throw new ArgumentNullException(nameof(version));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return predicate(version);
         }
