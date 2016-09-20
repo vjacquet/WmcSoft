@@ -60,6 +60,27 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
+        public void CheckEnumerableCollateRepeat() {
+            var array = new[] { "a", "b", "c" };
+            var actual = String.Concat(array.Repeat(3, collate: true));
+            var expected = "abcabcabc";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckEnumerableCollateRepeatToListOptimization() {
+            const int Repeat = 3;
+            var array = new[] { "a", "b", "c" };
+            var actual = array.Repeat(Repeat, collate: true).ToList();
+            var expected = new List<string>();
+            for (int i = 0; i < Repeat; i++) {
+                expected.AddRange(array);
+            }
+            Assert.AreNotEqual(expected.Capacity, actual.Capacity);
+            Assert.AreEqual(expected.Count, actual.Capacity);
+        }
+
+        [TestMethod]
         public void CheckGroupedRepeat() {
             var array = new[] { "a", "b", "c" };
             var actual = String.Concat(array.Repeat(3, collate: false));

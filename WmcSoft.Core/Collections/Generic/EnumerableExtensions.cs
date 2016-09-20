@@ -270,7 +270,7 @@ namespace WmcSoft.Collections.Generic
             if (index >= 0) {
                 var list = source as IList<TSource>;
                 if (list == null) {
-                    using (IEnumerator<TSource> enumerator = source.GetEnumerator()) {
+                    using (var enumerator = source.GetEnumerator()) {
                         while (enumerator.MoveNext()) {
                             if (index == 0)
                                 return selector(enumerator.Current);
@@ -1049,11 +1049,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         [DebuggerStepThrough]
-        public static T ReadOrDefault<T>(this IEnumerator<T> enumerator) {
+        public static T ReadOrDefault<T>(this IEnumerator<T> enumerator, T defaultValue = default(T)) {
             if (enumerator.MoveNext()) {
                 return enumerator.Current;
             }
-            return default(T);
+            return defaultValue;
         }
 
         #endregion
@@ -1068,18 +1068,20 @@ namespace WmcSoft.Collections.Generic
                 readonly int _repeat;
                 int _offset;
                 int _countdown;
+                T _current;
 
                 public Enumerator(IList<T> list, int repeat) {
                     _list = list;
                     _repeat = repeat;
                     _offset = -1;
                     _countdown = repeat;
+                    _current = default(T);
                 }
 
                 #region IEnumerator<T> Membres
 
                 public T Current {
-                    get { return _list[_offset]; }
+                    get { return _current; }
                 }
 
                 #endregion
@@ -1102,17 +1104,19 @@ namespace WmcSoft.Collections.Generic
                     if (_offset >= _list.Count) {
                         if (_countdown == 1) {
                             _offset--; // to allow multiple call.
+                            _current = default(T);
                             return false;
                         }
                         _offset = 0;
                         _countdown--;
-                        return true;
                     }
+                    _current = _list[_offset];
                     return true;
                 }
 
                 public void Reset() {
                     _offset = -1;
+                    _current = default(T);
                     _countdown = _repeat;
                 }
 
@@ -1121,8 +1125,8 @@ namespace WmcSoft.Collections.Generic
 
             #region fields
 
-            IList<T> _list;
-            int _repeat;
+            readonly IList<T> _list;
+            readonly int _repeat;
 
             #endregion
 
@@ -1168,17 +1172,19 @@ namespace WmcSoft.Collections.Generic
                 readonly int _repeat;
                 int _offset;
                 int _countdown;
+                T _current;
 
                 public Enumerator(IList<T> list, int repeat) {
                     _list = list;
                     _repeat = repeat;
                     _countdown = repeat + 1;
+                    _current = default(T);
                 }
 
                 #region IEnumerator<T> Membres
 
                 public T Current {
-                    get { return _list[_offset]; }
+                    get { return _current; }
                 }
 
                 #endregion
@@ -1198,20 +1204,25 @@ namespace WmcSoft.Collections.Generic
 
                 public bool MoveNext() {
                     if (_offset == _list.Count)
-                        return false;
+                        return false;// to allow multiple call.
+
                     _countdown--;
                     if (_countdown == 0) {
                         _countdown = _repeat;
                         _offset++;
-                        if (_offset == _list.Count)
+                        if (_offset == _list.Count) {
+                            _current = default(T);
                             return false;
+                        }
                     }
+                    _current = _list[_offset];
                     return true;
                 }
 
                 public void Reset() {
                     _offset = -1;
                     _countdown = _repeat;
+                    _current = default(T);
                 }
 
                 #endregion
@@ -1219,8 +1230,8 @@ namespace WmcSoft.Collections.Generic
 
             #region fields
 
-            IList<T> _list;
-            int _repeat;
+            readonly IList<T> _list;
+            readonly int _repeat;
 
             #endregion
 
