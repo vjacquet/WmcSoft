@@ -89,5 +89,20 @@ namespace WmcSoft.Security
             Thread.CurrentPrincipal = principal;
             return new Disposer(() => Thread.CurrentPrincipal = current);
         }
+
+        /// <summary>
+        /// Determines whether the current principal belongs to any of the specified <paramref name="roles"/>.
+        /// </summary>
+        /// <param name="principal">The principal.</param>
+        /// <param name="roles">The name of the roles for which to check membership.</param>
+        /// <returns><c>true</c> if the current principal is a member of any the specified roles; otherwise, <c>false</c>.</returns>
+        public static bool IsInAnyRole(this IPrincipal principal, params string[] roles) {
+            var length = roles != null ? roles.Length : 0;
+            for (int i = 0; i < length; i++) {
+                if (principal.IsInRole(roles[i]))
+                    return true;
+            }
+            return false;
+        }
     }
 }
