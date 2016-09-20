@@ -91,8 +91,10 @@ namespace WmcSoft
         public struct RangeEnumerator<T> : IEnumerator<T>
         {
             private readonly T[] _storage;
-            private int _begin;
-            private int _end;
+            private readonly int _begin;
+            private readonly int _end;
+            private int _index;
+            private T _current;
 
             public RangeEnumerator(T[] array, int startIndex, int length) {
                 if (array == null) throw new ArgumentNullException("array");
@@ -103,25 +105,30 @@ namespace WmcSoft
                 _storage = array;
                 _begin = startIndex;
                 _end = startIndex + length;
+                _index = _begin;
+                _current = default(T);
             }
 
             public void Dispose() {
             }
 
             public bool MoveNext() {
-                if (_begin < _end) {
-                    _begin++;
+                if (_index < _end) {
+                    _index++;
+                    _current = _storage[_index];
                     return true;
                 }
+                _current = default(T);
                 return false;
             }
 
             public void Reset() {
-                throw new NotImplementedException();
+                _index = _begin;
+                _current = default(T);
             }
 
             public T Current {
-                get { return _storage[_begin]; }
+                get { return _current; }
             }
 
             object IEnumerator.Current {
@@ -247,6 +254,59 @@ namespace WmcSoft
                 dimensions[i] = array.GetLength(i);
             }
             return dimensions;
+        }
+
+        #endregion
+
+        #region Replace / ReplaceIf
+
+        public static void UnguardedReplace<T>(this T[] array, int startIndex, int length, T oldValue, T newValue, IEqualityComparer<T> comparer = null) {
+            comparer = comparer ?? EqualityComparer<T>.Default;
+            var endIndex = startIndex + length;
+            for (int i = startIndex; i < endIndex; i++) {
+                if (comparer.Equals(array[i], oldValue))
+                    array[i] = newValue;
+            }
+        }
+
+        public static void Replace<T>(this T[] array, int startIndex, int length, T oldValue, T newValue, IEqualityComparer<T> comparer = null) {
+            if (array == null) throw new ArgumentNullException("array");
+            if (length < 0) throw new ArgumentOutOfRangeException("length");
+            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
+            if (array.Length < (startIndex + length)) throw new ArgumentException("array");
+
+            UnguardedReplace(array, startIndex, length, oldValue, newValue, comparer);
+        }
+
+        public static void Replace<T>(this T[] array, T oldValue, T newValue, IEqualityComparer<T> comparer = null) {
+            if (array == null) throw new ArgumentNullException("array");
+
+            UnguardedReplace(array, 0, array.Length, oldValue, newValue, comparer);
+        }
+
+        public static void UnguardedReplaceIf<T>(this T[] array, int startIndex, int length, Predicate<T> predicate, T newValue) {
+            var endIndex = startIndex + length;
+            for (int i = startIndex; i < endIndex; i++) {
+                if (predicate(array[i]))
+                    array[i] = newValue;
+            }
+        }
+
+        public static void ReplaceIf<T>(this T[] array, int startIndex, int length, Predicate<T> predicate, T newValue) {
+            if (array == null) throw new ArgumentNullException("array");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (length < 0) throw new ArgumentOutOfRangeException("length");
+            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
+            if (array.Length < (startIndex + length)) throw new ArgumentException("array");
+
+            UnguardedReplaceIf(array, startIndex, length, predicate, newValue);
+        }
+
+        public static void ReplaceIf<T>(this T[] array, Predicate<T> predicate, T newValue) {
+            if (array == null) throw new ArgumentNullException("array");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            UnguardedReplaceIf(array, 0, array.Length, predicate, newValue);
         }
 
         #endregion
