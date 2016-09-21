@@ -95,7 +95,7 @@ namespace WmcSoft.Collections.Generic
         public override Enumerator GetEnumerator() {
             var array = new T[Count];
             CopyTo(array, 0);
-            array.Suffle(_random);
+            array.Shuffle(_random);
             return new Bag<T>.Enumerator(this, array);
         }
     }

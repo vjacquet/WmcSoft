@@ -38,7 +38,7 @@ namespace WmcSoft.Collections.Specialized
             var random = new Random(1664);
             var priorityQueue = new PriorityQueue<int>(1024);
             var data = Enumerable.Range(1, 1024).ToArray();
-            data.Suffle(random);
+            data.Shuffle(random);
             foreach (var datum in data) {
                 priorityQueue.Enqueue(datum);
             }

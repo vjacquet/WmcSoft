@@ -1331,7 +1331,7 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region Suffle methods
+        #region Shuffle methods
 
         /// <summary>
         /// Suffles in place items of the list.
@@ -1339,6 +1339,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
         public static void Shuffle<T>(this IList<T> list) {
             Shuffle(list, new Random());
         }
@@ -1350,18 +1351,16 @@ namespace WmcSoft.Collections.Generic
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
         public static void Shuffle<T>(this IList<T> list, Random random) {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (random == null)
-                throw new ArgumentNullException("random");
-            if (list.IsReadOnly)
-                throw new ArgumentException();
+            if (list == null) throw new ArgumentNullException("list");
+            if (random == null) throw new ArgumentNullException("random");
+            if (list.IsReadOnly) throw new ArgumentException();
 
             int j;
             for (int i = 0; i < list.Count; i++) {
                 j = random.Next(i, list.Count);
-                list.SwapItems(i, j);
+                SwapItems(list, i, j);
             }
         }
 
