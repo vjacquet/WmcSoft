@@ -40,33 +40,6 @@ namespace WmcSoft.IO
 
         #endregion
 
-        #region Rewind method
-
-        /// <summary>
-        /// Rewind the stream.
-        /// </summary>
-        /// <param name="stream">The stream</param>
-        public static void Rewind(this Stream stream) {
-            stream.Seek(0, SeekOrigin.Begin);
-        }
-
-        #endregion
-
-        #region End method
-
-        public static void End(this Stream stream) {
-            if (stream.CanSeek) {
-                stream.Seek(0, SeekOrigin.End);
-            } else {
-                byte[] buffer = new byte[DefaultBufferSize];
-                int bytesRead = 0;
-                while ((bytesRead = stream.Read(buffer, 0, DefaultBufferSize)) > 0)
-                    ;
-            }
-        }
-
-        #endregion
-
         #region Copy methods
 
         /// <summary>
@@ -134,32 +107,94 @@ namespace WmcSoft.IO
 
         #region Consume
 
-        public static long ConsumeAll(this Stream source) {
-            if (source == null)
+        public static long ConsumeAll(this Stream stream) {
+            if (stream == null)
                 throw new ArgumentNullException("source");
 
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
             int bytesRead = 0;
-            while ((bytesRead = source.Read(buffer, 0, DefaultBufferSize)) > 0)
+            while ((bytesRead = stream.Read(buffer, 0, DefaultBufferSize)) > 0)
                 length += bytesRead;
             return length;
         }
 
-        public static async Task<long> ConsumeAllAsync(this Stream source, CancellationToken cancellationToken) {
-            if (source == null)
+        public static async Task<long> ConsumeAllAsync(this Stream stream, CancellationToken cancellationToken) {
+            if (stream == null)
                 throw new ArgumentNullException("source");
 
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
             int bytesRead = 0;
-            while ((bytesRead = await source.ReadAsync(buffer, 0, DefaultBufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, DefaultBufferSize, cancellationToken).ConfigureAwait(false)) > 0)
                 length += bytesRead;
             return length;
         }
 
-        public static Task<long> ConsumeAllAsync(this Stream source) {
-            return ConsumeAllAsync(source, CancellationToken.None);
+        public static Task<long> ConsumeAllAsync(this Stream stream) {
+            return ConsumeAllAsync(stream, CancellationToken.None);
+        }
+
+        #endregion
+
+        #region End method
+
+        /// <summary>
+        /// Go to the end of the stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume the data until the end of stream.</remarks>
+        public static void End(this Stream stream) {
+            if (stream.CanSeek) {
+                stream.Seek(0L, SeekOrigin.End);
+            } else {
+                var buffer = new byte[DefaultBufferSize];
+                var bytesRead = 0;
+                while ((bytesRead = stream.Read(buffer, 0, DefaultBufferSize)) > 0)
+                    ;
+            }
+        }
+
+        #endregion
+
+        #region Rewind method
+
+        /// <summary>
+        /// Rewind the stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public static void Rewind(this Stream stream) {
+            stream.Seek(0L, SeekOrigin.Begin);
+        }
+
+        #endregion
+
+        #region Skip
+
+        /// <summary>
+        /// Skip <paramref name="count"/> bytes from the current position.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="count">The number of bytes to skip.</param>
+        /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume up to <paramref name="count"/> bytes of data.</remarks>
+        public static void Skip(this Stream stream, long count) {
+            if (stream.CanSeek) {
+                stream.Seek(count, SeekOrigin.Current);
+            } else {
+                var buffer = new byte[DefaultBufferSize];
+                while (count > DefaultBufferSize) {
+                    var bytesRead = stream.Read(buffer, 0, DefaultBufferSize);
+                    if (bytesRead == 0)
+                        return; // end of stream reached.
+                    count -= bytesRead;
+                }
+                while (count > 0) {
+                    var bytesRead = stream.Read(buffer, 0, unchecked((int)count));
+                    if (bytesRead == 0)
+                        return; // end of stream reached.
+                    count -= bytesRead;
+                }
+            }
         }
 
         #endregion
