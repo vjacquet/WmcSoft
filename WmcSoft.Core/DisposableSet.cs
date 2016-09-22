@@ -67,9 +67,9 @@ namespace WmcSoft
         }
 
         protected virtual void Dispose(bool disposing) {
+            _set.Clear();
             while (_stack.Count != 0) {
                 var disposable = _stack.Pop();
-                _set.Remove(disposable);
                 disposable.Dispose();
             }
         }
