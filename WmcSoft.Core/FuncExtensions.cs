@@ -25,6 +25,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Diagnostics;
 
 namespace WmcSoft
@@ -277,6 +279,24 @@ namespace WmcSoft
                     throw rethrow(t, e);
                 }
             };
+        }
+
+        #endregion
+
+        #region Logical operators
+
+        public static Func<T, bool> Negation<T>(this Func<T, bool> predicate) {
+            return _ => !predicate(_);
+        }
+
+        public static Func<T, bool> Conjunction<T>(this IEnumerable<Func<T, bool>> predicates) {
+            var array = predicates.ToArray();
+            return _ => array.All(f => f(_));
+        }
+
+        public static Func<T, bool> Disjunction<T>(this IEnumerable<Func<T, bool>> predicates) {
+            var array = predicates.ToArray();
+            return _ => array.Any(f => f(_));
         }
 
         #endregion
