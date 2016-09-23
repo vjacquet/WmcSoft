@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -229,7 +230,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckChoose() {
-            var data = "a1bcd2ef3";
+            var data = new DisposeMonitorEnumerable<char>("a1bcd2ef3");
 
             Func<char, bool> vowel = c => "aeiouy".Contains(c);
             Func<char, bool> digits = c => Char.IsDigit(c);
@@ -244,6 +245,8 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual("123", string.Join("", data.Choose(uppercase, white, digits)));
             Assert.AreEqual("123", string.Join("", data.Choose(uppercase, digits, white)));
             Assert.AreEqual("", string.Join("", data.Choose(uppercase, white)));
+
+            Assert.AreEqual(7, data.Tally);
         }
     }
 }
