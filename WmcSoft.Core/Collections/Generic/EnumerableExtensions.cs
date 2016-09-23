@@ -202,6 +202,87 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Choose
+
+        static IEnumerable<TSource> UnguardedFlush<TSource>(IEnumerator<TSource> enumerator) {
+            using (enumerator) {
+                do {
+                    yield return enumerator.Current;
+                } while (enumerator.MoveNext());
+            }
+        }
+
+        static IEnumerable<TSource> UnguardedFlush<TSource>(IEnumerator<TSource> enumerator, Func<TSource, bool> predicate) {
+            using (enumerator) {
+                yield return enumerator.Current;
+                while (enumerator.MoveNext()) {
+                    var current = enumerator.Current;
+                    if (predicate(current))
+                        yield return current;
+                }
+            }
+        }
+
+        static T Move<T>(ref T value) {
+            var moved = value;
+            value = default(T);
+            return moved;
+        }
+
+        static IEnumerable<TSource> UnguardedChoose<TSource>(IEnumerable<TSource> source, Func<TSource, bool>[] predicates) {
+            var length = predicates.Length;
+            var slots = new List<TSource>[length];
+            for (int i = 1; i < length; i++) {
+                slots[i] = new List<TSource>();
+            }
+            var enumerator = source.GetEnumerator();
+            try {
+                var predicate = predicates[0];
+                while (enumerator.MoveNext()) {
+                    var item = enumerator.Current;
+                    if (predicate(item)) {
+                        return UnguardedFlush(Move(ref enumerator), predicate);
+                    }
+                    for (int i = 1; i < length; i++) {
+                        if (predicates[i](item)) {
+                            slots[i].Add(item);
+                            i++;
+                            while (length > i) {
+                                length--;
+                                slots[length] = null; // not needed anymore
+                            }
+                        }
+                    }
+                }
+
+                // exhausted items, return the first not empty slot.
+                for (int i = 1; i < length; i++) {
+                    if (slots[i].Count > 0) {
+                        return slots[i];
+                    }
+                }
+                return Enumerable.Empty<TSource>();
+            }
+            finally {
+                if (enumerator != null)
+                    enumerator.Dispose();
+            }
+        }
+
+        public static IEnumerable<TSource> Choose<TSource>(this IEnumerable<TSource> source, params Func<TSource, bool>[] predicates) {
+            var length = predicates == null ? 0 : predicates.Length;
+            switch (length) {
+            case 0:
+                return source;
+            case 1:
+                return source.Where(predicates[0]);
+            default:
+                return UnguardedChoose(source, predicates);
+            }
+        }
+
+        #endregion
+
         #region Discretize
 
         /// <summary>

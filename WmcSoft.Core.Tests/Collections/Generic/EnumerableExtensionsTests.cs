@@ -226,5 +226,24 @@ namespace WmcSoft.Collections.Generic
             Assert.IsTrue(data.AtMost(2, i => i < 10));
             Assert.IsFalse(data.AtMost(2, i => i > 100));
         }
+
+        [TestMethod]
+        public void CheckChoose() {
+            var data = "a1bcd2ef3";
+
+            Func<char, bool> vowel = c => "aeiouy".Contains(c);
+            Func<char, bool> digits = c => Char.IsDigit(c);
+            Func<char, bool> uppercase = c => Char.IsUpper(c);
+            Func<char, bool> letter = c => Char.IsLetter(c);
+            Func<char, bool> white = c => Char.IsWhiteSpace(c);
+
+            Assert.AreEqual("ae", string.Join("", data.Choose(vowel, uppercase, digits)));
+            Assert.AreEqual("abcdef", string.Join("", data.Choose(letter, vowel, digits)));
+            Assert.AreEqual("123", string.Join("", data.Choose(digits, letter, vowel)));
+            Assert.AreEqual("123", string.Join("", data.Choose(digits, white)));
+            Assert.AreEqual("123", string.Join("", data.Choose(uppercase, white, digits)));
+            Assert.AreEqual("123", string.Join("", data.Choose(uppercase, digits, white)));
+            Assert.AreEqual("", string.Join("", data.Choose(uppercase, white)));
+        }
     }
 }
