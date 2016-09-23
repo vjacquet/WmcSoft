@@ -33,6 +33,8 @@ using System.Linq;
 using System.Text;
 using WmcSoft.Collections.Generic.Internals;
 
+using static WmcSoft.Algorithms;
+
 namespace WmcSoft.Collections.Generic
 {
     public static class EnumerableExtensions
@@ -223,12 +225,6 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        static T Move<T>(ref T value) {
-            var moved = value;
-            value = default(T);
-            return moved;
-        }
-
         static IEnumerable<TSource> UnguardedChoose<TSource>(IEnumerable<TSource> source, Func<TSource, bool>[] predicates) {
             var length = predicates.Length;
             var slots = new List<TSource>[length];
@@ -269,6 +265,14 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        /// <summary>
+        /// Returns the elements matching the first predicate. 
+        /// If none match, then returns the element matching the second, etc.
+        /// </summary>
+        /// <typeparam name="TSource">The type of elements in the sequence.</typeparam>
+        /// <param name="source">The sequence of elements.</param>
+        /// <param name="predicates">The prioritized sequence of predicates.</param>
+        /// <returns>The elements matching the first predicate to match any element.</returns>
         public static IEnumerable<TSource> Choose<TSource>(this IEnumerable<TSource> source, params Func<TSource, bool>[] predicates) {
             var length = predicates == null ? 0 : predicates.Length;
             switch (length) {

@@ -195,7 +195,7 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Assigns a new value to an element and returns the old one..
+        /// Assigns a new value to an element and returns the old one.
         /// </summary>
         /// <typeparam name="T">The type of element to assign.</typeparam>
         /// <param name="obj">The element.</param>
@@ -205,6 +205,18 @@ namespace WmcSoft
             var t = obj;
             obj = value;
             return t;
+        }
+
+        /// <summary>
+        /// Returns the value of an element and clears it.
+        /// </summary>
+        /// <typeparam name="T">The type of element to assign.</typeparam>
+        /// <param name="obj">The element.</param>
+        /// <returns>The value.</returns>
+        public static T Move<T>(ref T obj) {
+            var moved = obj;
+            obj = default(T);
+            return moved;
         }
 
         /// <summary>
