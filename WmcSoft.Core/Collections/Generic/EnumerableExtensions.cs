@@ -349,7 +349,7 @@ namespace WmcSoft.Collections.Generic
         public static TResult ElementAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
             if (source == null) {
                 // I would normally return default(TResult) but here I should be consistent with the framework.
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (index >= 0) {
@@ -850,8 +850,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static TSource Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -872,8 +871,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -894,8 +892,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -981,10 +978,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns>true if the quorum is reached; otherwise, false.</returns>
         public static bool Quorum<TSource>(this IEnumerable<TSource> source, int quorum, Predicate<TSource> predicate) {
-            if (quorum < 1)
-                throw new ArgumentOutOfRangeException("quorum");
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            if (quorum < 1) throw new ArgumentOutOfRangeException(nameof(quorum));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             if (source == null)
                 return false;
@@ -1034,10 +1029,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource Elected<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
             where TSource : IEquatable<TSource> {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (eligible == null)
-                throw new ArgumentNullException("eligible");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (eligible == null) throw new ArgumentNullException(nameof(eligible));
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
@@ -1090,8 +1083,7 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
             where TSource : IEquatable<TSource> {
-            if (eligible == null)
-                throw new ArgumentNullException("eligible");
+            if (eligible == null) throw new ArgumentNullException(nameof(eligible));
             if (source == null)
                 return default(TSource);
 
@@ -1380,10 +1372,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="step">The step</param>
         /// <returns></returns>
         public static IEnumerable<T> Stride<T>(this IEnumerable<T> source, int step) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (step < 1)
-                throw new ArgumentOutOfRangeException("step");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (step < 1) throw new ArgumentOutOfRangeException(nameof(step));
             var i = step - 1;
             foreach (var item in source) {
                 if (++i == step) {
@@ -1405,8 +1395,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The number of elements to return.</param>
         /// <returns>A sequence that contains at most the specified number elements at the end of the input sequence.</returns>
         public static IEnumerable<TSource> Tail<TSource>(this IEnumerable<TSource> source, int count) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0)
                 return System.Linq.Enumerable.Empty<TSource>();
             if (count == 1)
@@ -1462,8 +1451,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The number of elements to return.</param>
         /// <returns>A sequence that contains at most the specified number elements not matching the predicate, at the end of the input sequence.</returns>
         public static IEnumerable<TSource> TailUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0)
                 return System.Linq.Enumerable.Empty<TSource>();
             Func<TSource, bool> unless = x => !predicate(x);
@@ -1490,8 +1478,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The number of elements to return.</param>
         /// <returns>A sequence that contains at most the specified number elements not matching the predicate, from the start of the input sequence.</returns>
         public static IEnumerable<TSource> TakeUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             Func<TSource, bool> unless = x => !predicate(x);
             return source.Where(unless).Take(count);
         }
@@ -1612,9 +1600,9 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, DuplicatePolicy policy, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer = null) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
 
             var d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
@@ -1640,19 +1628,19 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TElement, TElement> merger, IEqualityComparer<TKey> comparer = null) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
-            if (merger == null) throw new ArgumentNullException("merger");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
+            if (merger == null) throw new ArgumentNullException(nameof(merger));
 
             return ToDictionary(source, keySelector, elementSelector, (x, y) => merger(x, elementSelector(y)), comparer);
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TElement, TSource, TElement> merger, IEqualityComparer<TKey> comparer = null) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
-            if (merger == null) throw new ArgumentNullException("merger");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
+            if (merger == null) throw new ArgumentNullException(nameof(merger));
 
             var d = new Dictionary<TKey, TElement>(comparer);
             foreach (TSource item in source) {
@@ -1708,7 +1696,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public static string ToString<T>(this IEnumerable<T> enumerable, string format, IFormatProvider formatProvider = null)
             where T : IFormattable {
-            if (enumerable == null) throw new ArgumentNullException("enumerable");
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
             var textInfo = GetTextInfo(formatProvider);
             var separator = textInfo.ListSeparator;
@@ -1734,14 +1722,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Traits
 
-        /// <summary>
-        /// Check if a sequence of elements is sorted.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="enumerable">The sequence.</param>
-        /// <param name="comparer">The comparer</param>
-        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
+        static bool UnguardedIsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var previous = enumerator.Current;
@@ -1756,13 +1737,36 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
+        /// Check if a sequence of elements is sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="source">The sequence.</param>
+        /// <param name="comparer">The comparer</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
+        public static bool IsSorted<T>(this IEnumerable<T> source, IComparer<T> comparer) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedIsSorted(source, comparer ?? Comparer<T>.Default);
+        }
+
+        /// <summary>
         /// Check if a sequence of elements is sorted, using the default comparer.
         /// </summary>
         /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="enumerable">The sequence.</param>
+        /// <param name="source">The sequence.</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IEnumerable<T> enumerable) {
-            return enumerable.IsSorted(Comparer<T>.Default);
+        public static bool IsSorted<T>(this IEnumerable<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return UnguardedIsSorted(source, Comparer<T>.Default);
+        }
+
+        static bool UnguardedIsSorted<T>(IList<T> list, IComparer<T> comparer, int startIndex, int length) {
+            var end = startIndex + length;
+            for (int i = startIndex + 1; i < end; i++) {
+                if (comparer.Compare(list[i - 1], list[i]) > 0)
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -1775,12 +1779,12 @@ namespace WmcSoft.Collections.Generic
         /// <param name="length">The length.</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
         public static bool IsSorted<T>(this IList<T> list, IComparer<T> comparer, int startIndex, int length) {
-            var end = startIndex + length;
-            for (int i = startIndex + 1; i < end; i++) {
-                if (comparer.Compare(list[i - 1], list[i]) > 0)
-                    return false;
-            }
-            return true;
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (list.Count < (startIndex + length)) throw new ArgumentException(nameof(list));
+
+            return UnguardedIsSorted(list, comparer ?? Comparer<T>.Default, startIndex, length);
         }
 
         /// <summary>
@@ -1792,7 +1796,12 @@ namespace WmcSoft.Collections.Generic
         /// <param name="length">The length.</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
         public static bool IsSorted<T>(this IList<T> list, int startIndex, int length) {
-            return list.IsSorted(Comparer<T>.Default, startIndex, length);
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (list.Count < (startIndex + length)) throw new ArgumentException(nameof(list));
+
+            return UnguardedIsSorted(list, Comparer<T>.Default, startIndex, length);
         }
 
         /// <summary>

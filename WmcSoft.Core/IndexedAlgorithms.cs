@@ -52,17 +52,17 @@ namespace WmcSoft
         #region CopyTo methods
 
         public static void CopyTo<T>(this T[] source, T[] array, int arrayIndex, int length) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             Array.Copy(source, 0, array, arrayIndex, length);
         }
 
         public static void CopyTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (array == null) throw new ArgumentNullException("array");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
-            if (source.Count < length) throw new ArgumentException("source");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (source.Count < length) throw new ArgumentException(nameof(source));
 
             for (int i = 0; i < length; i++) {
                 array[arrayIndex++] = source[i];
@@ -70,17 +70,17 @@ namespace WmcSoft
         }
 
         public static void CopyTo<T>(this T[] source, int sourceIndex, T[] array, int arrayIndex, int length) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             Array.Copy(source, sourceIndex, array, arrayIndex, length);
         }
 
         public static void CopyTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (array == null) throw new ArgumentNullException("array");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
-            if (source.Count < length) throw new ArgumentException("source");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (source.Count < length) throw new ArgumentException(nameof(source));
             length += sourceIndex;
 
             for (int i = sourceIndex; i < length; i++) {
@@ -93,10 +93,10 @@ namespace WmcSoft
         #region CopyBackwardsTo methods
 
         public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length) {
-            if (array == null) throw new ArgumentNullException("array");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
-            if (source.Count < (sourceIndex + length)) throw new ArgumentException("source");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (source.Count < (sourceIndex + length)) throw new ArgumentException(nameof(source));
 
             for (int i = sourceIndex + length - 1; i >= sourceIndex; i--) {
                 array[arrayIndex++] = source[i];
@@ -104,10 +104,10 @@ namespace WmcSoft
         }
 
         public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length) {
-            if (array == null) throw new ArgumentNullException("array");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException("array");
-            if (source.Count < length) throw new ArgumentException("source");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (source.Count < length) throw new ArgumentException(nameof(source));
 
             for (int i = length - 1; i >= 0; i--) {
                 array[arrayIndex++] = source[i];
@@ -115,9 +115,9 @@ namespace WmcSoft
         }
 
         public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (array == null) throw new ArgumentNullException("array");
-            if (array.Count < arrayIndex) throw new ArgumentException("array");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (array.Count < arrayIndex) throw new ArgumentException(nameof(array));
 
             for (int i = source.Count - 1; i >= 0; i--) {
                 array[arrayIndex++] = source[i];
@@ -224,7 +224,7 @@ namespace WmcSoft
         #region Iota
 
         public static void Iota(this IList<short> source) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = checked((short)source.Count);
             for (short i = 0; i < length; i++) {
@@ -233,7 +233,7 @@ namespace WmcSoft
         }
 
         public static void Iota(this IList<int> source) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
             for (int i = 0; i < length; i++) {
@@ -242,7 +242,7 @@ namespace WmcSoft
         }
 
         public static void Iota(this IList<long> source) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
             for (int i = 0; i < length; i++) {
@@ -251,7 +251,7 @@ namespace WmcSoft
         }
 
         public static void Iota(this IList<short> source, short startValue, short step = 1) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = checked((short)source.Count);
             for (short i = 0; i < length; i++) {
@@ -261,7 +261,7 @@ namespace WmcSoft
         }
 
         public static void Iota(this IList<int> source, int startValue, int step = 1) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
             for (int i = 0; i < length; i++) {
@@ -271,7 +271,7 @@ namespace WmcSoft
         }
 
         public static void Iota(this IList<long> source, long startValue, long step = 1) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
             for (int i = 0; i < length; i++) {
@@ -351,10 +351,10 @@ namespace WmcSoft
         /// <param name="length">The length of the range</param>
         /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
         public static int Rotate<T>(this IList<T> source, int n, int startIndex, int length) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (source.Count < (startIndex + length)) throw new ArgumentException("source");
-            if (n > length || -n > length) throw new ArgumentException("n");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (source.Count < (startIndex + length)) throw new ArgumentException(nameof(source));
+            if (n > length || -n > length) throw new ArgumentException(nameof(n));
 
             return UnguardedRotate(source, n, startIndex, length);
         }
@@ -367,9 +367,9 @@ namespace WmcSoft
         /// <param name="n">The number of elements to move</param>
         /// <returns>The new position of the first element</returns>
         public static int Rotate<T>(this IList<T> source, int n) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             var length = source.Count;
-            if (n > length || -n > length) throw new ArgumentException("n");
+            if (n > length || -n > length) throw new ArgumentException(nameof(n));
 
             return UnguardedRotate(source, n, 0, length);
         }

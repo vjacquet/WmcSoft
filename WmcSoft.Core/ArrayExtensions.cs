@@ -95,10 +95,10 @@ namespace WmcSoft
             private int _end;
 
             public RangeEnumerator(T[] array, int startIndex, int length) {
-                if (array == null) throw new ArgumentNullException("array");
-                if (length < 0) throw new ArgumentOutOfRangeException("length");
-                if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
-                if (array.Length < (startIndex + length)) throw new ArgumentException("array");
+                if (array == null) throw new ArgumentNullException(nameof(array));
+                if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+                if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+                if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
 
                 _storage = array;
                 _begin = startIndex - 1;
@@ -287,10 +287,10 @@ namespace WmcSoft
         /// <param name="length">The length of the range</param>
         /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
         public static int Rotate<T>(this T[] source, int n, int startIndex, int length) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (source.Length < (startIndex + length)) throw new ArgumentException("source");
-            if (n > length || -n > length) throw new ArgumentException("n");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (source.Length < (startIndex + length)) throw new ArgumentException(nameof(source));
+            if (n > length || -n > length) throw new ArgumentException(nameof(n));
 
             return UngardedRotate(source, n, startIndex, length);
         }
@@ -304,9 +304,9 @@ namespace WmcSoft
         /// <param name="n">The number of elements to move</param>
         /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
         public static int Rotate<T>(this T[] source, int n) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             var length = source.Length;
-            if (n > length || -n > length) throw new ArgumentException("n");
+            if (n > length || -n > length) throw new ArgumentException(nameof(n));
 
             return UngardedRotate(source, n, 0, length);
         }
