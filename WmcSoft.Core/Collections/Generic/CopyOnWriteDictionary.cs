@@ -54,11 +54,11 @@ namespace WmcSoft.Collections.Generic
             : this(dictionary, dictionary.Comparer) {
         }
 
-        private IDictionary<TKey, TValue> Readable {
+        protected IDictionary<TKey, TValue> Readable {
             get { return _inner; }
         }
 
-        private IDictionary<TKey, TValue> Writtable {
+        protected IDictionary<TKey, TValue> Writtable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new Dictionary<TKey, TValue>(_source, _comparer);

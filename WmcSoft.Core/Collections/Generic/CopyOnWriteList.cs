@@ -42,11 +42,11 @@ namespace WmcSoft.Collections.Generic
             _inner = _source = list;
         }
 
-        private IList<T> Readable {
+        protected IList<T> Readable {
             get { return _inner; }
         }
 
-        private IList<T> Writtable {
+        protected IList<T> Writtable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new List<T>(_source); // copy
