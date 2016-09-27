@@ -36,6 +36,7 @@ using System.Diagnostics;
 namespace WmcSoft.Time
 {
     [DebuggerDisplay("{_storage,nq}mn")]
+    [Serializable]
     public struct MinuteOfHour : IComparable<MinuteOfHour>, IEquatable<MinuteOfHour>
     {
         private readonly short _storage;
