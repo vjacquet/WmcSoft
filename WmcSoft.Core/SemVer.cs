@@ -31,6 +31,7 @@ namespace WmcSoft
     /// <summary>
     /// Represent a version when using semantic versioning.
     /// </summary>
+    /// <remarks>See http://developer.telerik.com/featured/mystical-magical-semver-ranges-used-npm-bower/ </remarks>
     public sealed class SemVer : ICloneable<SemVer>, IComparable<SemVer>, IEquatable<SemVer>, IComparable
     {
         private readonly Version _version;
