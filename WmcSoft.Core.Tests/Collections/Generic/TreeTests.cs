@@ -10,7 +10,9 @@ namespace WmcSoft.Collections.Generic
     {
         [TestMethod]
         public void CanCreateTree() {
-            var tree = new Tree<int>(5);
+            var tree = new Tree<int>();
+            tree.Root = new TreeNode<int>(5);
+            tree.Root.Append(1);
         }
     }
 }

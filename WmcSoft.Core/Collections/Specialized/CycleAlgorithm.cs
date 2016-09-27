@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -58,7 +57,7 @@ namespace WmcSoft.Collections.Specialized
                 if (!_marked[w]) {
                     Process(graph, w, v);
                 } else if (w != u) {
-                    _hasCycle = true; // explores the complete graph eventhough we know the ansswer...
+                    _hasCycle = true; // explores the complete graph eventhough we know the answer...
                 }
             }
         }

@@ -31,6 +31,10 @@ namespace WmcSoft.Collections.Generic
 {
     public class TreeNode<T>
     {
+        public TreeNode(T value) {
+            Value = value;
+        }
+
         public TreeNode<T> Parent { get; private set; }
         public TreeNode<T> FollowingSibling { get; private set; }
         public TreeNode<T> PrecedingSibling { get; private set; }
@@ -71,31 +75,28 @@ namespace WmcSoft.Collections.Generic
         }
 
         public TreeNode<T> InsertBefore(T value) {
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = Parent,
                 PrecedingSibling = PrecedingSibling,
                 FollowingSibling = this,
-                Value = value,
             };
             PrecedingSibling = node;
             return node;
         }
 
         public TreeNode<T> InsertAfter(T value) {
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = Parent,
                 PrecedingSibling = this,
                 FollowingSibling = FollowingSibling,
-                Value = value,
             };
             FollowingSibling = node;
             return node;
         }
 
         private TreeNode<T> AddEmpty(T value) {
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = this,
-                Value = value,
             };
             node.PrecedingSibling = node;
             node.FollowingSibling = node;
@@ -107,9 +108,8 @@ namespace WmcSoft.Collections.Generic
             if (head == null)
                 return AddEmpty(value);
             var tail = LastChild;
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = this,
-                Value = value,
                 PrecedingSibling = tail,
                 FollowingSibling = tail.FollowingSibling,
             };
@@ -121,9 +121,8 @@ namespace WmcSoft.Collections.Generic
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = this,
-                Value = value,
                 PrecedingSibling = head.PrecedingSibling,
                 FollowingSibling = head,
             };

@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +33,26 @@ namespace WmcSoft.Collections.Generic
 {
     public class Tree<T> : IEnumerable<T>
     {
-        public Tree(T value) {
-            Root = new TreeNode<T> { Value = value };
+        public Tree() {
         }
 
-        public TreeNode<T> Root { get; private set; }
+        public TreeNode<T> Root { get; set; }
+        public T Value {
+            get {
+                if (Root == null) throw new InvalidOperationException();
+                return Root.Value;
+            }
+            set {
+                if (Root != null)
+                    Root.Value = value;
+                else
+                    Root = new TreeNode<T>(value);
+            }
+        }
+
+        public void Clear() {
+            Root = null;
+        }
 
         public int Weight {
             get {
