@@ -31,13 +31,36 @@ namespace WmcSoft.Collections.Generic
 {
     public class TreeNode<T>
     {
+        private TreeNode<T> _followingSibling;
+        private TreeNode<T> _precedingSibling;
+
         public TreeNode(T value) {
             Value = value;
         }
 
         public TreeNode<T> Parent { get; private set; }
-        public TreeNode<T> FollowingSibling { get; private set; }
-        public TreeNode<T> PrecedingSibling { get; private set; }
+        public TreeNode<T> FollowingSibling {
+            get {
+                if (Parent == null || _followingSibling == Parent.FirstChild)
+                    return null;
+
+                return _followingSibling;
+            }
+            private set {
+                _followingSibling = value;
+            }
+        }
+        public TreeNode<T> PrecedingSibling {
+            get {
+                if (Parent == null || _precedingSibling == Parent.FirstChild.PrecedingSibling)
+                    return null;
+
+                return _precedingSibling;
+            }
+            private set {
+                _precedingSibling = value;
+            }
+        }
         public TreeNode<T> FirstChild { get; private set; }
         public TreeNode<T> LastChild {
             get {

@@ -1077,12 +1077,12 @@ namespace WmcSoft
         public static string Translate(this char[] self, string source, string target) {
             var normalized = target;
             if (target.Length < source.Length)
-                normalized += new String('\0', source.Length - target.Length);
+                normalized += new string('\0', source.Length - target.Length);
             var mapping = source.Zip(normalized, (s, t) => new KeyValuePair<char, char>(s, t))
                 .OrderBy((t) => t.Key)
                 .ToArray();
 
-            var comparer = new AnonymousComparer<KeyValuePair<char, char>>((x, y) => x.Key.CompareTo(y.Key));
+            var comparer = Comparer<KeyValuePair<char, char>>.Create((x, y) => x.Key.CompareTo(y.Key));
             int j = 0;
             for (int i = 0; i < self.Length; i++) {
                 int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(self[i], '\0'), comparer);
@@ -1091,7 +1091,7 @@ namespace WmcSoft
                 else if (mapping[found].Value != '\0')
                     self[j++] = mapping[found].Value;
             }
-            return new String(self, 0, j);
+            return new string(self, 0, j);
         }
         /// <summary>
         /// Translates the chars of the <paramref name="source "/> into the corresponding chars in the <paramref name="target"/>.

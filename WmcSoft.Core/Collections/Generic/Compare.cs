@@ -37,6 +37,7 @@ namespace WmcSoft.Collections.Generic
     {
         #region HashCodes
 
+        // TODO: move the hash helpers to another class
         internal static int CombineHashCodes(int h1, int h2) {
             return (((h1 << 5) + h1) ^ h2);
         }
@@ -64,6 +65,10 @@ namespace WmcSoft.Collections.Generic
         #endregion
 
         public static ComparerBuilder<T> OrderOf<T>() {
+            //TODO: Is it necessary in a technical library
+            // Shouldn't it be used in a Business glossary type class ?
+            // Compare.Persons => returns the default comparer
+            // Compare.Persons.By(p=>p.Age) => returns the comparer by the Age property...
             return ComparerBuilder<T>.Default;
         }
     }
