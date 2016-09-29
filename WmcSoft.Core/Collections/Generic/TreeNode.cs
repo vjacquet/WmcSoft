@@ -25,10 +25,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using static System.Math;
 
 namespace WmcSoft.Collections.Generic
 {
+    [DebuggerDisplay("{Value,nq}")]
     public class TreeNode<T>
     {
         private TreeNode<T> _followingSibling;
@@ -52,7 +55,7 @@ namespace WmcSoft.Collections.Generic
         }
         public TreeNode<T> PrecedingSibling {
             get {
-                if (Parent == null || _precedingSibling == Parent.FirstChild.PrecedingSibling)
+                if (Parent == null || this == Parent.FirstChild)
                     return null;
 
                 return _precedingSibling;
@@ -69,6 +72,17 @@ namespace WmcSoft.Collections.Generic
                 return FirstChild.PrecedingSibling;
             }
         }
+
+        public IEnumerable<TreeNode<T>> Children {
+            get {
+                var p = FirstChild;
+                while (p != null) {
+                    yield return p;
+                    p = p.FollowingSibling;
+                }
+            }
+        }
+
         public T Value { get; set; }
 
         public bool IsLeaf { get { return FirstChild == null; } }
@@ -100,10 +114,11 @@ namespace WmcSoft.Collections.Generic
         public TreeNode<T> InsertBefore(T value) {
             var node = new TreeNode<T>(value) {
                 Parent = Parent,
-                PrecedingSibling = PrecedingSibling,
+                PrecedingSibling = _precedingSibling,
                 FollowingSibling = this,
             };
-            PrecedingSibling = node;
+            _precedingSibling._followingSibling = node;
+            _precedingSibling = node;
             return node;
         }
 
@@ -111,9 +126,10 @@ namespace WmcSoft.Collections.Generic
             var node = new TreeNode<T>(value) {
                 Parent = Parent,
                 PrecedingSibling = this,
-                FollowingSibling = FollowingSibling,
+                FollowingSibling = _followingSibling,
             };
-            FollowingSibling = node;
+            _followingSibling._precedingSibling = node;
+            _followingSibling = node;
             return node;
         }
 
@@ -121,8 +137,8 @@ namespace WmcSoft.Collections.Generic
             var node = new TreeNode<T>(value) {
                 Parent = this,
             };
-            node.PrecedingSibling = node;
-            node.FollowingSibling = node;
+            node._precedingSibling = node;
+            node._followingSibling = node;
             FirstChild = node;
             return node;
         }
@@ -130,28 +146,14 @@ namespace WmcSoft.Collections.Generic
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
-            var tail = LastChild;
-            var node = new TreeNode<T>(value) {
-                Parent = this,
-                PrecedingSibling = tail,
-                FollowingSibling = tail.FollowingSibling,
-            };
-            tail.FollowingSibling = node;
-            return node;
+            return head.InsertBefore(value);
         }
 
         public TreeNode<T> Preprend(T value) {
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
-            var node = new TreeNode<T>(value) {
-                Parent = this,
-                PrecedingSibling = head.PrecedingSibling,
-                FollowingSibling = head,
-            };
-            head.PrecedingSibling = node;
-            FirstChild = node;
-            return node;
+            return FirstChild = head.InsertBefore(value);
         }
 
         public bool Remove(T value) {
