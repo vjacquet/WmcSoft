@@ -46,7 +46,6 @@ namespace WmcSoft.Collections.Generic
             get {
                 if (Parent == null || _followingSibling == Parent.FirstChild)
                     return null;
-
                 return _followingSibling;
             }
             private set {
@@ -57,7 +56,6 @@ namespace WmcSoft.Collections.Generic
             get {
                 if (Parent == null || this == Parent.FirstChild)
                     return null;
-
                 return _precedingSibling;
             }
             private set {
@@ -156,10 +154,30 @@ namespace WmcSoft.Collections.Generic
             return FirstChild = head.InsertBefore(value);
         }
 
+        public TreeNode<T> Find(T value) {
+            var comparer = EqualityComparer<T>.Default;
+            var p = FirstChild;
+            while (p != null) {
+                if (comparer.Equals(p.Value, value))
+                    return p;
+                p = p.FollowingSibling;
+            }
+            return null;
+        }
+
         public bool Remove(T value) {
-            if (FirstChild == null)
+            var found = Find(value);
+            if (found == null)
                 return false;
-            throw new NotImplementedException();
+            found._followingSibling._precedingSibling = found._precedingSibling;
+            found._precedingSibling._followingSibling = found._followingSibling;
+             if(found == FirstChild) {
+                FirstChild = found._followingSibling;
+                if (found == FirstChild)
+                    FirstChild = null;
+            }
+            found.Value = default(T);
+           return true;
         }
     }
 }
