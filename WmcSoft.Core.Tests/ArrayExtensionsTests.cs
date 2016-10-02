@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WmcSoft.Collections.Generic;
 
@@ -78,5 +79,17 @@ namespace WmcSoft
             CollectionAssert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void CanEnumerateRange() {
+            var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var expected = new[] { 3, 4, 5, 6 };
+            var list = new List<int>();
+            using(var enumerator = data.GetEnumerator(2, 4)) {
+                while (enumerator.MoveNext())
+                    list.Add(enumerator.Current);
+            }
+            var actual = list.ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
