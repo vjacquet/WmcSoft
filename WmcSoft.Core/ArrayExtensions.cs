@@ -114,8 +114,8 @@ namespace WmcSoft
 
             public bool MoveNext() {
                 if (_index < _end) {
-                    _index++;
                     _current = _storage[_index];
+                    ++_index;
                     return true;
                 }
                 _current = default(T);
