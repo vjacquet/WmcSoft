@@ -8,7 +8,7 @@ namespace WmcSoft.IO
     [TestClass]
     public class StreamExtensionsTests
     {
-        public class Progress : IProgress<long>
+        class Progress : IProgress<long>
         {
             readonly object _syncRoot = new object();
             readonly List<long> _notifications = new List<long>();
@@ -24,6 +24,14 @@ namespace WmcSoft.IO
             #endregion
 
             public List<long> Notifications { get { return _notifications; } }
+        }
+
+        class HideSeekableStream : ConstrainedStreamDecorator
+        {
+            public HideSeekableStream(Stream stream) : base(stream) {
+            }
+
+            public override bool CanSeek { get { return false; } }
         }
 
         [TestMethod]
@@ -44,6 +52,32 @@ namespace WmcSoft.IO
             var expected = new[] { 256L, 512L, 768L, 1024L };
             var actual = progress.Notifications;
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckSkipOnSeekableStream() {
+            var expected = 63;
+            var buffer = new byte[0x8000];
+            buffer[0x2048] = (byte)expected;
+            using (var stream = new MemoryStream(buffer)) {
+                stream.Skip(0x2048);
+                var actual = stream.ReadByte();
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [TestMethod]
+        public void CheckSkipOnNonSeekableStream() {
+            var expected = 63;
+            var buffer = new byte[0x8000];
+            buffer[0x2048] = (byte)expected;
+            using (var stream = new HideSeekableStream(new MemoryStream(buffer))) {
+                stream.Skip(0x2048);
+                var actual = stream.ReadByte();
+
+                Assert.AreEqual(expected, actual);
+            }
         }
     }
 }

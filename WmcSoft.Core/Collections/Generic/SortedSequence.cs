@@ -1,11 +1,40 @@
-﻿using System;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
-    [DebuggerTypeProxy(typeof(SortedSequenceDebugView<>))]
+    /// <summary>
+    /// Represents a sequence of sorted items.
+    /// </summary>
+    /// <typeparam name="T">The type of items.</typeparam>
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {Count}")]
     public class SortedSequence<T> : ICollection<T>
     {
@@ -20,19 +49,18 @@ namespace WmcSoft.Collections.Generic
 
         public SortedSequence(IComparer<T> comparer) {
             _storage = new List<T>();
-            _comparer = comparer;
+            _comparer = comparer ?? Comparer<T>.Default;
         }
 
         public SortedSequence()
-            : this(Comparer<T>.Default) {
+            : this(null) {
         }
 
         #endregion
 
         #region Properties
 
-        public IComparer<T> Comparer
-        {
+        public IComparer<T> Comparer {
             get { return _comparer; }
         }
 
@@ -64,13 +92,11 @@ namespace WmcSoft.Collections.Generic
             _storage.CopyTo(array, arrayIndex);
         }
 
-        public int Count
-        {
+        public int Count {
             get { return _storage.Count; }
         }
 
-        public bool IsReadOnly
-        {
+        public bool IsReadOnly {
             get { return false; }
         }
 
@@ -86,7 +112,11 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public List<T>.Enumerator GetEnumerator() {
+            return _storage.GetEnumerator();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
             return _storage.GetEnumerator();
         }
 
@@ -94,28 +124,10 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
         #endregion
-    }
-
-    internal class SortedSequenceDebugView<T>
-    {
-        private ICollection<T> _collection;
-
-        public SortedSequenceDebugView(ICollection<T> collection) {
-            if (collection == null)
-                throw new ArgumentNullException("set");
-
-            _collection = collection;
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public T[] Items
-        {
-            get { return _collection.ToArray(); }
-        }
     }
 }

@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -35,7 +34,7 @@ namespace WmcSoft.Collections.Generic
     /// Represents a set of objects that is maintained in sorted order.
     /// </summary>
     /// <typeparam name="T">The type of elements in the set.</typeparam>
-    [DebuggerTypeProxy(typeof(SortedSequenceDebugView<>))]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {Count}")]
     public class SortedSequenceSet<T> : ISet<T>
     {
@@ -377,7 +376,11 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public List<T>.Enumerator GetEnumerator() {
+            return _storage.GetEnumerator();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
             return _storage.GetEnumerator();
         }
 

@@ -357,7 +357,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CanStablePartition() {
-            var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
+            var data = new[] { 2, 1, 3, 4, 6, 7, 8, 9, 11 };
             Predicate<int> odd = e => e % 2 == 1;
             var p = data.StablePartition(odd);
             Assert.AreEqual(4, p);
@@ -368,6 +368,13 @@ namespace WmcSoft.Collections.Generic
             for (; i < data.Length; ++i)
                 Assert.IsTrue(odd(data[i]));
             data.IsSorted(p, data.Length - p);
+        }
+
+        [TestMethod]
+        public void CheckBinaryRank() {
+            var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
+            Assert.AreEqual(3, data.BinaryRank(4));
+            Assert.AreEqual(4, data.BinaryRank(x => Comparer<int>.Default.Compare(x, 5)));
         }
     }
 }

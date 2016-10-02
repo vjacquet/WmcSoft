@@ -29,11 +29,11 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Text
 {
-    public interface ITrie<TLetter, TValue> : IDictionary<IEnumerable<TLetter>, TValue>
+    public interface ITrie<TLetter, TValue> : IDictionary<IReadOnlyList<TLetter>, TValue>
         where TLetter : struct, IEquatable<TLetter>
     {
-        IEnumerable<TLetter> GetLongestPrefixOf(IEnumerable<TLetter> sequence);
-        IEnumerable<IEnumerable<TLetter>> GetKeysWithPrefix(IEnumerable<TLetter> sequence);
-        IEnumerable<IEnumerable<TLetter>> Match(IEnumerable<TLetter?> sequence);
+        int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> query);
+        IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix);
+        IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> pattern);
     }
 }

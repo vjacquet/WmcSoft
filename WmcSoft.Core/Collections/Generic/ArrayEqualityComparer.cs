@@ -48,17 +48,10 @@ namespace WmcSoft.Collections.Generic
         #region IEqualityComparer<Array> Membres
 
         public bool Equals(Array x, Array y) {
-            if (x == y)
-                return true;
-            if (x == null)
+            if (!ArrayShapeEqualityComparer.Default.Equals(x, y))
                 return false;
 
-            if (x.Rank != y.Rank)
-                return false;
-            if (!x.GetDimensions().SequenceEqual(y.GetDimensions()))
-                return false;
-
-            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>());
+            return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>(), _comparer);
         }
 
         public int GetHashCode(Array obj) {

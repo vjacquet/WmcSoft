@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -36,12 +37,56 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+    /// <remarks>The dictionary assumes it has the sole ownership of the arrays.</remarks>
     public class DisjoinedReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
+        [Serializable]
+        public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+        {
+            private readonly TKey[] _keys;
+            private readonly TValue[] _values;
+
+            int _index;
+
+            internal Enumerator(TKey[] keys, TValue[] values) {
+                _keys = keys;
+                _values = values;
+                _index = -1;
+            }
+
+            public KeyValuePair<TKey, TValue> Current {
+                get {
+                    var i = _index;
+                    return new KeyValuePair<TKey, TValue>(_keys[i], _values[i]);
+                }
+            }
+
+            object IEnumerator.Current { get { return Current; } }
+
+            public void Dispose() {
+            }
+
+            public bool MoveNext() {
+                if (_index < _keys.Length) {
+                    _index++;
+                    return true;
+                }
+                return false;
+            }
+
+            public void Reset() {
+                _index = -1;
+            }
+        }
+
         private readonly TKey[] _keys;
         private readonly TValue[] _values;
 
         public DisjoinedReadOnlyDictionary(TKey[] keys, TValue[] values) {
+            if (keys == null) throw new ArgumentNullException(nameof(keys));
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (keys.Length != values.Length) throw new ArgumentException();
+
             _keys = keys;
             _values = values;
         }
@@ -76,8 +121,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// The number of elements in the collection. 
         /// </returns>
-        public int Count
-        {
+        public int Count {
             get { return _keys.Length; }
         }
 
@@ -121,8 +165,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="key">The key to locate.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
         /// <exception cref="T:System.Collections.Generic.KeyNotFoundException">The property is retrieved and <paramref name="key"/> is not found. </exception>
-        public TValue this[TKey key]
-        {
+        public TValue this[TKey key] {
             get {
                 var found = Array.IndexOf(_keys, key);
                 if (found >= 0)
@@ -137,9 +180,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerable collection that contains the keys in the read-only dictionary.
         /// </returns>
-        public IEnumerable<TKey> Keys
-        {
-            get { return _keys; }
+        public ReadOnlyCollection<TKey> Keys {
+            get { return Array.AsReadOnly(_keys); }
         }
 
         /// <summary>
@@ -148,10 +190,13 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerable collection that contains the values in the read-only dictionary.
         /// </returns>
-        public IEnumerable<TValue> Values
-        {
-            get { return _values; }
+        public ReadOnlyCollection<TValue> Values {
+            get { return Array.AsReadOnly(_values); }
         }
+
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys { get { return Keys; } }
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values { get { return Values; } }
 
         #endregion
     }

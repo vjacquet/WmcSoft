@@ -24,6 +24,8 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft
 {
     /// <summary>
@@ -69,6 +71,63 @@ namespace WmcSoft
                 x &= (x - 1);
             }
             return n;
+        }
+
+        #endregion
+
+        #region Distance
+
+        /// <summary>
+        /// Computes the number of positions at which the bits of the two numbers are different.
+        /// </summary>
+        /// <param name="x">The first number.</param>
+        /// <param name="y">The second number.</param>
+        /// <returns>The number of positions at which the bits of <paramref name="x"/> and <paramref name="y"/> are different.</returns>
+        public static int Hamming(uint x, uint y) {
+            return CountBits(x ^ y);
+        }
+
+        #endregion
+
+        #region Gray encoding
+
+        /// <summary>
+        /// Converts an unsigned binary number to reflected binary Gray code.
+        /// </summary>
+        /// <param name="i">The number.</param>
+        /// <returns>The encoded number.</returns>
+        /// <remarks>See https://en.wikipedia.org/wiki/Gray_code for more information.</remarks>
+        public static uint ToGray(uint i) {
+            return i ^ (i >> 1);
+        }
+
+        /// <summary>
+        /// converts a reflected binary Gray code number to a binary number.
+        /// </summary>
+        /// <param name="i">The encoded number.</param>
+        /// <returns>The number.</returns>
+        /// <remarks>See https://en.wikipedia.org/wiki/Gray_code for more information.</remarks>
+        public static uint FromGray(uint i) {
+            i ^= i >> 16;
+            i ^= i >> 8;
+            i ^= i >> 4;
+            i ^= i >> 2;
+            i ^= i >> 1;
+            return i;
+        }
+
+        #endregion
+
+        #region Lb
+
+        public static int Lb(int x) {
+            if (x < 0) throw new ArgumentOutOfRangeException(nameof(x));
+
+            var lb = 0;
+            for (int i = x - 1; i > 0; i /= 2) {
+                lb++;
+            }
+            return lb;
         }
 
         #endregion

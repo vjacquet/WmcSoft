@@ -48,19 +48,14 @@ namespace WmcSoft.Collections.Generic
         }
 
         public SelectComparer(Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
-            if (selector == null)
-                throw new ArgumentNullException("selector");
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             _selector = (x) => (x != null) ? selector(x) : default(TReturn);
             _comparer = comparer ?? Comparer<TReturn>.Default;
         }
 
-        #region IComparer<TSource> Membres
-
-        int IComparer<TSource>.Compare(TSource x, TSource y) {
+        public int Compare(TSource x, TSource y) {
             return _comparer.Compare(_selector(x), _selector(y));
         }
-
-        #endregion
     }
 }

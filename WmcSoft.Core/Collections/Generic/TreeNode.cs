@@ -25,15 +25,43 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using static System.Math;
 
 namespace WmcSoft.Collections.Generic
 {
+    [DebuggerDisplay("{Value,nq}")]
     public class TreeNode<T>
     {
+        private TreeNode<T> _followingSibling;
+        private TreeNode<T> _precedingSibling;
+
+        public TreeNode(T value) {
+            Value = value;
+        }
+
         public TreeNode<T> Parent { get; private set; }
-        public TreeNode<T> FollowingSibling { get; private set; }
-        public TreeNode<T> PrecedingSibling { get; private set; }
+        public TreeNode<T> FollowingSibling {
+            get {
+                if (Parent == null || _followingSibling == Parent.FirstChild)
+                    return null;
+                return _followingSibling;
+            }
+            private set {
+                _followingSibling = value;
+            }
+        }
+        public TreeNode<T> PrecedingSibling {
+            get {
+                if (Parent == null || this == Parent.FirstChild)
+                    return null;
+                return _precedingSibling;
+            }
+            private set {
+                _precedingSibling = value;
+            }
+        }
         public TreeNode<T> FirstChild { get; private set; }
         public TreeNode<T> LastChild {
             get {
@@ -42,6 +70,17 @@ namespace WmcSoft.Collections.Generic
                 return FirstChild.PrecedingSibling;
             }
         }
+
+        public IEnumerable<TreeNode<T>> Children {
+            get {
+                var p = FirstChild;
+                while (p != null) {
+                    yield return p;
+                    p = p.FollowingSibling;
+                }
+            }
+        }
+
         public T Value { get; set; }
 
         public bool IsLeaf { get { return FirstChild == null; } }
@@ -71,34 +110,33 @@ namespace WmcSoft.Collections.Generic
         }
 
         public TreeNode<T> InsertBefore(T value) {
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = Parent,
-                PrecedingSibling = PrecedingSibling,
+                PrecedingSibling = _precedingSibling,
                 FollowingSibling = this,
-                Value = value,
             };
-            PrecedingSibling = node;
+            _precedingSibling._followingSibling = node;
+            _precedingSibling = node;
             return node;
         }
 
         public TreeNode<T> InsertAfter(T value) {
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = Parent,
                 PrecedingSibling = this,
-                FollowingSibling = FollowingSibling,
-                Value = value,
+                FollowingSibling = _followingSibling,
             };
-            FollowingSibling = node;
+            _followingSibling._precedingSibling = node;
+            _followingSibling = node;
             return node;
         }
 
         private TreeNode<T> AddEmpty(T value) {
-            var node = new TreeNode<T> {
+            var node = new TreeNode<T>(value) {
                 Parent = this,
-                Value = value,
             };
-            node.PrecedingSibling = node;
-            node.FollowingSibling = node;
+            node._precedingSibling = node;
+            node._followingSibling = node;
             FirstChild = node;
             return node;
         }
@@ -106,36 +144,40 @@ namespace WmcSoft.Collections.Generic
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
-            var tail = LastChild;
-            var node = new TreeNode<T> {
-                Parent = this,
-                Value = value,
-                PrecedingSibling = tail,
-                FollowingSibling = tail.FollowingSibling,
-            };
-            tail.FollowingSibling = node;
-            return node;
+            return head.InsertBefore(value);
         }
 
         public TreeNode<T> Preprend(T value) {
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
-            var node = new TreeNode<T> {
-                Parent = this,
-                Value = value,
-                PrecedingSibling = head.PrecedingSibling,
-                FollowingSibling = head,
-            };
-            head.PrecedingSibling = node;
-            FirstChild = node;
-            return node;
+            return FirstChild = head.InsertBefore(value);
+        }
+
+        public TreeNode<T> Find(T value) {
+            var comparer = EqualityComparer<T>.Default;
+            var p = FirstChild;
+            while (p != null) {
+                if (comparer.Equals(p.Value, value))
+                    return p;
+                p = p.FollowingSibling;
+            }
+            return null;
         }
 
         public bool Remove(T value) {
-            if (FirstChild == null)
+            var found = Find(value);
+            if (found == null)
                 return false;
-            throw new NotImplementedException();
+            found._followingSibling._precedingSibling = found._precedingSibling;
+            found._precedingSibling._followingSibling = found._followingSibling;
+             if(found == FirstChild) {
+                FirstChild = found._followingSibling;
+                if (found == FirstChild)
+                    FirstChild = null;
+            }
+            found.Value = default(T);
+           return true;
         }
     }
 }

@@ -45,18 +45,6 @@ namespace WmcSoft.IO
 
         #region Stream decoration
 
-        public override bool CanRead {
-            get { return false; }
-        }
-
-        public override bool CanWrite {
-            get { return false; }
-        }
-
-        public override bool CanSeek {
-            get { return false; }
-        }
-
         public override long Length {
             get {
                 if (!CanSeek)
@@ -76,6 +64,12 @@ namespace WmcSoft.IO
                     throw new NotSupportedException();
                 base.Position = value;
             }
+        }
+
+        public override long Seek(long offset, SeekOrigin origin) {
+            if (!CanSeek)
+                throw new NotSupportedException();
+            return base.Seek(offset, origin);
         }
 
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {

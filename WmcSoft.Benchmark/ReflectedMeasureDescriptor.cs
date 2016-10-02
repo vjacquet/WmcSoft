@@ -24,10 +24,12 @@
 
 #endregion
 
+using System.Diagnostics;
 using System.Reflection;
 
 namespace WmcSoft.Benchmark
 {
+    [DebuggerDisplay("Name = {Name,nq}")]
     public class ReflectedMeasureDescriptor : IMeasureDescriptor
     {
         readonly MethodInfo _method;

@@ -35,40 +35,31 @@ namespace WmcSoft
     {
         #region Distances
 
+        /// <summary>
+        /// Computes the number of positions at which the chars of the two string of equal length are different.
+        /// </summary>
+        /// <param name="x">The first string.</param>
+        /// <param name="y">The second string.</param>
+        /// <returns>The number of positions at which the chars of <paramref name="x"/> and <paramref name="y"/> are different.</returns>
+        /// <remarks>The chars are compared bytewise.</remarks>
+        /// <exception cref="ArgumentNullException">Either <paramref name="x"/> pr <paramref name="y"/> is null.</exception>
+        /// <exception cref="ArgumentException">The two strings have different length.</exception>
         public static int Hamming(string x, string y) {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
 
-            using (var ex = x.GetEnumerator())
-            using (var ey = y.GetEnumerator()) {
-                var dist = 0;
-                while (ex.MoveNext() & ey.MoveNext()) {
-                    if (ex.Current != ey.Current)
-                        dist++;
-                }
-                return dist;
+            var length = x.Length;
+            var dist = 0;
+            for (int i = 0; i < length; i++) {
+                if (string.CompareOrdinal(x, i, y, i, 1) != 0)
+                    dist++;
             }
+            return dist;
         }
 
-        public static int Hamming(string x, string y, IEqualityComparer<string> comparer) {
-            if (x == null) throw new ArgumentNullException(nameof(x));
-            if (y == null) throw new ArgumentNullException(nameof(y));
-            if (x.Length != y.Length) throw new ArgumentException();
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
-
-            using (var ex = x.GetEnumerator())
-            using (var ey = y.GetEnumerator()) {
-                var dist = 0;
-                while (ex.MoveNext() & ey.MoveNext()) {
-                    if (!comparer.Equals(ex.Current.ToString(), ey.Current.ToString()))
-                        dist++;
-                }
-                return dist;
-            }
-        }
-
-        public static int Hamming(string x, string y, IEqualityComparer<char> comparer) {
+        public static int Hamming<TComparer>(string x, string y, TComparer comparer)
+            where TComparer : IEqualityComparer<char> {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
@@ -102,7 +93,8 @@ namespace WmcSoft
             }
         }
 
-        public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, IEqualityComparer<T> comparer) {
+        public static int Hamming<T, TComparer>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, TComparer comparer)
+            where TComparer : IEqualityComparer<T> {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Count != y.Count) throw new ArgumentException();
@@ -125,43 +117,85 @@ namespace WmcSoft
         /// <param name="s">The first string</param>
         /// <param name="t">The second string</param>
         /// <returns>From <https://en.wikipedia.org/wiki/Levenshtein_distance></returns>
+        /// <remarks>To use different weight for insertions, deletions and transposition, check <https://en.wikipedia.org/wiki/Edit_distance>.</remarks>
         public static int Levenshtein(string s, string t) {
             // degenerate cases
-            if (s == t) return 0;
-            if (s.Length == 0) return t.Length;
-            if (t.Length == 0) return s.Length;
+            if (s == t)
+                return 0;
+            if (string.IsNullOrEmpty(s))
+                return t == null ? 0 : t.Length;
+            if (string.IsNullOrEmpty(t))
+                return s.Length;
 
-            // create two work vectors of integer distances
-            int[] v0 = new int[t.Length + 1];
-            int[] v1 = new int[t.Length + 1];
+            var m = s.Length;
+            var n = t.Length;
+            var d = new int[2, n + 1];
+            for (int j = 1; j <= n; j++) {
+                d[0, j] = j;
+            }
 
-            // initialize v1 (the current row of distances)
-            // this row is A[0][i]: edit distance for an empty s
-            // the distance is just the number of characters to delete from t
-            for (int i = 0; i < v0.Length; i++)
-                v1[i] = i;
+            var r = 0;
+            for (int i = 1; i <= m; i++) {
+                var pr = r;
+                r = (r + 1) % 2;
+                d[r, 0] = i;
 
-            for (int i = 0; i < s.Length; i++) {
-                Swap(ref v0, ref v1); // current becomes previous
-
-                // calculate v1 (current row distances) from the previous row v0
-
-                // first element of v1 is A[i+1][0]
-                //   edit distance is delete (i+1) chars from s to match empty t
-                v1[0] = i + 1;
-
-                // use formula to fill in the rest of the row
-                for (int j = 0; j < t.Length; j++) {
-                    var cost = (s[i] == t[j]) ? 0 : 1;
-                    v1[j + 1] = Min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+                var cost = (s[0] == t[0]) ? 0 : 1;
+                d[r, 1] = Min(d[pr, 1] + 1, d[r, 0] + 1, d[pr, 0] + cost);
+                for (int j = 2; j <= n; j++) {
+                    cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
+                    var min = Min(d[pr, j] + 1, d[r, j - 1] + 1, d[pr, j - 1] + cost);
+                    d[r, j] = min;
                 }
             }
 
-            return v1[t.Length];
+            return d[r, n];
         }
 
         /// <summary>
-        /// Assigns a new value to an element and returns the old one..
+        /// Computes the Damerau-Levenshtein distance of two strings.
+        /// </summary>
+        /// <param name="s">The first string</param>
+        /// <param name="t">The second string</param>
+        /// <returns>From <https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance></returns>
+        public static int DamerauLevenshtein(string s, string t) {
+            // degenerate cases
+            if (s == t)
+                return 0;
+            if (string.IsNullOrEmpty(s))
+                return t == null ? 0 : t.Length;
+            if (string.IsNullOrEmpty(t))
+                return s.Length;
+
+            var m = s.Length;
+            var n = t.Length;
+            var d = new int[3, n + 1];
+            for (int j = 1; j <= n; j++) {
+                d[0, j] = j;
+            }
+
+            var r = 0;
+            for (int i = 1; i <= m; i++) {
+                var pr = r;
+                r = (r + 1) % 3;
+                d[r, 0] = i;
+
+                var cost = (s[0] == t[0]) ? 0 : 1;
+                d[r, 1] = Min(d[pr, 1] + 1, d[r, 0] + 1, d[pr, 0] + cost);
+                for (int j = 2; j <= n; j++) {
+                    cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
+                    var min = Min(d[pr, j] + 1, d[r, j - 1] + 1, d[pr, j - 1] + cost);
+                    if (i > 1 && s[i - 1] == t[j - 2] && s[i - 2] == t[j - 1])
+                        min = Min(min, d[(r + 1) % 3, j - 2] + 1);
+                    d[r, j] = min;
+                }
+            }
+
+            return d[r, n];
+        }
+
+        /// <summary>
+        /// Assigns a new value to an element and returns the old one.
         /// </summary>
         /// <typeparam name="T">The type of element to assign.</typeparam>
         /// <param name="obj">The element.</param>
@@ -171,6 +205,18 @@ namespace WmcSoft
             var t = obj;
             obj = value;
             return t;
+        }
+
+        /// <summary>
+        /// Returns the value of an element and clears it.
+        /// </summary>
+        /// <typeparam name="T">The type of element to assign.</typeparam>
+        /// <param name="obj">The element.</param>
+        /// <returns>The value.</returns>
+        public static T Move<T>(ref T obj) {
+            var moved = obj;
+            obj = default(T);
+            return moved;
         }
 
         /// <summary>
@@ -294,14 +340,11 @@ namespace WmcSoft
         #region Min/Max
 
         /// <summary>
-        /// Returns the smaller of n 32-bit signed integers.
+        /// Returns the smaller of n 32-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The smaller of the n 32-bit signed integers.</returns>
-        public static int Min(params int[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static int UnguardedMin(params int[] values) {
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 min = Math.Min(min, values[i]);
@@ -310,14 +353,11 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns the smaller of n 64-bit signed integers.
+        /// Returns the smaller of n 64-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The smaller of the n 64-bit signed integers.</returns>
-        public static long Min(params long[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static long UnguardedMin(params long[] values) {
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 min = Math.Min(min, values[i]);
@@ -326,14 +366,11 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns the larger of n 32-bit signed integers.
+        /// Returns the larger of n 32-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The larger of the n 32-bit signed integers.</returns>
-        public static int Max(params int[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static int UnguardedMax(params int[] values) {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 max = Math.Max(max, values[i]);
@@ -342,19 +379,72 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns the larger of n 64-bit signed integers.
+        /// Returns the larger of n 64-bit signed integers, without checking the arguments.
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The larger of the n 64-bit signed integers.</returns>
-        public static long Max(params long[] values) {
-            if (values.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(values));
-
+        public static long UnguardedMax(params long[] values) {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 max = System.Math.Max(max, values[i]);
             }
             return max;
+        }
+
+        /// <summary>
+        /// Returns the smaller of n 32-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The smaller of the n 32-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static int Min(params int[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMin(values);
+        }
+
+        /// <summary>
+        /// Returns the smaller of n 64-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The smaller of the n 64-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static long Min(params long[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMin(values);
+        }
+
+        /// <summary>
+        /// Returns the larger of n 32-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The larger of the n 32-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static int Max(params int[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMax(values);
+        }
+
+        /// <summary>
+        /// Returns the larger of n 64-bit signed integers.
+        /// </summary>
+        /// <param name="values">The values</param>
+        /// <returns>The larger of the n 64-bit signed integers.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
+        public static long Max(params long[] values) {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
+
+            return UnguardedMax(values);
         }
 
         /// <summary>

@@ -101,11 +101,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         public ICollection<TKey> Keys {
-            get { return new ReadOnlyCollectionAdapter<TKey>(_storage.Select(p => p.Key), _storage.Count, _comparer); }
+            get { return new CollectionAdapter<TKey>(_storage.Count, _storage.Select(p => p.Key), _comparer); }
         }
 
         public ICollection<TValue> Values {
-            get { return new ReadOnlyCollectionAdapter<TValue>(_storage.Select(p => p.Value), _storage.Count); }
+            get { return new CollectionAdapter<TValue>(_storage.Count, _storage.Select(p => p.Value)); }
         }
 
         public void Add(KeyValuePair<TKey, TValue> item) {

@@ -51,6 +51,11 @@ namespace WmcSoft.Collections.Generic
         #region IComparer Members
 
         public int Compare(IEnumerable<T> x, IEnumerable<T> y) {
+            if (x == null)
+                return y != null ? 1 : 0;
+            if (y == null)
+                return -1;
+
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
@@ -69,8 +74,8 @@ namespace WmcSoft.Collections.Generic
                     return -1;
                 return 0;
             }
-
-            #endregion
         }
+
+        #endregion
     }
 }

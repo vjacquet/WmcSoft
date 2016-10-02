@@ -114,21 +114,36 @@ namespace WmcSoft.Runtime.Serialization
             return _strategy.Deserialize(reader);
         }
 
+        /// <summary>
+        /// Deserializes an instance of <typeparamref name="T"/> from the specified <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream from which to deserialize the instance.</param>
+        /// <returns>The instance.</returns>
         public T Deserialize(Stream stream) {
-            using (var reader = XmlReader.Create(stream, _readerSettings)) {
-                return DoDeserialize(reader);
+            using (var r = XmlReader.Create(stream, _readerSettings)) {
+                return DoDeserialize(r);
             }
         }
 
-        public T Deserialize(TextReader textReader) {
-            using (var reader = XmlReader.Create(textReader, _readerSettings)) {
-                return DoDeserialize(reader);
+        /// <summary>
+        /// Deserializes an instance of <typeparamref name="T"/> from the specified <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The reader from which to deserialize the instance.</param>
+        /// <returns>The instance.</returns>
+        public T Deserialize(TextReader reader) {
+            using (var r = XmlReader.Create(reader, _readerSettings)) {
+                return DoDeserialize(r);
             }
         }
 
-        public T Deserialize(XmlReader xmlReader) {
-            using (var reader = XmlReader.Create(xmlReader, _readerSettings)) {
-                return DoDeserialize(reader);
+        /// <summary>
+        /// Deserializes an instance of <typeparamref name="T"/> from the specified <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">The reader from which to deserialize the instance.</param>
+        /// <returns>The instance.</returns>
+        public T Deserialize(XmlReader reader) {
+            using (var r = XmlReader.Create(reader, _readerSettings)) {
+                return DoDeserialize(r);
             }
         }
 
@@ -136,21 +151,36 @@ namespace WmcSoft.Runtime.Serialization
             _strategy.Serialize(writer, value);
         }
 
+        /// <summary>
+        ///  Serializes the instance to the given <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream to which the <paramref name="instance"/> is to be serialized.</param>
+        /// <param name="instance">The value to serialize.</param>
         public void Serialize(Stream stream, T value) {
-            using (var writer = XmlWriter.Create(stream, _writerSettings)) {
-                DoSerialize(writer, value);
+            using (var w = XmlWriter.Create(stream, _writerSettings)) {
+                DoSerialize(w, value);
             }
         }
 
-        public void Serialize(TextWriter textWriter, T value) {
-            using (var writer = XmlWriter.Create(textWriter, _writerSettings)) {
-                DoSerialize(writer, value);
+        /// <summary>
+        ///  Serializes the instance to the given <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The writer to which the <paramref name="instance"/> is to be serialized.</param>
+        /// <param name="instance">The value to serialize.</param>
+        public void Serialize(TextWriter writer, T value) {
+            using (var w = XmlWriter.Create(writer, _writerSettings)) {
+                DoSerialize(w, value);
             }
         }
 
-        public void Serialize(XmlWriter xmlWriter, T value) {
-            using (var writer = XmlWriter.Create(xmlWriter, _writerSettings)) {
-                DoSerialize(writer, value);
+        /// <summary>
+        ///  Serializes the instance to the given <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">The writer to which the <paramref name="instance"/> is to be serialized.</param>
+        /// <param name="instance">The value to serialize.</param>
+        public void Serialize(XmlWriter writer, T value) {
+            using (var w = XmlWriter.Create(writer, _writerSettings)) {
+                DoSerialize(w, value);
             }
         }
 

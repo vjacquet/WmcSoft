@@ -83,7 +83,7 @@ namespace WmcSoft
         /// <param name="destinationType">The <see cref="Type"/> to convert the value parameter to.</param>
         /// <param name="culture">A <see cref="CultureInfo"/>. If <c>null</c> is passed, the current culture is assumed.</param>
         /// <returns>An <see cref="object"/> that represents the converted value.</returns>
-        /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> parameter is null.</exception>
+        /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> is <c>null</c>.</exception>
         /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
         /// <remarks>This method eagerly tries to convert the value.</remarks>
         public static object ConvertTo(this object value, Type destinationType, CultureInfo culture) {

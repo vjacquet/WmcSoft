@@ -47,6 +47,14 @@ namespace WmcSoft.Collections.Generic
             _hasher = hasher ?? Hash;
         }
 
+        public EqualityComparerAdapter(IComparer<T> comparer, params T[] knownValues) {
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+
+            var array = (T[])knownValues.Clone();
+            Array.Sort(array, comparer);
+            _hasher = x => Hash(x, array);
+        }
+
         #endregion
 
         #region IEqualityComparer<T> Members
@@ -68,6 +76,13 @@ namespace WmcSoft.Collections.Generic
             // those that compares equal to the default, and those that does not.
             if (_comparer.Compare(obj, default(T)) == 0)
                 return 0;
+            return -1;
+        }
+
+        int Hash(T obj, T[] knownValues) {
+            var found = Array.BinarySearch(knownValues, obj, _comparer);
+            if (found >= 0)
+                return Math.Abs(knownValues[found].GetHashCode());
             return -1;
         }
 

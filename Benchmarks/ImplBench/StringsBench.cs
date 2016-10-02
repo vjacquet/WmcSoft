@@ -40,7 +40,7 @@ namespace ImplBench
     [Benchmark(Iterations = 2000)]
     public class StringsBench
     {
-        const int Count = 8192*4;
+        const int Count = 8192 * 4;
         static readonly string[] samples = new[] { "a", "b", "c", "e", "f", "g", "h", "i", "j", "k", "l", "m", "lorem", "ipsum", "dolor", "sit", "amet" };
         static StringValues[] stringValues;
         static Strings[] strings;
@@ -49,6 +49,8 @@ namespace ImplBench
         static Strings[] strings2;
 
         static int Values;
+        static string LatestString;
+        static string[] LatestStringArray;
 
         static string Sample(Random random) {
             return samples[random.Next(0, samples.Length)];
@@ -156,6 +158,54 @@ namespace ImplBench
             }
             Values = count;
         }
+
+        [Measure]
+        public static void MeasureGetAsStringOnStringValues() {
+            int count = 0;
+            for (int n = 0; n < Count; n++) {
+                var candidate = stringValues[n];
+                for (int i = 0; i < candidate.Count; i++) {
+                    LatestString = (string)candidate;
+                }
+            }
+            Values = count;
+        }
+
+        [Measure]
+        public static void MeasureGetAsStringOnStrings() {
+            int count = 0;
+            for (int n = 0; n < Count; n++) {
+                var candidate = strings[n];
+                for (int i = 0; i < candidate.Count; i++) {
+                    LatestString = (string)candidate;
+                }
+            }
+            Values = count;
+        }
+
+        [Measure]
+        public static void MeasureGetAsArrayOnStringValues() {
+            int count = 0;
+            for (int n = 0; n < Count; n++) {
+                var candidate = stringValues[n];
+                for (int i = 0; i < candidate.Count; i++) {
+                    LatestStringArray = (string[])candidate;
+                }
+            }
+            Values = count;
+        }
+
+        [Measure]
+        public static void MeasureGetAsArrayOnStrings() {
+            int count = 0;
+            for (int n = 0; n < Count; n++) {
+                var candidate = strings[n];
+                for (int i = 0; i < candidate.Count; i++) {
+                    LatestStringArray = (string[])candidate;
+                }
+            }
+            Values = count;
+        }
     }
 }
 
@@ -200,19 +250,16 @@ namespace Microsoft.Extensions.Primitives
 
         public int Count => _value != null ? 1 : (_values?.Length ?? 0);
 
-        bool ICollection<string>.IsReadOnly
-        {
+        bool ICollection<string>.IsReadOnly {
             get { return true; }
         }
 
-        string IList<string>.this[int index]
-        {
+        string IList<string>.this[int index] {
             get { return this[index]; }
             set { throw new NotSupportedException(); }
         }
 
-        public string this[int index]
-        {
+        public string this[int index] {
             get {
                 if (_values != null) {
                     return _values[index]; // may throw

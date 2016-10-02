@@ -82,7 +82,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private int Translate(int index) {
+        private int Slide(int index) {
             if (index < _gapStartIndex)
                 return index;
             return index - _gapStartIndex + _gapEndIndex;
@@ -172,8 +172,8 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public T this[int index] {
-            get { return _storage[Translate(index)]; }
-            set { _storage[Translate(index)] = value; }
+            get { return _storage[Slide(index)]; }
+            set { _storage[Slide(index)] = value; }
         }
 
         public int Count {

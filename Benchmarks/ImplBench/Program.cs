@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using WmcSoft.Benchmark;
 using WmcSoft.Diagnostics;
@@ -18,7 +19,8 @@ namespace ImplBench
                 traceSource.TraceInformation("{1} resolution stopwatch. Frequency is {0} ticks/s", Stopwatch.Frequency, Stopwatch.IsHighResolution ? "High" : "Low");
 
                 var engine = new MicrobenchEngine(traceSource);
-                var discovery = new AssemblyBenchmarkDiscovery(assembly);
+                //var discovery = new AssemblyBenchmarkDiscovery(assembly);
+                var discovery = new TypesBenchmarkDiscovery(typeof(BagBench));
                 foreach (var benchmark in discovery) {
                     engine.Run(benchmark, args);
                 }

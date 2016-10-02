@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TypesBenchmarkDiscovery.cs" />
     <Compile Include="AssemblyBenchmarkDiscovery.cs" />
     <Compile Include="BenchmarkAttribute.cs" />
     <Compile Include="IBenchmarkDescriptor.cs" />

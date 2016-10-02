@@ -36,28 +36,16 @@ namespace WmcSoft.Collections.Generic
     [Serializable]
     public sealed class ReverseComparer<T> : IComparer<T>
     {
-        #region Fields
-
-        readonly IComparer<T> _comparer;
-
-        #endregion
-
-        #region Lifecycle
+        private readonly IComparer<T> _comparer;
 
         public ReverseComparer(IComparer<T> comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+
             _comparer = comparer;
         }
-
-        #endregion
-
-        #region IComparer Members
 
         public int Compare(T x, T y) {
             return _comparer.Compare(y, x);
         }
-
-        #endregion
     }
 }

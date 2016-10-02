@@ -187,7 +187,7 @@ namespace WmcSoft.Collections
 
         #endregion
 
-        #region Suffle methods
+        #region Shuffle methods
 
         /// <summary>
         /// Suffles in place items of the list.
@@ -195,8 +195,9 @@ namespace WmcSoft.Collections
         /// <param name="source">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList source) {
-            Suffle(source, new Random());
+        /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
+        public static void Shuffle(this IList source) {
+            Shuffle(source, new Random());
         }
 
         /// <summary>
@@ -206,19 +207,16 @@ namespace WmcSoft.Collections
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        public static void Suffle(this IList source, Random random) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (random == null)
-                throw new ArgumentNullException("random");
-            if (source.IsReadOnly)
-                throw new ArgumentException();
+        /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
+        public static void Shuffle(this IList source, Random random) {
+            if (source == null) throw new ArgumentNullException("source");
+            if (random == null) throw new ArgumentNullException("random");
+            if (source.IsReadOnly) throw new ArgumentException();
 
             int j;
-
             for (int i = 0; i < source.Count; i++) {
                 j = random.Next(i, source.Count);
-                source.SwapItems(i, j);
+                SwapItems(source, i, j);
             }
         }
 

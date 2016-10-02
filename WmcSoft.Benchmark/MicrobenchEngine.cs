@@ -37,6 +37,7 @@ namespace WmcSoft.Benchmark
     public class MicrobenchEngine
     {
         readonly TraceSource _trace;
+        const int ValuesToDiscard = 5;
 
         public MicrobenchEngine(TraceSource traceSource) {
             _trace = traceSource;
@@ -48,8 +49,12 @@ namespace WmcSoft.Benchmark
         public void Run(IBenchmarkDescriptor benchmark, params string[] args) {
             _trace.TraceInformation("Benchmarking {0}", benchmark.Name);
 
-            var measures = benchmark.EnumerateMeasures()
-                .Repeat(benchmark.Iterations).ToList();
+            var results = new Dictionary<IMeasureDescriptor, double>();
+            foreach (var measure in benchmark.EnumerateMeasures())
+                results.Add(measure, 0);
+
+            var measures = results.Keys
+                .Repeat(benchmark.Iterations + ValuesToDiscard).ToList();
             measures.Shuffle(new Random(1789));
 
             try {
@@ -66,7 +71,12 @@ namespace WmcSoft.Benchmark
                 throw;
             }
 
-            var results = new Dictionary<IMeasureDescriptor, double>();
+            for (int i = 0; i < ValuesToDiscard; i++) {
+                foreach (var measure in results.Keys) {
+                    benchmark.Reset();
+                    measure.Invoke();
+                }
+            }
 
             foreach (var measure in measures) {
                 try {
@@ -89,13 +99,8 @@ namespace WmcSoft.Benchmark
 
                     // If everything's worked, report the time taken, 
                     // nicely lined up (assuming no very long method names!)
-                    double duration;
-                    if (results.TryGetValue(measure, out duration)) {
-                        results[measure] = duration + stopwatch.Elapsed.TotalMilliseconds;
-                    } else {
-                        // discard first run
-                        results.Add(measure, 0d);
-                    }
+                    double duration = results[measure];
+                    results[measure] = duration + stopwatch.Elapsed.TotalMilliseconds;
                 }
                 catch (TargetInvocationException e) {
                     Exception inner = e.InnerException;
@@ -118,6 +123,4 @@ namespace WmcSoft.Benchmark
             }
         }
     }
-
-
 }

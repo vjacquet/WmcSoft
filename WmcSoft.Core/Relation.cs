@@ -26,5 +26,12 @@
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents the association between the ordered pairs of objects.
+    /// </summary>
+    /// <typeparam name="T">The type of the parameters</typeparam>
+    /// <param name="x">The first parameter.</param>
+    /// <param name="y">The second parameter.</param>
+    /// <returns><c>true</c> when the relation holds; otherwise, <c>false</c>.</returns>
     public delegate bool Relation<in T>(T x, T y);
 }

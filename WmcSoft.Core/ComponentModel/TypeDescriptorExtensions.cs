@@ -25,7 +25,7 @@ namespace WmcSoft.ComponentModel
         /// <param name="properties">The property descriptor collection.</param>
         /// <param name="component">The component whose properties to be set.</param>
         /// <param name="values">The values to set.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
         public static void SetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values) {
             if (values == null) throw new ArgumentNullException("values");
 
@@ -46,7 +46,7 @@ namespace WmcSoft.ComponentModel
         /// <param name="properties">The property descriptor collection.</param>
         /// <param name="component">The component whose properties to get.</param>
         /// <param name="values">The values to get.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
         public static void GetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values) {
             if (values == null) throw new ArgumentNullException("values");
 

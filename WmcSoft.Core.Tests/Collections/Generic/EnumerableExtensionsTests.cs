@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -57,6 +58,27 @@ namespace WmcSoft.Collections.Generic
             var actual = String.Concat(array.Repeat(3));
             var expected = "abcabcabc";
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckEnumerableCollateRepeat() {
+            var array = new[] { "a", "b", "c" };
+            var actual = String.Concat(array.Repeat(3, collate: true));
+            var expected = "abcabcabc";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckEnumerableCollateRepeatToListOptimization() {
+            const int Repeat = 3;
+            var array = new[] { "a", "b", "c" };
+            var actual = array.Repeat(Repeat, collate: true).ToList();
+            var expected = new List<string>();
+            for (int i = 0; i < Repeat; i++) {
+                expected.AddRange(array);
+            }
+            Assert.AreNotEqual(expected.Capacity, actual.Capacity);
+            Assert.AreEqual(expected.Count, actual.Capacity);
         }
 
         [TestMethod]
@@ -190,6 +212,41 @@ namespace WmcSoft.Collections.Generic
             var actual = data.Discretize(51, 91, 151, 231, 331, 451).ToArray();
             var expected = new[] { 0, 0, 0, 1, 5, 6, 4, 6 };
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckAtLeast() {
+            var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
+            Assert.IsFalse(data.AtLeast(2, i => i < 10));
+            Assert.IsTrue(data.AtLeast(2, i => i > 100));
+        }
+
+        [TestMethod]
+        public void CheckAtMost() {
+            var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
+            Assert.IsTrue(data.AtMost(2, i => i < 10));
+            Assert.IsFalse(data.AtMost(2, i => i > 100));
+        }
+
+        [TestMethod]
+        public void CheckChoose() {
+            var data = new DisposeMonitorEnumerable<char>("a1bcd2ef3");
+
+            Func<char, bool> vowel = c => "aeiouy".Contains(c);
+            Func<char, bool> digits = c => Char.IsDigit(c);
+            Func<char, bool> uppercase = c => Char.IsUpper(c);
+            Func<char, bool> letter = c => Char.IsLetter(c);
+            Func<char, bool> white = c => Char.IsWhiteSpace(c);
+
+            Assert.AreEqual("ae", string.Join("", data.Choose(vowel, uppercase, digits)));
+            Assert.AreEqual("abcdef", string.Join("", data.Choose(letter, vowel, digits)));
+            Assert.AreEqual("123", string.Join("", data.Choose(digits, letter, vowel)));
+            Assert.AreEqual("123", string.Join("", data.Choose(digits, white)));
+            Assert.AreEqual("123", string.Join("", data.Choose(uppercase, white, digits)));
+            Assert.AreEqual("123", string.Join("", data.Choose(uppercase, digits, white)));
+            Assert.AreEqual("", string.Join("", data.Choose(uppercase, white)));
+
+            Assert.AreEqual(7, data.Tally);
         }
     }
 }

@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Implements a comparer based on a relation.
+    /// Implements a <see cref="IComparer{T}"/> based on a relation.
     /// </summary>
     /// <typeparam name="T">The type of elements.</typeparam>
     public sealed class RelationComparer<T> : IComparer<T>
@@ -38,8 +38,7 @@ namespace WmcSoft.Collections.Generic
         private readonly Relation<T> _relation;
 
         public RelationComparer(Relation<T> relation) {
-            if (relation == null)
-                throw new ArgumentNullException("relation");
+            if (relation == null) throw new ArgumentNullException(nameof(relation));
 
             _relation = relation;
         }

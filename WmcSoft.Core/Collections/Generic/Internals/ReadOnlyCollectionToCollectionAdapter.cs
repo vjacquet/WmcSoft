@@ -40,6 +40,10 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
+        public ReadOnlyCollectionToCollectionAdapter(int count, IEnumerable<T> enumerable)
+            : this(new ReadOnlyCollectionAdapter<T>(count, enumerable)) {
+        }
+
         public ReadOnlyCollectionToCollectionAdapter(IReadOnlyCollection<T> collection) {
             _collection = collection;
         }
