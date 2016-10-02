@@ -37,10 +37,9 @@ namespace WmcSoft.Collections
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
                 for (int i = 0; i < mask.Count; i++) {
-                    if (!enumerator1.MoveNext())
-                        throw new ArgumentException("x");
-                    if (!enumerator2.MoveNext())
-                        throw new ArgumentException("y");
+                    if (!enumerator1.MoveNext()) throw new ArgumentException("x");
+                    if (!enumerator2.MoveNext()) throw new ArgumentException("y");
+
                     if (mask.Get(i))
                         yield return enumerator2.Current;
                     else
@@ -82,7 +81,8 @@ namespace WmcSoft.Collections
 
             var rx = ReadOnly(x);
             var ry = ReadOnly(y);
-            if (rx != null && ry != null) return DoMask(mask, rx, ry);
+            if (rx != null && ry != null)
+                return DoMask(mask, rx, ry);
             return DoMask(mask, x, y);
         }
 
@@ -97,6 +97,7 @@ namespace WmcSoft.Collections
         public static TSource[] Mask<TSource>(this BitArray mask, IList<TSource> x, IList<TSource> y) {
             if (x == null) throw new ArgumentNullException("x");
             if (y == null) throw new ArgumentNullException("y");
+
             return DoMask(mask, x.AsReadOnly(), y.AsReadOnly());
         }
 
@@ -111,6 +112,7 @@ namespace WmcSoft.Collections
         public static string Mask(this BitArray mask, string x, string y) {
             if (x == null) throw new ArgumentNullException("x");
             if (y == null) throw new ArgumentNullException("y");
+
             return new string(DoMask(mask, x.AsReadOnlyList(), y.AsReadOnlyList()));
         }
 
