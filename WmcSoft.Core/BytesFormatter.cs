@@ -35,10 +35,10 @@ using WmcSoft.Text.RegularExpressions;
 
 namespace WmcSoft
 {
-    public class ByteFormatter : IFormatProvider, ICustomFormatter
+    public class BytesFormatter : IFormatProvider, ICustomFormatter
     {
         static readonly Regex regex;
-        static ByteFormatter() {
+        static BytesFormatter() {
             regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
         }
 
@@ -81,8 +81,6 @@ namespace WmcSoft
                 return BitConverter.GetBytes((uint)arg);
             case TypeCode.UInt64:
                 return BitConverter.GetBytes((ulong)arg);
-            default:
-                break;
             }
 
             if (arg is byte[]) {
@@ -126,7 +124,7 @@ namespace WmcSoft
 
             switch (format) {
             case "B":
-                return Format(bytes, b => Convert.ToString(b, 2), 8, group ?? 8);
+                return Format(bytes, b => Convert.ToString(b, 2), 8, group ?? 1);
             case "O":
                 return Format(bytes, b => Convert.ToString(b, 8), 4, group ?? 4);
             case "x":
