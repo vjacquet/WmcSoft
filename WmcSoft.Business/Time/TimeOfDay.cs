@@ -21,7 +21,7 @@
     4. This notice may not be removed or altered.
 
  ****************************************************************************
- * Adapted from HourOfDay.java
+ * Adapted from TimeOfDay.java
  * ---------------------------
  * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
  * free software is distributed under the "MIT" licence. See file licence.txt.
@@ -35,96 +35,78 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
-    [DebuggerDisplay("{_storage,nq}h")]
+    [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
-    public struct HourOfDay : IComparable<HourOfDay>, IEquatable<HourOfDay>
+    public struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>
     {
-        private readonly short _storage;
+        private readonly TimeSpan _storage;
 
-        public HourOfDay(int hour) {
+        public TimeOfDay(int hour, int minute) {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
-            _storage = (short)hour;
+            if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));
+
+            _storage = new TimeSpan(hour, minute, 0);
         }
 
-        public HourOfDay(int hour, string am_pm) {
-            _storage = (short)ConvertTo24Hour(hour, am_pm);
+        public HourOfDay Hour {
+            get { return new HourOfDay(_storage.Hours); }
+        }
+
+        public MinuteOfHour Minutes {
+            get { return new MinuteOfHour(_storage.Minutes); }
         }
 
         public override string ToString() {
-            return _storage + "h";
+            return _storage.Hours.ToString("00") + ':' + _storage.Minutes.ToString("00");
         }
 
         public override int GetHashCode() {
-            return _storage;
+            return _storage.GetHashCode();
         }
 
         public override bool Equals(object obj) {
-            if (obj == null || obj.GetType() != typeof(HourOfDay))
+            if (obj == null || obj.GetType() != typeof(TimeOfDay))
                 return false;
-            return Equals((HourOfDay)obj);
+            return Equals((TimeOfDay)obj);
         }
 
-        public bool Equals(HourOfDay other) {
+        public bool Equals(TimeOfDay other) {
             return _storage.Equals(other._storage);
         }
 
-        public int CompareTo(HourOfDay other) {
+        public int CompareTo(TimeOfDay other) {
             return _storage.CompareTo(other._storage);
         }
 
-        public int Value { get { return _storage; } }
-
-        public bool IsAfter(HourOfDay other) {
+        public bool IsAfter(TimeOfDay other) {
             return CompareTo(other) > 0;
         }
 
-        public bool IsBefore(HourOfDay other) {
+        public bool IsBefore(TimeOfDay other) {
             return CompareTo(other) < 0;
         }
 
         #region Operators
 
-        public static implicit operator HourOfDay(int h) {
-            return new HourOfDay(h);
-        }
-
-        public static explicit operator int(HourOfDay h) {
-            return h.Value;
-        }
-
-        public static bool operator ==(HourOfDay x, HourOfDay y) {
+        public static bool operator ==(TimeOfDay x, TimeOfDay y) {
             return x.Equals(y);
         }
 
-        public static bool operator !=(HourOfDay a, HourOfDay b) {
+        public static bool operator !=(TimeOfDay a, TimeOfDay b) {
             return !a.Equals(b);
         }
 
-        public static bool operator <(HourOfDay x, HourOfDay y) {
+        public static bool operator <(TimeOfDay x, TimeOfDay y) {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(HourOfDay x, HourOfDay y) {
+        public static bool operator <=(TimeOfDay x, TimeOfDay y) {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(HourOfDay x, HourOfDay y) {
+        public static bool operator >(TimeOfDay x, TimeOfDay y) {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(HourOfDay x, HourOfDay y) {
+        public static bool operator >=(TimeOfDay x, TimeOfDay y) {
             return x.CompareTo(y) >= 0;
-        }
-
-        #endregion
-
-        #region Helpers
-
-        static int ConvertTo24Hour(int hour, string am_pm) {
-            if (!("AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase) || "PM".Equals(am_pm, StringComparison.OrdinalIgnoreCase)))
-                throw new ArgumentOutOfRangeException("am_pm");
-            if (hour < 0 | hour > 12) throw new ArgumentOutOfRangeException("hour");
-
-            int translatedAmPm = "AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase) ? 0 : 12;
-            translatedAmPm -= (hour == 12) ? 12 : 0;
-            return hour + translatedAmPm;
         }
 
         #endregion

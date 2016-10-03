@@ -216,12 +216,14 @@
     <Compile Include="Security\SecurityContext.cs" />
     <Compile Include="Security\UncheckedTag.cs" />
     <Compile Include="Security\User.cs" />
+    <Compile Include="Time\Date.cs" />
     <Compile Include="Time\IDateSpecification.cs" />
     <Compile Include="Time\AnnualDateSpecification.cs" />
     <Compile Include="Time\Interval.cs" />
     <Compile Include="Time\IntervalLimit.cs" />
     <Compile Include="Time\MinuteOfHour.cs" />
     <Compile Include="Time\HourOfDay.cs" />
+    <Compile Include="Time\TimeOfDay.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Business\Accounting\RM.en-us.resx">
@@ -286,6 +288,7 @@
     </None>
     <None Include="DesignNotes.md" />
     <None Include="Security\SecurityDiagram.cd" />
+    <None Include="Time\Time.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
