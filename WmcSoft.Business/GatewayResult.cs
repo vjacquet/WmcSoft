@@ -29,6 +29,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using WmcSoft.Runtime.Serialization;
 
 namespace WmcSoft
 {
@@ -48,15 +49,11 @@ namespace WmcSoft
         }
 
         public bool Succeeded {
-            get {
-                return ReferenceEquals(_errors, None);
-            }
+            get { return ReferenceEquals(_errors, None); }
         }
 
         public ReadOnlyCollection<GatewayError> Errors {
-            get {
-                return new ReadOnlyCollection<GatewayError>(_errors);
-            }
+            get { return new ReadOnlyCollection<GatewayError>(_errors); }
         }
 
         public static GatewayResult Failed(params GatewayError[] errors) {
@@ -80,7 +77,7 @@ namespace WmcSoft
             if (succeeded) {
                 _errors = None;
             } else {
-                _errors = (GatewayError[])info.GetValue("Errors", typeof(GatewayError[]));
+                _errors = info.GetValue<GatewayError[]>("Errors");
             }
         }
 
