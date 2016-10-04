@@ -87,6 +87,7 @@
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
     <Compile Include="TemporalTests.cs" />
+    <Compile Include="Time\TimeOfDayTests.cs" />
     <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>
   <ItemGroup>

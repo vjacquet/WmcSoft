@@ -224,6 +224,8 @@
     <Compile Include="Time\MinuteOfHour.cs" />
     <Compile Include="Time\HourOfDay.cs" />
     <Compile Include="Time\TimeOfDay.cs" />
+    <Compile Include="Time\TimeRate.cs" />
+    <Compile Include="Time\TimeUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Business\Accounting\RM.en-us.resx">

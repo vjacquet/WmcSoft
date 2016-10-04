@@ -86,6 +86,15 @@ namespace WmcSoft.Time
             return CompareTo(other) < 0;
         }
 
+        public DateTime On(Date date) {
+            return DateTime.SpecifyKind(date, DateTimeKind.Local).Add(_storage);
+        }
+
+        public DateTimeOffset On(Date date, TimeZoneInfo timeZone) {
+            var dateTimeOffset = new DateTimeOffset(On(date));
+            return TimeZoneInfo.ConvertTime(dateTimeOffset, timeZone);
+        }
+
         #region Operators
 
         public static bool operator ==(TimeOfDay x, TimeOfDay y) {
