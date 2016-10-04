@@ -31,15 +31,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Time
 {
     [Serializable]
-    public struct TimeUnit
+    public struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
     {
         const int MillisecondsPerSecond = 1000;
         const int MillisecondsPerMinute = 60 * MillisecondsPerSecond;
@@ -90,8 +86,108 @@ namespace WmcSoft.Time
             get { return _baseType == Type.Millisecond ? Millisecond : Month; }
         }
 
+        public TimeUnit[] DescendingUnits {
+            get {
+                return IsConvertibleToMilliseconds() ? DescendingMillisecondBased : DescendingMonthBased;
+            }
+        }
+
+        public TimeUnit[] DescendingUnitsForDisplay {
+            get {
+                return IsConvertibleToMilliseconds() ? DescendingMillisecondBasedForDisplay : DescendingMonthBasedForDisplay;
+            }
+        }
+
+        public TimeUnit NextFinerUnit() {
+            TimeUnit[] descending = DescendingUnits;
+            int index = Array.IndexOf(descending, this, 0, descending.Length - 1);
+            return descending[index + 1];
+        }
+
+        public bool IsConvertibleToMilliseconds() {
+            return IsConvertibleTo(Millisecond);
+        }
+
+        public bool IsConvertibleTo(TimeUnit other) {
+            return _baseType.Equals(other._baseType);
+        }
+
         public override string ToString() {
             return _type.ToString().ToLowerInvariant();
         }
+
+        public string ToString(long quantity) {
+            return string.Concat(quantity, ' ', this, quantity == 1 ? "" : "s");
+        }
+
+        #region Operators
+
+        public static bool operator ==(TimeUnit x, TimeUnit y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(TimeUnit x, TimeUnit y) {
+            return !x.Equals(y);
+        }
+
+        public static bool Equals(TimeUnit x, TimeUnit y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator <(TimeUnit x, TimeUnit y) {
+            return x.CompareTo(y) < 0;
+        }
+
+        public static bool operator >(TimeUnit x, TimeUnit y) {
+            return x.CompareTo(y) > 0;
+        }
+
+        public static bool operator <=(TimeUnit x, TimeUnit y) {
+            return x.CompareTo(y) <= 0;
+        }
+
+        public static bool operator >=(TimeUnit x, TimeUnit y) {
+            return x.CompareTo(y) >= 0;
+        }
+
+        public static int Compare(TimeUnit x, TimeUnit y) {
+            return x.CompareTo(y);
+        }
+
+        #endregion
+
+        #region IComparable<TimeUnit> members
+
+        public int CompareTo(TimeUnit other) {
+            if (other._baseType.Equals(_baseType))
+                return _factor.CompareTo(other._factor);
+            if (_baseType.Equals(Type.Month))
+                return 1;
+            return -1;
+        }
+
+        #endregion
+
+        #region IEquatable<TimeUnit> members
+
+        public bool Equals(TimeUnit other) {
+            return CompareTo(other) == 0;
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != GetType())
+                return false;
+            return Equals((TimeUnit)obj);
+        }
+
+        public override int GetHashCode() {
+            return _factor + _baseType.GetHashCode() + _type.GetHashCode();
+        }
+
+        #endregion
     }
 }
