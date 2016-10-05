@@ -47,43 +47,46 @@ namespace WmcSoft.Time
 
         public enum Type
         {
-            Millisecond,
-            Second,
-            Minute,
-            Hour,
-            Day,
-            Week,
-            Month,
-            Quarter,
-            Year,
+            Millisecond = 0x01,
+            Second = 0x03,
+            Minute = 0x05,
+            Hour = 0x09,
+            Day = 0x0B,
+            Week = 0x0D,
+            Month = 0x10,
+            Quarter = 0x30,
+            Year = 0x50,
         }
 
-        public static readonly TimeUnit Millisecond = new TimeUnit(Type.Millisecond, Type.Millisecond, 1);
-        public static readonly TimeUnit Second = new TimeUnit(Type.Second, Type.Millisecond, MillisecondsPerSecond);
-        public static readonly TimeUnit Minute = new TimeUnit(Type.Minute, Type.Millisecond, MillisecondsPerMinute);
-        public static readonly TimeUnit Hour = new TimeUnit(Type.Hour, Type.Millisecond, MillisecondsPerHour);
-        public static readonly TimeUnit Day = new TimeUnit(Type.Day, Type.Millisecond, MillisecondsPerDay);
-        public static readonly TimeUnit Week = new TimeUnit(Type.Week, Type.Millisecond, MillisecondsPerWeek);
+        public static readonly TimeUnit Millisecond = new TimeUnit(Type.Millisecond, 1);
+        public static readonly TimeUnit Second = new TimeUnit(Type.Second, MillisecondsPerSecond);
+        public static readonly TimeUnit Minute = new TimeUnit(Type.Minute, MillisecondsPerMinute);
+        public static readonly TimeUnit Hour = new TimeUnit(Type.Hour, MillisecondsPerHour);
+        public static readonly TimeUnit Day = new TimeUnit(Type.Day, MillisecondsPerDay);
+        public static readonly TimeUnit Week = new TimeUnit(Type.Week, MillisecondsPerWeek);
+        public static readonly TimeUnit Month = new TimeUnit(Type.Month, 1);
+        public static readonly TimeUnit Quarter = new TimeUnit(Type.Quarter, MonthsPerQuarter);
+        public static readonly TimeUnit Year = new TimeUnit(Type.Year, MonthsPerYear);
+
         public static readonly TimeUnit[] DescendingMillisecondBased = { Week, Day, Hour, Minute, Second, Millisecond };
         public static readonly TimeUnit[] DescendingMillisecondBasedForDisplay = { Day, Hour, Minute, Second, Millisecond };
-        public static readonly TimeUnit Month = new TimeUnit(Type.Month, Type.Month, 1);
-        public static readonly TimeUnit Quarter = new TimeUnit(Type.Quarter, Type.Month, MonthsPerQuarter);
-        public static readonly TimeUnit Year = new TimeUnit(Type.Year, Type.Month, MonthsPerYear);
+
         public static readonly TimeUnit[] DescendingMonthBased = { Year, Quarter, Month };
         public static readonly TimeUnit[] DescendingMonthBasedForDisplay = { Year, Month };
 
         private readonly Type _type;
-        private readonly Type _baseType;
         private readonly int _factor;
 
-        private TimeUnit(Type type, Type baseType, int factor) {
+        private TimeUnit(Type type, int factor) {
             _type = type;
-            _baseType = baseType;
             _factor = factor;
         }
 
+        private Type BaseType {
+            get { return _type & (Type.Millisecond | Type.Month); }
+        }
         public TimeUnit BaseUnit {
-            get { return _baseType == Type.Millisecond ? Millisecond : Month; }
+            get { return (_type & Type.Millisecond) != 0 ? Millisecond : Month; }
         }
 
         public TimeUnit[] DescendingUnits {
@@ -101,6 +104,8 @@ namespace WmcSoft.Time
         public TimeUnit NextFinerUnit() {
             TimeUnit[] descending = DescendingUnits;
             int index = Array.IndexOf(descending, this, 0, descending.Length - 1);
+            if (index == -1)
+                return this;
             return descending[index + 1];
         }
 
@@ -109,7 +114,7 @@ namespace WmcSoft.Time
         }
 
         public bool IsConvertibleTo(TimeUnit other) {
-            return _baseType.Equals(other._baseType);
+            return BaseType == other.BaseType;
         }
 
         public override string ToString() {
@@ -159,9 +164,9 @@ namespace WmcSoft.Time
         #region IComparable<TimeUnit> members
 
         public int CompareTo(TimeUnit other) {
-            if (other._baseType.Equals(_baseType))
+            if (other.BaseType.Equals(BaseType))
                 return _factor.CompareTo(other._factor);
-            if (_baseType.Equals(Type.Month))
+            if (BaseType.Equals(Type.Month))
                 return 1;
             return -1;
         }
@@ -185,7 +190,7 @@ namespace WmcSoft.Time
         }
 
         public override int GetHashCode() {
-            return _factor + _baseType.GetHashCode() + _type.GetHashCode();
+            return _factor + BaseType.GetHashCode() + _type.GetHashCode();
         }
 
         #endregion

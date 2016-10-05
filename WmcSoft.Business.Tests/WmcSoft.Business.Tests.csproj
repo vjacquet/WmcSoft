@@ -6,7 +6,7 @@
     <ProjectGuid>{B250C3FB-98EC-4E7D-A9BB-F7A56BB18C42}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.Business</RootNamespace>
+    <RootNamespace>WmcSoft</RootNamespace>
     <AssemblyName>WmcSoft.Business.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -88,6 +88,7 @@
     <Compile Include="Security\Todo.cs" />
     <Compile Include="TemporalTests.cs" />
     <Compile Include="Time\TimeOfDayTests.cs" />
+    <Compile Include="Time\TimeUnitTests.cs" />
     <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>
   <ItemGroup>
