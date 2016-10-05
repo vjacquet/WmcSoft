@@ -258,6 +258,25 @@ namespace WmcSoft
 
         #endregion
 
+        #region Path
+
+        /// <summary>
+        /// Enumerates the items of the <paramref name="source"/> at the specified <paramref name="indices"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items</typeparam>
+        /// <param name="source">The source array</param>
+        /// <param name="indices">The indices of the items in the array</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of the items at the specified <paramref name="indices"/>.</returns>
+        /// <exception cref="IndexOutOfRangeException">Thrown when an indice is not in the array.</exception>
+        public static IEnumerable<T> Path<T>(this T[] source, params int[] indices) {
+            var length = indices.Length;
+            for (int i = 0; i < length; i++) {
+                yield return source[indices[i]];
+            }
+        }
+
+        #endregion
+
         #region Replace / ReplaceIf
 
         public static void UnguardedReplace<T>(this T[] array, int startIndex, int length, T oldValue, T newValue, IEqualityComparer<T> comparer = null) {
