@@ -99,5 +99,12 @@ namespace WmcSoft
             var actual = data.Path(1, 4, 5, 7).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanPlayTicTacToe() {
+            var tictactoe = new[] { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+
+            Assert.IsTrue(tictactoe.Path(1, 4, 7).All(p => p == 1));
+        }
     }
 }

@@ -222,7 +222,7 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, T4, T5, int> Prepare<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
             IDbDataParameter[] p;
             var command = Prepare(5, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -310,6 +310,202 @@ namespace WmcSoft.Data
             return (p0, p1, p2, p3, p4, p5, p6, p7) => {
                 SetValues(p, p0, p1, p2, p3, p4, p5, p6, p7);
                 return command.ExecuteNonQuery();
+            };
+        }
+
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramter.
+        /// </summary>
+        /// <typeparam name="T">The type of the parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T, TResult> PrepareExecuteScalar<T, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
+            var p = command.PrepareParameter(nameGenerator);
+            return p0 => {
+                SetValue(p, p0);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, TResult> PrepareExecuteScalar<T1, T2, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(2, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1) => {
+                SetValues(p, p0, p1);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <typeparam name="T3">The type of the third parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, T3, TResult> PrepareExecuteScalar<T1, T2, T3, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(3, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2) => {
+                SetValues(p, p0, p1, p2);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <typeparam name="T3">The type of the third parameter</typeparam>
+        /// <typeparam name="T4">The type of the fourth parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, T3, T4, TResult> PrepareExecuteScalar<T1, T2, T3, T4, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(4, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3) => {
+                SetValues(p, p0, p1, p2, p3);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <typeparam name="T3">The type of the third parameter</typeparam>
+        /// <typeparam name="T4">The type of the fourth parameter</typeparam>
+        /// <typeparam name="T5">The type of the fifth parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, T3, T4, T5, TResult> PrepareExecuteScalar<T1, T2, T3, T4, T5, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(5, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4) => {
+                SetValues(p, p0, p1, p2, p3, p4);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <typeparam name="T3">The type of the third parameter</typeparam>
+        /// <typeparam name="T4">The type of the fourth parameter</typeparam>
+        /// <typeparam name="T5">The type of the fifth parameter</typeparam>
+        /// <typeparam name="T6">The type of the sixth parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, T3, T4, T5, T6, TResult> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(6, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4, p5) => {
+                SetValues(p, p0, p1, p2, p3, p4, p5);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <typeparam name="T3">The type of the third parameter</typeparam>
+        /// <typeparam name="T4">The type of the fourth parameter</typeparam>
+        /// <typeparam name="T5">The type of the fifth parameter</typeparam>
+        /// <typeparam name="T6">The type of the sixth parameter</typeparam>
+        /// <typeparam name="T7">The type of the seventh parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, T3, T4, T5, T6, T7, TResult> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, T7, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(7, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4, p5, p6) => {
+                SetValues(p, p0, p1, p2, p3, p4, p5, p6);
+                return command.ExecuteScalar<TResult>();
+            };
+        }
+
+        /// <summary>
+        /// Generates a function that executes the query with the specified paramters.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first parameter</typeparam>
+        /// <typeparam name="T2">The type of the secord parameter</typeparam>
+        /// <typeparam name="T3">The type of the third parameter</typeparam>
+        /// <typeparam name="T4">The type of the fourth parameter</typeparam>
+        /// <typeparam name="T5">The type of the fifth parameter</typeparam>
+        /// <typeparam name="T6">The type of the sixth parameter</typeparam>
+        /// <typeparam name="T7">The type of the seventh parameter</typeparam>
+        /// <typeparam name="T8">The type of the eigth parameter</typeparam>
+        /// <param name="connection">The connection to the data source.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
+        /// <returns>The function.</returns>
+        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+            IDbDataParameter[] p;
+            var command = Prepare(8, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
+
+            return (p0, p1, p2, p3, p4, p5, p6, p7) => {
+                SetValues(p, p0, p1, p2, p3, p4, p5, p6, p7);
+                return command.ExecuteScalar<TResult>();
             };
         }
 
