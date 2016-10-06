@@ -55,7 +55,7 @@ namespace WmcSoft.Data
         /// <returns>An object whose type is <typeparamref name="T"/> and whose value is equivalent to value or default, if value is null or DBNull and <typeparamref name="T"/> is not a value type. </returns>
         public static T ChangeTypeOrDefault<T>(object value, T defaultValue = default(T)) {
             if (value == DBNull.Value)
-                return default(T);
+                return defaultValue;
 
             var underlyingType = Nullable.GetUnderlyingType(typeof(T));
             return (T)Convert.ChangeType(value, underlyingType ?? typeof(T));
