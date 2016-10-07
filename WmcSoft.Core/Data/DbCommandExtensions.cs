@@ -258,10 +258,10 @@ namespace WmcSoft.Data
             return (T)Convert.ChangeType(result, typeof(T));
         }
 
-        public static T ExecuteScalarOrDefault<T>(this IDbCommand command) {
+        public static T ExecuteScalarOrDefault<T>(this IDbCommand command, T defaultValue = default(T)) {
             var result = command.ExecuteScalar();
             if (result == null || DBNull.Value.Equals(result))
-                return default(T);
+                return defaultValue;
             return (T)Convert.ChangeType(result, typeof(T));
         }
 

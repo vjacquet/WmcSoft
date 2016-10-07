@@ -102,6 +102,42 @@ namespace WmcSoft
 
         #endregion
 
+        #region Compose
+
+        public static Func<T, TResult> Compose<T, TOutput, TResult>(this Func<T, TOutput> func, Func<TOutput, TResult> convert) {
+            return x => convert(func(x));
+        }
+
+        public static Func<T1, T2, TResult> Compose<T1, T2, TOutput, TResult>(this Func<T1, T2, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1) => convert(func(p0, p1));
+        }
+
+        public static Func<T1, T2, T3, TResult> Compose<T1, T2, T3, TOutput, TResult>(this Func<T1, T2, T3, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1, p2) => convert(func(p0, p1, p2));
+        }
+
+        public static Func<T1, T2, T3, T4, TResult> Compose<T1, T2, T3, T4, TOutput, TResult>(this Func<T1, T2, T3, T4, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1, p2, p3) => convert(func(p0, p1, p2, p3));
+        }
+
+        public static Func<T1, T2, T3, T4, T5, TResult> Compose<T1, T2, T3, T4, T5, TOutput, TResult>(this Func<T1, T2, T3, T4, T5, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1, p2, p3, p4) => convert(func(p0, p1, p2, p3, p4));
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, TResult> Compose<T1, T2, T3, T4, T5, T6, TOutput, TResult>(this Func<T1, T2, T3, T4, T5, T6, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1, p2, p3, p4, p5) => convert(func(p0, p1, p2, p3, p4, p5));
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, T7, TResult> Compose<T1, T2, T3, T4, T5, T6, T7, TOutput, TResult>(this Func<T1, T2, T3, T4, T5, T6, T7, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1, p2, p3, p4, p5, p6) => convert(func(p0, p1, p2, p3, p4, p5, p6));
+        }
+
+        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> Compose<T1, T2, T3, T4, T5, T6, T7, T8, TOutput, TResult>(this Func<T1, T2, T3, T4, T5, T6, T7, T8, TOutput> func, Func<TOutput, TResult> convert) {
+            return (p0, p1, p2, p3, p4, p5, p6, p7) => convert(func(p0, p1, p2, p3, p4, p5, p6, p7));
+        }
+
+        #endregion
+
         #region Lift
 
         public static Func<T?, TResult?> Lift<T, TResult>(this Func<T, TResult> func)
