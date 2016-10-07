@@ -37,13 +37,13 @@ namespace WmcSoft.Time
     [Serializable]
     public struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
     {
-        const int MillisecondsPerSecond = 1000;
-        const int MillisecondsPerMinute = 60 * MillisecondsPerSecond;
-        const int MillisecondsPerHour = 60 * MillisecondsPerMinute;
-        const int MillisecondsPerDay = 24 * MillisecondsPerHour;
-        const int MillisecondsPerWeek = 7 * MillisecondsPerDay;
-        const int MonthsPerQuarter = 3;
-        const int MonthsPerYear = 12;
+        public const int MillisecondsPerSecond = 1000;
+        public const int MillisecondsPerMinute = 60 * MillisecondsPerSecond;
+        public const int MillisecondsPerHour = 60 * MillisecondsPerMinute;
+        public const int MillisecondsPerDay = 24 * MillisecondsPerHour;
+        public const int MillisecondsPerWeek = 7 * MillisecondsPerDay;
+        public const int MonthsPerQuarter = 3;
+        public const int MonthsPerYear = 12;
 
         public enum Type
         {
@@ -89,6 +89,8 @@ namespace WmcSoft.Time
             get { return (_type & Type.Millisecond) != 0 ? Millisecond : Month; }
         }
 
+        public int Factor { get { return _factor; } }
+
         public TimeUnit[] DescendingUnits {
             get {
                 return IsConvertibleToMilliseconds() ? DescendingMillisecondBased : DescendingMonthBased;
@@ -99,6 +101,18 @@ namespace WmcSoft.Time
             get {
                 return IsConvertibleToMilliseconds() ? DescendingMillisecondBasedForDisplay : DescendingMonthBasedForDisplay;
             }
+        }
+
+        public static TimeUnit NormalizeUnit(long quantity, TimeUnit unit) {
+            var baseAmount = quantity * unit._factor;
+            var units = unit.DescendingUnits;
+            for (var i = 0; i < units.Length; i++) {
+                var aUnit = units[i];
+                var remainder = baseAmount % aUnit.Factor;
+                if (remainder == 0)
+                    return aUnit;
+            }
+            throw new InvalidOperationException();
         }
 
         public TimeUnit NextFinerUnit() {
@@ -167,8 +181,8 @@ namespace WmcSoft.Time
             if (other.BaseType.Equals(BaseType))
                 return _factor.CompareTo(other._factor);
             if (BaseType.Equals(Type.Month))
-                return 1;
-            return -1;
+                return 1; // because the other is less than or equal to week
+            return -1; // because the other is greater than of equal to Month
         }
 
         #endregion

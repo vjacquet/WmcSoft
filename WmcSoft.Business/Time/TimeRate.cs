@@ -31,15 +31,21 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Time
 {
     public struct TimeRate
     {
         private readonly decimal _quantity;
+        private readonly TimeSpan _unit;
+
+        public TimeRate(decimal quantity, TimeSpan unit) {
+            _quantity = quantity;
+            _unit = unit;
+        }
+
+        public override string ToString() {
+            return base.ToString();
+        }
     }
 }
