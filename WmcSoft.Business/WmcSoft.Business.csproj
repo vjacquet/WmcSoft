@@ -217,6 +217,7 @@
     <Compile Include="Security\UncheckedTag.cs" />
     <Compile Include="Security\User.cs" />
     <Compile Include="Time\Date.cs" />
+    <Compile Include="Time\Duration.cs" />
     <Compile Include="Time\IDateSpecification.cs" />
     <Compile Include="Time\AnnualDateSpecification.cs" />
     <Compile Include="Time\Interval.cs" />
