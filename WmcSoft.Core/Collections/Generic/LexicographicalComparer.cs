@@ -51,8 +51,10 @@ namespace WmcSoft.Collections.Generic
         #region IComparer Members
 
         public int Compare(IEnumerable<T> x, IEnumerable<T> y) {
+            if (ReferenceEquals(x, y))
+                return 0;
             if (x == null)
-                return y != null ? 1 : 0;
+                return 1;
             if (y == null)
                 return -1;
 

@@ -44,15 +44,16 @@ namespace WmcSoft.Collections.Generic
         }
 
         public RelationComparer(Func<T, T, bool> func) {
-            if (func == null)
-                throw new ArgumentNullException("func");
+            if (func == null) throw new ArgumentNullException(nameof(func));
 
             _relation = (x, y) => func(x, y);
         }
 
         public int Compare(T x, T y) {
+            if (ReferenceEquals(x, y))
+                return 0;
             if (x == null)
-                return y != null ? 1 : 0;
+                return 1;
             if (y == null)
                 return -1;
             if (_relation(x, y))

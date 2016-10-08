@@ -84,12 +84,27 @@ namespace WmcSoft
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 4, 5, 6 };
             var list = new List<int>();
-            using(var enumerator = data.GetEnumerator(2, 4)) {
+            using (var enumerator = data.GetEnumerator(2, 4)) {
                 while (enumerator.MoveNext())
                     list.Add(enumerator.Current);
             }
             var actual = list.ToArray();
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanEnumeratePath() {
+            var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var expected = new[] { 2, 5, 6, 8 };
+            var actual = data.Path(1, 4, 5, 7).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanPlayTicTacToe() {
+            var tictactoe = new[] { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+
+            Assert.IsTrue(tictactoe.Path(1, 4, 7).All(p => p == 1));
         }
     }
 }
