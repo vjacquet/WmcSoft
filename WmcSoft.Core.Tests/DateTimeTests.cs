@@ -76,5 +76,33 @@ namespace WmcSoft
             var actual = date.LastDayOfMonth();
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void AssertUnspecifiedKindOnNewDateTime() {
+            var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
+            Assert.AreEqual(DateTimeKind.Unspecified, unspecified.Kind);
+        }
+
+        [TestMethod]
+        public void CheckAsLocalTime() {
+            var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
+            var local = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Local);
+            var utc = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Utc);
+
+            Assert.AreEqual(local.ToLocalTime(), local.AsLocalTime());
+            Assert.AreEqual(utc.ToLocalTime(), utc.AsLocalTime());
+            Assert.AreNotEqual(unspecified.ToLocalTime(), unspecified.AsLocalTime());
+        }
+
+        [TestMethod]
+        public void CheckAsUniversalTime() {
+            var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
+            var local = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Local);
+            var utc = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Utc);
+
+            Assert.AreEqual(local.ToUniversalTime(), local.AsUniversalTime());
+            Assert.AreEqual(utc.ToUniversalTime(), utc.AsUniversalTime());
+            Assert.AreNotEqual(unspecified.ToUniversalTime(), unspecified.AsUniversalTime());
+        }
     }
 }

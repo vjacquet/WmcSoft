@@ -40,7 +40,7 @@ namespace WmcSoft
         /// </summary>
         /// <param name="dateTime">The time.</param>
         /// <returns>The time as Utc.</returns>
-        /// <remarks>When the kind is unspecified, assumes <see cref="DateTimeKind.Utc"/>.</remarks>
+        /// <remarks>When the kind is unspecified, assumes <see cref="DateTimeKind.Local"/> wheras <see cref="DateTime.ToLocalTime"/> assumes <see cref="DateTimeKind.Utc"/>.</remarks>
         public static DateTime AsLocalTime(this DateTime dateTime) {
             switch (dateTime.Kind) {
             case DateTimeKind.Local:
@@ -58,7 +58,7 @@ namespace WmcSoft
         /// </summary>
         /// <param name="dateTime">The time.</param>
         /// <returns>The time as Utc.</returns>
-        /// <remarks>When the kind is unspecified, assumes <see cref="DateTimeKind.Utc"/>.</remarks>
+        /// <remarks>When the kind is unspecified, assumes <see cref="DateTimeKind.Utc"/> wheras <see cref="DateTime.ToUniversalTime"/> assumes <see cref="DateTimeKind.Local"/>.</remarks>
         public static DateTime AsUniversalTime(this DateTime dateTime) {
             switch (dateTime.Kind) {
             case DateTimeKind.Local:
