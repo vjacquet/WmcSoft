@@ -23,6 +23,26 @@ To improve readability:
             return Tokenize(self, new CharTokenizer(separator));
         }
 
+- Extensions methods yielding `IEnumerable<T>` should check the arguments and the return the result from an unguarded version. 
+  The unguarded version might be called separately and the verification of the arguments will not be defered until the start 
+  of the enumeration.
+
+        static IEnumerable<T> UnguardedBackwards<T>(IReadOnlyList<T> source) {
+            for (int i = source.Count - 1; i >= 0; i--) {
+                yield return source[i];
+            }
+        }
+
+        public static IReadOnlyCollection<T> Backwards<T>(this IReadOnlyList<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return new ReadOnlyCollectionAdapter<T>(source.Count, UnguardedBackwards(source));
+        }
+
+  On a side note, it is unfortunate that the convention for a null `this` argument of the extensions should throw `ArgumentNullException`
+  instead of `NullReferenceException`. Not only the latter is what calling a method on a null reference would throw but also we would not
+  have to always guard for null.
+
 - Operator overloads should provide the equivalent with a named function. Apparently, the framework does not have 
 a clear policy on whether the function should be static or not. It is static for `Complex` but not for `TimeSpan`.
 
@@ -32,6 +52,7 @@ a clear policy on whether the function should be static or not. It is static for
         public static Rational Negate(Rational x) {
             return -x;
         }
+
 
 ## Libraries
 
@@ -59,6 +80,12 @@ _Library of components to build business applications._
 - ProductType, ProductInstance, Package
 
 - Accounting
+
+- Time, adapted from <http://domainlanguage.com>'s time & money.
+
+  `TimePoint` is a equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
+
+  `TimeUnit` should derive from WmcSoft's units.
 
 ### WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._

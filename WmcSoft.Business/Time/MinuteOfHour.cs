@@ -42,9 +42,11 @@ namespace WmcSoft.Time
         private readonly short _storage;
 
         public MinuteOfHour(int minute) {
-            if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException("minute");
-            _storage = (short)minute;
+            if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));
+            _storage = unchecked((short)minute);
         }
+
+        public int Value { get { return _storage; } }
 
         public override string ToString() {
             return _storage + "mn";
@@ -68,13 +70,11 @@ namespace WmcSoft.Time
             return _storage.CompareTo(other._storage);
         }
 
-        public int Value { get { return _storage; } }
-
-        public bool After(MinuteOfHour other) {
+        public bool IsAfter(MinuteOfHour other) {
             return CompareTo(other) > 0;
         }
 
-        public bool Before(MinuteOfHour other) {
+        public bool IsBefore(MinuteOfHour other) {
             return CompareTo(other) < 0;
         }
 

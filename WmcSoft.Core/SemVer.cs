@@ -45,7 +45,7 @@ namespace WmcSoft
         }
 
         public SemVer(Version version) {
-            if (version == null) throw new ArgumentNullException("version");
+            if (version == null) throw new ArgumentNullException(nameof(version));
 
             _version = (version.Revision != 0)
                 ? new Version(version.Major, version.Minor, version.Build)
@@ -88,7 +88,7 @@ namespace WmcSoft
 
             var other = obj as SemVer;
             if (ReferenceEquals(other, null))
-                throw new ArgumentException("obj");
+                throw new ArgumentException(nameof(obj));
             return _version.CompareTo(other._version);
         }
 
