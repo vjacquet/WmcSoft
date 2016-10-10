@@ -37,7 +37,10 @@ namespace WmcSoft.Time
     [Serializable]
     public struct Duration : IComparable<Duration>, IEquatable<Duration>
     {
+        public static readonly Duration None;
+
         // TODO: Shouldn't the quantity be always in ms or months? Otherwise equal values won't overflow at the same time.
+        // TODO: Implement Parse & ToString using ISO 8601 <https://en.wikipedia.org/wiki/ISO_8601#Durations>
 
         private readonly long _quantity;
         private readonly TimeUnit _unit;
@@ -130,6 +133,10 @@ namespace WmcSoft.Time
 
         public static Duration Years(int howMany) {
             return new Duration(howMany, TimeUnit.Year);
+        }
+
+        public static Duration Of(int howMany, TimeUnit unit) {
+            return new Duration(howMany, unit);
         }
 
         public long InBaseUnits() {
