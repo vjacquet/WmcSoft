@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WmcSoft.Collections.Generic.Internals
 {
     [TestClass]
-    [Ignore]
     public class BulkQueueTests
     {
         [TestMethod]
@@ -30,7 +29,7 @@ namespace WmcSoft.Collections.Generic.Internals
             queue.BulkEnqueue(data.Length, (array, index) => Array.Copy(data, 0, array, index, data.Length));
 
             var length = data.Length;
-            for (int i = length - 1; i >= 0; i--) {
+            for (int i = 0; i < length; i++) {
                 var expected = data[i];
                 var actual = queue.Dequeue();
                 Assert.AreEqual(expected, actual);
@@ -43,13 +42,18 @@ namespace WmcSoft.Collections.Generic.Internals
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var queue = new BulkQueue<int>();
             queue.Enqueue(-20);
+            queue.Enqueue(-30);
+            queue.Enqueue(-40);
+            Assert.AreEqual(-20, queue.Dequeue());
+            Assert.AreEqual(-30, queue.Dequeue());
+
             queue.BulkEnqueue(data.Length, (array, index) => Array.Copy(data, 0, array, index, data.Length));
             queue.Enqueue(20);
 
-            Assert.AreEqual(-20, queue.Dequeue());
+            Assert.AreEqual(-40, queue.Dequeue());
 
             var length = data.Length;
-            for (int i = length - 1; i >= 0; i--) {
+            for (int i = 0; i < length; i++) {
                 var expected = data[i];
                 var actual = queue.Dequeue();
                 Assert.AreEqual(expected, actual);

@@ -40,7 +40,16 @@ namespace WmcSoft.Collections.Generic.Internals
         }
 
         protected override void Copy(T[] source, T[] destination, int length) {
-            base.Copy(source, destination, length);
+            if (_count > 0) {
+                if (_head < _tail) {
+                    Array.Copy(source, _head, destination, 0, _count);
+                } else {
+                    Array.Copy(source, _head, destination, 0, source.Length - _head);
+                    Array.Copy(source, 0, destination, source.Length - _head, _tail);
+                }
+            }
+            _head = 0;
+            _tail = (_count == destination.Length) ? 0 : _count;
         }
         public bool IsEmpty() {
             return _count == 0;
@@ -56,18 +65,22 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public void BulkEnqueue(int count, Action<T[], int> action) {
             Ensure(count);
+            action(_storage, _count);
+            _count += count;
         }
 
         public T Peek() {
             if (IsEmpty()) throw new InvalidOperationException();
 
-            return _storage[_head - 1];
+            return _storage[_head];
         }
 
         public T Dequeue() {
             var head = Peek();
-            throw new NotImplementedException();
+            _storage[_head] = default(T);
+            _head = (_head + 1) % _storage.Length;
+            _count--;
+            return head;
         }
-
     }
 }
