@@ -72,6 +72,8 @@
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
     <Compile Include="Collections\Generic\DisjoinedReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\Forest.cs" />
+    <Compile Include="Collections\Generic\Internals\BulkQueue.cs" />
+    <Compile Include="Collections\Generic\Internals\BulkStack.cs" />
     <Compile Include="Collections\Generic\Internals\ReadOnlyCollectionAdapter.cs" />
     <Compile Include="Collections\Generic\Internals\ContiguousStorage.cs" />
     <Compile Include="Collections\Generic\IOrderedDictionary.cs" />

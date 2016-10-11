@@ -126,7 +126,7 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="capacity">The number of elements that the new bag can initially store.</param>
         public Bag(int capacity) {
-            if (capacity < 0) throw new ArgumentOutOfRangeException("capacity");
+            if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
             _storage = (capacity != 0)
                 ? new T[capacity]

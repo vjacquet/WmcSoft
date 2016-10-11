@@ -33,13 +33,66 @@ namespace WmcSoft.Collections.Generic.Internals
     /// Utitilies to manipulate contiguous storage.
     /// </summary>
     /// <typeparam name="T">The type of stored items.</typeparam>
-    internal static class ContiguousStorage<T>
+    [DebuggerDisplay("Count = {_count}")]
+    [DebuggerTypeProxy(typeof(ContiguousStorage<>.DebugView))]
+    internal class ContiguousStorage<T>
     {
+        class DebugView
+        {
+            private readonly ContiguousStorage<T> _storage;
+
+            DebugView(ContiguousStorage<T> storage) {
+                _storage = storage;
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public T[] Items {
+                get {
+                    var array = new T[_storage._count];
+                    _storage._storage.CopyTo(array, 0);
+                    return array;
+                }
+            }
+        }
+
         public const int MaxArrayLength = 0X7FEFFFFF; // taken from http://referencesource.microsoft.com/#mscorlib/system/array.cs,2d2b551eabe74985
         const int DefaultCapacity = 4;
         const int QuarterOfDefaultCapacity = 1;
 
         public static readonly T[] Empty = new T[0];
+
+        #region Base implementation
+
+        protected T[] _storage;
+        protected int _count;
+
+        protected ContiguousStorage() {
+            _storage = Empty;
+        }
+
+        protected ContiguousStorage(int capacity) {
+            _storage = (capacity > 0)
+                ? new T[capacity]
+                : Empty;
+        }
+
+        protected void EnsureOne() {
+            if (_count == _storage.Length)
+                Reserve(ref _storage, 1, Copy);
+        }
+        protected void Ensure(int count) {
+            var requires = _storage.Length - _count - count;
+            if (requires < 0)
+                Reserve(ref _storage, -requires, Copy);
+        }
+
+        protected virtual void Copy(T[] source, T[] destination, int length) {
+            Array.Copy(source, destination, length);
+        }
+
+        #endregion
+
+        #region Helpers
 
         /// <summary>
         /// Resizes the array to the specified length, copying the first count items.
@@ -53,6 +106,14 @@ namespace WmcSoft.Collections.Generic.Internals
 
             var buffer = new T[length];
             Array.Copy(items, buffer, count);
+            items = buffer;
+        }
+
+        public static void Resize(ref T[] items, int length, int count, Action<T[], T[], int> copy) {
+            Debug.Assert(count < length);
+
+            var buffer = new T[length];
+            copy(items, buffer, count);
             items = buffer;
         }
 
@@ -89,6 +150,19 @@ namespace WmcSoft.Collections.Generic.Internals
             Resize(ref items, capacity, length);
         }
 
+        public static void Reserve(ref T[] items, int n, Action<T[], T[], int> copy) {
+            Debug.Assert(n > 0);
+
+            var length = items.Length;
+            n += length;
+
+            var capacity = length == 0 ? DefaultCapacity : length * 2;
+            if ((uint)capacity > MaxArrayLength) capacity = MaxArrayLength;
+            if (capacity < n) capacity = n;
+
+            Resize(ref items, capacity, length, copy);
+        }
+
         /// <summary>
         /// Shrinks the array so it has enough room for at most twice as many items.
         /// </summary>
@@ -102,10 +176,12 @@ namespace WmcSoft.Collections.Generic.Internals
             }
         }
 
-        public static void Fill(T[] items, int startIndex, int count, T value=default(T)) {
+        public static void Fill(T[] items, int startIndex, int count, T value = default(T)) {
             var endIndex = startIndex + count;
             while (startIndex < endIndex)
                 items[startIndex++] = value;
         }
+
+        #endregion
     }
 }
