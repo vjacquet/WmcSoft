@@ -25,15 +25,24 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft
 {
     public static class DecimalExtensions
     {
+        private const int MaxPower = 29;
+        private static readonly decimal[] Powers;
+        static DecimalExtensions() {
+            Powers = new decimal[MaxPower];
+            Powers[0] = 1m;
+
+            var n = 1m;
+            for (int i = 1; i < MaxPower; i++) {
+                n *= 10m;
+                Powers[i] = n;
+            }
+        }
+
         private const int SignMask = unchecked((int)0x80000000);
 
         // Scale mask for the flags field. This byte in the flags field contains
@@ -42,10 +51,20 @@ namespace WmcSoft
         private const int ScaleMask = 0x00FF0000;
 
         // Number of bits scale is shifted by.
-        private const int ScaleShift = 16;  
+        private const int ScaleShift = 16;
         public static int Scale(this decimal value) {
             var bits = decimal.GetBits(value);
             return (bits[3] & ScaleMask) >> ScaleShift;
+        }
+
+        public static int Precision(this decimal value) {
+            if (value < 0m)
+                value = -value;
+            value *= Powers[Scale(value)];
+            var found = Array.BinarySearch(Powers, 1, MaxPower - 1, value);
+            if (found >= 0)
+                return found + 1;
+            return ~found;
         }
     }
 }
