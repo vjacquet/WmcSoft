@@ -30,9 +30,10 @@ namespace WmcSoft
 {
     public static class DecimalExtensions
     {
-        private const int MaxPower = 29;
         private static readonly decimal[] Powers;
         static DecimalExtensions() {
+        const int MaxPower = 29; // last power before overflow
+
             Powers = new decimal[MaxPower];
             Powers[0] = 1m;
 
@@ -43,28 +44,38 @@ namespace WmcSoft
             }
         }
 
-        private const int SignMask = unchecked((int)0x80000000);
-
-        // Scale mask for the flags field. This byte in the flags field contains
-        // the power of 10 to divide the Decimal value by. The scale byte must
-        // contain a value between 0 and 28 inclusive.
-        private const int ScaleMask = 0x00FF0000;
-
-        // Number of bits scale is shifted by.
-        private const int ScaleShift = 16;
-        public static int Scale(this decimal value) {
-            var bits = decimal.GetBits(value);
-            return (bits[3] & ScaleMask) >> ScaleShift;
-        }
-
+        /// <summary>
+        /// Returns the number of digits in the unscaled value.
+        /// </summary>
+        /// <param name="value">The decimal value.</param>
+        /// <returns>Returns the <paramref name="value"/>'s precision.</returns>
         public static int Precision(this decimal value) {
             if (value < 0m)
                 value = -value;
-            value *= Powers[Scale(value)];
-            var found = Array.BinarySearch(Powers, 1, MaxPower - 1, value);
+            var scale = Scale(value);
+            value *= Powers[scale];
+            var found = Array.BinarySearch(Powers, 1, Powers.Length - 1, value);
             if (found >= 0)
                 return found + 1;
             return ~found;
+        }
+
+        /// <summary>
+        /// Returns the number of digits to the right of the decimal point.
+        /// </summary>
+        /// <param name="value">The decimal value.</param>
+        /// <returns>Returns the <paramref name="value"/>'s scale.</returns>
+        public static int Scale(this decimal value) {
+            // Scale mask for the flags field. This byte in the flags field contains
+            // the power of 10 to divide the Decimal value by. The scale byte must
+            // contain a value between 0 and 28 inclusive.
+            const int ScaleMask = 0x00FF0000;
+
+            // Number of bits scale is shifted by.
+            const int ScaleShift = 16;
+
+            var bits = decimal.GetBits(value);
+            return (bits[3] & ScaleMask) >> ScaleShift;
         }
     }
 }
