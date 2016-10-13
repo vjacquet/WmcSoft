@@ -43,6 +43,7 @@ namespace WmcSoft
 
             d = 0.0m;
             Assert.AreEqual(1, d.Scale());
+            Assert.AreNotEqual(2, d.Precision()); // true in the SO question.
             Assert.AreEqual(1, d.Precision());
 
             d = 12.45m;
