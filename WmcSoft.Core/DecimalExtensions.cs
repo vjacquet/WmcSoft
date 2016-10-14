@@ -32,7 +32,7 @@ namespace WmcSoft
     {
         private static readonly decimal[] Powers;
         static DecimalExtensions() {
-        const int MaxPower = 29; // last power before overflow
+            const int MaxPower = 29; // last power before overflow
 
             Powers = new decimal[MaxPower];
             Powers[0] = 1m;
@@ -77,5 +77,50 @@ namespace WmcSoft
             var bits = decimal.GetBits(value);
             return (bits[3] & ScaleMask) >> ScaleShift;
         }
+
+        public static decimal Round(this decimal value, RoundingMode rounding) {
+            switch (rounding) {
+            case RoundingMode.Ceiling:
+                return decimal.Ceiling(value);
+            case RoundingMode.Down:
+                return decimal.Truncate(value);
+            case RoundingMode.Floor:
+                return decimal.Floor(value);
+            case RoundingMode.HalfDown:
+                return (value > 0m) ? decimal.Ceiling(value-0.5m) : -decimal.Ceiling(-value - 0.5m);
+            case RoundingMode.HalfEven:
+                return decimal.Round(value, MidpointRounding.ToEven);
+            case RoundingMode.HalfUp:
+                return decimal.Round(value, MidpointRounding.AwayFromZero);
+            case RoundingMode.Unnecessary:
+                var truncate = decimal.Truncate(value);
+                if (value != truncate) throw new OverflowException();
+                return truncate;
+            case RoundingMode.Up:
+                return (value > 0m) ? decimal.Ceiling(value) : decimal.Floor(value);
+            }
+            throw new NotSupportedException();
+        }
     }
+
+    public enum RoundingMode
+    {
+        /// <summary>Rounding mode to round towards positive infinity.</summary>
+        Ceiling,
+        /// <summary>Rounding mode to round towards zero.</summary>
+        Down,
+        /// <summary>Rounding mode to round towards negative infinity.</summary>
+        Floor,
+        /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.</summary>
+        HalfDown, // 
+        /// <summary>Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.</summary>
+        HalfEven,
+        /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.</summary>
+        HalfUp,
+        /// <summary>Rounding mode to assert that the requested operation has an exact result, hence no rounding is necessary.</summary>
+        Unnecessary,
+        /// <summary>Rounding mode to round away from zero.</summary>
+        Up, // 
+    }
+
 }
