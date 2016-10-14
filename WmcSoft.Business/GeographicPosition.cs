@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft
 {
     [Serializable]
-    public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>
+    public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>, IFormattable
     {
         public GeographicPosition(Latitude latitude, Longitude longitude) {
             Latitude = latitude;
@@ -83,6 +83,23 @@ namespace WmcSoft
         }
         public static bool operator >=(GeographicPosition x, GeographicPosition y) {
             return x.CompareTo(y) >= 0;
+        }
+
+        #endregion
+
+        #region IFormattable Membres
+
+        public override string ToString() {
+            return ToString(null, null);
+        }
+        public string ToString(IFormatProvider formatProvider) {
+            return ToString(null, formatProvider);
+        }
+        public string ToString(string format, IFormatProvider formatProvider = null) {
+            var formatter = new GeoFormatter(format, formatProvider);
+            return formatter.Format(Latitude. Degrees, Latitude.Minutes, Latitude.Seconds)
+                + ';'
+                + formatter.Format(Longitude.Degrees, Longitude.Minutes, Longitude.Seconds);
         }
 
         #endregion

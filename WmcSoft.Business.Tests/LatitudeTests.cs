@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft
@@ -8,10 +9,12 @@ namespace WmcSoft
     {
         [TestMethod]
         public void CanToString() {
+            var iv = CultureInfo.InvariantCulture;
             var latitude = new Latitude(49, 30);
-            var expected = "49° 30' 00''";
-            var actual = latitude.ToString();
-            Assert.AreEqual(expected, actual);
+
+            Assert.AreEqual("49° 30' 00\"", latitude.ToString(iv));
+            Assert.AreEqual("49° 30.00'", latitude.ToString("M", iv));
+            Assert.AreEqual("49.5000°", latitude.ToString("D", iv));
         }
     }
 }

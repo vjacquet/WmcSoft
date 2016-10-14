@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft
 {
     [Serializable]
-    public struct Longitude : IComparable<Longitude>, IEquatable<Longitude>
+    public struct Longitude : IComparable<Longitude>, IEquatable<Longitude>, IFormattable
     {
         const int Amplitude = 180;
 
@@ -100,6 +100,21 @@ namespace WmcSoft
         }
         public static bool operator >=(Longitude x, Longitude y) {
             return x.CompareTo(y) >= 0;
+        }
+
+        #endregion
+
+        #region IFormattable Membres
+
+        public override string ToString() {
+            return ToString(null, null);
+        }
+        public string ToString(IFormatProvider formatProvider) {
+            return ToString(null, formatProvider);
+        }
+        public string ToString(string format, IFormatProvider formatProvider = null) {
+            var formatter = new GeoFormatter(format, formatProvider);
+            return formatter.Format(Degrees, Minutes, Seconds);
         }
 
         #endregion

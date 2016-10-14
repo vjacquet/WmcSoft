@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft
 {
     [Serializable]
-    public struct Latitude : IComparable<Latitude>, IEquatable<Latitude>
+    public struct Latitude : IComparable<Latitude>, IEquatable<Latitude>, IFormattable
     {
         const int Amplitude = 90;
 
@@ -52,7 +52,6 @@ namespace WmcSoft
 
             _storage = degrees * 3600 + minutes * 60 + seconds;
         }
-
 
         public int Degrees { get { return _storage / 3600; } }
         public int Minutes { get { return (_storage / 60) % 60; } }
@@ -101,6 +100,21 @@ namespace WmcSoft
         }
         public static bool operator >=(Latitude x, Latitude y) {
             return x.CompareTo(y) >= 0;
+        }
+
+        #endregion
+
+        #region IFormattable Membres
+
+        public override string ToString() {
+            return ToString(null, null);
+        }
+        public string ToString(IFormatProvider formatProvider) {
+            return ToString(null, formatProvider);
+        }
+        public string ToString(string format, IFormatProvider formatProvider = null) {
+            var formatter = new GeoFormatter(format, formatProvider);
+            return formatter.Format(Degrees, Minutes, Seconds);
         }
 
         #endregion
