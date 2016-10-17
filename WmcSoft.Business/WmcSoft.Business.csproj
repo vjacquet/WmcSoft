@@ -191,9 +191,13 @@
     <Compile Include="Business\UnitOfWork.cs" />
     <Compile Include="GatewayError.cs" />
     <Compile Include="GatewayResult.cs" />
+    <Compile Include="GeoFormatter.cs" />
+    <Compile Include="GeographicPosition.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />
+    <Compile Include="Longitude.cs" />
+    <Compile Include="Latitude.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
