@@ -38,6 +38,16 @@ namespace WmcSoft
             return value.GetHashCode();
         }
 
+        public static int Hash(int h1, int h2) {
+            return (((h1 << 5) + h1) ^ h2);
+        }
+        public static int Hash(int h1, int h2, int h3) {
+            return Hash(Hash(h1, h2), h3);
+        }
+        public static int Hash(int h1, int h2, int h3, int h4) {
+            return Hash(Hash(h1, h2), Hash(h3, h4));
+        }
+
         public static string GetTraitDisplayName(Type type) {
             var attr = type.GetCustomAttribute<DisplayNameAttribute>(true);
             if (attr != null)

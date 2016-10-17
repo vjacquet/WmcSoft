@@ -31,15 +31,16 @@
 #endregion
 
 using System;
+using static WmcSoft.Helpers;
 
 namespace WmcSoft.Time
 {
-    public struct TimeRate
+    public struct TimeRate : IEquatable<TimeRate>
     {
         private readonly decimal _quantity;
-        private readonly TimeSpan _unit;
+        private readonly Duration _unit;
 
-        public TimeRate(decimal quantity, TimeSpan unit) {
+        public TimeRate(decimal quantity, Duration unit) {
             _quantity = quantity;
             _unit = unit;
         }
@@ -47,5 +48,58 @@ namespace WmcSoft.Time
         public override string ToString() {
             return base.ToString();
         }
+
+        public decimal Over(Duration duration) {
+            return Over(duration, RoundingMode.Unnecessary);
+        }
+
+        public decimal Over(Duration duration, RoundingMode rounding) {
+            return Over(duration, Scale, rounding);
+        }
+
+        public decimal Over(Duration duration, int scale, RoundingMode rounding) {
+            throw new NotImplementedException();
+            //return duration.dividedBy(unit).times(quantity).decimalValue(scale, roundRule);
+        }
+
+        public int Scale {
+            get {
+                return _quantity.Scale();
+            }
+        }
+
+        #region Operators
+
+        public static bool operator ==(TimeRate x, TimeRate y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(TimeRate x, TimeRate y) {
+            return !x.Equals(y);
+        }
+
+        #endregion
+
+        #region IEquatable<TimeRate> members
+
+        public bool Equals(TimeRate other) {
+            return _quantity == other._quantity && _unit == other._unit;
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != GetType())
+                return false;
+            return Equals((TimeRate)obj);
+        }
+
+        public override int GetHashCode() {
+            return Hash(_quantity.GetHashCode(), _unit.GetHashCode());
+        }
+
+        #endregion
     }
 }

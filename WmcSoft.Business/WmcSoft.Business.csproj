@@ -200,6 +200,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RangeComparer.cs" />
+    <Compile Include="Ratio.cs" />
     <Compile Include="RM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
