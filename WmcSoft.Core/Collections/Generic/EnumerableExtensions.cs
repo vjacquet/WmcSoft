@@ -916,7 +916,14 @@ namespace WmcSoft.Collections.Generic
 
         #region NthElement
 
+        public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return Enumerable.Empty<TSource>();
+        }
         public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, int n) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var i = 0;
             foreach (var element in source) {
                 if (++i % n == 0)
@@ -925,6 +932,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, int n1, int n2) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var i = 0;
             foreach (var element in source) {
                 ++i;
@@ -934,6 +943,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> NthElements<TSource>(this IEnumerable<TSource> source, params int[] n) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var i = 0;
             foreach (var element in source) {
                 ++i;
