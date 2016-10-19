@@ -97,5 +97,25 @@ namespace WmcSoft
                 }
             }
         }
+
+        [TestMethod]
+        public void CanPowerUp() {
+            var expected = 200m;
+            var actual = 2m.Pow10(2);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanPowerDown() {
+            var expected = 0.02m;
+            var actual = 2m.Pow10(-2);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(OverflowException))]
+        public void CheckOverflow() {
+            123456789m.Pow10(28);
+        }
     }
 }

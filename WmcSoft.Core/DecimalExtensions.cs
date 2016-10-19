@@ -30,9 +30,10 @@ namespace WmcSoft
 {
     public static class DecimalExtensions
     {
+        const int MaxPower = 29; // last power before overflow
         private static readonly decimal[] Powers;
+
         static DecimalExtensions() {
-            const int MaxPower = 29; // last power before overflow
 
             Powers = new decimal[MaxPower];
             Powers[0] = 1m;
@@ -42,6 +43,12 @@ namespace WmcSoft
                 n *= 10m;
                 Powers[i] = n;
             }
+        }
+
+        public static decimal Pow10(this decimal d, int n) {
+            if (n > 0) return d * Powers[n];
+            else if (n < 0) return d / Powers[-n];
+            return 1m;
         }
 
         /// <summary>
@@ -87,7 +94,7 @@ namespace WmcSoft
             case RoundingMode.Floor:
                 return decimal.Floor(value);
             case RoundingMode.HalfDown:
-                return (value > 0m) ? decimal.Ceiling(value-0.5m) : -decimal.Ceiling(-value - 0.5m);
+                return (value > 0m) ? decimal.Ceiling(value - 0.5m) : -decimal.Ceiling(-value - 0.5m);
             case RoundingMode.HalfEven:
                 return decimal.Round(value, MidpointRounding.ToEven);
             case RoundingMode.HalfUp:
@@ -122,5 +129,4 @@ namespace WmcSoft
         /// <summary>Rounding mode to round away from zero.</summary>
         Up, // 
     }
-
 }
