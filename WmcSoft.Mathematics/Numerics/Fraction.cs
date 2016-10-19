@@ -60,9 +60,9 @@ namespace WmcSoft.Numerics
         }
 
         public Fraction(int numerator, int denominator) {
-            if (denominator == 0)
+            if (denominator == 0) {
                 throw new DivideByZeroException();
-            else if (denominator > 0) {
+            } else if (denominator > 0) {
                 var gcd = GreatestCommonDivisor(Math.Abs(numerator), denominator);
                 _numerator = numerator / gcd;
                 _denominator = denominator / gcd;
@@ -216,7 +216,7 @@ namespace WmcSoft.Numerics
 
         #endregion
 
-        #region IEquatable<Rational> Membres
+        #region IEquatable<Fraction> Membres
 
         public bool Equals(Fraction other) {
             return CompareTo(other) == 0;
@@ -234,7 +234,7 @@ namespace WmcSoft.Numerics
 
         #endregion
 
-        #region IComparable<Rational> Membres
+        #region IComparable<Fraction> Membres
 
         public int CompareTo(Fraction other) {
             long numerator = _numerator;

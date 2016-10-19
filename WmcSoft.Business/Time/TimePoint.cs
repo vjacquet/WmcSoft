@@ -31,10 +31,12 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
     [Serializable]
+    [DebuggerDisplay("{_storage,nq}")]
     public struct TimePoint : IComparable<TimePoint>, IEquatable<TimePoint>
     {
         DateTime _storage;
@@ -76,16 +78,20 @@ namespace WmcSoft.Time
         }
 
         public static TimePoint operator +(TimePoint t, Duration d) {
-            // TODO: fix for Month base Duration.
-            return new TimePoint(t._storage + (TimeSpan)d);
+            if (d.Unit.IsConvertibleToMilliseconds())
+                return new TimePoint(t._storage + (TimeSpan)d);
+            var months = checked((int)d.InBaseUnits());
+            return new TimePoint(t._storage.AddMonths(months));
         }
         public static TimePoint Add(TimePoint t, Duration d) {
             return t + d;
         }
 
         public static TimePoint operator -(TimePoint t, Duration d) {
-            // TODO: fix for Month base Duration.
-            return new TimePoint(t._storage - (TimeSpan)d);
+            if (d.Unit.IsConvertibleToMilliseconds())
+                return new TimePoint(t._storage - (TimeSpan)d);
+            var months = checked(-(int)d.InBaseUnits());
+            return new TimePoint(t._storage.AddMonths(months));
         }
         public static TimePoint Subtract(TimePoint t, Duration d) {
             return t - d;
