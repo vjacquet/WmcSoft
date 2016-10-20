@@ -84,13 +84,6 @@ namespace WmcSoft
 
         #endregion
 
-        #region Properties
-
-        public decimal Numerator { get { return _numerator; } }
-        public decimal Denominator { get { return _denominator; } }
-
-        #endregion
-
         #region Operators
 
         public static implicit operator Ratio(int x) {
@@ -190,6 +183,11 @@ namespace WmcSoft
         }
         public static Ratio Inverse(Ratio x) {
             return x.Inverse();
+        }
+
+        public decimal GetDecimalValue(int scale, RoundingMode roundingRule) {
+            var value = _numerator / _denominator;
+            return value.Round(scale, roundingRule);
         }
 
         #endregion
