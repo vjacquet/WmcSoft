@@ -43,6 +43,11 @@ namespace WmcSoft.Configuration
             _knownConfigurationSections.Add(typeof(T), sectionName);
         }
 
+        public static T GetSection<T>() where T : ConfigurationSection {
+            var sectionName = _knownConfigurationSections[typeof(T)];
+            return GetSection<T>(sectionName);
+        }
+
         public static T GetSection<T>(string sectionName) where T : ConfigurationSection {
             var section = ConfigurationManager.GetSection(sectionName);
             return (T)section;

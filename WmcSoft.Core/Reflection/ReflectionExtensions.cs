@@ -26,10 +26,12 @@ namespace WmcSoft.Reflection
 
         #region GetCustomAttributes / GetMetadataAttribute
 
+        [Obsolete("Use System.Reflection instead.", false)]
         public static TAttribute GetCustomAttribute<TAttribute>(this MemberInfo memberInfo, bool inherit = true) where TAttribute : Attribute {
             return memberInfo.GetCustomAttributes<TAttribute>(inherit).FirstOrDefault();
         }
 
+        [Obsolete("Use System.Reflection instead.", false)]
         public static TAttribute GetCustomAttribute<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
             return type.GetCustomAttributes<TAttribute>(inherit).FirstOrDefault();
         }
@@ -38,10 +40,12 @@ namespace WmcSoft.Reflection
             return TypeDescriptor.GetProperties(memberInfo.DeclaringType)[memberInfo.Name].GetMetadataAttribute<TAttribute>();
         }
 
+        [Obsolete("Use System.Reflection instead.", false)]
         public static TAttribute[] GetCustomAttributes<TAttribute>(this MemberInfo element, bool inherit = true) where TAttribute : Attribute {
             return (TAttribute[])Attribute.GetCustomAttributes(element, typeof(TAttribute), inherit);
         }
 
+        [Obsolete("Use System.Reflection instead.", false)]
         public static TAttribute[] GetCustomAttributes<TAttribute>(this Type type, bool inherit = true) where TAttribute : Attribute {
             return (TAttribute[])Attribute.GetCustomAttributes(type, typeof(TAttribute), inherit);
         }
