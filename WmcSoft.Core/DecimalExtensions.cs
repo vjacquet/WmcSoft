@@ -108,6 +108,10 @@ namespace WmcSoft
             }
             throw new NotSupportedException();
         }
+
+        public static decimal Round(this decimal value, int scale, RoundingMode rounding) {
+            return value.Pow10(scale).Round(rounding).Pow10(-scale);
+        }
     }
 
     public enum RoundingMode
@@ -120,7 +124,7 @@ namespace WmcSoft
         Floor,
         /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.</summary>
         HalfDown, // 
-        /// <summary>Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.</summary>
+                  /// <summary>Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.</summary>
         HalfEven,
         /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.</summary>
         HalfUp,
