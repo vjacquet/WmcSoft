@@ -31,6 +31,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
@@ -41,6 +42,7 @@ namespace WmcSoft.Time
 
         // TODO: Shouldn't the quantity be always in ms or months? Otherwise equal values won't overflow at the same time.
         // TODO: Implement Parse & ToString using ISO 8601 <https://en.wikipedia.org/wiki/ISO_8601#Durations>
+        // TODO: Should Ratio be public?
 
         private readonly long _quantity;
         private readonly TimeUnit _unit;
@@ -219,6 +221,16 @@ namespace WmcSoft.Time
         public static int Compare(Duration x, Duration y) {
             return x.CompareTo(y);
         }
+
+        internal Ratio DividedBy(Duration divisor) {
+            Debug.Assert(_unit.IsConvertibleTo(divisor._unit));
+
+            return new Ratio(InBaseUnits(), divisor.InBaseUnits());
+        }
+
+        //public static Ratio operator /(Duration x, Duration y) {
+        //    return x.DividedBy(y);
+        //}
 
         #endregion
 

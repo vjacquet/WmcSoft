@@ -58,14 +58,11 @@ namespace WmcSoft.Time
         }
 
         public decimal Over(Duration duration, int scale, RoundingMode rounding) {
-            throw new NotImplementedException();
-            //return duration.dividedBy(unit).times(quantity).decimalValue(scale, roundRule);
+            return duration.DividedBy(_unit).MultipliedBy(_quantity).GetDecimalValue(scale, rounding);
         }
 
         public int Scale {
-            get {
-                return _quantity.Scale();
-            }
+            get { return _quantity.Scale(); }
         }
 
         #region Operators
