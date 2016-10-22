@@ -90,6 +90,7 @@
     <Compile Include="TemporalTests.cs" />
     <Compile Include="Time\TimeOfDayTests.cs" />
     <Compile Include="Time\TimePointTests.cs" />
+    <Compile Include="Time\DurationTests.cs" />
     <Compile Include="Time\TimeUnitTests.cs" />
     <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>

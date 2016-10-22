@@ -83,7 +83,7 @@ _Library of components to build business applications._
 
 - Time, adapted from <http://domainlanguage.com>'s time & money.
 
-  `TimePoint` is a equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
+  `TimePoint` is equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
 
   `TimeUnit` should derive from WmcSoft's units.
 

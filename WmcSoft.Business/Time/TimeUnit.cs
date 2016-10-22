@@ -31,6 +31,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace WmcSoft.Time
 {
@@ -86,7 +87,7 @@ namespace WmcSoft.Time
             get { return _type & (Type.Millisecond | Type.Month); }
         }
         public TimeUnit BaseUnit {
-            get { return (_type & Type.Millisecond) != 0 ? Millisecond : Month; }
+            get { return IsConvertibleToMilliseconds() ? Millisecond : Month; }
         }
 
         public int Factor { get { return _factor; } }
@@ -115,6 +116,24 @@ namespace WmcSoft.Time
             throw new InvalidOperationException();
         }
 
+        static IEnumerable<Tuple<long, TimeUnit>> Decompose(long remainder, TimeUnit[] units) {
+            for (int i = 0; i < units.Length; i++) {
+                var aUnit = units[i];
+                var factor = aUnit.Factor;
+                long portion = Math.DivRem(remainder, aUnit.Factor, out remainder);
+                if (portion > 0)
+                    yield return Tuple.Create(portion, aUnit);
+            }
+        }
+
+        public static IEnumerable<Tuple<long, TimeUnit>> Decompose(long quantity, TimeUnit unit) {
+            return Decompose(quantity * unit._factor, unit.DescendingUnits);
+        }
+
+        public static IEnumerable<Tuple<long, TimeUnit>> DecomposeForDisplay(long quantity, TimeUnit unit) {
+            return Decompose(quantity * unit._factor, unit.DescendingUnitsForDisplay);
+        }
+
         public TimeUnit NextFinerUnit() {
             TimeUnit[] descending = DescendingUnits;
             int index = Array.IndexOf(descending, this, 0, descending.Length - 1);
@@ -124,7 +143,7 @@ namespace WmcSoft.Time
         }
 
         public bool IsConvertibleToMilliseconds() {
-            return IsConvertibleTo(Millisecond);
+            return (_type & Type.Millisecond) != 0;
         }
 
         public bool IsConvertibleTo(TimeUnit other) {
@@ -135,7 +154,7 @@ namespace WmcSoft.Time
             return _type.ToString().ToLowerInvariant();
         }
 
-        public string ToString(long quantity) {
+        internal string ToString(long quantity) {
             return string.Concat(quantity, ' ', this, quantity == 1 ? "" : "s");
         }
 
@@ -204,6 +223,7 @@ namespace WmcSoft.Time
         }
 
         public override int GetHashCode() {
+            // CHECK: is it a good hash function?
             return _factor + BaseType.GetHashCode() + _type.GetHashCode();
         }
 

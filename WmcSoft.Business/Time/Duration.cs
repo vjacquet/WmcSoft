@@ -32,6 +32,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace WmcSoft.Time
 {
@@ -43,6 +44,7 @@ namespace WmcSoft.Time
         // TODO: Shouldn't the quantity be always in ms or months? Otherwise equal values won't overflow at the same time.
         // TODO: Implement Parse & ToString using ISO 8601 <https://en.wikipedia.org/wiki/ISO_8601#Durations>
         // TODO: Should Ratio be public?
+        // NOTE: addedTo and substractFrom are implemented as operators in TimePoint.
 
         private readonly long _quantity;
         private readonly TimeUnit _unit;
@@ -265,6 +267,10 @@ namespace WmcSoft.Time
 
         public override int GetHashCode() {
             return _quantity.GetHashCode();
+        }
+
+        public override string ToString() {
+            return string.Join(", ", TimeUnit.DecomposeForDisplay(_quantity, _unit).Select(p => p.Item2.ToString(p.Item1)));
         }
 
         #endregion
