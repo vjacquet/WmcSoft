@@ -41,19 +41,39 @@ namespace WmcSoft.Time
         private readonly IntervalLimit<T> _lower;
         private readonly IntervalLimit<T> _upper;
 
+        public Interval(IntervalLimit<T> lower, IntervalLimit<T> upper) {
+            _lower = lower;
+            _upper = upper;
+        }
+
         public T Lower { get { return _lower.Value; } }
         public T Upper { get { return _upper.Value; } }
 
-        public bool IncludesUpperLimit { get { return _upper.IsClosed; } }
-        public bool IncludesLowerLimit { get { return _lower.IsClosed; } }
+        public bool IncludesLowerLimit() {
+            return _lower.IsClosed;
+        }
+        public bool IncludesUpperLimit() {
+            return _upper.IsClosed;
+        }
+
+        public bool IsOpen() {
+            return !IncludesLowerLimit() && !IncludesUpperLimit();
+        }
+        public bool IsClosed() {
+            return IncludesLowerLimit() && IncludesUpperLimit();
+        }
+
+        public bool IsEmpty() {
+            throw new NotImplementedException();
+        }
 
         public int CompareTo(Interval<T> other) {
             var result = _upper.CompareTo(other._upper);
             if (result != 0)
                 return result;
-            if (IncludesLowerLimit && !other.IncludesLowerLimit)
+            if (IncludesLowerLimit() && !other.IncludesLowerLimit())
                 return -1;
-            if (!IncludesLowerLimit && other.IncludesLowerLimit)
+            if (!IncludesLowerLimit() && other.IncludesLowerLimit())
                 return 1;
             return _lower.CompareTo(other._lower);
         }
@@ -72,11 +92,31 @@ namespace WmcSoft.Time
         public override int GetHashCode() {
             var h1 = _lower.GetHashCode();
             var h2 = _upper.GetHashCode();
-            return  h1 ^ h2;
+            return h1 ^ h2;
         }
 
         public override string ToString() {
             return base.ToString();
+        }
+
+        public bool Includes(T value) {
+            throw new NotImplementedException();
+        }
+
+        public bool Covers(T value) {
+            throw new NotImplementedException();
+        }
+
+        public bool Intersects(Interval<T> other) {
+            throw new NotImplementedException();
+        }
+
+        public Interval<T> Intersect(Interval<T> other) {
+            throw new NotImplementedException();
+        }
+
+        public Interval<T> Gap(Interval<T> other) {
+            throw new NotImplementedException();
         }
 
         #region Operators
@@ -102,5 +142,23 @@ namespace WmcSoft.Time
         }
 
         #endregion
+    }
+
+    public static class Interval
+    {
+        public static Interval<T> Closed<T>(T lower, T upper)
+            where T : IComparable<T> {
+            return new Interval<T>(IntervalLimit.Lower(true, lower), IntervalLimit.Upper(true, upper));
+        }
+
+        public static Interval<T> Open<T>(T lower, T upper)
+            where T : IComparable<T> {
+            return new Interval<T>(IntervalLimit.Lower(false, lower), IntervalLimit.Upper(false, upper));
+        }
+
+        public static Interval<T> Over<T>(T lower, bool lowerIncluded, T upper, bool upperIncluded)
+            where T : IComparable<T> {
+            return new Interval<T>(IntervalLimit.Lower(lowerIncluded, lower), IntervalLimit.Upper(upperIncluded, upper));
+        }
     }
 }
