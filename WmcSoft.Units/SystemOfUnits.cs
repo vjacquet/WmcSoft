@@ -111,6 +111,7 @@ namespace WmcSoft.Units
         }
 
         #endregion
+
         //		public static bool operator ==(SystemOfUnits left, SystemOfUnits right)
         //		{
         //			return (left.nameOfSystem == right.nameOfSystem) && (left.nameOfStandardizationBody == right.nameOfStandardizationBody);

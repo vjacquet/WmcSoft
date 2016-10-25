@@ -21,8 +21,8 @@
     4. This notice may not be removed or altered.
 
  ****************************************************************************
- * Adapted from DateSpecification.java
- * ---------------------------
+ * Adapted from IntervalLimit.java
+ * -------------------------------
  * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
@@ -36,7 +36,7 @@ namespace WmcSoft.Time
 {
     [Serializable]
     public struct IntervalLimit<T> : IComparable<IntervalLimit<T>>, IEquatable<IntervalLimit<T>>
-        where T : IComparable<T>
+        where T : struct, IComparable<T>
     {
         public static readonly IntervalLimit<T> Undefined;
 
@@ -54,9 +54,7 @@ namespace WmcSoft.Time
         private readonly State _state;
 
         public IntervalLimit(bool closed, bool lower, T value) {
-            _state = value == null
-                ? State.None
-                : (closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper);
+            _state = (closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper);
             _value = value;
         }
 
@@ -65,8 +63,17 @@ namespace WmcSoft.Time
         public bool IsClosed { get { return (_state & State.Closed) != 0; } }
         public bool IsOpen { get { return (_state & State.Open) != 0; } }
 
-        public T Value { get { return _value; } }
         public bool HasValue { get { return _state != State.None; } }
+        public T Value {
+            get {
+                if (!HasValue)
+                    throw new InvalidOperationException();
+                return _value;
+            }
+        }
+        public T GetValueOrDefault() {
+            return _value;
+        }
 
         public int CompareTo(IntervalLimit<T> other) {
             if (!HasValue) {
@@ -98,6 +105,12 @@ namespace WmcSoft.Time
 
         #region Operators
 
+        public static explicit operator T? (IntervalLimit<T> x) {
+            if (x.HasValue)
+                return x.Value;
+            return null;
+        }
+
         public static bool operator ==(IntervalLimit<T> a, IntervalLimit<T> b) {
             return a.Equals(b);
         }
@@ -124,12 +137,12 @@ namespace WmcSoft.Time
     public static class IntervalLimit
     {
         public static IntervalLimit<T> Lower<T>(bool closed, T value)
-            where T : IComparable<T> {
+            where T : struct, IComparable<T> {
             return new IntervalLimit<T>(closed, true, value);
         }
 
         public static IntervalLimit<T> Upper<T>(bool closed, T value)
-            where T : IComparable<T> {
+            where T : struct, IComparable<T> {
             return new IntervalLimit<T>(closed, false, value);
         }
     }

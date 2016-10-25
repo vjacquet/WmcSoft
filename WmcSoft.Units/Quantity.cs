@@ -218,6 +218,8 @@ namespace WmcSoft.Units
         }
 
         public override int GetHashCode() {
+            if (_metric == null)
+                return 0;
             return _amount.GetHashCode() ^ _metric.GetHashCode();
         }
 
