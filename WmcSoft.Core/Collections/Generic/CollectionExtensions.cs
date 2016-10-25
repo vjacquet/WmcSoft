@@ -1333,9 +1333,19 @@ namespace WmcSoft.Collections.Generic
 
         #region Shuffle methods
 
+        static void UnguardedShuffle<T>(IList<T> list, int index, int count, Random random) {
+            int end = index + count;
+            int j;
+            for (int i = index; i < end; i++) {
+                j = random.Next(i, end);
+                SwapItems(list, i, j);
+            }
+        }
+
         /// <summary>
         /// Suffles in place items of the list.
         /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
         /// <param name="list">The list.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
@@ -1347,6 +1357,7 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Suffles in place items of the list.
         /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
         /// <param name="list">The list.</param>
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
@@ -1355,13 +1366,122 @@ namespace WmcSoft.Collections.Generic
         public static void Shuffle<T>(this IList<T> list, Random random) {
             if (list == null) throw new ArgumentNullException("list");
             if (random == null) throw new ArgumentNullException("random");
-            if (list.IsReadOnly) throw new ArgumentException();
 
-            int j;
-            for (int i = 0; i < list.Count; i++) {
-                j = random.Next(i, list.Count);
-                SwapItems(list, i, j);
+            UnguardedShuffle(list, 0, list.Count, random);
+        }
+
+        /// <summary>
+        /// Splits the items in half (a bottom half and a top half) and 
+        /// then interweaves each half of the deck such that every-other item came 
+        /// from the same half of the list.
+        /// The first item will move to second place.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <remarks>See https://en.wikipedia.org/wiki/Faro_shuffle and https://en.wikipedia.org/wiki/In_shuffle for more information.</remarks>
+        public static void PerfectInShuffle<T>(this IList<T> list) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            UnguardedPerfectInShuffle(list, 0, list.Count);
+        }
+
+        public static void PerfectInShuffle<T>(this IList<T> list, int index, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if ((count % 2) == 1) throw new ArgumentException("count");
+
+            UnguardedPerfectInShuffle(list, index, count);
+        }
+
+        static void UnguardedPerfectInShuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[i] = list[m + j];
+                aux[i + 1] = list[index + j];
             }
+            aux.CopyTo(list, index, count);
+        }
+
+        public static void PerfectInUnshuffle<T>(this IList<T> list) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            UnguardedPerfectInUnshuffle(list, 0, list.Count);
+        }
+
+        public static void PerfectInUnshuffle<T>(this IList<T> list, int index, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if ((count % 2) == 1) throw new ArgumentException("count");
+
+            UnguardedPerfectInUnshuffle(list, index, count);
+        }
+
+        static void UnguardedPerfectInUnshuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[index + j] = list[i + 1];
+                aux[m + j] = list[i];
+            }
+            aux.CopyTo(list, index, count);
+        }
+
+        /// <summary>
+        /// Splits the items in half (a bottom half and a top half) and 
+        /// then interweaves each half such that every-other item came 
+        /// from the same half of the list.
+        /// The first item remain first.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <remarks>See https://en.wikipedia.org/wiki/Faro_shuffle and https://en.wikipedia.org/wiki/Out_shuffle for more information.</remarks>
+        public static void PerfectOutShuffle<T>(this IList<T> list) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            UnguardedPerfectOutShuffle(list, 0, list.Count);
+        }
+
+        public static void PerfectOutShuffle<T>(this IList<T> list, int index, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if ((count % 2) == 1) throw new ArgumentException("count");
+
+            UnguardedPerfectOutShuffle(list, index, count);
+        }
+
+        static void UnguardedPerfectOutShuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[i] = list[index + j];
+                aux[i + 1] = list[m + j];
+            }
+            aux.CopyTo(list, index, count);
+        }
+
+        public static void PerfectOutUnshuffle<T>(this IList<T> list) {
+            if (list == null) throw new ArgumentNullException("list");
+
+            UnguardedPerfectOutUnshuffle(list, 0, list.Count);
+        }
+
+        public static void PerfectOutUnshuffle<T>(this IList<T> list, int index, int count) {
+            if (list == null) throw new ArgumentNullException("list");
+            if ((count % 2) == 1) throw new ArgumentException("count");
+
+            UnguardedPerfectOutUnshuffle(list, index, count);
+        }
+
+        static void UnguardedPerfectOutUnshuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[index + j] = list[i];
+                aux[m + j] = list[i + 1];
+            }
+            aux.CopyTo(list, index, count);
         }
 
         #endregion

@@ -376,5 +376,42 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(3, data.BinaryRank(4));
             Assert.AreEqual(4, data.BinaryRank(x => Comparer<int>.Default.Compare(x, 5)));
         }
+
+        [TestMethod]
+        public void CheckPerfectInShuffle() {
+            var data = "AGINORSTABEELMPX".ToCharArray();
+            data.PerfectInShuffle();
+            var actual = new string(data);
+            var expected = "AABGEIENLOMRPSXT";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckPerfectInUnshuffle() {
+            var data = "AABGEIENLOMRPSXT".ToCharArray();
+            data.PerfectInUnshuffle();
+            var actual = new string(data);
+            var expected = "AGINORSTABEELMPX";
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestMethod]
+        public void CheckPerfectOutShuffle() {
+            var data = "AGINORSTABEELMPX".ToCharArray();
+            data.PerfectOutShuffle();
+            var actual = new string(data);
+            var expected = "AAGBIENEOLRMSPTX";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckPerfectOutUnshuffle() {
+            var data = "AAGBIENEOLRMSPTX".ToCharArray();
+            data.PerfectOutUnshuffle();
+            var actual = new string(data);
+            var expected = "AGINORSTABEELMPX";
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
