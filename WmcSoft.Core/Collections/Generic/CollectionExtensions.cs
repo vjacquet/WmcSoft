@@ -44,21 +44,21 @@ namespace WmcSoft.Collections.Generic
         /// Ensure the value is present by adding it when missing.
         /// </summary>
         /// <typeparam name="T">Type of objects within the collection.</typeparam>
-        /// <param name="self">The list to add items to.</param>
+        /// <param name="source">The list to add items to.</param>
         /// <param name="value">The value</param>
         /// <returns>True if the value was added, false it was already in the collection.</returns>
-        public static bool Ensure<T>(this ICollection<T> self, T value) {
-            var collection = self as ICollection;
+        public static bool Ensure<T>(this ICollection<T> source, T value) {
+            var collection = source as ICollection;
             if (collection != null && collection.IsSynchronized) {
                 lock (collection.SyncRoot) {
-                    if (!self.Contains(value)) {
-                        self.Add(value);
+                    if (!source.Contains(value)) {
+                        source.Add(value);
                         return true;
                     }
                 }
             } else {
-                if (!self.Contains(value)) {
-                    self.Add(value);
+                if (!source.Contains(value)) {
+                    source.Add(value);
                     return true;
                 }
             }
@@ -70,38 +70,38 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="T">Type of objects within the collection.</typeparam>
         /// <typeparam name="TCollection">The type of collection</typeparam>
-        /// <param name="self">The collection to add items to.</param>
+        /// <param name="source">The collection to add items to.</param>
         /// <param name="items">The items to add to the collection.</param>
         /// <returns>The collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static ICollection<T> AddRange<T>(this ICollection<T> self, IEnumerable<T> items) {
-            if (self == null)
+        public static ICollection<T> AddRange<T>(this ICollection<T> source, IEnumerable<T> items) {
+            if (source == null)
                 throw new ArgumentNullException("self");
 
             if (items == null)
-                return self;
+                return source;
 
-            var list = self as List<T>;
-            var collection = self as ICollection;
+            var list = source as List<T>;
+            var collection = source as ICollection;
             if (list != null) {
                 list.AddRange(items);
             } else if (collection != null && collection.IsSynchronized) {
                 lock (collection.SyncRoot) {
                     foreach (var each in items) {
-                        self.Add(each);
+                        source.Add(each);
                     }
                 }
             } else {
                 foreach (var each in items) {
-                    self.Add(each);
+                    source.Add(each);
                 }
             }
 
-            return self;
+            return source;
         }
 
-        public static ICollection<T> AddRange<T>(this ICollection<T> self, params T[] items) {
-            return AddRange(self, items.AsEnumerable());
+        public static ICollection<T> AddRange<T>(this ICollection<T> source, params T[] items) {
+            return AddRange(source, items.AsEnumerable());
         }
 
         #endregion
@@ -200,29 +200,40 @@ namespace WmcSoft.Collections.Generic
             return lo;
         }
 
+        static void Guard<T>(IReadOnlyCollection<T> source, int index, int count) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            if ((source.Count - index) < count) throw new ArgumentException("Invalid length");
+        }
+
+        static void Guard<T>(ICollection<T> source, int index, int count) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            if ((source.Count - index) < count) throw new ArgumentException("Invalid length");
+        }
+
         /// <summary>
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
         /// <typeparam name="T">The type of elements in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
-        public static int BinarySearch<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (index < 0) throw new ArgumentOutOfRangeException("index");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
-            if ((list.Count - index) < count) throw new ArgumentException("Invalid length");
+        public static int BinarySearch<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder) {
+            Guard(source, index, count);
 
             try {
                 int lo = index;
                 int hi = lo + count - 1;
                 while (lo <= hi) {
                     int mid = GetMidpoint(lo, hi);
-                    int cmp = finder(list[mid]);
+                    int cmp = finder(source[mid]);
                     if (cmp < 0) lo = mid + 1;
                     else if (cmp > 0) hi = mid - 1;
                     else return mid;
@@ -238,29 +249,29 @@ namespace WmcSoft.Collections.Generic
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
         /// <typeparam name="T">The type of elements in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
-        public static int BinarySearch<T>(this IReadOnlyList<T> list, Func<T, int> finder) {
-            return BinarySearch(list, 0, list.Count, finder);
+        public static int BinarySearch<T>(this IReadOnlyList<T> source, Func<T, int> finder) {
+            return BinarySearch(source, 0, source.Count, finder);
         }
 
         /// <summary>
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static T BinaryFind<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
-            var found = BinarySearch(list, index, count, finder);
+        public static T BinaryFind<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = BinarySearch(source, index, count, finder);
             if (found >= 0)
-                return list[found];
+                return source[found];
             return defaultValue;
         }
 
@@ -268,115 +279,115 @@ namespace WmcSoft.Collections.Generic
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static T BinaryFind<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
-            return BinaryFind(list, 0, list.Count, finder, defaultValue);
+        public static T BinaryFind<T>(this IReadOnlyList<T> source, Func<T, int> finder, T defaultValue = default(T)) {
+            return BinaryFind(source, 0, source.Count, finder, defaultValue);
         }
 
         /// <summary>
         /// Returns the last element for which the finder returns a negative value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static T LowerBound<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
-            return LowerBound(list, 0, list.Count, finder, defaultValue);
+        public static T LowerBound<T>(this IReadOnlyList<T> source, Func<T, int> finder, T defaultValue = default(T)) {
+            return LowerBound(source, 0, source.Count, finder, defaultValue);
         }
 
         /// <summary>
         /// Returns the last element for which the finder returns a negative value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static T LowerBound<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
-            var found = BinarySearch(list, index, count, finder);
+        public static T LowerBound<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = BinarySearch(source, index, count, finder);
             if (found < 0) {
                 var lo = ~found;
                 if (lo > index)
-                    return list[lo - 1];
+                    return source[lo - 1];
                 return defaultValue;
             }
-            return list[found];
+            return source[found];
         }
 
         /// <summary>
         /// Returns the first element for which the finder returns a positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static T UpperBound<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
-            return UpperBound(list, 0, list.Count, finder, defaultValue);
+        public static T UpperBound<T>(this IReadOnlyList<T> source, Func<T, int> finder, T defaultValue = default(T)) {
+            return UpperBound(source, 0, source.Count, finder, defaultValue);
         }
 
         /// <summary>
         /// Returns the first element for which the finder returns a positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static T UpperBound<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
-            var found = BinarySearch(list, index, count, finder);
+        public static T UpperBound<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+            var found = BinarySearch(source, index, count, finder);
             if (found < 0) {
                 var lo = ~found;
                 if (lo < index + count)
-                    return list[lo];
+                    return source[lo];
                 return defaultValue;
             }
-            return list[found];
+            return source[found];
         }
 
         /// <summary>
         /// Returns the first element for which the finder returns a positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static Tuple<T, T> Bounds<T>(this IReadOnlyList<T> list, Func<T, int> finder, T defaultValue = default(T)) {
-            return Bounds(list, 0, list.Count, finder, defaultValue);
+        public static Tuple<T, T> Bounds<T>(this IReadOnlyList<T> source, Func<T, int> finder, T defaultValue = default(T)) {
+            return Bounds(source, 0, source.Count, finder, defaultValue);
         }
 
         /// <summary>
         /// Returns the first element for which the finder returns a positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static Tuple<T, T> Bounds<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
+        public static Tuple<T, T> Bounds<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder, T defaultValue = default(T)) {
             if (count == 0)
                 return Tuple.Create(defaultValue, defaultValue);
-            var found = BinarySearch(list, index, count, finder);
+            var found = BinarySearch(source, index, count, finder);
             if (found < 0) {
                 var lo = ~found;
                 if (lo <= index)
-                    return Tuple.Create(defaultValue, list[lo]);
+                    return Tuple.Create(defaultValue, source[lo]);
                 if (lo < index + count)
-                    return Tuple.Create(list[lo - 1], list[lo]);
-                return Tuple.Create(list[lo - 1], defaultValue);
+                    return Tuple.Create(source[lo - 1], source[lo]);
+                return Tuple.Create(source[lo - 1], defaultValue);
             }
-            var equivalent = list[found];
+            var equivalent = source[found];
             return Tuple.Create(equivalent, equivalent);
         }
 
@@ -384,23 +395,20 @@ namespace WmcSoft.Collections.Generic
         /// Computes the number of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for which the <paramref name="finder"/> returns a negative value.
         /// </summary>
         /// <typeparam name="T">The type of elements in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The number of elements for which the finder returns a negative value.</returns>
-        public static int BinaryRank<T>(this IReadOnlyList<T> list, int index, int count, Func<T, int> finder) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (index < 0) throw new ArgumentOutOfRangeException("index");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
-            if ((list.Count - index) < count) throw new ArgumentException("Invalid length");
+        public static int BinaryRank<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder) {
+            Guard(source, index, count);
 
             try {
                 int lo = index;
                 int hi = lo + count - 1;
                 while (lo <= hi) {
                     int mid = GetMidpoint(lo, hi);
-                    int cmp = finder(list[mid]);
+                    int cmp = finder(source[mid]);
                     if (cmp < 0) lo = mid + 1;
                     else if (cmp > 0) hi = mid - 1;
                     else return mid;
@@ -416,21 +424,21 @@ namespace WmcSoft.Collections.Generic
         /// Computes the number of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for which the <paramref name="finder"/> returns a negative value.
         /// </summary>
         /// <typeparam name="T">The type of elements in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The number of elements for which the finder returns a negative value.</returns>
-        public static int BinaryRank<T>(this IReadOnlyList<T> list, Func<T, int> finder) {
-            return BinaryRank(list, 0, list.Count, finder);
+        public static int BinaryRank<T>(this IReadOnlyList<T> source, Func<T, int> finder) {
+            return BinaryRank(source, 0, source.Count, finder);
         }
 
-        public static int BinaryRank<T>(this IReadOnlyList<T> list, T value) {
-            return BinaryRank(list, value, Comparer<T>.Default);
+        public static int BinaryRank<T>(this IReadOnlyList<T> source, T value) {
+            return BinaryRank(source, value, Comparer<T>.Default);
         }
 
-        public static int BinaryRank<T>(this IReadOnlyList<T> list, T value, IComparer<T> comparer) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int BinaryRank<T>(this IReadOnlyList<T> source, T value, IComparer<T> comparer) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return UnguardedBinaryRank(list, 0, list.Count, value, comparer ?? Comparer<T>.Default);
+            return UnguardedBinaryRank(source, 0, source.Count, value, comparer ?? Comparer<T>.Default);
         }
 
         #endregion
@@ -438,14 +446,14 @@ namespace WmcSoft.Collections.Generic
         #region ConvertAll
 
         /// <summary>
-        /// Converts a collection of one type to a collection of another type.
+        /// Converts a collection of items of one type to a collection of another type.
         /// </summary>
         /// <typeparam name="TInput">The type of the elements of the source collection.</typeparam>
         /// <typeparam name="TOutput">The type of the elements of the target collection.</typeparam>
         /// <param name="source">The source collection.</param>
         /// <param name="converter">A Converter<TInput, TOutput> that converts each element from one type to another type.</param>
         /// <returns>A collection of the target type containing the converted elements from the source array.</returns>
-        public static ICollection<TOutput> ConvertAll<TInput, TOutput>(this ICollection<TInput> source, Converter<TInput, TOutput> converter) {
+        public static IList<TOutput> ConvertAll<TInput, TOutput>(this ICollection<TInput> source, Converter<TInput, TOutput> converter) {
             var list = new List<TOutput>(source.Count);
             foreach (var item in source) {
                 list.Add(converter(item));
@@ -453,21 +461,6 @@ namespace WmcSoft.Collections.Generic
             return list;
         }
 
-        /// <summary>
-        /// Converts a list of one type to a list of another type.
-        /// </summary>
-        /// <typeparam name="TInput">The type of the elements of the source list.</typeparam>
-        /// <typeparam name="TOutput">The type of the elements of the target list.</typeparam>
-        /// <param name="source">The source list.</param>
-        /// <param name="converter">A Converter<TInput, TOutput> that converts each element from one type to another type.</param>
-        /// <returns>A list of the target type containing the converted elements from the source array.</returns>
-        public static IList<TOutput> ConvertAll<TInput, TOutput>(this IList<TInput> source, Converter<TInput, TOutput> converter) {
-            var list = new List<TOutput>(source.Count);
-            foreach (var item in source) {
-                list.Add(converter(item));
-            }
-            return list;
-        }
         #endregion
 
         #region ElementsAt
@@ -554,7 +547,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IEnumerable<TSource> source, params int[] indices) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var readable = source as IReadOnlyList<TSource>;
             if (readable != null) return DoElementsAtOrDefault(readable, indices);
@@ -564,7 +557,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TSource> ElementsAtOrDefault<TSource>(this IList<TSource> source, params int[] indices) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
@@ -604,7 +597,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var readable = source as IReadOnlyList<TSource>;
             if (readable != null) return DoElementsAt(readable, selector, indices);
@@ -614,7 +607,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAt<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             return indices.Select(i => selector(source[i]));
         }
@@ -653,7 +646,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var readable = source as IReadOnlyList<TSource>;
             if (readable != null) return DoElementsAtOrDefault(readable, selector, indices);
@@ -663,7 +656,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IEnumerable<TResult> ElementsAtOrDefault<TSource, TResult>(this IList<TSource> source, Func<TSource, TResult> selector, params int[] indices) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             for (int i = 0; i < indices.Length; i++) {
                 var indice = indices[i];
@@ -682,39 +675,36 @@ namespace WmcSoft.Collections.Generic
         /// Searches a range of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for an element using the specified function and returns the zero-based index of the element.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <returns>The zero-based index of item in the sorted <seealso cref="IReadOnlyList{T}"/>, if item is found; 
         /// otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than item or, 
         /// if there is no larger element, the bitwise complement of Count.</returns>
-        public static int InterpolatedSearch<T>(this IReadOnlyList<T> list, int index, int count, T value, IOrdinal<T> ordinal) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (index < 0) throw new ArgumentOutOfRangeException("index");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
-            if ((list.Count - index) < count) throw new ArgumentException("Invalid length");
+        public static int InterpolatedSearch<T>(this IReadOnlyList<T> source, int index, int count, T value, IOrdinal<T> ordinal) {
+            Guard(source, index, count);
 
             try {
                 int lo = index;
                 int hi = lo + count - 1;
                 while (lo <= hi) {
-                    int D = ordinal.Compare(list[lo], list[hi]);
-                    int d = ordinal.Compare(list[lo], value);
+                    int D = ordinal.Compare(source[lo], source[hi]);
+                    int d = ordinal.Compare(source[lo], value);
                     if (D == 0) {
                         if (d < 0) return ~lo;
                         else if (d > 0) return ~hi;
                         return lo;
                     }
                     int i = lo + MulDiv(d, hi - lo, D);
-                    int cmp = ordinal.Compare(list[i], value);
+                    int cmp = ordinal.Compare(source[i], value);
                     switch (cmp) {
                     case 0:
                         return i;
                     case -1:
-                        return UnguardedBinarySearch(list, i + 1, hi, value, ordinal);
+                        return UnguardedBinarySearch(source, i + 1, hi, value, ordinal);
                     case 1:
-                        return UnguardedBinarySearch(list, lo, i - 1, value, ordinal);
+                        return UnguardedBinarySearch(source, lo, i - 1, value, ordinal);
                     default:
                         if (cmp < 0) lo = i + 1;
                         else if (cmp > 0) hi = i - 1;
@@ -729,8 +719,8 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static int InterpolatedSearch<T>(this IReadOnlyList<T> list, T value, IOrdinal<T> ordinal) {
-            return InterpolatedSearch(list, 0, list.Count, value, ordinal);
+        public static int InterpolatedSearch<T>(this IReadOnlyList<T> source, T value, IOrdinal<T> ordinal) {
+            return InterpolatedSearch(source, 0, source.Count, value, ordinal);
         }
 
         #endregion
@@ -744,7 +734,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The source element</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
         public static int MinElement<TSource>(this IList<TSource> source) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = Comparer<TSource>.Default.Compare;
             return MinElement(source, 0, source.Count, comparison);
@@ -758,7 +748,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or null to use the default comparer Comparer<T>.Default.</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
         public static int MinElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MinElement(source, 0, source.Count, comparison);
@@ -770,24 +760,24 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="TSource">The type of the element of source</typeparam>
         /// <param name="source">The source element</param>
         /// <param name="index">The zero-based starting index of the range to get the min element from.</param>
-        /// <param name="length">The length of the range to get the min element from.</param>
+        /// <param name="count">The length of the range to get the min element from.</param>
         /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or null to use the default comparer Comparer<T>.Default.</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
-        public static int MinElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
-            if (source == null) throw new ArgumentNullException("source");
+        public static int MinElement<TSource>(this IList<TSource> source, int index, int count, IComparer<TSource> comparer) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
-            return MinElement(source, index, length, comparison);
+            return MinElement(source, index, count, comparison);
         }
 
         public static int MinElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             return MinElement(source, 0, source.Count, comparison);
         }
 
         public static int MinElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (source.Count == 0)
                 return -1;
@@ -803,34 +793,34 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = Comparer<TSource>.Default.Compare;
             return MaxElement(source, 0, source.Count, comparison);
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MaxElement(source, 0, source.Count, comparison);
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MaxElement(source, index, length, comparison);
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             return MaxElement(source, 0, source.Count, comparison);
         }
 
         public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (source.Count == 0)
                 return -1;
@@ -846,34 +836,34 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = Comparer<TSource>.Default.Compare;
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
         public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
         public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MinMaxElement(source, index, length, comparison);
         }
 
         public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
         public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (source.Count == 0)
                 return Tuple.Create(-1, -1);
@@ -910,57 +900,57 @@ namespace WmcSoft.Collections.Generic
         /// Returns the partition point of the list if the list is partitionned.
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="source">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
-        public static int FindPartitionPoint<T>(this IList<T> list, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int FindPartitionPoint<T>(this IList<T> source, Predicate<T> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedFindPartitionPoint(list, 0, list.Count, predicate);
+            return UnguardedFindPartitionPoint(source, 0, source.Count, predicate);
         }
 
         /// <summary>
         /// Returns the partition point of the list if the list is partitionned.
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="start">The start index of the sequence</param>
-        /// <param name="length">The length of the sequence</param>
-        /// <param name="list">The list</param>
+        /// <param name="index">The start index of the sequence</param>
+        /// <param name="count">The length of the sequence</param>
+        /// <param name="source">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
-        public static int FindPartitionPoint<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int FindPartitionPoint<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
+            Guard(source, index, count);
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedFindPartitionPoint(list, start, length, predicate);
+            return UnguardedFindPartitionPoint(source, index, count, predicate);
         }
 
         /// <summary>
         /// Returns the partition point of the list if the list is partitionned.
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="source">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
-        public static bool IsPartitioned<T>(this IList<T> list, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static bool IsPartitioned<T>(this IList<T> source, Predicate<T> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedFindPartitionPoint(list, 0, list.Count, predicate) >= 0;
+            return UnguardedFindPartitionPoint(source, 0, source.Count, predicate) >= 0;
         }
 
         /// <summary>
         /// Returns the partition point of the list if the list is partitionned.
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="start">The start index of the sequence</param>
-        /// <param name="length">The length of the sequence</param>
-        /// <param name="list">The list</param>
+        /// <param name="index">The start index of the sequence</param>
+        /// <param name="count">The length of the sequence</param>
+        /// <param name="source">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
-        public static bool IsPartitioned<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
-            return FindPartitionPoint(list, start, length, predicate) >= 0;
+        public static bool IsPartitioned<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
+            return FindPartitionPoint(source, index, count, predicate) >= 0;
         }
 
         static int UnguardedPartition<T>(IList<T> list, int start, int length, Predicate<T> predicate) {
@@ -980,30 +970,30 @@ namespace WmcSoft.Collections.Generic
         /// Implements a partition of the list 
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="source">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
-        public static int Partition<T>(this IList<T> list, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int Partition<T>(this IList<T> source, Predicate<T> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedPartition(list, 0, list.Count, predicate);
+            return UnguardedPartition(source, 0, source.Count, predicate);
         }
 
         /// <summary>
         /// Implements a partition of the list 
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="start">The start index of the sequence</param>
-        /// <param name="length">The length of the sequence</param>
+        /// <param name="source">The list</param>
+        /// <param name="index">The start index of the sequence</param>
+        /// <param name="count">The length of the sequence</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
-        public static int Partition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int Partition<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedPartition(list, start, length, predicate);
+            return UnguardedPartition(source, index, count, predicate);
         }
 
         private static int UnguardedStablePartition<T>(this IList<T> list, T[] buffer, int start, int length, Predicate<T> predicate) {
@@ -1042,30 +1032,30 @@ namespace WmcSoft.Collections.Generic
         /// Implements a stable partition of the list 
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
+        /// <param name="source">The list</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
-        public static int StablePartition<T>(this IList<T> list, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int StablePartition<T>(this IList<T> source, Predicate<T> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedStablePartition(list, 0, list.Count, predicate);
+            return UnguardedStablePartition(source, 0, source.Count, predicate);
         }
 
         /// <summary>
         /// Implements a stable partition of the list 
         /// </summary>
         /// <typeparam name="T">The type of items</typeparam>
-        /// <param name="list">The list</param>
-        /// <param name="start">The start index of the sequence</param>
-        /// <param name="length">The length of the sequence</param>
+        /// <param name="source">The list</param>
+        /// <param name="index">The start index of the sequence</param>
+        /// <param name="count">The length of the sequence</param>
         /// <param name="predicate">Thre predicate</param>
         /// <returns>The partition point</returns>
-        public static int StablePartition<T>(this IList<T> list, int start, int length, Predicate<T> predicate) {
-            if (list == null) throw new ArgumentNullException("list");
+        public static int StablePartition<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
+            Guard(source, index, count);
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return UnguardedStablePartition(list, start, length, predicate);
+            return UnguardedStablePartition(source, index, count, predicate);
         }
 
         #endregion
@@ -1076,17 +1066,17 @@ namespace WmcSoft.Collections.Generic
         /// Removes the last element from the list and returns it.
         /// </summary>
         /// <typeparam name="T">The type of elements in the list.</typeparam>
-        /// <param name="list">The list.</param>
+        /// <param name="source">The list.</param>
         /// <exception cref="ArgumentNullException">The list is null.</exception>
         /// <exception cref="InvalidOperationException">The list is empty.</exception>
         /// <returns>The last element from the list.</returns>
-        public static T Pop<T>(this IList<T> list) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (list.Count == 0) throw new InvalidOperationException();
+        public static T Pop<T>(this IList<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source.Count == 0) throw new InvalidOperationException();
 
-            var last = list.Count - 1;
-            var t = list[last];
-            list.RemoveAt(last);
+            var last = source.Count - 1;
+            var t = source[last];
+            source.RemoveAt(last);
             return t;
         }
 
@@ -1094,18 +1084,18 @@ namespace WmcSoft.Collections.Generic
         /// Removes the element at the specified <param name="index"/> from the list and returns it.
         /// </summary>
         /// <typeparam name="T">The type of elements in the list.</typeparam>
-        /// <param name="list">The list.</param>
+        /// <param name="source">The list.</param>
         /// <param name="index">The index of the element to remove.</param>
         /// <exception cref="ArgumentNullException">The list is null.</exception>
         /// <exception cref="InvalidOperationException">The list is empty.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><param name="index"/> is not a valid index in the <paramref name="list"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><param name="index"/> is not a valid index in the <paramref name="source"/>.</exception>
         /// <returns>The last element from the list.</returns>
-        public static T Pop<T>(this IList<T> list, int index) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (list.Count == 0) throw new InvalidOperationException();
+        public static T Pop<T>(this IList<T> source, int index) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source.Count == 0) throw new InvalidOperationException();
 
-            var t = list[index];
-            list.RemoveAt(index);
+            var t = source[index];
+            source.RemoveAt(index);
             return t;
         }
 
@@ -1166,30 +1156,29 @@ namespace WmcSoft.Collections.Generic
         /// Remove a range of items from a collection. 
         /// </summary>
         /// <typeparam name="T">Type of objects within the collection.</typeparam>
-        /// <param name="self">The collection to remove items from.</param>
+        /// <param name="source">The collection to remove items from.</param>
         /// <param name="items">The items to remove from the collection.</param>
         /// <returns>The count of items removed from the collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static int RemoveRange<T>(this ICollection<T> self, IEnumerable<T> items) {
-            if (self == null)
-                throw new ArgumentNullException("self");
+        public static int RemoveRange<T>(this ICollection<T> source, IEnumerable<T> items) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (items == null)
                 return 0;
 
-            ICollection collection = self as ICollection;
+            ICollection collection = source as ICollection;
             int count = 0;
 
             if (collection != null && collection.IsSynchronized) {
                 lock (collection.SyncRoot) {
                     foreach (var each in items) {
-                        if (self.Remove(each))
+                        if (source.Remove(each))
                             count++;
                     }
                 }
             } else {
                 foreach (var each in items) {
-                    if (self.Remove(each))
+                    if (source.Remove(each))
                         count++;
                 }
             }
@@ -1201,10 +1190,11 @@ namespace WmcSoft.Collections.Generic
 
         #region Reserve
 
-        public static void Reserve<T>(this List<T> list, int extraSpace) {
-            var required = list.Count + extraSpace;
-            if (list.Capacity < required)
-                list.Capacity = required;
+        public static List<T> Reserve<T>(this List<T> source, int extraSpace) {
+            var required = source.Count + extraSpace;
+            if (source.Capacity < required)
+                source.Capacity = required;
+            return source;
         }
 
         #endregion
@@ -1218,7 +1208,6 @@ namespace WmcSoft.Collections.Generic
             readonly int _length;
 
             public SliceList(IList<T> underlying, int startIndex, int length) {
-
                 _underlying = underlying;
                 _startIndex = startIndex;
                 _length = length;
@@ -1292,7 +1281,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IList<T> Slice<T>(this IList<T> list, int startIndex, int length) {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
             if (length < 0 || startIndex > (list.Count - length)) throw new ArgumentOutOfRangeException("length");
 
@@ -1333,35 +1322,159 @@ namespace WmcSoft.Collections.Generic
 
         #region Shuffle methods
 
-        /// <summary>
-        /// Suffles in place items of the list.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
-        /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
-        public static void Shuffle<T>(this IList<T> list) {
-            Shuffle(list, new Random());
+        static void UnguardedShuffle<T>(IList<T> list, int index, int count, Random random) {
+            int end = index + count;
+            int j;
+            for (int i = index; i < end; i++) {
+                j = random.Next(i, end);
+                SwapItems(list, i, j);
+            }
         }
 
         /// <summary>
         /// Suffles in place items of the list.
         /// </summary>
-        /// <param name="list">The list.</param>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="source">The list.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
+        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
+        public static void Shuffle<T>(this IList<T> source) {
+            Shuffle(source, new Random());
+        }
+
+        /// <summary>
+        /// Suffles in place items of the list.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="source">The list.</param>
         /// <param name="random">The random object to use to perfom the suffle.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
         /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
-        public static void Shuffle<T>(this IList<T> list, Random random) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (random == null) throw new ArgumentNullException("random");
-            if (list.IsReadOnly) throw new ArgumentException();
+        public static void Shuffle<T>(this IList<T> source, Random random) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
-            int j;
-            for (int i = 0; i < list.Count; i++) {
-                j = random.Next(i, list.Count);
-                SwapItems(list, i, j);
+            UnguardedShuffle(source, 0, source.Count, random);
+        }
+
+        /// <summary>
+        /// Splits the items in half (a bottom half and a top half) and 
+        /// then interweaves each half of the deck such that every-other item came 
+        /// from the same half of the list.
+        /// The first item will move to second place.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="source">The list.</param>
+        /// <remarks>See https://en.wikipedia.org/wiki/Faro_shuffle and https://en.wikipedia.org/wiki/In_shuffle for more information.</remarks>
+        public static void PerfectInShuffle<T>(this IList<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if ((source.Count % 2) == 1) throw new ArgumentException(nameof(source));
+
+            UnguardedPerfectInShuffle(source, 0, source.Count);
+        }
+
+        public static void PerfectInShuffle<T>(this IList<T> source, int index, int count) {
+            Guard(source, index, count);
+            if ((count % 2) == 1) throw new ArgumentException(nameof(count));
+
+            UnguardedPerfectInShuffle(source, index, count);
+        }
+
+        static void UnguardedPerfectInShuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[i] = list[m + j];
+                aux[i + 1] = list[index + j];
             }
+            aux.CopyTo(list, index, count);
+        }
+
+        public static void PerfectInUnshuffle<T>(this IList<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if ((source.Count % 2) == 1) throw new ArgumentException(nameof(source));
+
+            UnguardedPerfectInUnshuffle(source, 0, source.Count);
+        }
+
+        public static void PerfectInUnshuffle<T>(this IList<T> source, int index, int count) {
+            Guard(source, index, count);
+            if ((count % 2) == 1) throw new ArgumentException(nameof(count));
+
+            UnguardedPerfectInUnshuffle(source, index, count);
+        }
+
+        static void UnguardedPerfectInUnshuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[index + j] = list[i + 1];
+                aux[m + j] = list[i];
+            }
+            aux.CopyTo(list, index, count);
+        }
+
+        /// <summary>
+        /// Splits the items in half (a bottom half and a top half) and 
+        /// then interweaves each half such that every-other item came 
+        /// from the same half of the list.
+        /// The first item remain first.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="source">The list.</param>
+        /// <remarks>See https://en.wikipedia.org/wiki/Faro_shuffle and https://en.wikipedia.org/wiki/Out_shuffle for more information.</remarks>
+        public static void PerfectOutShuffle<T>(this IList<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if ((source.Count % 2) == 1) throw new ArgumentException(nameof(source));
+
+            UnguardedPerfectOutShuffle(source, 0, source.Count);
+        }
+
+        public static void PerfectOutShuffle<T>(this IList<T> source, int index, int count) {
+            Guard(source, index, count);
+            if ((count % 2) == 1) throw new ArgumentException(nameof(count));
+
+            UnguardedPerfectOutShuffle(source, index, count);
+        }
+
+        static void UnguardedPerfectOutShuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[i] = list[index + j];
+                aux[i + 1] = list[m + j];
+            }
+            aux.CopyTo(list, index, count);
+        }
+
+        public static void PerfectOutUnshuffle<T>(this IList<T> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if ((source.Count % 2) == 1) throw new ArgumentException(nameof(source));
+
+            UnguardedPerfectOutUnshuffle(source, 0, source.Count);
+        }
+
+        public static void PerfectOutUnshuffle<T>(this IList<T> source, int index, int count) {
+            Guard(source, index, count);
+            if ((count % 2) == 1) throw new ArgumentException(nameof(count));
+
+            UnguardedPerfectOutUnshuffle(source, index, count);
+        }
+
+        static void UnguardedPerfectOutUnshuffle<T>(IList<T> list, int index, int count) {
+            var aux = new T[count];
+            int m = index + count / 2;
+            int r = index + count;
+            for (int i = index, j = 0; i < r; i += 2, j++) {
+                aux[index + j] = list[i];
+                aux[m + j] = list[i + 1];
+            }
+            aux.CopyTo(list, index, count);
         }
 
         #endregion
@@ -1371,16 +1484,16 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Swaps two items.
         /// </summary>
-        /// <param name="list">The list.</param>
+        /// <param name="source">The list.</param>
         /// <param name="i">The item at the <paramref name="i"/> index.</param>
         /// <param name="j">The item at the <paramref name="j"/> index.</param>
         /// <returns>The list</returns>
-        /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
-        public static IList<T> SwapItems<T>(this IList<T> list, int i, int j) {
-            T temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-            return list;
+        /// <remarks>This function does not guard against null list or out of bound indices for performance reasons.</remarks>
+        public static IList<T> SwapItems<T>(this IList<T> source, int i, int j) {
+            T temp = source[i];
+            source[i] = source[j];
+            source[j] = temp;
+            return source;
         }
 
         #endregion
@@ -1397,8 +1510,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An array or null if collection is null</returns>
         /// <remarks>Uses the Count of items of the collection to avoid amortizing reallocations.</remarks>
         public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> convert) {
-            if (convert == null)
-                throw new ArgumentNullException("convert");
+            if (convert == null) throw new ArgumentNullException(nameof(convert));
             if (collection == null)
                 return null;
 
@@ -1422,8 +1534,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An array</returns>
         /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
         public static TOutput[] ToArray<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> convert) {
-            if (convert == null)
-                throw new ArgumentNullException("convert");
+            if (convert == null) throw new ArgumentNullException(nameof(convert));
             if (list == null)
                 return null;
 
