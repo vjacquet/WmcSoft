@@ -31,10 +31,12 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using static WmcSoft.Helpers;
 
 namespace WmcSoft.Time
 {
+    [DebuggerDisplay("{ToString(), nq}")]
     public struct TimeRate : IEquatable<TimeRate>
     {
         private readonly decimal _quantity;
@@ -43,10 +45,6 @@ namespace WmcSoft.Time
         public TimeRate(decimal quantity, Duration unit) {
             _quantity = quantity;
             _unit = unit;
-        }
-
-        public override string ToString() {
-            return base.ToString();
         }
 
         public decimal Over(Duration duration) {
@@ -58,14 +56,11 @@ namespace WmcSoft.Time
         }
 
         public decimal Over(Duration duration, int scale, RoundingMode rounding) {
-            throw new NotImplementedException();
-            //return duration.dividedBy(unit).times(quantity).decimalValue(scale, roundRule);
+            return duration.DividedBy(_unit).MultipliedBy(_quantity).GetDecimalValue(scale, rounding);
         }
 
         public int Scale {
-            get {
-                return _quantity.Scale();
-            }
+            get { return _quantity.Scale(); }
         }
 
         #region Operators
@@ -98,6 +93,14 @@ namespace WmcSoft.Time
 
         public override int GetHashCode() {
             return Hash(_quantity.GetHashCode(), _unit.GetHashCode());
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override string ToString() {
+            return _quantity + " per " + _unit;
         }
 
         #endregion

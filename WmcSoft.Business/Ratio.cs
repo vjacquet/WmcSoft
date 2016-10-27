@@ -48,7 +48,7 @@ namespace WmcSoft
     /// the responsibilities that enable an appropriate choice of these parameters.
     /// </remarks>
     [Serializable]
-    internal struct Ratio : IEquatable<Ratio>, IFormattable
+    internal struct Ratio : IEquatable<Ratio>
     {
         #region Constants
 
@@ -84,113 +84,14 @@ namespace WmcSoft
 
         #endregion
 
-        #region Operators
-
-        public static implicit operator Ratio(int x) {
-            return new Ratio(x);
-        }
-        public static Ratio FromInt32(int x) {
-            return x;
-        }
-
-        public static implicit operator Ratio(long x) {
-            return new Ratio(x);
-        }
-        public static Ratio FromInt64(long x) {
-            return x;
-        }
-
-        public static implicit operator Ratio(decimal x) {
-            return new Ratio(x);
-        }
-        public static Ratio Of(decimal x) {
-            return x;
-        }
-
-        public static implicit operator decimal(Ratio q) {
-            return q._numerator / q._denominator;
-        }
-
-        public static explicit operator int(Ratio q) {
-            var d = (decimal)q;
-            try {
-                d = d.Round(RoundingMode.Unnecessary);
-            }
-            catch (OverflowException) {
-                throw new InvalidCastException();
-            }
-            return (int)d;
-        }
-
-        public static int FromInt32(Ratio q) {
-            return (int)q;
-        }
-
-        public static Ratio operator +(Ratio x, Ratio y) {
-            return new Ratio(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
-        }
-        public static Ratio Add(Ratio x, Ratio y) {
-            return x + y;
-        }
-
-        public static Ratio operator -(Ratio x, Ratio y) {
-            return new Ratio(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
-        }
-        public static Ratio Subtract(Ratio x, Ratio y) {
-            return x - y;
-        }
-
-        public static Ratio operator *(Ratio x, Ratio y) {
-            return new Ratio(x._numerator * y._numerator, x._denominator * y._denominator);
-        }
-
-        public static Ratio Multiply(Ratio x, Ratio y) {
-            return x * y;
-        }
-
-        public static Ratio operator /(Ratio x, Ratio y) {
-            if (x._numerator == 0m)
-                return Zero;
-            if (y._numerator == 0m)
-                throw new DivideByZeroException();
-
-            return new Ratio(x._numerator * y._denominator, x._denominator * y._numerator);
-        }
-        public static Ratio Divide(Ratio x, Ratio y) {
-            return x / y;
-        }
-
-        public static Ratio operator -(Ratio x) {
-            return new Ratio(-x._numerator, x._denominator);
-        }
-        public static Ratio Negate(Ratio x) {
-            return -x;
-        }
-
-        public static Ratio operator +(Ratio x) {
-            return x;
-        }
-        public static Ratio Plus(Ratio x) {
-            return x;
-        }
-
-        public Ratio Inverse() {
-            if (_numerator > 0m)
-                return new Ratio(_denominator, _numerator);
-            if (_numerator < 0m)
-                return new Ratio(-_denominator, -_numerator);
-            throw new DivideByZeroException();
-        }
-        public static Ratio Inverse(Ratio x) {
-            return x.Inverse();
-        }
-
         public decimal GetDecimalValue(int scale, RoundingMode roundingRule) {
             var value = _numerator / _denominator;
             return value.Round(scale, roundingRule);
         }
 
-        #endregion
+        public Ratio MultipliedBy(decimal multiplicand) {
+            return new Ratio(_numerator * multiplicand, _denominator);
+        }
 
         #region IEquatable<Ratio> Membres
 
@@ -210,20 +111,12 @@ namespace WmcSoft
 
         #endregion
 
-        #region IFormattable Membres
+        #region Overrides
 
         public override string ToString() {
-            return ToString(null, null);
-        }
-        public string ToString(IFormatProvider formatProvider) {
-            return ToString(null, formatProvider);
-        }
-        public string ToString(string format, IFormatProvider formatProvider = null) {
             if (_denominator == 1m || _numerator == 0m)
-                return _numerator.ToString(format, formatProvider);
-            return _numerator.ToString(format, formatProvider)
-                + '/'
-                + _denominator.ToString(format, formatProvider);
+                return _numerator.ToString();
+            return _numerator.ToString() + '/' + _denominator.ToString();
         }
 
         #endregion
