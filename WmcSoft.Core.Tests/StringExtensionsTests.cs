@@ -158,6 +158,20 @@ namespace WmcSoft
         }
 
         [TestMethod]
+        public void CanEnsurePrefix() {
+            Assert.AreEqual("mytest", "test".EnsurePrefix("my"));
+            Assert.AreEqual("mytest", "mytest".EnsurePrefix("my"));
+            Assert.AreEqual("mytest", "test".EnsureAffixes("my", ""));
+        }
+
+        [TestMethod]
+        public void CanEnsureSuffix() {
+            Assert.AreEqual("test*", "test".EnsureSuffix("*"));
+            Assert.AreEqual("test*", "test*".EnsureSuffix("*"));
+            Assert.AreEqual("/test*", "test".EnsureAffixes("/", "*"));
+        }
+
+        [TestMethod]
         public void CheckGlob() {
             Assert.IsTrue("abaaba".Glob("a?aaba"));
             Assert.IsTrue("abaaba".Glob("ab*a"));
