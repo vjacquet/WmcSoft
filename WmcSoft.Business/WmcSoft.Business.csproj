@@ -229,6 +229,7 @@
     <Compile Include="Time\IntervalLimit.cs" />
     <Compile Include="Time\MinuteOfHour.cs" />
     <Compile Include="Time\HourOfDay.cs" />
+    <Compile Include="Time\TimeInterval.cs" />
     <Compile Include="Time\TimeOfDay.cs" />
     <Compile Include="Time\TimePoint.cs" />
     <Compile Include="Time\TimeRate.cs" />

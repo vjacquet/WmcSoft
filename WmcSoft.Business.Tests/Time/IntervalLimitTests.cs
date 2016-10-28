@@ -25,7 +25,6 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        [Ignore]
         public void CanCompareIntervalLimitsWithUndefined() {
             var undefined = IntervalLimit<int>.Undefined;
             var lower = IntervalLimit.Lower(false, 1);

@@ -76,13 +76,16 @@ namespace WmcSoft.Time
         }
 
         public int CompareTo(IntervalLimit<T> other) {
+            // `null` is lesser than lower bounds, but greater than upper bounds
+            // to mimic -∞ < limit < ∞
             if (!HasValue) {
                 if (!other.HasValue)
                     return 0;
-                return IsLower ? -1 : 1;
+                return other.IsLower ? -1 : 1;
             }
             if (!other.HasValue)
-                return other.IsLower ? 1 : -1;
+                return IsLower ? 1 : -1;
+            // should the limit be equal when only the value are equal?
             return _value.CompareTo(other._value);
         }
 
