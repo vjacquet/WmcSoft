@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Resources;
 
 namespace WmcSoft.Units
@@ -32,7 +33,7 @@ namespace WmcSoft.Units
     /// <summary>
     /// Description résumée de SIBaseUnit.
     /// </summary>
-    [System.Diagnostics.DebuggerStepThrough]
+    [DebuggerStepThrough]
     public class SIBaseUnit : Unit
     {
         readonly string _symbol;
@@ -52,7 +53,7 @@ namespace WmcSoft.Units
         }
 
         public override SystemOfUnits SystemOfUnits {
-            get { return SystemOfUnits.SI; }
+            get { return SystemOfUnits.International; }
         }
 
         public override string Name {

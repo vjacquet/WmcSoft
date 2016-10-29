@@ -66,7 +66,7 @@ namespace WmcSoft.Units
 
         #region Global access
 
-        public static SI SI {
+        public static SI International {
             get { return SI.GetSystemOfUnit(); }
         }
         public static ImperialSystemOfUnit Imperial {

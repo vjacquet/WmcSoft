@@ -48,7 +48,7 @@ namespace WmcSoft.Units
                 kelvin=new Kelvin(),
                 mole= new Mole(),
                 candela= new Candela(),
-                new KnownDerivedUnit("Celsius", SystemOfUnits.SI, SI.Kelvin),
+                new KnownDerivedUnit("Celsius", SystemOfUnits.International, SI.Kelvin),
             };
             UnitConverter.RegisterConversion(new Conversion.CelsiusToKelvinConversion());
 
