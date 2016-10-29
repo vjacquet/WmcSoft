@@ -345,6 +345,57 @@ namespace WmcSoft
 
         #endregion
 
+        #region EnsurePrefix/EnsureSuffix/EnsureAffixes
+
+        public static string EnsurePrefix(this string self, string prefix) {
+            return EnsurePrefix(self, prefix, StringComparison.CurrentCulture);
+        }
+
+        public static string EnsurePrefix(this string self, string prefix, StringComparison comparison) {
+            if (self == null || self.StartsWith(prefix, comparison))
+                return self;
+            return prefix + self;
+        }
+
+        public static string EnsureSuffix(this string self, string suffix) {
+            return EnsureSuffix(self, suffix, StringComparison.CurrentCulture);
+        }
+
+        public static string EnsureSuffix(this string self, string suffix, StringComparison comparison) {
+            if (self == null || self.EndsWith(suffix, comparison))
+                return self;
+            return self + suffix;
+        }
+
+        public static string EnsureAffixes(this string self, string affix) {
+            return EnsureAffixes(self, affix, affix, StringComparison.CurrentCulture);
+        }
+
+        public static string EnsureAffixes(this string self, string affix, StringComparison comparison) {
+            return EnsureAffixes(self, affix, affix, comparison);
+        }
+
+        public static string EnsureAffixes(this string self, string prefix, string suffix) {
+            return EnsureAffixes(self, prefix, suffix, StringComparison.CurrentCulture);
+        }
+
+        public static string EnsureAffixes(this string self, string prefix, string suffix, StringComparison comparison) {
+            if (self == null)
+                return self;
+            var starts = self.StartsWith(prefix, comparison);
+            var ends = self.EndsWith(suffix, comparison);
+            if (starts & ends) {
+                return self;
+            } else if (starts) {
+                return self + suffix;
+            } else if (ends) {
+                return prefix + self;
+            }
+            return prefix + self + suffix;
+        }
+
+        #endregion
+
         #region FormatWith
 
         /// <summary>

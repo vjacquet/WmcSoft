@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading;
 
 namespace WmcSoft.Threading
 {
@@ -37,11 +38,9 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        private IDictionary<Type, ServiceCreatorCallback> _callbacks;
         private readonly ServiceContainer _serviceContainer;
-
-        [ThreadStatic]
-        static IDictionary<ThreadStaticServiceContainer, IServiceContainer> threadStaticContainers;
+        private readonly ThreadLocal<ServiceContainer> _local;
+        private Dictionary<Type, ServiceCreatorCallback> _callbacks;
 
         #endregion
 
@@ -52,6 +51,7 @@ namespace WmcSoft.Threading
         /// </summary>
         public ThreadStaticServiceContainer() {
             _serviceContainer = new ServiceContainer();
+            _local = new ThreadLocal<ServiceContainer>(CreateLocalServiceContainer, true);
         }
 
         /// <summary>
@@ -60,35 +60,28 @@ namespace WmcSoft.Threading
         /// <param name="serviceProvider">The service provider.</param>
         public ThreadStaticServiceContainer(IServiceProvider serviceProvider) {
             _serviceContainer = new ServiceContainer(serviceProvider);
+            _local = new ThreadLocal<ServiceContainer>(CreateLocalServiceContainer, true);
         }
 
         #endregion
 
         #region Properties
 
+        ServiceContainer CreateLocalServiceContainer() {
+            var serviceContainer = new ServiceContainer(_serviceContainer);
+            if (_callbacks != null) {
+                foreach (var callback in _callbacks) {
+                    serviceContainer.AddService(callback.Key, callback.Value, false);
+                }
+            }
+            return serviceContainer;
+        }
+
         /// <summary>
         /// Gets the thread local static container.
         /// </summary>
-        private IServiceContainer ThreadLocalStaticContainer
-        {
-            get {
-                if (threadStaticContainers == null) {
-                    threadStaticContainers = new Dictionary<ThreadStaticServiceContainer, IServiceContainer>();
-                }
-                IServiceContainer serviceContainer;
-                if (!threadStaticContainers.TryGetValue(this, out serviceContainer)) {
-                    serviceContainer = new ServiceContainer(this._serviceContainer);
-                    lock (serviceContainer) {
-                        if (_callbacks != null) {
-                            foreach (var callback in _callbacks) {
-                                serviceContainer.AddService(callback.Key, callback.Value, false);
-                            }
-                        }
-                    }
-                    threadStaticContainers.Add(this, serviceContainer);
-                }
-                return serviceContainer;
-            }
+        private IServiceContainer ThreadLocalStaticContainer {
+            get { return _local.Value; }
         }
 
         #endregion
@@ -180,6 +173,9 @@ namespace WmcSoft.Threading
         #endregion
 
         public void Dispose() {
+            foreach (var container in _local.Values)
+                container.Dispose();
+            _local.Dispose();
             _serviceContainer.Dispose();
         }
     }
