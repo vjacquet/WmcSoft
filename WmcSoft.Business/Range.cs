@@ -34,7 +34,7 @@ namespace WmcSoft
 {
     /// <summary>
     /// Stores a range of objects within a single object. This class is useful to use as the
-    /// T of a list.
+    /// <typeparamref name="T"/> of a list.
     /// </summary>
     /// <remarks>The default bounding strategy is <see cref="BoundStrategy{T}.UpperExclusive"/>.</remarks>
     /// <typeparam name="T">The type</typeparam>
@@ -92,20 +92,20 @@ namespace WmcSoft
 
         #region Methods
 
-        public bool IsLower(T value) {
+        public bool IsLowerThan(T value) {
             return value.CompareTo(Upper) > 0;
         }
 
-        public bool IsUpper(T value) {
+        public bool IsUpperthan(T value) {
             return value.CompareTo(Lower) < 0;
         }
 
-        public bool IsAdjacent(Range<T> other) {
+        public bool IsAdjacentTo(Range<T> other) {
             return Upper.CompareTo(other.Lower) == 0 || Lower.CompareTo(other.Upper) == 0;
         }
 
         public bool Includes(Range<T> other) {
-            return other.IsLower(Upper) && other.IsUpper(Lower);
+            return other.IsLowerThan(Upper) && other.IsUpperthan(Lower);
         }
 
         public bool Includes<TStrategy>(T value, TStrategy strategy) where TStrategy : IBoundStrategy<T> {
@@ -117,11 +117,11 @@ namespace WmcSoft
         }
 
         public bool Overlaps(Range<T> other) {
-            return IsLower(other.Upper) && Includes(other.Lower) || IsUpper(other.Lower) && Includes(other.Upper);
+            return IsLowerThan(other.Upper) && Includes(other.Lower) || IsUpperthan(other.Lower) && Includes(other.Upper);
         }
 
         public bool IsDistinct(Range<T> other) {
-            return other.IsLower(Lower) || other.IsUpper(Upper);
+            return other.IsLowerThan(Lower) || other.IsUpperthan(Upper);
         }
 
         public Range<T> GapBetween(Range<T> other) {
@@ -138,8 +138,8 @@ namespace WmcSoft
             return Merge(ranges);
         }
 
-        public static bool IsContiguous(IEnumerable<Range<T>> enumerable) {
-            var list = new List<Range<T>>(enumerable);
+        public static bool IsContiguous(IEnumerable<Range<T>> collection) {
+            var list = new List<Range<T>>(collection);
             list.Sort();
             return IsContiguous(list);
         }
@@ -147,7 +147,7 @@ namespace WmcSoft
         private static bool IsContiguous(IList<Range<T>> list) {
             // requires list is sorted
             for (int i = 1; i < list.Count; i++) {
-                if (!list[i - 1].IsAdjacent(list[i]))
+                if (!list[i - 1].IsAdjacentTo(list[i]))
                     return false;
             }
             return true;
@@ -272,8 +272,13 @@ namespace WmcSoft
         public static Range<T> Inflate<T, O>(this Range<T> range, int delta, O ordinal)
             where T : IComparable<T>
             where O : IOrdinal<T> {
-
             return new Range<T>(ordinal.Advance(range.Lower, -delta), ordinal.Advance(range.Upper, delta));
+        }
+
+        public static Range<T> Shift<T, O>(this Range<T> range, int delta, O ordinal)
+            where T : IComparable<T>
+            where O : IOrdinal<T> {
+            return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
         }
     }
 }
