@@ -30,6 +30,8 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft.Time
 {
     public static class TimeInterval
@@ -40,6 +42,57 @@ namespace WmcSoft.Time
 
         public static Interval<TimePoint> Over(TimePoint start, TimePoint end) {
             return Over(start, true, end, false);
+        }
+
+        public static Interval<TimePoint> StartingFrom(TimePoint start, bool startClosed, Duration length, bool endClosed) {
+            TimePoint end = start + length;
+            return Over(start, startClosed, end, endClosed);
+        }
+
+        /// <remarks>Uses the common default for time intervals, [start, end)</remarks>
+        public static Interval<TimePoint> StartingFrom(TimePoint start, Duration length) {
+            return StartingFrom(start, true, length, false);
+        }
+
+        public static Interval<TimePoint> Preceding(TimePoint end, bool startClosed, Duration length, bool endClosed) {
+            TimePoint start = end - length;
+            return Over(start, startClosed, end, endClosed);
+        }
+
+        /// <remarks>Uses the common default for time intervals, [start, end)</remarks>
+        public static Interval<TimePoint> Preceding(TimePoint end, Duration length) {
+            return Preceding(end, true, length, false);
+        }
+
+        public static Interval<TimePoint> Closed(TimePoint start, TimePoint end) {
+            return Over(start, true, end, true);
+        }
+
+        public static Interval<TimePoint> Open(TimePoint start, TimePoint end) {
+            return Over(start, false, end, false);
+        }
+
+        public static Interval<TimePoint> Since(TimePoint start) {
+            return new Interval<TimePoint>(IntervalLimit.Lower(true, start), IntervalLimit<TimePoint>.Undefined);
+        }
+
+        public static Interval<TimePoint> Until(TimePoint end) {
+            return new Interval<TimePoint>(IntervalLimit<TimePoint>.Undefined, IntervalLimit.Lower(false, end));
+        }
+
+        public static Duration? Length(this Interval<TimePoint> interval) {
+            if (!interval.Lower.HasValue || !interval.Upper.HasValue)
+                return null;
+
+            return interval.Upper.GetValueOrDefault() - interval.Lower.GetValueOrDefault();
+        }
+
+        public static TimePoint Start(this Interval<TimePoint> interval) {
+            return interval.Lower.Value;
+        }
+
+        public static TimePoint End(this Interval<TimePoint> interval) {
+            return interval.Upper.Value;
         }
     }
 }

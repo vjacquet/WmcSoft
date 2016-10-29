@@ -32,7 +32,7 @@
 
 using System;
 
-namespace WmcSoft.Time
+namespace WmcSoft
 {
     [Serializable]
     public struct IntervalLimit<T> : IComparable<IntervalLimit<T>>, IEquatable<IntervalLimit<T>>

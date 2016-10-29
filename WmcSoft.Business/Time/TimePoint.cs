@@ -97,6 +97,10 @@ namespace WmcSoft.Time
             return t - d;
         }
 
+        public static Duration operator -(TimePoint x, TimePoint y) {
+            return y._storage - x._storage;
+        }
+
         public static bool operator ==(TimePoint x, TimePoint y) {
             return x.Equals(y);
         }

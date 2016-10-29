@@ -31,7 +31,7 @@ for theses "results" class.
 Most features can be enable only when extra data are stored. Therefore, the UserManager's Store can implement several interfaces and the UserManager have check methods
 to tell the developer which are available. This design decision has two drawbacks:
 
-0. the check is done at runtime;
+1. the check is done at runtime;
 
 0. the developer has more work because he/she have to be prepared for the fact that a feature is unavailable.
 

@@ -81,11 +81,13 @@ _Library of components to build business applications._
 
 - Accounting
 
-- Time, adapted from <http://domainlanguage.com>'s time & money.
+- Time, adapted from <http://domainlanguage.com>'s time & money:
 
-  `TimePoint` is equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
+  - `TimePoint` is equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
 
-  `TimeUnit` should derive from WmcSoft's units.
+  - `TimeUnit` should derive from WmcSoft's units.
+
+  - `newOfSameType()` factory methods are not required for value types.
 
 ### WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._

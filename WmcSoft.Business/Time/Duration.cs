@@ -147,6 +147,10 @@ namespace WmcSoft.Time
             return _quantity * _unit.Factor;
         }
 
+        public static Duration Between(TimePoint x, TimePoint y) {
+            return y - x;
+        }
+
         #region Operators
 
         public static implicit operator Duration(TimeSpan x) {

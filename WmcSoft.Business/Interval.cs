@@ -33,7 +33,7 @@
 using System;
 using System.Text;
 
-namespace WmcSoft.Time
+namespace WmcSoft
 {
     [Serializable]
     public struct Interval<T> : IComparable<Interval<T>>, IEquatable<Interval<T>>
@@ -73,11 +73,11 @@ namespace WmcSoft.Time
         }
 
         public bool IsEmpty() {
-            throw new NotImplementedException();
+            return IsOpen() && _lower.HasValue && _lower.CompareTo(_upper) == 0;
         }
 
         public bool IsSingleElement() {
-            throw new NotImplementedException();
+            return IsClosed() && _lower.HasValue && _lower.CompareTo(_upper) == 0;
         }
 
         public bool IsBelow(T value) {
