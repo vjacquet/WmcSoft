@@ -31,10 +31,12 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 
 namespace WmcSoft
 {
     [Serializable]
+    [ImmutableObject(true)]
     public struct IntervalLimit<T> : IComparable<IntervalLimit<T>>, IEquatable<IntervalLimit<T>>
         where T : struct, IComparable<T>
     {
@@ -44,8 +46,8 @@ namespace WmcSoft
         internal enum State
         {
             None = 0,
-            Open = 1,
-            Closed = 2,
+            Closed = 1,
+            Open = 2,
             Upper = 4,
             Lower = 8,
         }
@@ -53,9 +55,17 @@ namespace WmcSoft
         private readonly T _value;
         private readonly State _state;
 
-        public IntervalLimit(bool closed, bool lower, T value) {
-            _state = (closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper);
+        private IntervalLimit(State state, T value) {
             _value = value;
+            _state = state;
+        }
+
+        public IntervalLimit(T value, bool lower)
+            : this(State.Closed | (lower ? State.Lower : State.Upper), value) {
+        }
+
+        public IntervalLimit(T value, bool lower, bool closed)
+            : this((closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper), value) {
         }
 
         public bool IsLower { get { return (_state & State.Lower) != 0; } }
@@ -139,14 +149,24 @@ namespace WmcSoft
 
     public static class IntervalLimit
     {
-        public static IntervalLimit<T> Lower<T>(bool closed, T value)
-            where T : struct, IComparable<T> {
-            return new IntervalLimit<T>(closed, true, value);
+        public static IntervalLimit<T> Lower<T>(T value)
+          where T : struct, IComparable<T> {
+            return new IntervalLimit<T>(value, true);
         }
 
-        public static IntervalLimit<T> Upper<T>(bool closed, T value)
+        public static IntervalLimit<T> Lower<T>(T value, bool closed)
             where T : struct, IComparable<T> {
-            return new IntervalLimit<T>(closed, false, value);
+            return new IntervalLimit<T>(value, true, closed);
+        }
+
+        public static IntervalLimit<T> Upper<T>(T value)
+         where T : struct, IComparable<T> {
+            return new IntervalLimit<T>(value, false);
+        }
+
+        public static IntervalLimit<T> Upper<T>(T value, bool closed)
+            where T : struct, IComparable<T> {
+            return new IntervalLimit<T>(value, false, closed);
         }
     }
 }

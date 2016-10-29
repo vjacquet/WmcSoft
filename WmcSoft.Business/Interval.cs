@@ -31,11 +31,13 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Text;
 
 namespace WmcSoft
 {
     [Serializable]
+    [ImmutableObject(true)]
     public struct Interval<T> : IComparable<Interval<T>>, IEquatable<Interval<T>>
         where T : struct, IComparable<T>
     {
@@ -205,17 +207,17 @@ namespace WmcSoft
     {
         public static Interval<T> Closed<T>(T lower, T upper)
             where T : struct, IComparable<T> {
-            return new Interval<T>(IntervalLimit.Lower(true, lower), IntervalLimit.Upper(true, upper));
+            return new Interval<T>(IntervalLimit.Lower(lower, true), IntervalLimit.Upper(upper, true));
         }
 
         public static Interval<T> Open<T>(T lower, T upper)
             where T : struct, IComparable<T> {
-            return new Interval<T>(IntervalLimit.Lower(false, lower), IntervalLimit.Upper(false, upper));
+            return new Interval<T>(IntervalLimit.Lower(lower, false), IntervalLimit.Upper(upper, false));
         }
 
         public static Interval<T> Over<T>(T lower, bool lowerIncluded, T upper, bool upperIncluded)
             where T : struct, IComparable<T> {
-            return new Interval<T>(IntervalLimit.Lower(lowerIncluded, lower), IntervalLimit.Upper(upperIncluded, upper));
+            return new Interval<T>(IntervalLimit.Lower(lower, lowerIncluded), IntervalLimit.Upper(upper, upperIncluded));
         }
     }
 }

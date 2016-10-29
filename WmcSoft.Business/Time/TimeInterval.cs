@@ -73,11 +73,11 @@ namespace WmcSoft.Time
         }
 
         public static Interval<TimePoint> Since(TimePoint start) {
-            return new Interval<TimePoint>(IntervalLimit.Lower(true, start), IntervalLimit<TimePoint>.Undefined);
+            return new Interval<TimePoint>(IntervalLimit.Lower(start, true), IntervalLimit<TimePoint>.Undefined);
         }
 
         public static Interval<TimePoint> Until(TimePoint end) {
-            return new Interval<TimePoint>(IntervalLimit<TimePoint>.Undefined, IntervalLimit.Lower(false, end));
+            return new Interval<TimePoint>(IntervalLimit<TimePoint>.Undefined, IntervalLimit.Lower(end, false));
         }
 
         public static Duration? Length(this Interval<TimePoint> interval) {
