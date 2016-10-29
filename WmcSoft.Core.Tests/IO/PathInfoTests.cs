@@ -44,5 +44,11 @@ namespace WmcSoft.IO
             var extension = p.Extension;
             Assert.IsNull(extension);
         }
+
+        [TestMethod]
+        public void CheckCombineOperator() {
+            PathInfo p = @"c:\path";
+            Assert.AreEqual(@"c:\path\to\file", p / "to" / "file");
+        }
     }
 }
