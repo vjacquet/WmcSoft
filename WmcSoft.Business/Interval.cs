@@ -45,6 +45,9 @@ namespace WmcSoft
         private readonly IntervalLimit<T> _upper;
 
         public Interval(IntervalLimit<T> lower, IntervalLimit<T> upper) {
+            if (!lower.IsLower) throw new ArgumentException(nameof(lower));
+            if (!upper.IsUpper) throw new ArgumentException(nameof(upper));
+
             _lower = lower;
             _upper = upper;
         }
@@ -106,6 +109,22 @@ namespace WmcSoft
         }
 
         public bool Equals(Interval<T> other) {
+            switch ((IsEmpty() ? 0 : 1) | (other.IsEmpty() ? 0 : 2)) {
+            case 0:
+                return true;
+            case 1:
+            case 2:
+                return false;
+            }
+
+            switch ((IsSingleElement() ? 0 : 1) | (other.IsSingleElement() ? 0 : 2)) {
+            case 0:
+                return Lower.Equals(other.Lower);
+            case 1:
+            case 2:
+                return false;
+            }
+
             return CompareTo(other) == 0;
         }
 

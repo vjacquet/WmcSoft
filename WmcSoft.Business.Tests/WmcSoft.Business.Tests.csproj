@@ -60,6 +60,7 @@
     <Compile Include="Accounting\MoneyTests.cs" />
     <Compile Include="AutorizableTests.cs" />
     <Compile Include="GatewayResultTests.cs" />
+    <Compile Include="IntervalTests.cs" />
     <Compile Include="LatitudeTests.cs" />
     <Compile Include="PartyModel\BusinessExtensions.cs" />
     <Compile Include="PartyModel\FamilyLikeModel.cs" />
@@ -88,8 +89,9 @@
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
     <Compile Include="TemporalTests.cs" />
-    <Compile Include="Time\IntervalLimitTests.cs" />
+    <Compile Include="IntervalLimitTests.cs" />
     <Compile Include="Time\TimeOfDayTests.cs" />
+    <Compile Include="Time\DateTests.cs" />
     <Compile Include="Time\TimePointTests.cs" />
     <Compile Include="Time\DurationTests.cs" />
     <Compile Include="Time\TimeUnitTests.cs" />

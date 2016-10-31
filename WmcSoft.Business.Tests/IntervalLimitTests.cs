@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WmcSoft.Time
+namespace WmcSoft
 {
     /// <summary>
     /// Description résumée pour IntervalLimitTests

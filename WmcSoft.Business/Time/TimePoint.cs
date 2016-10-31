@@ -57,6 +57,14 @@ namespace WmcSoft.Time
             return CompareTo(other) < 0;
         }
 
+        public static TimePoint AtUtcMidnight(Date date) {
+            return DateTime.SpecifyKind(TimeOfDay.Midnight.On(date), DateTimeKind.Utc);
+        }
+
+        public static TimePoint AtMidnight(Date date, TimeZoneInfo zone) {
+            return TimeOfDay.Midnight.On(date, zone);
+        }
+
         #region Operators
 
         public static implicit operator TimePoint(DateTimeOffset x) {

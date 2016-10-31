@@ -39,6 +39,9 @@ namespace WmcSoft.Time
     [Serializable]
     public struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>
     {
+        public static readonly TimeOfDay Midnight = new TimeOfDay(0);
+        public static readonly TimeOfDay Noon = new TimeOfDay(12);
+
         private readonly TimeSpan _storage;
 
         public TimeOfDay(int hour, int minute) {
@@ -46,6 +49,12 @@ namespace WmcSoft.Time
             if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));
 
             _storage = new TimeSpan(hour, minute, 0);
+        }
+
+        public TimeOfDay(int hour) {
+            if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
+
+            _storage = new TimeSpan(hour, 0, 0);
         }
 
         public HourOfDay Hour {
@@ -87,7 +96,8 @@ namespace WmcSoft.Time
         }
 
         public DateTime On(Date date) {
-            return DateTime.SpecifyKind(date, DateTimeKind.Local).Add(_storage);
+            DateTime dateTime = date;
+            return dateTime.Add(_storage);
         }
 
         public DateTimeOffset On(Date date, TimeZoneInfo timeZone) {
