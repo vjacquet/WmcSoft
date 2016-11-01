@@ -30,14 +30,10 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.Time
 {
     public static class TimeInterval
     {
-        #region TimePoint related extensions
-
         public static Interval<TimePoint> Over(TimePoint start, bool closedStart, TimePoint end, bool closedEnd) {
             return Interval.Over(start, closedStart, end, closedEnd);
         }
@@ -96,7 +92,5 @@ namespace WmcSoft.Time
         public static TimePoint End(this Interval<TimePoint> interval) {
             return interval.Upper.Value;
         }
-
-        #endregion
     }
 }

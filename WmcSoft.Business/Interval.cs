@@ -164,7 +164,7 @@ namespace WmcSoft
         }
 
         public bool Includes(T value) {
-            throw new NotImplementedException();
+            return !_lower.IsOutside(value) && !_upper.IsOutside(value);
         }
 
         public bool Covers(T value) {

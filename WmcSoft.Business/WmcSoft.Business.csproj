@@ -222,7 +222,12 @@
     <Compile Include="Security\UncheckedTag.cs" />
     <Compile Include="Security\User.cs" />
     <Compile Include="Time\Date.cs" />
+    <Compile Include="Time\DateInterval.cs" />
+    <Compile Include="Time\DateSpecificationExtensions.cs" />
     <Compile Include="Time\Duration.cs" />
+    <Compile Include="Time\DateSpecification.cs" />
+    <Compile Include="Time\FixedDateSpecification.cs" />
+    <Compile Include="Time\FloatingDateSpecification.cs" />
     <Compile Include="Time\IDateSpecification.cs" />
     <Compile Include="Time\AnnualDateSpecification.cs" />
     <Compile Include="Interval.cs" />

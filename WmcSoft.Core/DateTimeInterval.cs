@@ -20,24 +20,42 @@
 
     4. This notice may not be removed or altered.
 
- ****************************************************************************
- * Adapted from DateSpecification.java
- * -----------------------------------
- * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
- * free software is distributed under the "MIT" licence. See file licence.txt.
- * For more information, see http://timeandmoney.sourceforge.net.
  ****************************************************************************/
 
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WmcSoft.Time
+using TDate = System.DateTime;
+
+namespace WmcSoft
 {
-    public interface IDateSpecification
+    public struct DateTimeInterval
     {
-        bool IsSatisfiedBy(Date date);
+        public TDate? Since { get; }
+        public TDate? Until { get; }
 
-        IEnumerable<Date> EnumerateOver(Interval<Date> interval);
+        public DateTimeInterval(DateTime since, DateTime until) {
+            Since = since;
+            Until = until;
+        }
+    }
+
+    [Flags]
+    public enum TypeOfInterval
+    {
+        Open = 0,
+        Closed = 3,
+        LeftClosed = 2,
+        RightOpen = 2,
+        RightClosed = 1,
+        LeftOpen = 1,
+        LeftUnbounded = 5,
+        RightUnbonded = 6,
+        Unbounded = 4,
     }
 }

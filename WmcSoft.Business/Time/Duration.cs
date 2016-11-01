@@ -151,10 +151,29 @@ namespace WmcSoft.Time
             return y - x;
         }
 
+        public static Duration Between(Date x, Date y) {
+            return BetweenDates(x, y);
+        }
+
+        static Duration BetweenDates(DateTime x, DateTime y) {
+            if (x.Day == y.Day) {
+                var years = y.Year - x.Year;
+                var months = y.Month - x.Month;
+                return Months(years * 12 + months);
+            } else {
+                var timeSpan = y - x;
+                return Days((int)timeSpan.TotalDays);
+            }
+        }
+
         #region Operators
 
         public static implicit operator Duration(TimeSpan x) {
             return new Duration(x.Days, x.Hours, x.Minutes, x.Seconds, x.Milliseconds);
+        }
+
+        public static implicit operator Duration(Interval<Date> interval) {
+            return BetweenDates(interval.Lower.Value, interval.Upper.Value);
         }
 
         public static explicit operator TimeSpan(Duration x) {

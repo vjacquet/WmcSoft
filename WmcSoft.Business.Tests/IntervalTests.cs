@@ -31,5 +31,29 @@ namespace WmcSoft
             Assert.IsFalse(actual.IsOpen());
             Assert.IsFalse(actual.IsEmpty());
         }
+
+        [TestMethod]
+        public void CheckIncludesOnOpenInterval() {
+            var open = Interval.Open(1, 10);
+
+            Assert.IsTrue(open.Includes(4));
+            Assert.IsTrue(open.Includes(8));
+            Assert.IsFalse(open.Includes(1));
+            Assert.IsFalse(open.Includes(10));
+            Assert.IsFalse(open.Includes(11));
+            Assert.IsFalse(open.Includes(0));
+        }
+
+        [TestMethod]
+        public void CheckIncludesOnClosedInterval() {
+            var open = Interval.Closed(1, 10);
+
+            Assert.IsTrue(open.Includes(4));
+            Assert.IsTrue(open.Includes(8));
+            Assert.IsTrue(open.Includes(1));
+            Assert.IsTrue(open.Includes(10));
+            Assert.IsFalse(open.Includes(11));
+            Assert.IsFalse(open.Includes(0));
+        }
     }
 }

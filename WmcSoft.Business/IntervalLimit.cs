@@ -85,6 +85,21 @@ namespace WmcSoft
             return _value;
         }
 
+        internal bool IsOutside(T value) {
+            switch (_state) {
+            case State.Lower | State.Closed:
+                return value.CompareTo(_value) < 0;
+            case State.Lower | State.Open:
+                return value.CompareTo(_value) <= 0;
+            case State.Upper | State.Open:
+                return value.CompareTo(_value) >= 0;
+            case State.Upper | State.Closed:
+                return value.CompareTo(_value) > 0;
+            default:
+                throw new InvalidOperationException();
+            }
+        }
+
         public int CompareTo(IntervalLimit<T> other) {
             // `null` is lesser than lower bounds, but greater than upper bounds
             // to mimic -∞ < limit < ∞

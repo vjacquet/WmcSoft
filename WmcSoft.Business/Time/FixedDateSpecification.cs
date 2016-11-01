@@ -21,8 +21,8 @@
     4. This notice may not be removed or altered.
 
  ****************************************************************************
- * Adapted from AnnualDateSpecification.java
- * -----------------------------------------
+ * Adapted from FixedDateSpecification.java
+ * ----------------------------------------
  * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
@@ -31,35 +31,26 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace WmcSoft.Time
 {
-    public abstract class AnnualDateSpecification : IDateSpecification
+    sealed class FixedDateSpecification : AnnualDateSpecification
     {
-        public abstract Date OfYear(int year);
+        private readonly int _month;
+        private readonly int _day;
 
-        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval) {
-            var start = interval.Lower.GetValueOrDefault();
-            var year = ((DateTime)start).Year;
-
-            var current = OfYear(year);
-            if (interval.Includes(current))
-                yield return current;
-
-            current = OfYear(++year);
-            while (interval.Includes(current)) {
-                yield return current;
-                current = OfYear(++year);
-            }
+        public FixedDateSpecification(int month, int day) {
+            _month = month;
+            _day = day;
         }
 
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval) {
-            if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
-
-            return UnguardedEnumerateOver(interval);
+        public override Date OfYear(int year) {
+            return new Date(year, _month, _day);
         }
 
-        public abstract bool IsSatisfiedBy(Date date);
+        public override bool IsSatisfiedBy(Date date) {
+            DateTime dateTime = date;
+            return dateTime.Day == _day && dateTime.Month == _month;
+        }
     }
 }
