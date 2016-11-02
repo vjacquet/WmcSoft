@@ -105,8 +105,8 @@ namespace WmcSoft
 
         static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider) {
             var dateTimeFormatInfo = formatProvider.GetFormat<DateTimeFormatInfo>();
-            DayOfWeek firstDayOfWeek = dateTimeFormatInfo.FirstDayOfWeek;
-            DayOfWeek dayOfWeek = date.DayOfWeek;
+            var firstDayOfWeek = dateTimeFormatInfo.FirstDayOfWeek;
+            var dayOfWeek = date.DayOfWeek;
             var delta = firstDayOfWeek - dayOfWeek;
             if (delta > 0)
                 delta -= 7;

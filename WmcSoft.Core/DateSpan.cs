@@ -28,6 +28,9 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents a date interval.
+    /// </summary>
     public struct DateSpan : IComparable, IComparable<DateSpan>, IEquatable<DateSpan>
     {
         #region Fields
