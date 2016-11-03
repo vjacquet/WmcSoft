@@ -163,6 +163,26 @@ namespace WmcSoft
             return sb.ToString();
         }
 
+        public bool IsBelow(T? value) {
+            if (!HasUpperLimit) return false;
+            if (!value.HasValue)
+                return true;
+            int comparison = _upper.GetValueOrDefault().CompareTo(value.GetValueOrDefault());
+            return comparison < 0 || (comparison == 0 && !IncludesUpperLimit());
+        }
+
+        public bool IsAbove(T? value) {
+            if (!HasLowerLimit) return false;
+            if (!value.HasValue)
+                return true;
+            int comparison = _lower.GetValueOrDefault().CompareTo(value.GetValueOrDefault());
+            return comparison > 0 || (comparison == 0 && !IncludesLowerLimit());
+        }
+
+        public bool Includes(T? value) {
+            return !IsBelow(value) && !IsAbove(value);
+        }
+
         public bool Includes(T value) {
             return !_lower.IsOutside(value) && !_upper.IsOutside(value);
         }
@@ -212,11 +232,57 @@ namespace WmcSoft
         private T? LesserOfLowerLimits(Interval<T> other) {
             if (!HasLowerLimit)
                 return null;
-
-            int lowerComparison = _lower.CompareTo(other._lower);
-            if (lowerComparison <= 0)
+            int comparison = _lower.CompareTo(other._lower);
+            if (comparison <= 0)
                 return GetLowerOrDefault();
             return (T?)other._lower;
+        }
+
+        private T? GreaterOfLowerLimits(Interval<T> other) {
+            if (!HasLowerLimit)
+                return (T?)other._lower;
+            int comparison = _lower.CompareTo(other._lower);
+            if (comparison >= 0)
+                return GetLowerOrDefault();
+            return (T?)other._lower;
+        }
+
+        private T? LesserOfUpperLimits(Interval<T> other) {
+            if (!HasUpperLimit)
+                return (T?)other._upper;
+            int comparison = _upper.CompareTo(other._upper);
+            if (comparison <= 0)
+                return GetUpperOrDefault();
+            return (T?)other._upper;
+        }
+
+        private T? GreaterOfUpperLimits(Interval<T> other) {
+            if (!HasUpperLimit)
+                return (T?)other._upper;
+            int comparison = _upper.CompareTo(other._upper);
+            if (comparison >= 0)
+                return GetUpperOrDefault();
+            return (T?)other._upper;
+        }
+
+        private bool GreaterOfLowerIncludedInIntersection(Interval<T> other) {
+            var limit = GreaterOfLowerLimits(other);
+            return Includes(limit) && other.Includes(limit);
+        }
+
+        private bool LesserOfUpperIncludedInIntersection(Interval<T> other) {
+            var limit = LesserOfUpperLimits(other);
+            return Includes(limit) && other.Includes(limit);
+        }
+
+        private bool GreaterOfLowerIncludedInUnion(Interval<T> other) {
+            var limit = GreaterOfLowerLimits(other);
+            return Includes(limit) || other.Includes(limit);
+        }
+
+        private bool LesserOfUpperIncludedInUnion(Interval<T> other) {
+            var limit = LesserOfUpperLimits(other);
+            return Includes(limit) || other.Includes(limit);
         }
 
         #endregion
@@ -239,4 +305,19 @@ namespace WmcSoft
             return new Interval<T>(IntervalLimit.Lower(lower, lowerIncluded), IntervalLimit.Upper(upper, upperIncluded));
         }
     }
+
+    [Flags]
+    public enum TypeOfInterval
+    {
+        Open = 0,
+        Closed = 3,
+        LeftClosed = 2,
+        RightOpen = 2,
+        RightClosed = 1,
+        LeftOpen = 1,
+        LeftUnbounded = 5,
+        RightUnbounded = 6,
+        Unbounded = 4,
+    }
+
 }
