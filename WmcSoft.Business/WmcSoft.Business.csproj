@@ -232,8 +232,10 @@
     <Compile Include="Time\AnnualDateSpecification.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="IntervalLimit.cs" />
+    <Compile Include="Time\ITimeSource.cs" />
     <Compile Include="Time\MinuteOfHour.cs" />
     <Compile Include="Time\HourOfDay.cs" />
+    <Compile Include="Time\SystemClock.cs" />
     <Compile Include="Time\TimeInterval.cs" />
     <Compile Include="Time\TimeOfDay.cs" />
     <Compile Include="Time\TimePoint.cs" />

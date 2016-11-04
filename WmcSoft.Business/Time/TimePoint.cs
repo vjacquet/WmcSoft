@@ -65,6 +65,12 @@ namespace WmcSoft.Time
             return TimeOfDay.Midnight.On(date, zone);
         }
 
+        internal static TimePoint Now() {
+            var tp = default(TimePoint);
+            tp._storage = DateTime.UtcNow;
+            return tp;
+        }
+
         #region Operators
 
         public static implicit operator TimePoint(DateTimeOffset x) {
