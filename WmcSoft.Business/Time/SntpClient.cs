@@ -42,15 +42,15 @@ namespace WmcSoft.Time
         public SntpClient() : this(ServerDefault, PortDefault) {
         }
 
-        public SntpClient(string host) : this(host, PortDefault) {
+        public SntpClient(string hostNameOrAddress) : this(hostNameOrAddress, PortDefault) {
         }
 
-        public SntpClient(string host, int port) {
-            if (host == null) throw new ArgumentNullException(nameof(host));
+        public SntpClient(string hostNameOrAddress, int port)
+            : this(new IPEndPoint(Dns.GetHostEntry(hostNameOrAddress).AddressList[0], port)) {
+        }
 
-            var addresses = Dns.GetHostEntry(host).AddressList;
-            _endpoint = new IPEndPoint(addresses[0], port);
-
+        internal SntpClient(IPEndPoint endpoint) {
+            _endpoint = endpoint;
             Timeout = TimeSpan.FromSeconds(30);
         }
 

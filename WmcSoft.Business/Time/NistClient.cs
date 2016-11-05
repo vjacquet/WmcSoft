@@ -48,15 +48,15 @@ namespace WmcSoft.Time
         public NistClient() : this(ServerDefault, PortDefault) {
         }
 
-        public NistClient(string host) : this(host, PortDefault) {
+        public NistClient(string hostNameOrAddress) : this(hostNameOrAddress, PortDefault) {
         }
 
-        public NistClient(string host, int port) {
-            if (host == null) throw new ArgumentNullException(nameof(host));
+        public NistClient(string hostNameOrAddress, int port)
+            : this(new IPEndPoint(Dns.GetHostEntry(hostNameOrAddress).AddressList[0], port)) {
+        }
 
-            var addresses = Dns.GetHostEntry(host).AddressList;
-            _endpoint = new IPEndPoint(addresses[0], port);
-
+        internal NistClient(IPEndPoint endpoint) {
+            _endpoint = endpoint;
             Timeout = TimeSpan.FromSeconds(30);
         }
 

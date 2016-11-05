@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -20,22 +20,22 @@
 
     4. This notice may not be removed or altered.
 
- ****************************************************************************
- * Adapted from SystemClock.java
- * -----------------------------
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
- * free software is distributed under the "MIT" licence. See file licence.txt.
- * For more information, see http://timeandmoney.sourceforge.net.
  ****************************************************************************/
 
 #endregion
 
+using System;
+
 namespace WmcSoft.Time
 {
-    public class SystemClock : ITimeSource
+    public static class TimeSource
     {
-        public TimePoint Now() {
-            return TimePoint.Now();
-        }
+        static readonly Lazy<ITimeSource> _systemClock = new Lazy<ITimeSource>(() => new SystemClockTimeSource());
+        static readonly Lazy<ITimeSource> _nist = new Lazy<ITimeSource>(() => new NistClientTimeSource());
+        static readonly Lazy<ITimeSource> _sntp = new Lazy<ITimeSource>(() => new SntpClientTimeSource());
+
+        static public ITimeSource SystemClock { get { return _systemClock.Value; } }
+        static public ITimeSource Nist { get { return _systemClock.Value; } }
+        static public ITimeSource Sntp { get { return _systemClock.Value; } }
     }
 }
