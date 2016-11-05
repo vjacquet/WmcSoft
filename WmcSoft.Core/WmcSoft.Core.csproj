@@ -355,6 +355,8 @@
     <Compile Include="Xml\XPath\ReflectNavigator.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIterator.cs" />
     <Compile Include="Xml\XPath\XPathLocator.cs" />
+    <Compile Include="Xml\Xsl\XsltContextFunction.cs" />
+    <Compile Include="Xml\Xsl\XsltContextVariable.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.fr.resx">

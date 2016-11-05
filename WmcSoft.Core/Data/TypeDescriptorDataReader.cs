@@ -32,6 +32,10 @@ using System.Data.Common;
 
 namespace WmcSoft.Data
 {
+    /// <summary>
+    /// Adapts a typed enumerable as a <see cref="DataReader"/>.
+    /// </summary>
+    /// <typeparam name="T">The type.</typeparam>
     public class TypeDescriptorDataReader<T> : DataReaderBase
     {
         #region Fields
@@ -48,7 +52,7 @@ namespace WmcSoft.Data
             : this(data, TypeDescriptor.GetProperties(typeof(T))) {
         }
 
-        public TypeDescriptorDataReader(IEnumerable<T> data, Attribute[] attributes)
+        public TypeDescriptorDataReader(IEnumerable<T> data, params Attribute[] attributes)
             : this(data, TypeDescriptor.GetProperties(typeof(T), attributes)) {
         }
 
