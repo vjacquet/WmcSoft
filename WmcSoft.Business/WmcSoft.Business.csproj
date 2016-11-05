@@ -235,6 +235,8 @@
     <Compile Include="Time\ITimeSource.cs" />
     <Compile Include="Time\MinuteOfHour.cs" />
     <Compile Include="Time\HourOfDay.cs" />
+    <Compile Include="Time\NistClient.cs" />
+    <Compile Include="Time\SntpClient.cs" />
     <Compile Include="Time\SystemClock.cs" />
     <Compile Include="Time\TimeInterval.cs" />
     <Compile Include="Time\TimeOfDay.cs" />
