@@ -209,12 +209,29 @@ namespace WmcSoft.Collections
         /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
         /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
         public static void Shuffle(this IList source, Random random) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (random == null) throw new ArgumentNullException("random");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
             if (source.IsReadOnly) throw new ArgumentException();
 
             int j;
             for (int i = 0; i < source.Count; i++) {
+                j = random.Next(i, source.Count);
+                SwapItems(source, i, j);
+            }
+        }
+
+        public static void PartialShuffle(this IList source, int count) {
+            PartialShuffle(source, count, new Random());
+        }
+
+        public static void PartialShuffle(this IList source, int count, Random random) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
+            if (source.IsReadOnly) throw new ArgumentException();
+            if (count > source.Count) throw new ArgumentOutOfRangeException(nameof(count));
+
+            int j;
+            for (int i = 0; i < count; i++) {
                 j = random.Next(i, source.Count);
                 SwapItems(source, i, j);
             }
