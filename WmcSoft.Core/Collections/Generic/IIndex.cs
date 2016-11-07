@@ -24,8 +24,6 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace WmcSoft.Collections.Generic
 {
     public interface IIndex<TKey, TValue> : IReadOnlyIndex<TKey, TValue>
