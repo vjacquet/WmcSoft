@@ -69,6 +69,14 @@ namespace WmcSoft.Business.Accounting
             get { return _culture.NumberFormat.CurrencyDecimalDigits; }
         }
 
+        public override int NumericCode {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override RoundingMode Rounding {
+            get { throw new NotImplementedException(); }
+        }
+
         #endregion
     }
 }

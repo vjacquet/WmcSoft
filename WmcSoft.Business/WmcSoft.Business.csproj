@@ -52,6 +52,7 @@
     <Compile Include="Business\Accounting\DebitCard.cs" />
     <Compile Include="Business\Accounting\ExchangeRate.cs" />
     <Compile Include="Business\Accounting\IncompatibleCurrencyException.cs" />
+    <Compile Include="Business\Accounting\KnownCurrency.cs" />
     <Compile Include="Business\Accounting\Money.cs" />
     <Compile Include="Business\Accounting\Payment.cs" />
     <Compile Include="Business\Accounting\PaymentCard.cs" />

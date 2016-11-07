@@ -60,7 +60,13 @@ namespace WmcSoft.Business.Accounting
 
         public abstract string ThreeLetterISOCode { get; }
 
+        public abstract int NumericCode { get; }
+
         public abstract int DecimalDigits { get; }
+
+        public abstract RoundingMode Rounding { get; }
+
+        public int FractionsPerUnit { get; }
 
         #endregion
 
