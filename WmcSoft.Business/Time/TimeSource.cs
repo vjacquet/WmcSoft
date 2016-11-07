@@ -24,18 +24,18 @@
 
 #endregion
 
-namespace WmcSoft.Collections.Generic
+using System;
+
+namespace WmcSoft.Time
 {
-    public interface IIndex<TKey, TValue> : IReadOnlyIndex<TKey, TValue>
+    public static class TimeSource
     {
-        bool IsReadOnly { get; }
+        static readonly Lazy<ITimeSource> _systemClock = new Lazy<ITimeSource>(() => new SystemClockTimeSource());
+        static readonly Lazy<ITimeSource> _nist = new Lazy<ITimeSource>(() => new NistClientTimeSource());
+        static readonly Lazy<ITimeSource> _sntp = new Lazy<ITimeSource>(() => new SntpClientTimeSource());
 
-        bool Add(TKey key, TValue value);
-
-        bool Remove(TKey key);
-
-        bool Remove(TKey key, TValue value);
-
-        void Clear();
+        static public ITimeSource SystemClock { get { return _systemClock.Value; } }
+        static public ITimeSource Nist { get { return _systemClock.Value; } }
+        static public ITimeSource Sntp { get { return _systemClock.Value; } }
     }
 }

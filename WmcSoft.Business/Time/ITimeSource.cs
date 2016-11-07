@@ -21,45 +21,19 @@
     4. This notice may not be removed or altered.
 
  ****************************************************************************
- * Adapted from AnnualDateSpecification.java
- * -----------------------------------------
- * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
+ * Adapted from TimeSource.java
+ * ----------------------------
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  ****************************************************************************/
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace WmcSoft.Time
 {
-    public abstract class AnnualDateSpecification : IDateSpecification
+    public interface ITimeSource
     {
-        public abstract Date OfYear(int year);
-
-        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval) {
-            var start = interval.Lower.GetValueOrDefault();
-            var year = ((DateTime)start).Year;
-
-            var current = OfYear(year);
-            if (interval.Includes(current))
-                yield return current;
-
-            current = OfYear(++year);
-            while (interval.Includes(current)) {
-                yield return current;
-                current = OfYear(++year);
-            }
-        }
-
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval) {
-            if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
-
-            return UnguardedEnumerateOver(interval);
-        }
-
-        public abstract bool IsSatisfiedBy(Date date);
+        TimePoint Now();
     }
 }

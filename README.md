@@ -84,9 +84,8 @@ _Library of components to build business applications._
 - Time, adapted from <http://domainlanguage.com>'s time & money:
 
   - `TimePoint` is equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
-
+  - `DateTime`, with a `DateTimeKind.Unspecified`, replaces `CalendarMinute`
   - `TimeUnit` should derive from WmcSoft's units.
-
   - `newOfSameType()` factory methods are not required for value types.
 
 ### WmcSoft.Jobs

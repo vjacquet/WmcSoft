@@ -22,7 +22,7 @@
 
  ****************************************************************************
  * Adapted from DateSpecification.java
- * ---------------------------
+ * -----------------------------------
  * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
@@ -30,16 +30,14 @@
 
 #endregion
 
-using System;
+using System.Collections.Generic;
 
 namespace WmcSoft.Time
 {
     public interface IDateSpecification
     {
-        bool IsSatisfiedBy(DateTime date);
+        bool IsSatisfiedBy(Date date);
 
-        //DateTime firstOccurrenceIn(CalendarInterval interval);
-
-        //Iterator iterateOver(CalendarInterval interval);
+        IEnumerable<Date> EnumerateOver(Interval<Date> interval);
     }
 }

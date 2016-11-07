@@ -24,18 +24,28 @@
 
 #endregion
 
-namespace WmcSoft.Collections.Generic
+using System;
+
+namespace WmcSoft.Time
 {
-    public interface IIndex<TKey, TValue> : IReadOnlyIndex<TKey, TValue>
+    sealed class SntpClientTimeSource : ITimeSource, IDisposable
     {
-        bool IsReadOnly { get; }
+        private readonly SntpClient _client;
 
-        bool Add(TKey key, TValue value);
+        public SntpClientTimeSource() : this(new SntpClient()) {
+        }
 
-        bool Remove(TKey key);
+        public SntpClientTimeSource(SntpClient client) {
+            if (client == null) throw new ArgumentNullException(nameof(client));
+            _client = client;
+        }
 
-        bool Remove(TKey key, TValue value);
+        public void Dispose() {
+            _client.Dispose();
+        }
 
-        void Clear();
+        public TimePoint Now() {
+            return new TimePoint(_client.Query());
+        }
     }
 }

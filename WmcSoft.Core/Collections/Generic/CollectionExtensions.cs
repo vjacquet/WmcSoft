@@ -1359,6 +1359,23 @@ namespace WmcSoft.Collections.Generic
             UnguardedShuffle(source, 0, source.Count, random);
         }
 
+        public static void PartialShuffle<T>(this IList<T> source, int count) {
+            PartialShuffle(source, count, new Random());
+        }
+
+        public static void PartialShuffle<T>(this IList<T> source, int count, Random random) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
+            if (source.IsReadOnly) throw new ArgumentException();
+            if (count > source.Count) throw new ArgumentOutOfRangeException(nameof(count));
+
+            int j;
+            for (int i = 0; i < count; i++) {
+                j = random.Next(i, source.Count);
+                SwapItems(source, i, j);
+            }
+        }
+
         /// <summary>
         /// Splits the items in half (a bottom half and a top half) and 
         /// then interweaves each half of the deck such that every-other item came 

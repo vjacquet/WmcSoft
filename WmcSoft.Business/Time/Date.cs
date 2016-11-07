@@ -42,7 +42,7 @@ namespace WmcSoft.Time
         readonly DateTime _storage;
 
         private Date(DateTime date) {
-            _storage = date.Date;
+            _storage = DateTime.SpecifyKind(date.Date, DateTimeKind.Unspecified);
         }
 
         public Date(int year, int month, int day) {
@@ -65,10 +65,27 @@ namespace WmcSoft.Time
             return new Date(_storage.AddDays(-1));
         }
 
+        public TimePoint AsTimePoint(TimeZoneInfo zone) {
+            var dateTime = TimeZoneInfo.ConvertTimeToUtc(_storage, zone);
+            return new TimePoint(dateTime);
+        }
+
+        public DateTime At(TimeOfDay time) {
+            return time.On(this);
+        }
+
+        public DateTimeOffset At(TimeOfDay time, TimeZoneInfo timeZone) {
+            return time.On(this, timeZone);
+        }
+
         #region Operators
 
         public static explicit operator Date(DateTime date) {
             return new Date(date);
+        }
+
+        public static explicit operator Date(DateTimeOffset date) {
+            return new Date(date.Date);
         }
 
         public static implicit operator DateTime(Date date) {

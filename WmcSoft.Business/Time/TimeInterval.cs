@@ -30,8 +30,6 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.Time
 {
     public static class TimeInterval

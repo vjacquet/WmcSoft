@@ -21,8 +21,8 @@
     4. This notice may not be removed or altered.
 
  ****************************************************************************
- * Adapted from AnnualDateSpecification.java
- * -----------------------------------------
+ * Adapted from DateSpecification.java
+ * -----------------------------------
  * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
@@ -30,36 +30,15 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Time
 {
-    public abstract class AnnualDateSpecification : IDateSpecification
+    public static class DateSpecificationExtensions
     {
-        public abstract Date OfYear(int year);
-
-        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval) {
-            var start = interval.Lower.GetValueOrDefault();
-            var year = ((DateTime)start).Year;
-
-            var current = OfYear(year);
-            if (interval.Includes(current))
-                yield return current;
-
-            current = OfYear(++year);
-            while (interval.Includes(current)) {
-                yield return current;
-                current = OfYear(++year);
-            }
+        public static Date? FirstOccurrenceIn<TSpecification>(this TSpecification specification, Interval<Date> interval)
+            where TSpecification : IDateSpecification {
+            return specification.EnumerateOver(interval).FirstOrDefault();
         }
-
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval) {
-            if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
-
-            return UnguardedEnumerateOver(interval);
-        }
-
-        public abstract bool IsSatisfiedBy(Date date);
     }
 }
