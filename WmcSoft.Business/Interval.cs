@@ -45,6 +45,8 @@ namespace WmcSoft
         private readonly IntervalLimit<T> _upper;
 
         public Interval(IntervalLimit<T> lower, IntervalLimit<T> upper) {
+            if (lower.CompareTo(upper) > 0) throw new ArgumentException();
+
             _lower = lower;
             _upper = upper;
         }
