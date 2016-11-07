@@ -66,11 +66,11 @@ namespace WmcSoft.Units
             lock (_systemOfUnits) {
                 if (_units == null) {
                     _units = new Unit[5];
-                    _units[(int)KnownNaturalUnits.PlanckTime] = new KnownDerivedUnit("PlanckTime", SystemOfUnits.Natural, SI.Second);
-                    _units[(int)KnownNaturalUnits.PlanckLength] = new KnownDerivedUnit("PlanckLength", SystemOfUnits.Natural, SI.Meter);
-                    _units[(int)KnownNaturalUnits.PlanckMass] = new KnownDerivedUnit("PlanckMass", SystemOfUnits.Natural, SI.Kilogram);
-                    _units[(int)KnownNaturalUnits.PlanckCharge] = new KnownDerivedUnit("PlanckCharge", SystemOfUnits.Natural, SI.Ampere, SI.Second);
-                    _units[(int)KnownNaturalUnits.PlanckTemperature] = new KnownDerivedUnit("PlanckTemperature", SystemOfUnits.Natural, SI.Kelvin);
+                    _units[(int)KnownNaturalUnits.PlanckTime] = new KnownDerivedUnit("PlanckTime", Natural, SI.Second);
+                    _units[(int)KnownNaturalUnits.PlanckLength] = new KnownDerivedUnit("PlanckLength", Natural, SI.Meter);
+                    _units[(int)KnownNaturalUnits.PlanckMass] = new KnownDerivedUnit("PlanckMass", Natural, SI.Kilogram);
+                    _units[(int)KnownNaturalUnits.PlanckCharge] = new KnownDerivedUnit("PlanckCharge", Natural, SI.Ampere, SI.Second);
+                    _units[(int)KnownNaturalUnits.PlanckTemperature] = new KnownDerivedUnit("PlanckTemperature", Natural, SI.Kelvin);
 
                     Conversion.CrossSystemConversions.RegisterImperialToSIConversions();
                     Conversion.CrossSystemConversions.RegisterUSCustomaryToSIConversions();
@@ -80,6 +80,7 @@ namespace WmcSoft.Units
         }
 
         #region units
+
         public static Unit PlanckTime {
             get { return GetUnit(KnownNaturalUnits.PlanckTime); }
         }

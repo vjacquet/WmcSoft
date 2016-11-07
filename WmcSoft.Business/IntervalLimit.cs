@@ -35,6 +35,10 @@ using System.ComponentModel;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents a limit for an interval.
+    /// </summary>
+    /// <typeparam name="T">The type of the limit value.</typeparam>
     [Serializable]
     [ImmutableObject(true)]
     public struct IntervalLimit<T> : IComparable<IntervalLimit<T>>, IEquatable<IntervalLimit<T>>
@@ -48,8 +52,8 @@ namespace WmcSoft
             None = 0,
             Closed = 1,
             Open = 2,
-            Upper = 4,
-            Lower = 8,
+            Lower = 4,
+            Upper = 8,
         }
 
         private readonly T _value;
@@ -88,6 +92,34 @@ namespace WmcSoft
         public int CompareTo(IntervalLimit<T> other) {
             // `null` is lesser than lower bounds, but greater than upper bounds
             // to mimic -∞ < limit < ∞
+#if WORKINPROGRESS
+            if (_state == other._state) {
+                if (HasValue)
+                    return _value.CompareTo(other._value);
+                return 0;
+            }
+            if (!HasValue)
+                return other.IsLower ? -1 : 1;
+            if (!other.HasValue)
+                return IsLower ? 1 : -1;
+
+            var comparison = _value.CompareTo(other._value);
+            if (comparison != 0)
+                return comparison;
+            if (IsLower) {
+                if (other.IsLower)
+                    return IsClosed ? -1 : 1;
+                if (IsClosed)
+                    return other.IsClosed ? 0 : -1;
+                return other.IsClosed ? 1 : 0;
+            } else {
+                if (other.IsUpper)
+                    return IsClosed ? 1 : -1;
+                if (IsClosed)
+                    return other.IsClosed ? 0 : 1;
+                return other.IsClosed ? -1 : 0;
+            }
+#else
             if (!HasValue) {
                 if (!other.HasValue)
                     return 0;
@@ -97,10 +129,15 @@ namespace WmcSoft
                 return IsLower ? 1 : -1;
             // should the limit be equal when only the value are equal?
             return _value.CompareTo(other._value);
+#endif
         }
 
         public bool Equals(IntervalLimit<T> other) {
+#if WORKINPROGRESS
+            return _state == other._state && _value.Equals(other._state);
+#else
             return CompareTo(other) == 0;
+#endif
         }
 
         public override bool Equals(object obj) {

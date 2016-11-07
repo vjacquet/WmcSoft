@@ -3,7 +3,7 @@
   <Class Name="WmcSoft.Units.Metric">
     <Position X="16.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAgAAAAAQAAAAAAIAAAAAAAAAACiA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAEgAAAAAQAAAAAAIAAAAAAAAAACiA=</HashCode>
       <FileName>Metric.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -32,32 +32,32 @@
   <Class Name="WmcSoft.Units.Unit" Collapsed="true">
     <Position X="16.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAQAAAA=</HashCode>
+      <HashCode>AAAAAAAQAAAAAAAAgAAAAAAAAAIAAIAAAAAAAAQAAAA=</HashCode>
       <FileName>Unit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Units.ScaledUnit" Collapsed="true">
     <Position X="19.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAACIAAAACAABAAAAAAQAAAAEAAAAAAAEAAQADAA=</HashCode>
+      <HashCode>AAAAIACAAAAACAABAAAAAAQgAIAAEAAAAAAAAAQADAA=</HashCode>
       <FileName>ScaledUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Units.ImperialSystemOfUnit" Collapsed="true">
     <Position X="7.75" Y="12.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAIAAAAAgCAIAAAAABAAAAAAAIAQAAAAAACABCACIgA=</HashCode>
+      <HashCode>BAIAAAAAgCAIAAAAABAAAAAAAIAAAAAAEACAACACIAA=</HashCode>
       <FileName>ImperialSystemOfUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Units.SystemOfUnits">
     <Position X="10.25" Y="8.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAACAAAAgABAAAAgAAAAAIAAEAAAAAFAAAA=</HashCode>
+      <HashCode>AAAAABAAAAACAAAAgABAAAAgAABAAIAAEAAAAAEAAAA=</HashCode>
       <FileName>SystemOfUnits.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Units.NaturalSystemOfUnit" Collapsed="true">
+  <Class Name="WmcSoft.Units.NaturalSystemOfUnit">
     <Position X="9.5" Y="12.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAMIAAgAAIAAAAAAIAAAAAAAAAAAAAACAABAAAIgI=</HashCode>
@@ -67,7 +67,7 @@
   <Class Name="WmcSoft.Units.SI" Collapsed="true">
     <Position X="11.25" Y="12.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgIAIIASICgAACAoAAAEQAAABhAAABIQAAgA=</HashCode>
+      <HashCode>AAAAAAAAgIAIIASICgAACAoAAAEAAAABlAAAAIQAAAA=</HashCode>
       <FileName>SISystemOfUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -81,7 +81,7 @@
   <Class Name="WmcSoft.Units.SIBaseUnit" Collapsed="true">
     <Position X="10.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAIAAAACAAEgAAAAAQAAAAEAIAAAAAAAAQACAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAgAAAAAQAAIAAAIAAAAAAAAQACAA=</HashCode>
       <FileName>SIBaseUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -95,7 +95,7 @@
   <Class Name="WmcSoft.Units.Kilogram" Collapsed="true">
     <Position X="13.5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>SIBaseUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -130,7 +130,7 @@
   <Class Name="WmcSoft.Units.UnitConversion">
     <Position X="10.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAkAAAAAAAIAAACAAQAgAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAkAAAAAAAIAAACAAQAgAACAAAAAAAAAAAAA=</HashCode>
       <FileName>UnitConversion.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -159,11 +159,11 @@
       <FileName>Conversion\Conversion.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Units.StandardConversion" Collapsed="true">
+  <Class Name="WmcSoft.Units.LinearConversion" Collapsed="true">
     <Position X="12.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAAAAABAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>StandardConversion.cs</FileName>
+      <FileName>LinearConversion.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Units.ManHour" Collapsed="true">
@@ -176,22 +176,8 @@
   <Class Name="WmcSoft.Units.DerivedUnitTerm" Collapsed="true">
     <Position X="14.75" Y="10.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABAAAAAAACAAAoAAAAAQAAKAAAIABAAAAAAQACAI=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAAoAAAAAAAAKAAAIABAAAAAAAACAI=</HashCode>
       <FileName>DerivedUnitTerm.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WmcSoft.Units.ExtrapolatedConversion" Collapsed="true">
-    <Position X="12.75" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ExtrapolatedConversion.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="WmcSoft.Units.KnownScaledUnit" Collapsed="true">
-    <Position X="20.5" Y="7.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>KnownScaledUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Units.Inch" Collapsed="true">
@@ -215,11 +201,11 @@
       <FileName>ImperialSystemOfUnit.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="WmcSoft.Units.KnownScaledUnitPrefix" Collapsed="true">
+  <Enum Name="WmcSoft.Units.SIPrefix" Collapsed="true">
     <Position X="18.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACoAAAACAAFAAAAABAAQMAgAAAAIDAAgABAQEAABA=</HashCode>
-      <FileName>KnownScaledUnit.cs</FileName>
+      <FileName>SIPrefix.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Tahoma" Size="8.25" />
