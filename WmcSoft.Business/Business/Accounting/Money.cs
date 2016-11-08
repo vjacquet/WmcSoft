@@ -149,46 +149,6 @@ namespace WmcSoft.Business.Accounting
             return value * multiplier;
         }
 
-        public static Quantity operator /(Money value, Quantity quantity) {
-            throw new NotImplementedException();
-
-            //int count = 1;
-            //int index = 0;
-
-            //if (quantity.Metric is DerivedUnit) {
-            //    count += ((DerivedUnit)quantity.Metric).Terms.Length;
-            //} else {
-            //    count += 1;
-            //}
-            //DerivedUnitTerm[] terms = new DerivedUnitTerm[count];
-            //terms[index++] = new DerivedUnitTerm((Unit)value.Currency, 1);
-
-            //if (quantity.Metric is DerivedUnit) {
-            //    DerivedUnitTerm term;
-            //    for (int i = 0; i < ((DerivedUnit)value.Metric).Terms.Length; i++) {
-            //        term = ((DerivedUnit)value.Metric).Terms[i];
-            //        terms[index++] = new DerivedUnitTerm(term.Unit, -term.Power);
-            //    }
-            //    ((DerivedUnit)value.Metric).Terms.CopyTo(terms, index);
-            //} else {
-            //    terms[index++] = new DerivedUnitTerm((Unit)quantity.Metric, -1);
-            //}
-
-            //return new Quantity(value.Amount * quantity.Amount, new DerivedUnit(terms));
-        }
-
-        public static Quantity Divide(Money value, Quantity quantity) {
-            return value / quantity;
-        }
-
-        public static Money operator /(Money value, decimal divider) {
-            return new Money(value.Amount / divider, value.Currency);
-        }
-
-        public static Money Divide(Money value, decimal divider) {
-            return value / divider;
-        }
-
         public static bool operator >=(Money left, Money right) {
             return left.CompareTo(right) >= 0;
         }
@@ -317,5 +277,143 @@ namespace WmcSoft.Business.Accounting
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Represents an amount of a specific <see cref="Currency"/>. Strongly typed version.
+    /// This <see cref="Currency"/> is acceptedIn one or more <see cref="System.Globalization.CultureInfo"/>.
+    /// </summary>
+    public struct Money<C> : IComparable<Money<C>>, IComparable, IEquatable<Money<C>>
+        where C : Currency, new()
+    {
+        #region Fields
+
+        readonly decimal _amount;
+
+        #endregion
+
+        #region Lifecycle
+
+        public Money(decimal amount) {
+            _amount = amount;
+        }
+
+        #endregion
+
+        #region Operators
+
+        public static implicit operator Money<C>(int value) {
+            return new Money<C>(value);
+        }
+        public static implicit operator Money<C>(double value) {
+            return new Money<C>((decimal)value);
+        }
+        public static implicit operator Money<C>(decimal value) {
+            return new Money<C>(value);
+        }
+
+        public static implicit operator Quantity(Money<C> that) {
+            return new Quantity(that._amount, new C());
+        }
+
+        public static explicit operator decimal(Money<C> that) {
+            return that._amount;
+        }
+
+        public static Money<C> operator +(Money<C> x, Money<C> y) {
+            return new Money<C>(x._amount + y._amount);
+        }
+
+        public static Money<C> Add(Money<C> x, Money<C> y) {
+            return x + y;
+        }
+
+        public static Money<C> operator -(Money<C> x, Money<C> y) {
+            return new Money<C>(x._amount - y._amount);
+        }
+
+        public static Money<C> Subtract(Money<C> x, Money<C> y) {
+            return x - y;
+        }
+
+        public static Money<C> operator *(decimal multiplier, Money<C> value) {
+            return new Money<C>(multiplier * value._amount);
+        }
+
+        public static Money<C> Multiply(decimal multiplier, Money<C> value) {
+            return value * multiplier;
+        }
+
+        public static Money<C> operator *(Money<C> value, decimal multiplier) {
+            return new Money<C>(multiplier * value._amount);
+        }
+
+        public static Money<C> Multiply(Money<C> value, decimal multiplier) {
+            return value * multiplier;
+        }
+
+        public static bool operator >=(Money<C> x, Money<C> y) {
+            return x.CompareTo(y) >= 0;
+        }
+
+        public static bool operator >(Money<C> x, Money<C> y) {
+            return x.CompareTo(y) > 0;
+        }
+
+        public static bool operator <=(Money<C> x, Money<C> y) {
+            return x.CompareTo(y) <= 0;
+        }
+
+        public static bool operator <(Money<C> x, Money<C> y) {
+            return x.CompareTo(y) < 0;
+        }
+
+        public static bool operator ==(Money<C> x, Money<C> y) {
+            return x.CompareTo(y) == 0;
+        }
+
+        public static bool operator !=(Money<C> x, Money<C> y) {
+            return x.CompareTo(y) != 0;
+        }
+
+        #endregion
+
+        #region IComparable<Quantity<M>> Members
+
+        public int CompareTo(Money<C> other) {
+            return _amount.CompareTo(other._amount);
+        }
+
+        #endregion
+
+        #region IEquatable<Quantity<M>> Members
+
+        public bool Equals(Money<C> other) {
+            return CompareTo(other) == 0;
+        }
+
+        #endregion
+
+        #region IComparable Members
+
+        public int CompareTo(object obj) {
+            if (obj == null || GetType() != obj.GetType())
+                return 1;
+            var other = (Money<C>)obj;
+            return _amount.CompareTo(other._amount);
+        }
+
+        #endregion
+
+        public override bool Equals(object obj) {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            var that = (Money<C>)obj;
+            return (that == this);
+        }
+
+        public override int GetHashCode() {
+            return _amount.GetHashCode();
+        }
     }
 }

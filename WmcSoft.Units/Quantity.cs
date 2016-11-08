@@ -30,7 +30,7 @@ using System.Diagnostics;
 namespace WmcSoft.Units
 {
     /// <summary>
-    /// Represents an amount measured in some Metric
+    /// Represents an amount measured in some <see cref="Metric"/>.
     /// </summary>
     [DebuggerDisplay("{_amount,nq} {_metric.Symbol,nq}")]
     public struct Quantity : IComparable<Quantity>, IComparable, IEquatable<Quantity>
@@ -256,7 +256,7 @@ namespace WmcSoft.Units
     }
 
     /// <summary>
-    /// Represents an amount measured in some Metric. Strongly typed version.
+    /// Represents an amount measured in some <see cref="Metric"/>. Strongly typed version.
     /// </summary>
     /// <typeparam name="M">The metric</typeparam>
     public struct Quantity<M> : IComparable<Quantity<M>>, IComparable, IEquatable<Quantity<M>>
