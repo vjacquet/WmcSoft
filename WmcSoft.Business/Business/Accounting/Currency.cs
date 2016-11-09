@@ -46,7 +46,7 @@ namespace WmcSoft.Business.Accounting
 
         #region Lifecycle
 
-        public Currency() {
+        protected Currency() {
             _acceptedIn = new List<CultureInfo>();
         }
 

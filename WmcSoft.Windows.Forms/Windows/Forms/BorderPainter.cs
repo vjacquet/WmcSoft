@@ -50,8 +50,8 @@ namespace WmcSoft.Windows.Forms
         /// <summary>
         /// 
         /// </summary>
-        [DefaultValue(System.Windows.Forms.Border3DStyle.Etched)]
-        public System.Windows.Forms.Border3DStyle Border3DStyle {
+        [DefaultValue(Border3DStyle.Etched)]
+        public Border3DStyle Border3DStyle {
             get {
                 return border3DStyle;
             }
@@ -62,7 +62,7 @@ namespace WmcSoft.Windows.Forms
                 }
             }
         }
-        System.Windows.Forms.Border3DStyle border3DStyle = System.Windows.Forms.Border3DStyle.Etched;
+        Border3DStyle border3DStyle = Border3DStyle.Etched;
 
         Dictionary<Control, Border3DSide> border3DSides = new Dictionary<Control, Border3DSide>();
 
@@ -117,13 +117,13 @@ namespace WmcSoft.Windows.Forms
 
         private void InvalidatePainting() {
             if (_paintOnParent) {
-                foreach (Control control in border3DSides.Keys) {
-                    Control parent = control.Parent;
+                foreach (var control in border3DSides.Keys) {
+                    var parent = control.Parent;
                     if (parent != null)
                         control.Parent.Invalidate();
                 }
             } else {
-                foreach (Control control in border3DSides.Keys) {
+                foreach (var control in border3DSides.Keys) {
                     control.Invalidate();
                 }
             }
@@ -165,7 +165,7 @@ namespace WmcSoft.Windows.Forms
         #endregion
 
         private void control_Paint(object sender, PaintEventArgs e) {
-            Control control = sender as Control;
+            var control = sender as Control;
             if (control != null) {
                 Border3DSide border3DSide;
                 if (border3DSides.TryGetValue(control, out border3DSide)) {
@@ -199,6 +199,5 @@ namespace WmcSoft.Windows.Forms
                 }
             }
         }
-
     }
 }
