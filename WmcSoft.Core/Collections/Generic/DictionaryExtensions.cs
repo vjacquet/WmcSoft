@@ -70,6 +70,23 @@ namespace WmcSoft.Collections.Generic
             return defaultValue;
         }
 
+        public static TValue Pop<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key) {
+            var value = source[key];
+            source.Remove(key);
+            return value;
+        }
+
+        public static TValue PopOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue defaultValue = default(TValue)) {
+            if (source != null) {
+                TValue value;
+                if (source.TryGetValue(key, out value)) {
+                    source.Remove(key);
+                    return value;
+                }
+            }
+            return defaultValue;
+        }
+
         /// <summary>
         /// Removes from a dictionary values with keys existing in another one.
         /// </summary>
