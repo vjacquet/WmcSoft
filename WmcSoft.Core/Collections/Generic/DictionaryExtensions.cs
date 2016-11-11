@@ -30,8 +30,12 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Provides a set of static methods to extend dictionary related classes or interfaces.
+    /// </summary>
     public static class DictionaryExtensions
     {
+        #region 
         /// <summary>
         /// Gets and convert the value from dictionary or the default value if the value is missing.
         /// </summary>
