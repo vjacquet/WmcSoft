@@ -35,7 +35,8 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class DictionaryExtensions
     {
-        #region 
+        #region Convert
+
         /// <summary>
         /// Gets and convert the value from dictionary or the default value if the value is missing.
         /// </summary>
@@ -54,6 +55,10 @@ namespace WmcSoft.Collections.Generic
             }
             return defaultValue;
         }
+
+        #endregion
+
+        #region Get
 
         /// <summary>
         /// Gets the value from the dictionary or the default value if the value is missing.
@@ -74,6 +79,10 @@ namespace WmcSoft.Collections.Generic
             return defaultValue;
         }
 
+        #endregion
+
+        #region Pop
+
         public static TValue Pop<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key) {
             var value = source[key];
             source.Remove(key);
@@ -90,6 +99,10 @@ namespace WmcSoft.Collections.Generic
             }
             return defaultValue;
         }
+
+        #endregion
+
+        #region Set methods
 
         /// <summary>
         /// Removes from a dictionary values with keys existing in another one.
@@ -234,5 +247,7 @@ namespace WmcSoft.Collections.Generic
             }
             return dictionary;
         }
+
+        #endregion
     }
 }

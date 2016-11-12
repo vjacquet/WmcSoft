@@ -32,6 +32,12 @@ using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Text
 {
+    /// <summary>
+    /// Represents a naive lorem ipsum generator that takes a list of words 
+    /// and choose randomly from them to create sentences 
+    /// and paragraphs of random length.
+    /// </summary>
+    /// <remarks>A better implementation would use templates for sentences.</remarks>
     public class LoremIpsumGenerator
     {
         private readonly string[] _words;

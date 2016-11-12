@@ -21,6 +21,13 @@ namespace WmcSoft
         }
 
         [TestMethod]
+        public void CheckGuidEmptyAndSuidEmptyHaveEqualHashCode() {
+            var expected = Guid.Empty.GetHashCode();
+            var actual = Suid.Empty.GetHashCode();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void CanToString() {
             var empty = Suid.Empty;
             var actual = empty.ToString();
