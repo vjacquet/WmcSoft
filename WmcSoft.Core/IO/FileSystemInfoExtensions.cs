@@ -24,6 +24,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
 
@@ -31,9 +32,9 @@ namespace WmcSoft.IO
 {
     public static class FileSystemInfoExtensions
     {
-        public static bool DeleteAllFiles(this DirectoryInfo directory) {
+        public static bool DeleteAll(this IEnumerable<FileInfo> files) {
             bool failed = false;
-            foreach (var file in directory.EnumerateFiles()) {
+            foreach (var file in files) {
                 try {
                     file.Delete();
                 }
@@ -42,32 +43,18 @@ namespace WmcSoft.IO
                 }
             }
             return !failed;
+        }
+
+        public static bool DeleteAllFiles(this DirectoryInfo directory) {
+            return DeleteAll(directory.EnumerateFiles());
         }
 
         public static bool DeleteAllFiles(this DirectoryInfo directory, string searchPattern) {
-            bool failed = false;
-            foreach (var file in directory.EnumerateFiles(searchPattern)) {
-                try {
-                    file.Delete();
-                }
-                catch {
-                    failed = true;
-                }
-            }
-            return !failed;
+            return DeleteAll(directory.EnumerateFiles(searchPattern));
         }
 
         public static bool DeleteAllFiles(this DirectoryInfo directory, string searchPattern, SearchOption searchOption) {
-            bool failed = false;
-            foreach (var file in directory.EnumerateFiles(searchPattern, searchOption)) {
-                try {
-                    file.Delete();
-                }
-                catch {
-                    failed = true;
-                }
-            }
-            return !failed;
+            return DeleteAll(directory.EnumerateFiles(searchPattern, searchOption));
         }
 
         public static string GetContentType(this FileInfo file) {
