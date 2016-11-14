@@ -30,8 +30,13 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Provides a set of static methods to extend dictionary related classes or interfaces.
+    /// </summary>
     public static class DictionaryExtensions
     {
+        #region Convert
+
         /// <summary>
         /// Gets and convert the value from dictionary or the default value if the value is missing.
         /// </summary>
@@ -51,6 +56,10 @@ namespace WmcSoft.Collections.Generic
             return defaultValue;
         }
 
+        #endregion
+
+        #region Get
+
         /// <summary>
         /// Gets the value from the dictionary or the default value if the value is missing.
         /// </summary>
@@ -69,6 +78,31 @@ namespace WmcSoft.Collections.Generic
             }
             return defaultValue;
         }
+
+        #endregion
+
+        #region Pop
+
+        public static TValue Pop<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key) {
+            var value = source[key];
+            source.Remove(key);
+            return value;
+        }
+
+        public static TValue PopOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue defaultValue = default(TValue)) {
+            if (source != null) {
+                TValue value;
+                if (source.TryGetValue(key, out value)) {
+                    source.Remove(key);
+                    return value;
+                }
+            }
+            return defaultValue;
+        }
+
+        #endregion
+
+        #region Set methods
 
         /// <summary>
         /// Removes from a dictionary values with keys existing in another one.
@@ -213,5 +247,7 @@ namespace WmcSoft.Collections.Generic
             }
             return dictionary;
         }
+
+        #endregion
     }
 }
