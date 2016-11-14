@@ -176,7 +176,7 @@ namespace WmcSoft.Units
                 terms[index++] = new DerivedUnitTerm((Unit)y.Metric, -1);
             }
 
-            return new Quantity(x._amount * y._amount, new DerivedUnit(terms));
+            return new Quantity(x._amount / y._amount, new DerivedUnit(terms));
         }
 
         public static Quantity Divide(Quantity x, Quantity y) {
@@ -288,12 +288,12 @@ namespace WmcSoft.Units
             return new Quantity<M>(value);
         }
 
-        public static implicit operator Quantity(Quantity<M> that) {
-            return new Quantity(that._amount, new M());
-        }
-
         public static explicit operator decimal(Quantity<M> that) {
             return that._amount;
+        }
+
+        public static implicit operator Quantity(Quantity<M> that) {
+            return new Quantity(that._amount, new M());
         }
 
         public static Quantity<M> operator +(Quantity<M> x, Quantity<M> y) {
