@@ -33,9 +33,11 @@ namespace WmcSoft.Net.Mail
 {
     public static class SmtpExtensions
     {
+        #region MailAddressEqualityComparer class
+
         class MailAddressEqualityComparer : IEqualityComparer<MailAddress>
         {
-            #region IEqualityComparer<MailAddress> Membres
+            public static readonly MailAddressEqualityComparer Default = new MailAddressEqualityComparer();
 
             public bool Equals(MailAddress x, MailAddress y) {
                 return String.Equals(x.Address, y.Address, StringComparison.InvariantCultureIgnoreCase);
@@ -44,12 +46,12 @@ namespace WmcSoft.Net.Mail
             public int GetHashCode(MailAddress obj) {
                 return obj.Address.ToLowerInvariant().GetHashCode();
             }
-
-            #endregion
         }
 
-        public static void AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses) {
-            var comparer = new MailAddressEqualityComparer();
+        #endregion
+
+        public static void AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses, IEqualityComparer<MailAddress> comparer = null) {
+            comparer = comparer ?? MailAddressEqualityComparer.Default;
             foreach (var address in addresses) {
                 if (!self.Contains(address, comparer))
                     self.Add(address);
