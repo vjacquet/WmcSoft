@@ -106,6 +106,7 @@
     <Compile Include="Collections\Specialized\BreathFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\BipartiteAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstOrderAlgorithm.cs" />
+    <Compile Include="Collections\Specialized\DirectedDepthFirstSearchAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DirectedCycleAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DepthFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\ConnectedComponentsAlgorithm.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Collections\Specialized\IGraph.cs" />
     <Compile Include="Collections\Specialized\KosarajuSharirStrongConnectedComponentsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\IndexedPriorityQueue.cs" />
+    <Compile Include="Collections\Specialized\TransitiveClosureAlgorithm.cs" />
     <Compile Include="Collections\Specialized\UnboundedSparseArray.cs" />
     <Compile Include="Collections\Specialized\SparseArray.cs" />
     <Compile Include="Collections\Specialized\TopologicalAlgorithm.cs" />

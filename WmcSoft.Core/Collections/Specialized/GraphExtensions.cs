@@ -98,6 +98,10 @@ namespace WmcSoft.Collections.Specialized
             return new KosarajuSharirStrongConnectedComponentsAlgorithm(graph);
         }
 
+        public static TransitiveClosureAlgorithm TransitiveClosure(this IDirectedGraph graph) {
+            return new TransitiveClosureAlgorithm(graph);
+        }
+
         #endregion
 
         #region Connect

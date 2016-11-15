@@ -24,26 +24,20 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace WmcSoft.Collections.Specialized
 {
-    public class TopologicalAlgorithm
+    public class TransitiveClosureAlgorithm
     {
-        private readonly IReadOnlyCollection<int> _order;
+        private readonly DirectedDepthFirstSearchAlgorithm[] _all;
 
-        public TopologicalAlgorithm(IDirectedGraph graph) {
-            var finder = graph.Cycle();
-            if (!finder.HasCycle) {
-                var dfs = new DepthFirstOrderAlgorithm(graph);
-                _order = dfs.ReversePostOrder;
-            } else {
-                _order = null;
+        public TransitiveClosureAlgorithm(IDirectedGraph graph) {
+            var V = graph.VerticeCount;
+            _all = new DirectedDepthFirstSearchAlgorithm[V];
+            for (int v = 0; v < V; v++) {
+                _all[v] = new DirectedDepthFirstSearchAlgorithm(graph, v);
             }
         }
 
-        public IReadOnlyCollection<int> Order { get { return _order; } }
-
-        public bool IsDag { get { return _order != null; } }
+        public bool this[int v, int w] { get { return _all[v][w]; } }
     }
 }
