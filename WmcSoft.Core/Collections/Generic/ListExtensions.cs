@@ -37,13 +37,13 @@ namespace WmcSoft.Collections.Generic
     public static class ListExtensions
     {
         static void Guard<T>(IReadOnlyList<T> list, int startIndex, int count) {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
         }
 
         static void Guard<T>(IList<T> list, int startIndex, int count) {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
         }
@@ -93,7 +93,7 @@ namespace WmcSoft.Collections.Generic
 
         public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value, int startIndex, int count) {
             Guard(list, startIndex, count);
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
             case 0:
@@ -106,8 +106,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (value == null) throw new ArgumentNullException("value");
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
             case 0:
@@ -117,6 +117,26 @@ namespace WmcSoft.Collections.Generic
             default:
                 return UnguardedIndexOf(list.AsReadOnly(), value, 0, list.Count, EqualityComparer<T>.Default);
             }
+        }
+
+        #endregion
+
+        #region Remove
+
+        /// <summary>
+        /// Removes the first occurrence that matches the conditions defined by the specified predicate.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="match">The <see cref="Predicate{T}"/> delegate that defines the conditions of the element to search for.</param>
+        /// <returns><c>true</c> if item is successfully removed; otherwise, <c>false</c>.</returns>
+        public static bool Remove<T>(this List<T> list, Predicate<T> match) {
+            var index = list.FindIndex(match);
+            if (index >= 0) {
+                list.RemoveAt(index);
+                return true;
+            }
+            return false;
         }
 
         #endregion
@@ -189,7 +209,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="rotation">The target rotation.</param>
         /// <returns>The amount by wich to rotate the list.</returns>
         public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation) {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (rotation == null) throw new ArgumentNullException("rotation");
 
             if (rotation.Count != list.Count)
@@ -216,7 +236,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation) {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (rotation == null) throw new ArgumentNullException("rotation");
 
             if (rotation.Count != list.Count)
@@ -225,7 +245,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count) {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (rotation == null) throw new ArgumentNullException("rotation");
 
             if (rotation.Count != count)
