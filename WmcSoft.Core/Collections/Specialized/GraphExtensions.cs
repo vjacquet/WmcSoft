@@ -98,6 +98,12 @@ namespace WmcSoft.Collections.Specialized
             return new KosarajuSharirStrongConnectedComponentsAlgorithm(graph);
         }
 
+        /// <summary>
+        /// The transitive closure of a digraph is another digraph with the same set of vertices, 
+        /// but with an edge from v to w if and only if w is reachable from v.
+        /// </summary>
+        /// <param name="graph">The digraph</param>
+        /// <returns>The transitive closure</returns>
         public static TransitiveClosureAlgorithm TransitiveClosure(this IDirectedGraph graph) {
             return new TransitiveClosureAlgorithm(graph);
         }

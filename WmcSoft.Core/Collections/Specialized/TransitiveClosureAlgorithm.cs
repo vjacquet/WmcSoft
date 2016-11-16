@@ -24,20 +24,63 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using WmcSoft.Collections.Generic.Internals;
+
 namespace WmcSoft.Collections.Specialized
 {
-    public class TransitiveClosureAlgorithm
+    public class TransitiveClosureAlgorithm : IDirectedGraph
     {
-        private readonly DirectedDepthFirstSearchAlgorithm[] _all;
+        private readonly DepthFirstSearchAlgorithm[] _all;
+        private readonly int _edges;
 
-        public TransitiveClosureAlgorithm(IDirectedGraph graph) {
+        internal TransitiveClosureAlgorithm(IDirectedGraph graph) {
+            if (graph == null) throw new ArgumentNullException(nameof(graph));
+
             var V = graph.VerticeCount;
-            _all = new DirectedDepthFirstSearchAlgorithm[V];
+            _all = new DepthFirstSearchAlgorithm[V];
+            var edges = 0;
             for (int v = 0; v < V; v++) {
-                _all[v] = new DirectedDepthFirstSearchAlgorithm(graph, v);
+                var a = new DepthFirstSearchAlgorithm(graph, v);
+                _all[v] = a;
+                edges += a.Count;
             }
+            _edges = edges;
         }
 
-        public bool this[int v, int w] { get { return _all[v][w]; } }
+        private bool Reachable(int v, int w) {
+            return _all[v][w];
+        }
+
+        public bool this[int v, int w] { get { return Reachable(v, w); } }
+
+        #region IDirectedGraph methods
+
+        public int EdgeCount { get { return _edges; } }
+        public int VerticeCount { get { return _all.Length; } }
+
+        public IReadOnlyCollection<int> Adjacents(int v) {
+            var adj = _all[v];
+            var enumerable = from w in Enumerable.Range(0, VerticeCount)
+                             where adj[w]
+                             select w;
+            return new ReadOnlyCollectionAdapter<int>(adj.Count, enumerable);
+        }
+
+        public IDirectedGraph Reverse() {
+            var length = VerticeCount;
+            var digraph = new Digraph(length);
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    if (Reachable(i, j))
+                        digraph.Connect(j, i);
+                }
+            }
+            return digraph;
+        }
+
+        #endregion
     }
 }
