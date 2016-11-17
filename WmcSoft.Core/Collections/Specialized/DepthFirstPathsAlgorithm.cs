@@ -33,7 +33,7 @@ namespace WmcSoft.Collections.Specialized
     /// Finds paths to all the vertices in a graph that are connected to a given start vertex.
     /// </summary>
     /// <remarks>The operation is performed in time proportional to the sum of their degree.</remarks>
-    public struct DepthFirstPathsAlgorithm
+    public struct DepthFirstPathsAlgorithm : IPaths<int>
     {
         private readonly bool[] _marked;
         private readonly int[] _edgeTo;

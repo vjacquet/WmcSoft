@@ -34,7 +34,7 @@ namespace WmcSoft.Collections.Specialized
     /// </summary>
     /// <remarks>The operation is performed in time proportional to 
     /// <see cref="Graph.VerticeCount"/>+<see cref="Graph.EdgeCount"/> in the worst case.</remarks>
-    public struct BreathFirstPathsAlgorithm
+    public struct BreathFirstPathsAlgorithm : IPaths<int>
     {
         private readonly bool[] _marked;
         private readonly int[] _edgeTo;
