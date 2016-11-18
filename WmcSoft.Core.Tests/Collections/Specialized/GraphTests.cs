@@ -125,7 +125,7 @@ namespace WmcSoft.Collections.Specialized
             CheckPaths(paths, 5, 0, 5);
         }
 
-        public void CheckComponents(ConnectedComponentsAlgorithm cc, int id, params int[] expected) {
+        public void CheckComponents(IConnectedComponents<int> cc, int id, params int[] expected) {
             CollectionAssert.AreEqual(cc.Components(id).ToList(), expected);
         }
 

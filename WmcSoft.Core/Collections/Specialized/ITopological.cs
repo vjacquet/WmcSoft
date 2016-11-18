@@ -28,22 +28,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public class TopologicalAlgorithm : ITopological<int>
+    public interface ITopological<TEgde>
     {
-        private readonly IReadOnlyCollection<int> _order;
-
-        public TopologicalAlgorithm(IDirectedGraph graph) {
-            var finder = graph.Cycle();
-            if (!finder.HasCycle) {
-                var dfs = new DepthFirstOrderAlgorithm(graph);
-                _order = dfs.ReversePostOrder;
-            } else {
-                _order = null;
-            }
-        }
-
-        public bool IsDag { get { return _order != null; } }
-
-        public IReadOnlyCollection<int> Order { get { return _order; } }
+        bool IsDag { get; }
+        IReadOnlyCollection<int> Order { get; }
     }
 }

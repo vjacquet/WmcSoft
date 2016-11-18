@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public struct KosarajuSharirStrongConnectedComponentsAlgorithm
+    public struct KosarajuSharirStrongConnectedComponentsAlgorithm : IConnectedComponents<int>
     {
         private readonly bool[] _marked;
         private readonly int[] _ids;

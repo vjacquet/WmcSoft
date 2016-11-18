@@ -63,8 +63,9 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// Divides the vertices into equivalence classes (the connected components).
         /// </summary>
-        public static ConnectedComponentsAlgorithm ConnectedComponents(this IGraph graph) {
-            return new ConnectedComponentsAlgorithm(graph);
+        public static ConnectedComponentsAlgorithm<TGraph> ConnectedComponents<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            return new ConnectedComponentsAlgorithm<TGraph>(graph);
         }
 
         /// <summary>

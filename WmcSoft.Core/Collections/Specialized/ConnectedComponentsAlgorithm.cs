@@ -32,13 +32,14 @@ namespace WmcSoft.Collections.Specialized
     /// <summary>
     /// Divides the vertices into equivalence classes (the connected components).
     /// </summary>
-    public struct ConnectedComponentsAlgorithm
+    public struct ConnectedComponentsAlgorithm<TGraph> : IConnectedComponents<int>
+        where TGraph : IGraph
     {
         private readonly bool[] _marked;
         private readonly int[] _ids;
         private readonly int _count;
 
-        public ConnectedComponentsAlgorithm(IGraph graph) {
+        public ConnectedComponentsAlgorithm(TGraph graph) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
             _marked = new bool[graph.VerticeCount];
@@ -70,7 +71,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private void Process(IGraph graph, int v) {
+        private void Process(TGraph graph, int v) {
             _marked[v] = true;
             _ids[v] = _count;
             foreach (var w in graph.Adjacents(v))
