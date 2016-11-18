@@ -28,9 +28,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public interface IPaths<TEgde>
+    public interface IPaths<TVertex>
     {
-        bool HasPathTo(TEgde w);
-        IEnumerable<TEgde> PathTo(TEgde v);
+        bool HasPathTo(TVertex w);
+        IEnumerable<TVertex> PathTo(TVertex v);
     }
 }

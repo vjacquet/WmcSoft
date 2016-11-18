@@ -28,11 +28,11 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public interface IConnectedComponents<TEgde>
+    public interface IConnectedComponents<TVertex>
     {
-        bool Connected(TEgde v, TEgde w);
+        bool Connected(TVertex v, TVertex w);
         int Count { get; }
-        int IdOf(TEgde v);
-        IEnumerable<TEgde> Components(TEgde id);
+        int IdOf(TVertex v);
+        IEnumerable<TVertex> Components(TVertex id);
     }
 }

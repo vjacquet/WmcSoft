@@ -113,8 +113,8 @@ namespace WmcSoft.Collections.Specialized
 
         #region Connect
 
-        public static TGraph Connect<TGraph>(this TGraph graph, int v, params int[] w)
-            where TGraph : IGraphBuilder {
+        public static TGraph Connect<TGraph, TVertex>(this TGraph graph, TVertex v, params TVertex[] w)
+            where TGraph : IGraphBuilder<TVertex> {
             for (int i = 0; i < w.Length; i++) {
                 graph.Connect(v, w[i]);
             }

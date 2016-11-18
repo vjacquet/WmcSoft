@@ -28,9 +28,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public interface ITopological<TEgde>
+    public interface ITopological<TVertex>
     {
         bool IsDag { get; }
-        IReadOnlyCollection<int> Order { get; }
+        IReadOnlyCollection<TVertex> Order { get; }
     }
 }
