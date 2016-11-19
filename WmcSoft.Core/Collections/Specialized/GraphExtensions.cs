@@ -79,8 +79,9 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// Checks if the <paramref name="graph"/> is bipartite.
         /// </summary>
-        public static bool IsBipartite(this IGraph graph) {
-            var a = new BipartiteAlgorithm(graph);
+        public static bool IsBipartite<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            var a = new BipartiteAlgorithm<TGraph>(graph);
             return a.IsBipartite;
         }
 
