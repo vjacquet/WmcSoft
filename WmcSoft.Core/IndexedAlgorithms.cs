@@ -161,6 +161,25 @@ namespace WmcSoft
 
         #endregion
 
+        #region Fill
+
+        public static void UnguardedFill<TList, T>(this TList source, T value)
+            where TList : IList<T> {
+            var length = source.Count;
+            for (int i = 0; i < length; i++) {
+                source[i] = value;
+            }
+        }
+
+        public static void Fill<TList, T>(this TList source, T value)
+            where TList : IList<T> {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            UnguardedFill(source, value);
+        }
+
+        #endregion
+
         #region InsertionSort
 
         public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer) {
