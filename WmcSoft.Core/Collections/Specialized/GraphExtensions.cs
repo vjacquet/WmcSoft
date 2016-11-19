@@ -110,6 +110,10 @@ namespace WmcSoft.Collections.Specialized
             return new TransitiveClosureAlgorithm(graph);
         }
 
+        public static DijkstraShortestPathsAlgorithm DijkstraShortestPaths(this WeightedDigraph graph, int s) {
+            return new DijkstraShortestPathsAlgorithm(graph, s);
+        }
+
         #endregion
 
         #region Connect
