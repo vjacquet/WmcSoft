@@ -24,13 +24,11 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace WmcSoft.Collections.Specialized
 {
-    public interface IPaths<TVertex, TEdge>
+    public interface IShortestPaths<TVertex, TEdge, TWeight> 
+        : IPaths<TVertex, TEdge>
     {
-        bool HasPathTo(TVertex v);
-        IEnumerable<TEdge> PathTo(TVertex v);
+        TWeight DistanceTo(TVertex v);
     }
 }

@@ -79,8 +79,9 @@ namespace WmcSoft.Collections.Specialized
         /// <summary>
         /// Checks if the <paramref name="graph"/> is bipartite.
         /// </summary>
-        public static bool IsBipartite(this IGraph graph) {
-            var a = new BipartiteAlgorithm(graph);
+        public static bool IsBipartite<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            var a = new BipartiteAlgorithm<TGraph>(graph);
             return a.IsBipartite;
         }
 
@@ -109,12 +110,16 @@ namespace WmcSoft.Collections.Specialized
             return new TransitiveClosureAlgorithm(graph);
         }
 
+        public static DijkstraShortestPathsAlgorithm DijkstraShortestPaths(this WeightedDigraph graph, int s) {
+            return new DijkstraShortestPathsAlgorithm(graph, s);
+        }
+
         #endregion
 
         #region Connect
 
-        public static TGraph Connect<TGraph>(this TGraph graph, int v, params int[] w)
-            where TGraph : IGraphBuilder {
+        public static TGraph Connect<TGraph, TVertex>(this TGraph graph, TVertex v, params TVertex[] w)
+            where TGraph : IGraphBuilder<TVertex> {
             for (int i = 0; i < w.Length; i++) {
                 graph.Connect(v, w[i]);
             }

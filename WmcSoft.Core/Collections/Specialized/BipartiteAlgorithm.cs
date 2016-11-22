@@ -32,13 +32,14 @@ namespace WmcSoft.Collections.Specialized
     /// <summary>
     /// Checks if the <see cref="Graph"/> is bipartite.
     /// </summary>
-    public struct BipartiteAlgorithm
+    public struct BipartiteAlgorithm<TGraph>
+        where TGraph : IGraph
     {
         private readonly bool[] _marked;
         private readonly bool[] _color;
         private bool _isBipartite;
 
-        public BipartiteAlgorithm(IGraph graph) {
+        public BipartiteAlgorithm(TGraph graph) {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
             _marked = new bool[graph.VerticeCount];
@@ -54,7 +55,7 @@ namespace WmcSoft.Collections.Specialized
             get { return _isBipartite; }
         }
 
-        private void Process(IGraph graph, int v) {
+        private void Process(TGraph graph, int v) {
             _marked[v] = true;
             foreach (var w in graph.Adjacents(v)) {
                 if (!_marked[w]) {

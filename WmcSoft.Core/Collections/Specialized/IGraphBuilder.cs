@@ -28,8 +28,8 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public interface IGraphBuilder
+    public interface IGraphBuilder<TVertex>
     {
-        void Connect(int v, int w);
+        void Connect(TVertex v, TVertex w);
     }
 }
