@@ -36,6 +36,7 @@ namespace WmcSoft.Collections.Specialized
 
             // compute eccentricities
             var eccentricities = new int[graph.VerticeCount];
+            throw new NotImplementedException();
 
             var length = eccentricities.Length;
             var diameter = eccentricities[0];
