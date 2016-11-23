@@ -26,6 +26,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 using static System.Math;
 
 namespace WmcSoft.Statistics
@@ -34,6 +36,7 @@ namespace WmcSoft.Statistics
     /// Computes Sum, Mean, Variance and other statical entities in linear time of the measures.
     /// </summary>
     /// <remarks>Values can be removed.</remarks>
+    [DebuggerDisplay("µ={Mean,nq}, Var={Variance,nq}, σ={Sigma,nq}")]
     public class StraightforwardAccumulator : IAccumulator
     {
         #region Fields

@@ -24,6 +24,8 @@
 
 #endregion
 
+using System.Diagnostics;
+
 using static System.Math;
 
 namespace WmcSoft.Statistics
@@ -34,6 +36,7 @@ namespace WmcSoft.Statistics
     /// </summary>
     /// <remarks>This implementation is less susceptible to roundoff error than the
     /// straightforward implementation (see Robert Sedgewick & Kevin Wayne, Algorithms, Fourth edition, Page 118).</remarks>
+    [DebuggerDisplay("µ={Mean,nq}, Var={Variance,nq}, σ={Sigma,nq}")]
     public class Accumulator : IAccumulator
     {
         #region Fields
