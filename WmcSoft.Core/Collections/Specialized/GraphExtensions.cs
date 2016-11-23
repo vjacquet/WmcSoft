@@ -25,6 +25,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -112,6 +113,34 @@ namespace WmcSoft.Collections.Specialized
 
         public static DijkstraShortestPathsAlgorithm DijkstraShortestPaths(this WeightedDigraph graph, int s) {
             return new DijkstraShortestPathsAlgorithm(graph, s);
+        }
+
+        #endregion
+
+        #region Typical graph processing methods
+
+        /// <summary>
+        /// Computes the degree of the vertex <paramref name="v"/>.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <param name="v">The vertex.</param>
+        /// <returns>The degree of the vertex.</returns>
+        public static int Degree<TGraph>(this TGraph graph, int v)
+            where TGraph : IGraph {
+            return graph.Adjacents(v).Count;
+        }
+
+        /// <summary>
+        /// Computes the maximum degree.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <returns>The maximum degree.</returns>
+        public static int MaxDegree<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            return Enumerable.Range(0, graph.VerticeCount)
+                .Max(v => graph.Adjacents(v).Count);
         }
 
         #endregion
