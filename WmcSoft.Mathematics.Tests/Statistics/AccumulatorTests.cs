@@ -32,7 +32,7 @@ namespace WmcSoft.Statistics
 
         [TestMethod]
         public void CheckStraightForwardAccumulator() {
-            var a = new StraightForwardAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            var a = new StraightforwardAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
             Assert.AreEqual(5.5d, a.Mean);
             Assert.AreEqual(8.25d, a.Variance);
             Assert.AreEqual(2.872281323d, a.Sigma, 0.00000001d);

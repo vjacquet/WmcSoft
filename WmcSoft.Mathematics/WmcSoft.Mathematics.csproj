@@ -97,7 +97,7 @@
     <Compile Include="RNGRandom.cs" />
     <Compile Include="Statistics\SamplesAccumulator.cs" />
     <Compile Include="Statistics\Accumulator.cs" />
-    <Compile Include="Statistics\StraightForwardAccumulator.cs" />
+    <Compile Include="Statistics\StraightforwardAccumulator.cs" />
     <Compile Include="Statistics\IAccumulator.cs" />
     <Compile Include="Statistics\Quantiles.cs" />
     <Compile Include="Tableau.cs" />

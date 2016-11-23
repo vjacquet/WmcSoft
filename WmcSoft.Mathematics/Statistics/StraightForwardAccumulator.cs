@@ -34,7 +34,7 @@ namespace WmcSoft.Statistics
     /// Computes Sum, Mean, Variance and other statical entities in linear time of the measures.
     /// </summary>
     /// <remarks>Values can be removed.</remarks>
-    public class StraightForwardAccumulator : IAccumulator
+    public class StraightforwardAccumulator : IAccumulator
     {
         #region Fields
 
@@ -46,10 +46,10 @@ namespace WmcSoft.Statistics
 
         #region Lifecycle
 
-        public StraightForwardAccumulator() {
+        public StraightforwardAccumulator() {
         }
 
-        public StraightForwardAccumulator(params double[] values)
+        public StraightforwardAccumulator(params double[] values)
             : this() {
             AddRange(values);
         }
@@ -79,14 +79,14 @@ namespace WmcSoft.Statistics
             _squaredSum += value * value;
         }
 
-        public void Add(StraightForwardAccumulator accumulator) {
+        public void Add(StraightforwardAccumulator accumulator) {
             _count += accumulator._count;
             _sum += accumulator._sum;
             _squaredSum += accumulator._squaredSum;
         }
 
         public void RemoveRange(IEnumerable<double> values) {
-            var accumulator = new StraightForwardAccumulator();
+            var accumulator = new StraightforwardAccumulator();
             accumulator.AddRange(values);
             if (accumulator._count >= _count)
                 throw new InvalidOperationException();
@@ -108,7 +108,7 @@ namespace WmcSoft.Statistics
             _squaredSum -= value * value;
         }
 
-        public void Remove(StraightForwardAccumulator accumulator) {
+        public void Remove(StraightforwardAccumulator accumulator) {
             if (_count < accumulator._count) throw new InvalidOperationException();
             if (_count == accumulator._count) {
                 if (!_sum.Equals(accumulator._sum)) throw new ArgumentOutOfRangeException("accumulator");
