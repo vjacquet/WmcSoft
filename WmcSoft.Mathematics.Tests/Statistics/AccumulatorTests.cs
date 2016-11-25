@@ -8,7 +8,7 @@ namespace WmcSoft.Statistics
     {
         [TestMethod]
         public void CanGetPropertiesWhenEmpty() {
-            var a = new Accumulator();
+            var a = new SamplesAccumulator();
             Assert.AreEqual(0d, a.Mean);
             Assert.AreEqual(0d, a.Variance);
             Assert.AreEqual(0d, a.Sigma);
@@ -23,16 +23,16 @@ namespace WmcSoft.Statistics
         }
 
         [TestMethod]
-        public void CheckAccumulator() {
-            var a = new Accumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        public void CheckStraightforwardAccumulator() {
+            var a = new StraightforwardAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
             Assert.AreEqual(5.5d, a.Mean);
             Assert.AreEqual(8.25d, a.Variance);
             Assert.AreEqual(2.872281323d, a.Sigma, 0.00000001d);
         }
 
         [TestMethod]
-        public void CheckStraightForwardAccumulator() {
-            var a = new StraightforwardAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        public void CheckPopulationAccumulator() {
+            var a = new Accumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
             Assert.AreEqual(5.5d, a.Mean);
             Assert.AreEqual(8.25d, a.Variance);
             Assert.AreEqual(2.872281323d, a.Sigma, 0.00000001d);

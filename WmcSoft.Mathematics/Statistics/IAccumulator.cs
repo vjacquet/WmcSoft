@@ -38,6 +38,11 @@ namespace WmcSoft.Statistics
         void Add(double value);
 
         /// <summary>
+        /// The count of accumulated values.
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
         /// The mean of the values.
         /// </summary>
         double Mean { get; }

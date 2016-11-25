@@ -71,10 +71,12 @@ namespace WmcSoft.Statistics
             _mean += delta / N;
         }
 
-        public double Mean {
-            get { return _mean; }
-        }
+        #endregion
 
+        #region Properties
+
+        public int Count { get { return _count; } }
+        public double Mean { get { return _mean; } }
         public double Variance {
             get {
                 if (_count < 2)
@@ -82,10 +84,7 @@ namespace WmcSoft.Statistics
                 return _s / _count;
             }
         }
-
-        public double Sigma {
-            get { return Sqrt(Variance); }
-        }
+        public double Sigma { get { return Sqrt(Variance); } }
 
         #endregion
     }

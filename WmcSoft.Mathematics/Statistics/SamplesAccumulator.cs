@@ -31,7 +31,7 @@ using static System.Math;
 namespace WmcSoft.Statistics
 {
     /// <summary>
-    /// Computes Sum, Mean, Variance and other statical entities in linear time of the measures.
+    /// Computes Sum, Mean, Variance and other statistical entities in linear time of the measures.
     /// The measures are considered as a sample of a larger population.
     /// </summary>
     /// <remarks>This implementation is less susceptible to roundoff error than the
@@ -67,14 +67,16 @@ namespace WmcSoft.Statistics
             _count++;
             var delta = (value - _mean);
             var N = (double)_count;
-            _s += (N - 1d) * delta * delta / N;
+            _s += (N - 1d) / N * delta * delta;
             _mean += delta / N;
         }
 
-        public double Mean {
-            get { return _mean; }
-        }
+        #endregion
 
+        #region Properties
+
+        public int Count { get { return _count; } }
+        public double Mean { get { return _mean; } }
         public double Variance {
             get {
                 if (_count < 2)
@@ -82,10 +84,7 @@ namespace WmcSoft.Statistics
                 return _s / (_count - 1);
             }
         }
-
-        public double Sigma {
-            get { return Sqrt(Variance); }
-        }
+        public double Sigma { get { return Sqrt(Variance); } }
 
         #endregion
     }

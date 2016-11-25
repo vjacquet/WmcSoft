@@ -33,7 +33,7 @@ using static System.Math;
 namespace WmcSoft.Statistics
 {
     /// <summary>
-    /// Computes Sum, Mean, Variance and other statical entities in linear time of the measures.
+    /// Computes Sum, Mean, Variance and other statistical entities in linear time of the measures.
     /// </summary>
     /// <remarks>Values can be removed.</remarks>
     [DebuggerDisplay("µ={Mean,nq}, Var={Variance,nq}, σ={Sigma,nq}")]
@@ -43,7 +43,7 @@ namespace WmcSoft.Statistics
 
         int _count;
         double _sum;
-        double _squaredSum;
+        double _sumOfSquares;
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace WmcSoft.Statistics
         public void Reset() {
             _count = 0;
             _sum = 0d;
-            _squaredSum = 0d;
+            _sumOfSquares = 0d;
         }
 
         public void AddRange(IEnumerable<double> values) {
@@ -79,13 +79,13 @@ namespace WmcSoft.Statistics
         public void Add(double value) {
             _count++;
             _sum += value;
-            _squaredSum += value * value;
+            _sumOfSquares += value * value;
         }
 
         public void Add(StraightforwardAccumulator accumulator) {
             _count += accumulator._count;
             _sum += accumulator._sum;
-            _squaredSum += accumulator._squaredSum;
+            _sumOfSquares += accumulator._sumOfSquares;
         }
 
         public void RemoveRange(IEnumerable<double> values) {
@@ -108,7 +108,7 @@ namespace WmcSoft.Statistics
 
             _count--;
             _sum -= value;
-            _squaredSum -= value * value;
+            _sumOfSquares -= value * value;
         }
 
         public void Remove(StraightforwardAccumulator accumulator) {
@@ -122,7 +122,7 @@ namespace WmcSoft.Statistics
 
             _count -= accumulator._count;
             _sum -= accumulator._sum;
-            _squaredSum -= accumulator._squaredSum;
+            _sumOfSquares -= accumulator._sumOfSquares;
         }
 
         #endregion
@@ -131,15 +131,15 @@ namespace WmcSoft.Statistics
 
         public int Count { get { return _count; } }
         public double Sum { get { return _sum; } }
-        public double SquaredSum { get { return _squaredSum; } }
+        public double SumOfSquares { get { return _sumOfSquares; } }
         public double Mean { get { return (_count == 0) ? 0d : _sum / _count; } }
-        public double SquaredMean { get { return (_count == 0) ? 0d : _squaredSum / _count; } }
+        public double MeanOfSquares { get { return (_count == 0) ? 0d : _sumOfSquares / _count; } }
         public double Variance {
             get {
                 if (_count == 0)
                     return 0d;
                 var mean = Mean;
-                return SquaredMean - mean * mean;
+                return MeanOfSquares - mean * mean;
             }
         }
         public double Sigma { get { return Sqrt(Variance); } }
