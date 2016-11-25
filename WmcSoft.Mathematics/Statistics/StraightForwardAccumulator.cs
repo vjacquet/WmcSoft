@@ -34,6 +34,7 @@ namespace WmcSoft.Statistics
 {
     /// <summary>
     /// Computes Sum, Mean, Variance and other statistical entities in linear time of the measures.
+    /// The measures are the complete population.
     /// </summary>
     /// <remarks>Values can be removed.</remarks>
     [DebuggerDisplay("µ={Mean,nq}, Var={Variance,nq}, σ={Sigma,nq}")]

@@ -95,7 +95,7 @@
     </Compile>
     <Compile Include="RandomBase.cs" />
     <Compile Include="RNGRandom.cs" />
-    <Compile Include="Statistics\Accumulator.cs" />
+    <Compile Include="Statistics\PopulationAccumulator.cs" />
     <Compile Include="Statistics\SamplesAccumulator.cs" />
     <Compile Include="Statistics\StraightforwardAccumulator.cs" />
     <Compile Include="Statistics\IAccumulator.cs" />

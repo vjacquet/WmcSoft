@@ -37,7 +37,7 @@ namespace WmcSoft.Statistics
     /// <remarks>This implementation is less susceptible to roundoff error than the
     /// straightforward implementation (see Robert Sedgewick & Kevin Wayne, Algorithms, Fourth edition, Page 118).</remarks>
     [DebuggerDisplay("µ={Mean,nq}, Var={Variance,nq}, σ={Sigma,nq}")]
-    public class Accumulator : IAccumulator
+    public class PopulationAccumulator : IAccumulator
     {
         #region Fields
 
@@ -49,10 +49,10 @@ namespace WmcSoft.Statistics
 
         #region Lifecycle
 
-        public Accumulator() {
+        public PopulationAccumulator() {
         }
 
-        public Accumulator(params double[] values)
+        public PopulationAccumulator(params double[] values)
             : this() {
             for (int i = 0; i < values.Length; i++) {
                 Add(values[i]);
