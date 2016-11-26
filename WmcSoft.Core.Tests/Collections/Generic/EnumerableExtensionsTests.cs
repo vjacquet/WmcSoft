@@ -248,5 +248,28 @@ namespace WmcSoft.Collections.Generic
 
             Assert.AreEqual(7, data.Tally);
         }
+
+        [TestMethod]
+        public void CheckMinMax() {
+            var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var expected = Tuple.Create(1, 9);
+            var actual = data.MinMax();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckMinMaxOnNullable() {
+            var empty = new List<int?>();
+            Assert.AreEqual(new Tuple<int?, int?>(null, null), empty.MinMax());
+
+            empty.Add(null);
+            empty.Add(null);
+            Assert.AreEqual(new Tuple<int?, int?>(null, null), empty.MinMax());
+
+            var data = new List<int?> { null, 1, 2, 3, 4, null, 5, 6, 7, 8, 9 };
+            var expected = Tuple.Create<int?,int?>(1, 9);
+            var actual = data.MinMax();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
