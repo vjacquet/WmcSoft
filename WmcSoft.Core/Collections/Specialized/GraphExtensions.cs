@@ -24,8 +24,10 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -132,6 +134,18 @@ namespace WmcSoft.Collections.Specialized
         }
 
         /// <summary>
+        /// Computes the minimum degree.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <returns>The minimum degree.</returns>
+        public static int MinDegree<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            return Enumerable.Range(0, graph.VerticeCount)
+                .Max(v => graph.Adjacents(v).Count);
+        }
+
+        /// <summary>
         /// Computes the maximum degree.
         /// </summary>
         /// <typeparam name="TGraph">The type of graph.</typeparam>
@@ -141,6 +155,41 @@ namespace WmcSoft.Collections.Specialized
             where TGraph : IGraph {
             return Enumerable.Range(0, graph.VerticeCount)
                 .Max(v => graph.Adjacents(v).Count);
+        }
+
+        public static Tuple<int,int> MinMaxDegree<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            return Enumerable.Range(0, graph.VerticeCount)
+                .MinMax(v => graph.Adjacents(v).Count);
+        }
+
+        /// <summary>
+        /// Computes the average degree.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <returns>The average degree.</returns>
+        public static double AverageDegree<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            if (graph is IDirectedGraph)
+                throw new NotSupportedException(); // verify if true for directed graphs
+            return 2d * graph.EdgeCount / graph.VerticeCount;
+        }
+
+        /// <summary>
+        /// Computes the average degree.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <returns>The average degree.</returns>
+        public static double NumberOfSelfLoops<TGraph>(this TGraph graph)
+            where TGraph : IGraph {
+            int count = 0;
+            int V = graph.VerticeCount;
+            for (int v = 0; v < V; v++)
+                foreach (var w in graph.Adjacents(v))
+                    if (v == w) count++;
+            return count / 2; // each edge counted twice.
         }
 
         #endregion
