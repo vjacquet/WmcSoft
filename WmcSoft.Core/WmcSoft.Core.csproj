@@ -117,6 +117,7 @@
     <Compile Include="Collections\Specialized\Digraph.cs" />
     <Compile Include="Collections\Specialized\Graph.cs" />
     <Compile Include="Collections\Specialized\GraphExtensions.cs" />
+    <Compile Include="Collections\Specialized\IUndirectedGraph.cs" />
     <Compile Include="Collections\Specialized\IShortestPaths.cs" />
     <Compile Include="Collections\Specialized\GraphProperties.cs" />
     <Compile Include="Collections\Specialized\ITopological.cs" />

@@ -40,7 +40,7 @@ namespace WmcSoft.Collections.Specialized
     /// <remarks>This implementation allows self loops and parallel edges.</remarks>
     [DebuggerDisplay("Vertices={VerticeCount,nq}, Edges={EdgeCount,nq}")]
     [DebuggerTypeProxy(typeof(DebugView))]
-    public class Graph : IGraph, IGraphBuilder<int>
+    public class Graph : IUndirectedGraph, IGraphBuilder<int>
     {
         internal class DebugView
         {
