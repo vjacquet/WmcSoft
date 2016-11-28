@@ -118,6 +118,7 @@
     <Compile Include="IO\StreamSourceTests.cs" />
     <Compile Include="IO\SubstringReaderTests.cs" />
     <Compile Include="Linq\Expressions\DynamicTests.cs" />
+    <Compile Include="Linq\Expressions\ExpressionExtensionsTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="PairTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
