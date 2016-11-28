@@ -893,7 +893,7 @@ namespace WmcSoft.Collections.Generic
 
             using (var enumerator = source.GetEnumerator()) {
                 bool hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
+                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.Value)))
                     ;
                 if (!hasData)
                     return Tuple.Create(default(double?), default(double?));
@@ -901,7 +901,7 @@ namespace WmcSoft.Collections.Generic
                 var min = enumerator.Current;
                 var max = enumerator.Current;
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
+                    if (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.Value))
                         continue;
                     if (enumerator.Current < min)
                         min = enumerator.Current;
@@ -1022,7 +1022,7 @@ namespace WmcSoft.Collections.Generic
 
             using (var enumerator = source.GetEnumerator()) {
                 bool hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
+                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.Value)))
                     ;
                 if (!hasData)
                     return Tuple.Create(default(float?), default(float?));
@@ -1030,7 +1030,7 @@ namespace WmcSoft.Collections.Generic
                 var min = enumerator.Current;
                 var max = enumerator.Current;
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
+                    if (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.Value))
                         continue;
                     if (enumerator.Current < min)
                         min = enumerator.Current;
