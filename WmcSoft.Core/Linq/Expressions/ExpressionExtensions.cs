@@ -124,6 +124,37 @@ namespace WmcSoft.Linq.Expressions
 
         #region Combiners
 
+        static Expression<TDelegate> UnguardedCompose<TDelegate>(Func<Expression, Expression, Expression> merge, Expression<TDelegate> x, Expression<TDelegate> y) {
+            // build parameter map (from parameters of second to parameters of first)
+            var length = x.Parameters.Count;
+            var map = new Dictionary<ParameterExpression, ParameterExpression>(x.Parameters.Count);
+            for (int i = 0; i < length; i++) {
+                map.Add(y.Parameters[i], x.Parameters[i]);
+            }
+
+            // then apply composition of lambda expression bodies to parameters from the first expression 
+            return Expression.Lambda<TDelegate>(merge(x.Body, RebindParameters(y.Body, map)), x.Parameters);
+        }
+
+        /// <summary>
+        /// Composes two expressions using a binary function.
+        /// </summary>
+        /// <typeparam name="TDelegate">A delegate type</typeparam>
+        /// <param name="merge">The binary function used to compose the two expressions.</param>
+        /// <param name="x">The first expression.</param>
+        /// <param name="y">The second expression.</param>
+        /// <returns>A composed expression.</returns>
+        /// <remarks>Based on the original post by Colin Meek:
+        /// http://blogs.msdn.com/b/meek/archive/2008/05/02/linq-to-entities-combining-predicates.aspx </remarks>
+        public static Expression<TDelegate> Compose<TDelegate>(this Func<Expression, Expression, Expression> merge, Expression<TDelegate> x, Expression<TDelegate> y) {
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
+            if (merge == null) throw new ArgumentNullException(nameof(merge));
+            if (x.Parameters.Count != y.Parameters.Count) throw new ArgumentException();
+
+            return UnguardedCompose(merge, x, y);
+        }
+
         static Expression Replace(Expression expression, Expression oldValue, Expression newValue) {
             var visitor = new ReplaceExpressionVisitor(oldValue, newValue);
             return visitor.Visit(expression);
@@ -183,9 +214,10 @@ namespace WmcSoft.Linq.Expressions
             case 0:
                 throw new InvalidOperationException();
             case 1:
-                return predicates[1];
+                return predicates[0];
             default:
-                var result = predicates[predicates.Count - 2];
+                // reduce right so the resulting expression tree should be isomorphic to a && .. && z
+                var result = predicates[predicates.Count - 1];
                 for (int i = predicates.Count - 2; i >= 0; i--) {
                     result = predicates[i].AndAlso(result);
                 }
@@ -200,14 +232,24 @@ namespace WmcSoft.Linq.Expressions
             case 0:
                 throw new InvalidOperationException();
             case 1:
-                return predicates[1];
+                return predicates[0];
             default:
-                var result = predicates[predicates.Count - 2];
+                // reduce right so the resulting expression tree should be isomorphic to a || .. || z
+                var result = predicates[predicates.Count - 1];
                 for (int i = predicates.Count - 2; i >= 0; i--) {
                     result = predicates[i].OrElse(result);
                 }
                 return result;
             }
+        }
+
+        #endregion
+
+        #region Rebinder
+
+        public static Expression RebindParameters(this Expression exp, IDictionary<ParameterExpression, ParameterExpression> map) {
+            var rebinder = new ParameterRebindExpressionVisitor(map);
+            return rebinder.Visit(exp);
         }
 
         #endregion

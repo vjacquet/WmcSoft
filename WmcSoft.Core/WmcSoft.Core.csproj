@@ -168,6 +168,7 @@
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
+    <Compile Include="Linq\Expressions\ParameterRebindExpressionVisitor.cs" />
     <Compile Include="Linq\Expressions\ReplaceExpressionVisitor.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Symbol.cs" />
