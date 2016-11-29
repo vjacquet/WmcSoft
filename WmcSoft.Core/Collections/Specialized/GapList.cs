@@ -47,19 +47,20 @@ namespace WmcSoft.Collections.Specialized
 
         private int _gapStartIndex;
         private int _gapEndIndex;
+        private int _version;
 
         public GapList() {
             _storage = Empty;
         }
 
         public GapList(int capacity) {
-            if (capacity < 0) throw new ArgumentOutOfRangeException("capacity");
+            if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
             _storage = capacity == 0 ? Empty : new T[capacity];
             _gapEndIndex = capacity;
         }
 
         public GapList(IEnumerable<T> collection) {
-            if (collection == null) throw new ArgumentOutOfRangeException("collection");
+            if (collection == null) throw new ArgumentOutOfRangeException(nameof(collection));
 
             var c = collection as ICollection<T>;
             if (c != null) {
@@ -151,7 +152,7 @@ namespace WmcSoft.Collections.Specialized
             }
             set {
                 var count = Count;
-                if (value < count) throw new ArgumentOutOfRangeException("value");
+                if (value < count) throw new ArgumentOutOfRangeException(nameof(value));
 
                 if (value != _storage.Length) {
                     if (value > 0) {
@@ -187,11 +188,13 @@ namespace WmcSoft.Collections.Specialized
         public void Add(T item) {
             Reserve(1);
             _storage[_gapStartIndex++] = item;
+            _version++;
         }
 
         public void Clear() {
             _gapStartIndex = 0;
             _gapEndIndex = _storage.Length;
+            _version++;
         }
 
         public bool Contains(T item) {
@@ -240,6 +243,7 @@ namespace WmcSoft.Collections.Specialized
             Seek(index + 1);
             _gapStartIndex--;
             _storage[_gapStartIndex] = default(T); // no loitering
+            _version++;
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
