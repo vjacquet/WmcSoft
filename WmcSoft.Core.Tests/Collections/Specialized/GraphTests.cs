@@ -164,5 +164,25 @@ namespace WmcSoft.Collections.Specialized
 
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckGraphProperties() {
+            // test case taken from <http://mathworld.wolfram.com/GraphEccentricity.html>
+            var graph = new Graph(7);
+            graph.Connect(0, 1);
+            graph.Connect(1, 2);
+            graph.Connect(1, 3);
+            graph.Connect(3, 4);
+            graph.Connect(1, 5);
+            graph.Connect(5, 6);
+
+            var properties = new GraphProperties(graph);
+            var expected = new int[] { 3, 2, 3, 3, 4, 3, 4 };
+            CollectionAssert.AreEqual(expected, properties.Eccentricity);
+
+            Assert.AreEqual(2, properties.Radius);
+            Assert.AreEqual(4, properties.Diameter);
+            Assert.AreEqual(1, properties.Center);
+        }
     }
 }

@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Linq;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -35,15 +36,23 @@ namespace WmcSoft.Collections.Specialized
             if (graph.VerticeCount <= 0) throw new ArgumentException(nameof(graph));
 
             // compute eccentricities
-            var eccentricities = new int[graph.VerticeCount];
-            throw new NotImplementedException();
+            var length = graph.VerticeCount;
 
-            var length = eccentricities.Length;
+            var algorithms = new BreathFirstPathsAlgorithm[length];
+            for (int i = 0; i < length; i++) {
+                algorithms[i] = new BreathFirstPathsAlgorithm(graph, i);
+            }
+
+            var eccentricities = new int[length];
+            for (int i = 0; i < length; i++) {
+                eccentricities[i] = algorithms.Max(a => a.DistanceTo(i));
+            }
+
             var diameter = eccentricities[0];
             var radius = eccentricities[0];
             var center = 0;
             for (int i = 1; i < length; i++) {
-                if (eccentricities[i] < diameter) {
+                if (eccentricities[i] < radius) {
                     radius = eccentricities[i];
                     center = i;
                 } else if (eccentricities[i] > diameter) {

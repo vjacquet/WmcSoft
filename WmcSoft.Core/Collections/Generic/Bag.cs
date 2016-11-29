@@ -128,9 +128,7 @@ namespace WmcSoft.Collections.Generic
         public Bag(int capacity) {
             if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
-            _storage = (capacity != 0)
-                ? new T[capacity]
-                : ContiguousStorage<T>.Empty;
+            _storage = (capacity != 0) ? new T[capacity] : ContiguousStorage<T>.Empty;
         }
 
         /// <summary>
