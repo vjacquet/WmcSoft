@@ -80,5 +80,23 @@ namespace WmcSoft.Collections.Specialized
             var actual = list.ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanEnumerateWithGap() {
+            var list = new GapList<int>(16);
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.Add(6);
+            list.Insert(4, 9);
+            list.Add(10);
+            list.Insert(7, 7);
+            list.Add(8);
+            var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
+            var actual = list.ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

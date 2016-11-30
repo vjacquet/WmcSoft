@@ -27,16 +27,93 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
+    /// <summary>
+    /// Represents a list of items with a moving gap to speed insertions and deletions in the "middle".
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the list.</typeparam>
+    [Serializable]
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     public sealed class GapList<T> : IList<T>
     {
         // *************........................*******
         // ^            ^                       ^      ^
         // 0            |                       |     capacity
         //       _gapStartIndex          _gapEndIndex
+
+        #region Enumerator
+
+        [Serializable]
+        public struct Enumerator : IEnumerator<T>
+        {
+            private readonly GapList<T> _list;
+            private readonly T[] _storage;
+            private readonly int _version;
+            private int _index;
+            private int _count;
+            private T _current;
+
+            internal Enumerator(GapList<T> list) {
+                Debug.Assert(list != null);
+
+                _list = list;
+                _storage = list._storage;
+                _index = -1;
+                _count = list._gapStartIndex;
+                _version = list._version;
+                _current = default(T);
+            }
+
+            public void Dispose() {
+            }
+
+            public bool MoveNext() {
+                if (_version == _list._version && _index < _count) {
+                    _current = _storage[_index++];
+                    return true;
+                } else if (_version == _list._version && _index < _list._gapEndIndex) {
+                    _index = _list._gapEndIndex;
+                    _count = _storage.Length;
+                    _current = _storage[_index];
+                    return true;
+                }
+                return MoveNextRare();
+            }
+
+            private bool MoveNextRare() {
+                if (_version != _list._version)
+                    throw new InvalidOperationException();
+                _index = -1;
+                _current = default(T);
+                return false;
+            }
+
+            public T Current { get { return _current; } }
+
+            object IEnumerator.Current {
+                get {
+                    if (_index < 0 | _index >= _storage.Length)
+                        throw new InvalidOperationException();
+                    return Current;
+                }
+            }
+
+            void IEnumerator.Reset() {
+                if (_version != _list._version)
+                    throw new InvalidOperationException();
+                _index = -1;
+                _count = _list._gapStartIndex;
+                _current = default(T);
+            }
+        }
+
+        #endregion
 
         private static readonly T[] Empty = new T[0];
         private const int DefaultCapacity = 4;
@@ -97,12 +174,8 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public int Position {
-            get {
-                return _gapStartIndex;
-            }
-            set {
-                Seek(value, SeekOrigin.Begin);
-            }
+            get { return _gapStartIndex; }
+            set { Seek(value, SeekOrigin.Begin); }
         }
 
         public int Seek(int offset, SeekOrigin origin) {
@@ -135,6 +208,8 @@ namespace WmcSoft.Collections.Specialized
                 var n = _gapStartIndex - position;
                 _gapEndIndex = _storage.Rotate(-n, position, _gapEndIndex - position);
                 _gapStartIndex = position;
+
+                _version++;
             } else if (position > _gapStartIndex) {
                 // ***********.....******
                 //                    ^
@@ -143,6 +218,8 @@ namespace WmcSoft.Collections.Specialized
                 var gap = _gapEndIndex - _gapStartIndex;
                 _gapEndIndex = _storage.Rotate(n, _gapStartIndex, n + gap) + gap;
                 _gapStartIndex = position;
+
+                _version++;
             }
         }
 
@@ -206,16 +283,21 @@ namespace WmcSoft.Collections.Specialized
             Array.Copy(_storage, _gapEndIndex, array, arrayIndex + _gapStartIndex, _storage.Length - _gapEndIndex);
         }
 
-        public IEnumerator<T> GetEnumerator() {
-            using (var enumerator = _storage.GetEnumerator(0, _gapStartIndex)) {
-                while (enumerator.MoveNext())
-                    yield return enumerator.Current;
-            }
+        public Enumerator GetEnumerator() {
+            return new Enumerator(this);
+        }
 
-            using (var enumerator = _storage.GetEnumerator(_gapEndIndex, _storage.Length - _gapEndIndex)) {
-                while (enumerator.MoveNext())
-                    yield return enumerator.Current;
-            }
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+            return GetEnumerator();
+            //using (var enumerator = _storage.GetEnumerator(0, _gapStartIndex)) {
+            //    while (enumerator.MoveNext())
+            //        yield return enumerator.Current;
+            //}
+
+            //using (var enumerator = _storage.GetEnumerator(_gapEndIndex, _storage.Length - _gapEndIndex)) {
+            //    while (enumerator.MoveNext())
+            //        yield return enumerator.Current;
+            //}
         }
 
         public int IndexOf(T item) {
@@ -240,10 +322,9 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public void RemoveAt(int index) {
-            Seek(index + 1);
+            Seek(index + 1); // seek increment the version
             _gapStartIndex--;
             _storage[_gapStartIndex] = default(T); // no loitering
-            _version++;
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
