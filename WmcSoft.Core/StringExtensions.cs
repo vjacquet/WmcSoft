@@ -161,6 +161,57 @@ namespace WmcSoft
 
         #endregion
 
+        #region AsWords
+
+        enum AsWordsState
+        {
+            Start,
+            Lower,
+            Upper,
+            NewWord,
+        }
+
+        static bool IsWordDelimiter(char c) {
+            return char.IsWhiteSpace(c) || c == '_' || c == '-';
+        }
+
+        public static IEnumerable<string> AsWords(this string sentence) {
+            if (sentence == null) throw new ArgumentNullException(nameof(sentence));
+
+            var state = AsWordsState.Start;
+            var first = 0;
+            for (int i = 0; i < sentence.Length; i++) {
+                var c = sentence[i];
+                if (IsWordDelimiter(c)) {
+                    if (state != AsWordsState.Start) {
+                        yield return sentence.Substring(first, i - first);
+                        do { i++; }
+                        while (i < sentence.Length && IsWordDelimiter(sentence[i]));
+                        state = AsWordsState.NewWord;
+                    }
+                    first = i;
+                } else if (char.IsUpper(c)) {
+                    switch (state) {
+                    case AsWordsState.Lower:
+                    case AsWordsState.NewWord:
+                        yield return sentence.Substring(first, i - first);
+                        first = i;
+                        break;
+                    case AsWordsState.Upper:
+                        break;
+                    }
+
+                    state = AsWordsState.Upper;
+                } else {
+                    state = AsWordsState.Lower;
+                }
+            }
+            if (first < sentence.Length)
+                yield return sentence.Substring(first, sentence.Length - first);
+        }
+
+        #endregion
+
         #region Case operations
 
         /// <summary>

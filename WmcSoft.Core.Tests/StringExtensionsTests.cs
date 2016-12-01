@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft
@@ -178,6 +179,24 @@ namespace WmcSoft
             Assert.IsTrue("abaaba".Glob("ab*ba"));
             Assert.IsTrue("abaaba".Glob("*aba"));
             Assert.IsFalse("abaaba".Glob("abaabac"));
+        }
+
+        [TestMethod]
+        public void CheckAsWords() {
+            CheckWords("abc", "abc");
+            CheckWords("abc def", "abc", "def");
+            CheckWords("abc def", "abc", "def");
+            CheckWords("abc-def", "abc", "def");
+            CheckWords("abc_def", "abc", "def");
+            CheckWords("AbcDef", "Abc", "Def");
+            CheckWords("ABcDefGHI", "ABc", "Def", "GHI");
+            CheckWords("abcDefGHI", "abc", "Def", "GHI");
+        }
+
+        static void CheckWords(string sentence, params string[] words) {
+            var actual = sentence.AsWords().ToArray();
+            var expected = words;
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }
