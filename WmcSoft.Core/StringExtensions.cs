@@ -175,9 +175,7 @@ namespace WmcSoft
             return char.IsWhiteSpace(c) || c == '_' || c == '-';
         }
 
-        public static IEnumerable<string> AsWords(this string sentence) {
-            if (sentence == null) throw new ArgumentNullException(nameof(sentence));
-
+        static IEnumerable<string> UnguardedAsWords(string sentence) {
             var state = AsWordsState.Start;
             var first = 0;
             for (int i = 0; i < sentence.Length; i++) {
@@ -208,6 +206,24 @@ namespace WmcSoft
             }
             if (first < sentence.Length)
                 yield return sentence.Substring(first, sentence.Length - first);
+        }
+
+        public static IEnumerable<string> AsWords(this string sentence) {
+            if (sentence == null) throw new ArgumentNullException(nameof(sentence));
+
+            return UnguardedAsWords(sentence);
+        }
+
+        public static string ToSnakeCase(this string source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedAsWords(source).Select(w =>w.ToLowerInvariant()).Join("_");
+        }
+
+        public static string ToKebabCase(this string source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).Join("-");
         }
 
         #endregion
