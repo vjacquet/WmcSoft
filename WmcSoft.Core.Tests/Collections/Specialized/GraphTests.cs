@@ -40,6 +40,27 @@ namespace WmcSoft.Collections.Specialized
             return g;
         }
 
+        static Digraph TinyDGex2() {
+            var g = new Digraph(12);
+            g.Connect(8, 4);
+            g.Connect(2, 3);
+            g.Connect(0, 5);
+            g.Connect(0, 6);
+            g.Connect(3, 6);
+            g.Connect(10, 3);
+            g.Connect(7, 11);
+            g.Connect(7, 8);
+            g.Connect(11, 8);
+            g.Connect(2, 0);
+            g.Connect(6, 2);
+            g.Connect(5, 2);
+            g.Connect(5, 10);
+            g.Connect(3, 10);
+            g.Connect(8, 1);
+            g.Connect(4, 1);
+            return g;
+        }
+
         class JobNames
         {
             public int Algorithms = 0;
@@ -183,6 +204,24 @@ namespace WmcSoft.Collections.Specialized
             Assert.AreEqual(2, properties.Radius);
             Assert.AreEqual(4, properties.Diameter);
             Assert.AreEqual(1, properties.Center);
+        }
+
+        [TestMethod]
+        public void CheckDegrees() {
+            var graph = TinyDGex2();
+
+            var degrees = new Degrees(graph);
+
+            Assert.AreEqual(2, degrees.Indegree(2));
+            Assert.AreEqual(2, degrees.Outdegree(2));
+            Assert.AreEqual(2, degrees.Indegree(6));
+            Assert.AreEqual(1, degrees.Outdegree(6));
+
+            var sinks = new int[] { 1, 9 };
+            CollectionAssert.AreEquivalent(sinks, degrees.Sinks().ToArray());
+
+            var sources = new int[] { 7, 9 };
+            CollectionAssert.AreEquivalent(sources, degrees.Sources().ToArray());
         }
     }
 }
