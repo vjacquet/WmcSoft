@@ -107,6 +107,7 @@
     <Compile Include="Collections\Specialized\BipartiteAlgorithm.cs" />
     <Compile Include="Collections\Specialized\Degrees.cs" />
     <Compile Include="Collections\Specialized\DepthFirstOrderAlgorithm.cs" />
+    <Compile Include="Collections\Specialized\AcyclicShortestPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DijkstraShortestPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DirectedDepthFirstSearchAlgorithm.cs" />
     <Compile Include="Collections\Specialized\DirectedCycleAlgorithm.cs" />

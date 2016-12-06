@@ -117,6 +117,10 @@ namespace WmcSoft.Collections.Specialized
             return new DijkstraShortestPathsAlgorithm(graph, s);
         }
 
+        public static AcyclicShortestPathsAlgorithm AcyclicShortestPaths(this WeightedDigraph graph, int s) {
+            return new AcyclicShortestPathsAlgorithm(graph, s);
+        }
+
         #endregion
 
         #region Typical graph processing methods
@@ -157,7 +161,7 @@ namespace WmcSoft.Collections.Specialized
                 .Max(v => graph.Adjacents(v).Count);
         }
 
-        public static Tuple<int,int> MinMaxDegree<TGraph>(this TGraph graph)
+        public static Tuple<int, int> MinMaxDegree<TGraph>(this TGraph graph)
             where TGraph : IGraph {
             return Enumerable.Range(0, graph.VerticeCount)
                 .MinMax(v => graph.Adjacents(v).Count);
