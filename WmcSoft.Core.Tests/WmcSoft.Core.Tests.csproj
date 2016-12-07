@@ -136,6 +136,7 @@
     <Compile Include="SemVerTests.cs" />
     <Compile Include="SuidTests.cs" />
     <Compile Include="SymbolTests.cs" />
+    <Compile Include="TestTools\UnitTesting\ContractAssert.cs" />
     <Compile Include="Text\EncoderBestFitFallbackTests.cs" />
     <Compile Include="Text\StringsTests.cs" />
     <Compile Include="Text\StripTests.cs" />

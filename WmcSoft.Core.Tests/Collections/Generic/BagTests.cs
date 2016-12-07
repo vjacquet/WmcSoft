@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
     [TestClass]
     public class BagTests
     {
+        [TestMethod]
+        public void CheckBagIsCollection() {
+            ContractAssert.Collection(new Bag<int>());
+        }
+
         [TestMethod]
         public void CanAddToBag() {
             var bag = new Bag<int>() { 1, 2, 3, 4, 5, 6 };
@@ -55,4 +61,5 @@ namespace WmcSoft.Collections.Generic
             Assert.IsTrue(bag.Contains(null));
         }
     }
+
 }

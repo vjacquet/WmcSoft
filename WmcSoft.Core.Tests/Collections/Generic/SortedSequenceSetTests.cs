@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
     [TestClass]
     public class SortedSequenceSetTests
     {
+        [TestMethod]
+        public void CheckSortedSequenceIsCollection() {
+            ContractAssert.Collection(new SortedSequenceSet<int>());
+        }
+
         [TestMethod]
         public void CheckIntersectWith() {
             var actual = new SortedSequenceSet<char>();
