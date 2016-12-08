@@ -27,9 +27,12 @@ namespace WmcSoft.TestTools.UnitTesting
             Assert.IsTrue(collection.Contains(1));
             Assert.IsTrue(collection.Contains(2));
 
-            var buffer = new int[collection.Count + 2];
+            var buffer = new int[] { -1, -2, -3, -4 };
             collection.CopyTo(buffer, 2);
-            CollectionAssert.AreEquivalent(buffer.Skip(2).ToArray(), collection.ToArray());
+            Assert.AreEqual(-1, buffer[0]);
+            Assert.AreEqual(-2, buffer[1]);
+            CollectionAssert.AreEquivalent(new int[] { -1, -2, 2, 1 }, buffer);
+            CollectionAssert.AreEquivalent(new int[] { 1, 2 }, collection.ToArray());
 
             Assert.IsTrue(collection.Remove(2));
             Assert.AreEqual(1, collection.Count);
