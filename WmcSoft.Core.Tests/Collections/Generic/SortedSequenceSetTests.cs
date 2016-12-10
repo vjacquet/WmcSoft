@@ -9,8 +9,8 @@ namespace WmcSoft.Collections.Generic
     public class SortedSequenceSetTests
     {
         [TestMethod]
-        public void CheckSortedSequenceIsCollection() {
-            ContractAssert.Collection(new SortedSequenceSet<int>());
+        public void CheckSortedSequenceIsSet() {
+            ContractAssert.Set(new SortedSequenceSet<int>());
         }
 
         [TestMethod]

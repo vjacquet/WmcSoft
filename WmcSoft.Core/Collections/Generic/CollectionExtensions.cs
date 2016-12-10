@@ -74,9 +74,9 @@ namespace WmcSoft.Collections.Generic
         /// <param name="items">The items to add to the collection.</param>
         /// <returns>The collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static ICollection<T> AddRange<T>(this ICollection<T> source, IEnumerable<T> items) {
-            if (source == null)
-                throw new ArgumentNullException("self");
+        public static TCollection AddRange<T, TCollection>(this TCollection source, IEnumerable<T> items)
+            where TCollection : ICollection<T> {
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (items == null)
                 return source;
@@ -100,7 +100,8 @@ namespace WmcSoft.Collections.Generic
             return source;
         }
 
-        public static ICollection<T> AddRange<T>(this ICollection<T> source, params T[] items) {
+        public static TCollection AddRange<T, TCollection>(this TCollection source, params T[] items)
+            where TCollection : ICollection<T> {
             return AddRange(source, items.AsEnumerable());
         }
 

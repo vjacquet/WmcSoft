@@ -71,8 +71,7 @@ namespace WmcSoft.Collections
         /// <remarks>Does nothing if items is null.</remarks>
         public static TList AddRange<TList>(this TList list, IEnumerable items)
           where TList : IList {
-            if (list == null)
-                throw new ArgumentNullException("list");
+            if (list == null) throw new ArgumentNullException(nameof(list));
 
             if (items == null)
                 return list;
