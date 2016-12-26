@@ -30,6 +30,6 @@ namespace WmcSoft
 {
     public interface ISpecification<T>
     {
-        bool IsStatisfiedBy(T candidate);
+        bool IsSatisfiedBy(T candidate);
     }
 }

@@ -34,10 +34,8 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Time
 {
-    public interface IDateSpecification
+    public interface IDateSpecification : ISpecification<Date>
     {
-        bool IsSatisfiedBy(Date date);
-
         IEnumerable<Date> EnumerateOver(Interval<Date> interval);
     }
 }

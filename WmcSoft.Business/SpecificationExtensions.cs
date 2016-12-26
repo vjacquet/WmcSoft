@@ -39,7 +39,7 @@ namespace WmcSoft
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (specification == null) throw new ArgumentNullException(nameof(specification));
 
-            return source.Where(specification.IsStatisfiedBy);
+            return source.Where(specification.IsSatisfiedBy);
         }
     }
 }
