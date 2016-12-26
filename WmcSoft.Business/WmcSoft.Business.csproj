@@ -197,6 +197,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />
+    <Compile Include="ISpecification.cs" />
     <Compile Include="Longitude.cs" />
     <Compile Include="Latitude.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -222,6 +223,7 @@
     <Compile Include="Security\SecurityContext.cs" />
     <Compile Include="Security\UncheckedTag.cs" />
     <Compile Include="Security\User.cs" />
+    <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Time\Date.cs" />
     <Compile Include="Time\DateInterval.cs" />
     <Compile Include="Time\DateSpecificationExtensions.cs" />
