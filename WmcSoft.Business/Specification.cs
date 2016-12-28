@@ -42,6 +42,14 @@ namespace WmcSoft
         public bool IsSatisfiedBy(T candidate) {
             return _spec.IsSatisfiedBy(candidate);
         }
+
+        #region Operators
+
+        public static implicit operator Specification<T>(Func<T, bool> x) {
+            return new Specification<T>(Specification.Create(x));
+        }
+
+        #endregion
     }
 
     public static class Specification

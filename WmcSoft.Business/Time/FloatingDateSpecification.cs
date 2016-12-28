@@ -43,11 +43,15 @@ namespace WmcSoft.Time
         public FloatingDateSpecification(int month, DayOfWeek dayOfWeek, int occurrence) {
             _month = month;
             _dayOfWeek = dayOfWeek;
-            _occurrence = occurrence;
+            _occurrence = occurrence - 1; // zero-based
         }
 
         public override Date OfYear(int year) {
-            throw new NotImplementedException();
+            var firstOfMonth = new DateTime(year, _month, 1);
+            int dayOfWeekOffset = (int)_dayOfWeek - (int)firstOfMonth.DayOfWeek;
+            int dateOfFirstOccurrenceOfDayOfWeek = (dayOfWeekOffset + 7) % 7 + 1;
+            int date = _occurrence * 7 + dateOfFirstOccurrenceOfDayOfWeek;
+            return new Date(year, _month, date);
         }
 
         public override bool IsSatisfiedBy(Date date) {

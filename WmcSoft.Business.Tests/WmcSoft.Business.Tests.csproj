@@ -91,7 +91,7 @@
     <Compile Include="TemporalTests.cs" />
     <Compile Include="IntervalLimitTests.cs" />
     <Compile Include="Time\ClockTests.cs" />
-    <Compile Include="Time\FixedDateSpecificationTests.cs" />
+    <Compile Include="Time\DateSpecificationTests.cs" />
     <Compile Include="Time\TimeOfDayTests.cs" />
     <Compile Include="Time\DateTests.cs" />
     <Compile Include="Time\TimePointTests.cs" />
