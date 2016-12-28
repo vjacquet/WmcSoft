@@ -77,13 +77,11 @@ namespace WmcSoft.Collections.Specialized
                 if (_version == _list._version && _index < _count) {
                     _current = _storage[_index++];
                     return true;
-                } else if (_version == _list._version && _index < _list._gapEndIndex) {
+                } else if (_version == _list._version && _index < _list._gapEndIndex && _list._gapEndIndex != _storage.Length) {
                     _index = _list._gapEndIndex;
                     _count = _storage.Length;
-                    if (_index < _count) {
-                        _current = _storage[_index++];
-                        return true;
-                    }
+                    _current = _storage[_index++];
+                    return true;
                 }
                 return MoveNextRare();
             }
