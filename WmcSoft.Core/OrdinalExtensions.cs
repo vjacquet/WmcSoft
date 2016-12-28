@@ -40,6 +40,10 @@ namespace WmcSoft
             return ordinal.Advance(x, -n);
         }
 
+        public static int Distance<T>(this IOrdinal<T> ordinal, T x, T y) {
+            return ordinal.Compare(y, x);
+        }
+
         public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last) {
             var distance = ordinal.Compare(first, last);
             if (distance < 0) {
@@ -86,7 +90,7 @@ namespace WmcSoft
         }
 
         public static IEnumerable<R> Collate<T, R>(this IEnumerable<T> sequence, IOrdinal<T> ordinal, Func<T, T, R> factory) {
-            return Collate(ordinal,factory, sequence);
+            return Collate(ordinal, factory, sequence);
         }
 
         public static IEnumerable<R> Collate<T, R>(this IOrdinal<T> ordinal, Func<T, T, R> factory, IEnumerable<T> sequence) {

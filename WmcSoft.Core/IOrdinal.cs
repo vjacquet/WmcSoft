@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace WmcSoft
 {
@@ -52,7 +53,26 @@ namespace WmcSoft
         #region IComparer<int> Members
 
         public int Compare(int x, int y) {
-            return checked(x -y);
+            return checked(x - y);
+        }
+
+        #endregion
+    }
+
+    public struct Int64Ordinal : IOrdinal<long>
+    {
+        #region IOrdinal<long> Members
+
+        public long Advance(long x, int n) {
+            return checked(x + n);
+        }
+
+        #endregion
+
+        #region IComparer<int> Members
+
+        public int Compare(long x, long y) {
+            return checked((int)(x - y));
         }
 
         #endregion
@@ -94,5 +114,85 @@ namespace WmcSoft
         }
 
         #endregion
+    }
+
+    public struct SequenceOrdinal<T> : IOrdinal<T>, IEquatable<SequenceOrdinal<T>>
+        where T : IEquatable<T>
+    {
+        readonly T[] _values;
+
+        public SequenceOrdinal(params T[] values) {
+            _values = values;
+        }
+
+        private int IndexOf(T value) {
+            for (int i = 0; i < _values.Length; i++) {
+                if (_values[i].Equals(value))
+                    return i;
+            }
+            throw new IndexOutOfRangeException();
+        }
+
+        #region IOrdinal<DateTime> Members
+
+        public T Advance(T x, int n) {
+            var ix = IndexOf(x);
+            return _values[ix + n];
+        }
+
+        #endregion
+
+        #region IComparer<T> Members
+
+        public int Compare(T x, T y) {
+            var ix = IndexOf(x);
+            var iy = IndexOf(y);
+            return ix - iy;
+        }
+
+        #endregion
+
+        int Length {
+            get { return _values != null ? _values.Length : 0; }
+        }
+
+        public bool Equals(SequenceOrdinal<T> other) {
+            if (ReferenceEquals(_values, other._values))
+                return true;
+            if (Length != other.Length)
+                return false;
+            for (int i = 0; i < _values.Length; i++) {
+                if (!_values[i].Equals(other._values[i]))
+                    return false;
+            }
+            return true;
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != typeof(SequenceOrdinal<T>))
+                return false;
+            return Equals((SequenceOrdinal<T>)obj);
+        }
+
+        public override int GetHashCode() {
+            if (Length == 0)
+                return 0;
+            return _values.GetHashCode();
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+            sb.Append('{');
+            var length = Length;
+            if (length > 0) {
+                sb.Append(_values[0]);
+                for (int i = 1; i < length; i++) {
+                    sb.Append(',');
+                    sb.Append(_values[i]);
+                }
+            }
+            sb.Append('}');
+            return sb.ToString();
+        }
     }
 }
