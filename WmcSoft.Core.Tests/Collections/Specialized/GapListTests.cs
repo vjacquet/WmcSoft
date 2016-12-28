@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Specialized
 {
     [TestClass]
     public class GapListTests
     {
+        [TestMethod]
+        public void CheckGapListIsCollection() {
+            ContractAssert.Collection(new GapList<int>(10));
+        }
+
         [TestMethod]
         public void CanInsert() {
             var list = new GapList<int>(10);
@@ -82,7 +88,7 @@ namespace WmcSoft.Collections.Specialized
         }
 
         [TestMethod]
-        public void CanEnumerateWithGap() {
+        public void CanCopyToArrayWithGap() {
             var list = new GapList<int>(16);
             list.Add(1);
             list.Add(2);
@@ -96,6 +102,24 @@ namespace WmcSoft.Collections.Specialized
             list.Add(8);
             var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
             var actual = list.ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CanEnumerateWithGap() {
+            var list = new GapList<int>(16);
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.Add(6);
+            list.Insert(4, 9);
+            list.Add(10);
+            list.Insert(7, 7);
+            list.Add(8);
+            var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
+            var actual = list.Select(i=>i).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
     }

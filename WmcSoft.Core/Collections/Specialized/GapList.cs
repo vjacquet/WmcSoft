@@ -64,7 +64,7 @@ namespace WmcSoft.Collections.Specialized
 
                 _list = list;
                 _storage = list._storage;
-                _index = -1;
+                _index = 0;
                 _count = list._gapStartIndex;
                 _version = list._version;
                 _current = default(T);
@@ -80,8 +80,10 @@ namespace WmcSoft.Collections.Specialized
                 } else if (_version == _list._version && _index < _list._gapEndIndex) {
                     _index = _list._gapEndIndex;
                     _count = _storage.Length;
-                    _current = _storage[_index];
-                    return true;
+                    if (_index < _count) {
+                        _current = _storage[_index++];
+                        return true;
+                    }
                 }
                 return MoveNextRare();
             }
@@ -89,7 +91,7 @@ namespace WmcSoft.Collections.Specialized
             private bool MoveNextRare() {
                 if (_version != _list._version)
                     throw new InvalidOperationException();
-                _index = -1;
+                _index = 0;
                 _current = default(T);
                 return false;
             }
@@ -98,7 +100,7 @@ namespace WmcSoft.Collections.Specialized
 
             object IEnumerator.Current {
                 get {
-                    if (_index < 0 | _index >= _storage.Length)
+                    if (_index == 0 | _index >= _storage.Length)
                         throw new InvalidOperationException();
                     return Current;
                 }
@@ -289,15 +291,6 @@ namespace WmcSoft.Collections.Specialized
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator() {
             return GetEnumerator();
-            //using (var enumerator = _storage.GetEnumerator(0, _gapStartIndex)) {
-            //    while (enumerator.MoveNext())
-            //        yield return enumerator.Current;
-            //}
-
-            //using (var enumerator = _storage.GetEnumerator(_gapEndIndex, _storage.Length - _gapEndIndex)) {
-            //    while (enumerator.MoveNext())
-            //        yield return enumerator.Current;
-            //}
         }
 
         public int IndexOf(T item) {
