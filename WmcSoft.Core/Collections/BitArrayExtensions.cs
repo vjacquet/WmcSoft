@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -28,6 +28,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using WmcSoft.Collections.Generic;
+
+using static WmcSoft.BitArithmetics;
 
 namespace WmcSoft.Collections
 {
@@ -135,8 +137,9 @@ namespace WmcSoft.Collections
         /// <param name="bits">The bits</param>
         /// <returns>Returns true when at least one bit is true.</returns>
         public static bool Any(this BitArray bits) {
-            foreach (bool b in bits) {
-                if (b)
+            var data = DataOf(bits);
+            foreach (var i in data) {
+                if (i != 0)
                     return true;
             }
             return false;
@@ -148,8 +151,9 @@ namespace WmcSoft.Collections
         /// <param name="bits">The bits</param>
         /// <returns>Returns true when all bits are false.</returns>
         public static bool None(this BitArray bits) {
-            foreach (bool b in bits) {
-                if (b)
+            var data = DataOf(bits);
+            foreach (var i in data) {
+                if (i != 0)
                     return false;
             }
             return true;
@@ -217,6 +221,30 @@ namespace WmcSoft.Collections
                 bits.Length = length;
             }
             return bits;
+        }
+
+        internal static int[] DataOf(BitArray bits) {
+            var ints = new int[(bits.Count >> 5) + 1];
+            bits.CopyTo(ints, 0);
+            // fix for not truncated bits in last integer that may have been set to true with SetAll()
+            ints[ints.Length - 1] &= ~(-1 << (bits.Count % 32));
+            return ints;
+        }
+
+        /// <summary>
+        /// Computes the number of bits set to one.
+        /// </summary>
+        /// <param name="bits">The bits</param>
+        /// <returns>The number of bits set to one.</returns>
+        public static int Cardinality(this BitArray bits) {
+            // see <http://stackoverflow.com/questions/5063178/counting-bits-set-in-a-net-bitarray-class/14354311#14354311>
+            var data = DataOf(bits);
+
+            var count = 0;
+            for (int i = 0; i < data.Length; i++) {
+                count += FastCountBits((uint)data[i]);
+            }
+            return count;
         }
     }
 }
