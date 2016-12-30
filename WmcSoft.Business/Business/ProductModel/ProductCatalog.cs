@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Business.ProductModel
@@ -32,7 +33,7 @@ namespace WmcSoft.Business.ProductModel
     /// Represents a persistent store of product information 
     /// used in the selling process.
     /// </summary>
-    public class ProductCatalog
+    public abstract class ProductCatalog
     {
         #region Fields
 
@@ -49,10 +50,30 @@ namespace WmcSoft.Business.ProductModel
         #endregion
 
         #region Properties
-        
+
         public IList<CatalogEntry> Entries {
             get { return _entries; }
         }
+
+        #endregion
+
+        #region Methods
+
+        public void AddProductType(ProductType productType) {
+            AddProductType(null, productType);
+        }
+
+        abstract public void AddProductType(string catalogIdentifier, ProductType productType);
+
+        abstract public void RemoveProductType(ProductIdentifier id);
+
+        abstract public IEnumerable<ProductType> FindProductTypeByCatalogIdentifier(string id);
+
+        abstract public ProductType FindProductTypeByProductTypeIdentifier(ProductIdentifier id);
+
+        abstract public IEnumerable<ProductType> FindProductTypeByName(string name);
+
+        abstract public IEnumerable<ProductType> FindProductFeatureType(params ProductFeatureType[] features);
 
         #endregion
     }

@@ -5,7 +5,6 @@
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
-      <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>ABAAAAABAAAgAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
@@ -120,7 +119,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.ProductModel.ProductFeatureType">
-    <Position X="5.75" Y="5" Width="1.5" />
+    <Position X="5.25" Y="5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\ProductModel\ProductFeatureType.cs</FileName>
@@ -237,7 +236,7 @@
       <Path>
         <Point X="5.75" Y="9.462" />
         <Point X="3.343" Y="9.462" />
-        <Point X="3.343" Y="5.93" />
+        <Point X="3.343" Y="6.507" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
