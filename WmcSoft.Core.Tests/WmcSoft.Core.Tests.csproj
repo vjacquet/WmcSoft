@@ -84,6 +84,7 @@
     <Compile Include="Collections\Generic\ListExtensionsTests.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionaryTests.cs" />
     <Compile Include="Collections\Generic\TreeTests.cs" />
+    <Compile Include="Collections\Specialized\MutableOrdinalSetTests.cs" />
     <Compile Include="Collections\Specialized\IndexedPriorityQueueTests.cs" />
     <Compile Include="Collections\Specialized\SparseArrayTests.cs" />
     <Compile Include="Collections\Specialized\GapListTests.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Linq\Expressions\DynamicTests.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensionsTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
+    <Compile Include="OrdinalSetTests.cs" />
     <Compile Include="OrdinalTests.cs" />
     <Compile Include="PairTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

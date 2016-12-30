@@ -51,16 +51,20 @@ namespace WmcSoft
                     yield return first;
                     first = ordinal.Advance(first, 1);
                     distance = ordinal.Compare(first, last);
-                } while (distance < 0);
+                } while (distance <= 0);
             } else if (distance > 0) {
                 do {
                     yield return first;
                     first = ordinal.Advance(first, -1);
                     distance = ordinal.Compare(first, last);
-                } while (distance > 0);
+                } while (distance >= 0);
             } else {
                 yield return first;
             }
+        }
+
+        static IEnumerable<T> Sequence<T>(IOrdinal<T> ordinal, Pair<T> p) {
+            return Sequence(ordinal, p.Item1, p.Item2);
         }
 
         public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last, int stride) {
@@ -114,8 +118,12 @@ namespace WmcSoft
             }
         }
 
-        public static IEnumerable<T> Expand<T, R>(this IOrdinal<T> ordinal, Func<IOrdinal<T>, R, IEnumerable<T>> expander, IEnumerable<R> sequence) {
-            return sequence.SelectMany(r => expander(ordinal, r));
+        public static IEnumerable<T> Expand<T>(this IOrdinal<T> ordinal, IEnumerable<Pair<T>> sequence) {
+            return sequence.SelectMany(r => Sequence(ordinal, r));
+        }
+
+        public static IEnumerable<T> Expand<T, R>(this IOrdinal<T> ordinal, Func<R, Pair<T>> expander, IEnumerable<R> sequence) {
+            return sequence.SelectMany(r => Sequence(ordinal, expander(r)));
         }
     }
 }

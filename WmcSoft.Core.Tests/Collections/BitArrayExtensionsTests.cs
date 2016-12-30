@@ -45,5 +45,23 @@ namespace WmcSoft
             actual.CopyTo(buffer, 0);
             Assert.AreEqual(-65536, buffer[0]);
         }
+
+        [TestMethod]
+        public void CheckCardinalityOnBitArray() {
+            var bits = new BitArray(36);
+            bits[5] = true;
+            bits[15] = true;
+            bits[25] = true;
+            bits[35] = true;
+            Assert.AreEqual(4, bits.Cardinality());
+        }
+
+        [TestMethod]
+        public void CheckCardinalityOnBitArrayAfterSetAll() {
+            var bits = new BitArray(36);
+            bits.SetAll(true);
+            Assert.AreEqual(36, bits.Cardinality());
+        }
+
     }
 }

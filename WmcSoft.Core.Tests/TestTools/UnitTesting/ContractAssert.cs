@@ -10,6 +10,9 @@ namespace WmcSoft.TestTools.UnitTesting
 {
     public static class ContractAssert
     {
+        public const int CollectionMinValue = 1;
+        public const int CollectionMaxValue = 5;
+
         class CollectionAdapter<T> : ICollection
         {
             readonly ICollection<T> _storage;
@@ -142,6 +145,13 @@ namespace WmcSoft.TestTools.UnitTesting
             Assert.IsFalse(set.IsProperSubsetOf(other));
             Assert.IsTrue(set.IsSupersetOf(other));
             Assert.IsFalse(set.IsProperSupersetOf(other));
+        }
+
+        public static void Ordinal<TOrdinal, T>(TOrdinal ordinal, T startValue, T endValue, int distance)
+            where TOrdinal : IOrdinal<T> {
+            var actual = ordinal.Advance(startValue, distance);
+            Assert.AreEqual(endValue, actual);
+            Assert.AreEqual(distance, ordinal.Distance(startValue, endValue));
         }
     }
 }

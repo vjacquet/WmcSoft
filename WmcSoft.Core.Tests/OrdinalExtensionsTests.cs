@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -52,12 +53,14 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void ChechYearOrdinal() {
-            YearOrdinal ordinal;
+        public void CanExpand() {
+            var data = new[] { new Pair<int>(1, 3), new Pair<int>(5, 8) };
+            Int32Ordinal ordinal;
 
-            var expected = new DateTime(2017, 02, 28);
-            var actual = ordinal.Advance(new DateTime(2016, 02, 29), 1);
-            Assert.AreEqual(expected, actual);
+            var actual = ordinal.Expand(data).ToArray();
+            var expected = new[] { 1, 2, 3, 5, 6, 7, 8 };
+
+            CollectionAssert.AreEquivalent(expected, actual);
         }
     }
 }

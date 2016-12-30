@@ -73,6 +73,16 @@ namespace WmcSoft
             return n;
         }
 
+        public static int FastCountBits(uint x) {
+            // magic (http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel)
+            unchecked {
+                x = x - ((x >> 1) & 0x55555555);
+                x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+                x = ((x + (x >> 4) & 0xF0F0F0F) * 0x1010101) >> 24;
+                return (int)x;
+            }
+        }
+
         #endregion
 
         #region Distance

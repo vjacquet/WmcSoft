@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft
 {
@@ -11,8 +12,22 @@ namespace WmcSoft
         public void CheckInt32Ordinal() {
             var ordinal = new Int32Ordinal();
 
-            Assert.AreEqual(5, ordinal.Advance(2, 3));
-            Assert.AreEqual(3, ordinal.Distance(2, 5));
+            ContractAssert.Ordinal(ordinal, 2, 5, 3);
+        }
+
+        [TestMethod]
+        public void ChechYearOrdinal() {
+            YearOrdinal ordinal;
+
+            var expected = new DateTime(2017, 02, 28);
+            var actual = ordinal.Advance(new DateTime(2016, 02, 29), 1);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckSequenceOrdinal() {
+            var ordinal = new SequenceOrdinal<char>('a', 'e', 'i', 'o', 'u', 'y');
+            ContractAssert.Ordinal(ordinal, 'a', 'u', 4);
         }
     }
 }

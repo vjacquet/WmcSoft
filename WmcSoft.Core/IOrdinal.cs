@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -116,7 +117,7 @@ namespace WmcSoft
         #endregion
     }
 
-    public struct SequenceOrdinal<T> : IOrdinal<T>, IEquatable<SequenceOrdinal<T>>
+    public struct SequenceOrdinal<T> : IOrdinal<T>, IEquatable<SequenceOrdinal<T>>, IReadOnlyList<T>
         where T : IEquatable<T>
     {
         readonly T[] _values;
@@ -152,14 +153,20 @@ namespace WmcSoft
 
         #endregion
 
-        int Length {
+        public int Count {
             get { return _values != null ? _values.Length : 0; }
+        }
+
+        public T this[int index] {
+            get {
+                return ((IReadOnlyList<T>)_values)[index];
+            }
         }
 
         public bool Equals(SequenceOrdinal<T> other) {
             if (ReferenceEquals(_values, other._values))
                 return true;
-            if (Length != other.Length)
+            if (Count != other.Count)
                 return false;
             for (int i = 0; i < _values.Length; i++) {
                 if (!_values[i].Equals(other._values[i]))
@@ -175,7 +182,7 @@ namespace WmcSoft
         }
 
         public override int GetHashCode() {
-            if (Length == 0)
+            if (Count == 0)
                 return 0;
             return _values.GetHashCode();
         }
@@ -183,7 +190,7 @@ namespace WmcSoft
         public override string ToString() {
             var sb = new StringBuilder();
             sb.Append('{');
-            var length = Length;
+            var length = Count;
             if (length > 0) {
                 sb.Append(_values[0]);
                 for (int i = 1; i < length; i++) {
@@ -193,6 +200,14 @@ namespace WmcSoft
             }
             sb.Append('}');
             return sb.ToString();
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            return ((IReadOnlyList<T>)_values).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return ((IReadOnlyList<T>)_values).GetEnumerator();
         }
     }
 }
