@@ -100,5 +100,19 @@ namespace WmcSoft
         public static bool AllowsNull(this Type type) {
             return IsNullable(type) || !type.IsValueType;
         }
+
+        /// <summary>
+        /// Returns the <see cref="Type"/> referred to by the array or <see cref="IEnumerable{T}"/> type.
+        /// </summary>
+        /// <param name="type">The type</param>
+        /// <returns>The <see cref="Type"/> referred to by the array or <see cref="IEnumerable{T}"/> type, or <c>null</c> if <paramref name="type"/> is not enumerable.</returns>
+        public static Type GetGenericElementType(this Type type) {
+            if (type.IsArray)
+                return type.GetElementType();
+            return type.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(IEnumerable<>)))
+                .Select(i=> i.GetGenericArguments()[0])
+                .FirstOrDefault();
+        }
     }
 }
