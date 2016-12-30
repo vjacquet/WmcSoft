@@ -24,6 +24,8 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace WmcSoft.Business.ProductModel
 {
     /// <summary>
@@ -34,15 +36,15 @@ namespace WmcSoft.Business.ProductModel
     {
         #region Fields
 
-        readonly ProductType _productType;
+        readonly HashSet<ProductType> _productTypes;
         readonly string _identifier;
 
         #endregion
 
         #region Lifecycle
 
-        public CatalogEntry(ProductType productType, string catalogIdentifier) {
-            _productType = productType;
+        public CatalogEntry(string catalogIdentifier) {
+            _productTypes = new HashSet<ProductType>();
             _identifier = catalogIdentifier;
         }
 
@@ -53,11 +55,14 @@ namespace WmcSoft.Business.ProductModel
         public string CatalogIdentifier {
             get { return _identifier; }
         }
+
         public string Description { get; set; }
-        public ProductType ProductType {
-            get { return _productType; }
+
+        public string[] Keywords { get; set; }
+
+        public ICollection<ProductType> ProductTypes {
+            get { return _productTypes; }
         }
-        public string[] Keyworkds { get; set; }
 
         #endregion
     }

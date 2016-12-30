@@ -32,7 +32,7 @@ namespace WmcSoft.Business.CustomerRelationshipModel
     /// Represents a unique identifier for a customer service case.
     /// </summary>
     [Serializable]
-    public class CustomerServiceCaseIdentifier : IUniqueIdentifier<Guid>
+    public sealed class CustomerServiceCaseIdentifier : IUniqueIdentifier<Guid>
     {
         #region Fields
 
@@ -65,6 +65,16 @@ namespace WmcSoft.Business.CustomerRelationshipModel
 
         public bool Equals(Guid other) {
             return _id == other;
+        }
+
+        public override int GetHashCode() {
+            return _id.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != typeof(CustomerServiceCaseIdentifier))
+                return false;
+            return base.Equals((CustomerServiceCaseIdentifier)obj);
         }
 
         #endregion

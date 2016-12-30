@@ -32,7 +32,7 @@ namespace WmcSoft.Business.ProductModel
     /// Represents a unique identifier for a type of product.
     /// </summary>
     [Serializable]
-    public class ProductIdentifier : IUniqueIdentifier<Guid>
+    public sealed class ProductIdentifier : IUniqueIdentifier<Guid>
     {
         #region Fields
 
@@ -60,6 +60,16 @@ namespace WmcSoft.Business.ProductModel
 
         public bool Equals(Guid other) {
             return _identifier == other;
+        }
+
+        public override int GetHashCode() {
+            return _identifier.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != typeof(ProductIdentifier))
+                return false;
+            return base.Equals((ProductIdentifier)obj);
         }
 
         #endregion

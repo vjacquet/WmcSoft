@@ -88,6 +88,16 @@ namespace WmcSoft.Business.PartyModel
             return _id.ToString();
         }
 
+        public override int GetHashCode() {
+            return _id.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != typeof(PartyRoleIdentifier))
+                return false;
+            return base.Equals((PartyRoleIdentifier)obj);
+        }
+
         #endregion
     }
 }

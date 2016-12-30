@@ -31,6 +31,7 @@ namespace WmcSoft.Business.ProductModel
     /// <summary>
     /// Represents a unique identifier for a specific instance of a product.
     /// </summary>
+    [Serializable]
     public class SerialNumber : IUniqueIdentifier<string>, IComparable<SerialNumber>
     {
         #region Fields
@@ -71,6 +72,16 @@ namespace WmcSoft.Business.ProductModel
 
         public bool Equals(string other) {
             return StringComparer.InvariantCultureIgnoreCase.Equals(_serialNumber, other);
+        }
+
+        public override int GetHashCode() {
+            return _serialNumber.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null || obj.GetType() != typeof(SerialNumber))
+                return false;
+            return base.Equals((SerialNumber)obj);
         }
 
         #endregion
