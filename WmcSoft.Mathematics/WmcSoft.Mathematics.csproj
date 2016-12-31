@@ -84,6 +84,7 @@
     <Compile Include="Numerics\Fraction.cs" />
     <Compile Include="Numerics\StrideEnumerable.cs" />
     <Compile Include="Numerics\StrideEnumerator.cs" />
+    <Compile Include="Numerics\Boolarray.cs" />
     <Compile Include="Numerics\Valarray.cs" />
     <Compile Include="Numerics\Vector3.cs" />
     <Compile Include="Numerics\Vector.cs" />

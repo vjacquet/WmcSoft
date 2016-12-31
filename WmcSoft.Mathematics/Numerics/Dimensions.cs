@@ -67,9 +67,9 @@ namespace WmcSoft.Numerics
         }
 
         public int GetDimension(int i) {
-            if (_dimensions == null)
-                return 0;
-            return _dimensions[Mod(i, _dimensions.Length)];
+            if (_dimensions != null)
+                return _dimensions[Mod(i, _dimensions.Length)];
+            return 0;
         }
 
         static int Mod(int i, int n) {
@@ -79,11 +79,11 @@ namespace WmcSoft.Numerics
 
         internal int GetIndex(int[] indices) {
             if (indices == null)
-                throw new ArgumentNullException("indices");
+                throw new ArgumentNullException(nameof(indices));
 
             var length = indices.Length;
             if (length != Count || length == 0)
-                throw new ArgumentOutOfRangeException("indices");
+                throw new ArgumentOutOfRangeException(nameof(indices));
 
             int index = Mod(indices[0], _dimensions[0]);
             for (int i = 1; i < length; i++) {
