@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -7,7 +8,12 @@ namespace WmcSoft.Collections.Generic
     public class SortedSequenceTests
     {
         [TestMethod]
-        public void CanAdd() {
+        public void CheckSortedSequenceCollectionInvariants() {
+            ContractAssert.Collection(new SortedSequence<int>());
+        }
+
+        [TestMethod]
+        public void CanAddToSortedSequence() {
             var collection = new SortedSequence<char>();
             collection.AddRange(new []{'b', 'a', 'c'});
             var expected = "abc";
@@ -16,7 +22,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanAddWithCollision() {
+        public void CanAddToSortedSequenceWithCollision() {
             var collection = new SortedSequence<string>(StringComparer.InvariantCultureIgnoreCase);
             collection.AddRange(new[] { "b", "a", "c", "B" });
             var expected = "abBc";
@@ -25,7 +31,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemove() {
+        public void CanRemoveFromSortedSequence() {
             var collection = new SortedSequence<char>();
             collection.AddRange(new[] { 'b', 'a', 'c' });
             Assert.IsTrue(collection.Remove('a'));

@@ -67,7 +67,7 @@ namespace WmcSoft.Tests
         }
 
         [TestMethod]
-        public void CanAdd() {
+        public void CanAddWithArithmetics() {
             var calc = new Int32Arithmetics();
 
             Assert.AreEqual(2, calc.Add(1, 1));
