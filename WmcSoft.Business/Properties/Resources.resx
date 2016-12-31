@@ -120,4 +120,10 @@
   <data name="CurrencyFromRegionDescriptionFormat" xml:space="preserve">
     <value>Currency used in {0}.</value>
   </data>
+  <data name="MissingOperationException" xml:space="preserve">
+    <value>The definition of the operation is missing.</value>
+  </data>
+  <data name="UnexpectedRuleElementException" xml:space="preserve">
+    <value>Unexpected element.</value>
+  </data>
 </root>

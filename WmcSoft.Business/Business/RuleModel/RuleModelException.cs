@@ -29,7 +29,7 @@ using System.Runtime.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    public abstract class RuleModelException : ApplicationException
+    public abstract class RuleModelException : Exception
     {
         protected RuleModelException(string message)
             : base(message) {

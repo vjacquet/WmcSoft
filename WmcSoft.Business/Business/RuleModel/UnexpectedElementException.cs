@@ -32,7 +32,7 @@ namespace WmcSoft.Business.RuleModel
     public class UnexpectedElementException : RuleModelException
     {
         public UnexpectedElementException()
-            : base(DefaultMessage) {
+            : base(Properties.Resources.UnexpectedRuleElementException) {
         }
         public UnexpectedElementException(string message)
             : base(message) {
@@ -45,17 +45,5 @@ namespace WmcSoft.Business.RuleModel
         public UnexpectedElementException(string message, Exception innerException)
             : base(message, innerException) {
         }
-
-        #region DefaultMessage
-        public static string DefaultMessage {
-            get {
-                if (defaultMessage == null) {
-                    defaultMessage = RM.GetString(RM.UnexpectedElementException);
-                }
-                return defaultMessage;
-            }
-        }
-        static string defaultMessage;
-        #endregion
     }
 }

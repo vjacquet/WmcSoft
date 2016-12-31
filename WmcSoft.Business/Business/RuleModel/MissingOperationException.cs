@@ -32,7 +32,7 @@ namespace WmcSoft.Business.RuleModel
     public class MissingOperationException : RuleModelException
     {
         public MissingOperationException()
-            : base(DefaultMessage) {
+            : base(Properties.Resources.MissingOperationException) {
         }
         public MissingOperationException(string message)
             : base(message) {
@@ -45,19 +45,5 @@ namespace WmcSoft.Business.RuleModel
         public MissingOperationException(string message, Exception innerException)
             : base(message, innerException) {
         }
-
-        #region DefaultMessage
-
-        public static string DefaultMessage {
-            get {
-                if (defaultMessage == null) {
-                    defaultMessage = RM.GetString(RM.MissingOperationException);
-                }
-                return defaultMessage;
-            }
-        }
-        static string defaultMessage;
-
-        #endregion
     }
 }
