@@ -74,5 +74,15 @@ namespace WmcSoft.Numerics.Tests
             var actual = x + y;
             Assert.AreEqual(expected, actual);
         }
+
+
+        [TestMethod]
+        public void CheckBoolarrayIndices() {
+            var valarray = Valarray.Range(1, 9).Reshape(2, 2, 2);
+            var expected = new[] { 7d, 8d };
+            var actual = valarray[valarray > 6].ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
     }
 }

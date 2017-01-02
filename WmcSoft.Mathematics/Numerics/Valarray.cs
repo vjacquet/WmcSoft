@@ -501,8 +501,8 @@ namespace WmcSoft.Numerics
             return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => !x.Equals(value)));
         }
 
-        public static Boolarray Match(Valarray valarray, Predicate<double> predicate) {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => predicate(x)));
+        public Boolarray Match(Predicate<double> predicate) {
+            return new Boolarray(_dimensions, Array.ConvertAll(_data, x => predicate(x)));
         }
 
         #endregion

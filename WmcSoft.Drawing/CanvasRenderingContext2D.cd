@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Drawing.Path2D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Path2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="WmcSoft.Drawing.ICanvasState">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasTransform">
+    <Position X="5.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAKAAAQAEAAAAAAAAAAEAAQAAAA=</HashCode>
+      <FileName>ICanvasTransform.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasCompositing">
+    <Position X="11" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasCompositing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasImageSmoothing">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasImageSmoothing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasFillStrokeStyles">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAABAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ICanvasFillStrokeStyles.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasShadowStyles">
+    <Position X="7.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAIAAAAAAAAAAMAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasShadowStyles.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasFilters">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasFilters.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasRect">
+    <Position X="9.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAABAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasRect.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasDrawPath">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasDrawPath.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasText">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAAAAAgAAA=</HashCode>
+      <FileName>ICanvasText.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasDrawImage">
+    <Position X="2.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasDrawImage.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasImageData">
+    <Position X="2.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICanvasImageData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasPathDrawingStyles">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAIIkAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>ICanvasPathDrawingStyles.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasTextDrawingStyles">
+    <Position X="4" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAEAAAAABAAAAAAAAACAAA=</HashCode>
+      <FileName>ICanvasTextDrawingStyles.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Drawing.ICanvasPath">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAACAAgAAAAAAAAAAAAAECEIAIAAAAAAAAAAACA=</HashCode>
+      <FileName>ICanvasPath.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="WmcSoft.Drawing.CanvasFillRule" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CanvasFillRule.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Drawing.CanvasLineCap" Collapsed="true">
+    <Position X="11.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAAA=</HashCode>
+      <FileName>CanvasLineCap.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Drawing.CanvasLineJoin" Collapsed="true">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>CanvasLineJoin.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Drawing.CanvasTextAlign" Collapsed="true">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAAAAAAAAAAAAAAAAAAAACACAAAAIAAA=</HashCode>
+      <FileName>CanvasTextAlign.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Drawing.CanvasTextBaseline" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAABQAAAAFAA=</HashCode>
+      <FileName>CanvasTextBaseline.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WmcSoft.Drawing.CanvasDirection" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>CanvasDirection.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
