@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
@@ -170,10 +171,12 @@ namespace WmcSoft.Collections.Generic
 
         #region BinarySearch methods
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int MulDiv(int number, int numerator, int denominator) {
             return (int)(((long)number * numerator) / denominator);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int GetMidpoint(int lo, int hi) {
             Debug.Assert(hi - lo >= 0);
             return lo + (hi - lo) / 2; // cannot overflow when (hi + lo) could
@@ -242,7 +245,8 @@ namespace WmcSoft.Collections.Generic
                 return ~lo;
             }
             catch (Exception e) {
-                throw new InvalidOperationException("The finder threw an exception", e);
+                var message = string.Format(Properties.Resources.InvalidOperationExceptionRethrow, nameof(finder), e.GetType().FullName);
+                throw new InvalidOperationException(message, e);
             }
         }
 
@@ -417,7 +421,8 @@ namespace WmcSoft.Collections.Generic
                 return lo;
             }
             catch (Exception e) {
-                throw new InvalidOperationException("The finder threw an exception", e);
+                var message = string.Format(Properties.Resources.InvalidOperationExceptionRethrow, nameof(finder), e.GetType().FullName);
+                throw new InvalidOperationException(message, e);
             }
         }
 
@@ -716,7 +721,8 @@ namespace WmcSoft.Collections.Generic
                 return ~lo;
             }
             catch (Exception e) {
-                throw new InvalidOperationException("The ordinal threw an exception", e);
+                var message = string.Format(Properties.Resources.InvalidOperationExceptionRethrow, nameof(ordinal), e.GetType().FullName);
+                throw new InvalidOperationException(message, e);
             }
         }
 
@@ -906,7 +912,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
         public static int FindPartitionPoint<T>(this IList<T> source, Predicate<T> predicate) {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedFindPartitionPoint(source, 0, source.Count, predicate);
         }
@@ -922,7 +928,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
         public static int FindPartitionPoint<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
             Guard(source, index, count);
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedFindPartitionPoint(source, index, count, predicate);
         }
@@ -936,7 +942,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The index of the partition point, -1 if the list is not partitionned.</returns>
         public static bool IsPartitioned<T>(this IList<T> source, Predicate<T> predicate) {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedFindPartitionPoint(source, 0, source.Count, predicate) >= 0;
         }
@@ -963,7 +969,7 @@ namespace WmcSoft.Collections.Generic
                     end--;
                 if (start > end)
                     return start;
-                list.SwapItems(start++, end--);
+                SwapItems(list, start++, end--);
             }
         }
 
@@ -976,7 +982,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The partition point</returns>
         public static int Partition<T>(this IList<T> source, Predicate<T> predicate) {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedPartition(source, 0, source.Count, predicate);
         }
@@ -992,7 +998,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The partition point</returns>
         public static int Partition<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedPartition(source, index, count, predicate);
         }
@@ -1038,7 +1044,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The partition point</returns>
         public static int StablePartition<T>(this IList<T> source, Predicate<T> predicate) {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedStablePartition(source, 0, source.Count, predicate);
         }
@@ -1054,7 +1060,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The partition point</returns>
         public static int StablePartition<T>(this IList<T> source, int index, int count, Predicate<T> predicate) {
             Guard(source, index, count);
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return UnguardedStablePartition(source, index, count, predicate);
         }
