@@ -260,6 +260,33 @@ namespace WmcSoft.Numerics
             }
         }
 
+        public IEnumerable<double> this[Boolarray select] {
+            get {
+                var length = Math.Min(select._data.Length, _data.Length);
+                for (int i = 0; i < length; i++) {
+                    if (select._data[i])
+                        yield return _data[i];
+                }
+            }
+            set {
+                if (value == null)
+                    return;
+                using (var enumerator = value.GetEnumerator()) {
+                    var length = Math.Min(select._data.Length, _data.Length);
+                    for (int i = 0; i < length; i++) {
+                        if (select._data[i]) {
+                            if (enumerator.MoveNext()) {
+                                _data[i] = enumerator.Current;
+                            } else {
+                                return;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -452,6 +479,30 @@ namespace WmcSoft.Numerics
         }
         public static Valarray Plus(Valarray x) {
             return x.Clone();
+        }
+
+        public static Boolarray operator <(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x < value));
+        }
+        public static Boolarray operator <=(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x <= value));
+        }
+        public static Boolarray operator >(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x > value));
+        }
+        public static Boolarray operator >=(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x >= value));
+        }
+
+        public static Boolarray operator ==(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x.Equals(value)));
+        }
+        public static Boolarray operator !=(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => !x.Equals(value)));
+        }
+
+        public static Boolarray Match(Valarray valarray, Predicate<double> predicate) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => predicate(x)));
         }
 
         #endregion
