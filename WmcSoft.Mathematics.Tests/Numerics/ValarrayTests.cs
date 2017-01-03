@@ -75,12 +75,22 @@ namespace WmcSoft.Numerics.Tests
             Assert.AreEqual(expected, actual);
         }
 
-
         [TestMethod]
         public void CheckBoolarrayIndices() {
             var valarray = Valarray.Range(1, 9).Reshape(2, 2, 2);
             var expected = new[] { 7d, 8d };
             var actual = valarray[valarray > 6].ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckBoolarrayMasking() {
+            var valarray = Valarray.Range(1, 9).Reshape(2, 2, 2);
+            var backwards = Valarray.Range(8, 0, -1).Reshape(2, 2, 2);
+            var mask = new Boolarray(false, true, true, false, false, false, true, false);
+            var expected = new[] { 1d, 7d, 6d, 4d, 5d, 6d, 2d, 8d };
+            valarray.Assign(mask, backwards);
+            var actual = valarray.ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 

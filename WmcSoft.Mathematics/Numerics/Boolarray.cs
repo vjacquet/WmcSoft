@@ -246,11 +246,11 @@ namespace WmcSoft.Numerics
             }
         }
 
-        public IEnumerable<bool> this[Boolarray select] {
+        public IEnumerable<bool> this[Boolarray mask] {
             get {
-                var length = Math.Min(select._data.Length, _data.Length);
+                var length = Math.Min(mask._data.Length, _data.Length);
                 for (int i = 0; i < length; i++) {
-                    if (select._data[i])
+                    if (mask._data[i])
                         yield return _data[i];
                 }
             }
@@ -258,9 +258,10 @@ namespace WmcSoft.Numerics
                 if (value == null)
                     return;
                 using (var enumerator = value.GetEnumerator()) {
-                    var length = Math.Min(select._data.Length, _data.Length);
-                    for (int i = 0; i < length; i++) {
-                        if (select._data[i]) {
+                    var length = Math.Min(mask._data.Length, _data.Length);
+                    var i = 0;
+                    for (i = 0; i < length; i++) {
+                        if (mask._data[i]) {
                             if (enumerator.MoveNext()) {
                                 _data[i] = enumerator.Current;
                             } else {
@@ -268,7 +269,11 @@ namespace WmcSoft.Numerics
                             }
                         }
                     }
-
+                    for (; i < length; i++) {
+                        if (mask._data[i]) {
+                            _data[i] = false;
+                        }
+                    }
                 }
             }
         }
