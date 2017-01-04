@@ -20,6 +20,8 @@
 
     4. This notice may not be removed or altered.
 
+ ****************************************************************************
+ * Based on <https://html.spec.whatwg.org/multipage/scripting.html#2dcontext>
  ****************************************************************************/
 
 #endregion

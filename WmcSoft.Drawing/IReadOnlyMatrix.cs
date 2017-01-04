@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Drawing
 {
-    public interface IReadOnlyMatrix
+    public interface IReadOnlyMatrix2: IReadOnlyMatrix2D, IReadOnlyMatrix3D
     {
+        //bool Is2D { get; }
+        //bool IsIdentity { get; }
+
         //       readonly attribute unrestricted double a;
         //       readonly attribute unrestricted double b;
         //       readonly attribute unrestricted double c;
