@@ -90,6 +90,7 @@
     <Compile Include="Collections\Generic\EnumeratorAdapter.cs" />
     <Compile Include="Collections\Generic\ListExtensions.cs" />
     <Compile Include="Collections\Generic\CustomSortComparer.cs" />
+    <Compile Include="Collections\Generic\SequenceSet.cs" />
     <Compile Include="Collections\Generic\Tree.cs" />
     <Compile Include="Collections\Generic\TreeNode.cs" />
     <Compile Include="Collections\ReverseComparer.cs" />

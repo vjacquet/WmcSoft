@@ -6,18 +6,18 @@ using WmcSoft.TestTools.UnitTesting;
 namespace WmcSoft.Collections.Generic
 {
     [TestClass]
-    public class SortedSequenceSetTests
+    public class SequenceSetTests
     {
         [TestMethod]
-        public void CheckSortedSequenceIsSet() {
-            ContractAssert.Set(new SortedSequenceSet<int>());
+        public void CheckSequenceIsSet() {
+            ContractAssert.Set(new SequenceSet<int>());
         }
 
         [TestMethod]
         public void CheckIntersectWith() {
-            var actual = new SortedSequenceSet<char>();
+            var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
-            var other = new SortedSequenceSet<char>();
+            var other = new SequenceSet<char>();
             other.AddRange('b', 'd');
             actual.IntersectWith(other);
 
@@ -27,7 +27,7 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckIntersectWithCollectionWithDuplicates() {
-            var actual = new SortedSequenceSet<char>();
+            var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
             var other = new SortedSequence<char>();
             other.AddRange('b', 'b', 'd');
@@ -38,10 +38,10 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckUnionWithAnotherSet() {
-            var actual = new SortedSequenceSet<char>();
+        public void CheckUnionWith() {
+            var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
-            var other = new SortedSequenceSet<char>();
+            var other = new SequenceSet<char>();
             other.AddRange('b', 'd');
             actual.UnionWith(other);
 
@@ -50,21 +50,10 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckUnionWithAnEnumerable() {
-            var actual = new SortedSequenceSet<char>();
+        public void CheckExceptWith() {
+            var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
-            var other = new[] { 'b', 'd' };
-            actual.UnionWith(other);
-
-            var expected = new[] { 'a', 'b', 'c', 'd' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
-        }
-
-        [TestMethod]
-        public void CheckExceptWithAnotherSet() {
-            var actual = new SortedSequenceSet<char>();
-            actual.AddRange('a', 'b', 'c');
-            var other = new SortedSequenceSet<char>();
+            var other = new SequenceSet<char>();
             other.AddRange('b', 'd');
             actual.ExceptWith(other);
 
@@ -73,34 +62,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckExceptWithAnEnumerable() {
-            var actual = new SortedSequenceSet<char>();
+        public void CheckSymmetricExceptWith() {
+            var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
-            var other = new[] {'b', 'd'};
-            actual.ExceptWith(other);
-
-            var expected = new[] { 'a', 'c' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
-        }
-
-
-        [TestMethod]
-        public void CheckSymmetricExceptWithAnotherSet() {
-            var actual = new SortedSequenceSet<char>();
-            actual.AddRange('a', 'b', 'c');
-            var other = new SortedSequenceSet<char>();
+            var other = new SequenceSet<char>();
             other.AddRange('b', 'd');
-            actual.SymmetricExceptWith(other);
-
-            var expected = new[] { 'a', 'c', 'd' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
-        }
-
-        [TestMethod]
-        public void CheckSymmetricExceptWithAnEnumerable() {
-            var actual = new SortedSequenceSet<char>();
-            actual.AddRange('a', 'b', 'c');
-            var other = new[] { 'b', 'd' };
             actual.SymmetricExceptWith(other);
 
             var expected = new[] { 'a', 'c', 'd' };
@@ -109,16 +75,16 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckOverlaps() {
-            var low = new SortedSequenceSet<int>(Enumerable.Range(1, 4));
-            var all = new SortedSequenceSet<int>(Enumerable.Range(0, 10));
+            var low = new SequenceSet<int>(Enumerable.Range(1, 4));
+            var all = new SequenceSet<int>(Enumerable.Range(0, 10));
 
             Assert.IsTrue(low.Overlaps(all));
         }
 
         [TestMethod]
         public void CheckSubsetAndProperSubsetOnDifferentSets() {
-            var set1 = new SortedSequenceSet<int>(Enumerable.Range(1, 4));
-            var set2 = new SortedSequenceSet<int>(Enumerable.Range(0, 10));
+            var set1 = new SequenceSet<int>(Enumerable.Range(1, 4));
+            var set2 = new SequenceSet<int>(Enumerable.Range(0, 10));
 
             Assert.IsFalse(set1.SetEquals(set2));
             Assert.IsTrue(set1.IsSubsetOf(set2));
@@ -129,8 +95,8 @@ namespace WmcSoft.Collections.Generic
 
         [TestMethod]
         public void CheckSubsetAndProperSubsetOnEquivalentSets() {
-            var set1 = new SortedSequenceSet<int>(Enumerable.Range(1, 4));
-            var set2 = new SortedSequenceSet<int>(Enumerable.Range(1, 4));
+            var set1 = new SequenceSet<int>(Enumerable.Range(1, 4));
+            var set2 = new SequenceSet<int>(Enumerable.Range(1, 4));
 
             Assert.IsTrue(set1.SetEquals(set2));
             Assert.IsTrue(set1.IsSubsetOf(set2));

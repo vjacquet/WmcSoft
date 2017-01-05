@@ -83,6 +83,7 @@
     <Compile Include="Collections\Generic\ListDictionaryTests.cs" />
     <Compile Include="Collections\Generic\ListExtensionsTests.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionaryTests.cs" />
+    <Compile Include="Collections\Generic\SequenceSetTests.cs" />
     <Compile Include="Collections\Generic\TreeTests.cs" />
     <Compile Include="Collections\Specialized\MutableOrdinalSetTests.cs" />
     <Compile Include="Collections\Specialized\IndexedPriorityQueueTests.cs" />
