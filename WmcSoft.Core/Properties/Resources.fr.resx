@@ -123,4 +123,7 @@
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>Le format '{0}' est incorrect.</value>
   </data>
+  <data name="InvalidOperationExceptionRethrow" xml:space="preserve">
+    <value>{0} a lancé l'exception '{1}'.</value>
+  </data>
 </root>

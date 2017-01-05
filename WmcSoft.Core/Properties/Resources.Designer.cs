@@ -178,6 +178,15 @@ namespace WmcSoft.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} threw &apos;{1}&apos;..
+        /// </summary>
+        internal static string InvalidOperationExceptionRethrow {
+            get {
+                return ResourceManager.GetString("InvalidOperationExceptionRethrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid qualified type name {0}..
         /// </summary>
         internal static string InvalidQualifiedName {

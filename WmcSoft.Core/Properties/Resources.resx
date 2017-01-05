@@ -156,6 +156,9 @@
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>The format of '{0}' is invalid.</value>
   </data>
+  <data name="InvalidOperationExceptionRethrow" xml:space="preserve">
+    <value>{0} threw '{1}'.</value>
+  </data>
   <data name="InvalidQualifiedName" xml:space="preserve">
     <value>Invalid qualified type name {0}.</value>
   </data>
