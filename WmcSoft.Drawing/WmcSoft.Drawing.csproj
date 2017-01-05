@@ -32,6 +32,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.3.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,10 +72,7 @@
     <Compile Include="ICanvasState.cs" />
     <Compile Include="ImageData.cs" />
     <Compile Include="ImageSmoothingQuality.cs" />
-    <Compile Include="IReadOnlyMatrix.cs" />
-    <Compile Include="Matrix.cs" />
     <Compile Include="Path2D.cs" />
-    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ByteClampedArray.cs" />
     <Compile Include="TextMetrics.cs" />
@@ -78,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CanvasRenderingContext2D.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

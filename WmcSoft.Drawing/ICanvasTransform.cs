@@ -26,6 +26,8 @@
 
 #endregion
 
+using System.Numerics;
+
 namespace WmcSoft.Drawing
 {
     public interface ICanvasTransform
@@ -35,18 +37,17 @@ namespace WmcSoft.Drawing
         void Translate(double x, double y);
         void Transform(double a, double b, double c, double d, double e, double f);
 
-        //DOMMatrix getTransform();
-        //void setTransform(optional DOMMatrixInit transform);
-        //void SetTransform(double a, double b, double c, double d, double e, double f); => moved to the extension
-        // TODO: work on the Matrix equivalent
-        // Matrix Transform {get;set;}
-        void ResetTransform();
+        Matrix4x4 TransformationMatrix { get; set; }
     }
 
     public static class CanvasTransformExtensions
     {
-        public static void SetTransform(this ICanvasTransform canvas, double a, double b, double c, double d, double e, double f) {
+        public static void Set2DTransformation(this ICanvasTransform canvas, double a, double b, double c, double d, double e, double f) {
             throw new System.NotImplementedException();
+        }
+
+        public static void ResetTransformationMatrix(this ICanvasTransform canvas) {
+            canvas.TransformationMatrix = Matrix4x4.Identity;
         }
     }
 }
