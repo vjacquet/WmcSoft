@@ -136,7 +136,7 @@ namespace WmcSoft.Numerics
         #region Fields
 
         private Dimensions _dimensions;
-        private double[] _data;
+        internal double[] _data;
 
         #endregion
 
@@ -257,6 +257,38 @@ namespace WmcSoft.Numerics
             set {
                 var index = _dimensions.GetIndex(indices);
                 _data[index] = value;
+            }
+        }
+
+        public IEnumerable<double> this[Boolarray mask] {
+            get {
+                var length = Math.Min(mask._data.Length, _data.Length);
+                for (int i = 0; i < length; i++) {
+                    if (mask._data[i])
+                        yield return _data[i];
+                }
+            }
+            set {
+                if (value == null)
+                    return;
+                using (var enumerator = value.GetEnumerator()) {
+                    var length = Math.Min(mask._data.Length, _data.Length);
+                    var i = 0;
+                    for (i = 0; i < length; i++) {
+                        if (mask._data[i]) {
+                            if (enumerator.MoveNext()) {
+                                _data[i] = enumerator.Current;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    for (; i < length; i++) {
+                        if (mask._data[i]) {
+                            _data[i] = 0d;
+                        }
+                    }
+                }
             }
         }
 
@@ -452,6 +484,71 @@ namespace WmcSoft.Numerics
         }
         public static Valarray Plus(Valarray x) {
             return x.Clone();
+        }
+
+        public static Boolarray operator <(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x < value));
+        }
+        public static Boolarray operator <=(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x <= value));
+        }
+        public static Boolarray operator >(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x > value));
+        }
+        public static Boolarray operator >=(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x >= value));
+        }
+
+        public static Boolarray operator ==(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x.Equals(value)));
+        }
+        public static Boolarray operator !=(Valarray valarray, double value) {
+            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => !x.Equals(value)));
+        }
+
+        public Boolarray Match(Predicate<double> predicate) {
+            return new Boolarray(_dimensions, Array.ConvertAll(_data, x => predicate(x)));
+        }
+
+        private void UnguardedAssign(Boolarray mask, double value = 0d) {
+            var length = Math.Min(_data.Length, mask._data.Length);
+            for (int i = 0; i < length; i++) {
+                if (mask._data[i])
+                    _data[i] = value;
+            }
+        }
+
+        public static Valarray operator *(Valarray valarray, Boolarray mask) {
+            if (mask == null) throw new ArgumentNullException(nameof(mask));
+            var result = valarray.Clone();
+            result.UnguardedAssign(mask, 0d);
+            return result;
+        }
+        public Valarray Assign(Boolarray mask, double value = 0d) {
+            if (mask == null) throw new ArgumentNullException(nameof(mask));
+            UnguardedAssign(mask, 0d);
+            return this;
+        }
+        public Valarray Assign<TValues>(Boolarray mask, TValues values)
+            where TValues : IEnumerable<double> {
+            using (var enumerator = values.GetEnumerator()) {
+                var length = Math.Min(mask._data.Length, _data.Length);
+                var i = 0;
+                for (i = 0; i < length; i++) {
+                    if (enumerator.MoveNext()) {
+                        if (mask._data[i])
+                            _data[i] = enumerator.Current;
+                    } else {
+                        break;
+                    }
+                }
+                for (; i < length; i++) {
+                    if (mask._data[i]) {
+                        _data[i] = 0d;
+                    }
+                }
+            }
+            return this;
         }
 
         #endregion

@@ -136,13 +136,13 @@ namespace WmcSoft.Numerics
         #region Fields
 
         private Dimensions _dimensions;
-        private bool[] _data;
+        internal bool[] _data;
 
         #endregion
 
         #region Lifecycle
 
-        private Boolarray(Dimensions dimensions, bool[] data) {
+        internal Boolarray(Dimensions dimensions, bool[] data) {
             _dimensions = dimensions;
             _data = data;
         }
@@ -243,6 +243,38 @@ namespace WmcSoft.Numerics
             set {
                 var index = _dimensions.GetIndex(indices);
                 _data[index] = value;
+            }
+        }
+
+        public IEnumerable<bool> this[Boolarray mask] {
+            get {
+                var length = Math.Min(mask._data.Length, _data.Length);
+                for (int i = 0; i < length; i++) {
+                    if (mask._data[i])
+                        yield return _data[i];
+                }
+            }
+            set {
+                if (value == null)
+                    return;
+                using (var enumerator = value.GetEnumerator()) {
+                    var length = Math.Min(mask._data.Length, _data.Length);
+                    var i = 0;
+                    for (i = 0; i < length; i++) {
+                        if (mask._data[i]) {
+                            if (enumerator.MoveNext()) {
+                                _data[i] = enumerator.Current;
+                            } else {
+                                return;
+                            }
+                        }
+                    }
+                    for (; i < length; i++) {
+                        if (mask._data[i]) {
+                            _data[i] = false;
+                        }
+                    }
+                }
             }
         }
 
