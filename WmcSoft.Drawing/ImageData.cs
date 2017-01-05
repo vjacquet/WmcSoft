@@ -24,6 +24,8 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft.Drawing
 {
     public struct ImageData
@@ -31,11 +33,32 @@ namespace WmcSoft.Drawing
         public ImageData(uint sw, uint sh) {
             Width = sw;
             Height = sh;
+            Data = new ByteClampedArray(new byte[4 * sw * sh]);
         }
 
-        public ImageData(ByteClampedArray data, uint sw, uint sh = 0) {
+        public ImageData(ByteClampedArray data, uint sw) {
+            var length = (uint)data.Count;
+            if (length % 4 != 0) throw new ArgumentException(nameof(data));
+            length /= 4;
+            if (length % sw != 0) throw new ArgumentOutOfRangeException(nameof(data));
+            length /= sw;
+
+            Width = sw;
+            Height = length;
+            Data = data;
+        }
+
+        public ImageData(ByteClampedArray data, uint sw, uint sh) {
+            var length = (uint)data.Count;
+            if (length % 4 != 0) throw new ArgumentException(nameof(data));
+            length /= 4;
+            if (length % sw != 0) throw new ArgumentOutOfRangeException(nameof(data));
+            length /= sw;
+            if (sh != length) throw new ArgumentOutOfRangeException(nameof(sh));
+
             Width = sw;
             Height = sh;
+            Data = data;
         }
 
         public uint Width { get; }
