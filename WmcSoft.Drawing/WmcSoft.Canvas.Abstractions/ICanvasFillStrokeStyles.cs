@@ -33,12 +33,12 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Colors and styles (see also the CanvasPathDrawingStyles and CanvasTextDrawingStyles interfaces)
     /// </summary>
-    public interface ICanvasFillStrokeStyles<TColor>
+    public interface ICanvasFillStrokeStyles<T, TColor>
     {
-        Variant<TColor, CanvasGradient<TColor>, CanvasPattern> StrokeStyle { get; set; } // (default black)
-        Variant<TColor, CanvasGradient<TColor>, CanvasPattern> FillStyle { get; set; }  // (default black)
-        CanvasGradient<TColor> CreateLinearGradient(double x0, double y0, double x1, double y1);
-        CanvasGradient<TColor> CreateRadialGradient(double x0, double y0, double r0, double x1, double y1, double r1);
+        Variant<TColor, CanvasGradient<T, TColor>, CanvasPattern> StrokeStyle { get; set; } // (default black)
+        Variant<TColor, CanvasGradient<T, TColor>, CanvasPattern> FillStyle { get; set; }  // (default black)
+        CanvasGradient<T, TColor> CreateLinearGradient(T x0, T y0, T x1, T y1);
+        CanvasGradient<T, TColor> CreateRadialGradient(T x0, T y0, T r0, T x1, T y1, T r1);
         CanvasPattern CreatePattern(ICanvasImageSource image, Repetition repetition = Repetition.NoRepeat);
     }
 

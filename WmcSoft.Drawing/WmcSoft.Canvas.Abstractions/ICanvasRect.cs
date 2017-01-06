@@ -29,10 +29,10 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// rects
     /// </summary>
-    public interface ICanvasRect
+    public interface ICanvasRect<T>
     {
-        void ClearRect(double x, double y, double w, double h);
-        void FillRect(double x, double y, double w, double h);
-        void StrokeRect(double x, double y, double w, double h);
+        void ClearRect(T x, T y, T w, T h);
+        void FillRect(T x, T y, T w, T h);
+        void StrokeRect(T x, T y, T w, T h);
     }
 }

@@ -26,8 +26,8 @@
 
 namespace WmcSoft.Canvas
 {
-    public abstract class CanvasGradient<TColor>
+    public abstract class CanvasGradient<T, TColor>
     {
-        public abstract void AddColorStop(double offset, TColor color);
+        public abstract void AddColorStop(T offset, TColor color);
     }
 }

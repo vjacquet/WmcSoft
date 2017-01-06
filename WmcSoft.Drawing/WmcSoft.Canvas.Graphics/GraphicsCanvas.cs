@@ -33,7 +33,7 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Canvas
 {
-    public class GraphicsCanvas : ICanvasRect, ICanvasFillStrokeStyles<Color>, IDisposable
+    public class GraphicsCanvas : ICanvasRect<float>, ICanvasFillStrokeStyles<float, Color>, IDisposable
     {
         private Graphics g;
         private Action<Graphics> _disposer;
@@ -49,14 +49,14 @@ namespace WmcSoft.Canvas
             StrokeStyle = Color.Black;
         }
 
-        public Variant<Color, CanvasGradient<Color>, CanvasPattern> FillStyle { get; set; }
-        public Variant<Color, CanvasGradient<Color>, CanvasPattern> StrokeStyle { get; set; }
+        public Variant<Color, CanvasGradient<float,Color>, CanvasPattern> FillStyle { get; set; }
+        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> StrokeStyle { get; set; }
 
-        public void ClearRect(double x, double y, double w, double h) {
+        public void ClearRect(float x, float y, float w, float h) {
             throw new NotImplementedException();
         }
 
-        public CanvasGradient<Color> CreateLinearGradient(double x0, double y0, double x1, double y1) {
+        public CanvasGradient<float, Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
             throw new NotImplementedException();
         }
 
@@ -64,15 +64,15 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
-        public CanvasGradient<Color> CreateRadialGradient(double x0, double y0, double r0, double x1, double y1, double r1) {
+        public CanvasGradient<float, Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
             throw new NotImplementedException();
         }
 
-        public void FillRect(double x, double y, double w, double h) {
+        public void FillRect(float x, float y, float w, float h) {
             throw new NotImplementedException();
         }
 
-        public void StrokeRect(double x, double y, double w, double h) {
+        public void StrokeRect(float x, float y, float w, float h) {
             throw new NotImplementedException();
         }
 

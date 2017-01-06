@@ -29,17 +29,17 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Shared path API methods
     /// </summary>
-    public interface ICanvasPath
+    public interface ICanvasPath<T>
     {
         void ClosePath();
-        void MoveTo(double x, double y);
-        void LineTo(double x, double y);
-        void QuadraticCurveTo(double cpx, double cpy, double x, double y);
-        void BezierCurveTo(double cp1x, double cp1y, double cp2x, double cp2y, double x, double y);
-        void ArcTo(double x1, double y1, double x2, double y2, double radius);
-        void ArcTo(double x1, double y1, double x2, double y2, double radiusX, double radiusY, double rotation);
-        void Rect(double x, double y, double w, double h);
-        void Arc(double x, double y, double radius, double startAngle, double endAngle, bool anticlockwise = false);
-        void Ellipse(double x, double y, double radiusX, double radiusY, double rotation, double startAngle, double endAngle, bool anticlockwise = false);
+        void MoveTo(T x, T y);
+        void LineTo(T x, T y);
+        void QuadraticCurveTo(T cpx, T cpy, T x, T y);
+        void BezierCurveTo(T cp1x, T cp1y, T cp2x, T cp2y, T x, T y);
+        void ArcTo(T x1, T y1, T x2, T y2, T radius);
+        void ArcTo(T x1, T y1, T x2, T y2, T radiusX, T radiusY, T rotation);
+        void Rect(T x, T y, T w, T h);
+        void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise = false);
+        void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise = false);
     }
 }

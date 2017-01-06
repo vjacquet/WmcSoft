@@ -29,10 +29,21 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Text
     /// </summary>
-    public interface ICanvasText
+    public interface ICanvasText<T>
     {
-        void FillText(string text, double x, double y, double maxWidth = 0d);
-        void StrokeText(string text, double x, double y, double maxWidth = 0d);
+        void FillText(string text, T x, T y, T maxWidth);
+        void StrokeText(string text, T x, T y, T maxWidth);
         TextMetrics MeasureText(string text);
+    }
+
+    public static class CanvasTextExtensions
+    {
+        public static void FillText<T>(this ICanvasText<T> canvas, string text, T x, T y) {
+            canvas.FillText(text, x, y, default(T));
+        }
+
+        public static void StrokeText<T>(this ICanvasText<T> canvas, string text, T x, T y) {
+            canvas.StrokeText(text, x, y, default(T));
+        }
     }
 }

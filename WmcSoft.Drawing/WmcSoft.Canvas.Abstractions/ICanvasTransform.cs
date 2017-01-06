@@ -30,23 +30,23 @@ using System.Numerics;
 
 namespace WmcSoft.Canvas
 {
-    public interface ICanvasTransform
+    public interface ICanvasTransform<T>
     {
-        void Scale(double x, double y);
-        void Rotate(double angle);
-        void Translate(double x, double y);
-        void Transform(double a, double b, double c, double d, double e, double f);
+        void Scale(T x, T y);
+        void Rotate(T angle);
+        void Translate(T x, T y);
+        void Transform(T a, T b, T c, T d, T e, T f);
 
         Matrix4x4 TransformationMatrix { get; set; }
     }
 
     public static class CanvasTransformExtensions
     {
-        public static void Set2DTransformation(this ICanvasTransform canvas, double a, double b, double c, double d, double e, double f) {
+        public static void Set2DTransformation<T>(this ICanvasTransform<T> canvas, T a, T b, T c, T d, T e, T f) {
             throw new System.NotImplementedException();
         }
 
-        public static void ResetTransformationMatrix(this ICanvasTransform canvas) {
+        public static void ResetTransformationMatrix<T>(this ICanvasTransform<T> canvas) {
             canvas.TransformationMatrix = Matrix4x4.Identity;
         }
     }

@@ -29,9 +29,9 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Compositing.
     /// </summary>
-    public interface ICanvasCompositing
+    public interface ICanvasCompositing<TAlpha>
     {
-        double GlobalAlpha { get; set; } // default 1.0
+        TAlpha GlobalAlpha { get; set; } // default 1.0
         // TODO: define GlobalCompositeOperation's type
         string GlobalCompositeOperation { get; set; } // default source-over
     }

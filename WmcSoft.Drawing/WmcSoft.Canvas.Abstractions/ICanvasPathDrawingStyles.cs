@@ -31,16 +31,16 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Line caps/joins & dashed lines.
     /// </summary>
-    public interface ICanvasPathDrawingStyles
+    public interface ICanvasPathDrawingStyles<T>
     {
         // line caps/joins
-        double LineWidth { get; set; } // (default 1)
+        T LineWidth { get; set; } // (default 1)
         CanvasLineCap LineCap { get; set; } // (default "butt")
         CanvasLineJoin LineJoin { get; set; } // (default "miter")
-        double MiterLimit { get; set; } // (default 10)
+        T MiterLimit { get; set; } // (default 10)
 
         // dashed lines
-        IEnumerable<double> LineDash { get; set; } // default empty
-        double LineDashOffset { get; set; }
+        IEnumerable<T> LineDash { get; set; } // default empty
+        T LineDashOffset { get; set; }
     };
 }
