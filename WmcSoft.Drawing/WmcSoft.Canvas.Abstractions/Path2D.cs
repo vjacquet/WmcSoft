@@ -26,7 +26,7 @@ namespace WmcSoft.Canvas
         public abstract void ArcTo(T x1, T y1, T x2, T y2, T radius);
         public abstract void ArcTo(T x1, T y1, T x2, T y2, T radiusX, T radiusY, T rotation);
         public abstract void Rect(T x, T y, T w, T h);
-        public abstract void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise = false);
-        public abstract void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise = false);
+        public abstract void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise);
+        public abstract void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise);
     }
 }

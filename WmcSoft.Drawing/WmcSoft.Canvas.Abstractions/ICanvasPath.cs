@@ -39,7 +39,19 @@ namespace WmcSoft.Canvas
         void ArcTo(T x1, T y1, T x2, T y2, T radius);
         void ArcTo(T x1, T y1, T x2, T y2, T radiusX, T radiusY, T rotation);
         void Rect(T x, T y, T w, T h);
-        void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise = false);
-        void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise = false);
+        void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise);
+        void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise);
+    }
+
+    public static class CanvasPathExtensions
+    {
+        public static void Arc<T>(this ICanvasPath<T> path, T x, T y, T radius, T startAngle, T endAngle) {
+            path.Arc(x, y, radius, startAngle, endAngle, false);
+        }
+
+        public static void Ellipse<T>(this ICanvasPath<T> path, T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle) {
+            path.Ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, false);
+
+        }
     }
 }

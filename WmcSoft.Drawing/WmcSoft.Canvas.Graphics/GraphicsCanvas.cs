@@ -27,16 +27,95 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WmcSoft.Canvas
 {
-    public class GraphicsCanvas : ICanvasRect<float>, ICanvasFillStrokeStyles<float, Color>, IDisposable
+    public class GraphicsCanvas : ICanvasRect<float>
+        , ICanvasDrawPath<float>
+        , ICanvasFillStrokeStyles<float, Color>
+        , IDisposable
     {
+        #region Variant visitors
+
+        sealed class PenVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+            , IDisposable
+        {
+            private Pen _tool;
+
+            public void Dispose() {
+                if (_tool != null) {
+                    _tool.Dispose();
+                    _tool = null;
+                }
+            }
+
+            public override void Visit(CanvasGradient<float, Color> instance) {
+                throw new NotSupportedException();
+            }
+
+            public override void Visit(CanvasPattern instance) {
+                throw new NotSupportedException();
+            }
+
+            public override void Visit(Color instance) {
+                var pen = new Pen(instance);
+                Dispose();
+                _tool = pen;
+            }
+
+            public Pen Pen { get { return _tool; } }
+
+            public static implicit operator Pen(PenVisitor visitor) {
+                return visitor._tool;
+            }
+        }
+
+        sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+              , IDisposable
+        {
+            private Brush _tool;
+
+            public void Dispose() {
+                if (_tool != null) {
+                    _tool.Dispose();
+                    _tool = null;
+                }
+            }
+
+            public override void Visit(CanvasGradient<float, Color> instance) {
+                throw new NotSupportedException();
+            }
+
+            public override void Visit(CanvasPattern instance) {
+                throw new NotSupportedException();
+            }
+
+            public override void Visit(Color instance) {
+                var brush = new SolidBrush(instance);
+                Dispose();
+                _tool = brush;
+            }
+
+            public Brush Brush { get { return _tool; } }
+
+            public static implicit operator Brush(BrushVisitor visitor) {
+                return visitor._tool;
+            }
+        }
+
+        #endregion
+
         private Graphics g;
         private Action<Graphics> _disposer;
+        private PenVisitor _pen;
+        private BrushVisitor _brush;
+        private GraphicsPath _path;
+        private float _x;
+        private float _y;
 
         public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
             g = graphics;
@@ -45,16 +124,50 @@ namespace WmcSoft.Canvas
             else
                 _disposer = disposer;
 
+            _pen = new PenVisitor();
+            _brush = new BrushVisitor();
+
             FillStyle = Color.Black;
             StrokeStyle = Color.Black;
         }
 
-        public Variant<Color, CanvasGradient<float,Color>, CanvasPattern> FillStyle { get; set; }
-        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> StrokeStyle { get; set; }
-
-        public void ClearRect(float x, float y, float w, float h) {
-            throw new NotImplementedException();
+        void IDisposable.Dispose() {
+            if (_disposer != null) {
+                _disposer(g);
+                _disposer = null;
+                g = null;
+            }
+            _pen.Dispose();
+            _brush.Dispose();
+            if (_path != null) {
+                _path.Dispose();
+                _path = null;
+            }
         }
+
+        #region ICanvasFillStrokeStyles<float, Color> methods
+
+        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> FillStyle {
+            get {
+                return _fillStyle;
+            }
+            set {
+                _fillStyle = value;
+                _fillStyle.Visit(_brush);
+            }
+        }
+        Variant<Color, CanvasGradient<float, Color>, CanvasPattern> _fillStyle;
+
+        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> StrokeStyle {
+            get {
+                return _strokeStyle;
+            }
+            set {
+                _strokeStyle = value;
+                _strokeStyle.Visit(_pen);
+            }
+        }
+        Variant<Color, CanvasGradient<float, Color>, CanvasPattern> _strokeStyle;
 
         public CanvasGradient<float, Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
             throw new NotImplementedException();
@@ -68,20 +181,129 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region ICanvasRect<float>
+
+        public void ClearRect(float x, float y, float w, float h) {
+            using (GraphicsPath path = new GraphicsPath()) {
+                path.AddRectangle(new RectangleF(x, y, w, h));
+                g.SetClip(path);
+                g.Clear(Color.Transparent);
+                g.ResetClip();
+            }
+        }
+
         public void FillRect(float x, float y, float w, float h) {
-            throw new NotImplementedException();
+            g.FillRectangle(_brush, x, y, w, h);
         }
 
         public void StrokeRect(float x, float y, float w, float h) {
+            g.DrawRectangle(_pen, x, y, w, h);
+        }
+
+        #endregion
+
+        #region ICanvasPath<float>
+
+        private GraphicsPath CurrentPath {
+            get { return _path; }
+        }
+
+        public void ClosePath() {
+            CurrentPath.CloseFigure();
+        }
+
+        public void MoveTo(float x, float y) {
+            _x = x;
+            _y = y;
+        }
+
+        public void LineTo(float x, float y) {
+            CurrentPath.AddLine(_x, _y, x, y);
+            _x = x;
+            _y = y;
+        }
+
+        public void QuadraticCurveTo(float cpx, float cpy, float x, float y) {
             throw new NotImplementedException();
         }
 
-        void IDisposable.Dispose() {
-            if (_disposer != null) {
-                _disposer(g);
-                _disposer = null;
-                g = null;
-            }
+        public void BezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y) {
+            throw new NotImplementedException();
         }
+
+        public void ArcTo(float x1, float y1, float x2, float y2, float radius) {
+            throw new NotImplementedException();
+        }
+
+        public void ArcTo(float x1, float y1, float x2, float y2, float radiusX, float radiusY, float rotation) {
+            throw new NotImplementedException();
+        }
+
+        public void Rect(float x, float y, float w, float h) {
+            throw new NotImplementedException();
+        }
+
+        public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise = false) {
+            throw new NotImplementedException();
+        }
+
+        public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation, float startAngle, float endAngle, bool anticlockwise = false) {
+            throw new NotImplementedException();
+        }
+
+        public void BeginPath() {
+            if (_path != null)
+                _path.Dispose();
+            _path = new GraphicsPath(FillMode.Alternate);
+            _path.StartFigure();
+        }
+
+        public void Fill(CanvasFillRule fillRule) {
+            throw new NotImplementedException();
+        }
+
+        public void Fill(Path2D<float> path, CanvasFillRule fillRule) {
+            throw new NotImplementedException();
+        }
+
+        public void Stroke() {
+            g.DrawPath(_pen, CurrentPath);
+        }
+
+        public void Stroke(Path2D<float> path) {
+            throw new NotImplementedException();
+        }
+
+        public void Clip(CanvasFillRule fillRule) {
+            throw new NotImplementedException();
+        }
+
+        public void Clip(Path2D<float> path, CanvasFillRule fillRule) {
+            throw new NotImplementedException();
+        }
+
+        public void ResetClip() {
+            throw new NotImplementedException();
+        }
+
+        public bool IsPointInPath(float x, float y, CanvasFillRule fillRule) {
+            throw new NotImplementedException();
+        }
+
+        public bool IsPointInPath(Path2D<float> path, float x, float y, CanvasFillRule fillRule) {
+            throw new NotImplementedException();
+        }
+
+        public bool IsPointInStroke(float x, float y) {
+            throw new NotImplementedException();
+        }
+
+        public bool IsPointInStroke(Path2D<float> path, float x, float y) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -70,13 +70,6 @@
       <FileName>ICanvasTextDrawingStyles.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasPath&lt;T&gt;">
-    <Position X="7.5" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAACAAgAAAAAAAAAAAAAECEIAIAAAAAAAAAAACA=</HashCode>
-      <FileName>ICanvasPath.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Enum Name="WmcSoft.Canvas.CanvasFillRule" Collapsed="true">
     <Position X="9.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
