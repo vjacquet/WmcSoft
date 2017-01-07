@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.ComponentModel.Design;
 using WmcSoft.Properties;
 
 namespace WmcSoft
@@ -35,6 +36,8 @@ namespace WmcSoft
     /// </summary>
     public static class ServiceProviderExtensions
     {
+        #region Service provider extensions
+
         /// <summary>
         /// Generic version of GetService for wich the type is inferred
         /// </summary>
@@ -68,5 +71,41 @@ namespace WmcSoft
         public static T RequireService<T>(this IServiceProvider self) {
             return (T)RequireService(self, typeof(T));
         }
+
+        #endregion
+
+        #region Service container extensions
+
+        public static void AddService<T>(this IServiceContainer container, T instance) {
+            container.AddService(typeof(T), instance);
+        }
+        public static void AddService<T>(this IServiceContainer container, T instance, bool promote) {
+            container.AddService(typeof(T), instance, promote);
+        }
+        public static void AddService<T>(this IServiceContainer container, Func<T> factory) {
+            ServiceCreatorCallback callback = (c, t) => factory();
+            container.AddService(typeof(T), callback);
+        }
+        public static void AddService<T>(this IServiceContainer container, Func<T> factory, bool promote) {
+            ServiceCreatorCallback callback = (c, t) => factory();
+            container.AddService(typeof(T), callback, promote);
+        }
+        public static void AddService<T>(this IServiceContainer container, Func<IServiceProvider, T> factory) {
+            ServiceCreatorCallback callback = (c, t) => factory(c);
+            container.AddService(typeof(T), callback);
+        }
+        public static void AddService<T>(this IServiceContainer container, Func<IServiceProvider, T> factory, bool promote) {
+            ServiceCreatorCallback callback = (c, t) => factory(c);
+            container.AddService(typeof(T), callback, promote);
+        }
+
+        public static void RemoveService<T>(this IServiceContainer container) {
+            container.RemoveService(typeof(T));
+        }
+        public static void RemoveService<T>(this IServiceContainer container, bool promote) {
+            container.RemoveService(typeof(T), promote);
+        }
+
+        #endregion
     }
 }
