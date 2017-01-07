@@ -36,6 +36,7 @@ namespace WmcSoft.Canvas
 {
     public class GraphicsCanvas : ICanvasRect<float>
         , ICanvasDrawPath<float>
+        , ICanvasPathDrawingStyles<float>
         , ICanvasFillStrokeStyles<float, Color>
         , IDisposable
     {
@@ -44,7 +45,15 @@ namespace WmcSoft.Canvas
         sealed class PenVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
             , IDisposable
         {
+            private Func<Pen> _factory;
             private Pen _tool;
+
+            public PenVisitor() {
+                width = 1f;
+                lineCap = LineCap.Flat;
+                lineJoin = LineJoin.Miter;
+                miterLimit = 10f;
+            }
 
             public void Dispose() {
                 if (_tool != null) {
@@ -61,17 +70,56 @@ namespace WmcSoft.Canvas
                 throw new NotSupportedException();
             }
 
-            public override void Visit(Color instance) {
-                var pen = new Pen(instance);
-                Dispose();
-                _tool = pen;
+            Pen CreateSolidPen(Color color) {
+                var pen = new Pen(color, Width);
+                pen.LineJoin = lineJoin;
+                pen.MiterLimit = MiterLimit;
+                pen.StartCap = LineCap;
+                pen.EndCap = LineCap;
+                return pen;
             }
 
-            public Pen Pen { get { return _tool; } }
+            public override void Visit(Color instance) {
+                _factory = () => CreateSolidPen(instance);
+
+                Dispose();
+            }
+
+            public Pen Pen {
+                get {
+                    if (_tool == null)
+                        _tool = _factory();
+                    return _tool;
+                }
+            }
 
             public static implicit operator Pen(PenVisitor visitor) {
-                return visitor._tool;
+                return visitor.Pen;
             }
+
+            public float Width {
+                get { return width; }
+                set { if (width != value) { width = value; Dispose(); } }
+            }
+            float width;
+
+            public LineJoin LineJoin {
+                get { return lineJoin; }
+                set { if (lineJoin != value) { lineJoin = value; Dispose(); } }
+            }
+            LineJoin lineJoin;
+
+            public float MiterLimit {
+                get { return miterLimit; }
+                set { if (miterLimit != value) { miterLimit = value; Dispose(); } }
+            }
+            float miterLimit;
+
+            public LineCap LineCap {
+                get { return lineCap; }
+                set { if (lineCap != value) { lineCap = value; Dispose(); } }
+            }
+            LineCap lineCap;
         }
 
         sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
@@ -103,19 +151,20 @@ namespace WmcSoft.Canvas
             public Brush Brush { get { return _tool; } }
 
             public static implicit operator Brush(BrushVisitor visitor) {
-                return visitor._tool;
+                return visitor.Brush;
             }
         }
 
         #endregion
 
-        private Graphics g;
+        public Graphics g;
         private Action<Graphics> _disposer;
         private PenVisitor _pen;
         private BrushVisitor _brush;
         private GraphicsPath _path;
         private float _x;
         private float _y;
+        private PointF _start;
 
         public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
             g = graphics;
@@ -212,9 +261,13 @@ namespace WmcSoft.Canvas
 
         public void ClosePath() {
             CurrentPath.CloseFigure();
+            _x = _start.X;
+            _y = _start.Y;
         }
 
         public void MoveTo(float x, float y) {
+            _path.StartFigure();
+            _start = new PointF(x, y);
             _x = x;
             _y = y;
         }
@@ -245,11 +298,11 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
-        public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise = false) {
+        public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise) {
             throw new NotImplementedException();
         }
 
-        public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation, float startAngle, float endAngle, bool anticlockwise = false) {
+        public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation, float startAngle, float endAngle, bool anticlockwise) {
             throw new NotImplementedException();
         }
 
@@ -302,6 +355,109 @@ namespace WmcSoft.Canvas
 
         public bool IsPointInStroke(Path2D<float> path, float x, float y) {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ICanvasPathDrawingStyles<T> members
+
+        public float LineWidth {
+            get { return _pen.Width; }
+            set { _pen.Width = value; }
+        }
+
+        public CanvasLineCap LineCap {
+            get {
+                switch (_pen.LineCap) {
+                case System.Drawing.Drawing2D.LineCap.Flat:
+                    return CanvasLineCap.Butt;
+                case System.Drawing.Drawing2D.LineCap.Square:
+                    return CanvasLineCap.Square;
+                case System.Drawing.Drawing2D.LineCap.Round:
+                    return CanvasLineCap.Round;
+                case System.Drawing.Drawing2D.LineCap.Triangle:
+                case System.Drawing.Drawing2D.LineCap.NoAnchor:
+                case System.Drawing.Drawing2D.LineCap.SquareAnchor:
+                case System.Drawing.Drawing2D.LineCap.RoundAnchor:
+                case System.Drawing.Drawing2D.LineCap.DiamondAnchor:
+                case System.Drawing.Drawing2D.LineCap.ArrowAnchor:
+                case System.Drawing.Drawing2D.LineCap.Custom:
+                case System.Drawing.Drawing2D.LineCap.AnchorMask:
+                default:
+                    throw new InvalidCastException();
+                }
+            }
+            set {
+                switch (value) {
+                case CanvasLineCap.Butt:
+                    _pen.LineCap = System.Drawing.Drawing2D.LineCap.Flat;
+                    break;
+                case CanvasLineCap.Round:
+                    _pen.LineCap = System.Drawing.Drawing2D.LineCap.Round;
+                    break;
+                case CanvasLineCap.Square:
+                    _pen.LineCap = System.Drawing.Drawing2D.LineCap.Square;
+                    break;
+                default:
+                    throw new ArgumentException();
+                }
+            }
+        }
+
+        public CanvasLineJoin LineJoin {
+            get {
+                switch (_pen.LineJoin) {
+                case System.Drawing.Drawing2D.LineJoin.Miter:
+                    return CanvasLineJoin.Miter;
+                case System.Drawing.Drawing2D.LineJoin.Bevel:
+                    return CanvasLineJoin.Bevel;
+                case System.Drawing.Drawing2D.LineJoin.Round:
+                    return CanvasLineJoin.Round;
+                case System.Drawing.Drawing2D.LineJoin.MiterClipped:
+                default:
+                    throw new InvalidCastException();
+                }
+            }
+            set {
+                switch (value) {
+                case CanvasLineJoin.Round:
+                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+                    break;
+                case CanvasLineJoin.Bevel:
+                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
+                    break;
+                case CanvasLineJoin.Miter:
+                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Miter;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        public float MiterLimit {
+            get { return _pen.MiterLimit; }
+            set { _pen.MiterLimit = value; }
+        }
+
+        public IEnumerable<float> LineDash {
+            get {
+                throw new NotImplementedException();
+            }
+
+            set {
+                throw new NotImplementedException();
+            }
+        }
+
+        public float LineDashOffset {
+            get {
+                throw new NotImplementedException();
+            }
+
+            set {
+                throw new NotImplementedException();
+            }
         }
 
         #endregion

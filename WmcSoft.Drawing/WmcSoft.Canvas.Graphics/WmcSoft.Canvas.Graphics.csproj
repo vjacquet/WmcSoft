@@ -60,7 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasPathTests.cs" />
     <Compile Include="CanvasRectTests.cs" />
+    <Compile Include="CanvasTestsBase.cs" />
     <Compile Include="GraphicsCanvas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

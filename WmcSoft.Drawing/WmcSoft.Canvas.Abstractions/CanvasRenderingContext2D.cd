@@ -57,7 +57,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="WmcSoft.Canvas.ICanvasPathDrawingStyles&lt;T&gt;">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Position X="0.5" Y="5.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAQAAIIgAAAAAAAAACAAAAAAAAA=</HashCode>
       <FileName>ICanvasPathDrawingStyles.cs</FileName>

@@ -10,42 +10,35 @@ using Xunit;
 
 namespace WmcSoft.Canvas
 {
-    public class CanvasRectTests
+    public class CanvasRectTests : CanvasTestsBase
     {
-        static GraphicsCanvas CreateCanvas(string filename) {
-            var image = new Bitmap(400, 200);
-            var path = Path.GetFullPath(Path.Combine(@"..\Tests", filename));
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            return new GraphicsCanvas(Graphics.FromImage(image), g => image.Save(path, ImageFormat.Png));
-        }
-
         [Fact]
-        public void CanFillRect() {
-            using(var canvas = CreateCanvas("fillRect.png")) {
-                canvas.FillStyle = Color.Green;
-                canvas.FillRect(10, 10, 100, 100);
+        public void SupportFillRect() {
+            using (var ctx = CreateCanvas("fillRect.png")) {
+                ctx.FillStyle = Color.Green;
+                ctx.FillRect(10, 10, 100, 100);
             }
         }
 
         [Fact]
-        public void CanStrokeRect() {
-            using(var canvas = CreateCanvas("strokeRect.png")) {
-                canvas.StrokeStyle = Color.Green;
-                canvas.StrokeRect(10, 10, 100, 100);
+        public void SupportStrokeRect() {
+            using (var ctx = CreateCanvas("strokeRect.png")) {
+                ctx.StrokeStyle = Color.Green;
+                ctx.StrokeRect(10, 10, 100, 100);
             }
         }
 
         [Fact]
-        public void CanClearRect() {
-            using(var canvas = CreateCanvas("clearRect.png")) {
-                canvas.BeginPath();
-                canvas.MoveTo(20, 20);
-                canvas.LineTo(200, 20);
-                canvas.LineTo(120, 120);
-                canvas.ClosePath(); // draws last line of the triangle
-                canvas.Stroke();
+        public void SupportClearRect() {
+            using (var ctx = CreateCanvas("clearRect.png")) {
+                ctx.BeginPath();
+                ctx.MoveTo(20, 20);
+                ctx.LineTo(200, 20);
+                ctx.LineTo(120, 120);
+                ctx.ClosePath(); // draws last line of the triangle
+                ctx.Stroke();
 
-                canvas.ClearRect(10, 10, 100, 100);
+                ctx.ClearRect(10, 10, 100, 100);
             }
         }
     }
