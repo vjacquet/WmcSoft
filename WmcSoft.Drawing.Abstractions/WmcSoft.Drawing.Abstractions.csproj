@@ -49,6 +49,7 @@
     <Compile Include="LinearGradientMode.cs" />
     <Compile Include="LineCap.cs" />
     <Compile Include="LineJoin.cs" />
+    <Compile Include="PixelOffsetMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QualityMode.cs" />
     <Compile Include="SmoothingMode.cs" />
