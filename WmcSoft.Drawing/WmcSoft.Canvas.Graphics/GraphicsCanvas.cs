@@ -157,7 +157,7 @@ namespace WmcSoft.Canvas
 
         #endregion
 
-        public Graphics g;
+        private Graphics g;
         private Action<Graphics> _disposer;
         private PenVisitor _pen;
         private BrushVisitor _brush;

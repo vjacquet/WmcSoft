@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Canvas.Abstractions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Canvas.Graphics", "WmcSoft.Drawing\WmcSoft.Canvas.Graphics\WmcSoft.Canvas.Graphics.csproj", "{F649DF42-9102-4875-A5C5-554E7CDD9E2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Drawing.Abstractions", "WmcSoft.Drawing.Abstractions\WmcSoft.Drawing.Abstractions.csproj", "{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -185,6 +187,10 @@ Global
 		{F649DF42-9102-4875-A5C5-554E7CDD9E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F649DF42-9102-4875-A5C5-554E7CDD9E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F649DF42-9102-4875-A5C5-554E7CDD9E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,5 +206,6 @@ Global
 		{36C0CA36-2994-48C5-BB49-F91CA6D17425} = {F9354138-94D5-4622-8434-F8B9DD9FDD25}
 		{5842B06A-3531-4990-A224-7CF37A9EEA6A} = {ADF1C128-6796-49E5-AA94-4F25DA95EB0F}
 		{F649DF42-9102-4875-A5C5-554E7CDD9E2D} = {ADF1C128-6796-49E5-AA94-4F25DA95EB0F}
+		{D1317B47-BB21-4ADF-9D7D-DF6D002346ED} = {ADF1C128-6796-49E5-AA94-4F25DA95EB0F}
 	EndGlobalSection
 EndGlobal
