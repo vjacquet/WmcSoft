@@ -1,3 +1,12 @@
+// Stephen Toub
+// stoub@microsoft.com
+//
+// XmlComments.cs
+// Retrieve the xml comments stored in the assembly's comments file
+// for specific types or members of types.
+// ==========================================================================
+// <mailto:vjacquet@club-internet.fr>
+// * Added more paths in to look for the assembly(s documentation.
 using System;
 using System.IO;
 using System.Reflection;
@@ -134,6 +143,7 @@ namespace WmcSoft.Reflection
             string runtimeDirectory = RuntimeEnvironment.GetRuntimeDirectory();
             string[] locations = new string[] {
                 asm.Location,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0", Path.GetFileName(asm.CodeBase)),
                 runtimeDirectory+ @"en\" + Path.GetFileName(asm.CodeBase),
                 Directory.GetParent(runtimeDirectory).Parent.FullName + @"\v2.0.50727\en\" + Path.GetFileName(asm.CodeBase),
             };

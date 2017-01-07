@@ -8,65 +8,41 @@
 // <mailto:vjacquet@club-internet.fr>
 // * Moving loading function to DocumentationLoader to avoid memory
 //   consumption.
+using System.Xml;
 
 namespace WmcSoft.Reflection
 {
-    using System.Xml;
-
     /// <summary>Used to retrieve the XML comments for MemberInfo objects.</summary>
+    [System.Diagnostics.DebuggerDisplay("{Summary == null ? string.Empty : Summary.InnerText,nq}")]
     public class XmlDocumentation
     {
-
-        #region Member Variables
-        /// <summary>The entire XML comment block for this member.</summary>
-        private XmlNode _comments;
-        /// <summary>The summary comment for this member.</summary>
-        private XmlNode _summary;
-        /// <summary>The remarks comment for this member.</summary>
-        private XmlNode _remarks;
-        /// <summary>The returns comment for this member.</summary>
-        private XmlNode _returns;
-        /// <summary>The value comment for this member.</summary>
-        private XmlNode _value;
-        /// <summary>The example comment for this member.</summary>
-        private XmlNode _example;
-        /// <summary>The includes comments for this member.</summary>
-        private XmlNodeList _includes;
-        /// <summary>The exceptions comments for this member.</summary>
-        private XmlNodeList _exceptions;
-        /// <summary>The paramrefs comments for this member.</summary>
-        private XmlNodeList _paramrefs;
-        /// <summary>The permissions comments for this member.</summary>
-        private XmlNodeList _permissions;
-        /// <summary>The params comments for this member.</summary>
-        private XmlNodeList _params;
-        #endregion
-
         #region Extracting Specific Comments
+
         /// <summary>Gets the entire XML comment block for this member.</summary>
-        public XmlNode AllComments { get { return _comments; } }
+        public XmlNode AllComments { get; }
         /// <summary>Gets the summary comment for this member.</summary>
-        public XmlNode Summary { get { return _summary; } }
+        public XmlNode Summary { get; }
         /// <summary>Gets the remarks comment for this member.</summary>
-        public XmlNode Remarks { get { return _remarks; } }
+        public XmlNode Remarks { get; }
         /// <summary>Gets the return comment for this member.</summary>
-        public XmlNode Returns { get { return _returns; } }
+        public XmlNode Returns { get; }
         /// <summary>Gets the value comment for this member.</summary>
-        public XmlNode Value { get { return _value; } }
+        public XmlNode Value { get; }
         /// <summary>Gets the example comment for this member.</summary>
-        public XmlNode Example { get { return _example; } }
+        public XmlNode Example { get; }
         /// <summary>Gets the includes comments for this member.</summary>
-        public XmlNodeList Includes { get { return _includes; } }
+        public XmlNodeList Includes { get; }
         /// <summary>Gets the exceptions comments for this member.</summary>
-        public XmlNodeList Exceptions { get { return _exceptions; } }
+        public XmlNodeList Exceptions { get; }
         /// <summary>Gets the paramrefs comments for this member.</summary>
-        public XmlNodeList ParamRefs { get { return _paramrefs; } }
+        public XmlNodeList ParamRefs { get; }
         /// <summary>Gets the permissions comments for this member.</summary>
-        public XmlNodeList Permissions { get { return _permissions; } }
+        public XmlNodeList Permissions { get; }
         /// <summary>Gets the params comments for this member.</summary>
-        public XmlNodeList Params { get { return _params; } }
+        public XmlNodeList Params { get; }
         /// <summary>Renders to a string the entire XML comment block for this member.</summary>
-        public override string ToString() { return _comments.OuterXml; }
+        public override string ToString() { return AllComments.OuterXml; }
+
         #endregion
 
         #region Construction
@@ -75,27 +51,27 @@ namespace WmcSoft.Reflection
         /// <param name="comments">The XML comments.</param>
         internal XmlDocumentation(XmlNode comments) {
             // Get the comments.  If we got any, parse out the important stuff.
-            _comments = comments;
-            if (_comments != null) {
+            AllComments = comments;
+            if (AllComments != null) {
                 // Get single nodes (comments that can appear only once)
-                _summary = Normalize(_comments.SelectSingleNode("summary"));
-                _returns = Normalize(_comments.SelectSingleNode("returns"));
-                _remarks = Normalize(_comments.SelectSingleNode("remarks"));
-                _example = Normalize(_comments.SelectSingleNode("example"));
-                _value = Normalize(_comments.SelectSingleNode("value"));
+                Summary = Normalize(comments.SelectSingleNode("summary"));
+                Returns = Normalize(comments.SelectSingleNode("returns"));
+                Remarks = Normalize(comments.SelectSingleNode("remarks"));
+                Example = Normalize(comments.SelectSingleNode("example"));
+                Value = Normalize(comments.SelectSingleNode("value"));
 
                 // Get node lists (comments that can appear multiple times)
-                _includes = Normalize(_comments.SelectNodes("include"));
-                _exceptions = Normalize(_comments.SelectNodes("exception"));
-                _paramrefs = Normalize(_comments.SelectNodes("paramref"));
-                _permissions = Normalize(_comments.SelectNodes("permission"));
-                _params = Normalize(_comments.SelectNodes("param"));
+                Includes = Normalize(comments.SelectNodes("include"));
+                Exceptions = Normalize(comments.SelectNodes("exception"));
+                ParamRefs = Normalize(comments.SelectNodes("paramref"));
+                Permissions = Normalize(comments.SelectNodes("permission"));
+                Params = Normalize(comments.SelectNodes("param"));
             } else {
                 // Make it easier for people to use this class when no comments exist
                 // by creating dummy nodes for all properties.
-                _comments = new XmlDocument();
-                _summary = _returns = _remarks = _example = _value = null;
-                _includes = _exceptions = _paramrefs = _permissions = _params = _comments.ChildNodes;
+                AllComments = new XmlDocument();
+                Summary = Returns = Remarks = Example = Value = null;
+                Includes = Exceptions = ParamRefs = Permissions = Params = AllComments.ChildNodes;
             }
         }
 
@@ -119,5 +95,4 @@ namespace WmcSoft.Reflection
             return nodeList;
         }
     }
-
 }
