@@ -206,6 +206,16 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Crawl
+
+        public static IEnumerable<T> Crawl<T>(this T start, Func<T, T> next, T sentinel = default(T)) {
+            var comparer = EqualityComparer<T>.Default;
+            for (T item = start; !comparer.Equals(item, sentinel); item = next(item))
+                yield return item;
+        }
+
+        #endregion
+
         #region Choose
 
         static IEnumerable<TSource> UnguardedFlush<TSource>(IEnumerator<TSource> enumerator) {
