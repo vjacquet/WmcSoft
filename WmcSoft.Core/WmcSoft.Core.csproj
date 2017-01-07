@@ -176,6 +176,9 @@
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Linq\Expressions\ParameterRebindExpressionVisitor.cs" />
     <Compile Include="Linq\Expressions\ReplaceExpressionVisitor.cs" />
+    <Compile Include="Net\CookieAwareWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OrdinalSet.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Symbol.cs" />
