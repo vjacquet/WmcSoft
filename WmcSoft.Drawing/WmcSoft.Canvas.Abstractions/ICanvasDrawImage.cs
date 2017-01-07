@@ -29,10 +29,10 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Drawing images.
     /// </summary>
-    public interface ICanvasDrawImage
+    public interface ICanvasDrawImage<T>
     {
-        void DrawImage(ICanvasImageSource image, double dx, double dy);
-        void DrawImage(ICanvasImageSource image, double dx, double dy, double dw, double dh);
-        void DrawImage(ICanvasImageSource image, double sx, double sy, double sw, double sh, double dx, double dy, double dw, double dh);
+        void DrawImage(ICanvasImageSource image, T dx, T dy);
+        void DrawImage(ICanvasImageSource image, T dx, T dy, T dw, T dh);
+        void DrawImage(ICanvasImageSource image, T sx, T sy, T sw, T sh, T dx, T dy, T dw, T dh);
     }
 }

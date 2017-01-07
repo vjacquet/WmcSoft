@@ -60,7 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasPathTests.cs" />
     <Compile Include="CanvasRectTests.cs" />
+    <Compile Include="CanvasTestsBase.cs" />
     <Compile Include="GraphicsCanvas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +74,9 @@
       <Project>{5842b06a-3531-4990-a224-7cf37a9eea6a}</Project>
       <Name>WmcSoft.Canvas.Abstractions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

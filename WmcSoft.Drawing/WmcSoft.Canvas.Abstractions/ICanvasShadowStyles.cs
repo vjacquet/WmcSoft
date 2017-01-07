@@ -29,11 +29,11 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Shadows.
     /// </summary>
-    public interface ICanvasShadowStyles<TColor>
+    public interface ICanvasShadowStyles<T,TColor>
     {
-        double ShadowOffsetX { get; set; } // (default 0)
-        double ShadowOffsetY { get; set; } // (default 0)
-        double ShadowBlur { get; set; } // (default 0)
+        T ShadowOffsetX { get; set; } // (default 0)
+        T ShadowOffsetY { get; set; } // (default 0)
+        T ShadowBlur { get; set; } // (default 0)
         TColor ShadowColor { get; set; } // (default transparent black)
     }
 }

@@ -26,22 +26,48 @@
 
 namespace WmcSoft.Canvas
 {
-    public interface TextMetrics
+    public class TextMetrics
     {
+        public TextMetrics(float Width
+            , float actualBoundingBoxLeft
+            , float actualBoundingBoxRight
+            , float fontBoundingBoxAscent
+            , float fontBoundingBoxDescent
+            , float actualBoundingBoxAscent
+            , float actualBoundingBoxDescent
+            , float emHeightAscent
+            , float emHeightDescent
+            , float hangingBaseline
+            , float alphabeticBaseline
+            , float ideographicBaseline) {
+            Width = actualBoundingBoxLeft;
+            ActualBoundingBoxLeft = actualBoundingBoxRight;
+            ActualBoundingBoxRight = fontBoundingBoxAscent;
+            FontBoundingBoxAscent = fontBoundingBoxDescent;
+            FontBoundingBoxDescent = fontBoundingBoxDescent;
+            ActualBoundingBoxAscent = actualBoundingBoxAscent;
+            ActualBoundingBoxDescent = actualBoundingBoxDescent;
+            EmHeightAscent = emHeightAscent;
+            EmHeightDescent = emHeightDescent;
+            HangingBaseline = hangingBaseline;
+            AlphabeticBaseline = alphabeticBaseline;
+            IdeographicBaseline = ideographicBaseline;
+        }
+
         // x-direction
-        double Width { get; } // advance width
-        double ActualBoundingBoxLeft { get; }
-        double ActualBoundingBoxRight { get; }
+        float Width { get; } // advance width
+        float ActualBoundingBoxLeft { get; }
+        float ActualBoundingBoxRight { get; }
 
         // y-direction
-        double FontBoundingBoxAscent { get; }
-        double FontBoundingBoxDescent { get; }
-        double ActualBoundingBoxAscent { get; }
-        double ActualBoundingBoxDescent { get; }
-        double EmHeightAscent { get; }
-        double EmHeightDescent { get; }
-        double HangingBaseline { get; }
-        double AlphabeticBaseline { get; }
-        double IdeographicBaseline { get; }
+        float FontBoundingBoxAscent { get; }
+        float FontBoundingBoxDescent { get; }
+        float ActualBoundingBoxAscent { get; }
+        float ActualBoundingBoxDescent { get; }
+        float EmHeightAscent { get; }
+        float EmHeightDescent { get; }
+        float HangingBaseline { get; }
+        float AlphabeticBaseline { get; }
+        float IdeographicBaseline { get; }
     }
 }

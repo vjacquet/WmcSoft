@@ -7,14 +7,14 @@
       <FileName>ICanvasState.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasTransform">
+  <Interface Name="WmcSoft.Canvas.ICanvasTransform&lt;T&gt;">
     <Position X="5.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAIAAAQAUAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>ICanvasTransform.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasCompositing">
+  <Interface Name="WmcSoft.Canvas.ICanvasCompositing&lt;TAlpha&gt;">
     <Position X="11" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -28,7 +28,7 @@
       <FileName>ICanvasImageSmoothing.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasShadowStyles&lt;TColor&gt;">
+  <Interface Name="WmcSoft.Canvas.ICanvasShadowStyles&lt;T, TColor&gt;">
     <Position X="7.5" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAAIAAAAAAAAAAMAAAAAAAAAA=</HashCode>
@@ -42,22 +42,22 @@
       <FileName>ICanvasFilters.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasRect">
+  <Interface Name="WmcSoft.Canvas.ICanvasRect&lt;T&gt;">
     <Position X="9.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAEAAAABAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ICanvasRect.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasDrawImage">
+  <Interface Name="WmcSoft.Canvas.ICanvasDrawImage&lt;T&gt;">
     <Position X="2.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ICanvasDrawImage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasPathDrawingStyles">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+  <Interface Name="WmcSoft.Canvas.ICanvasPathDrawingStyles&lt;T&gt;">
+    <Position X="0.5" Y="5.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAQAAIIgAAAAAAAAACAAAAAAAAA=</HashCode>
       <FileName>ICanvasPathDrawingStyles.cs</FileName>
@@ -68,13 +68,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAACAAAAAEAAAAABAAAAAAAAACAAA=</HashCode>
       <FileName>ICanvasTextDrawingStyles.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="WmcSoft.Canvas.ICanvasPath">
-    <Position X="7.5" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAACAAgAAAAAAAAAAAAAECEIAIAAAAAAAAAAACA=</HashCode>
-      <FileName>ICanvasPath.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="WmcSoft.Canvas.CanvasFillRule" Collapsed="true">

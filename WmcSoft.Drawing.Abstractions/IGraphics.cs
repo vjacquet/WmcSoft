@@ -24,15 +24,15 @@
 
 #endregion
 
-namespace WmcSoft.Canvas
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WmcSoft.Drawing.Abstractions
 {
-    /// <summary>
-    /// Compositing.
-    /// </summary>
-    public interface ICanvasCompositing<TAlpha>
+    public interface IGraphics : IDisposable
     {
-        TAlpha GlobalAlpha { get; set; } // default 1.0
-        // TODO: define GlobalCompositeOperation's type
-        string GlobalCompositeOperation { get; set; } // default source-over
     }
 }

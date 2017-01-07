@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("WmcSoft.Canvas.Graphics")]
+[assembly: AssemblyTitle("WmcSoft.Drawing.Abstractions")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WmcSoft")]
-[assembly: AssemblyProduct("WmcSoft.Canvas.Graphics")]
+[assembly: AssemblyProduct("WmcSoft.Drawing.Abstractions")]
 [assembly: AssemblyCopyright("Copyright © 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("f649df42-9102-4875-a5c5-554e7cdd9e2d")]
+[assembly: Guid("d1317b47-bb21-4adf-9d7d-df6d002346ed")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

@@ -24,10 +24,12 @@
 
 #endregion
 
+using System.Numerics;
+
 namespace WmcSoft.Canvas
 {
-  public abstract class CanvasPattern
+    public abstract class CanvasPattern
     {
-        //void SetTransform(DOMMatrixInit transform);
+      public  abstract void SetTransform(Matrix4x4 transform);
     }
 }

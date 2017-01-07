@@ -29,13 +29,13 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Pixel manipulation.
     /// </summary>
-    public interface ICanvasImageData
+    public interface ICanvasImageData<T>
     {
         // TODO: Define extensions to minimize the interface?
-        ImageData CreateImageData(double sw, double sh);
+        ImageData CreateImageData(T sw, T sh);
         ImageData CreateImageData(ImageData imagedata);
-        ImageData GetImageData(double sx, double sy, double sw, double sh);
-        void PutImageData(ImageData imagedata, double dx, double dy);
-        void PutImageData(ImageData imagedata, double dx, double dy, double dirtyX, double dirtyY, double dirtyWidth, double dirtyHeight);
+        ImageData GetImageData(T sx, T sy, T sw, T sh);
+        void PutImageData(ImageData imagedata, T dx, T dy);
+        void PutImageData(ImageData imagedata, T dx, T dy, T dirtyX, T dirtyY, T dirtyWidth, T dirtyHeight);
     }
 }
