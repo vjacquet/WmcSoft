@@ -40,8 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositingMode.cs" />
+    <Compile Include="CompositingQuality.cs" />
+    <Compile Include="FillMode.cs" />
+    <Compile Include="GraphicsUnit.cs" />
     <Compile Include="IGraphics.cs" />
+    <Compile Include="InterpolationMode.cs" />
+    <Compile Include="LinearGradientMode.cs" />
+    <Compile Include="LineCap.cs" />
+    <Compile Include="LineJoin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QualityMode.cs" />
+    <Compile Include="SmoothingMode.cs" />
+    <Compile Include="TextRenderingHint.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
