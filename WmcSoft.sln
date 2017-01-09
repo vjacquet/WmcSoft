@@ -71,7 +71,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Canvas.Abstractions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Canvas.Graphics", "WmcSoft.Drawing\WmcSoft.Canvas.Graphics\WmcSoft.Canvas.Graphics.csproj", "{F649DF42-9102-4875-A5C5-554E7CDD9E2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Drawing.Abstractions", "WmcSoft.Drawing.Abstractions\WmcSoft.Drawing.Abstractions.csproj", "{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Drawing.Abstractions", "WmcSoft.Drawing\WmcSoft.Drawing.Abstractions\WmcSoft.Drawing.Abstractions.csproj", "{D1317B47-BB21-4ADF-9D7D-DF6D002346ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

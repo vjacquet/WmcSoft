@@ -26,10 +26,10 @@
 
 namespace WmcSoft.Drawing.Abstractions
 {
-    /// <summary>The <see cref=".InterpolationMode" /> enumeration specifies the algorithm that is used when images are scaled or rotated.</summary>
+    /// <summary>The <see cref="InterpolationMode" /> enumeration specifies the algorithm that is used when images are scaled or rotated.</summary>
     public enum InterpolationMode
     {
-        /// <summary>Equivalent to the <see cref=".QualityMode.Invalid" /> element of the <see cref=".QualityMode" /> enumeration.</summary>
+        /// <summary>Equivalent to the <see cref="QualityMode.Invalid" /> element of the <see cref=".QualityMode" /> enumeration.</summary>
         Invalid = -1,
 
         /// <summary>Specifies default mode.</summary>
