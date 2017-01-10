@@ -38,14 +38,14 @@ namespace WmcSoft.Collections.Generic
     {
         static void Guard<T>(IReadOnlyList<T> list, int startIndex, int count) {
             if (list == null) throw new ArgumentNullException(nameof(list));
-            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
-            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
         }
 
         static void Guard<T>(IList<T> list, int startIndex, int count) {
             if (list == null) throw new ArgumentNullException(nameof(list));
-            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException("startIndex");
-            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException("count");
+            if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
         }
 
         #region Equals
@@ -179,8 +179,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         public static IReadOnlyList<T> Repeat<T>(this IReadOnlyList<T> source, int count) {
-            if (source == null) throw new ArgumentNullException("source");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             switch (count) {
             case 0:

@@ -129,8 +129,7 @@ namespace WmcSoft.Collections
         /// <returns>The count of items removed from the collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
         public static int RemoveRange(this IList source, IEnumerable items) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (items == null)
                 return 0;
@@ -163,7 +162,7 @@ namespace WmcSoft.Collections
         /// <param name="items">The items to add</param>
         public static void ReplaceAll(this IList source, IEnumerable items) {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             if (source.IsSynchronized) {
                 lock (source.SyncRoot) {
@@ -266,8 +265,7 @@ namespace WmcSoft.Collections
         /// <param name="source">The list</param>
         /// <returns>An array of objets containing all the items in the collection.</returns>
         public static object[] ToArray(this IList source) {
-            if (source == null)
-                throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var items = new object[source.Count];
             source.CopyTo(items, 0);
@@ -284,8 +282,8 @@ namespace WmcSoft.Collections
         /// <returns>An array</returns>
         /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
         public static TOutput[] ToArray<TInput, TOutput>(this ICollection source, Converter<TInput, TOutput> convert) {
-            if (convert == null)
-                throw new ArgumentNullException("convert");
+            if (convert == null) throw new ArgumentNullException("convert");
+
             if (source == null)
                 return null;
 

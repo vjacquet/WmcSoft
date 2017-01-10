@@ -50,12 +50,9 @@ namespace WmcSoft.IO
         /// <param name="buffer">The buffer</param>
         /// <returns>The number of bytes copied</returns>
         public static void CopyTo(this Stream source, Stream destination, byte[] buffer) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (destination == null)
-                throw new ArgumentNullException("destination");
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (destination == null) throw new ArgumentNullException(nameof(destination));
+            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
 
             int bufferSize = buffer.Length;
             if (bufferSize == 0)
@@ -69,14 +66,10 @@ namespace WmcSoft.IO
 
         [HostProtection(ExternalThreading = true)]
         public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress, CancellationToken cancellationToken) {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (destination == null)
-                throw new ArgumentNullException("destination");
-            if (bufferSize <= 0)
-                throw new ArgumentOutOfRangeException("bufferSize");
-            if (progress == null)
-                throw new ArgumentNullException("progress");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (destination == null) throw new ArgumentNullException(nameof(destination));
+            if (bufferSize <= 0) throw new ArgumentOutOfRangeException(nameof(bufferSize));
+            if (progress == null) throw new ArgumentNullException(nameof(progress));
 
             byte[] buffer = new byte[bufferSize];
             long length = 0;
@@ -108,8 +101,7 @@ namespace WmcSoft.IO
         #region Consume
 
         public static long ConsumeAll(this Stream stream) {
-            if (stream == null)
-                throw new ArgumentNullException("source");
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
@@ -120,8 +112,7 @@ namespace WmcSoft.IO
         }
 
         public static async Task<long> ConsumeAllAsync(this Stream stream, CancellationToken cancellationToken) {
-            if (stream == null)
-                throw new ArgumentNullException("source");
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
@@ -145,6 +136,8 @@ namespace WmcSoft.IO
         /// <param name="stream">The stream.</param>
         /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume the data until the end of stream.</remarks>
         public static void End(this Stream stream) {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+
             if (stream.CanSeek) {
                 stream.Seek(0L, SeekOrigin.End);
             } else {
