@@ -98,6 +98,11 @@ namespace WmcSoft
             return new Expected<T>(value);
         }
 
+        /// <summary>
+        /// Converts the <see cref="Expected{T}"/> to its value.
+        /// </summary>
+        /// <exception cref="Exception">Throws the stored exception when the value is missing.</exception>
+
         public static explicit operator T(Expected<T> expected) {
             return expected.Value;
         }
@@ -260,6 +265,19 @@ namespace WmcSoft
 
     public static class Expected
     {
+        #region Factory functions
+
+        public static Expected<T> Success<T>(T value) {
+            return value;
+        }
+        public static Expected<T> Failed<T>(Exception exception) {
+            return exception;
+        }
+
+        #endregion
+
+        #region Functional helpers
+
         static Exception Compose(Exception x, Exception y) {
             if (x == null)
                 return y;
@@ -317,5 +335,7 @@ namespace WmcSoft
                 return exception;
             }
         }
+
+        #endregion
     }
 }
