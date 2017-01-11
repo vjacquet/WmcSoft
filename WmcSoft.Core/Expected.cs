@@ -26,7 +26,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Diagnostics;
 
@@ -38,7 +40,8 @@ namespace WmcSoft
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <remarks>This type can simplify code when combining results from several functions, or 
     /// for giving a cheap way for the user to handle errors.</remarks>
-    public struct Expected<T>
+    [DebuggerDisplay("{ToString(),nq}")]
+    public struct Expected<T> : IEquatable<Expected<T>>
     {
         #region Fields
 
@@ -127,8 +130,9 @@ namespace WmcSoft
         /// <summary>
         /// The value.
         /// </summary>
-        /// <exception cref="System.Exception">Throws the stored exception when the value is missing.</exception>
+        /// <exception cref="Exception">Throws the stored exception when the value is missing.</exception>
         public T Value {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get {
                 if (_exception != null)
                     throw _exception;
@@ -136,15 +140,29 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Retrives the value of the current <see cref="Expected{T}"/> object, or the object's default value.
+        /// </summary>
+        /// <returns>The value of the <see cref="Value"/> property if the <see cref="HasValue "/> property is <c>true</c>; otherwise, the default value of the current <see cref="Expected{T}"/> object.
+        /// The type of the default value is the type argument of the current <see cref="Expected{T}"/> object, and the value of the default value consists solely of binary zeroes.</returns>
+        /// <remarks>The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is <c>false</c> (unlike the <see cref="Value"/> property, which throws an exception). </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetValueOrDefault() {
             return _value;
         }
+
+        /// <summary>
+        /// Retrives the value of the current <see cref="Expected{T}"/> object, or the object's default value.
+        /// </summary>
+        /// <returns>The value of the <see cref="Value"/> property if the <see cref="HasValue "/> property is <c>true</c>; otherwise, the <param name="defaultValue"/>.</returns>
+        /// <remarks>The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is <c>false</c> (unlike the <see cref="Value"/> property, which throws an exception). </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetValueOrDefault(T defaultValue) {
             return HasValue ? _value : defaultValue;
         }
 
         /// <summary>
-        /// The exception or null.
+        /// The exception or <c>null</c>.
         /// </summary>
         public Exception Exception {
             get { return _exception; }
@@ -164,6 +182,7 @@ namespace WmcSoft
 
         #region Methods
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static Exception PassThrough(Exception exception, Func<Exception, Exception> translate) {
             if (translate == null)
                 return exception;
@@ -208,10 +227,7 @@ namespace WmcSoft
             if (other == null)
                 return false;
             if (other.GetType() == GetType()) {
-                var that = (Expected<T>)other;
-                if (_exception != null)
-                    return _exception.Equals(that.Exception);
-                return Object.Equals(_value, that._value);
+                return Equals((Expected<T>)other);
             }
             if (_exception != null && _exception.Equals(other))
                 return true;
@@ -219,6 +235,13 @@ namespace WmcSoft
                 return true;
             return false;
         }
+
+        public bool Equals(Expected<T> other) {
+            if (_exception != null)
+                return _exception.Equals(other._exception);
+            return Object.Equals(_value, other._value);
+        }
+
 
         public override int GetHashCode() {
             if (_exception != null)
@@ -248,11 +271,11 @@ namespace WmcSoft
         static Exception Compose(params Exception[] exceptions) {
             if (exceptions == null)
                 return null;
-            var x = exceptions.Where(i => i != null).ToList();
+            var x = exceptions.Where(e => e != null).ToList();
             switch (x.Count) {
-                case 0: return null;
-                case 1: return x[0];
-                default: return new AggregateException(x);
+            case 0: return null;
+            case 1: return x[0];
+            default: return new AggregateException(x);
             }
         }
 
