@@ -57,5 +57,41 @@ namespace WmcSoft.Canvas
                 }
             }
         }
+
+        [Fact]
+        public void SupportLineWidth() {
+            using (var ctx = CreateCanvas("lineWidth.png")) {
+                ctx.BeginPath();
+                ctx.MoveTo(0, 0);
+                ctx.LineWidth = 15;
+                ctx.LineTo(100, 100);
+                ctx.Stroke();
+            }
+        }
+
+        [Fact]
+        public void SupportSetLineDash() {
+            using (var ctx = CreateCanvas("setLineDash.png")) {
+                ctx.LineDash = new[] { 5f, 15f };
+
+                ctx.BeginPath();
+                ctx.MoveTo(0, 100);
+                ctx.LineTo(400, 100);
+                ctx.Stroke();
+            }
+        }
+
+        [Fact]
+        public void SupportLineDashOffset() {
+            using (var ctx = CreateCanvas("lineDashOffset.png")) {
+                ctx.LineDash = new[] { 4f, 16f };
+                ctx.LineDashOffset = 2f;
+
+                ctx.BeginPath();
+                ctx.MoveTo(0, 100);
+                ctx.LineTo(400, 100);
+                ctx.Stroke();
+            }
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace WmcSoft.Canvas
         T MiterLimit { get; set; } // (default 10)
 
         // dashed lines
-        IEnumerable<T> LineDash { get; set; } // default empty
+        T[] LineDash { get; set; } // default empty
         T LineDashOffset { get; set; }
     };
 }

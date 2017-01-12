@@ -76,6 +76,9 @@ namespace WmcSoft.Canvas
                 pen.MiterLimit = MiterLimit;
                 pen.StartCap = LineCap;
                 pen.EndCap = LineCap;
+                if (dashPattern != null)
+                    pen.DashPattern = dashPattern;
+                pen.DashOffset = dashOffset;
                 return pen;
             }
 
@@ -115,11 +118,66 @@ namespace WmcSoft.Canvas
             }
             float miterLimit;
 
+            public float DashOffset {
+                get { return dashOffset; }
+                set { if (dashOffset != value) { dashOffset = value; Dispose(); } }
+            }
+            float dashOffset;
+
+            public float[] DashPattern {
+                get { return dashPattern ?? Array.Empty<float>(); }
+                set { if (!DashPatternEquals(value)) { SetDashPattern(value); Dispose(); } }
+            }
+
+            float[] dashPattern;
+
             public LineCap LineCap {
                 get { return lineCap; }
                 set { if (lineCap != value) { lineCap = value; Dispose(); } }
             }
             LineCap lineCap;
+
+            #region Helpers
+
+            private void SetDashPattern(float[] value) {
+                if (value == null || value.Length == 0) {
+                    dashPattern = null;
+                } else if (value.Length % 1 == 1) {
+                    dashPattern = new float[value.Length * 2];
+                    Array.Copy(value, dashPattern, value.Length);
+                    Array.Copy(value, 0, dashPattern, value.Length, value.Length);
+                } else {
+                    dashPattern = (float[])value.Clone();
+                }
+            }
+
+            private bool DashPatternEquals(float[] value) {
+                if (dashPattern == null) {
+                    return (value == null || value.Length == 0);
+                }
+                if (value == null) {
+                    return dashPattern == null;
+                }
+                if (value.Length % 1 == 1) {
+                    if (dashPattern.Length != value.Length * 2)
+                        return false;
+                    for (int i = 0; i < value.Length; i++) {
+                        if (value[i] != dashPattern[i] || value[i] != dashPattern[i + value.Length])
+                            return false;
+                    }
+                    return true;
+                } else {
+                    if (dashPattern.Length != value.Length)
+                        return false;
+                    for (int i = 0; i < value.Length; i++) {
+                        if (value[i] != dashPattern[i])
+                            return false;
+                    }
+                    return true;
+                }
+            }
+
+            #endregion
         }
 
         sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
@@ -162,6 +220,7 @@ namespace WmcSoft.Canvas
         private PenVisitor _pen;
         private BrushVisitor _brush;
         private GraphicsPath _path;
+        private float[] _lineDash;
         private float _x;
         private float _y;
         private PointF _start;
@@ -178,6 +237,8 @@ namespace WmcSoft.Canvas
 
             FillStyle = Color.Black;
             StrokeStyle = Color.Black;
+
+            _lineDash = Array.Empty<float>();
         }
 
         void IDisposable.Dispose() {
@@ -440,24 +501,14 @@ namespace WmcSoft.Canvas
             set { _pen.MiterLimit = value; }
         }
 
-        public IEnumerable<float> LineDash {
-            get {
-                throw new NotImplementedException();
-            }
-
-            set {
-                throw new NotImplementedException();
-            }
+        public float[] LineDash {
+            get { return _pen.DashPattern; }
+            set { _pen.DashPattern = value; }
         }
 
         public float LineDashOffset {
-            get {
-                throw new NotImplementedException();
-            }
-
-            set {
-                throw new NotImplementedException();
-            }
+            get { return _pen.DashOffset; }
+            set { _pen.DashOffset = value; }
         }
 
         #endregion

@@ -78,8 +78,8 @@ namespace WmcSoft.Reflection
         #endregion
 
         XmlNode Normalize(XmlNode node) {
-            if (node is XmlElement) {
-                var element = (XmlElement)node;
+            var element = node as XmlElement;
+            if (element != null) {
                 element.InnerXml = element.InnerXml.Trim();
             }
             return node;
