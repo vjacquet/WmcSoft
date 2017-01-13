@@ -24,8 +24,6 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace WmcSoft.Canvas
 {
     /// <summary>
@@ -33,17 +31,47 @@ namespace WmcSoft.Canvas
     /// </summary>
     public interface ICanvasPathDrawingStyles<T>
     {
-        // line caps/joins
+        #region line caps/joins
+
         /// <summary>
         /// The line width.
         /// </summary>
-        T LineWidth { get; set; } // (default 1)
-        CanvasLineCap LineCap { get; set; } // (default "butt")
-        CanvasLineJoin LineJoin { get; set; } // (default "miter")
-        T MiterLimit { get; set; } // (default 10)
+        /// <remarks>The default value is 1.</remarks>
+        T LineWidth { get; set; }
 
-        // dashed lines
-        T[] LineDash { get; set; } // default empty
+        /// <summary>
+        /// The line cap style.
+        /// </summary>
+        /// <remarks>The default value is <see cref="CanvasLineCap.Butt"/>.</remarks>
+        CanvasLineCap LineCap { get; set; }
+
+        /// <summary>
+        /// The line join style.
+        /// </summary>
+        /// <remarks>The default value is <see cref="CanvasLineJoin.Miter"/>.</remarks>
+        CanvasLineJoin LineJoin { get; set; }
+
+        /// <summary>
+        /// The miter limit ratio.
+        /// </summary>
+        /// <<remarks>The default value is 10.</remarks>
+        T MiterLimit { get; set; }
+
+        #endregion
+
+        #region dashed lines
+
+        /// <summary>
+        /// The distances for which to alternately have the line on and the line off.
+        /// </summary>
+        /// <remarks>The length of the array is even. On settings, odd arrays are repeated once.</remarks>
+        T[] LineDash { get; set; }
+
+        /// <summary>
+        /// The phase offset, in the same units as the line dash pattern.
+        /// </summary>
         T LineDashOffset { get; set; }
+
+        #endregion
     };
 }

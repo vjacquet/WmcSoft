@@ -559,7 +559,7 @@ namespace WmcSoft.Canvas
 
         public float MiterLimit {
             get { return _pen.MiterLimit; }
-            set { _pen.MiterLimit = value; }
+            set { Guard.Positive(value); _pen.MiterLimit = value; }
         }
 
         public float[] LineDash {
@@ -569,7 +569,7 @@ namespace WmcSoft.Canvas
 
         public float LineDashOffset {
             get { return _pen.DashOffset; }
-            set { _pen.DashOffset = value; }
+            set { Guard.Finite(value); _pen.DashOffset = value; }
         }
 
         #endregion

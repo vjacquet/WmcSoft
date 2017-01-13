@@ -37,5 +37,13 @@ namespace WmcSoft.Canvas
             if (!IsPositive(value))
                 throw new ArgumentOutOfRangeException(paramName);
         }
+
+        public static bool IsFinite(float value) {
+            return !Single.IsNaN(value) && !Single.IsInfinity(value);
+        }
+        public static void Finite(float value, string paramName = "value") {
+            if (!IsFinite(value))
+                throw new ArgumentOutOfRangeException(paramName);
+        }
     }
 }
