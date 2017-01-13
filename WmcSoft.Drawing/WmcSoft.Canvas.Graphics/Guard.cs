@@ -24,26 +24,18 @@
 
 #endregion
 
-using System.Collections.Generic;
+using System;
 
 namespace WmcSoft.Canvas
 {
-    /// <summary>
-    /// Line caps/joins & dashed lines.
-    /// </summary>
-    public interface ICanvasPathDrawingStyles<T>
+    internal static class Guard
     {
-        // line caps/joins
-        /// <summary>
-        /// The line width.
-        /// </summary>
-        T LineWidth { get; set; } // (default 1)
-        CanvasLineCap LineCap { get; set; } // (default "butt")
-        CanvasLineJoin LineJoin { get; set; } // (default "miter")
-        T MiterLimit { get; set; } // (default 10)
-
-        // dashed lines
-        T[] LineDash { get; set; } // default empty
-        T LineDashOffset { get; set; }
-    };
+        public static bool IsPositive(float value) {
+            return value > 0f && !Single.IsPositiveInfinity(value); // NaN and -oo are smaller than 0.
+        }
+        public static void Positive(float value, string paramName = "value") {
+            if (!IsPositive(value))
+                throw new ArgumentOutOfRangeException(paramName);
+        }
+    }
 }

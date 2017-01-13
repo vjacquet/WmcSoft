@@ -103,7 +103,7 @@ namespace WmcSoft.Canvas
 
             public float Width {
                 get { return width; }
-                set { if (width != value) { width = value; Dispose(); } }
+                set { Guard.Positive(value); if (width != value) { width = value; Dispose(); } }
             }
             float width;
 
@@ -485,7 +485,7 @@ namespace WmcSoft.Canvas
 
         public float LineWidth {
             get { return _pen.Width; }
-            set { _pen.Width = value; }
+            set { Guard.Positive(value); _pen.Width = value; }
         }
 
         public CanvasLineCap LineCap {
