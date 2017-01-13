@@ -419,7 +419,19 @@ namespace WmcSoft.Canvas
             _path.StartFigure();
         }
 
+        FillMode Map(CanvasFillRule value) {
+            switch (value) {
+            case CanvasFillRule.NonZero:
+                return FillMode.Winding;
+            case CanvasFillRule.EvenOdd:
+                return FillMode.Alternate;
+            default:
+                throw new InvalidOperationException();
+            }
+        }
+
         public void Fill(CanvasFillRule fillRule) {
+            CurrentPath.FillMode = Map(fillRule);
             g.FillPath(_brush, CurrentPath);
         }
 
