@@ -216,8 +216,12 @@ namespace WmcSoft.Canvas
 
         #endregion
 
+        #region Constants
+
         static readonly float PI = (float)Math.PI;
         static readonly float TWO_PI = (float)(2d * Math.PI);
+
+        #endregion
 
         private Graphics g;
         private Action<Graphics> _disposer;
