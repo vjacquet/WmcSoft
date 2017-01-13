@@ -38,6 +38,7 @@ namespace WmcSoft.Canvas
         , ICanvasDrawPath<float>
         , ICanvasPathDrawingStyles<float>
         , ICanvasFillStrokeStyles<float, Color>
+        , ICanvasImageSmoothing
         , IDisposable
     {
         #region Variant visitors
@@ -227,10 +228,11 @@ namespace WmcSoft.Canvas
         private float _x;
         private float _y;
         private PointF _start;
+        private ImageSmoothingQuality _imageSmoothingQuality;
 
         public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
             g = graphics;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            ImageSmoothingQuality = ImageSmoothingQuality.Low;
             g.SmoothingMode = SmoothingMode.HighQuality;
             if (disposer == null)
                 _disposer = _ => _.Dispose();
@@ -399,7 +401,7 @@ namespace WmcSoft.Canvas
                     _path.AddArc(x - radiusX, y - radiusY, 2 * radiusX, 2 * radiusY, Deg(endAngle), Swep(TWO_PI - sweepAngle));
             } else {
                 var matrix = new Matrix();
-                matrix.RotateAt(Deg(rotation), new PointF(x,y));
+                matrix.RotateAt(Deg(rotation), new PointF(x, y));
                 var path = new GraphicsPath();
                 if (!anticlockwise)
                     path.AddArc(x - radiusX, y - radiusY, 2 * radiusX, 2 * radiusY, Deg(startAngle), Swep(sweepAngle));
@@ -552,6 +554,47 @@ namespace WmcSoft.Canvas
         public float LineDashOffset {
             get { return _pen.DashOffset; }
             set { _pen.DashOffset = value; }
+        }
+
+        #endregion
+
+        #region ICanvasImageSmoothing
+
+        public bool ImageSmoothingEnabled {
+            get {
+                return g.InterpolationMode != InterpolationMode.Default;
+            }
+            set {
+                if (ImageSmoothingEnabled != value) {
+                    g.InterpolationMode = (value) ? Map(_imageSmoothingQuality) : InterpolationMode.Default;
+                }
+            }
+        }
+
+        public ImageSmoothingQuality ImageSmoothingQuality {
+            get {
+                return _imageSmoothingQuality;
+            }
+            set {
+                if (_imageSmoothingQuality != value) {
+                    _imageSmoothingQuality = value;
+                    if (ImageSmoothingEnabled)
+                        g.InterpolationMode = Map(_imageSmoothingQuality);
+                }
+            }
+        }
+
+        InterpolationMode Map(ImageSmoothingQuality value) {
+            switch (value) {
+            case ImageSmoothingQuality.Low:
+                return InterpolationMode.NearestNeighbor;
+            case ImageSmoothingQuality.Medium:
+                return InterpolationMode.Bicubic;
+            case ImageSmoothingQuality.High:
+                return InterpolationMode.HighQualityBicubic;
+            default:
+                return g.InterpolationMode;
+            }
         }
 
         #endregion
