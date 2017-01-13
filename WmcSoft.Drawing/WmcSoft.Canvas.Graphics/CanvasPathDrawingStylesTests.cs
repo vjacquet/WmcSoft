@@ -43,10 +43,58 @@ namespace WmcSoft.Canvas
         [Fact]
         public void SupportLineWidth() {
             using (var ctx = CreateCanvas("lineWidth.png")) {
+                for (var i = 0; i < 10; i++) {
+                    ctx.LineWidth = 1 + i;
+                    ctx.BeginPath();
+                    ctx.MoveTo(5 + i * 14, 5);
+                    ctx.LineTo(5 + i * 14, 140);
+                    ctx.Stroke();
+                }
+            }
+        }
+
+        [Fact]
+        public void SupportLineJoin() {
+            var lineJoin = new[] { CanvasLineJoin.Round, CanvasLineJoin.Bevel, CanvasLineJoin.Miter };
+            using (var ctx = CreateCanvas("lineJoin.png")) {
+                ctx.LineWidth = 10;
+                for (var i = 0; i < lineJoin.Length; i++) {
+                    ctx.LineJoin = lineJoin[i];
+                    ctx.BeginPath();
+                    ctx.MoveTo(-5, 5 + i * 40);
+                    ctx.LineTo(35, 45 + i * 40);
+                    ctx.LineTo(75, 5 + i * 40);
+                    ctx.LineTo(115, 45 + i * 40);
+                    ctx.LineTo(155, 5 + i * 40);
+                    ctx.Stroke();
+                }
+            }
+        }
+
+        [Fact]
+        public void SupportMiterLimit() {
+            using (var ctx = CreateCanvas("miterLimit.png")) {
+                // Clear canvas
+                ctx.ClearRect(0, 0, 150, 150);
+
+                // Draw guides
+                ctx.StrokeStyle = Color.FromArgb(0x00, 0x99, 0xff);
+                ctx.LineWidth = 2;
+                ctx.StrokeRect(-5, 50, 160, 50);
+
+                ctx.MiterLimit = 10;
+
+                // Set line styles
+                ctx.StrokeStyle = Color.Black;
+                ctx.LineWidth = 10;
+
+                // Draw lines
                 ctx.BeginPath();
-                ctx.MoveTo(0, 0);
-                ctx.LineWidth = 15;
-                ctx.LineTo(100, 100);
+                ctx.MoveTo(0, 100);
+                for (var i = 0; i < 24; i++) {
+                    var dy = i % 2 == 0 ? 25 : -25;
+                    ctx.LineTo((float)Math.Pow(i, 1.5) * 2, 75 + dy);
+                }
                 ctx.Stroke();
             }
         }
