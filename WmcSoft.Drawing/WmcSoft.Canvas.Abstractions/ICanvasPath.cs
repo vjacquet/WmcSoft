@@ -51,7 +51,15 @@ namespace WmcSoft.Canvas
 
         public static void Ellipse<T>(this ICanvasPath<T> path, T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle) {
             path.Ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, false);
+        }
 
+        public static void Arc(this ICanvasPath<float> path, float x, float y, float radius, double startAngle, double endAngle, bool anticlockwise = false) {
+            // Math.PI is double
+            path.Arc(x, y, radius, (float)startAngle, (float)endAngle, anticlockwise);
+        }
+
+        public static void Ellipse(this ICanvasPath<float> path, float x, float y, float radiusX, float radiusY, double rotation, double startAngle, double endAngle, bool anticlockwise = false) {
+            path.Ellipse(x, y, radiusX, radiusY, (float)rotation, (float)startAngle, (float)endAngle, anticlockwise);
         }
     }
 }

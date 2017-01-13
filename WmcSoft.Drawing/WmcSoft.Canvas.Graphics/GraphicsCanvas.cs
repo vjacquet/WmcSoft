@@ -215,6 +215,9 @@ namespace WmcSoft.Canvas
 
         #endregion
 
+        static readonly float PI = (float)Math.PI;
+        static readonly float TWO_PI = (float)(2d * Math.PI);
+
         private Graphics g;
         private Action<Graphics> _disposer;
         private PenVisitor _pen;
@@ -227,6 +230,8 @@ namespace WmcSoft.Canvas
 
         public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
             g = graphics;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = SmoothingMode.HighQuality;
             if (disposer == null)
                 _disposer = _ => _.Dispose();
             else
@@ -360,11 +365,49 @@ namespace WmcSoft.Canvas
         }
 
         public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise) {
-            throw new NotImplementedException();
+            var sweepAngle = endAngle - startAngle;
+            if (!anticlockwise)
+                _path.AddArc(x - radius, y - radius, 2 * radius, 2 * radius, Deg(startAngle), Swep(sweepAngle));
+            else
+                _path.AddArc(x - radius, y - radius, 2 * radius, 2 * radius, Deg(endAngle), Swep(TWO_PI - sweepAngle));
+        }
+
+        static float Deg(float value) {
+            value = 180f * value / PI;
+            while (value < 0f)
+                value += 360f;
+            if (value > 360f)
+                value = 360f;
+            return value;
+        }
+
+        static float Swep(float value) {
+            value = 180f * value / PI;
+            while (value <= 0f) // sweep cannot be 0
+                value += 360f;
+            if (value > 360f)
+                value = 360f;
+            return value;
         }
 
         public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation, float startAngle, float endAngle, bool anticlockwise) {
-            throw new NotImplementedException();
+            var sweepAngle = endAngle - startAngle;
+            if (rotation == 0f) {
+                if (!anticlockwise)
+                    _path.AddArc(x - radiusX, y - radiusY, 2 * radiusX, 2 * radiusY, Deg(startAngle), Swep(sweepAngle));
+                else
+                    _path.AddArc(x - radiusX, y - radiusY, 2 * radiusX, 2 * radiusY, Deg(endAngle), Swep(TWO_PI - sweepAngle));
+            } else {
+                var matrix = new Matrix();
+                matrix.RotateAt(Deg(rotation), new PointF(x,y));
+                var path = new GraphicsPath();
+                if (!anticlockwise)
+                    path.AddArc(x - radiusX, y - radiusY, 2 * radiusX, 2 * radiusY, Deg(startAngle), Swep(sweepAngle));
+                else
+                    path.AddArc(x - radiusX, y - radiusY, 2 * radiusX, 2 * radiusY, Deg(endAngle), Swep(TWO_PI - sweepAngle));
+                path.Transform(matrix);
+                _path.AddPath(path, false);
+            }
         }
 
         public void BeginPath() {
@@ -375,7 +418,7 @@ namespace WmcSoft.Canvas
         }
 
         public void Fill(CanvasFillRule fillRule) {
-            throw new NotImplementedException();
+            g.FillPath(_brush, CurrentPath);
         }
 
         public void Fill(Path2D<float> path, CanvasFillRule fillRule) {
@@ -387,7 +430,7 @@ namespace WmcSoft.Canvas
         }
 
         public void Stroke(Path2D<float> path) {
-            throw new NotImplementedException();
+            //g.DrawPath(_pen, CurrentPath);
         }
 
         public void Clip(CanvasFillRule fillRule) {
