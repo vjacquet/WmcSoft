@@ -61,6 +61,21 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
+        public void CanDrawSmiley() {
+            using (var ctx = CreateCanvas("smiley.png", 150, 150)) {
+                ctx.BeginPath();
+                ctx.Arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+                ctx.MoveTo(110, 75);
+                ctx.Arc(75, 75, 35, 0, Math.PI, false);    // Mouth (clockwise)
+                ctx.MoveTo(65, 65);
+                ctx.Arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+                ctx.MoveTo(95, 65);
+                ctx.Arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+                ctx.Stroke();
+            }
+        }
+
+        [Fact]
         public void SupportEllipse() {
             using (var ctx = CreateCanvas("ellipse.png")) {
                 ctx.BeginPath();
