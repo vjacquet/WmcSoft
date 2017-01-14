@@ -44,16 +44,24 @@ namespace WmcSoft.Canvas
         #region Variant visitors
 
         sealed class PenVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+            , ICloneable
             , IDisposable
         {
+            private readonly GraphicsCanvas _canvas;
             private Func<Pen> _factory;
             private Pen _tool;
 
-            public PenVisitor() {
-                width = 1f;
-                lineCap = LineCap.Flat;
-                lineJoin = LineJoin.MiterClipped;
-                miterLimit = 10f;
+            public PenVisitor(GraphicsCanvas canvas) {
+                _canvas = canvas;
+            }
+
+            public PenVisitor Clone() {
+                var clone = (PenVisitor)MemberwiseClone();
+                clone._tool = null; // the tool is owned by the visitor.
+                return clone;
+            }
+            object ICloneable.Clone() {
+                return Clone();
             }
 
             public void Dispose() {
@@ -72,20 +80,20 @@ namespace WmcSoft.Canvas
             }
 
             Pen CreateSolidPen(Color color) {
-                var pen = new Pen(color, Width);
-                pen.LineJoin = lineJoin;
-                pen.MiterLimit = MiterLimit;
-                pen.StartCap = LineCap;
-                pen.EndCap = LineCap;
-                if (dashPattern != null)
+                var pen = new Pen(color, _canvas.LineWidth);
+                pen.LineJoin = _canvas._lineJoin;
+                pen.MiterLimit = _canvas._miterLimit;
+                pen.StartCap = _canvas._lineCap;
+                pen.EndCap = _canvas._lineCap;
+                var dashPattern = _canvas._dashPattern;
+                if (dashPattern != null && dashPattern.Length > 0)
                     pen.DashPattern = dashPattern;
-                pen.DashOffset = dashOffset;
+                pen.DashOffset = _canvas._dashOffset;
                 return pen;
             }
 
             public override void Visit(Color instance) {
                 _factory = () => CreateSolidPen(instance);
-
                 Dispose();
             }
 
@@ -100,90 +108,13 @@ namespace WmcSoft.Canvas
             public static implicit operator Pen(PenVisitor visitor) {
                 return visitor.Pen;
             }
-
-            public float Width {
-                get { return width; }
-                set { Guard.Positive(value); if (width != value) { width = value; Dispose(); } }
-            }
-            float width;
-
-            public LineJoin LineJoin {
-                get { return lineJoin; }
-                set { if (lineJoin != value) { lineJoin = value; Dispose(); } }
-            }
-            LineJoin lineJoin;
-
-            public float MiterLimit {
-                get { return miterLimit; }
-                set { if (miterLimit != value) { miterLimit = value; Dispose(); } }
-            }
-            float miterLimit;
-
-            public float DashOffset {
-                get { return dashOffset; }
-                set { if (dashOffset != value) { dashOffset = value; Dispose(); } }
-            }
-            float dashOffset;
-
-            public float[] DashPattern {
-                get { return dashPattern ?? Array.Empty<float>(); }
-                set { if (!DashPatternEquals(value)) { SetDashPattern(value); Dispose(); } }
-            }
-
-            float[] dashPattern;
-
-            public LineCap LineCap {
-                get { return lineCap; }
-                set { if (lineCap != value) { lineCap = value; Dispose(); } }
-            }
-            LineCap lineCap;
-
-            #region Helpers
-
-            private void SetDashPattern(float[] value) {
-                if (value == null || value.Length == 0) {
-                    dashPattern = null;
-                } else if (value.Length % 1 == 1) {
-                    dashPattern = new float[value.Length * 2];
-                    Array.Copy(value, dashPattern, value.Length);
-                    Array.Copy(value, 0, dashPattern, value.Length, value.Length);
-                } else {
-                    dashPattern = (float[])value.Clone();
-                }
-            }
-
-            private bool DashPatternEquals(float[] value) {
-                if (dashPattern == null) {
-                    return (value == null || value.Length == 0);
-                }
-                if (value == null) {
-                    return dashPattern == null;
-                }
-                if (value.Length % 1 == 1) {
-                    if (dashPattern.Length != value.Length * 2)
-                        return false;
-                    for (int i = 0; i < value.Length; i++) {
-                        if (value[i] != dashPattern[i] || value[i] != dashPattern[i + value.Length])
-                            return false;
-                    }
-                    return true;
-                } else {
-                    if (dashPattern.Length != value.Length)
-                        return false;
-                    for (int i = 0; i < value.Length; i++) {
-                        if (value[i] != dashPattern[i])
-                            return false;
-                    }
-                    return true;
-                }
-            }
-
-            #endregion
         }
 
         sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
-              , IDisposable
+            , ICloneable
+            , IDisposable
         {
+            private Func<Brush> _factory;
             private Brush _tool;
 
             public void Dispose() {
@@ -191,6 +122,15 @@ namespace WmcSoft.Canvas
                     _tool.Dispose();
                     _tool = null;
                 }
+            }
+
+            public BrushVisitor Clone() {
+                var clone = (BrushVisitor)MemberwiseClone();
+                clone._tool = null; // the tool is owned by the visitor.
+                return clone;
+            }
+            object ICloneable.Clone() {
+                return Clone();
             }
 
             public override void Visit(CanvasGradient<float, Color> instance) {
@@ -202,16 +142,38 @@ namespace WmcSoft.Canvas
             }
 
             public override void Visit(Color instance) {
-                var brush = new SolidBrush(instance);
+                _factory = () => new SolidBrush(instance);
                 Dispose();
-                _tool = brush;
             }
 
-            public Brush Brush { get { return _tool; } }
+            public Brush Brush {
+                get {
+                    if (_tool == null)
+                        _tool = _factory();
+                    return _tool;
+                }
+            }
 
             public static implicit operator Brush(BrushVisitor visitor) {
                 return visitor.Brush;
             }
+        }
+
+        #endregion
+
+        #region DrawingState 
+
+        //The current transformation matrix.
+        //The current clipping region.
+        //The current values of the following attributes: strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, lineDashOffset, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, filter, globalCompositeOperation, font, textAlign, textBaseline, direction, imageSmoothingEnabled, imageSmoothingQuality.
+        //The current dash list.
+        struct DrawingState
+        {
+            GraphicsState savedState; // contains transformation matrix, clipping region, ImageSmoothingQualityEnabled
+            Variant<Color, CanvasGradient<float, Color>, CanvasPattern> fillStyle;
+            Variant<Color, CanvasGradient<float, Color>, CanvasPattern> strokeStyle;
+
+            ImageSmoothingQuality imageSmoothingQuality;
         }
 
         #endregion
@@ -228,7 +190,6 @@ namespace WmcSoft.Canvas
         private PenVisitor _pen;
         private BrushVisitor _brush;
         private GraphicsPath _path;
-        private float[] _lineDash;
         private float _x;
         private float _y;
         private PointF _start;
@@ -243,13 +204,16 @@ namespace WmcSoft.Canvas
             else
                 _disposer = disposer;
 
-            _pen = new PenVisitor();
+            _lineWidth = 1f;
+            _lineCap = System.Drawing.Drawing2D.LineCap.Flat;
+            _lineJoin = System.Drawing.Drawing2D.LineJoin.MiterClipped;
+            _miterLimit = 10f;
+
+            _pen = new PenVisitor(this);
             _brush = new BrushVisitor();
 
             FillStyle = Color.Black;
             StrokeStyle = Color.Black;
-
-            _lineDash = Array.Empty<float>();
         }
 
         void IDisposable.Dispose() {
@@ -484,13 +448,22 @@ namespace WmcSoft.Canvas
         #region ICanvasPathDrawingStyles<T> members
 
         public float LineWidth {
-            get { return _pen.Width; }
-            set { Guard.Positive(value); _pen.Width = value; }
+            get {
+                return _lineWidth;
+            }
+            set {
+                Guard.Positive(value);
+                if (_lineWidth != value) {
+                    _lineWidth = value;
+                    _pen.Dispose();
+                }
+            }
         }
+        float _lineWidth;
 
         public CanvasLineCap LineCap {
             get {
-                switch (_pen.LineCap) {
+                switch (_lineCap) {
                 case System.Drawing.Drawing2D.LineCap.Flat:
                     return CanvasLineCap.Butt;
                 case System.Drawing.Drawing2D.LineCap.Square:
@@ -510,25 +483,31 @@ namespace WmcSoft.Canvas
                 }
             }
             set {
+                LineCap lineCap;
                 switch (value) {
                 case CanvasLineCap.Butt:
-                    _pen.LineCap = System.Drawing.Drawing2D.LineCap.Flat;
+                    lineCap = System.Drawing.Drawing2D.LineCap.Flat;
                     break;
                 case CanvasLineCap.Round:
-                    _pen.LineCap = System.Drawing.Drawing2D.LineCap.Round;
+                    lineCap = System.Drawing.Drawing2D.LineCap.Round;
                     break;
                 case CanvasLineCap.Square:
-                    _pen.LineCap = System.Drawing.Drawing2D.LineCap.Square;
+                    lineCap = System.Drawing.Drawing2D.LineCap.Square;
                     break;
                 default:
                     throw new ArgumentException();
                 }
+                if (_lineCap != lineCap) {
+                    _lineCap = lineCap;
+                    _pen.Dispose();
+                }
             }
         }
+        LineCap _lineCap;
 
         public CanvasLineJoin LineJoin {
             get {
-                switch (_pen.LineJoin) {
+                switch (_lineJoin) {
                 case System.Drawing.Drawing2D.LineJoin.MiterClipped:
                     return CanvasLineJoin.Miter;
                 case System.Drawing.Drawing2D.LineJoin.Bevel:
@@ -541,36 +520,68 @@ namespace WmcSoft.Canvas
                 }
             }
             set {
+                LineJoin lineJoin;
                 switch (value) {
                 case CanvasLineJoin.Round:
-                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+                    lineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                     break;
                 case CanvasLineJoin.Bevel:
-                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
+                    lineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
                 case CanvasLineJoin.Miter:
-                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.MiterClipped;
+                    lineJoin = System.Drawing.Drawing2D.LineJoin.MiterClipped;
                     break;
                 default:
-                    break;
+                    throw new ArgumentException();
+                }
+                if (_lineJoin != lineJoin) {
+                    _lineJoin = lineJoin;
+                    _pen.Dispose();
                 }
             }
         }
+        LineJoin _lineJoin;
 
         public float MiterLimit {
-            get { return _pen.MiterLimit; }
-            set { Guard.Positive(value); _pen.MiterLimit = value; }
+            get {
+                return _miterLimit;
+            }
+            set {
+                Guard.Positive(value);
+                if (_miterLimit != value) {
+                    _miterLimit = value;
+                    _pen.Dispose();
+                }
+            }
         }
+        float _miterLimit;
 
         public float[] LineDash {
-            get { return _pen.DashPattern; }
-            set { _pen.DashPattern = value; }
+            get {
+                return _dashPattern ?? Array.Empty<float>();
+            }
+            set {
+                if (!DashPatternEquals(value)) {
+                    SetDashPattern(value);
+                    _pen.Dispose();
+                }
+            }
         }
+        float[] _dashPattern;
 
         public float LineDashOffset {
-            get { return _pen.DashOffset; }
-            set { Guard.Finite(value); _pen.DashOffset = value; }
+            get {
+                return _dashOffset;
+            }
+            set {
+                Guard.Finite(value);
+                if (_dashOffset != value) {
+                    _dashOffset = value;
+                    _pen.Dispose();
+                }
+            }
         }
+        float _dashOffset;
 
         #endregion
 
@@ -600,6 +611,10 @@ namespace WmcSoft.Canvas
             }
         }
 
+        #endregion
+
+        #region Helpers
+
         InterpolationMode Map(ImageSmoothingQuality value) {
             switch (value) {
             case ImageSmoothingQuality.Low:
@@ -613,6 +628,45 @@ namespace WmcSoft.Canvas
             }
         }
 
+        private void SetDashPattern(float[] value) {
+            if (value == null || value.Length == 0) {
+                _dashPattern = null;
+            } else if (value.Length % 1 == 1) {
+                _dashPattern = new float[value.Length * 2];
+                Array.Copy(value, _dashPattern, value.Length);
+                Array.Copy(value, 0, _dashPattern, value.Length, value.Length);
+            } else {
+                _dashPattern = (float[])value.Clone();
+            }
+        }
+
+        private bool DashPatternEquals(float[] value) {
+            if (_dashPattern == null) {
+                return (value == null || value.Length == 0);
+            }
+            if (value == null) {
+                return _dashPattern == null;
+            }
+            if (value.Length % 1 == 1) {
+                if (_dashPattern.Length != value.Length * 2)
+                    return false;
+                for (int i = 0; i < value.Length; i++) {
+                    if (value[i] != _dashPattern[i] || value[i] != _dashPattern[i + value.Length])
+                        return false;
+                }
+                return true;
+            } else {
+                if (_dashPattern.Length != value.Length)
+                    return false;
+                for (int i = 0; i < value.Length; i++) {
+                    if (value[i] != _dashPattern[i])
+                        return false;
+                }
+                return true;
+            }
+        }
+
         #endregion
+
     }
 }
