@@ -52,7 +52,7 @@ namespace WmcSoft.Canvas
             public PenVisitor() {
                 width = 1f;
                 lineCap = LineCap.Flat;
-                lineJoin = LineJoin.Miter;
+                lineJoin = LineJoin.MiterClipped;
                 miterLimit = 10f;
             }
 
@@ -529,13 +529,13 @@ namespace WmcSoft.Canvas
         public CanvasLineJoin LineJoin {
             get {
                 switch (_pen.LineJoin) {
-                case System.Drawing.Drawing2D.LineJoin.Miter:
+                case System.Drawing.Drawing2D.LineJoin.MiterClipped:
                     return CanvasLineJoin.Miter;
                 case System.Drawing.Drawing2D.LineJoin.Bevel:
                     return CanvasLineJoin.Bevel;
                 case System.Drawing.Drawing2D.LineJoin.Round:
                     return CanvasLineJoin.Round;
-                case System.Drawing.Drawing2D.LineJoin.MiterClipped:
+                case System.Drawing.Drawing2D.LineJoin.Miter:
                 default:
                     throw new InvalidCastException();
                 }
@@ -549,7 +549,7 @@ namespace WmcSoft.Canvas
                     _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
                 case CanvasLineJoin.Miter:
-                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Miter;
+                    _pen.LineJoin = System.Drawing.Drawing2D.LineJoin.MiterClipped;
                     break;
                 default:
                     break;

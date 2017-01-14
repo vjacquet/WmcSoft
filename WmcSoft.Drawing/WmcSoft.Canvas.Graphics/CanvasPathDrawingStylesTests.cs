@@ -73,7 +73,7 @@ namespace WmcSoft.Canvas
 
         [Fact]
         public void SupportMiterLimit() {
-            using (var ctx = CreateCanvas("miterLimit.png")) {
+            using (var ctx = CreateCanvas("miterLimit.png",150,150)) {
                 // Clear canvas
                 ctx.ClearRect(0, 0, 150, 150);
 
@@ -82,7 +82,7 @@ namespace WmcSoft.Canvas
                 ctx.LineWidth = 2;
                 ctx.StrokeRect(-5, 50, 160, 50);
 
-                ctx.MiterLimit = 10;
+                ctx.MiterLimit = 10f;
 
                 // Set line styles
                 ctx.StrokeStyle = Color.Black;
