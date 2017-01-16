@@ -44,7 +44,6 @@ namespace WmcSoft.Canvas
         #region Variant visitors
 
         sealed class PenVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
-            , ICloneable
             , IDisposable
         {
             private readonly GraphicsCanvas _canvas;
@@ -55,20 +54,23 @@ namespace WmcSoft.Canvas
                 _canvas = canvas;
             }
 
-            public PenVisitor Clone() {
-                var clone = (PenVisitor)MemberwiseClone();
-                clone._tool = null; // the tool is owned by the visitor.
-                return clone;
-            }
-            object ICloneable.Clone() {
-                return Clone();
-            }
-
             public void Dispose() {
                 if (_tool != null) {
                     _tool.Dispose();
                     _tool = null;
                 }
+            }
+
+            public Pen Pen {
+                get {
+                    if (_tool == null)
+                        _tool = _factory();
+                    return _tool;
+                }
+            }
+
+            public static implicit operator Pen(PenVisitor visitor) {
+                return visitor.Pen;
             }
 
             public override void Visit(CanvasGradient<float, Color> instance) {
@@ -96,22 +98,9 @@ namespace WmcSoft.Canvas
                 _factory = () => CreateSolidPen(instance);
                 Dispose();
             }
-
-            public Pen Pen {
-                get {
-                    if (_tool == null)
-                        _tool = _factory();
-                    return _tool;
-                }
-            }
-
-            public static implicit operator Pen(PenVisitor visitor) {
-                return visitor.Pen;
-            }
         }
 
         sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
-            , ICloneable
             , IDisposable
         {
             private Func<Brush> _factory;
@@ -124,13 +113,16 @@ namespace WmcSoft.Canvas
                 }
             }
 
-            public BrushVisitor Clone() {
-                var clone = (BrushVisitor)MemberwiseClone();
-                clone._tool = null; // the tool is owned by the visitor.
-                return clone;
+            public Brush Brush {
+                get {
+                    if (_tool == null)
+                        _tool = _factory();
+                    return _tool;
+                }
             }
-            object ICloneable.Clone() {
-                return Clone();
+
+            public static implicit operator Brush(BrushVisitor visitor) {
+                return visitor.Brush;
             }
 
             public override void Visit(CanvasGradient<float, Color> instance) {
@@ -144,18 +136,6 @@ namespace WmcSoft.Canvas
             public override void Visit(Color instance) {
                 _factory = () => new SolidBrush(instance);
                 Dispose();
-            }
-
-            public Brush Brush {
-                get {
-                    if (_tool == null)
-                        _tool = _factory();
-                    return _tool;
-                }
-            }
-
-            public static implicit operator Brush(BrushVisitor visitor) {
-                return visitor.Brush;
             }
         }
 
@@ -172,6 +152,12 @@ namespace WmcSoft.Canvas
             GraphicsState savedState; // contains transformation matrix, clipping region, ImageSmoothingQualityEnabled
             Variant<Color, CanvasGradient<float, Color>, CanvasPattern> fillStyle;
             Variant<Color, CanvasGradient<float, Color>, CanvasPattern> strokeStyle;
+            float lineWidth;
+            LineCap lineCap;
+            LineJoin lineJoin;
+            float miterLimit;
+            float[] dashPattern;
+            float dashOffset;
 
             ImageSmoothingQuality imageSmoothingQuality;
         }
@@ -194,6 +180,12 @@ namespace WmcSoft.Canvas
         private float _y;
         private PointF _start;
         private ImageSmoothingQuality _imageSmoothingQuality;
+        float _lineWidth;
+        LineCap _lineCap;
+        LineJoin _lineJoin;
+        float _miterLimit;
+        float[] _dashPattern;
+        float _dashOffset;
 
         public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
             g = graphics;
@@ -459,7 +451,6 @@ namespace WmcSoft.Canvas
                 }
             }
         }
-        float _lineWidth;
 
         public CanvasLineCap LineCap {
             get {
@@ -503,7 +494,6 @@ namespace WmcSoft.Canvas
                 }
             }
         }
-        LineCap _lineCap;
 
         public CanvasLineJoin LineJoin {
             get {
@@ -540,7 +530,6 @@ namespace WmcSoft.Canvas
                 }
             }
         }
-        LineJoin _lineJoin;
 
         public float MiterLimit {
             get {
@@ -554,7 +543,6 @@ namespace WmcSoft.Canvas
                 }
             }
         }
-        float _miterLimit;
 
         public float[] LineDash {
             get {
@@ -567,7 +555,6 @@ namespace WmcSoft.Canvas
                 }
             }
         }
-        float[] _dashPattern;
 
         public float LineDashOffset {
             get {
@@ -581,7 +568,6 @@ namespace WmcSoft.Canvas
                 }
             }
         }
-        float _dashOffset;
 
         #endregion
 
