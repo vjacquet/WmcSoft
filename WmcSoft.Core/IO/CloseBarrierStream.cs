@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.IO;
 
 namespace WmcSoft.IO
@@ -31,6 +32,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Prevents a stream to be closed on dispose.
     /// </summary>
+    [Serializable]
     public sealed class CloseBarrierStream : StreamDecorator
     {
         public CloseBarrierStream(Stream stream)
@@ -38,6 +40,7 @@ namespace WmcSoft.IO
         }
 
         public override void Close() {
+            GC.SuppressFinalize(this);
         }
     }
 }

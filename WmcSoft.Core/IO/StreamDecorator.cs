@@ -32,6 +32,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Base class when creating streams decorating another one.
     /// </summary>
+    [Serializable]
     public abstract class StreamDecorator : Stream
     {
         #region Fields
