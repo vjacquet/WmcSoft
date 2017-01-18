@@ -18,6 +18,8 @@ The abstractions will be tested against an implementation based on `System.Drawi
 
 ## Design notes
 
+- Canvas silently ignores invalid input. These abstractions should not.
+
 - Should I define a Matrix class or use the standard `System.Numerics.Matrix4x4`? The first one cannot be generic as it is difficult, though not impossible, to efficently perform arithmetics. 
 
 - Should I define a concrete Path2D class or an abstract class and rely on existing classes?
