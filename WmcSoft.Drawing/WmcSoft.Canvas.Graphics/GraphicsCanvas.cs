@@ -307,11 +307,13 @@ namespace WmcSoft.Canvas
         }
 
         public void QuadraticCurveTo(float cpx, float cpy, float x, float y) {
-            throw new NotImplementedException();
+            BezierCurveTo(_x / 3 + 2 * cpx / 3, _y / 3 + 2 * cpy / 3, x / 3 + 2 * cpx / 3, y / 3 + 2 * cpy / 3, x, y);
         }
 
         public void BezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y) {
-            throw new NotImplementedException();
+            CurrentPath.AddBezier(_x, _y, cp1x, cp1y, cp2x, cp2y, x, y);
+            _x = x;
+            _y = y;
         }
 
         public void ArcTo(float x1, float y1, float x2, float y2, float radius) {
