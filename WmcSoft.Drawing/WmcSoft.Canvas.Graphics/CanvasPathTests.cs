@@ -134,5 +134,17 @@ namespace WmcSoft.Canvas
             }
         }
 
+        [Fact]
+        public void SupportRectangle() {
+            using (var ctx = CreateCanvas("rect.png")) {
+                ctx.BeginPath(); // should not be required.
+                ctx.Rect(50, 50, 75, 75);
+                ctx.Fill();
+                ctx.LineTo(25, 25);
+                ctx.StrokeStyle = Color.Orange;
+                ctx.Stroke();
+            }
+        }
+
     }
 }

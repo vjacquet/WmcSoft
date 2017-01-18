@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="CanvasPathDrawingStylesTests.cs" />
     <Compile Include="CanvasPathTests.cs" />
+    <Compile Include="GlobalCompositingTests.cs" />
     <Compile Include="CanvasRectTests.cs" />
     <Compile Include="CanvasTestsBase.cs" />
     <Compile Include="GraphicsCanvas.cs" />

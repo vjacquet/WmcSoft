@@ -33,6 +33,12 @@ namespace WmcSoft.Canvas
     {
         TAlpha GlobalAlpha { get; set; } // default 1.0
         // TODO: define GlobalCompositeOperation's type
-        string GlobalCompositeOperation { get; set; } // default source-over
+        GlobalCompositeOperation GlobalCompositeOperation { get; set; } // default source-over
+    }
+
+    public enum GlobalCompositeOperation
+    {
+        SourceOver,
+        Copy,
     }
 }
