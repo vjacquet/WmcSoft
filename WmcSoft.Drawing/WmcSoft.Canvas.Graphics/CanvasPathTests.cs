@@ -103,5 +103,48 @@ namespace WmcSoft.Canvas
                 ctx.Fill(CanvasFillRule.EvenOdd);
             }
         }
+
+        [Fact]
+        public void SupportQuadraticCurveTo() {
+            using (var ctx = CreateCanvas("quadraticCurveTo.png")) {
+                ctx.BeginPath();
+                ctx.MoveTo(75, 25);
+                ctx.QuadraticCurveTo(25, 25, 25, 62.5f);
+                ctx.QuadraticCurveTo(25, 100, 50, 100);
+                ctx.QuadraticCurveTo(50, 120, 30, 125);
+                ctx.QuadraticCurveTo(60, 120, 65, 100);
+                ctx.QuadraticCurveTo(125, 100, 125, 62.5f);
+                ctx.QuadraticCurveTo(125, 25, 75, 25);
+                ctx.Stroke();
+            }
+        }
+
+        [Fact]
+        public void SupportBezierCurveTo() {
+            using (var ctx = CreateCanvas("bezierCurveTo.png")) {
+                ctx.BeginPath();
+                ctx.MoveTo(75, 40);
+                ctx.BezierCurveTo(75, 37, 70, 25, 50, 25);
+                ctx.BezierCurveTo(20, 25, 20, 62.5f, 20, 62.5f);
+                ctx.BezierCurveTo(20, 80, 40, 102, 75, 120);
+                ctx.BezierCurveTo(110, 102, 130, 80, 130, 62.5f);
+                ctx.BezierCurveTo(130, 62.5f, 130, 25, 100, 25);
+                ctx.BezierCurveTo(85, 25, 75, 37, 75, 40);
+                ctx.Fill();
+            }
+        }
+
+        [Fact]
+        public void SupportRectangle() {
+            using (var ctx = CreateCanvas("rect.png")) {
+                ctx.BeginPath(); // should not be required.
+                ctx.Rect(50, 50, 75, 75);
+                ctx.Fill();
+                ctx.LineTo(25, 25);
+                ctx.StrokeStyle = Color.Orange;
+                ctx.Stroke();
+            }
+        }
+
     }
 }

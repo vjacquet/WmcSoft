@@ -66,6 +66,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImplBench", "Benchmarks\ImplBench\ImplBench.csproj", "{36C0CA36-2994-48C5-BB49-F91CA6D17425}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drawing", "Drawing", "{ADF1C128-6796-49E5-AA94-4F25DA95EB0F}"
+	ProjectSection(SolutionItems) = preProject
+		WmcSoft.Drawing\Canvas.md = WmcSoft.Drawing\Canvas.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Canvas.Abstractions", "WmcSoft.Drawing\WmcSoft.Canvas.Abstractions\WmcSoft.Canvas.Abstractions.csproj", "{5842B06A-3531-4990-A224-7CF37A9EEA6A}"
 EndProject

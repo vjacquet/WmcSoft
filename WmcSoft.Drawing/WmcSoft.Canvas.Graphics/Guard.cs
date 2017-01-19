@@ -45,5 +45,14 @@ namespace WmcSoft.Canvas
             if (!IsFinite(value))
                 throw new ArgumentOutOfRangeException(paramName);
         }
+
+        public static bool IsAlphaValue(float value) {
+            return value >= 0f && value <= 1f;
+        }
+        public static void AlphaValue(float value, string paramName = "value") {
+            if (!IsAlphaValue(value))
+                throw new ArgumentOutOfRangeException(paramName);
+        }
+
     }
 }

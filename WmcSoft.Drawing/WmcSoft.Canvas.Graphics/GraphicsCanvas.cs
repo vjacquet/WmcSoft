@@ -39,6 +39,7 @@ namespace WmcSoft.Canvas
         , ICanvasPathDrawingStyles<float>
         , ICanvasFillStrokeStyles<float, Color>
         , ICanvasImageSmoothing
+        , ICanvasCompositing<float>
         , IDisposable
     {
         #region Variant visitors
@@ -82,7 +83,8 @@ namespace WmcSoft.Canvas
             }
 
             Pen CreateSolidPen(Color color) {
-                var pen = new Pen(color, _canvas.LineWidth);
+                var alpha = _canvas._globalAlpha < 1f ? Color.FromArgb((int)(255 * _canvas._globalAlpha), color) : color;
+                var pen = new Pen(alpha, _canvas.LineWidth);
                 pen.LineJoin = _canvas._lineJoin;
                 pen.MiterLimit = _canvas._miterLimit;
                 pen.StartCap = _canvas._lineCap;
@@ -103,8 +105,13 @@ namespace WmcSoft.Canvas
         sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
             , IDisposable
         {
+            private readonly GraphicsCanvas _canvas;
             private Func<Brush> _factory;
             private Brush _tool;
+
+            public BrushVisitor(GraphicsCanvas canvas) {
+                _canvas = canvas;
+            }
 
             public void Dispose() {
                 if (_tool != null) {
@@ -133,8 +140,14 @@ namespace WmcSoft.Canvas
                 throw new NotSupportedException();
             }
 
+            Brush CreateSolidBrush(Color color) {
+                var alpha = _canvas._globalAlpha < 1f ? Color.FromArgb((int)(255 * _canvas._globalAlpha), color) : color;
+                return new SolidBrush(alpha);
+            }
+
             public override void Visit(Color instance) {
-                _factory = () => new SolidBrush(instance);
+
+                _factory = () => CreateSolidBrush(instance);
                 Dispose();
             }
         }
@@ -180,12 +193,13 @@ namespace WmcSoft.Canvas
         private float _y;
         private PointF _start;
         private ImageSmoothingQuality _imageSmoothingQuality;
-        float _lineWidth;
-        LineCap _lineCap;
-        LineJoin _lineJoin;
-        float _miterLimit;
-        float[] _dashPattern;
-        float _dashOffset;
+        private float _lineWidth;
+        private LineCap _lineCap;
+        private LineJoin _lineJoin;
+        private float _miterLimit;
+        private float[] _dashPattern;
+        private float _dashOffset;
+        private float _globalAlpha;
 
         public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
             g = graphics;
@@ -200,12 +214,14 @@ namespace WmcSoft.Canvas
             _lineCap = System.Drawing.Drawing2D.LineCap.Flat;
             _lineJoin = System.Drawing.Drawing2D.LineJoin.MiterClipped;
             _miterLimit = 10f;
+            _globalAlpha = 1f;
 
             _pen = new PenVisitor(this);
-            _brush = new BrushVisitor();
+            _brush = new BrushVisitor(this);
 
             FillStyle = Color.Black;
             StrokeStyle = Color.Black;
+
         }
 
         void IDisposable.Dispose() {
@@ -307,11 +323,13 @@ namespace WmcSoft.Canvas
         }
 
         public void QuadraticCurveTo(float cpx, float cpy, float x, float y) {
-            throw new NotImplementedException();
+            BezierCurveTo(_x / 3 + 2 * cpx / 3, _y / 3 + 2 * cpy / 3, x / 3 + 2 * cpx / 3, y / 3 + 2 * cpy / 3, x, y);
         }
 
         public void BezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y) {
-            throw new NotImplementedException();
+            CurrentPath.AddBezier(_x, _y, cp1x, cp1y, cp2x, cp2y, x, y);
+            _x = x;
+            _y = y;
         }
 
         public void ArcTo(float x1, float y1, float x2, float y2, float radius) {
@@ -323,7 +341,9 @@ namespace WmcSoft.Canvas
         }
 
         public void Rect(float x, float y, float w, float h) {
-            throw new NotImplementedException();
+            CurrentPath.AddRectangle(new RectangleF(x, y, w, h));
+            _x = x;
+            _y = y;
         }
 
         public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise) {
@@ -654,5 +674,47 @@ namespace WmcSoft.Canvas
 
         #endregion
 
+        #region ICanvasCompositing<float>
+
+        public float GlobalAlpha {
+            get {
+                return _globalAlpha;
+            }
+            set {
+                Guard.AlphaValue(value);
+                if (value != _globalAlpha) {
+                    _globalAlpha = value;
+                    _pen.Dispose();
+                    _brush.Dispose();
+                }
+            }
+        }
+
+        public GlobalCompositeOperation GlobalCompositeOperation {
+            get {
+                switch (g.CompositingMode) {
+                case CompositingMode.SourceOver:
+                    return GlobalCompositeOperation.SourceOver;
+                case CompositingMode.SourceCopy:
+                    return GlobalCompositeOperation.Copy;
+                default:
+                    throw new InvalidCastException();
+                }
+            }
+            set {
+                switch (value) {
+                case GlobalCompositeOperation.SourceOver:
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    break;
+                case GlobalCompositeOperation.Copy:
+                    g.CompositingMode = CompositingMode.SourceCopy;
+                    break;
+                default:
+                    throw new ArgumentException();
+                }
+            }
+        }
+
+        #endregion
     }
 }
