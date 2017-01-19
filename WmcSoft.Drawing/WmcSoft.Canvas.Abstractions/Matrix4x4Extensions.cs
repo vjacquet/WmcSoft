@@ -26,26 +26,27 @@
 
 #endregion
 
+using System;
+using System.Numerics;
+
 namespace WmcSoft.Canvas
 {
-    // where M : IMatrix<T>
-    public interface ICanvasTransform<M, T>
+    public static class Matrix4x4Extensions
     {
-        void Scale(T x, T y);
-        void Rotate(T angle);
-        void Translate(T x, T y);
-        void Transform(T a, T b, T c, T d, T e, T f);
+        public static void Scale(this Matrix4x4 matrix, float x, float y) {
+            throw new NotImplementedException();
+        }
 
-        M TransformationMatrix { get; set; }
+        public static void Rotate(this Matrix4x4 matrix, float angle) {
+            throw new NotImplementedException();
+        }
 
-        void ResetResetTransformationMatrix();
-    }
+        public static void Translate(this Matrix4x4 matrix, float x, float y) {
+            throw new NotImplementedException();
+        }
 
-    public static class CanvasTransformExtensions
-    {
-        public static void Set2DTransformation<M, T>(this ICanvasTransform<M, T> canvas, T a, T b, T c, T d, T e, T f) {
-            canvas.ResetResetTransformationMatrix();
-            canvas.Transform(a, b, c, d, e, f);
+        public static void Transform(this Matrix4x4 matrix, float a, float b, float c, float d, float e, float f) {
+            throw new NotImplementedException();
         }
     }
 }
