@@ -51,7 +51,7 @@ namespace WmcSoft.Canvas
         public abstract void ClosePath();
         public abstract void MoveTo(T x, T y);
         public abstract void LineTo(T x, T y);
-        public abstract void QuadraticCurveTo(T cpx, T cpy, T x, T y); // = BezierCurveTo(cx/3+2*cpx/3, cy/3+2*cpt/3, x/3+2*cpx/3, y/3+2*cpt/3, x, y)
+        public abstract void QuadraticCurveTo(T cpx, T cpy, T x, T y); // = BezierCurveTo(cx/3+2*cpx/3, cy/3+2*cpy/3, x/3+2*cpx/3, y/3+2*cpy/3, x, y)
         public abstract void BezierCurveTo(T cp1x, T cp1y, T cp2x, T cp2y, T x, T y);
         public virtual void ArcTo(T x1, T y1, T x2, T y2, T radius) {
             ArcTo(x1, y1, x2, y2, radius, radius, default(T));
