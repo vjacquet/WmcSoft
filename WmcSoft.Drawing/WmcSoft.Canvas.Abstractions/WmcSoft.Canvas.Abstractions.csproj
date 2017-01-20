@@ -87,6 +87,7 @@
     <Compile Include="ICanvasState.cs" />
     <Compile Include="ImageData.cs" />
     <Compile Include="ImageSmoothingQuality.cs" />
+    <Compile Include="IMatrix.cs" />
     <Compile Include="Matrix4x4Extensions.cs" />
     <Compile Include="Path2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
