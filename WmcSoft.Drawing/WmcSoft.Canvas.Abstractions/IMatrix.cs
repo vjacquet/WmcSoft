@@ -48,7 +48,6 @@ namespace WmcSoft.Canvas
         IMatrix<T> Multiply(IMatrix<T> other);
         IMatrix<T> FlipX();
         IMatrix<T> FlipY();
-        IMatrix<T> Inverse();
     }
 
     public static class MatrixExtensions
@@ -113,6 +112,13 @@ namespace WmcSoft.Canvas
             where M : IMatrix<T> {
             var self = (M)matrix.Clone();
             self.SkewXBy(sy);
+            return self;
+        }
+
+        public static M Inverse<M, T>(this M matrix)
+            where M : IMatrix<T> {
+            var self = (M)matrix.Clone();
+            self.Invert();
             return self;
         }
     }
