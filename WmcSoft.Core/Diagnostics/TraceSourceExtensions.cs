@@ -40,6 +40,16 @@ namespace WmcSoft.Diagnostics
             traceSource.TraceEvent(TraceEventType.Verbose, id, format, args);
         }
 
+        public static void TraceInformation(this TraceSource traceSource, int id) {
+            traceSource.TraceEvent(TraceEventType.Information, id);
+        }
+        public static void TraceInformation(this TraceSource traceSource, int id, string message) {
+            traceSource.TraceEvent(TraceEventType.Information, id, message);
+        }
+        public static void TraceInformation(this TraceSource traceSource, int id, string format, params object[] args) {
+            traceSource.TraceEvent(TraceEventType.Information, id, format, args);
+        }
+
         public static void TraceWarning(this TraceSource traceSource, int id) {
             traceSource.TraceEvent(TraceEventType.Warning, id);
         }
