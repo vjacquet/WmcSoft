@@ -145,6 +145,9 @@
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderStream.cs" />
+    <Compile Include="Data\DataTableCollectionExtensions.cs" />
+    <Compile Include="Data\DataColumnCollectionExtensions.cs" />
+    <Compile Include="Data\DataViewExtensions.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="DecimalExtensions.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />

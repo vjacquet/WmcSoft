@@ -33,8 +33,6 @@ namespace WmcSoft.Data
 {
     public static class DataRowCollectionExtensions
     {
-        #region DataRowCollection extensions
-
         public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, bool> predicate) {
             return collection.Cast<DataRow>().Where(predicate);
         }
@@ -73,117 +71,5 @@ namespace WmcSoft.Data
         public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, int, bool> predicate) {
             return collection.Cast<DataRow>().Where(predicate);
         }
-
-        #endregion
-
-        #region DataTable extensions
-
-        public static EnumerableRowCollection<DataRow> Where(this DataTable table, Func<DataRow, bool> predicate) {
-            return table.AsEnumerable().Where(predicate);
-        }
-
-        public static EnumerableRowCollection<U> Select<U>(this DataTable table, Func<DataRow, U> selector) {
-            return table.AsEnumerable().Select(selector);
-        }
-        public static IEnumerable<V> SelectMany<U, V>(this DataTable table, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector) {
-            return table.AsEnumerable().SelectMany(selector, resultSelector);
-        }
-
-        public static IEnumerable<V> Join<U, K, V>(this DataTable table, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector) {
-            return table.AsEnumerable().Join(inner, outerKeySelector, innerKeySelector, resultSelector);
-        }
-
-        public static IEnumerable<V> GroupJoin<U, K, V>(this DataTable table, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector) {
-            return table.AsEnumerable().GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
-        }
-
-        public static OrderedEnumerableRowCollection<DataRow> OrderBy<K>(this DataTable table, Func<DataRow, K> keySelector) {
-            return table.AsEnumerable().OrderBy(keySelector);
-        }
-
-        public static OrderedEnumerableRowCollection<DataRow> OrderByDescending<K>(this DataTable table, Func<DataRow, K> keySelector) {
-            return table.AsEnumerable().OrderByDescending(keySelector);
-        }
-
-        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataTable table, Func<DataRow, K> keySelector) {
-            return table.AsEnumerable().GroupBy(keySelector);
-        }
-
-        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataTable table, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector) {
-            return table.AsEnumerable().GroupBy(keySelector, elementSelector);
-        }
-
-        public static IEnumerable<DataRow> Where(this DataTable table, Func<DataRow, int, bool> predicate) {
-            return table.AsEnumerable().Where(predicate);
-        }
-
-        #endregion
-
-        #region DataView extensions
-
-        public static IEnumerable<DataRow> Where(this DataView view, Func<DataRow, bool> predicate) {
-            return view.Cast<DataRow>().Where(predicate);
-        }
-
-        public static IEnumerable<U> Select<U>(this DataView view, Func<DataRow, U> selector) {
-            return view.Cast<DataRow>().Select(selector);
-        }
-        public static IEnumerable<V> SelectMany<U, V>(this DataView view, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector) {
-            return view.Cast<DataRow>().SelectMany(selector, resultSelector);
-        }
-
-        public static IEnumerable<V> Join<U, K, V>(this DataView view, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector) {
-            return view.Cast<DataRow>().Join(inner, outerKeySelector, innerKeySelector, resultSelector);
-        }
-
-        public static IEnumerable<V> GroupJoin<U, K, V>(this DataView view, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector) {
-            return view.Cast<DataRow>().GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
-        }
-
-        public static IOrderedEnumerable<DataRow> OrderBy<K>(this DataView view, Func<DataRow, K> keySelector) {
-            return view.Cast<DataRow>().OrderBy(keySelector);
-        }
-
-        public static IOrderedEnumerable<DataRow> OrderByDescending<K>(this DataView view, Func<DataRow, K> keySelector) {
-            return view.Cast<DataRow>().OrderByDescending(keySelector);
-        }
-
-        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataView view, Func<DataRow, K> keySelector) {
-            return view.Cast<DataRow>().GroupBy(keySelector);
-        }
-
-        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataView view, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector) {
-            return view.Cast<DataRow>().GroupBy(keySelector, elementSelector);
-        }
-
-        public static IEnumerable<DataRow> Where(this DataView view, Func<DataRow, int, bool> predicate) {
-            return view.Cast<DataRow>().Where(predicate);
-        }
-
-        #endregion
-
-        #region DataColumnCollection
-
-        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName) {
-            return columns.Add(columnName, typeof(T));
-        }
-
-        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName, T defaultValue) {
-            var column = columns.Add(columnName, typeof(T));
-            column.DefaultValue = defaultValue;
-            return column;
-        }
-
-        public static DataColumn AddColumn<T>(this DataTable table, string columnName) {
-            return table.Columns.Add(columnName, typeof(T));
-        }
-
-        public static DataColumn AddColumn<T>(this DataTable table, string columnName, T defaultValue) {
-            var column = table.Columns.Add(columnName, typeof(T));
-            column.DefaultValue = defaultValue;
-            return column;
-        }
-
-        #endregion
     }
 }
