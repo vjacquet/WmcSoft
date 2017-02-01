@@ -117,64 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppSettingsCheckpointKeyIsMissingError" xml:space="preserve">
-    <value>The key '{0}' is missing from the appSettings section.</value>
+  <data name="UnrecognizedAttributeFormat" xml:space="preserve">
+    <value>Unrecognized attribute '{0}'.</value>
   </data>
-  <data name="ArgumentEmpty" xml:space="preserve">
-    <value>Argument can not have an empty value.</value>
-  </data>
-  <data name="ArgumentNullOrEmpty" xml:space="preserve">
-    <value>The argument cannot be a null or empty string.</value>
-  </data>
-  <data name="CantAssignTo" xml:space="preserve">
-    <value>Type {0} is not assignable to type {1}.</value>
-  </data>
-  <data name="CantLoadAssembly" xml:space="preserve">
-    <value>Could not load assembly {0}. Verify if the type {1} syntax is correct.</value>
-  </data>
-  <data name="CantLoadType" xml:space="preserve">
-    <value>Could not load type {0}.</value>
-  </data>
-  <data name="ComparisonIncorrectTypeFormat" xml:space="preserve">
-    <value>Incorrect type. Expecting {0} but received {1}."</value>
-  </data>
-  <data name="ComponentNotSited" xml:space="preserve">
-    <value>Component {0} must be sited in a container in order to function properly.</value>
-  </data>
-  <data name="ComponentNull" xml:space="preserve">
-    <value>The component can not be null.</value>
-  </data>
-  <data name="ConfigurationCheckpointCannotLoadSection" xml:space="preserve">
-    <value>Cannot load the configuration section '{0}'.</value>
-  </data>
-  <data name="DispatcherDoesntSuppportCancellation" xml:space="preserve">
-    <value>The dispatcher does not support cancellation.</value>
-  </data>
-  <data name="InvalidAssemblyName" xml:space="preserve">
-    <value>Invalid assembly name {0}.</value>
-  </data>
-  <data name="InvalidFormatMessage" xml:space="preserve">
-    <value>The format of '{0}' is invalid.</value>
-  </data>
-  <data name="InvalidOperationExceptionRethrow" xml:space="preserve">
-    <value>{0} threw '{1}'.</value>
-  </data>
-  <data name="InvalidQualifiedName" xml:space="preserve">
-    <value>Invalid qualified type name {0}.</value>
-  </data>
-  <data name="InvalidServiceInstance" xml:space="preserve">
-    <value>Service instance of type {0} is not assignable to service type {1}.</value>
-  </data>
-  <data name="MissingServiceForComponentMessage" xml:space="preserve">
-    <value>Service {0}, required for component {1} is not available in the current container.</value>
-  </data>
-  <data name="MissingServiceMessage" xml:space="preserve">
-    <value>The required service {0} is missing.</value>
-  </data>
-  <data name="ProviderNull" xml:space="preserve">
-    <value>The service provider to look for dependencies can not be null.</value>
-  </data>
-  <data name="ServiceExists" xml:space="preserve">
-    <value>Service {0} already exists in the container.</value>
+  <data name="UnrecognizedElementFormat" xml:space="preserve">
+    <value>Unrecognized element '{0}'.</value>
   </data>
 </root>

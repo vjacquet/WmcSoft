@@ -139,8 +139,6 @@
     <Compile Include="Collections\Specialized\TopologicalAlgorithm.cs" />
     <Compile Include="Collections\Specialized\WeightedDigraph.cs" />
     <Compile Include="Collections\Specialized\WeightedGraph.cs" />
-    <Compile Include="Configuration\InfiniteNullableIntConverter.cs" />
-    <Compile Include="Configuration\NullableIntConverter.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
@@ -200,7 +198,6 @@
     <Compile Include="Text\Strings.cs" />
     <Compile Include="Threading\Register.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainer.cs" />
-    <Compile Include="Configuration\MailAddressConverter.cs" />
     <Compile Include="DateSpan.cs" />
     <Compile Include="IndexedAlgorithms.cs" />
     <Compile Include="Collections\Generic\Internals\Ballot.cs" />
@@ -229,14 +226,6 @@
     <Compile Include="Collections\Specialized\PriorityQueue.cs" />
     <Compile Include="ComponentModel\TypeConverterExtensions.cs" />
     <Compile Include="ComponentModel\TypeDescriptorExtensions.cs" />
-    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
-    <Compile Include="Configuration\AppConfig.cs" />
-    <Compile Include="Configuration\FactoryElement.cs" />
-    <Compile Include="Configuration\FileSearchSectionHandler.cs" />
-    <Compile Include="Configuration\ListSectionHandler.cs" />
-    <Compile Include="Configuration\MailAddressCollectionConverter.cs" />
-    <Compile Include="Configuration\MailPolicy.cs" />
-    <Compile Include="Configuration\MailPolicyCollection.cs" />
     <Compile Include="Data\DataConvert.cs" />
     <Compile Include="Data\DataSetExtensions.cs" />
     <Compile Include="DelegateExtensions.cs" />

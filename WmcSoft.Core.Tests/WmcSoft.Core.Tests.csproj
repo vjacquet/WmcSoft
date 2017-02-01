@@ -90,7 +90,6 @@
     <Compile Include="Collections\Specialized\SparseArrayTests.cs" />
     <Compile Include="Collections\Specialized\GapListTests.cs" />
     <Compile Include="Collections\Specialized\GraphTests.cs" />
-    <Compile Include="Configuration\FactoryElementTests.cs" />
     <Compile Include="ConvertibleExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
@@ -108,8 +107,6 @@
     <Compile Include="Collections\Specialized\PriorityQueueTests.cs" />
     <Compile Include="Collections\Specialized\NameValueCollectionTests.cs" />
     <Compile Include="ComponentModel\TypeDescriptorExtensionsTests.cs" />
-    <Compile Include="Configuration\MailPolicyTests.cs" />
-    <Compile Include="Configuration\TestSection.cs" />
     <Compile Include="Data\DataConvertTests.cs" />
     <Compile Include="Data\DataReaderTests.cs" />
     <Compile Include="AlgorithmsTests.cs" />
@@ -178,12 +175,6 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Configuration\factory-errors.test.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Configuration\factory-valid.test.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\XPathLocator.xml">
       <SubType>Designer</SubType>
