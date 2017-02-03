@@ -38,7 +38,7 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     /// <remarks>The dictionary assumes it has the sole ownership of the arrays.</remarks>
-    public class DisjoinedReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+    public class ZipReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         [Serializable]
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
@@ -48,7 +48,7 @@ namespace WmcSoft.Collections.Generic
             private int _index;
             private KeyValuePair<TKey, TValue> _current;
 
-            internal Enumerator(TKey[] keys, TValue[] values) {
+            public Enumerator(TKey[] keys, TValue[] values) {
                 _keys = keys;
                 _values = values;
                 _index = 0;
@@ -85,7 +85,7 @@ namespace WmcSoft.Collections.Generic
         private readonly TKey[] _keys;
         private readonly TValue[] _values;
 
-        public DisjoinedReadOnlyDictionary(TKey[] keys, TValue[] values) {
+        public ZipReadOnlyDictionary(TKey[] keys, TValue[] values) {
             if (keys == null) throw new ArgumentNullException(nameof(keys));
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (keys.Length != values.Length) throw new ArgumentException();
@@ -102,8 +102,12 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
-            return new Enumerator(_keys, _values);
+        public ZipEnumerator<TKey, TValue> GetEnumerator() {
+            return new ZipEnumerator<TKey, TValue>(_keys, _values);
+        }
+
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() {
+            return new ZipEnumerator<TKey, TValue>(_keys, _values);
         }
 
         /// <summary>

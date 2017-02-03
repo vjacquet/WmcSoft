@@ -5,13 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WmcSoft.Collections.Generic
 {
     [TestClass]
-    public class DisjoinedReadOnlyDictionaryTests
+    public class ZipReadOnlyDictionaryTests
     {
         [TestMethod]
         public void CheckContainsKey() {
             var keys = new[] { 1, 2, 3, 4, 5 };
             var values = new[] { "one", "two", "three", "four", "five" };
-            var dictionary = new DisjoinedReadOnlyDictionary<int, string>(keys, values);
+            var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
             Assert.IsTrue(dictionary.ContainsKey(1));
             Assert.IsFalse(dictionary.ContainsKey(0));
@@ -21,7 +21,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckCountKeysAndValues() {
             var keys = new[] { 1, 2, 3, 4, 5 };
             var values = new[] { "one", "two", "three", "four", "five" };
-            var dictionary = new DisjoinedReadOnlyDictionary<int, string>(keys, values);
+            var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
             Assert.AreEqual(5, dictionary.Count);
             CollectionAssert.AreEqual(keys, dictionary.Keys);
@@ -32,7 +32,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckTryGetValue() {
             var keys = new[] { 1, 2, 3, 4, 5 };
             var values = new[] { "one", "two", "three", "four", "five" };
-            var dictionary = new DisjoinedReadOnlyDictionary<int, string>(keys, values);
+            var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
             string one;
             Assert.IsTrue(dictionary.TryGetValue(1, out one));
@@ -46,7 +46,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckEnumerator() {
             var keys = new[] { 1, 2, 3, 4, 5 };
             var values = new[] { "one", "two", "three", "four", "five" };
-            var dictionary = new DisjoinedReadOnlyDictionary<int, string>(keys, values);
+            var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
             var expected = keys.Zip(values, (k, v) => new KeyValuePair<int, string>(k, v)).ToList();
             var actual = dictionary.ToList();
