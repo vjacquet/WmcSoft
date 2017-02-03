@@ -102,12 +102,12 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public ZipEnumerator<TKey, TValue> GetEnumerator() {
-            return new ZipEnumerator<TKey, TValue>(_keys, _values);
+        public Enumerator GetEnumerator() {
+            return new Enumerator(_keys, _values);
         }
 
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() {
-            return new ZipEnumerator<TKey, TValue>(_keys, _values);
+            return GetEnumerator();
         }
 
         /// <summary>
