@@ -35,8 +35,48 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
+        public void CanDemonstrateRect() {
+            using (var ctx = CreateCanvas("rect-demo.png", 150, 150)) {
+                ctx.FillRect(25, 25, 100, 100);
+                ctx.ClearRect(45, 45, 60, 60);
+                ctx.StrokeRect(50, 50, 50, 50);
+            }
+        }
+
+        [Fact]
+        public void CanDemonstrateTriangle() {
+            using (var ctx = CreateCanvas("triangle-demo.png", 150, 150)) {
+                ctx.BeginPath();
+                ctx.MoveTo(75, 50);
+                ctx.LineTo(100, 75);
+                ctx.LineTo(100, 25);
+                ctx.Fill();
+            }
+        }
+
+        [Fact]
+        public void CanDemonstrateLines() {
+            using (var ctx = CreateCanvas("lines-demo.png", 150, 150)) {
+                // Filled triangle
+                ctx.BeginPath();
+                ctx.MoveTo(25, 25);
+                ctx.LineTo(105, 25);
+                ctx.LineTo(25, 105);
+                ctx.Fill();
+
+                // Stroked triangle
+                ctx.BeginPath();
+                ctx.MoveTo(125, 125);
+                ctx.LineTo(125, 45);
+                ctx.LineTo(45, 125);
+                ctx.ClosePath();
+                ctx.Stroke();
+            }
+        }
+
+        [Fact]
         public void CanDemonstrateArc() {
-            using (var ctx = CreateCanvas("arc-demo.png")) {
+            using (var ctx = CreateCanvas("arc-demo.png", 150, 200)) {
                 // Draw shapes
                 for (int i = 0; i < 4; i++) {
                     for (int j = 0; j < 3; j++) {
