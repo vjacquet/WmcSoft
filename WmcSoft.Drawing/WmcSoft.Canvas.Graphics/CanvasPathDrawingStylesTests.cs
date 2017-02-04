@@ -8,7 +8,7 @@ namespace WmcSoft.Canvas
     {
         [Fact]
         public void SupportLineCap() {
-            using (var ctx = CreateCanvas("lineCap.png")) {
+            using (var ctx = CreateCanvas("lineCap.png", 150, 150)) {
                 //var p = new System.Drawing.Drawing2D.GraphicsPath();
                 //p.StartFigure();
                 //p.AddLine(10, 10, 200, 10);
@@ -42,7 +42,7 @@ namespace WmcSoft.Canvas
 
         [Fact]
         public void SupportLineWidth() {
-            using (var ctx = CreateCanvas("lineWidth.png")) {
+            using (var ctx = CreateCanvas("lineWidth.png", 150, 150)) {
                 for (var i = 0; i < 10; i++) {
                     ctx.LineWidth = 1 + i;
                     ctx.BeginPath();
@@ -126,7 +126,7 @@ namespace WmcSoft.Canvas
 
         [Fact]
         public void CanDemonstrateFillStyle() {
-            using (var ctx = CreateCanvas("fillStyle-demo.png", 150, 150)) {
+            using (var ctx = CreateCanvas("fillStyle.png", 150, 150)) {
                 for (var i = 0; i < 6; i++) {
                     for (var j = 0; j < 6; j++) {
                         ctx.FillStyle = Color.FromArgb((int)Math.Floor(255 - 42.5d * i), (int)Math.Floor(255 - 42.5d * j), 0);
@@ -138,7 +138,7 @@ namespace WmcSoft.Canvas
 
         [Fact]
         public void CanDemonstrateStrokeStyle() {
-            using (var ctx = CreateCanvas("strokeStyle-demo.png", 150, 150)) {
+            using (var ctx = CreateCanvas("strokeStyle.png", 150, 150)) {
                 for (var i = 0; i < 6; i++) {
                     for (var j = 0; j < 6; j++) {
                         ctx.StrokeStyle = Color.FromArgb(0, (int)Math.Floor(255 - 42.5 * i), (int)Math.Floor(255 - 42.5 * j));

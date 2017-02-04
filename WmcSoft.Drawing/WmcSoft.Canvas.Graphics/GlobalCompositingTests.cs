@@ -14,7 +14,7 @@ namespace WmcSoft.Canvas
     {
         [Fact]
         public void SupportGlobalAlpha() {
-            using (var ctx = CreateCanvas("globalAlpha.png")) {
+            using (var ctx = CreateCanvas("globalAlpha.png", 150, 150)) {
                 // draw background
                 ctx.FillStyle = Color.FromArgb(0xFF, 0xDD, 0x00);
                 ctx.FillRect(0, 0, 75, 75);
