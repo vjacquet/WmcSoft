@@ -73,7 +73,7 @@ namespace WmcSoft.Canvas
 
         [Fact]
         public void SupportMiterLimit() {
-            using (var ctx = CreateCanvas("miterLimit.png",150,150)) {
+            using (var ctx = CreateCanvas("miterLimit.png", 150, 150)) {
                 // Clear canvas
                 ctx.ClearRect(0, 0, 150, 150);
 
@@ -121,6 +121,32 @@ namespace WmcSoft.Canvas
                 ctx.MoveTo(0, 100);
                 ctx.LineTo(400, 100);
                 ctx.Stroke();
+            }
+        }
+
+        [Fact]
+        public void CanDemonstrateFillStyle() {
+            using (var ctx = CreateCanvas("fillStyle-demo.png", 150, 150)) {
+                for (var i = 0; i < 6; i++) {
+                    for (var j = 0; j < 6; j++) {
+                        ctx.FillStyle = Color.FromArgb((int)Math.Floor(255 - 42.5d * i), (int)Math.Floor(255 - 42.5d * j), 0);
+                        ctx.FillRect(j * 25, i * 25, 25, 25);
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void CanDemonstrateStrokeStyle() {
+            using (var ctx = CreateCanvas("strokeStyle-demo.png", 150, 150)) {
+                for (var i = 0; i < 6; i++) {
+                    for (var j = 0; j < 6; j++) {
+                        ctx.StrokeStyle = Color.FromArgb(0, (int)Math.Floor(255 - 42.5 * i), (int)Math.Floor(255 - 42.5 * j));
+                        ctx.BeginPath();
+                        ctx.Arc(12.5f + j * 25, 12.5f + i * 25, 10, 0, Math.PI * 2, true);
+                        ctx.Stroke();
+                    }
+                }
             }
         }
     }
