@@ -183,5 +183,14 @@ namespace WmcSoft.Canvas
             }
         }
 
+        [Fact]
+        public void SupportFillRule() {
+            using (var ctx = CreateCanvas("fillRule.png")) {
+                ctx.BeginPath();
+                ctx.Arc(50, 50, 30, 0, Math.PI * 2, true);
+                ctx.Arc(50, 50, 15, 0, Math.PI * 2, true);
+                ctx.Fill(CanvasFillRule.EvenOdd);
+            }
+        }
     }
 }
