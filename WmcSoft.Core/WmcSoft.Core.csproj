@@ -71,6 +71,8 @@
     <Compile Include="Collections\Generic\CopyOnWriteDictionary.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
     <Compile Include="Collections\Generic\DisjoinedReadOnlyDictionary.cs" />
+    <Compile Include="Collections\Generic\EnumerableExtensions.Traits.cs" />
+    <Compile Include="Collections\Generic\EnumerableExtensions.Expected.cs" />
     <Compile Include="Collections\Generic\Forest.cs" />
     <Compile Include="Collections\Generic\Index.cs" />
     <Compile Include="Collections\Generic\Internals\BulkQueue.cs" />

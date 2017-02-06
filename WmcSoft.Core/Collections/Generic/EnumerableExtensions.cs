@@ -37,7 +37,7 @@ using static WmcSoft.Algorithms;
 
 namespace WmcSoft.Collections.Generic
 {
-    public static class EnumerableExtensions
+    public static partial class EnumerableExtensions
     {
         #region AsEnumerable
 
@@ -908,17 +908,17 @@ namespace WmcSoft.Collections.Generic
                 if (!hasData)
                     return Tuple.Create(default(double?), default(double?));
 
-                var min = enumerator.Current;
-                var max = enumerator.Current;
+                var min = enumerator.Current.GetValueOrDefault();
+                var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.Value))
+                    if (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.GetValueOrDefault()))
                         continue;
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
+                    if (enumerator.Current.GetValueOrDefault() < min)
+                        min = enumerator.Current.GetValueOrDefault();
+                    else if (enumerator.Current.GetValueOrDefault() >= max)
+                        max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create(min, max);
+                return Tuple.Create((double?)min, (double?)max);
             }
         }
 
@@ -951,17 +951,17 @@ namespace WmcSoft.Collections.Generic
                 if (!hasData)
                     return Tuple.Create(default(long?), default(long?));
 
-                var min = enumerator.Current;
-                var max = enumerator.Current;
+                var min = enumerator.Current.GetValueOrDefault();
+                var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
                     if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
+                    if (enumerator.Current.GetValueOrDefault() < min)
+                        min = enumerator.Current.GetValueOrDefault();
+                    else if (enumerator.Current.GetValueOrDefault() >= max)
+                        max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create(min, max);
+                return Tuple.Create((long?)min, (long?)max);
             }
         }
 
@@ -994,17 +994,17 @@ namespace WmcSoft.Collections.Generic
                 if (!hasData)
                     return Tuple.Create(default(int?), default(int?));
 
-                var min = enumerator.Current;
-                var max = enumerator.Current;
+                var min = enumerator.Current.GetValueOrDefault();
+                var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
                     if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
+                    if (enumerator.Current.GetValueOrDefault() < min)
+                        min = enumerator.Current.GetValueOrDefault();
                     else if (enumerator.Current >= max)
-                        max = enumerator.Current;
+                        max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create(min, max);
+                return Tuple.Create((int?)min, (int?)max);
             }
         }
 
@@ -1037,17 +1037,17 @@ namespace WmcSoft.Collections.Generic
                 if (!hasData)
                     return Tuple.Create(default(float?), default(float?));
 
-                var min = enumerator.Current;
-                var max = enumerator.Current;
+                var min = enumerator.Current.GetValueOrDefault();
+                var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.Value))
+                    if (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.GetValueOrDefault()))
                         continue;
                     if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
+                        min = enumerator.Current.GetValueOrDefault();
+                    else if (enumerator.Current.GetValueOrDefault() >= max)
+                        max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create(min, max);
+                return Tuple.Create((float?)min, (float?)max);
             }
         }
 
@@ -1080,17 +1080,17 @@ namespace WmcSoft.Collections.Generic
                 if (!hasData)
                     return Tuple.Create(default(decimal?), default(decimal?));
 
-                var min = enumerator.Current;
-                var max = enumerator.Current;
+                var min = enumerator.Current.GetValueOrDefault();
+                var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
                     if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
+                    if (enumerator.Current.GetValueOrDefault() < min)
+                        min = enumerator.Current.GetValueOrDefault();
+                    else if (enumerator.Current.GetValueOrDefault() >= max)
+                        max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create(min, max);
+                return Tuple.Create((decimal?)min, (decimal?)max);
             }
         }
 
@@ -2025,124 +2025,6 @@ namespace WmcSoft.Collections.Generic
         public static string ToString<T>(this IEnumerable<T> enumerable, IFormatProvider formatProvider)
             where T : IFormattable {
             return enumerable.ToString(null, formatProvider);
-        }
-
-        #endregion
-
-        #region Traits
-
-        static bool UnguardedIsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
-            using (var enumerator = enumerable.GetEnumerator()) {
-                if (enumerator.MoveNext()) {
-                    var previous = enumerator.Current;
-                    while (enumerator.MoveNext()) {
-                        if (comparer.Compare(previous, enumerator.Current) > 0)
-                            return false;
-                        previous = enumerator.Current;
-                    }
-                }
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Check if a sequence of elements is sorted.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="source">The sequence.</param>
-        /// <param name="comparer">The comparer</param>
-        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IEnumerable<T> source, IComparer<T> comparer) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return UnguardedIsSorted(source, comparer ?? Comparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Check if a sequence of elements is sorted, using the default comparer.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="source">The sequence.</param>
-        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IEnumerable<T> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return UnguardedIsSorted(source, Comparer<T>.Default);
-        }
-
-        static bool UnguardedIsSorted<T>(IList<T> list, IComparer<T> comparer, int startIndex, int length) {
-            var end = startIndex + length;
-            for (int i = startIndex + 1; i < end; i++) {
-                if (comparer.Compare(list[i - 1], list[i]) > 0)
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Check if a sequence of elements is sorted.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="list">The sequence.</param>
-        /// <param name="comparer">The comparer</param>
-        /// <param name="startIndex">he start index.</param>
-        /// <param name="length">The length.</param>
-        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IList<T> list, IComparer<T> comparer, int startIndex, int length) {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (list.Count < (startIndex + length)) throw new ArgumentException(nameof(list));
-
-            return UnguardedIsSorted(list, comparer ?? Comparer<T>.Default, startIndex, length);
-        }
-
-        /// <summary>
-        /// Check if a sequence of elements is sorted, using the default comparer.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="list">The sequence.</param>
-        /// <param name="startIndex">he start index.</param>
-        /// <param name="length">The length.</param>
-        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IList<T> list, int startIndex, int length) {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (list.Count < (startIndex + length)) throw new ArgumentException(nameof(list));
-
-            return UnguardedIsSorted(list, Comparer<T>.Default, startIndex, length);
-        }
-
-        /// <summary>
-        /// Check if a sequence of elements is sorted.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="enumerable">The sequence.</param>
-        /// <returns>Returns true if each element in the sequence is less than to its successors; otherwise, false.</returns>
-        /// <remarks>If true, then the elements are unique in the sequence.</remarks>
-        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
-            using (var enumerator = enumerable.GetEnumerator()) {
-                if (enumerator.MoveNext()) {
-                    var previous = enumerator.Current;
-                    while (enumerator.MoveNext()) {
-                        if (comparer.Compare(previous, enumerator.Current) >= 0)
-                            return false;
-                        previous = enumerator.Current;
-                    }
-                }
-                return true;
-            }
-        }
-        /// <summary>
-        /// Check if a sequence of elements is sorted, using the default comparer.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="enumerable">The sequence.</param>
-        /// <param name="comparer">The comparer</param>
-        /// <returns>Returns true if each element in the sequence is less than to its successors; otherwise, false.</returns>
-        /// <remarks>If true, then the elements are unique in the sequence.</remarks>
-        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable) {
-            return enumerable.IsSortedSet(Comparer<T>.Default);
         }
 
         #endregion
