@@ -38,36 +38,39 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     /// <remarks>The dictionary assumes it has the sole ownership of the arrays.</remarks>
-    public class DisjoinedReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+    public class ZipReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         [Serializable]
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
         {
             private readonly TKey[] _keys;
             private readonly TValue[] _values;
+            private int _index;
+            private KeyValuePair<TKey, TValue> _current;
 
-            int _index;
-
-            internal Enumerator(TKey[] keys, TValue[] values) {
+            public Enumerator(TKey[] keys, TValue[] values) {
                 _keys = keys;
                 _values = values;
-                _index = -1;
+                _index = 0;
+                _current = default(KeyValuePair<TKey, TValue>);
             }
 
-            public KeyValuePair<TKey, TValue> Current {
+            public KeyValuePair<TKey, TValue> Current { get { return _current; } }
+
+            object IEnumerator.Current {
                 get {
-                    var i = _index;
-                    return new KeyValuePair<TKey, TValue>(_keys[i], _values[i]);
+                    if (_index == 0 | _index >= _keys.Length)
+                        throw new InvalidOperationException();
+                    return Current;
                 }
             }
-
-            object IEnumerator.Current { get { return Current; } }
 
             public void Dispose() {
             }
 
             public bool MoveNext() {
                 if (_index < _keys.Length) {
+                    _current = new KeyValuePair<TKey, TValue>(_keys[_index], _values[_index]);
                     _index++;
                     return true;
                 }
@@ -82,7 +85,7 @@ namespace WmcSoft.Collections.Generic
         private readonly TKey[] _keys;
         private readonly TValue[] _values;
 
-        public DisjoinedReadOnlyDictionary(TKey[] keys, TValue[] values) {
+        public ZipReadOnlyDictionary(TKey[] keys, TValue[] values) {
             if (keys == null) throw new ArgumentNullException(nameof(keys));
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (keys.Length != values.Length) throw new ArgumentException();
@@ -99,10 +102,12 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
-            for (int i = 0; i < _keys.Length; i++) {
-                yield return new KeyValuePair<TKey, TValue>(_keys[i], _values[i]);
-            }
+        public Enumerator GetEnumerator() {
+            return new Enumerator(_keys, _values);
+        }
+
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() {
+            return GetEnumerator();
         }
 
         /// <summary>

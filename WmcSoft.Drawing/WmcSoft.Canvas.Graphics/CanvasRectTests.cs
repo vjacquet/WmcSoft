@@ -44,6 +44,17 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
+        public void SupportOverlappingRgbaRect() {
+            using (var ctx = CreateCanvas("overlapping.png")) {
+                ctx.FillStyle = Color.FromArgb(200, 0, 0);
+                ctx.FillRect(10, 10, 50, 50);
+
+                ctx.FillStyle = Color.FromArgb((int)(0.5d * 255), 0, 0, 200);
+                ctx.FillRect(30, 30, 50, 50);
+            }
+        }
+
+        [Fact]
         public void SupportRgba() {
             using (var ctx = CreateCanvas("rgba.png")) {
                 ctx.FillStyle = Color.FromArgb(255, 221, 0);
