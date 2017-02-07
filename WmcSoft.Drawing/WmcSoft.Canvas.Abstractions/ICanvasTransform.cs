@@ -26,10 +26,13 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft.Canvas
 {
-    // where M : IMatrix<T>
     public interface ICanvasTransform<M, T>
+        where M : IMatrix<T>
+        where T : IConvertible
     {
         void Scale(T x, T y);
         void Rotate(T angle);
@@ -38,13 +41,15 @@ namespace WmcSoft.Canvas
 
         M TransformationMatrix { get; set; }
 
-        void ResetResetTransformationMatrix();
+        void ResetTransformationMatrix();
     }
 
     public static class CanvasTransformExtensions
     {
-        public static void Set2DTransformation<M, T>(this ICanvasTransform<M, T> canvas, T a, T b, T c, T d, T e, T f) {
-            canvas.ResetResetTransformationMatrix();
+        public static void Set2DTransformation<M, T>(this ICanvasTransform<M, T> canvas, T a, T b, T c, T d, T e, T f)
+            where M : IMatrix<T>
+            where T : IConvertible {
+            canvas.ResetTransformationMatrix();
             canvas.Transform(a, b, c, d, e, f);
         }
     }
