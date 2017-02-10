@@ -70,6 +70,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteCollection.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteDictionary.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
+    <Compile Include="Collections\Generic\EnumerableExtensions.ForEach.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.QuorumAndElected.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.MergeAndCombine.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.MinMax.cs" />
