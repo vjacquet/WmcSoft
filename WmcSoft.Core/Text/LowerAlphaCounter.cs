@@ -33,9 +33,10 @@ namespace WmcSoft.Text
     {
         const char FirstLetter = 'a';
 
+        const int MinStoredValue = 0;
+        const int MaxStoredValue = 26 * 26 * 26 - 1;
+
         static readonly Regex Validator = new Regex("^[a-z]{1,3}$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
-        static readonly int MinStoredValue = 0;
-        static readonly int MaxStoredValue = 26 * 26 * 26 - 1;
 
         public static readonly LowerAlphaCounter MinValue = new LowerAlphaCounter(MinStoredValue);
         public static readonly LowerAlphaCounter MaxValue = new LowerAlphaCounter(MaxStoredValue);
