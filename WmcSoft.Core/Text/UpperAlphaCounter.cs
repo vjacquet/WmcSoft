@@ -29,41 +29,43 @@ using System.Text.RegularExpressions;
 
 namespace WmcSoft.Text
 {
-    public struct LowerLatinCounter : IComparable<LowerLatinCounter>, IEquatable<LowerLatinCounter>
+    public struct UpperAlphaCounter : IComparable<UpperAlphaCounter>, IEquatable<UpperAlphaCounter>
     {
-        static readonly Regex Validator = new Regex("^[a-z]{1,3}$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
+        const char FirstLetter = 'A';
+
+        static readonly Regex Validator = new Regex("^[A-Z]{1,3}$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
         static readonly int MinStoredValue = 0;
         static readonly int MaxStoredValue = 26 * 26 * 26 - 1;
 
-        public static readonly LowerLatinCounter MinValue = new LowerLatinCounter(MinStoredValue);
-        public static readonly LowerLatinCounter MaxValue = new LowerLatinCounter(MaxStoredValue);
+        public static readonly UpperAlphaCounter MinValue = new UpperAlphaCounter(MinStoredValue);
+        public static readonly UpperAlphaCounter MaxValue = new UpperAlphaCounter(MaxStoredValue);
 
         readonly int _storage;
 
-        public LowerLatinCounter(int value) {
+        public UpperAlphaCounter(int value) {
             if (value > MaxStoredValue || value < MinStoredValue)
                 throw new OverflowException();
             _storage = value;
         }
 
-        public LowerLatinCounter(string value) {
+        public UpperAlphaCounter(string value) {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (!Validator.IsMatch(value)) throw new ArgumentException(nameof(value));
 
             var x = 0;
             foreach (var c in value) {
                 x *= 26;
-                x += c - 'a' + 1;
+                x += c - FirstLetter + 1;
             }
             _storage = x - 1;
         }
 
-        public int CompareTo(LowerLatinCounter other) {
+        public int CompareTo(UpperAlphaCounter other) {
             return _storage - other._storage;
         }
 
-        public LowerLatinCounter Increment(int n) {
-            return new LowerLatinCounter(_storage + n);
+        public UpperAlphaCounter Increment(int n) {
+            return new UpperAlphaCounter(_storage + n);
         }
 
         public override int GetHashCode() {
@@ -72,7 +74,7 @@ namespace WmcSoft.Text
 
         public override string ToString() {
             if (_storage < 26)
-                return ((char)('a' + _storage)).ToString();
+                return ((char)(FirstLetter + _storage)).ToString();
 
             var x = _storage;
             var chars = new char[3];
@@ -80,60 +82,60 @@ namespace WmcSoft.Text
             while (x != 0) {
                 var lo = x % 26;
                 x /= 26;
-                chars[--startIndex] = (char)('a' + _storage);
+                chars[--startIndex] = (char)(FirstLetter + _storage);
             }
             return new string(chars, startIndex, 3 - startIndex);
         }
 
-        public bool Equals(LowerLatinCounter other) {
+        public bool Equals(UpperAlphaCounter other) {
             return _storage == other._storage;
         }
 
         public override bool Equals(object obj) {
-            if (obj == null || obj.GetType() != typeof(LowerLatinCounter))
+            if (obj == null || obj.GetType() != typeof(UpperAlphaCounter))
                 return false;
-            return Equals((LowerLatinCounter)obj);
+            return Equals((UpperAlphaCounter)obj);
         }
 
         #region Conversion operators
 
-        public static implicit operator int(LowerLatinCounter x) {
+        public static implicit operator int(UpperAlphaCounter x) {
             return x._storage;
         }
 
-        public static implicit operator string(LowerLatinCounter x) {
+        public static implicit operator string(UpperAlphaCounter x) {
             return x.ToString();
         }
 
-        public static implicit operator LowerLatinCounter(int x) {
-            return new LowerLatinCounter(x);
+        public static implicit operator UpperAlphaCounter(int x) {
+            return new UpperAlphaCounter(x);
         }
 
-        public static implicit operator LowerLatinCounter(string x) {
-            return new LowerLatinCounter(x);
+        public static implicit operator UpperAlphaCounter(string x) {
+            return new UpperAlphaCounter(x);
         }
 
         #endregion
 
         #region Relational operators
 
-        public static bool operator ==(LowerLatinCounter a, LowerLatinCounter b) {
+        public static bool operator ==(UpperAlphaCounter a, UpperAlphaCounter b) {
             return a.Equals(b);
         }
-        public static bool operator !=(LowerLatinCounter a, LowerLatinCounter b) {
+        public static bool operator !=(UpperAlphaCounter a, UpperAlphaCounter b) {
             return !a.Equals(b);
         }
 
-        public static bool operator <(LowerLatinCounter x, LowerLatinCounter y) {
+        public static bool operator <(UpperAlphaCounter x, UpperAlphaCounter y) {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(LowerLatinCounter x, LowerLatinCounter y) {
+        public static bool operator <=(UpperAlphaCounter x, UpperAlphaCounter y) {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(LowerLatinCounter x, LowerLatinCounter y) {
+        public static bool operator >(UpperAlphaCounter x, UpperAlphaCounter y) {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(LowerLatinCounter x, LowerLatinCounter y) {
+        public static bool operator >=(UpperAlphaCounter x, UpperAlphaCounter y) {
             return x.CompareTo(y) >= 0;
         }
 
@@ -141,19 +143,19 @@ namespace WmcSoft.Text
 
         #region Arithmetic operators
 
-        public static LowerLatinCounter operator +(LowerLatinCounter x, int n) {
+        public static UpperAlphaCounter operator +(UpperAlphaCounter x, int n) {
             return x.Increment(n);
         }
 
-        public static LowerLatinCounter operator -(LowerLatinCounter x, int n) {
+        public static UpperAlphaCounter operator -(UpperAlphaCounter x, int n) {
             return x.Increment(-n);
         }
 
-        public static LowerLatinCounter operator ++(LowerLatinCounter x) {
+        public static UpperAlphaCounter operator ++(UpperAlphaCounter x) {
             return x.Increment(1);
         }
 
-        public static LowerLatinCounter operator --(LowerLatinCounter x) {
+        public static UpperAlphaCounter operator --(UpperAlphaCounter x) {
             return x.Increment(-1);
         }
 
