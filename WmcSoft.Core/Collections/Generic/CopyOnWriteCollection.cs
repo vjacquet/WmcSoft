@@ -46,7 +46,7 @@ namespace WmcSoft.Collections.Generic
             get { return _inner; }
         }
 
-        protected ICollection<T> Writtable {
+        protected ICollection<T> Writable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new List<T>(_source);
@@ -63,11 +63,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         public void Add(T item) {
-            Writtable.Add(item);
+            Writable.Add(item);
         }
 
         public void Clear() {
-            Writtable.Clear();
+            Writable.Clear();
         }
 
         public bool Contains(T item) {
@@ -83,7 +83,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public bool Remove(T item) {
-            return Writtable.Remove(item);
+            return Writable.Remove(item);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
