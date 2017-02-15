@@ -13,7 +13,7 @@ namespace WmcSoft.Xml.XPath
         [ClassInitialize]
         public static void Initialize(TestContext context) {
             document = new XmlDocument();
-            document.LoadXml(Resources.XPathLocator);
+            document.LoadXml(TestResources.XPathLocator);
         }
 
         [TestMethod]

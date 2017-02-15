@@ -53,7 +53,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanAddNullItems() {
+        public void CanAddNullItemsToBag() {
             var bag = new Bag<string> { "a", "b", null, "d", "e" };
 
             Assert.IsTrue(bag.Contains("a"));

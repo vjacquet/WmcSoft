@@ -9,12 +9,12 @@ namespace WmcSoft.Collections.Generic
     public class BagSetTests
     {
         [TestMethod]
-        public void CheckBagIsCollection() {
+        public void CheckBagSetIsCollection() {
             ContractAssert.Collection(new BagSet<int>());
         }
 
         [TestMethod]
-        public void CanAddToBag() {
+        public void CanAddToBagSet() {
             var bag = new BagSet<int>() { 1, 2, 3, 4, 5, 6 };
             Assert.AreEqual(6, bag.Count);
             Assert.IsFalse(bag.Contains(0));
@@ -23,7 +23,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveFromBag() {
+        public void CanRemoveFromBagSet() {
             var bag = new BagSet<int>() { 1, 2, 3, 4, 5, 6 };
             Assert.AreEqual(6, bag.Count);
 
@@ -33,7 +33,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanEnumerateBag() {
+        public void CanEnumerateBagSet() {
             var bag = new BagSet<int>() { 1, 2, 3, 4, 5, 6 };
 
             var expected = new[] { 1, 2, 3 };
@@ -42,7 +42,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanAddNullItems() {
+        public void CanAddNullItemsToBagSet() {
             var bag = new BagSet<string> { "a", "b", null, "d", "e" };
 
             Assert.IsTrue(bag.Contains("a"));

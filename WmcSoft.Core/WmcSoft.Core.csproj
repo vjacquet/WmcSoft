@@ -64,12 +64,14 @@
     <Compile Include="Collections\Generic\Bag.cs" />
     <Compile Include="Collections\Generic\BagSet.cs" />
     <Compile Include="Collections\Generic\CollectionDebugView.cs" />
+    <Compile Include="Collections\Generic\CollectionExtensions.MinMaxElement.cs" />
     <Compile Include="Collections\Generic\Compare.cs" />
     <Compile Include="Collections\Generic\CompareBuilderExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerBuilder.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteCollection.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteDictionary.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteList.cs" />
+    <Compile Include="Collections\Generic\EnumerableExtensions.ForEach.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.QuorumAndElected.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.MergeAndCombine.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.MinMax.cs" />
