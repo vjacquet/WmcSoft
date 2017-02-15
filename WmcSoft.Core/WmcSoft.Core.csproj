@@ -193,6 +193,9 @@
     <Compile Include="Text\Alphabet.cs" />
     <Compile Include="Text\ITrie.cs" />
     <Compile Include="Text\LoremIpsumGenerator.cs" />
+    <Compile Include="Text\DecimalCounter.cs" />
+    <Compile Include="Text\UpperAlphaCounter.cs" />
+    <Compile Include="Text\LowerAlphaCounter.cs" />
     <Compile Include="Text\SuffixArray.cs" />
     <Compile Include="Text\Trie.cs" />
     <Compile Include="Triple.cs" />
