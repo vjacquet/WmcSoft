@@ -58,7 +58,7 @@ namespace WmcSoft.Collections.Generic
             get { return _inner; }
         }
 
-        protected IDictionary<TKey, TValue> Writtable {
+        protected IDictionary<TKey, TValue> Writable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new Dictionary<TKey, TValue>(_source, _comparer);
@@ -84,7 +84,7 @@ namespace WmcSoft.Collections.Generic
 
         public TValue this[TKey key] {
             get { return Readable[key]; }
-            set { Writtable[key] = value; }
+            set { Writable[key] = value; }
         }
 
         public bool ContainsKey(TKey key) {
@@ -92,11 +92,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         public void Add(TKey key, TValue value) {
-            Writtable.Add(key, value);
+            Writable.Add(key, value);
         }
 
         public bool Remove(TKey key) {
-            return Writtable.Remove(key);
+            return Writable.Remove(key);
         }
 
         public bool TryGetValue(TKey key, out TValue value) {
@@ -104,11 +104,11 @@ namespace WmcSoft.Collections.Generic
         }
 
         public void Add(KeyValuePair<TKey, TValue> item) {
-            Writtable.Add(item);
+            Writable.Add(item);
         }
 
         public void Clear() {
-            Writtable.Clear();
+            Writable.Clear();
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item) {
@@ -120,7 +120,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item) {
-            return Writtable.Remove(item);
+            return Writable.Remove(item);
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {

@@ -46,7 +46,7 @@ namespace WmcSoft.Collections.Generic
             get { return _inner; }
         }
 
-        protected IList<T> Writtable {
+        protected IList<T> Writable {
             get {
                 if (ReferenceEquals(_inner, _source))
                     _inner = new List<T>(_source); // copy
@@ -64,7 +64,7 @@ namespace WmcSoft.Collections.Generic
 
         public T this[int index] {
             get { return Readable[index]; }
-            set { Writtable[index] = value; }
+            set { Writable[index] = value; }
         }
 
         public int IndexOf(T item) {
@@ -72,19 +72,19 @@ namespace WmcSoft.Collections.Generic
         }
 
         public void Insert(int index, T item) {
-            Writtable.Insert(index, item);
+            Writable.Insert(index, item);
         }
 
         public void RemoveAt(int index) {
-            Writtable.RemoveAt(index);
+            Writable.RemoveAt(index);
         }
 
         public void Add(T item) {
-            Writtable.Add(item);
+            Writable.Add(item);
         }
 
         public void Clear() {
-            Writtable.Clear();
+            Writable.Clear();
         }
 
         public bool Contains(T item) {
@@ -96,7 +96,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public bool Remove(T item) {
-            return Writtable.Remove(item);
+            return Writable.Remove(item);
         }
 
         public IEnumerator<T> GetEnumerator() {
