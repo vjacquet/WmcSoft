@@ -191,6 +191,7 @@
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />
+    <Compile Include="Text\DecimalLeadingZeroCounter.cs" />
     <Compile Include="Text\ITrie.cs" />
     <Compile Include="Text\LoremIpsumGenerator.cs" />
     <Compile Include="Text\DecimalCounter.cs" />
