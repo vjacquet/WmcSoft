@@ -29,7 +29,7 @@ using System.Globalization;
 
 namespace WmcSoft.Text
 {
-    public struct Counter : IComparable<Counter>, IEquatable<Counter>
+    public struct Counter : IComparable<Counter>, IEquatable<Counter>, IFormattable
     {
         readonly int _storage;
 
@@ -50,7 +50,7 @@ namespace WmcSoft.Text
         }
 
         public override string ToString() {
-            return (_storage + 1).ToString(CultureInfo.InvariantCulture);
+            return ToString("1");
         }
 
         public bool Equals(Counter other) {
@@ -132,6 +132,28 @@ namespace WmcSoft.Text
 
         public static Counter operator --(Counter x) {
             return x.Increment(-1);
+        }
+
+        #endregion
+
+        #region IFormattable members
+
+        public string ToString(string format) {
+            return ToString(format, null);
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider) {
+            switch (format) {
+            case "0":
+                return ((DecimalLeadingZeroCounter)_storage).ToString();
+            case "1":
+                return ((DecimalCounter)_storage).ToString();
+            case "a":
+                return ((LowerAlphaCounter)_storage).ToString();
+            case "A":
+                return ((UpperAlphaCounter)_storage).ToString();
+            }
+            throw new FormatException();
         }
 
         #endregion

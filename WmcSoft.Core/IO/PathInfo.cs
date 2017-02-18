@@ -136,6 +136,10 @@ namespace WmcSoft.IO
             return _path;
         }
 
+        public string ToString(string format) {
+            return ToString(format, null);
+        }
+
         public string ToString(string format, IFormatProvider formatProvider) {
             switch (format) {
             case "f":
