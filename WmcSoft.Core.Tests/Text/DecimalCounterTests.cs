@@ -14,13 +14,13 @@ namespace WmcSoft.Text
 
         [TestMethod]
         [ExpectedException(typeof(OverflowException))]
-        public void CanLowerLatinCounterDetectOverflow() {
+        public void CanDecimalCounterDetectOverflow() {
             var value = DecimalCounter.MaxValue;
             value++;
         }
 
         [TestMethod]
-        public void CanPreIncrementLowerLatinCounter() {
+        public void CanPreIncrementDecimalCounter() {
             var m = new DecimalCounter("3");
             var n = new DecimalCounter("4");
             var x = m;
@@ -29,7 +29,7 @@ namespace WmcSoft.Text
         }
 
         [TestMethod]
-        public void CanPostIncrementLowerLatinCounter() {
+        public void CanPostIncrementDecimalCounter() {
             var m = new DecimalCounter("3");
             var n = new DecimalCounter("4");
             var x = m;
@@ -39,15 +39,15 @@ namespace WmcSoft.Text
         }
 
         [TestMethod]
-        public void CanLowerLatinCounterIncrementOverOneLetter() {
-            var actual = new DecimalCounter("26");
-            var expected = new DecimalCounter("27");
+        public void CanDecimalCounterIncrementOverOneLetter() {
+            var actual = new DecimalCounter("9");
+            var expected = new DecimalCounter("10");
             actual++;
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void CanCompareLowerLatinCounter() {
+        public void CanCompareDecimalCounter() {
             var m = new DecimalCounter("3");
             var n = new DecimalCounter("4");
             var q = new DecimalCounter("4");

@@ -139,6 +139,7 @@
     <Compile Include="SuidTests.cs" />
     <Compile Include="SymbolTests.cs" />
     <Compile Include="TestTools\UnitTesting\ContractAssert.cs" />
+    <Compile Include="Text\DecimalLeadingZeroCounterTests.cs" />
     <Compile Include="Text\DecimalCounterTests.cs" />
     <Compile Include="Text\UpperAlphaCounterTests.cs" />
     <Compile Include="Text\LowerAlphaCounterTests.cs" />
