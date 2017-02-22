@@ -43,11 +43,11 @@ namespace WmcSoft.Collections.Generic
         class RandomAdapter : Random
         {
             public override int Next(int minValue, int maxValue) {
-                return maxValue;
+                return maxValue - 1;
             }
 
             public override int Next(int maxValue) {
-                return maxValue;
+                return maxValue - 1;
             }
 
             public override int Next() {
@@ -91,7 +91,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public T Pick() {
-            var last = Count - 1;
+            var last = Count;
             return PopAt(_random.Next(last));
         }
 
