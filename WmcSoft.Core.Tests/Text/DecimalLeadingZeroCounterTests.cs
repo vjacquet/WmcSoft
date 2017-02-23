@@ -47,6 +47,14 @@ namespace WmcSoft.Text
         }
 
         [TestMethod]
+        public void CanDecimalLeadingZeroCounterIncrementOverAHundred() {
+            var actual = new DecimalLeadingZeroCounter("99");
+            var expected = new DecimalLeadingZeroCounter("100");
+            actual++;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void CanCompareDecimalLeadingZeroCounter() {
             var m = new DecimalLeadingZeroCounter("03");
             var n = new DecimalLeadingZeroCounter("04");
