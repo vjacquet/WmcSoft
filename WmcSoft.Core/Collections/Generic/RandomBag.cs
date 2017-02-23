@@ -37,14 +37,17 @@ namespace WmcSoft.Collections.Generic
     {
         #region RandomAdapter class
 
+        /// <summary>
+        /// Adapter to always take the last item and thus removing RandomBag randomness...
+        /// </summary>
         class RandomAdapter : Random
         {
             public override int Next(int minValue, int maxValue) {
-                return maxValue;
+                return maxValue - 1;
             }
 
             public override int Next(int maxValue) {
-                return maxValue;
+                return maxValue - 1;
             }
 
             public override int Next() {
@@ -88,7 +91,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public T Pick() {
-            var last = Count - 1;
+            var last = Count;
             return PopAt(_random.Next(last));
         }
 
@@ -96,7 +99,7 @@ namespace WmcSoft.Collections.Generic
             var array = new T[Count];
             CopyTo(array, 0);
             array.Shuffle(_random);
-            return new Bag<T>.Enumerator(this, array);
+            return new Enumerator(this, array);
         }
     }
 }
