@@ -27,7 +27,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using static WmcSoft.Collections.Generic.Compare;
+
+using static WmcSoft.Collections.Generic.EqualityComparer;
 
 namespace WmcSoft.Text
 {

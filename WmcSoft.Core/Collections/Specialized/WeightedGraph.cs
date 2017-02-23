@@ -30,7 +30,7 @@ using System.Diagnostics;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Collections.Generic.Internals;
 
-using static WmcSoft.Collections.Generic.Compare;
+using static WmcSoft.Collections.Generic.EqualityComparer;
 using TWeight = System.Double;
 
 namespace WmcSoft.Collections.Specialized

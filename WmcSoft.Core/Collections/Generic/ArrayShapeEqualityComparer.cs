@@ -54,13 +54,13 @@ namespace WmcSoft.Collections.Generic
         }
 
         static int GetDimensionHashCode(Array obj, int i) {
-            return Compare.CombineHashCodes(obj.GetLowerBound(i), obj.GetUpperBound(i));
+            return EqualityComparer.CombineHashCodes(obj.GetLowerBound(i), obj.GetUpperBound(i));
         }
 
         public int GetHashCode(Array obj) {
             if (obj == null)
                 return 0;
-            return Compare.CombineHashCodes(obj.Rank, obj.Length, GetDimensionHashCode(obj, 0), GetDimensionHashCode(obj, obj.Rank - 1));
+            return EqualityComparer.CombineHashCodes(obj.Rank, obj.Length, GetDimensionHashCode(obj, 0), GetDimensionHashCode(obj, obj.Rank - 1));
         }
     }
 }
