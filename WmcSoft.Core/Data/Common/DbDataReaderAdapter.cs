@@ -41,30 +41,24 @@ namespace WmcSoft.Data.Common
             _reader = reader;
         }
 
-        public override object this[string name]
-        {
+        public override object this[string name] {
             get { return _reader[name]; }
         }
 
-        public override object this[int ordinal]
-        {
+        public override object this[int ordinal] {
             get { return _reader[ordinal]; }
         }
 
-        public override int Depth
-        {
+        public override int Depth {
             get { return _reader.Depth; }
         }
 
-        public override int FieldCount
-        {
+        public override int FieldCount {
             get { return _reader.FieldCount; }
         }
 
-        public override bool HasRows
-        {
-            get
-            {
+        public override bool HasRows {
+            get {
                 if (!_hasData.HasValue) {
                     Read();
                     _readOnce = true;
@@ -73,13 +67,11 @@ namespace WmcSoft.Data.Common
             }
         }
 
-        public override bool IsClosed
-        {
+        public override bool IsClosed {
             get { return _reader.IsClosed; }
         }
 
-        public override int RecordsAffected
-        {
+        public override int RecordsAffected {
             get { return _reader.RecordsAffected; }
         }
 

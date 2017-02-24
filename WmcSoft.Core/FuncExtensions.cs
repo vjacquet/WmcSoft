@@ -214,7 +214,8 @@ namespace WmcSoft
         /// <param name="func">The function to adapt.</param>
         /// <param name="rethrow">The transformation function for the exception</param>
         /// <returns>The result of the function.</returns>
-        public static Func<TResult> Shield<TResult, TException>(this Func<TResult> func, Func<Exception, TException> rethrow) where TException : Exception {
+        public static Func<TResult> Shield<TResult, TException>(this Func<TResult> func, Func<Exception, TException> rethrow)
+            where TException : Exception {
             return () => {
                 try {
                     return func();
@@ -233,7 +234,8 @@ namespace WmcSoft
         /// <param name="func">The function to adapt.</param>
         /// <param name="rethrow">The transformation function for the exception</param>
         /// <returns>The result of the function.</returns>
-        public static Func<T, TResult> Shield<T, TResult, TException>(this Func<T, TResult> func, Func<Exception, TException> rethrow) where TException : Exception {
+        public static Func<T, TResult> Shield<T, TResult, TException>(this Func<T, TResult> func, Func<Exception, TException> rethrow)
+            where TException : Exception {
             return (T t) => {
                 try {
                     return func(t);
@@ -252,7 +254,8 @@ namespace WmcSoft
         /// <param name="func">The function to adapt.</param>
         /// <param name="rethrow">The transformation function for the exception</param>
         /// <returns>The result of the function.</returns>
-        public static Func<T, TResult> Shield<T, TResult, TException>(this Func<T, TResult> func, Func<T, Exception, TException> rethrow) where TException : Exception {
+        public static Func<T, TResult> Shield<T, TResult, TException>(this Func<T, TResult> func, Func<T, Exception, TException> rethrow)
+            where TException : Exception {
             return (T t) => {
                 try {
                     return func(t);
@@ -270,7 +273,8 @@ namespace WmcSoft
         /// <param name="action">The function to adapt.</param>
         /// <param name="rethrow">The transformation function for the exception</param>
         /// <returns>The result of the function.</returns>
-        public static Action Shield<TResult, TException>(this Action action, Func<Exception, TException> rethrow) where TException : Exception {
+        public static Action Shield<TResult, TException>(this Action action, Func<Exception, TException> rethrow)
+            where TException : Exception {
             return () => {
                 try {
                     action();
@@ -287,7 +291,8 @@ namespace WmcSoft
         /// <typeparam name="TException">The exception type.</typeparam>
         /// <param name="action">The function to adapt.</param>
         /// <param name="rethrow">The transformation function for the exception</param>
-        public static Action<T> Shield<T, TException>(this Action<T> action, Func<Exception, TException> rethrow) where TException : Exception {
+        public static Action<T> Shield<T, TException>(this Action<T> action, Func<Exception, TException> rethrow)
+            where TException : Exception {
             return (T t) => {
                 try {
                     action(t);
@@ -306,7 +311,8 @@ namespace WmcSoft
         /// <param name="action">The function to adapt.</param>
         /// <param name="rethrow">The transformation function for the exception</param>
         /// <returns>The result of the function.</returns>
-        public static Action<T> Shield<T, TException>(this Action<T> action, Func<T, Exception, TException> rethrow) where TException : Exception {
+        public static Action<T> Shield<T, TException>(this Action<T> action, Func<T, Exception, TException> rethrow)
+            where TException : Exception {
             return (T t) => {
                 try {
                     action(t);
@@ -331,6 +337,20 @@ namespace WmcSoft
         }
 
         public static Func<T, bool> Disjunction<T>(this IEnumerable<Func<T, bool>> predicates) {
+            var array = predicates.ToArray();
+            return _ => array.Any(f => f(_));
+        }
+
+        public static Predicate<T> Negation<T>(this Predicate<T> predicate) {
+            return _ => !predicate(_);
+        }
+
+        public static Predicate<T> Conjunction<T>(this IEnumerable<Predicate<T>> predicates) {
+            var array = predicates.ToArray();
+            return _ => array.All(f => f(_));
+        }
+
+        public static Predicate<T> Disjunction<T>(this IEnumerable<Predicate<T>> predicates) {
             var array = predicates.ToArray();
             return _ => array.Any(f => f(_));
         }
