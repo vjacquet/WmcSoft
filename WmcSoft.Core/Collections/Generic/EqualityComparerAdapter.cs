@@ -73,17 +73,14 @@ namespace WmcSoft.Collections.Generic
 
         int Hash(T obj) {
             // We know nothing about the comparer, therefore we can deal with only two types of instances:
-            // those that compares equal to the default, and those that does not.
+            // those that compares equal to the default, and those that do not.
             if (_comparer.Compare(obj, default(T)) == 0)
                 return 0;
             return -1;
         }
 
         int Hash(T obj, T[] knownValues) {
-            var found = Array.BinarySearch(knownValues, obj, _comparer);
-            if (found >= 0)
-                return Math.Abs(knownValues[found].GetHashCode());
-            return -1;
+            return Array.BinarySearch(knownValues, obj, _comparer);
         }
 
         #endregion
