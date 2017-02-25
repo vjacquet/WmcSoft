@@ -29,7 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using WmcSoft.Properties;
-using static WmcSoft.Collections.Generic.Compare;
+using static WmcSoft.Collections.Generic.EqualityComparer;
 
 namespace WmcSoft
 {
@@ -117,7 +117,7 @@ namespace WmcSoft
         }
 
         int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
-            return CombineHashCodes(comparer, Item1, Item2, Item3);
+            return comparer.CombineHashCodes(Item1, Item2, Item3);
         }
 
         int IStructuralComparable.CompareTo(object other, IComparer comparer) {

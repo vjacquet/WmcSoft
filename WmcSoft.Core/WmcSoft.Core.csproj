@@ -65,6 +65,7 @@
     <Compile Include="Collections\Generic\BagSet.cs" />
     <Compile Include="Collections\Generic\CollectionDebugView.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.MinMaxElement.cs" />
+    <Compile Include="Collections\Generic\EqualityComparer.cs" />
     <Compile Include="Collections\Generic\Compare.cs" />
     <Compile Include="Collections\Generic\CompareBuilderExtensions.cs" />
     <Compile Include="Collections\Generic\ComparerBuilder.cs" />
