@@ -27,7 +27,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Properties;
 
@@ -85,13 +84,7 @@ namespace WmcSoft
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
-            sb.Append("(");
-            sb.Append(Item1);
-            sb.Append(", ");
-            sb.Append(Item2);
-            sb.Append(")");
-            return sb.ToString();
+            return "(" + Item1 + ", " + Item2 + ")";
         }
 
         public override bool Equals(object obj) {

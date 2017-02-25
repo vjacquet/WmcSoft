@@ -27,7 +27,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using WmcSoft.Properties;
 using static WmcSoft.Collections.Generic.EqualityComparer;
 
@@ -41,7 +40,7 @@ namespace WmcSoft
     }
 
     /// <summary>
-    /// Represents a Triple of two instances of the same type.
+    /// Represents a Triple of three instances of the same type.
     /// </summary>
     /// <typeparam name="T">The type of the instances.</typeparam>
     /// <remarks>This class mimics <see cref="Tuple{T1, T2, T3}"/> where T1 = T2 = T3.</remarks>
@@ -87,15 +86,7 @@ namespace WmcSoft
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
-            sb.Append("(");
-            sb.Append(Item1);
-            sb.Append(", ");
-            sb.Append(Item2);
-            sb.Append(", ");
-            sb.Append(Item3);
-            sb.Append(")");
-            return sb.ToString();
+            return "(" + Item1 + ", " + Item2 + ", " + Item3 + ")";
         }
 
         public override bool Equals(object obj) {
@@ -149,7 +140,7 @@ namespace WmcSoft
             var comparer = Comparer<T>.Default;
             var result = comparer.Compare(Item1, other.Item1);
             if (result != 0) return result;
-            result =  comparer.Compare(Item2, other.Item2);
+            result = comparer.Compare(Item2, other.Item2);
             if (result != 0) return result;
             return comparer.Compare(Item3, other.Item3);
         }
