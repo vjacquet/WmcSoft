@@ -29,10 +29,10 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Enumerator counting the number of times MoveNext returned true.
+    /// Enumerator counting the number of times <see cref="MoveNext"/> returned <c>true</c>.
     /// </summary>
     /// <typeparam name="T">The type of element being enumerated.</typeparam>
-   public sealed class CountingEnumerator<T> : IEnumerator<T>
+    public sealed class CountingEnumerator<T> : IEnumerator<T>
     {
         readonly IEnumerator<T> _base;
         int _count;
