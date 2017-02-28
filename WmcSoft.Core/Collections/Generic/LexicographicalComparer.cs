@@ -29,6 +29,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Compares two <see cref="IEnumerable{T}"/> in lexicographical order.
+    /// </summary>
+    /// <typeparam name="T">The type of elements of the <see cref="IEnumerable{T}"/> to compare.</typeparam>
     [Serializable]
     public sealed class LexicographicalComparer<T> : IComparer<IEnumerable<T>>
     {
@@ -41,8 +45,7 @@ namespace WmcSoft.Collections.Generic
         #region Lifecycle
 
         public LexicographicalComparer(IComparer<T> comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
             _comparer = comparer;
         }
 

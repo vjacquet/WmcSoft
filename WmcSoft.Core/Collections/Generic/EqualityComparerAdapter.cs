@@ -29,6 +29,11 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Adapts an <see cref="IComparable{T}"/> as an <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of objects to compare.This type parameter is contravariant. That is,
+    /// you can use either the type you specified or any type that is less derived.</typeparam>
     public sealed class EqualityComparerAdapter<T> : IEqualityComparer<T>
     {
         #region Fields
