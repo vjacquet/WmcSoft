@@ -33,7 +33,7 @@ namespace WmcSoft.Canvas
         private readonly byte _storage;
 
         public Transparency(float value) {
-            if (value < 0f || value > 1f) throw new ArgumentOutOfRangeException("value");
+            if (value < 0f || value > 1f) throw new ArgumentOutOfRangeException(nameof(value));
 
             _storage = (byte)(255f * value);
         }
@@ -42,7 +42,7 @@ namespace WmcSoft.Canvas
             return value._storage;
         }
         public static implicit operator Transparency(int value) {
-            if (value < 0 || value > 255) throw new ArgumentOutOfRangeException("value");
+            if (value < 0 || value > 255) throw new ArgumentOutOfRangeException(nameof(value));
             return new Transparency(value / 255f);
         }
 

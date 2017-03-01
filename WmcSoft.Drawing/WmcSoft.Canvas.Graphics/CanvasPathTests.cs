@@ -177,7 +177,7 @@ namespace WmcSoft.Canvas
         [Fact]
         public void SupportRectangle() {
             using (var ctx = CreateCanvas("rect.png")) {
-                ctx.BeginPath(); // TODO: should not be required.
+                //ctx.BeginPath(); // TODO: should not be required.
                 ctx.Rect(10, 10, 100, 100);
                 ctx.Fill();
             }

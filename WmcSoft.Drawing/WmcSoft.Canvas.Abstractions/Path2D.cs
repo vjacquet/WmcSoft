@@ -169,14 +169,16 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
+        protected abstract T Add(T x, T y);
+
         public override void Rect(T x, T y, T w, T h) {
             var path = new Subpath(x, y);
-            //path.points.Add(new Point(x + w, y));
-            //path.points.Add(new Point(x + w, y + h));
-            //path.points.Add(new Point(x, y + h));
-            //path.operations.Add(Operation.Line);
-            //path.operations.Add(Operation.Line);
-            //path.operations.Add(Operation.Line);
+            path.points.Add(new Point(Add(x, w), y));
+            path.points.Add(new Point(Add(x, w), Add(y, h)));
+            path.points.Add(new Point(x, Add(y, h)));
+            path.operations.Add(Operation.Line);
+            path.operations.Add(Operation.Line);
+            path.operations.Add(Operation.Line);
             path.closed = true;
             subpaths.Add(path);
         }

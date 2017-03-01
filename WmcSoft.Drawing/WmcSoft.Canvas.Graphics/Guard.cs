@@ -53,6 +53,5 @@ namespace WmcSoft.Canvas
             if (!IsAlphaValue(value))
                 throw new ArgumentOutOfRangeException(paramName);
         }
-
     }
 }
