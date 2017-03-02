@@ -289,16 +289,16 @@ namespace WmcSoft
         }
 
         public static void Replace<T>(this T[] array, int startIndex, int length, T oldValue, T newValue, IEqualityComparer<T> comparer = null) {
-            if (array == null) throw new ArgumentNullException("array");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
-            if (array.Length < (startIndex + length)) throw new ArgumentException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
 
             UnguardedReplace(array, startIndex, length, oldValue, newValue, comparer);
         }
 
         public static void Replace<T>(this T[] array, T oldValue, T newValue, IEqualityComparer<T> comparer = null) {
-            if (array == null) throw new ArgumentNullException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
 
             UnguardedReplace(array, 0, array.Length, oldValue, newValue, comparer);
         }
@@ -312,18 +312,18 @@ namespace WmcSoft
         }
 
         public static void ReplaceIf<T>(this T[] array, int startIndex, int length, Predicate<T> predicate, T newValue) {
-            if (array == null) throw new ArgumentNullException("array");
-            if (predicate == null) throw new ArgumentNullException("predicate");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
-            if (array.Length < (startIndex + length)) throw new ArgumentException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
 
             UnguardedReplaceIf(array, startIndex, length, predicate, newValue);
         }
 
         public static void ReplaceIf<T>(this T[] array, Predicate<T> predicate, T newValue) {
-            if (array == null) throw new ArgumentNullException("array");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             UnguardedReplaceIf(array, 0, array.Length, predicate, newValue);
         }
