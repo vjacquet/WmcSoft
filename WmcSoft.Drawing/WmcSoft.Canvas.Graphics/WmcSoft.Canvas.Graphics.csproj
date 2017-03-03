@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasImageDataTests.cs" />
     <Compile Include="CanvasPathDrawingStylesTests.cs" />
     <Compile Include="CanvasPathTests.cs" />
     <Compile Include="GlobalCompositingTests.cs" />

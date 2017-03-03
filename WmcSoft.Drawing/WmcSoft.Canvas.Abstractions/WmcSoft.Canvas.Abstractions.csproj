@@ -85,6 +85,8 @@
     <Compile Include="ICanvasTextDrawingStyles.cs" />
     <Compile Include="ICanvasTransform.cs" />
     <Compile Include="ICanvasState.cs" />
+    <Compile Include="IImageData.cs" />
+    <Compile Include="IImageSize.cs" />
     <Compile Include="ImageData.cs" />
     <Compile Include="ImageSmoothingQuality.cs" />
     <Compile Include="IMatrix.cs" />

@@ -29,13 +29,25 @@ namespace WmcSoft.Canvas
     /// <summary>
     /// Pixel manipulation.
     /// </summary>
-    public interface ICanvasImageData<T>
+    public interface ICanvasImageData<TImageData, T>
+        where TImageData : IImageSize<T>
     {
-        // TODO: Define extensions to minimize the interface?
-        ImageData CreateImageData(T sw, T sh);
-        ImageData CreateImageData(ImageData imagedata);
-        ImageData GetImageData(T sx, T sy, T sw, T sh);
-        void PutImageData(ImageData imagedata, T dx, T dy);
-        void PutImageData(ImageData imagedata, T dx, T dy, T dirtyX, T dirtyY, T dirtyWidth, T dirtyHeight);
+        TImageData CreateImageData(T sw, T sh);
+        TImageData GetImageData(T sx, T sy, T sw, T sh);
+        void PutImageData(TImageData imagedata, T dx, T dy, T dirtyX, T dirtyY, T dirtyWidth, T dirtyHeight);
+    }
+
+    public static class CanvasImageDataExtensions
+    {
+        public static TImageData CreateImageData<TImageData, T>(this ICanvasImageData<TImageData, T> canvas, TImageData imagedata)
+            where TImageData : IImageSize<T> {
+            return canvas.CreateImageData(imagedata.Width, imagedata.Height);
+        }
+
+        public static void PutImageData<TImageData, T>(this ICanvasImageData<TImageData, T> canvas, TImageData imagedata, T dx, T dy, T dirtyX = default(T), T dirtyY = default(T), T? dirtyWidth = null, T? dirtyHeight = null)
+            where T : struct
+            where TImageData : IImageSize<T> {
+            canvas.PutImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth ?? imagedata.Width, dirtyHeight ?? imagedata.Height);
+        }
     }
 }

@@ -28,7 +28,7 @@ using System;
 
 namespace WmcSoft.Canvas
 {
-    public struct ImageData
+    public struct ImageData : IImageData<ByteClampedArray, uint>
     {
         public ImageData(uint sw, uint sh) {
             Width = sw;
