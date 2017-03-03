@@ -29,6 +29,11 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Adapts an <see cref="IComparable{T}"/> as an <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of objects to compare.This type parameter is contravariant. That is,
+    /// you can use either the type you specified or any type that is less derived.</typeparam>
     public sealed class EqualityComparerAdapter<T> : IEqualityComparer<T>
     {
         #region Fields
@@ -73,17 +78,14 @@ namespace WmcSoft.Collections.Generic
 
         int Hash(T obj) {
             // We know nothing about the comparer, therefore we can deal with only two types of instances:
-            // those that compares equal to the default, and those that does not.
+            // those that compares equal to the default, and those that do not.
             if (_comparer.Compare(obj, default(T)) == 0)
                 return 0;
             return -1;
         }
 
         int Hash(T obj, T[] knownValues) {
-            var found = Array.BinarySearch(knownValues, obj, _comparer);
-            if (found >= 0)
-                return Math.Abs(knownValues[found].GetHashCode());
-            return -1;
+            return Array.BinarySearch(knownValues, obj, _comparer);
         }
 
         #endregion

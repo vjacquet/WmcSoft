@@ -341,6 +341,7 @@ namespace WmcSoft.Canvas
         }
 
         public void Rect(float x, float y, float w, float h) {
+            BeginPath();
             CurrentPath.AddRectangle(new RectangleF(x, y, w, h));
             _x = x;
             _y = y;

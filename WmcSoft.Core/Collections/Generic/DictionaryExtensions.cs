@@ -115,8 +115,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other)
             where TDictionary : IDictionary<TKey, TValue> {
-            if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
             if (other != null) {
                 foreach (var entry in other) {
                     dictionary.Remove(entry.Key);
@@ -137,8 +137,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other, IEqualityComparer<TValue> comparer)
             where TDictionary : IDictionary<TKey, TValue> {
-            if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
             if (other != null) {
                 foreach (var entry in other) {
                     TValue existing;
@@ -161,8 +161,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary IntersectWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
             where TDictionary : IDictionary<TKey, TValue> {
-            if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
             if (other != null) {
                 foreach (var key in dictionary.Keys.ToArray()) {
                     if (!other.ContainsKey(key))
@@ -183,8 +183,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary IntersectWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, Func<TValue, TValue, TValue> merger)
             where TDictionary : IDictionary<TKey, TValue> {
-            if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
             if (other != null) {
                 foreach (var entry in dictionary.ToArray()) {
                     TValue existing;
@@ -210,8 +210,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>When the key exists in both dictionary, the value is overwritten.</remarks>
         public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other)
             where TDictionary : IDictionary<TKey, TValue> {
-            if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
             if (other != null) {
                 foreach (var entry in other) {
                     dictionary[entry.Key] = entry.Value;
@@ -233,8 +233,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other, Func<TValue, TValue, TValue> merger)
             where TDictionary : IDictionary<TKey, TValue> {
-            if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
             if (other != null) {
                 foreach (var entry in other) {
                     TValue existing;

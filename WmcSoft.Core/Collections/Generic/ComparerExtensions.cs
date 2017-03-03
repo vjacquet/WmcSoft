@@ -49,7 +49,7 @@ namespace WmcSoft.Collections.Generic
 
         #region EqualsAny
 
-        public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2) {
+        public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2){
             return comparer.Equals(reference, value1) || comparer.Equals(reference, value2);
         }
 
@@ -81,7 +81,13 @@ namespace WmcSoft.Collections.Generic
 
         #region Lexicographical
 
-        public static IComparer<IEnumerable<T>> Lexicographical<T>(this IComparer<T> comparer) {
+        /// <summary>
+        /// Creates an <see cref="IComparer{T}"/> to compare two <see cref="IEnumerable{T}"/> in lexicographical order.
+        /// </summary>
+        /// <typeparam name="T">The type of elements of the <see cref="IEnumerable{T}"/> to compare.</typeparam>
+        /// <param name="comparer">The comparer to decorate.</param>
+        /// <returns>The decorated comparer.</returns>
+        public static LexicographicalComparer<T> Lexicographical<T>(this IComparer<T> comparer) {
             return new LexicographicalComparer<T>(comparer);
         }
 
@@ -89,7 +95,13 @@ namespace WmcSoft.Collections.Generic
 
         #region Reverse
 
-        public static IComparer<T> Reverse<T>(this IComparer<T> comparer) {
+        /// <summary>
+        /// Decorates a <see cref="IComparer{T}"/> to exposes a method that compares two objects in descending order.
+        /// </summary>
+        /// <typeparam name="T">The type of objects to compare.</typeparam>
+        /// <param name="comparer">The comparer to decorate.</param>
+        /// <returns>The decorated comparer.</returns>
+        public static ReverseComparer<T> Reverse<T>(this IComparer<T> comparer) {
             return new ReverseComparer<T>(comparer);
         }
 

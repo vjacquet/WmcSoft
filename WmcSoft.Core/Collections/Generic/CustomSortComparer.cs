@@ -44,13 +44,12 @@ namespace WmcSoft.Collections.Generic
             : this(EqualityComparer<T>.Default, customOrder) {
         }
 
-        public CustomSortComparer(IEqualityComparer<T> comparer, params T[] customOrder) {
-            _comparer = comparer ?? EqualityComparer<T>.Default;
-            _customOrder = customOrder;
+        public CustomSortComparer(IComparer<T> comparer, params T[] customOrder)
+            : this(new EqualityComparerAdapter<T>(comparer ?? Comparer<T>.Default, _ => _.GetHashCode())) {
         }
 
-        public CustomSortComparer(IComparer<T> comparer, params T[] customOrder) {
-            _comparer = new EqualityComparerAdapter<T>(comparer ?? Comparer<T>.Default);
+        public CustomSortComparer(IEqualityComparer<T> comparer, params T[] customOrder) {
+            _comparer = comparer ?? EqualityComparer<T>.Default;
             _customOrder = customOrder;
         }
 
