@@ -45,5 +45,16 @@ namespace WmcSoft.Text
             var a = new Strings("a");
             Assert.AreEqual(1, a.Count);
         }
+
+        [TestMethod]
+        public void CanCheckInConditionals() {
+            var empty = default(Strings);
+            if (empty)
+                Assert.Fail();
+
+            Strings value = "value";
+            if (!value)
+                Assert.Fail();
+        }
     }
 }

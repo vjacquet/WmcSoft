@@ -150,11 +150,31 @@ namespace WmcSoft.Text
             return GetEnumerator();
         }
 
+        public bool HasValue {
+            get {
+                var values = Values;
+                switch (values.Length) {
+                case 0: return false;
+                case 1: return _values[0] != null;
+                default: return true;
+                }
+            }
+        }
+
         public static bool IsNullOrEmpty(Strings value) {
             var values = value.Values;
             switch (values.Length) {
             case 0: return true;
             case 1: return string.IsNullOrEmpty(value._values[0]);
+            default: return false;
+            }
+        }
+
+        public static bool IsNullOrWhiteSpace(Strings value) {
+            var values = value.Values;
+            switch (values.Length) {
+            case 0: return true;
+            case 1: return string.IsNullOrWhiteSpace(value._values[0]);
             default: return false;
             }
         }
@@ -186,32 +206,8 @@ namespace WmcSoft.Text
             return true;
         }
 
-        public static bool operator ==(Strings x, Strings y) {
-            return Equals(x, y);
-        }
-
-        public static bool operator !=(Strings x, Strings y) {
-            return !Equals(x, y);
-        }
-
         public bool Equals(Strings other) {
             return Equals(this, other);
-        }
-
-        public static bool operator ==(Strings left, object right) {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Strings left, object right) {
-            return !left.Equals(right);
-        }
-
-        public static bool operator ==(object left, Strings right) {
-            return right.Equals(left);
-        }
-
-        public static bool operator !=(object left, Strings right) {
-            return !right.Equals(left);
         }
 
         public override bool Equals(object obj) {
@@ -248,5 +244,45 @@ namespace WmcSoft.Text
         public bool Equals(string[] other) {
             return Equals(new Strings(other));
         }
+
+        #region Operators
+
+        public static bool operator ==(Strings x, Strings y) {
+            return Equals(x, y);
+        }
+
+        public static bool operator !=(Strings x, Strings y) {
+            return !Equals(x, y);
+        }
+
+        public static bool operator ==(Strings left, object right) {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Strings left, object right) {
+            return !left.Equals(right);
+        }
+
+        public static bool operator ==(object left, Strings right) {
+            return right.Equals(left);
+        }
+
+        public static bool operator !=(object left, Strings right) {
+            return !right.Equals(left);
+        }
+
+        public static bool operator !(Strings x) {
+            return !x.HasValue;
+        }
+
+        public static bool operator true(Strings x) {
+            return x.HasValue;
+        }
+
+        public static bool operator false(Strings x) {
+            return !x.HasValue;
+        }
+
+        #endregion
     }
 }
