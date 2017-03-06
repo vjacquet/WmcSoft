@@ -194,6 +194,20 @@ namespace WmcSoft.Text
             return new Strings(values);
         }
 
+        public static Strings Zip(Strings x, Strings y) {
+            var cx = x.Count;
+            var cy = y.Count;
+            var count = Math.Min(cx, cy);
+            if (count == 0)
+                return default(Strings);
+
+            var values = new string[count];
+            for (int i = 0; i < count; i++) {
+                values[i] = x._values[i] + y._values[i];
+            }
+            return new Strings(values);
+        }
+
         public static bool Equals(Strings x, Strings y) {
             var count = x.Count;
             if (count != y.Count)
@@ -281,6 +295,14 @@ namespace WmcSoft.Text
 
         public static bool operator false(Strings x) {
             return !x.HasValue;
+        }
+
+        public static Strings operator &(Strings x, Strings y) {
+            return Zip(x, y);
+        }
+
+        public static Strings operator |(Strings x, Strings y) {
+            return Concat(x, y);
         }
 
         #endregion

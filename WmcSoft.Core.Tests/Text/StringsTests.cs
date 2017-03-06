@@ -41,6 +41,19 @@ namespace WmcSoft.Text
         }
 
         [TestMethod]
+        public void CanZip() {
+            Strings a = "a";
+            Strings b = "b";
+            Strings e = "";
+            Strings d = default(Strings);
+
+            CollectionAssert.AreEqual(new[] { "ab" }, (string[])Strings.Zip(a, b));
+            CollectionAssert.AreEqual(new[] { "a" }, (string[])Strings.Zip(a, e));
+            CollectionAssert.AreEqual(new[] { "b" }, (string[])Strings.Zip(e, b));
+            CollectionAssert.AreEqual(new string[0], (string[])Strings.Zip(d, b));
+        }
+
+        [TestMethod]
         public void CanConstructStrings() {
             var a = new Strings("a");
             Assert.AreEqual(1, a.Count);
@@ -56,5 +69,6 @@ namespace WmcSoft.Text
             if (!value)
                 Assert.Fail();
         }
+
     }
 }
