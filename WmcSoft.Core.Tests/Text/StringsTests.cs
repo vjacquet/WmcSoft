@@ -70,5 +70,27 @@ namespace WmcSoft.Text
                 Assert.Fail();
         }
 
+        [TestMethod]
+        public void CheckCheckInCombinedConditionals() {
+            Strings a = "a";
+            Strings b = "b";
+            Strings d = default(Strings);
+
+            if (a && d)
+                Assert.Fail();
+
+            if(a && b)
+                Noop();
+            else
+                Assert.Fail();
+
+            if (a || d)
+                Noop();
+            else
+                Assert.Fail();
+        }
+
+        static void Noop() {
+        }
     }
 }
