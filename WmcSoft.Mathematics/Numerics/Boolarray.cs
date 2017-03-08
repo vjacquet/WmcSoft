@@ -402,6 +402,14 @@ namespace WmcSoft.Numerics
             return ~x;
         }
 
+        public static bool operator ==(Boolarray x, Boolarray y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Boolarray x, Boolarray y) {
+            return !x.Equals(y);
+        }
+
         #endregion
 
         #region IEnumerable<bool> Membres
