@@ -150,6 +150,17 @@ namespace WmcSoft.Text
             return GetEnumerator();
         }
 
+        public bool HasValue {
+            get {
+                var values = Values;
+                switch (values.Length) {
+                case 0: return false;
+                case 1: return _values[0] != null;
+                default: return true;
+                }
+            }
+        }
+
         public static bool IsNullOrEmpty(Strings value) {
             var values = value.Values;
             switch (values.Length) {
@@ -159,6 +170,21 @@ namespace WmcSoft.Text
             }
         }
 
+        public static bool IsNullOrWhiteSpace(Strings value) {
+            var values = value.Values;
+            switch (values.Length) {
+            case 0: return true;
+            case 1: return string.IsNullOrWhiteSpace(value._values[0]);
+            default: return false;
+            }
+        }
+
+        /// <summary>
+        /// Append <paramref name="y"/>'s values after <paramref name="x"/>'s values.
+        /// </summary>
+        /// <param name="x">The first argument.</param>
+        /// <param name="y">The second argument.</param>
+        /// <returns>The concatenated values.</returns>
         public static Strings Concat(Strings x, Strings y) {
             var cx = x.Count;
             if (cx == 0)
@@ -174,6 +200,26 @@ namespace WmcSoft.Text
             return new Strings(values);
         }
 
+        /// <summary>
+        /// Concatenate values at the same index. The count of values equals the minimum of the argments' value count.
+        /// </summary>
+        /// <param name="x">The first argument.</param>
+        /// <param name="y">The second argument.</param>
+        /// <returns>The zipped values.</returns>
+        public static Strings Zip(Strings x, Strings y) {
+            var cx = x.Count;
+            var cy = y.Count;
+            var count = Math.Min(cx, cy);
+            if (count == 0)
+                return default(Strings);
+
+            var values = new string[count];
+            for (int i = 0; i < count; i++) {
+                values[i] = x._values[i] + y._values[i];
+            }
+            return new Strings(values);
+        }
+
         public static bool Equals(Strings x, Strings y) {
             var count = x.Count;
             if (count != y.Count)
@@ -186,32 +232,8 @@ namespace WmcSoft.Text
             return true;
         }
 
-        public static bool operator ==(Strings x, Strings y) {
-            return Equals(x, y);
-        }
-
-        public static bool operator !=(Strings x, Strings y) {
-            return !Equals(x, y);
-        }
-
         public bool Equals(Strings other) {
             return Equals(this, other);
-        }
-
-        public static bool operator ==(Strings left, object right) {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Strings left, object right) {
-            return !left.Equals(right);
-        }
-
-        public static bool operator ==(object left, Strings right) {
-            return right.Equals(left);
-        }
-
-        public static bool operator !=(object left, Strings right) {
-            return !right.Equals(left);
         }
 
         public override bool Equals(object obj) {
@@ -248,5 +270,65 @@ namespace WmcSoft.Text
         public bool Equals(string[] other) {
             return Equals(new Strings(other));
         }
+
+        #region Operators
+
+        public static bool operator ==(Strings x, Strings y) {
+            return Equals(x, y);
+        }
+
+        public static bool operator !=(Strings x, Strings y) {
+            return !Equals(x, y);
+        }
+
+        public static bool operator ==(Strings left, object right) {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Strings left, object right) {
+            return !left.Equals(right);
+        }
+
+        public static bool operator ==(object left, Strings right) {
+            return right.Equals(left);
+        }
+
+        public static bool operator !=(object left, Strings right) {
+            return !right.Equals(left);
+        }
+
+        public static bool operator !(Strings x) {
+            return !x.HasValue;
+        }
+
+        public static bool operator true(Strings x) {
+            return x.HasValue;
+        }
+
+        public static bool operator false(Strings x) {
+            return !x.HasValue;
+        }
+
+        /// <summary>
+        /// Operator to perform a <see cref="Zip(Strings, Strings)"/> of the two <see cref="Strings"/>.
+        /// </summary>
+        /// <param name="x">The first argument.</param>
+        /// <param name="y">The second argument.</param>
+        /// <returns>The <see cref="Zip(Strings, Strings)"/> of the two <see cref="Strings"/>.</returns>
+        public static Strings operator &(Strings x, Strings y) {
+            return Zip(x, y);
+        }
+
+        /// <summary>
+        /// Operator to perform a <see cref="Concat(Strings, Strings)"/> of the two <see cref="Strings"/>.
+        /// </summary>
+        /// <param name="x">The first argument.</param>
+        /// <param name="y">The second argument.</param>
+        /// <returns>The <see cref="Concat(Strings, Strings)"/> of the two <see cref="Strings"/>.</returns>
+        public static Strings operator |(Strings x, Strings y) {
+            return Concat(x, y);
+        }
+
+        #endregion
     }
 }

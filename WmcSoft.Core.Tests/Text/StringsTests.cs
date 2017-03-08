@@ -41,9 +41,56 @@ namespace WmcSoft.Text
         }
 
         [TestMethod]
+        public void CanZip() {
+            Strings a = "a";
+            Strings b = "b";
+            Strings e = "";
+            Strings d = default(Strings);
+
+            CollectionAssert.AreEqual(new[] { "ab" }, (string[])Strings.Zip(a, b));
+            CollectionAssert.AreEqual(new[] { "a" }, (string[])Strings.Zip(a, e));
+            CollectionAssert.AreEqual(new[] { "b" }, (string[])Strings.Zip(e, b));
+            CollectionAssert.AreEqual(new string[0], (string[])Strings.Zip(d, b));
+        }
+
+        [TestMethod]
         public void CanConstructStrings() {
             var a = new Strings("a");
             Assert.AreEqual(1, a.Count);
+        }
+
+        [TestMethod]
+        public void CanCheckInConditionals() {
+            var empty = default(Strings);
+            if (empty)
+                Assert.Fail();
+
+            Strings value = "value";
+            if (!value)
+                Assert.Fail();
+        }
+
+        [TestMethod]
+        public void CheckCheckInCombinedConditionals() {
+            Strings a = "a";
+            Strings b = "b";
+            Strings d = default(Strings);
+
+            if (a && d)
+                Assert.Fail();
+
+            if(a && b)
+                Noop();
+            else
+                Assert.Fail();
+
+            if (a || d)
+                Noop();
+            else
+                Assert.Fail();
+        }
+
+        static void Noop() {
         }
     }
 }
