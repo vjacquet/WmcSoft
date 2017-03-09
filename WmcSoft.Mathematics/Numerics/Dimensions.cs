@@ -60,6 +60,14 @@ namespace WmcSoft.Numerics
             return new Dimensions(dimensions);
         }
 
+        public static bool operator ==(Dimensions x, Dimensions y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Dimensions x, Dimensions y) {
+            return !x.Equals(y);
+        }
+
         #region Methods
 
         public int GetCardinality() {
