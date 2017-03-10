@@ -25,6 +25,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
@@ -32,14 +33,16 @@ namespace WmcSoft.Collections.Generic.Internals
     {
         #region fields
 
-        readonly IList<T> _list;
+        private readonly IList<T> _underlying;
 
         #endregion
 
         #region Lifecycle
 
         public ReadOnlyListFacade(IList<T> list) {
-            _list = list;
+            Debug.Assert(list != null);
+
+            _underlying = list;
         }
 
         #endregion
@@ -47,7 +50,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IReadOnlyList<T> Membres
 
         public T this[int index] {
-            get { return _list[index]; }
+            get { return _underlying[index]; }
         }
 
         #endregion
@@ -55,7 +58,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IReadOnlyCollection<T> Membres
 
         public int Count {
-            get { return _list.Count; }
+            get { return _underlying.Count; }
         }
 
         #endregion
@@ -63,7 +66,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IEnumerable<T> Membres
 
         public IEnumerator<T> GetEnumerator() {
-            return _list.GetEnumerator();
+            return _underlying.GetEnumerator();
         }
 
         #endregion

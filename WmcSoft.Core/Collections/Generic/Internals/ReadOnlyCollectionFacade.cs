@@ -34,14 +34,14 @@ namespace WmcSoft.Collections.Generic.Internals
     {
         #region fields
 
-        readonly ICollection<T> _collection;
+        readonly ICollection<T> _underlying;
 
         #endregion
 
         #region Lifecycle
 
         public ReadOnlyCollectionFacade(ICollection<T> collection) {
-            _collection = collection;
+            _underlying = collection;
         }
 
         #endregion
@@ -58,11 +58,11 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public bool Contains(T item) {
             var comparer = EqualityComparer<T>.Default;
-            return _collection.Any(x => comparer.Equals(x, item));
+            return _underlying.Any(x => comparer.Equals(x, item));
         }
 
         public void CopyTo(T[] array, int arrayIndex) {
-            foreach (var item in _collection)
+            foreach (var item in _underlying)
                 array[arrayIndex++] = item;
         }
 
@@ -79,7 +79,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IReadOnlyCollection<T> Membres
 
         public int Count {
-            get { return _collection.Count; }
+            get { return _underlying.Count; }
         }
 
         #endregion
@@ -87,7 +87,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IEnumerable<T> Membres
 
         public IEnumerator<T> GetEnumerator() {
-            return _collection.GetEnumerator();
+            return _underlying.GetEnumerator();
         }
 
         #endregion

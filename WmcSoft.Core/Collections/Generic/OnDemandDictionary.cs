@@ -43,7 +43,7 @@ namespace WmcSoft.Collections.Generic
         private readonly Func<TKey, TValue> _generator;
 
         public OnDemandDictionary(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> generator) {
-            if (generator == null) throw new ArgumentNullException("generator");
+            if (generator == null) throw new ArgumentNullException(nameof(generator));
 
             _storage = dictionary ?? new Dictionary<TKey, TValue>();
             _generator = generator;

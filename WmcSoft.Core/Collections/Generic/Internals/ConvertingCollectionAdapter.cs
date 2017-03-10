@@ -26,27 +26,28 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
     sealed class ConvertingCollectionAdapter<TInput, TOutput> : IReadOnlyCollection<TOutput>, ICollection<TOutput>
     {
-        private readonly IReadOnlyCollection<TInput> _collection;
+        private readonly IReadOnlyCollection<TInput> _underlying;
         private readonly Converter<TInput, TOutput> _convert;
 
         public ConvertingCollectionAdapter(IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter) {
-            if (collection == null) throw new ArgumentNullException("collection");
-            if (converter == null) throw new ArgumentNullException("convert");
+            Debug.Assert(collection != null);
+            Debug.Assert(converter != null);
 
-            _collection = collection;
+            _underlying = collection;
             _convert = converter;
         }
 
         #region IReadOnlyCollection<TOutput> Membres
 
         public int Count {
-            get { return _collection.Count; }
+            get { return _underlying.Count; }
         }
 
         #endregion
@@ -54,7 +55,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IEnumerable<TOutput> Membres
 
         public IEnumerator<TOutput> GetEnumerator() {
-            return _collection.Select(i => _convert(i)).GetEnumerator();
+            return _underlying.Select(i => _convert(i)).GetEnumerator();
         }
 
         #endregion
@@ -79,11 +80,11 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public bool Contains(TOutput item) {
             var comparer = EqualityComparer<TOutput>.Default;
-            return _collection.Any(x => comparer.Equals(_convert(x), item));
+            return _underlying.Any(x => comparer.Equals(_convert(x), item));
         }
 
         public void CopyTo(TOutput[] array, int arrayIndex) {
-            foreach (var item in _collection)
+            foreach (var item in _underlying)
                 array[arrayIndex++] = _convert(item);
         }
 

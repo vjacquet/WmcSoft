@@ -126,6 +126,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="collection">The collection</param>
         /// <returns>A read only collection</returns>
         public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection) {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+
             return new ReadOnlyCollectionFacade<T>(collection);
         }
 
@@ -133,10 +135,25 @@ namespace WmcSoft.Collections.Generic
         /// Shield a list as a readonly list
         /// </summary>
         /// <typeparam name="T">The type of the elements</typeparam>
-        /// <param name="list">The sorted list</param>
+        /// <param name="list">The list</param>
         /// <returns>A read only list</returns>
         public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> list) {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
             return new ReadOnlyListFacade<T>(list);
+        }
+
+        /// <summary>
+        /// Shield a dictionary as a readonly dictionary
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys</typeparam>
+        /// <typeparam name="TValue">The type of the values</typeparam>
+        /// <param name="dictionary">The dictionary</param>
+        /// <returns>A read only dictionary</returns>
+        public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary) {
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
+            return new ReadOnlyDictionaryFacade<TKey, TValue>(dictionary);
         }
 
         /// <summary>
@@ -149,6 +166,9 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A read only list</returns>
         /// <remarks>Conversion are done "on demand" and are not cached.</remarks>
         public static IReadOnlyCollection<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter) {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (converter == null) throw new ArgumentNullException(nameof(converter));
+
             return new ConvertingCollectionAdapter<TInput, TOutput>(collection, converter);
         }
 
@@ -162,6 +182,9 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A read only list</returns>
         /// <remarks>Conversion are done "on demand" and are not cached.</remarks>
         public static IReadOnlyList<TOutput> AsReadOnly<TInput, TOutput>(this IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (converter == null) throw new ArgumentNullException(nameof(converter));
+
             return new ConvertingReadOnlyListAdapter<TInput, TOutput>(list, converter);
         }
 

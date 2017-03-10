@@ -24,9 +24,9 @@
 
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
@@ -42,6 +42,9 @@ namespace WmcSoft.Collections.Generic.Internals
         #region Lifecycle
 
         public ReadOnlyCollectionAdapter(int count, IEnumerable<T> enumerable) {
+            Debug.Assert(enumerable != null);
+            Debug.Assert(count >= 0);
+
             _enumerable = enumerable;
             _count = count;
         }
@@ -50,8 +53,7 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IReadOnlyCollection<T> Members
 
-        public int Count
-        {
+        public int Count {
             get { return _count; }
         }
 
