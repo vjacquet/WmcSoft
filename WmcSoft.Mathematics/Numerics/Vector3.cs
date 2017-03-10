@@ -165,6 +165,14 @@ namespace WmcSoft.Numerics
             return result;
         }
 
+        public static bool operator ==(Vector3 x, Vector3 y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Vector3 x, Vector3 y) {
+            return !x.Equals(y);
+        }
+
         #endregion
 
         #region IEquatable<Vector3> Membres

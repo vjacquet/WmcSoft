@@ -16,6 +16,13 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
+        public void CheckOperatorEqual() {
+            var u = new Vector(1, 2, 3);
+            var v = new Vector(1, 2, 3);
+            Assert.IsTrue(u == v);
+        }
+
+        [TestMethod]
         public void CheckDotProduct() {
             var u = new Vector(1, 2, 3);
             var v = new Vector(1, 2, 3);
@@ -26,7 +33,7 @@ namespace WmcSoft.Numerics.Tests
         [TestMethod]
         public void CheckConvert() {
             var v = new Vector(1, 2, 3);
-            var expected = new double[] { 1, 2, 3};
+            var expected = new double[] { 1, 2, 3 };
             var actual = (double[])v;
             CollectionAssert.AreEqual(expected, actual);
         }

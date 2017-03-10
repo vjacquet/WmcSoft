@@ -25,6 +25,8 @@
 #endregion
 
 using System;
+using System.Collections;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Numerics
 {
@@ -32,7 +34,7 @@ namespace WmcSoft.Numerics
     /// Represents a fraction, where the numerator and denominator are prime to each other.
     /// </summary>
     [Serializable]
-    public struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IFormattable
+    public struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IFormattable, IStructuralEquatable
     {
         #region Constants
 
@@ -93,7 +95,7 @@ namespace WmcSoft.Numerics
             return x;
         }
 
-        public static explicit operator int (Fraction q) {
+        public static explicit operator int(Fraction q) {
             if (q._denominator == 1)
                 return q._numerator;
             int rem;
@@ -200,6 +202,30 @@ namespace WmcSoft.Numerics
             return x.Inverse();
         }
 
+        public static bool operator ==(Fraction x, Fraction y) {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Fraction x, Fraction y) {
+            return !x.Equals(y);
+        }
+
+        public static bool operator <(Fraction x, Fraction y) {
+            return x.CompareTo(y) < 0;
+        }
+
+        public static bool operator <=(Fraction x, Fraction y) {
+            return x.CompareTo(y) <= 0;
+        }
+
+        public static bool operator >=(Fraction x, Fraction y) {
+            return x.CompareTo(y) >= 0;
+        }
+
+        public static bool operator >(Fraction x, Fraction y) {
+            return x.CompareTo(y) > 0;
+        }
+
         #endregion
 
         #region Methods
@@ -258,6 +284,22 @@ namespace WmcSoft.Numerics
             return _numerator.ToString(format, formatProvider)
                 + '/'
                 + _denominator.ToString(format, formatProvider);
+        }
+
+        #endregion
+
+        #region IStructuralEquatable
+
+        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer) {
+            if (other == null || other.GetType() != GetType())
+                return false;
+
+            var that = (Fraction)other;
+            return comparer.Equals(_numerator, that._numerator) && comparer.Equals(_denominator, that._denominator);
+        }
+
+        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
+            return comparer.CombineHashCodes(_numerator, _denominator);
         }
 
         #endregion
