@@ -80,6 +80,7 @@
     <Compile Include="Collections\Generic\EnumerableExtensions.MinMax.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Traits.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Expected.cs" />
+    <Compile Include="Collections\Generic\Internals\ReadOnlyDictionaryFacade.cs" />
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyList.cs" />
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\ZipReadOnlyDictionary.cs" />

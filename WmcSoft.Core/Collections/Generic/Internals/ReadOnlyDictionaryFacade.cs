@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,78 +24,70 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
-    sealed class ReadOnlyCollectionToCollectionAdapter<T> : ICollection<T>, IReadOnlyCollection<T>
+    sealed class ReadOnlyDictionaryFacade<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         #region fields
 
-        readonly IReadOnlyCollection<T> _underlying;
+        private readonly IDictionary<TKey, TValue> _underlying;
 
         #endregion
 
         #region Lifecycle
 
-        public ReadOnlyCollectionToCollectionAdapter(int count, IEnumerable<T> enumerable) {
-            _underlying = new ReadOnlyCollectionAdapter<T>(count, enumerable);
-        }
+        public ReadOnlyDictionaryFacade(IDictionary<TKey, TValue> dictionary) {
+            Debug.Assert(dictionary != null);
 
-        public ReadOnlyCollectionToCollectionAdapter(IReadOnlyCollection<T> collection) {
-            Debug.Assert(collection != null);
-
-            _underlying = collection;
+            _underlying = dictionary;
         }
 
         #endregion
 
-        #region ICollection<T> Membres
+        #region IReadOnlyDictionary<TKey,TValue> Members
 
-        public void Add(T item) {
-            throw new NotSupportedException();
+        public bool ContainsKey(TKey key) {
+            return _underlying.ContainsKey(key);
         }
 
-        public void Clear() {
-            throw new NotSupportedException();
+        public IEnumerable<TKey> Keys {
+            get { return _underlying.Keys; }
         }
 
-        public bool Contains(T item) {
-            return _underlying.Contains(item);
+        public bool TryGetValue(TKey key, out TValue value) {
+            return _underlying.TryGetValue(key, out value);
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
-            foreach (var item in _underlying) {
-                array[arrayIndex++] = item;
-            }
+        public IEnumerable<TValue> Values {
+            get { return _underlying.Values; }
         }
+
+        public TValue this[TKey key] {
+            get { return _underlying[key]; }
+        }
+
+        #endregion
+
+        #region IReadOnlyCollection<KeyValuePair<TKey,TValue>> Members
 
         public int Count {
             get { return _underlying.Count; }
         }
 
-        public bool IsReadOnly {
-            get { return true; }
-        }
-
-        public bool Remove(T item) {
-            throw new NotSupportedException();
-        }
-
         #endregion
 
-        #region IEnumerable<T> Membres
+        #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
             return _underlying.GetEnumerator();
         }
 
         #endregion
 
-        #region IEnumerable Membres
+        #region IEnumerable Members
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return GetEnumerator();

@@ -26,27 +26,28 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
     sealed class ConvertingReadOnlyListAdapter<TInput, TOutput> : IReadOnlyList<TOutput>, ICollection<TOutput>
     {
-        private readonly IReadOnlyList<TInput> _list;
+        private readonly IReadOnlyList<TInput> _underlying;
         private readonly Converter<TInput, TOutput> _convert;
 
         public ConvertingReadOnlyListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
-            if (list == null) throw new ArgumentNullException("list");
-            if (converter == null) throw new ArgumentNullException("convert");
+            Debug.Assert(list != null);
+            Debug.Assert(converter != null);
 
-            _list = list;
+            _underlying = list;
             _convert = converter;
         }
 
         #region IReadOnlyList<TOutput> Membres
 
         public TOutput this[int index] {
-            get { return _convert(_list[index]); }
+            get { return _convert(_underlying[index]); }
         }
 
         #endregion
@@ -54,7 +55,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IReadOnlyCollection<TOutput> Membres
 
         public int Count {
-            get { return _list.Count; }
+            get { return _underlying.Count; }
         }
 
         #endregion
@@ -62,7 +63,7 @@ namespace WmcSoft.Collections.Generic.Internals
         #region IEnumerable<TOutput> Membres
 
         public IEnumerator<TOutput> GetEnumerator() {
-            return _list.Select(i => _convert(i)).GetEnumerator();
+            return _underlying.Select(i => _convert(i)).GetEnumerator();
         }
 
         #endregion
@@ -87,13 +88,13 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public bool Contains(TOutput item) {
             var comparer = EqualityComparer<TOutput>.Default;
-            return _list.Any(x => comparer.Equals(_convert(x), item));
+            return _underlying.Any(x => comparer.Equals(_convert(x), item));
         }
 
         public void CopyTo(TOutput[] array, int arrayIndex) {
-            var length = _list.Count;
+            var length = _underlying.Count;
             for (int i = 0; i != length; i++)
-                array[arrayIndex + i] = _convert(_list[i]);
+                array[arrayIndex + i] = _convert(_underlying[i]);
         }
 
         public bool IsReadOnly {
