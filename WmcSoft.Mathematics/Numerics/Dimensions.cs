@@ -144,13 +144,6 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Dimensions> Membres
 
-        public static bool operator ==(Dimensions x, Dimensions y) {
-            return x.Equals(y);
-        }
-        public static bool operator !=(Dimensions x, Dimensions y) {
-            return !x.Equals(y);
-        }
-
         public bool Equals(Dimensions other) {
             var length = Count;
             if (length != other.Count)
