@@ -108,9 +108,8 @@ namespace WmcSoft.Collections.Generic
 
                 var ballot = new Ballot<TSource>(equalityComparer);
                 do {
-                    if (!eligible(enumerator.Current))
-                        continue;
-                    ballot.Vote(enumerator.Current);
+                    if (eligible(enumerator.Current))
+                        ballot.Vote(enumerator.Current);
                 } while (enumerator.MoveNext());
                 return ballot.GetWinner();
             }
@@ -160,12 +159,10 @@ namespace WmcSoft.Collections.Generic
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     return default(TSource);
-
                 var ballot = new Ballot<TSource>(equalityComparer);
                 do {
-                    if (!eligible(enumerator.Current))
-                        continue;
-                    ballot.Vote(enumerator.Current);
+                    if (eligible(enumerator.Current))
+                        ballot.Vote(enumerator.Current);
                 } while (enumerator.MoveNext());
                 if (!ballot.HasVotes)
                     return default(TSource);

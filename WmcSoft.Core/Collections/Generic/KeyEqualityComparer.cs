@@ -43,8 +43,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         public KeyEqualityComparer(Func<T, K> selector, IEqualityComparer<K> comparer = null) {
-            if (selector == null)
-                throw new ArgumentNullException("selector");
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             _selector = (x) => (x != null) ? selector(x) : default(K);
             _comparer = comparer ?? EqualityComparer<K>.Default;

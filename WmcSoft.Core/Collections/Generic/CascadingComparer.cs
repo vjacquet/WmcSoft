@@ -48,7 +48,7 @@ namespace WmcSoft.Collections.Generic
         #region Lifecycle
 
         public CascadingComparer(params IComparer<T>[] comparers) {
-            if (comparers == null) throw new ArgumentNullException("comparers");
+            if (comparers == null) throw new ArgumentNullException(nameof(comparers));
             if (comparers.Length == 0) throw new ArgumentException();
 
             _comparers = comparers;

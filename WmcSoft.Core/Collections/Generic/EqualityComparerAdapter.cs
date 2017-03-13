@@ -45,18 +45,26 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public EqualityComparerAdapter(IComparer<T> comparer, Func<T, int> hasher = null) {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+        public EqualityComparerAdapter() {
+            _comparer = Comparer<T>.Default;
+            _hasher = Hash;
+        }
 
-            _comparer = comparer;
+        public EqualityComparerAdapter(Func<T, int> hasher) : this(Comparer<T>.Default, hasher) {
+        }
+
+        public EqualityComparerAdapter(IComparer<T> comparer, Func<T, int> hasher = null) {
+            _comparer = comparer ?? Comparer<T>.Default;
             _hasher = hasher ?? Hash;
         }
 
-        public EqualityComparerAdapter(IComparer<T> comparer, params T[] knownValues) {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+        public EqualityComparerAdapter(params T[] knownValues) : this(Comparer<T>.Default, knownValues) {
+        }
 
+        public EqualityComparerAdapter(IComparer<T> comparer, params T[] knownValues) {
+            _comparer = comparer ?? Comparer<T>.Default;
             var array = (T[])knownValues.Clone();
-            Array.Sort(array, comparer);
+            Array.Sort(array, _comparer);
             _hasher = x => Hash(x, array);
         }
 

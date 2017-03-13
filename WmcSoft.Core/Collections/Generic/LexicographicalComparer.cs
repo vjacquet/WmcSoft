@@ -38,21 +38,45 @@ namespace WmcSoft.Collections.Generic
     {
         #region Fields
 
-        readonly IComparer<T> _comparer;
+        private readonly IComparer<T> _comparer;
 
         #endregion
 
         #region Lifecycle
 
-        public LexicographicalComparer(IComparer<T> comparer) {
-            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
-            _comparer = comparer;
+        public LexicographicalComparer(IComparer<T> comparer = null) {
+            _comparer = comparer ?? Comparer<T>.Default;
         }
 
         #endregion
 
         #region IComparer Members
 
+        /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+        /// <param name="x">The first instance to compare.</param>
+        /// <param name="y">The second instance to compare.</param>
+        /// <returns>
+        /// A signed integer that indicates the relative values of x and y, as shown in the
+        /// following table.
+        /// <list type="table">
+        /// <listheader>
+        ///   <description>Value</description>
+        ///   <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        ///   <description>Less than zero</description>
+        ///   <description>x is less than y.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Zero</description>
+        ///   <description>x equals y.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Greater than zero</description>
+        ///   <description>x is greater than y.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
         public int Compare(IEnumerable<T> x, IEnumerable<T> y) {
             if (ReferenceEquals(x, y))
                 return 0;

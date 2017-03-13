@@ -40,8 +40,8 @@ namespace WmcSoft.Collections.Generic
         private readonly Func<T, T, int> _comparer;
 
         public AnonymousComparer(Func<T, T, int> comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+
             _comparer = comparer;
         }
 

@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -38,6 +39,8 @@ namespace WmcSoft.Collections.Generic
         readonly IEqualityComparer<T> _comparer;
 
         public SourceEqualityComparer(IReadOnlyList<T> list, IEqualityComparer<T> comparer = null) {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
             _list = list;
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
