@@ -34,6 +34,13 @@ namespace WmcSoft
 {
     public static class Pair
     {
+        /// <summary>
+        /// Creates a pair.
+        /// </summary>
+        /// <typeparam name="T">The type of the components of the pair.</typeparam>
+        /// <param name="item1">The value of the first component of the pair.</param>
+        /// <param name="item2">The value of the second component of the pair.</param>
+        /// <returns>A pair whose value is (<paramref name="item1"/>, <paramref name="item2"/>).</returns>
         public static Pair<T> Create<T>(T item1, T item2) {
             return new Pair<T>(item1, item2);
         }
@@ -111,7 +118,7 @@ namespace WmcSoft
             if (other == null)
                 return 1;
             if (other.GetType() != GetType())
-                throw new ArgumentException(string.Format(Resources.ComparisonIncorrectTypeFormat, GetType(), other.GetType()), "other");
+                throw new ArgumentException(string.Format(Resources.ComparisonIncorrectTypeFormat, GetType(), other.GetType()), nameof(other));
 
             var that = (Pair<T>)other;
             var result = comparer.Compare(Item1, that.Item1);
