@@ -32,6 +32,9 @@ using WmcSoft.Properties;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Provides static methods for creating triple objects.
+    /// </summary>
     public static class Triple
     {
         /// <summary>
