@@ -214,18 +214,6 @@ namespace WmcSoft
             return UnguardedAsWords(sentence);
         }
 
-        public static string ToSnakeCase(this string source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return UnguardedAsWords(source).Select(w =>w.ToLowerInvariant()).Join("_");
-        }
-
-        public static string ToKebabCase(this string source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).Join("-");
-        }
-
         #endregion
 
         #region Case operations
@@ -408,6 +396,39 @@ namespace WmcSoft
                 list.Add(s.ToLowerInvariant());
             }
             return list.ToArray();
+        }
+
+        public static string ToCamelCase(this string self)
+        {
+            if (string.IsNullOrEmpty(self) || !char.IsUpper(self[0]))
+                return self;
+
+            var culture = CultureInfo.InvariantCulture;
+            char[] array = self.ToCharArray();
+            int i = 0;
+            while (i < array.Length && (i != 1 || char.IsUpper(array[i])))
+            {
+                bool flag = i + 1 < array.Length;
+                if ((i > 0 & flag) && !char.IsUpper(array[i + 1]))
+                {
+                    break;
+                }
+                array[i] = char.ToLower(array[i], culture);
+                i++;
+            }
+            return new string(array);
+        }
+
+        public static string ToSnakeCase(this string source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).Join("_");
+        }
+
+        public static string ToKebabCase(this string source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).Join("-");
         }
 
         #endregion
