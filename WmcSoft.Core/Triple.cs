@@ -27,13 +27,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using WmcSoft.Collections.Generic;
 using WmcSoft.Properties;
-using static WmcSoft.Collections.Generic.EqualityComparer;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Provides static methods for creating triple objects.
+    /// </summary>
     public static class Triple
     {
+        /// <summary>
+        /// Creates a triple.
+        /// </summary>
+        /// <typeparam name="T">The type of the components of the triple.</typeparam>
+        /// <param name="item1">The value of the first component of the triple.</param>
+        /// <param name="item2">The value of the second component of the triple.</param>
+        /// <param name="item3">The value of the third component of the triple.</param>
+        /// <returns>A triple whose value is (<paramref name="item1"/>, <paramref name="item2"/>, <paramref name="item3"/>).</returns>
         public static Triple<T> Create<T>(T item1, T item2, T item3) {
             return new Triple<T>(item1, item2, item3);
         }
@@ -115,7 +126,7 @@ namespace WmcSoft
             if (other == null)
                 return 1;
             if (other.GetType() != GetType())
-                throw new ArgumentException(string.Format(Resources.ComparisonIncorrectTypeFormat, GetType(), other.GetType()), "other");
+                throw new ArgumentException(string.Format(Resources.ComparisonIncorrectTypeFormat, GetType(), other.GetType()), nameof(other));
 
             var that = (Triple<T>)other;
             var result = comparer.Compare(Item1, that.Item1);

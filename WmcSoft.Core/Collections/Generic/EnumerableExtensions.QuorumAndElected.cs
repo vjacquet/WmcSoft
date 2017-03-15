@@ -25,15 +25,8 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using WmcSoft.Collections.Generic.Internals;
-
-using static WmcSoft.Algorithms;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -48,11 +41,9 @@ namespace WmcSoft.Collections.Generic
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns>true if the quorum is reached; otherwise, false.</returns>
         public static bool Quorum<TSource>(this IEnumerable<TSource> source, int quorum, Predicate<TSource> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (quorum < 1) throw new ArgumentOutOfRangeException(nameof(quorum));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-
-            if (source == null)
-                return false;
 
             using (var enumerator = source.GetEnumerator()) {
                 while (enumerator.MoveNext()) {
@@ -76,6 +67,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource Elected<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
             where TSource : IEquatable<TSource> {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     throw new InvalidOperationException();
@@ -125,8 +118,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
             where TSource : IEquatable<TSource> {
-            if (source == null)
-                return default(TSource);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     return default(TSource);
@@ -152,9 +145,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
             where TSource : IEquatable<TSource> {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (eligible == null) throw new ArgumentNullException(nameof(eligible));
-            if (source == null)
-                return default(TSource);
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())

@@ -32,7 +32,7 @@ namespace WmcSoft.Collections.Generic.Internals
 {
     internal class Ballot<T> : IEnumerable<KeyValuePair<T, int>>
     {
-        // Paper enables voting to "null", because this value is not allowed by default on Dictionary.
+        // Paper enables voting to "null", because this value is not allowed by default on dictionary key.
         // CandidateComparer compares the Candidate on the Paper
         // Score has a Rank to allow stability: on ties, the first presented element wins.
 
@@ -48,8 +48,8 @@ namespace WmcSoft.Collections.Generic.Internals
         {
             private readonly IEqualityComparer<T> _equalityComparer;
 
-            public CandidateComparer(IEqualityComparer<T> equalityComparer = null) {
-                _equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
+            public CandidateComparer(IEqualityComparer<T> equalityComparer) {
+                _equalityComparer = equalityComparer;
             }
 
             #region IEqualityComparer<Votes> Membres
@@ -93,7 +93,7 @@ namespace WmcSoft.Collections.Generic.Internals
         private readonly Dictionary<Paper, Score> _votes;
 
         public Ballot(IEqualityComparer<T> equalityComparer = null) {
-            _votes = new Dictionary<Paper, Score>(new CandidateComparer(equalityComparer));
+            _votes = new Dictionary<Paper, Score>(new CandidateComparer(equalityComparer ?? EqualityComparer<T>.Default));
         }
 
         public void Vote(T candidate) {
