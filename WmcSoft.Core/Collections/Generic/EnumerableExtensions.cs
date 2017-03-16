@@ -172,16 +172,16 @@ namespace WmcSoft.Collections.Generic
 
         #region Backwards
 
-        static IEnumerable<T> UnguardedBackwards<T>(IReadOnlyList<T> source) {
+        public static IEnumerable<T> UnguardedBackwards<T>(IReadOnlyList<T> source) {
             for (int i = source.Count - 1; i >= 0; i--) {
                 yield return source[i];
             }
         }
 
-        public static IReadOnlyCollection<T> Backwards<T>(this IReadOnlyList<T> source) {
+        public static IReadOnlyList<T> Backwards<T>(this IReadOnlyList<T> source) {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return new ReadOnlyCollectionAdapter<T>(source.Count, UnguardedBackwards(source));
+            return new BackwardsReadOnlyList<T>(source);
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,61 +24,38 @@
 
 #endregion
 
-using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace WmcSoft.Collections.Generic
+using static WmcSoft.Collections.Generic.EnumerableExtensions;
+
+namespace WmcSoft.Collections.Generic.Internals
 {
-    public class SingleItemReadOnlyList<T> : IReadOnlyList<T>
+    sealed class BackwardsReadOnlyList<T> : IReadOnlyList<T>
     {
-        #region Fields
+        private readonly IReadOnlyList<T> _underlying;
 
-        private T _item;
+        public BackwardsReadOnlyList(IReadOnlyList<T> underlying) {
+            Debug.Assert(underlying != null);
 
-        #endregion
-
-        #region Lifecycle
-
-        public SingleItemReadOnlyList(T item) {
-            _item = item;
+            _underlying = underlying;
         }
-
-        #endregion
-
-        #region IList<T> Membres
 
         public T this[int index] {
-            get {
-                if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
-
-                return _item;
-            }
+            get { return _underlying[_underlying.Count - index - 1]; }
         }
-
-        #endregion
-
-        #region ICollection<T> Membres
 
         public int Count {
-            get { return 1; }
+            get { return _underlying.Count; }
         }
-
-        #endregion
-
-        #region IEnumerable<T> Membres
 
         public IEnumerator<T> GetEnumerator() {
-            yield return _item;
+            return UnguardedBackwards(_underlying).GetEnumerator();
         }
 
-        #endregion
-
-        #region IEnumerable Membres
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() {
+            return _underlying.GetEnumerator();
         }
-
-        #endregion
     }
 }
