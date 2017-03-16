@@ -198,5 +198,21 @@ namespace WmcSoft
             var expected = words;
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckToCamelCase() {
+            Assert.AreEqual("checkToCamelCase", "CheckToCamelCase".ToCamelCase());
+        }
+
+        [TestMethod]
+        public void CheckToSnakeCase() {
+            Assert.AreEqual("check_to_snake_case", "CheckToSnakeCase".ToSnakeCase());
+        }
+
+        [TestMethod]
+        public void CheckToKebabCase() {
+            Assert.AreEqual("check-to-kebab-case", "CheckToKebabCase".ToKebabCase());
+        }
+
     }
 }
