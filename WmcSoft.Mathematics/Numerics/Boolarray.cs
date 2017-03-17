@@ -155,13 +155,16 @@ namespace WmcSoft.Numerics
         }
 
         private Boolarray(bool value, int[] dimensions)
-            : this(new Dimensions(dimensions)) {
+            : this(value, new Dimensions(dimensions)) {
+        }
+
+        private Boolarray(bool value, Dimensions dimensions)
+            : this(dimensions) {
             var length = _data.Length;
             for (int i = 0; i < length; i++) {
                 _data[i] = value;
             }
         }
-
         public Boolarray(int n) {
             if (n < 0) throw new ArgumentNullException("n");
 
@@ -194,18 +197,34 @@ namespace WmcSoft.Numerics
         }
 
         /// <summary>
-        /// Construct a Boolarray filled with zeros.
+        /// Construct a Boolarray filled with <c>false</c> values.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
         public static Boolarray Falsities(params int[] dimensions) {
             return new Boolarray(dimensions);
         }
 
         /// <summary>
-        /// Construct a Boolarray filled with ones.
+        /// Construct a Boolarray filled with <c>false</c> values.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
+        public static Boolarray Falsities(Dimensions dimensions) {
+            return new Boolarray(dimensions);
+        }
+
+        /// <summary>
+        /// Construct a Boolarray filled with <c>true</c> values.
+        /// </summary>
+        /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
         public static Boolarray Truths(params int[] dimensions) {
+            return new Boolarray(true, dimensions);
+        }
+
+        /// <summary>
+        /// Construct a Boolarray filled with <c>true</c> values.
+        /// </summary>
+        /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
+        public static Boolarray Truths(Dimensions dimensions) {
             return new Boolarray(true, dimensions);
         }
 
@@ -389,7 +408,7 @@ namespace WmcSoft.Numerics
         }
 
         public static Boolarray operator ^(Boolarray x, Boolarray y) {
-            return Combine(x, y, (a, b) => a ^b);
+            return Combine(x, y, (a, b) => a ^ b);
         }
         public static Boolarray Xor(Boolarray x, Boolarray y) {
             return x ^ y;
@@ -408,6 +427,20 @@ namespace WmcSoft.Numerics
 
         public static bool operator !=(Boolarray x, Boolarray y) {
             return !x.Equals(y);
+        }
+
+        public static Boolarray operator !(Boolarray x) {
+            return x.All(v => v)
+                ? Falsities(x._dimensions)
+                : Truths(x._dimensions);
+        }
+
+        public static bool operator true(Boolarray x) {
+            return x.All(v => v);
+        }
+
+        public static bool operator false(Boolarray x) {
+            return !x.Any(v => !v);
         }
 
         #endregion
