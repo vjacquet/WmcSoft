@@ -58,6 +58,7 @@
     <Compile Include="Business\Accounting\PaymentCard.cs" />
     <Compile Include="Business\Accounting\PaymentMethod.cs" />
     <Compile Include="Business\Accounting\RM.cs" />
+    <Compile Include="Business\ActionsUnitOfWork.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Action.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Communication.cs" />
     <Compile Include="Business\CustomerRelationshipModel\CommunicationRouting.cs" />

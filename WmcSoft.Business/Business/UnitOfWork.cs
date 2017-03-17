@@ -37,7 +37,8 @@ namespace WmcSoft.Business
     /// </summary>
     /// <typeparam name="TEntity">The type of entities.</typeparam>
     /// <remarks>See http://www.martinfowler.com/eaaCatalog/unitOfWork.html </remarks>
-    public abstract class UnitOfWork<TEntity> : IRevertibleChangeTracking where TEntity : class
+    public abstract class UnitOfWork<TEntity> : IRevertibleChangeTracking
+        where TEntity : class
     {
         #region Private fields
 
@@ -59,11 +60,21 @@ namespace WmcSoft.Business
 
         #endregion
 
+        #region Properties
+
+        public int Count {
+            get {
+                return _newInstances.Count + _dirtyInstances.Count + _removeInstances.Count;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         public void RegisterNew(TEntity instance) {
-            if (instance == null)
-                throw new ArgumentNullException("instance");
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+
             Trace.Assert(!_dirtyInstances.Contains(instance), "Domain object should not be dirty");
             Trace.Assert(!_removeInstances.Contains(instance), "Domain object should not be removed");
             Trace.Assert(!_newInstances.Contains(instance), "Domain object should not already be registered as new");
@@ -71,8 +82,8 @@ namespace WmcSoft.Business
         }
 
         public void RegisterDirty(TEntity instance) {
-            if (instance == null)
-                throw new ArgumentNullException("instance");
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+
             Trace.Assert(!_removeInstances.Contains(instance), "Domain object should not be removed");
             if (!_dirtyInstances.Contains(instance) && !_newInstances.Contains(instance)) {
                 _dirtyInstances.Add(instance);
@@ -80,12 +91,14 @@ namespace WmcSoft.Business
         }
 
         public void RegisterClean(TEntity instance) {
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+
             _identityMap.Register(instance);
         }
 
         public void RegisterRemoved(TEntity instance) {
-            if (instance == null)
-                throw new ArgumentNullException("instance");
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+
             if (!_newInstances.Remove(instance)) {
                 _dirtyInstances.Remove(instance);
                 if (!_removeInstances.Contains(instance)) {
@@ -118,8 +131,7 @@ namespace WmcSoft.Business
             Commit();
         }
 
-        bool IChangeTracking.IsChanged
-        {
+        bool IChangeTracking.IsChanged {
             get {
                 return _newInstances.Count > 0 | _dirtyInstances.Count > 0 | _removeInstances.Count > 0;
             }
