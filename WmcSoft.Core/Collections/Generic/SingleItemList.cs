@@ -57,26 +57,26 @@ namespace WmcSoft.Collections.Generic
         }
 
         public void Insert(int index, T item) {
-            if (_hasValue | index != 0)
-                throw new ArgumentOutOfRangeException("index");
+            if (_hasValue | index != 0) throw new ArgumentOutOfRangeException(nameof(index));
+
             _item = item;
         }
 
         public void RemoveAt(int index) {
-            if (index != 0)
-                throw new ArgumentOutOfRangeException("index");
+            if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
+
             _hasValue = false;
         }
 
         public T this[int index] {
             get {
-                if (!_hasValue | index != 0)
-                    throw new ArgumentOutOfRangeException("index");
+                if (!_hasValue | index != 0) throw new ArgumentOutOfRangeException(nameof(index));
+
                 return _item;
             }
             set {
-                if (!_hasValue | index != 0)
-                    throw new ArgumentOutOfRangeException("index");
+                if (!_hasValue | index != 0) throw new ArgumentOutOfRangeException(nameof(index));
+
                 _item = value;
             }
         }
