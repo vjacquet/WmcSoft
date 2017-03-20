@@ -201,6 +201,8 @@ namespace WmcSoft.Collections.Generic
             if (list != null)
                 return Backwards(list.AsReadOnly());
 
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             return source.Reverse();
         }
 
@@ -270,8 +272,7 @@ namespace WmcSoft.Collections.Generic
                     }
                 }
                 return Enumerable.Empty<TSource>();
-            }
-            finally {
+            } finally {
                 if (enumerator != null)
                     enumerator.Dispose();
             }
@@ -286,6 +287,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="predicates">The prioritized sequence of predicates.</param>
         /// <returns>The elements matching the first predicate to match any element.</returns>
         public static IEnumerable<TSource> Choose<TSource>(this IEnumerable<TSource> source, params Func<TSource, bool>[] predicates) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var length = predicates == null ? 0 : predicates.Length;
             switch (length) {
             case 0:
@@ -871,7 +874,7 @@ namespace WmcSoft.Collections.Generic
         public static IEnumerable<TSource> TailUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0)
-                return System.Linq.Enumerable.Empty<TSource>();
+                return Enumerable.Empty<TSource>();
             Func<TSource, bool> unless = x => !predicate(x);
             if (count == 1)
                 return TailUnless1(source, unless);
@@ -1140,7 +1143,7 @@ namespace WmcSoft.Collections.Generic
 
         #region ZipAll methods
 
-        public static IEnumerable<TResult> ZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector) {
+        public static IEnumerable<TResult> UnguardedZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector) {
             using (var enumerator1 = first.GetEnumerator())
             using (var enumerator2 = second.GetEnumerator()) {
                 while (true) {
@@ -1159,6 +1162,14 @@ namespace WmcSoft.Collections.Generic
                     yield return resultSelector(enumerator1.Current, enumerator2.Current);
                 }
             }
+        }
+
+        public static IEnumerable<TResult> ZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector) {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return UnguardedZipAll(first, second, resultSelector);
         }
 
         #endregion
