@@ -41,6 +41,16 @@ namespace WmcSoft
         /// Creates a triple.
         /// </summary>
         /// <typeparam name="T">The type of the components of the triple.</typeparam>
+        /// <param name="item">The value of the three component of the triple.</param>
+        /// <returns>A triple whose value is (<paramref name="item"/>, <paramref name="item"/>, <paramref name="item"/>).</returns>
+        public static Triple<T> Create<T>(T item = default(T)) {
+            return new Triple<T>(item, item, item);
+        }
+
+        /// <summary>
+        /// Creates a triple.
+        /// </summary>
+        /// <typeparam name="T">The type of the components of the triple.</typeparam>
         /// <param name="item1">The value of the first component of the triple.</param>
         /// <param name="item2">The value of the second component of the triple.</param>
         /// <param name="item3">The value of the third component of the triple.</param>

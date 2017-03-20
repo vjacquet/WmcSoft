@@ -41,6 +41,16 @@ namespace WmcSoft
         /// Creates a pair.
         /// </summary>
         /// <typeparam name="T">The type of the components of the pair.</typeparam>
+        /// <param name="item">The value of the first and second component of the pair.</param>
+        /// <returns>A pair whose value is (<paramref name="item"/>, <paramref name="item"/>).</returns>
+        public static Pair<T> Create<T>(T item = default(T)) {
+            return new Pair<T>(item, item);
+        }
+
+        /// <summary>
+        /// Creates a pair.
+        /// </summary>
+        /// <typeparam name="T">The type of the components of the pair.</typeparam>
         /// <param name="item1">The value of the first component of the pair.</param>
         /// <param name="item2">The value of the second component of the pair.</param>
         /// <returns>A pair whose value is (<paramref name="item1"/>, <paramref name="item2"/>).</returns>
