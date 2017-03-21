@@ -771,14 +771,19 @@ namespace WmcSoft.Collections.Generic
         /// Repeats the sequence count times.
         /// </summary>
         /// <typeparam name="T">The item type</typeparam>
-        /// <param name="self">The enumerator</param>
+        /// <param name="source">The enumerator</param>
         /// <param name="count">The number of time to repeat the sequence</param>
         /// <param name="collate">Collate the items</param>
         /// <returns>The list with the repeated sequence</returns>
-        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> self, int count, bool collate = true) {
+        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count, bool collate = true) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (count == 0)
+                return Enumerable.Empty<T>();
             if (collate)
-                return new CollateRepeat<T>(self, count).AsCollection();
-            return new GroupedRepeat<T>(self, count).AsCollection();
+                return new CollateRepeat<T>(source, count).AsCollection();
+            return new GroupedRepeat<T>(source, count).AsCollection();
         }
 
         #endregion
@@ -817,8 +822,9 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A sequence that contains at most the specified number elements at the end of the input sequence.</returns>
         public static IEnumerable<TSource> Tail<TSource>(this IEnumerable<TSource> source, int count) {
             if (source == null) throw new ArgumentNullException(nameof(source));
+
             if (count <= 0)
-                return System.Linq.Enumerable.Empty<TSource>();
+                return Enumerable.Empty<TSource>();
             if (count == 1)
                 return TailIterator1(source);
 
@@ -873,6 +879,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A sequence that contains at most the specified number elements not matching the predicate, at the end of the input sequence.</returns>
         public static IEnumerable<TSource> TailUnless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, int count) {
             if (source == null) throw new ArgumentNullException(nameof(source));
+
             if (count <= 0)
                 return Enumerable.Empty<TSource>();
             Func<TSource, bool> unless = x => !predicate(x);
