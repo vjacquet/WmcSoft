@@ -165,6 +165,9 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The decorated enumerable</returns>
         /// <remarks>For optimization, the function does not guard against wrong count.</remarks>
         public static IReadOnlyCollection<T> AsReadOnlyCollection<T>(this IEnumerable<T> source, int count) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
             return new CollectionAdapter<T>(count, source);
         }
 
@@ -193,6 +196,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>Similar to <see cref="Enumerable.Reverse{TSource}(IEnumerable{TSource})"/> except that a copy 
         /// is avoided for classes implementing <see cref="IList{TSource}"/>.</remarks>
         public static IEnumerable<TSource> Backwards<TSource>(this IEnumerable<TSource> source) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var readOnlyList = source as IReadOnlyList<TSource>;
             if (readOnlyList != null)
                 return Backwards(readOnlyList);
@@ -201,8 +206,6 @@ namespace WmcSoft.Collections.Generic
             if (list != null)
                 return Backwards(list.AsReadOnly());
 
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
             return source.Reverse();
         }
 
@@ -210,10 +213,30 @@ namespace WmcSoft.Collections.Generic
 
         #region Crawl
 
-        public static IEnumerable<T> Crawl<T>(this T start, Func<T, T> next, T sentinel = default(T)) {
-            var comparer = EqualityComparer<T>.Default;
-            for (T item = start; !comparer.Equals(item, sentinel); item = next(item))
+        static IEnumerable<T> UnguardedCrawlWhile<T>(T start, Func<T, T> next, Predicate<T> predicate) {
+            for (T item = start; predicate(item); item = next(item))
                 yield return item;
+        }
+
+        public static IEnumerable<T> Crawl<T>(this T start, Func<T, T> next, T sentinel = default(T)) {
+            if (next == null) throw new ArgumentNullException(nameof(next));
+
+            var comparer = EqualityComparer<T>.Default;
+            return UnguardedCrawlWhile(start, next, i => !comparer.Equals(i, sentinel));
+        }
+
+        public static IEnumerable<T> CrawlWhile<T>(this T start, Func<T, T> next, Predicate<T> predicate) {
+            if (next == null) throw new ArgumentNullException(nameof(next));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return UnguardedCrawlWhile(start, next, i => predicate(i));
+        }
+
+        public static IEnumerable<T> CrawlUntil<T>(this T start, Func<T, T> next, Predicate<T> predicate) {
+            if (next == null) throw new ArgumentNullException(nameof(next));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return UnguardedCrawlWhile(start, next, i => !predicate(i));
         }
 
         #endregion
@@ -348,6 +371,9 @@ namespace WmcSoft.Collections.Generic
         /// <param name="selector">A transform function to apply to the element.</param>
         /// <returns>The element at the specified position in the source sequence.</returns>
         public static TResult ElementAt<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
+            // I would normally return default(TResult) but here I should be consistent with the framework.
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var result = source.ElementAt(index);
             return selector(result);
         }
@@ -362,10 +388,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="selector">A transform function to apply to the element.</param>
         /// <returns>The element at the specified position in the source sequence, or <code>default(TSource)</code> if the sequence contains less elements.</returns>
         public static TResult ElementAtOrDefault<TSource, TResult>(this IEnumerable<TSource> source, int index, Func<TSource, TResult> selector) {
-            if (source == null) {
-                // I would normally return default(TResult) but here I should be consistent with the framework.
-                throw new ArgumentNullException(nameof(source));
-            }
+            // I would normally return default(TResult) but here I should be consistent with the framework.
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (index >= 0) {
                 var list = source as IList<TSource>;
@@ -529,7 +553,7 @@ namespace WmcSoft.Collections.Generic
         #region Read
 
         [DebuggerStepThrough]
-        public static bool Read<T>(this IEnumerator<T> enumerator, out T value) {
+        public static bool TryRead<T>(this IEnumerator<T> enumerator, out T value) {
             if (enumerator.MoveNext()) {
                 value = enumerator.Current;
                 return true;
