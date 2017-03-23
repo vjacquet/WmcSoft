@@ -383,6 +383,31 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region EmptyOrAny
+
+        /// <summary>
+        /// Determines if a sequence is empty or if any of its elements match the specified predicate.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns><c>true</c> if the source is empty or if any element match the predicate; otherwise, <c>false</c>.</returns>
+        public static bool EmptyOrAny<T>(this IEnumerable<T> source, Predicate<T> predicate) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    return true;
+                do {
+                    if (predicate(enumerator.Current))
+                        return true;
+                } while (enumerator.MoveNext());
+            }
+            return false;
+        }
+
+        #endregion
+
         #region Extract
 
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value) {
