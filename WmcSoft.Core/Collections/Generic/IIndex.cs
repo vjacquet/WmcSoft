@@ -29,13 +29,9 @@ namespace WmcSoft.Collections.Generic
     public interface IIndex<TKey, TValue> : IReadOnlyIndex<TKey, TValue>
     {
         bool IsReadOnly { get; }
-
         bool Add(TKey key, TValue value);
-
         bool Remove(TKey key);
-
         bool Remove(TKey key, TValue value);
-
         void Clear();
     }
 }

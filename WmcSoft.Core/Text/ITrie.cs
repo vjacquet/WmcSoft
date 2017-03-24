@@ -29,11 +29,33 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Text
 {
+    /// <summary>
+    /// Represents a strongly-typed, read-only trie of elements.
+    /// </summary>
+    /// <typeparam name="TLetter">The type of letters that compose the key.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
     public interface ITrie<TLetter, TValue> : IDictionary<IReadOnlyList<TLetter>, TValue>
-        where TLetter : struct, IEquatable<TLetter>
+            where TLetter : struct, IEquatable<TLetter>
     {
+        /// <summary>
+        /// returns the length of the longest sequence of letters trie.
+        /// </summary>
+        /// <param name="query">The query sequence.</param>
+        /// <returns>The length of the longest sequence; or -1 if no such sequence exists.</returns>
         int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> query);
+
+        /// <summary>
+        /// Returns all of the keys in the set that start with <see cref="prefix"/>.
+        /// </summary>
+        /// <param name="prefix">The prefix.</param>
+        /// <returns>An enumerable of all the keys in the set that start with <see cref="prefix"/>.</returns>
         IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix);
+
+        /// <summary>
+        /// Returns all of the keys in the symbol table that match <see cref="pattern"/>, where the null letter is treated as a wildcard letter.
+        /// </summary>
+        /// <param name="pattern">The pattern</param>
+        /// <returns>An enumerable of all the keys in the set that start with <see cref="prefix"/>, where the null letter is treated as a wildcard letter.</returns>
         IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> pattern);
     }
 }
