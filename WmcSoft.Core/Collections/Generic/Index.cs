@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,14 @@ namespace WmcSoft.Collections.Generic
             get { return _storage.Keys; }
         }
 
+        public IEnumerable<TValue> GetValues(TKey key) {
+            List<TValue> list;
+            if (_storage.TryGetValue(key, out list)) {
+                return list.AsReadOnly();
+            }
+            return Enumerable.Empty<TValue>();
+        }
+
         public bool Add(TKey key, TValue value) {
             List<TValue> list;
             if (!_storage.TryGetValue(key, out list)) {
@@ -74,6 +83,13 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
+        public bool Add(KeyValuePair<TKey, TValue> item) {
+            return Add(item.Key, item.Value);
+        }
+        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item) {
+            Add(item.Key, item.Value);
+        }
+
         public void Clear() {
             _storage.Clear();
             _count = 0;
@@ -83,19 +99,29 @@ namespace WmcSoft.Collections.Generic
             return _storage.ContainsKey(key);
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
-            foreach (var kv in _storage)
-                foreach (var value in kv.Value)
-                    yield return new KeyValuePair<TKey, TValue>(kv.Key, value);
-        }
-
-        public bool Remove(TKey key) {
+        public bool Contains(TKey key, TValue value) {
             List<TValue> list;
             if (_storage.TryGetValue(key, out list)) {
-                _count -= list.Count;
-                return true;
+                return list.Contains(value);
             }
             return false;
+        }
+
+        public bool Contains(KeyValuePair<TKey, TValue> item) {
+            return Contains(item.Key, item.Value);
+        }
+
+        public int Remove(TKey key) {
+            List<TValue> list;
+            if (_storage.TryGetValue(key, out list)) {
+                _storage.Remove(key);
+
+                var removed = list.Count;
+                _count -= removed;
+                list.Clear();
+                return removed;
+            }
+            return 0;
         }
 
         public bool Remove(TKey key, TValue value) {
@@ -110,16 +136,36 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
+        public bool Remove(KeyValuePair<TKey, TValue> item) {
+            return Remove(item.Key, item.Value);
+        }
+
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+            foreach (var kv in _storage)
+                foreach (var value in kv.Value)
+                    yield return new KeyValuePair<TKey, TValue>(kv.Key, value);
+        }
+
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        public IEnumerable<TValue> GetValues(TKey key) {
-            List<TValue> list;
-            if (_storage.TryGetValue(key, out list)) {
-                return list.AsReadOnly();
+        /// <summary>
+        /// Copies the elements of the <see cref="Index{TKey, TValue}"/> to an <see cref="Array"/>, starting at a particular <see cref="Array"/> index.
+        /// </summary>
+        /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Index{TKey, TValue}"/>. The <see cref="Array"/> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (array.Rank != 1) throw new ArgumentException(nameof(array));
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            if ((arrayIndex + Count) > array.Length) throw new IndexOutOfRangeException();
+
+            foreach (var kv in _storage) {
+                foreach (var value in kv.Value) {
+                    array[arrayIndex++] = new KeyValuePair<TKey, TValue>(kv.Key, value);
+                }
             }
-            return Enumerable.Empty<TValue>();
         }
     }
 }
