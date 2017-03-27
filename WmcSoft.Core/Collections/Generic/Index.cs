@@ -31,6 +31,11 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Implements a generic mutable collection of key/value pairs for wich the key can have multiple values.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the mutable index.</typeparam>
+    /// <typeparam name="TValue">The type of values in the mutable index.</typeparam>
     public class Index<TKey, TValue> : IIndex<TKey, TValue>
     {
         private readonly Dictionary<TKey, List<TValue>> _storage;
@@ -153,7 +158,8 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Copies the elements of the <see cref="Index{TKey, TValue}"/> to an <see cref="Array"/>, starting at a particular <see cref="Array"/> index.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Index{TKey, TValue}"/>. The <see cref="Array"/> must have zero-based indexing.</param>
+        /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Index{TKey, TValue}"/>. 
+        /// The <see cref="Array"/> must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
             if (array == null) throw new ArgumentNullException(nameof(array));
