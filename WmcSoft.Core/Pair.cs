@@ -144,6 +144,8 @@ namespace WmcSoft
         }
 
         public bool Equals(Pair<T> other) {
+            if (ReferenceEquals(this, other)) return true;
+
             var comparer = EqualityComparer<T>.Default;
             return comparer.Equals(Item1, other.Item1) && comparer.Equals(Item2, other.Item2);
         }

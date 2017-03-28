@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Business
 {
@@ -14,11 +15,10 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CanFixInvalidRange() {
+        [ExpectedException(typeof(ArgumentException))]
+        public void CheckInvalidRange() {
             var actual = new Range<int>(5, 2);
-
-            Assert.AreEqual(2, actual.Lower);
-            Assert.AreEqual(5, actual.Upper);
+            Assert.Fail();
         }
 
         [TestMethod]

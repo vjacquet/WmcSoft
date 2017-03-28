@@ -33,10 +33,10 @@ using static WmcSoft.Algorithms;
 namespace WmcSoft
 {
     /// <summary>
-    /// Stores a range of objects within a single object. This class is useful to use as the
+    /// Stores a range of values within a single object. This class is useful to use as the
     /// <typeparamref name="T"/> of a list.
     /// </summary>
-    /// <remarks>The default bounding strategy is <see cref="BoundStrategy{T}.UpperExclusive"/>.</remarks>
+    /// <remarks><see cref="Lower"/> is included while <see cref="Upper"/> is not.</remarks>
     /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
@@ -71,13 +71,10 @@ namespace WmcSoft
         /// <param name="x">The lower bound of the range.</param>
         /// <param name="y">The upper bound of the range.</param>
         public Range(T x, T y) {
-            if (x.CompareTo(y) > 0) {
-                Lower = y;
-                Upper = x;
-            } else {
-                Lower = x;
-                Upper = y;
-            }
+            if (x.CompareTo(y) > 0) throw new ArgumentException();
+
+            Lower = x;
+            Upper = y;
         }
 
         #endregion
@@ -96,7 +93,7 @@ namespace WmcSoft
             return value.CompareTo(Upper) > 0;
         }
 
-        public bool IsUpperthan(T value) {
+        public bool IsUpperThan(T value) {
             return value.CompareTo(Lower) < 0;
         }
 
@@ -105,23 +102,23 @@ namespace WmcSoft
         }
 
         public bool Includes(Range<T> other) {
-            return other.IsLowerThan(Upper) && other.IsUpperthan(Lower);
+            return other.IsLowerThan(Upper) && other.IsUpperThan(Lower);
         }
 
-        public bool Includes<TStrategy>(T value, TStrategy strategy) where TStrategy : IBoundStrategy<T> {
-            return strategy.IsWithinRange(value, Lower, Upper);
-        }
+        //public bool Includes<TStrategy>(T value, TStrategy strategy) where TStrategy : IBoundStrategy<T> {
+        //    return strategy.IsWithinRange(value, Lower, Upper);
+        //}
 
         public bool Includes(T value) {
-            return Includes(value, BoundStrategy<T>.UpperExclusive);
+            return Lower.CompareTo(value) <= 0 && Upper.CompareTo(value) > 0;
         }
 
         public bool Overlaps(Range<T> other) {
-            return IsLowerThan(other.Upper) && Includes(other.Lower) || IsUpperthan(other.Lower) && Includes(other.Upper);
+            return IsLowerThan(other.Upper) && Includes(other.Lower) || IsUpperThan(other.Lower) && Includes(other.Upper);
         }
 
         public bool IsDistinct(Range<T> other) {
-            return other.IsLowerThan(Lower) || other.IsUpperthan(Upper);
+            return other.IsLowerThan(Lower) || other.IsUpperThan(Upper);
         }
 
         public Range<T> GapBetween(Range<T> other) {

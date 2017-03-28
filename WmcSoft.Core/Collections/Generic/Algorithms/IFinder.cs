@@ -41,7 +41,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
 
         public static IEnumerable<int> FindAllOccurences<T>(this IFinder<T> finder, IReadOnlyList<T> t) {
             var found = finder.FindFirstOccurence(t, 0);
-            while(found >= 0) {
+            while (found >= 0) {
                 yield return found;
                 found = finder.FindFirstOccurence(t, found + 1);
             }

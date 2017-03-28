@@ -196,6 +196,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="OrdinalSet.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="RangeComparer.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />

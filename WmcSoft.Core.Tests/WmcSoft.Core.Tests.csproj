@@ -130,6 +130,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RangeTests.cs" />
     <Compile Include="Reflection\ReflectionExtensionsTests.cs" />
     <Compile Include="Reflection\TypeExtensionsTests.cs" />
     <Compile Include="RegexExtensionsTests.cs" />

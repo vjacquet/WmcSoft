@@ -36,6 +36,10 @@ using System.Text;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Stores a range of values within a single object. 
+    /// </summary>
+    /// <remarks>This class stores the open/closed state of the bounds when <see cref="Range{T}"/> does not.</remarks>
     [Serializable]
     [ImmutableObject(true)]
     public struct Interval<T> : IComparable<Interval<T>>, IEquatable<Interval<T>>
