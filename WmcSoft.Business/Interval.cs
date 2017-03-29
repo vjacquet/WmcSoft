@@ -58,6 +58,14 @@ namespace WmcSoft
             _upper = upper;
         }
 
+        /// <remarks>Uses the common default for time intervals, [start, end)</remarks>
+        public Interval(T lower, T upper) {
+            if (lower.CompareTo(upper) > 0) throw new ArgumentException();
+
+            _lower = new IntervalLimit<T>(lower, lower: true, closed: true);
+            _upper = new IntervalLimit<T>(upper, lower: false, closed: false);
+        }
+
         public T? Lower { get { return (T?)_lower; } }
         public bool HasLowerLimit { get { return _lower.HasValue; } }
         public T GetLowerOrDefault() {

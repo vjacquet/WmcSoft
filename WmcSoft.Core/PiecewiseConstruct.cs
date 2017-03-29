@@ -29,7 +29,7 @@ namespace WmcSoft
     /// <summary>
     /// An empty struct to disambiguate some constructors.
     /// </summary>
-    struct PiecewiseConstruct
+    public struct PiecewiseConstruct
     {
         public static readonly PiecewiseConstruct Tag = default(PiecewiseConstruct);
     }

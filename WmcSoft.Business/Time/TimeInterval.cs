@@ -34,6 +34,8 @@ namespace WmcSoft.Time
 {
     public static class TimeInterval
     {
+        public static readonly Interval<TimePoint> Always = new Interval<TimePoint>(IntervalLimit<TimePoint>.UnboundedLower, IntervalLimit<TimePoint>.UnboundedUpper);
+
         public static Interval<TimePoint> Over(TimePoint start, bool closedStart, TimePoint end, bool closedEnd) {
             return Interval.Over(start, closedStart, end, closedEnd);
         }

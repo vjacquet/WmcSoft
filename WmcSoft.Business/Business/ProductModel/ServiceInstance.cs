@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.ProductModel
 {
@@ -48,16 +49,16 @@ namespace WmcSoft.Business.ProductModel
 
         public ServiceInstance(ProductType productType, DateTime scheduledStart, DateTime scheduledEnd)
             : base(productType) {
-            ScheduledPeriod = new Range<DateTime>(scheduledStart, scheduledEnd);
+            ScheduledPeriod = new Interval<TimePoint>(scheduledStart, scheduledEnd);
         }
 
         #endregion
 
         #region Properties
 
-        public DateTime? Start { get; private set; }
-        public DateTime? End { get; private set; }
-        public Range<DateTime> ScheduledPeriod { get; private set; }
+        public TimePoint? Start { get; private set; }
+        public TimePoint? End { get; private set; }
+        public Interval<TimePoint> ScheduledPeriod { get; private set; }
 
         public ServiceDeliveryStatus ServiceDeliveryStatus {
             get { return _serviceDeliveryStatus; }
@@ -73,7 +74,7 @@ namespace WmcSoft.Business.ProductModel
 
             DoReschedule(scheduledStart, scheduledEnd);
 
-            ScheduledPeriod = new Range<DateTime>(scheduledStart, scheduledEnd);
+            ScheduledPeriod = new Interval<TimePoint>(scheduledStart, scheduledEnd);
         }
 
         public void Execute() {

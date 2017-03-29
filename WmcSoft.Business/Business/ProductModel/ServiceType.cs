@@ -25,11 +25,12 @@
 #endregion
 
 using System;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.ProductModel
 {
     public abstract class ServiceType : ProductType
     {
-        public Range<DateTime>? PeriodOfOperation { get; set; }
+        public Interval<TimePoint> PeriodOfOperation { get; set; }
     }
 }
