@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 
 using static WmcSoft.Algorithms;
@@ -136,8 +137,10 @@ namespace WmcSoft
             return Merge(ranges);
         }
 
-        public static bool IsContiguous(IEnumerable<Range<T>> collection) {
-            var list = new List<Range<T>>(collection);
+        public static bool IsContiguous(IEnumerable<Range<T>> enumerable) {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
+            var list = new List<Range<T>>(enumerable);
             list.Sort();
             return IsContiguous(list);
         }
@@ -152,10 +155,12 @@ namespace WmcSoft
         }
 
         public static Range<T> Merge(IEnumerable<Range<T>> enumerable) {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
             var list = new List<Range<T>>(enumerable);
             list.Sort();
             if (!IsContiguous(list))
-                throw new ArgumentException("Unable to merge ranges", "enumerable");
+                throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
             return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
         }
 
@@ -278,5 +283,39 @@ namespace WmcSoft
             where O : IOrdinal<T> {
             return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
         }
+
+        #region Extensions on enumerable or collections
+
+        static IEnumerable<Range<T>> UnguardedPartialMerge<T>(IList<Range<T>> list)
+            where T : IComparable<T> {
+            // requires list is sorted as has more than one item
+            var lower = 0;
+            var i = 1;
+            for (; i < list.Count; i++) {
+                if (!list[i - 1].IsAdjacentTo(list[i])) {
+                    yield return new Range<T>(list[lower].Lower, list[i - 1].Upper);
+                    lower = i;
+                }
+            }
+            yield return new Range<T>(list[lower].Lower, list[i - 1].Upper);
+        }
+
+        public static IEnumerable<Range<T>> PartialMerge<T>(this IEnumerable<Range<T>> source)
+            where T : IComparable<T> {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            var list = new List<Range<T>>(source);
+            switch (list.Count) {
+            case 0:
+                return Enumerable.Empty<Range<T>>();
+            case 1:
+                return list;
+            default:
+                list.Sort(RangeComparer<T>.Lexicographical);
+                return UnguardedPartialMerge(list);
+            }
+        }
+
+        #endregion
     }
 }
