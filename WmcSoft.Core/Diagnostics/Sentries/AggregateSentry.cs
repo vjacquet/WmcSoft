@@ -80,7 +80,8 @@ namespace WmcSoft.Diagnostics.Sentries
         private readonly ISentry[] _sentries;
         private readonly IDisposable[] _unsubscribers;
 
-        public AggregateSentry(string name, params ISentry[] sentries) : base(name) {
+        public AggregateSentry(string name, params ISentry[] sentries) 
+            : base(name) {
             _sentries = sentries;
             _unsubscribers = new IDisposable[_sentries.Length];
         }

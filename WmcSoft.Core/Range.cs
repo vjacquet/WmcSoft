@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -42,6 +43,7 @@ namespace WmcSoft
     /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
+    [DebuggerDisplay("{ToString(),nq}")]
     public struct Range<T> : IEquatable<Range<T>>
         where T : IComparable<T>
     {
@@ -72,6 +74,7 @@ namespace WmcSoft
         /// </summary>
         /// <param name="x">The lower bound of the range.</param>
         /// <param name="y">The upper bound of the range.</param>
+        /// <exception cref="ArgumentException"><paramref name="x"/> is not less than or equal to <paramref name="y"/>.</exception>
         public Range(T x, T y) {
             if (x.CompareTo(y) > 0) throw new ArgumentException();
 
