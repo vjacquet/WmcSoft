@@ -289,15 +289,19 @@ namespace WmcSoft
         static IEnumerable<Range<T>> UnguardedPartialMerge<T>(IList<Range<T>> list)
             where T : IComparable<T> {
             // requires list is sorted as has more than one item
-            var lower = 0;
+            var lower = list[0].Lower;
+            var upper = list[0].Upper;
             var i = 1;
             for (; i < list.Count; i++) {
-                if (!list[i - 1].IsAdjacentTo(list[i])) {
-                    yield return new Range<T>(list[lower].Lower, list[i - 1].Upper);
-                    lower = i;
+                if (list[i].Lower.CompareTo(upper) > 0) {
+                    yield return new Range<T>(lower, upper);
+                    lower = list[i].Lower;
+                    upper = list[i].Upper;
+                } else if (list[i].Upper.CompareTo(upper) >= 0) {
+                    upper = list[i].Upper;
                 }
             }
-            yield return new Range<T>(list[lower].Lower, list[i - 1].Upper);
+            yield return new Range<T>(lower, upper);
         }
 
         public static IEnumerable<Range<T>> PartialMerge<T>(this IEnumerable<Range<T>> source)

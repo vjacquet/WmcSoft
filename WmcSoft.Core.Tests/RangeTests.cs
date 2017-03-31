@@ -114,5 +114,23 @@ namespace WmcSoft.Business
             var actual = data.PartialMerge().ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckPartialMergeOnOverlappingRanges() {
+            var data = new[] {
+                Range.Create(1, 3),
+                Range.Create(4, 5),
+                Range.Create(5, 7),
+                Range.Create(7, 9),
+                Range.Create(12, 16),
+                Range.Create(8, 13)
+            };
+            var expected = new[] {
+                Range.Create(1, 3),
+                Range.Create(4, 16),
+            };
+            var actual = data.PartialMerge().ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
