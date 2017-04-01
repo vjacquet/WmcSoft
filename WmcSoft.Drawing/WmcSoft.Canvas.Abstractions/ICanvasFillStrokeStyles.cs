@@ -35,10 +35,31 @@ namespace WmcSoft.Canvas
     /// </summary>
     public interface ICanvasFillStrokeStyles<T, TColor>
     {
-        Variant<TColor, CanvasGradient<T, TColor>, CanvasPattern> StrokeStyle { get; set; } // (default black)
-        Variant<TColor, CanvasGradient<T, TColor>, CanvasPattern> FillStyle { get; set; }  // (default black)
-        CanvasGradient<T, TColor> CreateLinearGradient(T x0, T y0, T x1, T y1);
-        CanvasGradient<T, TColor> CreateRadialGradient(T x0, T y0, T r0, T x1, T y1, T r1);
+        Variant<TColor, CanvasGradient<TColor>, CanvasPattern> StrokeStyle { get; set; } // (default black)
+        Variant<TColor, CanvasGradient<TColor>, CanvasPattern> FillStyle { get; set; }  // (default black)
+
+        /// <summary>
+        /// Creates a linear gradient object with a starting point of (x1, y1) and an end point of (x2, y2).
+        /// </summary>
+        /// <param name="x0">The x axis of the coordinate of the start point.</param>
+        /// <param name="y0">The y axis of the coordinate of the start point.</param>
+        /// <param name="x1">The x axis of the coordinate of the end point.</param>
+        /// <param name="y1">The y axis of the coordinate of the end point.</param>
+        /// <returns>A linear <see cref="CanvasGradient{TColor}"/> initialized with the specified line.</returns>
+        CanvasGradient<TColor> CreateLinearGradient(T x0, T y0, T x1, T y1);
+
+        /// <summary>
+        /// Creates a radial gradient. The parameters represent two circles, one with its center at (x1, y1) and a radius of r1, and the other with its center at (x2, y2) with a radius of r2.
+        /// </summary>
+        /// <param name="x0">The x axis of the coordinate of the start circle.</param>
+        /// <param name="y0">The y axis of the coordinate of the start circle.</param>
+        /// <param name="r0">The radius of the start circle.</param>
+        /// <param name="x1">The x axis of the coordinate of the end circle.</param>
+        /// <param name="y1">The y axis of the coordinate of the end circle.</param>
+        /// <param name="r1">The radius of the end circle.</param>
+        /// <returns>A radial <see cref="CanvasGradient{TColor}"/> initialized with the two specified circles.</returns>
+        CanvasGradient<TColor> CreateRadialGradient(T x0, T y0, T r0, T x1, T y1, T r1);
+
         CanvasPattern CreatePattern(ICanvasImageSource image, Repetition repetition = Repetition.NoRepeat);
     }
 

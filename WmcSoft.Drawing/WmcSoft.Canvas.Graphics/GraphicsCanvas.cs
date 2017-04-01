@@ -44,7 +44,7 @@ namespace WmcSoft.Canvas
     {
         #region Variant visitors
 
-        sealed class PenVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+        sealed class PenVisitor : Variant<Color, CanvasGradient<Color>, CanvasPattern>.Visitor
             , IDisposable
         {
             private readonly GraphicsCanvas _canvas;
@@ -74,7 +74,7 @@ namespace WmcSoft.Canvas
                 return visitor.Pen;
             }
 
-            public override void Visit(CanvasGradient<float, Color> instance) {
+            public override void Visit(CanvasGradient<Color> instance) {
                 throw new NotSupportedException();
             }
 
@@ -102,7 +102,7 @@ namespace WmcSoft.Canvas
             }
         }
 
-        sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+        sealed class BrushVisitor : Variant<Color, CanvasGradient<Color>, CanvasPattern>.Visitor
             , IDisposable
         {
             private readonly GraphicsCanvas _canvas;
@@ -132,7 +132,7 @@ namespace WmcSoft.Canvas
                 return visitor.Brush;
             }
 
-            public override void Visit(CanvasGradient<float, Color> instance) {
+            public override void Visit(CanvasGradient<Color> instance) {
                 throw new NotSupportedException();
             }
 
@@ -163,8 +163,8 @@ namespace WmcSoft.Canvas
         struct DrawingState
         {
             GraphicsState savedState; // contains transformation matrix, clipping region, ImageSmoothingQualityEnabled
-            Variant<Color, CanvasGradient<float, Color>, CanvasPattern> fillStyle;
-            Variant<Color, CanvasGradient<float, Color>, CanvasPattern> strokeStyle;
+            Variant<Color, CanvasGradient<Color>, CanvasPattern> fillStyle;
+            Variant<Color, CanvasGradient<Color>, CanvasPattern> strokeStyle;
             float lineWidth;
             LineCap lineCap;
             LineJoin lineJoin;
@@ -240,7 +240,7 @@ namespace WmcSoft.Canvas
 
         #region ICanvasFillStrokeStyles<float, Color> methods
 
-        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> FillStyle {
+        public Variant<Color, CanvasGradient<Color>, CanvasPattern> FillStyle {
             get {
                 return _fillStyle;
             }
@@ -249,9 +249,9 @@ namespace WmcSoft.Canvas
                 _fillStyle.Visit(_brush);
             }
         }
-        Variant<Color, CanvasGradient<float, Color>, CanvasPattern> _fillStyle;
+        Variant<Color, CanvasGradient<Color>, CanvasPattern> _fillStyle;
 
-        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> StrokeStyle {
+        public Variant<Color, CanvasGradient<Color>, CanvasPattern> StrokeStyle {
             get {
                 return _strokeStyle;
             }
@@ -260,9 +260,9 @@ namespace WmcSoft.Canvas
                 _strokeStyle.Visit(_pen);
             }
         }
-        Variant<Color, CanvasGradient<float, Color>, CanvasPattern> _strokeStyle;
+        Variant<Color, CanvasGradient<Color>, CanvasPattern> _strokeStyle;
 
-        public CanvasGradient<float, Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
+        public CanvasGradient<Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
             throw new NotImplementedException();
         }
 
@@ -270,7 +270,7 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
-        public CanvasGradient<float, Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
+        public CanvasGradient< Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
             throw new NotImplementedException();
         }
 
