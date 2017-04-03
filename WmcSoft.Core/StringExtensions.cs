@@ -398,19 +398,16 @@ namespace WmcSoft
             return list.ToArray();
         }
 
-        public static string ToCamelCase(this string self)
-        {
+        public static string ToCamelCase(this string self) {
             if (string.IsNullOrEmpty(self) || !char.IsUpper(self[0]))
                 return self;
 
             var culture = CultureInfo.InvariantCulture;
             char[] array = self.ToCharArray();
             int i = 0;
-            while (i < array.Length && (i != 1 || char.IsUpper(array[i])))
-            {
+            while (i < array.Length && (i != 1 || char.IsUpper(array[i]))) {
                 bool flag = i + 1 < array.Length;
-                if ((i > 0 & flag) && !char.IsUpper(array[i + 1]))
-                {
+                if ((i > 0 & flag) && !char.IsUpper(array[i + 1])) {
                     break;
                 }
                 array[i] = char.ToLower(array[i], culture);
@@ -1099,10 +1096,12 @@ namespace WmcSoft
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
         public static string Left(this string self, int length) {
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (self == null)
                 return self;
-            if (length < 0)
-                length = self.Length - length;
+
+            if (length == 0)
+                return string.Empty;
             if (length > self.Length)
                 return self;
             return self.Substring(0, length);
@@ -1115,10 +1114,12 @@ namespace WmcSoft
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
         public static string Right(this string self, int length) {
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (self == null)
                 return self;
-            if (length < 0)
-                length = self.Length - length;
+
+            if (length == 0)
+                return string.Empty;
             if (length > self.Length)
                 return self;
             return self.Substring(self.Length - length, length);
