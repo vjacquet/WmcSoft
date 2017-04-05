@@ -31,8 +31,8 @@ namespace WmcSoft.Canvas
 {
     public abstract class CanvasGradient<TColor>
     {
-        private readonly List<float> _offsets;
-        private readonly List<TColor> _colors;
+        protected readonly List<float> _offsets;
+        protected readonly List<TColor> _colors;
 
         protected CanvasGradient() {
             _offsets = new List<float>();
@@ -51,32 +51,32 @@ namespace WmcSoft.Canvas
             _offsets.Insert(index, offset);
             _colors.Insert(index, color);
         }
-
-        protected IReadOnlyList<float> Offsets { get { return _offsets; } }
-        protected IReadOnlyList<TColor> Colors { get { return _colors; } }
     }
 
-    public abstract class LinearGradient<T, TColor> : CanvasGradient<TColor>
+    public class LinearGradient<T, TColor> : CanvasGradient<TColor>
     {
         private readonly T _x0;
         private readonly T _y0;
         private readonly T _x1;
         private readonly T _y1;
 
-        protected LinearGradient(T x0, T y0, T x1, T y1) {
+        public LinearGradient(T x0, T y0, T x1, T y1) {
             _x0 = x0;
             _y0 = y0;
             _x1 = x1;
             _y1 = y1;
         }
 
-        protected T X0 { get { return _x0; } }
-        protected T Y0 { get { return _y0; } }
-        protected T X1 { get { return _x1; } }
-        protected T Y1 { get { return _y1; } }
+        public T X0 { get { return _x0; } }
+        public T Y0 { get { return _y0; } }
+        public T X1 { get { return _x1; } }
+        public T Y1 { get { return _y1; } }
+
+        public IReadOnlyList<float> Offsets { get { return _offsets; } }
+        public IReadOnlyList<TColor> Colors { get { return _colors; } }
     }
 
-    public abstract class RadialGradient<T, TColor> : CanvasGradient<TColor>
+    public class RadialGradient<T, TColor> : CanvasGradient<TColor>
     {
         private readonly T _x0;
         private readonly T _y0;
@@ -85,7 +85,7 @@ namespace WmcSoft.Canvas
         private readonly T _y1;
         private readonly T _r1;
 
-        protected RadialGradient(T x0, T y0, T r0, T x1, T y1, T r1) {
+        public RadialGradient(T x0, T y0, T r0, T x1, T y1, T r1) {
             _x0 = x0;
             _y0 = y0;
             _r0 = r0;
@@ -94,10 +94,13 @@ namespace WmcSoft.Canvas
             _r1 = r1;
         }
 
-        protected T X0 { get { return _x0; } }
-        protected T Y0 { get { return _y0; } }
-        protected T R0 { get { return _r0; } }
-        protected T X1 { get { return _x1; } }
-        protected T R1 { get { return _r1; } }
+        public T X0 { get { return _x0; } }
+        public T Y0 { get { return _y0; } }
+        public T R0 { get { return _r0; } }
+        public T X1 { get { return _x1; } }
+        public T R1 { get { return _r1; } }
+
+        public IReadOnlyList<float> Offsets { get { return _offsets; } }
+        public IReadOnlyList<TColor> Colors { get { return _colors; } }
     }
 }

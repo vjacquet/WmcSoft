@@ -133,6 +133,63 @@ namespace WmcSoft.Canvas
             }
 
             public override void Visit(CanvasGradient<Color> instance) {
+                var linear = instance as LinearGradient<float, Color>;
+                if (linear != null) {
+                    _factory = () => Create(linear);
+                    Dispose();
+                    return;
+                }
+
+                var radial = instance as RadialGradient<float, Color>;
+                if (radial != null) {
+                    _factory = () => Create(linear);
+                    Dispose();
+                    return;
+                }
+
+                throw new NotSupportedException();
+            }
+
+            private Brush Create(LinearGradient<float, Color> instance) {
+                var count = instance.Colors.Count;
+                if (count == 0)
+                    return CreateSolidBrush(Color.Transparent);
+
+                var includesStart = instance.Offsets[0].Equals(0f);
+                var includesEnd = instance.Offsets[count - 1].Equals(1f);
+
+                var startColor = instance.Colors[0];
+                if (count == 1)
+                    return CreateSolidBrush(startColor);
+
+                var endColor = instance.Colors[count - 1];
+                var brush = new LinearGradientBrush(new PointF(instance.X0, instance.Y0), new PointF(instance.X1, instance.Y1), startColor, endColor);
+                //brush.WrapMode = WrapMode.Clamp;
+
+                if (instance.Offsets[count - 1].Equals(1f)) {
+                    count--;
+                }
+
+                var start = 0;
+                if (instance.Offsets[0].Equals(0f)) {
+                    start = 1;
+                    count--;
+                }
+
+                if (count > 0) {
+                    var blend = new ColorBlend(count);
+                    for (int i = 0; i < count; i++) {
+                        blend.Positions[i] = instance.Offsets[start];
+                        blend.Positions[i] = instance.Offsets[start];
+                        start++;
+                    }
+                    brush.InterpolationColors = blend;
+                }
+
+                return brush;
+            }
+
+            private Brush Create(RadialGradient<float, Color> instance) {
                 throw new NotSupportedException();
             }
 
@@ -146,7 +203,6 @@ namespace WmcSoft.Canvas
             }
 
             public override void Visit(Color instance) {
-
                 _factory = () => CreateSolidBrush(instance);
                 Dispose();
             }
@@ -263,15 +319,15 @@ namespace WmcSoft.Canvas
         Variant<Color, CanvasGradient<Color>, CanvasPattern> _strokeStyle;
 
         public CanvasGradient<Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
-            throw new NotImplementedException();
+            return new LinearGradient<float, Color>(x0, y0, x1, y1);
         }
 
         public CanvasPattern CreatePattern(ICanvasImageSource image, Repetition repetition = Repetition.NoRepeat) {
             throw new NotImplementedException();
         }
 
-        public CanvasGradient< Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
-            throw new NotImplementedException();
+        public CanvasGradient<Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
+            return new RadialGradient<float, Color>(x0, y0, r0, x1, y1, r1);
         }
 
         #endregion
