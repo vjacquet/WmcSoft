@@ -155,37 +155,42 @@ namespace WmcSoft.Canvas
                 if (count == 0)
                     return CreateSolidBrush(Color.Transparent);
 
-                var includesStart = instance.Offsets[0].Equals(0f);
-                var includesEnd = instance.Offsets[count - 1].Equals(1f);
+
+                if (count == 1)
+                    return CreateSolidBrush(instance.Colors[0]);
 
                 var startColor = instance.Colors[0];
-                if (count == 1)
-                    return CreateSolidBrush(startColor);
-
                 var endColor = instance.Colors[count - 1];
                 var brush = new LinearGradientBrush(new PointF(instance.X0, instance.Y0), new PointF(instance.X1, instance.Y1), startColor, endColor);
                 //brush.WrapMode = WrapMode.Clamp;
 
-                if (instance.Offsets[count - 1].Equals(1f)) {
-                    count--;
-                }
-
                 var start = 0;
-                if (instance.Offsets[0].Equals(0f)) {
+                var end = count;
+                if (!instance.Offsets[0].Equals(0f)) {
                     start = 1;
-                    count--;
+                    end++;
+                }
+                if (!instance.Offsets[count - 1].Equals(1f)) {
+                    end++;
                 }
 
                 if (count > 0) {
-                    var blend = new ColorBlend(count);
+                    var blend = new ColorBlend(end);
+                    if (start > 0) {
+                        blend.Positions[0] = 0f;
+                        blend.Colors[0] = startColor;
+                    }
                     for (int i = 0; i < count; i++) {
-                        blend.Positions[i] = instance.Offsets[start];
-                        blend.Positions[i] = instance.Offsets[start];
+                        blend.Positions[start] = instance.Offsets[i];
+                        blend.Colors[start] = instance.Colors[i];
                         start++;
+                    }
+                    if (start < end) {
+                        blend.Positions[start] = 1f;
+                        blend.Colors[start] = endColor;
                     }
                     brush.InterpolationColors = blend;
                 }
-
                 return brush;
             }
 

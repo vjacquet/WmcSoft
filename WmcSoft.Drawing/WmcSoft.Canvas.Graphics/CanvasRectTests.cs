@@ -87,10 +87,10 @@ namespace WmcSoft.Canvas
             }
         }
 
-        [Fact(Skip = "Not implemented yet")]
+        [Fact]
         public void SupportComplexLinearGradient() {
             using (var ctx = CreateCanvas("linearGradient2.png")) {
-                var gradient = ctx.CreateLinearGradient(0, 0, 200, 000);
+                var gradient = ctx.CreateLinearGradient(0, 0, 200, 0);
                 gradient.AddColorStop(0.25f, Color.Green);
                 gradient.AddColorStop(0.5f, Color.Red);
                 gradient.AddColorStop(0.5f, Color.Blue);
