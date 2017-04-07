@@ -42,7 +42,7 @@ namespace WmcSoft.Diagnostics
     {
         #region Private fields
 
-        Stopwatch _stopwatch;
+        readonly Stopwatch _stopwatch;
         Action _onDispose;
 
         #endregion

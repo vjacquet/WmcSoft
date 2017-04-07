@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Business.ProductModel
 {
@@ -48,7 +49,7 @@ namespace WmcSoft.Business.ProductModel
 
         public ServiceInstance(ProductType productType, DateTime scheduledStart, DateTime scheduledEnd)
             : base(productType) {
-            ScheduledPeriod = new Range<DateTime>(scheduledStart, scheduledEnd);
+            ScheduledPeriod = new Interval<DateTime>(scheduledStart, scheduledEnd);
         }
 
         #endregion
@@ -57,7 +58,7 @@ namespace WmcSoft.Business.ProductModel
 
         public DateTime? Start { get; private set; }
         public DateTime? End { get; private set; }
-        public Range<DateTime> ScheduledPeriod { get; private set; }
+        public Interval<DateTime> ScheduledPeriod { get; private set; }
 
         public ServiceDeliveryStatus ServiceDeliveryStatus {
             get { return _serviceDeliveryStatus; }
@@ -68,12 +69,13 @@ namespace WmcSoft.Business.ProductModel
         #region Methods
 
         public void Reschedule(DateTime scheduledStart, DateTime scheduledEnd) {
-            if (_serviceDeliveryStatus != ServiceDeliveryStatus.Scheduled)
-                throw new InvalidOperationException();
+            if (_serviceDeliveryStatus != ServiceDeliveryStatus.Scheduled)                throw new InvalidOperationException();
+            if (scheduledStart > scheduledEnd) throw new ArgumentException();
 
-            DoReschedule(scheduledStart, scheduledEnd);
+            DoReschedule(ref scheduledStart, ref scheduledEnd);
+            Debug.Assert(scheduledStart > scheduledEnd);
 
-            ScheduledPeriod = new Range<DateTime>(scheduledStart, scheduledEnd);
+            ScheduledPeriod = new Interval<DateTime>(scheduledStart, scheduledEnd);
         }
 
         public void Execute() {
@@ -110,7 +112,7 @@ namespace WmcSoft.Business.ProductModel
             return DateTime.Now;
         }
 
-        protected virtual void DoReschedule(DateTime scheduledStart, DateTime scheduledEnd) { }
+        protected virtual void DoReschedule(ref DateTime scheduledStart,ref  DateTime scheduledEnd) { }
         protected virtual void DoExecute() { }
         protected virtual void DoComplete() { }
         protected virtual void DoCancel() { }

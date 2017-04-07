@@ -52,8 +52,6 @@ namespace WmcSoft.Collections.Generic.Internals
                 _equalityComparer = equalityComparer;
             }
 
-            #region IEqualityComparer<Votes> Membres
-
             public bool Equals(Paper x, Paper y) {
                 return _equalityComparer.Equals(x.Candidate, y.Candidate);
             }
@@ -61,8 +59,6 @@ namespace WmcSoft.Collections.Generic.Internals
             public int GetHashCode(Paper obj) {
                 return _equalityComparer.GetHashCode(obj.Candidate);
             }
-
-            #endregion
         }
 
         [DebuggerDisplay("#{Count,nq} (Rank {Rank,nq})")]
@@ -114,22 +110,14 @@ namespace WmcSoft.Collections.Generic.Internals
             return _votes.Max(ScoresComparer.Default).Key.Candidate;
         }
 
-        #region IEnumerable<KeyValuePair<T,int>> Membres
-
         public IEnumerator<KeyValuePair<T, int>> GetEnumerator() {
             return _votes.OrderByDescending(v => v.Value, ScoresComparer.Default)
                 .Select(v => new KeyValuePair<T, int>(v.Key.Candidate, v.Value.Count))
                 .GetEnumerator();
         }
 
-        #endregion
-
-        #region IEnumerable Membres
-
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
-
-        #endregion
     }
 }

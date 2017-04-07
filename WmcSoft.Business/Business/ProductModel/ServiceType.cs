@@ -30,6 +30,6 @@ namespace WmcSoft.Business.ProductModel
 {
     public abstract class ServiceType : ProductType
     {
-        public Range<DateTime>? PeriodOfOperation { get; set; }
+        public Interval<DateTime> PeriodOfOperation { get; set; }
     }
 }

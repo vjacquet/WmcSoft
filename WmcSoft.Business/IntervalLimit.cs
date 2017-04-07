@@ -45,6 +45,8 @@ namespace WmcSoft
         where T : struct, IComparable<T>
     {
         public static readonly IntervalLimit<T> Undefined;
+        public static readonly IntervalLimit<T> UnboundedLower = new IntervalLimit<T>(State.Lower);
+        public static readonly IntervalLimit<T> UnboundedUpper = new IntervalLimit<T>(State.Upper);
 
         [Flags]
         internal enum State
@@ -59,7 +61,7 @@ namespace WmcSoft
         private readonly T _value;
         private readonly State _state;
 
-        private IntervalLimit(State state, T value) {
+        private IntervalLimit(State state, T value = default(T)) {
             _value = value;
             _state = state;
         }

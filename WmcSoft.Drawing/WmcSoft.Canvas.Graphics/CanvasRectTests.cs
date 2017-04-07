@@ -75,5 +75,40 @@ namespace WmcSoft.Canvas
                 }
             }
         }
+
+        [Fact]
+        public void SupportLinearGradient() {
+            using (var ctx = CreateCanvas("linearGradient.png")) {
+                var gradient = ctx.CreateLinearGradient(0, 0, 200, 0);
+                gradient.AddColorStop(0, Color.Green);
+                gradient.AddColorStop(1, Color.Yellow);
+                ctx.FillStyle = gradient;
+                ctx.FillRect(10, 10, 200, 100);
+            }
+        }
+
+        [Fact]
+        public void SupportComplexLinearGradient() {
+            using (var ctx = CreateCanvas("linearGradient2.png")) {
+                var gradient = ctx.CreateLinearGradient(0, 0, 200, 0);
+                gradient.AddColorStop(0.25f, Color.Green);
+                gradient.AddColorStop(0.5f, Color.Red);
+                gradient.AddColorStop(0.5f, Color.Blue);
+                gradient.AddColorStop(0.75f, Color.White);
+                ctx.FillStyle = gradient;
+                ctx.FillRect(10, 10, 200, 100);
+            }
+        }
+
+        [Fact(Skip = "Not implemented yet")]
+        public void SupportRadialGradient() {
+            using (var ctx = CreateCanvas("radialGradient.png")) {
+                var gradient = ctx.CreateRadialGradient(100, 100, 100, 100, 100, 0);
+                gradient.AddColorStop(0, Color.Green);
+                gradient.AddColorStop(1, Color.White);
+                ctx.FillStyle = gradient;
+                ctx.FillRect(0, 0, 200, 200);
+            }
+        }
     }
 }

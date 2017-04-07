@@ -32,9 +32,10 @@ namespace WmcSoft.IO
     /// <summary>
     /// Registers files to be included in a batch but differs the actual processing to the commit phase.
     /// </summary>
-    public abstract class Batch<TScope> : IDisposable where TScope : IDisposable
+    public abstract class Batch<TScope> : IDisposable 
+        where TScope : IDisposable
     {
-        IList<KeyValuePair<string, IStreamSource>> entries;
+        private IList<KeyValuePair<string, IStreamSource>> _entries;
 
         /// <summary>
         /// Adds the specified data source.
@@ -42,24 +43,24 @@ namespace WmcSoft.IO
         /// <param name="soure">The data source.</param>
         /// <param name="name">Name of the entry.</param>
         public void Add(string name, IStreamSource source) {
-            if (entries == null) {
-                entries = new List<KeyValuePair<string, IStreamSource>>();
+            if (_entries == null) {
+                _entries = new List<KeyValuePair<string, IStreamSource>>();
             }
-            entries.Add(new KeyValuePair<string, IStreamSource>(name, source));
+            _entries.Add(new KeyValuePair<string, IStreamSource>(name, source));
         }
 
         /// <summary>
         /// Commits this instance.
         /// </summary>
         public void Commit() {
-            if (entries != null && entries.Count > 0) {
+            if (_entries != null && _entries.Count > 0) {
                 using (var scope = CreateCommitScope()) {
-                    foreach (var entry in entries) {
+                    foreach (var entry in _entries) {
                         Process(scope, entry.Key, entry.Value);
                     }
                 }
             }
-            entries = null;
+            _entries = null;
         }
 
         /// <summary>

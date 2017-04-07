@@ -27,19 +27,23 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
+
 using static WmcSoft.Algorithms;
 
 namespace WmcSoft
 {
     /// <summary>
-    /// Stores a range of objects within a single object. This class is useful to use as the
+    /// Stores a range of values within a single object. This class is useful to use as the
     /// <typeparamref name="T"/> of a list.
     /// </summary>
-    /// <remarks>The default bounding strategy is <see cref="BoundStrategy{T}.UpperExclusive"/>.</remarks>
+    /// <remarks><see cref="Lower"/> is included while <see cref="Upper"/> is not.</remarks>
     /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
+    [DebuggerDisplay("{ToString(),nq}")]
     public struct Range<T> : IEquatable<Range<T>>
         where T : IComparable<T>
     {
@@ -70,14 +74,12 @@ namespace WmcSoft
         /// </summary>
         /// <param name="x">The lower bound of the range.</param>
         /// <param name="y">The upper bound of the range.</param>
+        /// <exception cref="ArgumentException"><paramref name="x"/> is not less than or equal to <paramref name="y"/>.</exception>
         public Range(T x, T y) {
-            if (x.CompareTo(y) > 0) {
-                Lower = y;
-                Upper = x;
-            } else {
-                Lower = x;
-                Upper = y;
-            }
+            if (x.CompareTo(y) > 0) throw new ArgumentException();
+
+            Lower = x;
+            Upper = y;
         }
 
         #endregion
@@ -96,7 +98,7 @@ namespace WmcSoft
             return value.CompareTo(Upper) > 0;
         }
 
-        public bool IsUpperthan(T value) {
+        public bool IsUpperThan(T value) {
             return value.CompareTo(Lower) < 0;
         }
 
@@ -105,23 +107,23 @@ namespace WmcSoft
         }
 
         public bool Includes(Range<T> other) {
-            return other.IsLowerThan(Upper) && other.IsUpperthan(Lower);
+            return other.IsLowerThan(Upper) && other.IsUpperThan(Lower);
         }
 
-        public bool Includes<TStrategy>(T value, TStrategy strategy) where TStrategy : IBoundStrategy<T> {
-            return strategy.IsWithinRange(value, Lower, Upper);
-        }
+        //public bool Includes<TStrategy>(T value, TStrategy strategy) where TStrategy : IBoundStrategy<T> {
+        //    return strategy.IsWithinRange(value, Lower, Upper);
+        //}
 
         public bool Includes(T value) {
-            return Includes(value, BoundStrategy<T>.UpperExclusive);
+            return Lower.CompareTo(value) <= 0 && Upper.CompareTo(value) > 0;
         }
 
         public bool Overlaps(Range<T> other) {
-            return IsLowerThan(other.Upper) && Includes(other.Lower) || IsUpperthan(other.Lower) && Includes(other.Upper);
+            return IsLowerThan(other.Upper) && Includes(other.Lower) || IsUpperThan(other.Lower) && Includes(other.Upper);
         }
 
         public bool IsDistinct(Range<T> other) {
-            return other.IsLowerThan(Lower) || other.IsUpperthan(Upper);
+            return other.IsLowerThan(Lower) || other.IsUpperThan(Upper);
         }
 
         public Range<T> GapBetween(Range<T> other) {
@@ -138,8 +140,10 @@ namespace WmcSoft
             return Merge(ranges);
         }
 
-        public static bool IsContiguous(IEnumerable<Range<T>> collection) {
-            var list = new List<Range<T>>(collection);
+        public static bool IsContiguous(IEnumerable<Range<T>> enumerable) {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
+            var list = new List<Range<T>>(enumerable);
             list.Sort();
             return IsContiguous(list);
         }
@@ -154,10 +158,12 @@ namespace WmcSoft
         }
 
         public static Range<T> Merge(IEnumerable<Range<T>> enumerable) {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
             var list = new List<Range<T>>(enumerable);
             list.Sort();
             if (!IsContiguous(list))
-                throw new ArgumentException("Unable to merge ranges", "enumerable");
+                throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
             return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
         }
 
@@ -280,5 +286,43 @@ namespace WmcSoft
             where O : IOrdinal<T> {
             return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
         }
+
+        #region Extensions on enumerable or collections
+
+        static IEnumerable<Range<T>> UnguardedPartialMerge<T>(IList<Range<T>> list)
+            where T : IComparable<T> {
+            // requires list is sorted as has more than one item
+            var lower = list[0].Lower;
+            var upper = list[0].Upper;
+            var i = 1;
+            for (; i < list.Count; i++) {
+                if (list[i].Lower.CompareTo(upper) > 0) {
+                    yield return new Range<T>(lower, upper);
+                    lower = list[i].Lower;
+                    upper = list[i].Upper;
+                } else if (list[i].Upper.CompareTo(upper) >= 0) {
+                    upper = list[i].Upper;
+                }
+            }
+            yield return new Range<T>(lower, upper);
+        }
+
+        public static IEnumerable<Range<T>> PartialMerge<T>(this IEnumerable<Range<T>> source)
+            where T : IComparable<T> {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            var list = new List<Range<T>>(source);
+            switch (list.Count) {
+            case 0:
+                return Enumerable.Empty<Range<T>>();
+            case 1:
+                return list;
+            default:
+                list.Sort(RangeComparer<T>.Lexicographical);
+                return UnguardedPartialMerge(list);
+            }
+        }
+
+        #endregion
     }
 }

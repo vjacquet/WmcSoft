@@ -28,11 +28,16 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Represents a generic read-only collection of key/value pairs for wich the key can have multiple values.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the read-only index.</typeparam>
+    /// <typeparam name="TValue">The type of values in the read-only index.</typeparam>
     public interface IReadOnlyIndex<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
     {
-        // <summary>Gets the element that has the specified key in the read-only dictionary.</summary>
+        // <summary>Gets the element that has the specified key in the read-only index.</summary>
         /// <param name="key">The key to locate.</param>
-        /// <returns>The element that has the specified key in the read-only dictionary.</returns>
+        /// <returns>The element that has the specified key in the read-only index.</returns>
         /// <exception cref="ArgumentNullException">key is null.</exception>
         IReadOnlyList<TValue> this[TKey key] { get; }
 
@@ -43,12 +48,21 @@ namespace WmcSoft.Collections.Generic
         IEnumerable<TKey> Keys { get; }
 
         /// <summary>
-        /// Determines whether the read-only dictionary contains an element that has the specified key.
+        /// Determines whether the read-only index contains an element that has the specified key.
         /// </summary>
         /// <param name="key">The key to locate.</param>
-        /// <returns>true if the read-only index contains an element that has the specified key; otherwise, false.</returns>
+        /// <returns><c>true</c> if the read-only index contains an element that has the specified <paramref name="key"/>; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">key is null.</exception>
         bool ContainsKey(TKey key);
+
+        /// <summary>
+        /// Determines whether the read-only index contains an element that has the specified key.
+        /// </summary>
+        /// <param name="key">The key to locate.</param>
+        /// <param name="value">The value to locate.</param>
+        /// <returns><c>true</c> if the read-only index contains an element that has the specified <paramref name="key"/> and <paramref name="value"/>; otherwise, <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">key is null.</exception>
+        bool Contains(TKey key, TValue value);
 
         /// <summary>
         /// Gets the values that is associated with the specified key.

@@ -26,12 +26,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Diagnostics.Sentries
 {
     /// <summary>
     /// Represents a sentry.
     /// </summary>
+    [DebuggerDisplay("{ToString(),nq}")]
     public abstract class SentryBase : ISentry
     {
         #region Utilities
@@ -103,6 +105,10 @@ namespace WmcSoft.Diagnostics.Sentries
         }
 
         #region Overridables methods
+
+        public override string ToString() {
+            return Name + ": " + _status + " (" + _observers.Count + ")";
+        }
 
         /// <summary>
         /// Called before the <paramref name="observer"/> is added to the list of observers.

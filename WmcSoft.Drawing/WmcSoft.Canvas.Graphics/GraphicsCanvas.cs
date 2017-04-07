@@ -44,7 +44,7 @@ namespace WmcSoft.Canvas
     {
         #region Variant visitors
 
-        sealed class PenVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+        sealed class PenVisitor : Variant<Color, CanvasGradient<Color>, CanvasPattern>.Visitor
             , IDisposable
         {
             private readonly GraphicsCanvas _canvas;
@@ -74,7 +74,7 @@ namespace WmcSoft.Canvas
                 return visitor.Pen;
             }
 
-            public override void Visit(CanvasGradient<float, Color> instance) {
+            public override void Visit(CanvasGradient<Color> instance) {
                 throw new NotSupportedException();
             }
 
@@ -102,7 +102,7 @@ namespace WmcSoft.Canvas
             }
         }
 
-        sealed class BrushVisitor : Variant<Color, CanvasGradient<float, Color>, CanvasPattern>.Visitor
+        sealed class BrushVisitor : Variant<Color, CanvasGradient<Color>, CanvasPattern>.Visitor
             , IDisposable
         {
             private readonly GraphicsCanvas _canvas;
@@ -132,7 +132,69 @@ namespace WmcSoft.Canvas
                 return visitor.Brush;
             }
 
-            public override void Visit(CanvasGradient<float, Color> instance) {
+            public override void Visit(CanvasGradient<Color> instance) {
+                var linear = instance as LinearGradient<float, Color>;
+                if (linear != null) {
+                    _factory = () => Create(linear);
+                    Dispose();
+                    return;
+                }
+
+                var radial = instance as RadialGradient<float, Color>;
+                if (radial != null) {
+                    _factory = () => Create(linear);
+                    Dispose();
+                    return;
+                }
+
+                throw new NotSupportedException();
+            }
+
+            private Brush Create(LinearGradient<float, Color> instance) {
+                var count = instance.Colors.Count;
+                if (count == 0)
+                    return CreateSolidBrush(Color.Transparent);
+
+
+                if (count == 1)
+                    return CreateSolidBrush(instance.Colors[0]);
+
+                var startColor = instance.Colors[0];
+                var endColor = instance.Colors[count - 1];
+                var brush = new LinearGradientBrush(new PointF(instance.X0, instance.Y0), new PointF(instance.X1, instance.Y1), startColor, endColor);
+                //brush.WrapMode = WrapMode.Clamp;
+
+                var start = 0;
+                var end = count;
+                if (!instance.Offsets[0].Equals(0f)) {
+                    start = 1;
+                    end++;
+                }
+                if (!instance.Offsets[count - 1].Equals(1f)) {
+                    end++;
+                }
+
+                if (count > 0) {
+                    var blend = new ColorBlend(end);
+                    if (start > 0) {
+                        blend.Positions[0] = 0f;
+                        blend.Colors[0] = startColor;
+                    }
+                    for (int i = 0; i < count; i++) {
+                        blend.Positions[start] = instance.Offsets[i];
+                        blend.Colors[start] = instance.Colors[i];
+                        start++;
+                    }
+                    if (start < end) {
+                        blend.Positions[start] = 1f;
+                        blend.Colors[start] = endColor;
+                    }
+                    brush.InterpolationColors = blend;
+                }
+                return brush;
+            }
+
+            private Brush Create(RadialGradient<float, Color> instance) {
                 throw new NotSupportedException();
             }
 
@@ -146,7 +208,6 @@ namespace WmcSoft.Canvas
             }
 
             public override void Visit(Color instance) {
-
                 _factory = () => CreateSolidBrush(instance);
                 Dispose();
             }
@@ -163,8 +224,8 @@ namespace WmcSoft.Canvas
         struct DrawingState
         {
             GraphicsState savedState; // contains transformation matrix, clipping region, ImageSmoothingQualityEnabled
-            Variant<Color, CanvasGradient<float, Color>, CanvasPattern> fillStyle;
-            Variant<Color, CanvasGradient<float, Color>, CanvasPattern> strokeStyle;
+            Variant<Color, CanvasGradient<Color>, CanvasPattern> fillStyle;
+            Variant<Color, CanvasGradient<Color>, CanvasPattern> strokeStyle;
             float lineWidth;
             LineCap lineCap;
             LineJoin lineJoin;
@@ -240,7 +301,7 @@ namespace WmcSoft.Canvas
 
         #region ICanvasFillStrokeStyles<float, Color> methods
 
-        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> FillStyle {
+        public Variant<Color, CanvasGradient<Color>, CanvasPattern> FillStyle {
             get {
                 return _fillStyle;
             }
@@ -249,9 +310,9 @@ namespace WmcSoft.Canvas
                 _fillStyle.Visit(_brush);
             }
         }
-        Variant<Color, CanvasGradient<float, Color>, CanvasPattern> _fillStyle;
+        Variant<Color, CanvasGradient<Color>, CanvasPattern> _fillStyle;
 
-        public Variant<Color, CanvasGradient<float, Color>, CanvasPattern> StrokeStyle {
+        public Variant<Color, CanvasGradient<Color>, CanvasPattern> StrokeStyle {
             get {
                 return _strokeStyle;
             }
@@ -260,18 +321,18 @@ namespace WmcSoft.Canvas
                 _strokeStyle.Visit(_pen);
             }
         }
-        Variant<Color, CanvasGradient<float, Color>, CanvasPattern> _strokeStyle;
+        Variant<Color, CanvasGradient<Color>, CanvasPattern> _strokeStyle;
 
-        public CanvasGradient<float, Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
-            throw new NotImplementedException();
+        public CanvasGradient<Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
+            return new LinearGradient<float, Color>(x0, y0, x1, y1);
         }
 
         public CanvasPattern CreatePattern(ICanvasImageSource image, Repetition repetition = Repetition.NoRepeat) {
             throw new NotImplementedException();
         }
 
-        public CanvasGradient<float, Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
-            throw new NotImplementedException();
+        public CanvasGradient<Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
+            return new RadialGradient<float, Color>(x0, y0, r0, x1, y1, r1);
         }
 
         #endregion

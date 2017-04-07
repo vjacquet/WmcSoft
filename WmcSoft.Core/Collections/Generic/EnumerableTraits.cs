@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -67,16 +68,19 @@ namespace WmcSoft.Collections.Generic
 
         #region Collection resolver
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int? GetCount(ICollection<T> collection) {
             if (collection != null)
                 return collection.Count;
             return null;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int? GetCount(IReadOnlyCollection<T> collection) {
             if (collection != null)
                 return collection.Count;
             return null;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static int? GetCount(ICollection collection) {
             if (collection != null)
                 return collection.Count;

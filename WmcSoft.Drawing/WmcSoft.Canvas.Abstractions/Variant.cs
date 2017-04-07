@@ -69,11 +69,11 @@ namespace WmcSoft.Canvas
 
         public void Visit(Visitor visitor) {
             var type = GetInnerType();
-            if (type == typeof(T1))
+            if (typeof(T1).IsAssignableFrom(type))
                 visitor.Visit((T1)_storage);
-            else if (type == typeof(T2))
+            else if (typeof(T2).IsAssignableFrom(type))
                 visitor.Visit((T2)_storage);
-            else if (type == typeof(T3))
+            else if (typeof(T3).IsAssignableFrom(type))
                 visitor.Visit((T3)_storage);
             else
                 throw new InvalidOperationException();

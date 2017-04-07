@@ -43,7 +43,9 @@ namespace WmcSoft.IO
         /// </summary>
         /// <param name="path">The path.</param>
         public FileCopyBatch(string path) {
-            this._path = path;
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            _path = path;
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace WmcSoft.IO
         /// An <see cref="IDisposable"/> instance to release resources once the commit is complete.
         /// </returns>
         protected override IDisposable CreateCommitScope() {
-            if (_impersonator!=null) {
+            if (_impersonator != null) {
                 return _impersonator();
             }
             return Disposable.Empty;

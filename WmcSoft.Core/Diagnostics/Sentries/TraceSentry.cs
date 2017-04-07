@@ -63,7 +63,7 @@ namespace WmcSoft.Diagnostics.Sentries
         private IDisposable _unsubscriber;
 
         public TraceSentry(TraceSource traceSource, ISentry decorated) {
-            _syncRoot = new Object();
+            _syncRoot = new object();
             _traceSource = traceSource;
             _decorated = decorated;
             _refCount = 0;
@@ -102,15 +102,15 @@ namespace WmcSoft.Diagnostics.Sentries
         }
 
         private void TraceNext(SentryStatus value) {
-            _traceSource.TraceInformation("Sentry {0} observed {1}.", Name, value);
+            _traceSource.TraceInformation($"Sentry {Name} observed {value}.");
         }
 
         private void TraceCompleted() {
-            _traceSource.TraceInformation("Sentry {0} completed.", Name);
+            _traceSource.TraceInformation($"Sentry {Name} completed.");
         }
 
         private void TraceError(Exception error) {
-            _traceSource.TraceError(0, "Sentry {0} failed: {1}.", Name, error);
+            _traceSource.TraceError(0, $"Sentry {Name} failed: {error}.");
         }
     }
 }

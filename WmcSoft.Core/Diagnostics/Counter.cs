@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 namespace WmcSoft.Diagnostics
@@ -33,6 +34,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Represents a Named counter.
     /// </summary>
+    [DebuggerDisplay("{ToString(),nq}")]
     public sealed class Counter : IComparable<Counter>
     {
         readonly string _name;
@@ -43,7 +45,8 @@ namespace WmcSoft.Diagnostics
         /// </summary>
         /// <param name="name">The name of the counter.</param>
         public Counter(string name) {
-            if (string.IsNullOrWhiteSpace("name")) throw new ArgumentException("name");
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
+
             _name = name;
         }
 

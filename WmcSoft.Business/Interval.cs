@@ -36,6 +36,10 @@ using System.Text;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Stores a range of values within a single object. 
+    /// </summary>
+    /// <remarks>This class stores the open/closed state of the bounds when <see cref="Range{T}"/> does not.</remarks>
     [Serializable]
     [ImmutableObject(true)]
     public struct Interval<T> : IComparable<Interval<T>>, IEquatable<Interval<T>>
@@ -52,6 +56,14 @@ namespace WmcSoft
 
             _lower = lower;
             _upper = upper;
+        }
+
+        /// <remarks>Uses the common default for time intervals, [start, end)</remarks>
+        public Interval(T lower, T upper) {
+            if (lower.CompareTo(upper) > 0) throw new ArgumentException();
+
+            _lower = new IntervalLimit<T>(lower, lower: true, closed: true);
+            _upper = new IntervalLimit<T>(upper, lower: false, closed: false);
         }
 
         public T? Lower { get { return (T?)_lower; } }

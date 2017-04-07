@@ -32,21 +32,31 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents a point in time.
+    /// </summary>
+    /// <remarks>Unlike <see cref="DateTime"/>, you cannot access its parts.</remarks>
     [Serializable]
     [DebuggerDisplay("{_storage,nq}")]
     public struct TimePoint : IComparable<TimePoint>, IEquatable<TimePoint>
     {
-        DateTime _storage;
+        private readonly DateTime _storage; // stores the time in UTC.
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private TimePoint(DateTime dateTime, PiecewiseConstruct tag) {
+            _storage = dateTime;
+        }
 
         public TimePoint(DateTime dateTime) {
             _storage = dateTime.ToUniversalTime();
         }
 
         public TimePoint(DateTimeOffset dateTimeOffset) {
-            _storage = dateTimeOffset.ToUniversalTime().DateTime;
+            _storage = dateTimeOffset.UtcDateTime;
         }
 
         public bool IsAfter(TimePoint other) {
@@ -66,17 +76,13 @@ namespace WmcSoft.Time
         }
 
         internal static TimePoint Now() {
-            var tp = default(TimePoint);
-            tp._storage = DateTime.UtcNow;
-            return tp;
+            return new TimePoint(DateTime.UtcNow, PiecewiseConstruct.Tag);
         }
 
         #region Operators
 
         public static implicit operator TimePoint(DateTimeOffset x) {
-            var result = new TimePoint();
-            result._storage = x.UtcDateTime;
-            return result;
+            return new TimePoint(x.UtcDateTime);
         }
 
         public static explicit operator DateTimeOffset(TimePoint x) {

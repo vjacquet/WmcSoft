@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Business
 {
@@ -14,11 +16,10 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CanFixInvalidRange() {
+        [ExpectedException(typeof(ArgumentException))]
+        public void CheckInvalidRange() {
             var actual = new Range<int>(5, 2);
-
-            Assert.AreEqual(2, actual.Lower);
-            Assert.AreEqual(5, actual.Upper);
+            Assert.Fail();
         }
 
         [TestMethod]
@@ -96,6 +97,40 @@ namespace WmcSoft.Business
             Assert.AreEqual(new Range<int>(c, d), Range<int>.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
             Assert.AreEqual(new Range<int>(b, b), Range<int>.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
             Assert.AreEqual(new Range<int>(b, d), Range<int>.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
+        }
+
+        [TestMethod]
+        public void CheckPartialMerge() {
+            var data = new[] {
+                Range.Create(1, 3),
+                Range.Create(4, 5),
+                Range.Create(5, 7),
+                Range.Create(7, 9),
+            };
+            var expected = new[] {
+                Range.Create(1, 3),
+                Range.Create(4, 9),
+            };
+            var actual = data.PartialMerge().ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckPartialMergeOnOverlappingRanges() {
+            var data = new[] {
+                Range.Create(1, 3),
+                Range.Create(4, 5),
+                Range.Create(5, 7),
+                Range.Create(7, 9),
+                Range.Create(12, 16),
+                Range.Create(8, 13)
+            };
+            var expected = new[] {
+                Range.Create(1, 3),
+                Range.Create(4, 16),
+            };
+            var actual = data.PartialMerge().ToArray();
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }
