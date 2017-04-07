@@ -93,7 +93,6 @@ namespace WmcSoft
             Assert.AreEqual("abc", "abc".Right(5));
         }
 
-
         [TestMethod]
         public void CheckSurroundWith() {
             string n = null;
