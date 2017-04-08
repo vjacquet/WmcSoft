@@ -169,8 +169,44 @@ namespace WmcSoft.Collections.Specialized
             Enqueue(item);
         }
 
+        bool RemoveForwards(T item, int startIndex, int count) {
+            var found = Array.IndexOf(_array, item, startIndex, count);
+            if (found >= 0) {
+                while (found != startIndex) {
+                    _array[found] = _array[found - 1];
+                    found--;
+                }
+                _array[found] = default(T);
+                _count--;
+                _head++;
+                return true;
+            }
+            return false;
+        }
+
+        bool RemoveBackwards(T item, int startIndex, int count) {
+            var found = Array.IndexOf(_array, item, startIndex, count);
+            if (found >= 0) {
+                var endIndex = startIndex + count-1;
+                while (found != endIndex) {
+                    _array[found] = _array[found + 1];
+                    found++;
+                }
+                _array[found] = default(T);
+                _count--;
+                _tail--;
+                return true;
+            }
+            return false;
+        }
+
         public bool Remove(T item) {
-            throw new NotSupportedException();
+            if (_head < _tail) {
+                return RemoveBackwards(item, _head, _count);
+            } else {
+                return RemoveForwards(item, _head, _array.Length - _head)
+                    || RemoveBackwards(item, 0, _tail);
+            }
         }
 
         public void Clear() {
