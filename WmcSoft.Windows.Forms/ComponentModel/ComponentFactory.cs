@@ -79,7 +79,6 @@ namespace WmcSoft.ComponentModel
         }
 
         #endregion
-
     }
 
     #region Design
@@ -88,8 +87,8 @@ namespace WmcSoft.ComponentModel
     {
         class TypeResolutionService : ITypeResolutionService
         {
-            ITypeResolutionService _service;
-            ComponentFactory _factory;
+            readonly ITypeResolutionService _service;
+            readonly ComponentFactory _factory;
 
             internal TypeResolutionService(ComponentFactory factory, ITypeResolutionService service) {
                 _factory = factory;
@@ -132,6 +131,9 @@ namespace WmcSoft.ComponentModel
             #endregion
         }
 
+        ITypeResolutionService _typeResolutionService;
+        IDesignerHost _host;
+
         public ComponentFactoryDesigner() {
             _typeResolutionService = null;
         }
@@ -162,9 +164,6 @@ namespace WmcSoft.ComponentModel
 
             base.Dispose(disposing);
         }
-
-        ITypeResolutionService _typeResolutionService;
-        IDesignerHost _host;
     }
 
     #endregion
