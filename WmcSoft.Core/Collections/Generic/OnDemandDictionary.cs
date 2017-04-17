@@ -36,7 +36,7 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    /// <remarks>Only the indexed accessor can generate a value. All other metods work on what is already on the dictionary.</remarks>
+    /// <remarks>Only the indexed accessor can generate a value. All other methods work on what is already on the dictionary.</remarks>
     public class OnDemandDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _storage;
@@ -59,7 +59,7 @@ namespace WmcSoft.Collections.Generic
         /// An enumerable collection that contains the keys in the read-only dictionary.
         /// </returns>
         public IEnumerable<TKey> Keys {
-            get { return ((IReadOnlyDictionary<TKey, TValue>)_storage).Keys; }
+            get { return _storage.Keys; }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace WmcSoft.Collections.Generic
         /// An enumerable collection that contains the values in the read-only dictionary.
         /// </returns>
         public IEnumerable<TValue> Values {
-            get { return ((IReadOnlyDictionary<TKey, TValue>)_storage).Values; }
+            get { return _storage.Values; }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace WmcSoft.Collections.Generic
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
-            return ((IReadOnlyDictionary<TKey, TValue>)_storage).GetEnumerator();
+            return _storage.GetEnumerator();
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace WmcSoft.Collections.Generic
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator() {
-            return ((IReadOnlyDictionary<TKey, TValue>)_storage).GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

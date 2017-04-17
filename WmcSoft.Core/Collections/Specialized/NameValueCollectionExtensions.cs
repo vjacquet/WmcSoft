@@ -50,8 +50,9 @@ namespace WmcSoft.Collections.Specialized
             private readonly TypeConverter _converter;
 
             public TypeConverterAdapter(TypeConverter converter) {
-                if (converter == null) throw new ArgumentNullException("converter");
-                if (!converter.CanConvertFrom(typeof(string))) throw new ArgumentException("converter");
+                if (converter == null) throw new ArgumentNullException(nameof(converter));
+                if (!converter.CanConvertFrom(typeof(string))) throw new ArgumentException(nameof(converter));
+
                 _converter = converter;
             }
 
@@ -65,7 +66,8 @@ namespace WmcSoft.Collections.Specialized
             private readonly Converter<string, TOutput> _converter;
 
             public ConverterAdapter(Converter<string, TOutput> converter) {
-                if (converter == null) throw new ArgumentNullException("converter");
+                if (converter == null) throw new ArgumentNullException(nameof(converter));
+
                 _converter = converter;
             }
 

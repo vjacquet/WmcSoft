@@ -37,6 +37,10 @@ namespace WmcSoft.Data
             return collection.Cast<DataRow>().Where(predicate);
         }
 
+        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, int, bool> predicate) {
+            return collection.Cast<DataRow>().Where(predicate);
+        }
+
         public static IEnumerable<U> Select<U>(this DataRowCollection collection, Func<DataRow, U> selector) {
             return collection.Cast<DataRow>().Select(selector);
         }
@@ -66,10 +70,6 @@ namespace WmcSoft.Data
 
         public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataRowCollection collection, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector) {
             return collection.Cast<DataRow>().GroupBy(keySelector, elementSelector);
-        }
-
-        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, int, bool> predicate) {
-            return collection.Cast<DataRow>().Where(predicate);
         }
     }
 }
