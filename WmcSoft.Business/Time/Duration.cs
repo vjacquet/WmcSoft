@@ -36,6 +36,9 @@ using System.Linq;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents a duration.
+    /// </summary>
     [Serializable]
     public struct Duration : IComparable<Duration>, IEquatable<Duration>
     {
@@ -261,13 +264,35 @@ namespace WmcSoft.Time
 
         #region IComparable<Duration> members
 
+        /// <summary>
+        /// Compares two durations and returns a value indicating whether one is less than, equal to, or greater than the other.
+        /// </summary>
+        /// <param name="other">The other duration.</param>
+        /// <returns>A signed integer value that indicates the relative order of the objects being compared. The return value has these meanings:
+        /// <list type="table">
+        /// <listheader>
+        ///   <description>Value</description>
+        ///   <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        ///   <description>Less than zero</description>
+        ///   <description> This instance precedes <paramref name="other"/> in the sort order.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Zero</description>
+        ///   <description>This instance occurs in the same position in the sort order as <paramref name="other"/>.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Greater than zero</description>
+        ///   <description>This instance follows <paramref name="other"/> in the sort order.</description>
+        /// </item>
+        /// </returns>
+        /// <remarks><see cref="Duration"/>s in milliseconds are always less than <see cref="Duration"/>s in months.</remarks>
         public int CompareTo(Duration other) {
-            // TODO: Should not happen...
-            if (_unit.BaseUnit != other.BaseUnit) throw new ArgumentException();
-            var delta = InBaseUnits() - other.InBaseUnits();
-            if (delta < 0) return -1;
-            if (delta > 0) return 1;
-            return 0;
+            if (_unit.BaseUnit == other.BaseUnit) {
+                return InBaseUnits().CompareTo(other.InBaseUnits());
+            }
+            return (_unit.BaseUnit == TimeUnit.Month) ? 1 : -1;
         }
 
         #endregion
