@@ -35,6 +35,10 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents the minutes of an hour.
+    /// </summary>
+    /// <remarks>The value is in the range [0, 59].</remarks>
     [DebuggerDisplay("{_storage,nq}mn")]
     [Serializable]
     public struct MinuteOfHour : IComparable<MinuteOfHour>, IEquatable<MinuteOfHour>
@@ -92,8 +96,8 @@ namespace WmcSoft.Time
             return x.Equals(y);
         }
 
-        public static bool operator !=(MinuteOfHour a, MinuteOfHour b) {
-            return !a.Equals(b);
+        public static bool operator !=(MinuteOfHour x, MinuteOfHour y) {
+            return !x.Equals(y);
         }
 
         public static bool operator <(MinuteOfHour x, MinuteOfHour y) {

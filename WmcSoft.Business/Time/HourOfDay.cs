@@ -35,6 +35,10 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents an hour of the day.
+    /// </summary>
+    /// <remarks>The value is in the range [0, 23].</remarks>
     [DebuggerDisplay("{_storage,nq}h")]
     [Serializable]
     public struct HourOfDay : IComparable<HourOfDay>, IEquatable<HourOfDay>
@@ -96,8 +100,8 @@ namespace WmcSoft.Time
             return x.Equals(y);
         }
 
-        public static bool operator !=(HourOfDay a, HourOfDay b) {
-            return !a.Equals(b);
+        public static bool operator !=(HourOfDay x, HourOfDay y) {
+            return !x.Equals(y);
         }
 
         public static bool operator <(HourOfDay x, HourOfDay y) {
@@ -118,11 +122,13 @@ namespace WmcSoft.Time
         #region Helpers
 
         static int ConvertTo24Hour(int hour, string am_pm) {
-            if (!("AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase) || "PM".Equals(am_pm, StringComparison.OrdinalIgnoreCase)))
-                throw new ArgumentOutOfRangeException("am_pm");
             if (hour < 0 | hour > 12) throw new ArgumentOutOfRangeException("hour");
 
-            int translatedAmPm = "AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase) ? 0 : 12;
+            var am = "AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
+            var pm = "PM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
+            if (!(am || pm)) throw new ArgumentOutOfRangeException("am_pm");
+
+            int translatedAmPm = am ? 0 : 12;
             translatedAmPm -= (hour == 12) ? 12 : 0;
             return hour + translatedAmPm;
         }
