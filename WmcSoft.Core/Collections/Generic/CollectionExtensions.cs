@@ -125,6 +125,7 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of the elements</typeparam>
         /// <param name="collection">The collection</param>
         /// <returns>A read only collection</returns>
+        /// <remarks>Unlike <see cref="System.Collections.ObjectModel.ReadOnlyCollection{T}"/>, the returned type implements only <see cref="IReadOnlyCollection{T}"/>.</remarks>
         public static IReadOnlyCollection<T> AsReadOnly<T>(this ICollection<T> collection) {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
 
@@ -132,11 +133,12 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Shield a list as a readonly list
+        /// Shields a list as a read only list
         /// </summary>
         /// <typeparam name="T">The type of the elements</typeparam>
         /// <param name="list">The list</param>
-        /// <returns>A read only list</returns>
+        /// <returns>A read only list.</returns>
+        /// <remarks>Unlike <see cref="System.Collections.ObjectModel.ReadOnlyCollection{T}"/>, the returned type implements only <see cref="IReadOnlyList{T}"/>.</remarks>
         public static IReadOnlyList<T> AsReadOnly<T>(this IList<T> list) {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
@@ -144,12 +146,13 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Shield a dictionary as a readonly dictionary
+        /// Shield a dictionary as a read only dictionary
         /// </summary>
         /// <typeparam name="TKey">The type of the keys</typeparam>
         /// <typeparam name="TValue">The type of the values</typeparam>
         /// <param name="dictionary">The dictionary</param>
         /// <returns>A read only dictionary</returns>
+        /// <remarks>Unlike <see cref="System.Collections.ObjectModel.ReadOnlyDictionary{TKey, TValue}"/>, the returned type implements only <see cref="IReadOnlyDictionary{TKey, TValue}"/>.</remarks>
         public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary) {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
