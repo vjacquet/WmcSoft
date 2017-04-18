@@ -823,16 +823,22 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The enumerator</param>
         /// <param name="count">The number of time to repeat the sequence</param>
         /// <param name="collate">Collate the items</param>
-        /// <returns>The list with the repeated sequence</returns>
+        /// <returns>The list with the repeated sequence.</returns>
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count, bool collate = true) {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            if (count == 0)
+            switch (count) {
+            case 0:
                 return Enumerable.Empty<T>();
-            if (collate)
-                return new CollateRepeat<T>(source, count).AsCollection();
-            return new GroupedRepeat<T>(source, count).AsCollection();
+            case 1:
+                return source;
+            default:
+                // most optimized implementation tries to cast as ICollection<T>, not IReadOnlyCollection, to get the count of items.
+                return collate
+                    ? new CollateRepeat<T>(source, count).AsCollection()
+                    : new GroupedRepeat<T>(source, count).AsCollection();
+            }
         }
 
         #endregion
