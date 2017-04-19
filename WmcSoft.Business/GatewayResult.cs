@@ -27,7 +27,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.Serialization;
 using WmcSoft.Runtime.Serialization;
 
@@ -67,18 +66,14 @@ namespace WmcSoft
                 return "Succeeded";
             if (_errors.Length == 0)
                 return "Failed";
-            return "Failed: " + string.Join(", ", _errors.Select(e => e.Code));
+            return "Failed: " + string.Join(", ", Array.ConvertAll(_errors, e => e.Code));
         }
 
         #region Serialization
 
         private GatewayResult(SerializationInfo info, StreamingContext context) {
             var succeeded = info.GetBoolean("Succeeded");
-            if (succeeded) {
-                _errors = None;
-            } else {
-                _errors = info.GetValue<GatewayError[]>("Errors");
-            }
+            _errors = succeeded ? None : info.GetValue<GatewayError[]>("Errors");
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) {
