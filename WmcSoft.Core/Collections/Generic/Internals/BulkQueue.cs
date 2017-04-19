@@ -25,10 +25,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
-    internal class BulkQueue<T> : ContiguousStorage<T>
+    sealed class BulkQueue<T> : ContiguousStorage<T>
     {
         int _head;
         int _tail;
@@ -61,6 +62,16 @@ namespace WmcSoft.Collections.Generic.Internals
             _storage[_tail] = item;
             _tail = (_tail + 1) % _storage.Length;
             _count++;
+        }
+
+        /// <summary>
+        /// Enqueues <paramref name="count"/> items in place.
+        /// </summary>
+        /// <param name="count">The count of items</param>
+        /// <param name="action">The action taking as parameters the buffer to copy to and the index where to start copying.</param>
+        public void Enqueue(IEnumerable<T> items) {
+            var list = new List<T>(items);
+            BulkEnqueue(list.Count, list.CopyTo);
         }
 
         public void BulkEnqueue(int count, Action<T[], int> action) {

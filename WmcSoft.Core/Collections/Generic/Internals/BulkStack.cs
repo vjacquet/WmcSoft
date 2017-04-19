@@ -25,10 +25,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
-    internal class BulkStack<T> : ContiguousStorage<T>
+    sealed class BulkStack<T> : ContiguousStorage<T>
     {
         public BulkStack() : base() {
         }
@@ -45,6 +46,16 @@ namespace WmcSoft.Collections.Generic.Internals
             _storage[_count++] = item;
         }
 
+        public void Push(IEnumerable<T> items) {
+            var list = new List<T>(items);
+            BulkPush(list.Count, list.CopyTo);
+        }
+
+        /// <summary>
+        /// Pushes <paramref name="count"/> items in place.
+        /// </summary>
+        /// <param name="count">The count of items</param>
+        /// <param name="action">The action taking as parameters the buffer to copy to and the index where to start copying.</param>
         public void BulkPush(int count, Action<T[], int> action) {
             Ensure(count);
             action(_storage, _count);

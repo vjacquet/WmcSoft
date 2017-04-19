@@ -38,6 +38,21 @@ namespace WmcSoft.Collections.Generic.Internals
         }
 
         [TestMethod]
+        public void CanPushItems() {
+            var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            var stack = new BulkStack<int>();
+            stack.Push(data);
+
+            var length = data.Length;
+            for (int i = length - 1; i >= 0; i--) {
+                var expected = data[i];
+                var actual = stack.Pop();
+                Assert.AreEqual(expected, actual);
+            }
+            Assert.IsTrue(stack.IsEmpty());
+        }
+
+        [TestMethod]
         public void CanBulkPushAfterAFewPushes() {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var stack = new BulkStack<int>();

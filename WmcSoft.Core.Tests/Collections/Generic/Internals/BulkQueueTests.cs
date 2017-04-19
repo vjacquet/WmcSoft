@@ -38,6 +38,21 @@ namespace WmcSoft.Collections.Generic.Internals
         }
 
         [TestMethod]
+        public void CanEnqueueItems() {
+            var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            var queue = new BulkQueue<int>();
+            queue.Enqueue(data);
+
+            var length = data.Length;
+            for (int i = 0; i < length; i++) {
+                var expected = data[i];
+                var actual = queue.Dequeue();
+                Assert.AreEqual(expected, actual);
+            }
+            Assert.IsTrue(queue.IsEmpty());
+        }
+
+        [TestMethod]
         public void CanBulkEnqueueAfterAFewEnqueues() {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var queue = new BulkQueue<int>();
