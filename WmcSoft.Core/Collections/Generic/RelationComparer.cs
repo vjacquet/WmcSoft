@@ -37,13 +37,15 @@ namespace WmcSoft.Collections.Generic
     {
         private readonly Relation<T> _relation;
 
-        public RelationComparer(Relation<T> relation) {
+        public RelationComparer(Relation<T> relation)
+        {
             if (relation == null) throw new ArgumentNullException(nameof(relation));
 
             _relation = relation;
         }
 
-        public RelationComparer(Func<T, T, bool> func) {
+        public RelationComparer(Func<T, T, bool> func)
+        {
             if (func == null) throw new ArgumentNullException(nameof(func));
 
             _relation = (x, y) => func(x, y);
@@ -74,7 +76,8 @@ namespace WmcSoft.Collections.Generic
         /// </item>
         /// </list>
         /// </returns>
-        public int Compare(T x, T y) {
+        public int Compare(T x, T y)
+        {
             if (ReferenceEquals(x, y))
                 return 0;
             if (x == null)

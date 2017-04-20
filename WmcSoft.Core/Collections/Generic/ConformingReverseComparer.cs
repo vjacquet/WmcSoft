@@ -30,22 +30,24 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Decorates a <see cref="IComparer{T}"/> to exposes a method that compares two objects in descending order.
+    /// Decorates a <see cref="IComparer{T}"/> to exposes a method that compares 
+    /// two objects in descending order.
     /// </summary>
     /// <typeparam name="T">The type of objects to compare.</typeparam>
-    /// <remarks>This decorator behaves as if the data were sorted using the original comparer and then enumerate the items backwards. 
-    /// Therefore, null items will be greater than anything instead of less than anyting.</remarks>
+    /// <remarks>With this decorator, null items are still less than anyting.</remarks>
     [Serializable]
-    public sealed class ReverseComparer<T> : IComparer<T>
+    public sealed class ConformingReverseComparer<T> : IComparer<T>
+        where T : class
     {
         private readonly IComparer<T> _comparer;
 
-        public ReverseComparer(IComparer<T> comparer = null)
+        public ConformingReverseComparer(IComparer<T> comparer = null)
         {
             _comparer = comparer ?? Comparer<T>.Default;
         }
 
-        /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+        /// <summary>Compares two objects and returns a value indicating whether one is less than, 
+        /// equal to, or greater than the other.</summary>
         /// <param name="x">The first instance to compare.</param>
         /// <param name="y">The second instance to compare.</param>
         /// <returns>
@@ -72,7 +74,13 @@ namespace WmcSoft.Collections.Generic
         /// </returns>
         public int Compare(T x, T y)
         {
-            return _comparer.Compare(y, x);
+            if (x == null) {
+                return y == null ? 0 : -1;
+            } else if (y == null) {
+                return 1;
+            } else {
+                return _comparer.Compare(y, x);
+            }
         }
     }
 }

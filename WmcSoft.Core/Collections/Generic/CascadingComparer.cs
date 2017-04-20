@@ -47,14 +47,16 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public CascadingComparer(params IComparer<T>[] comparers) {
+        public CascadingComparer(params IComparer<T>[] comparers)
+        {
             if (comparers == null) throw new ArgumentNullException(nameof(comparers));
             if (comparers.Length == 0) throw new ArgumentException();
 
             _comparers = comparers;
         }
 
-        internal CascadingComparer(IEnumerable<IComparer<T>> comparers, IComparer<T> other) {
+        internal CascadingComparer(IEnumerable<IComparer<T>> comparers, IComparer<T> other)
+        {
             var primary = ToArray(comparers);
             var length = primary.Length;
             _comparers = new IComparer<T>[length + 1];
@@ -62,7 +64,8 @@ namespace WmcSoft.Collections.Generic
             _comparers[length] = other;
         }
 
-        internal CascadingComparer(IComparer<T> other, IEnumerable<IComparer<T>> comparers) {
+        internal CascadingComparer(IComparer<T> other, IEnumerable<IComparer<T>> comparers)
+        {
             var primary = ToArray(comparers);
             var length = primary.Length;
             _comparers = new IComparer<T>[length + 1];
@@ -70,9 +73,9 @@ namespace WmcSoft.Collections.Generic
             Array.Copy(primary, 0, _comparers, 1, length);
         }
 
-        static IComparer<T>[] ToArray(IEnumerable<IComparer<T>> comparers) {
-            var cascading = comparers as CascadingComparer<T>;
-            if (cascading != null)
+        static IComparer<T>[] ToArray(IEnumerable<IComparer<T>> comparers)
+        {
+            if (comparers is CascadingComparer<T> cascading)
                 return cascading._comparers;
             return comparers.ToArray();
         }
@@ -106,9 +109,10 @@ namespace WmcSoft.Collections.Generic
         /// </item>
         /// </list>
         /// </returns>
-        public int Compare(T x, T y) {
-            int result = 0;
-            for (int i = 0; i < _comparers.Length; i++) {
+        public int Compare(T x, T y)
+        {
+            var result = 0;
+            for (var i = 0; i < _comparers.Length; i++) {
                 result = _comparers[i].Compare(x, y);
                 if (result != 0)
                     break;
@@ -120,11 +124,13 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<IComparer<T> members
 
-        public IEnumerator<IComparer<T>> GetEnumerator() {
+        public IEnumerator<IComparer<T>> GetEnumerator()
+        {
             return ((IEnumerable<IComparer<T>>)_comparers).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
