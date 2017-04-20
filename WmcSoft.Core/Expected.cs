@@ -56,7 +56,8 @@ namespace WmcSoft
         /// Constructs the expected from a value.
         /// </summary>
         /// <param name="value">The value</param>
-        public Expected(T value) {
+        public Expected(T value)
+        {
             _value = value;
             _exception = null;
         }
@@ -65,7 +66,8 @@ namespace WmcSoft
         /// Constructs the expected from an exception.
         /// </summary>
         /// <param name="exception">The exception.</param>
-        public Expected(Exception exception) {
+        public Expected(Exception exception)
+        {
             _value = default(T);
             _exception = exception;
         }
@@ -74,27 +76,33 @@ namespace WmcSoft
 
         #region Operators
 
-        public static bool operator ==(Expected<T> x, Expected<T> y) {
+        public static bool operator ==(Expected<T> x, Expected<T> y)
+        {
             return Equals(x, y);
         }
 
-        public static bool operator !=(Expected<T> x, Expected<T> y) {
+        public static bool operator !=(Expected<T> x, Expected<T> y)
+        {
             return Equals(x, y);
         }
 
-        public static bool operator !(Expected<T> x) {
+        public static bool operator !(Expected<T> x)
+        {
             return x.IsFaulted;
         }
 
-        public static bool operator true(Expected<T> x) {
+        public static bool operator true(Expected<T> x)
+        {
             return x.HasValue;
         }
 
-        public static bool operator false(Expected<T> x) {
+        public static bool operator false(Expected<T> x)
+        {
             return x.IsFaulted;
         }
 
-        public static implicit operator Expected<T>(T value) {
+        public static implicit operator Expected<T>(T value)
+        {
             return new Expected<T>(value);
         }
 
@@ -103,15 +111,18 @@ namespace WmcSoft
         /// </summary>
         /// <exception cref="Exception">Throws the stored exception when the value is missing.</exception>
 
-        public static explicit operator T(Expected<T> expected) {
+        public static explicit operator T(Expected<T> expected)
+        {
             return expected.Value;
         }
 
-        public static implicit operator Expected<T>(Exception exception) {
+        public static implicit operator Expected<T>(Exception exception)
+        {
             return new Expected<T>(exception);
         }
 
-        public static implicit operator Fault(Expected<T> x) {
+        public static implicit operator Fault(Expected<T> x)
+        {
             return new Fault(x._exception);
         }
 
@@ -152,7 +163,8 @@ namespace WmcSoft
         /// The type of the default value is the type argument of the current <see cref="Expected{T}"/> object, and the value of the default value consists solely of binary zeroes.</returns>
         /// <remarks>The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is <c>false</c> (unlike the <see cref="Value"/> property, which throws an exception). </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetValueOrDefault() {
+        public T GetValueOrDefault()
+        {
             return _value;
         }
 
@@ -162,7 +174,8 @@ namespace WmcSoft
         /// <returns>The value of the <see cref="Value"/> property if the <see cref="HasValue "/> property is <c>true</c>; otherwise, the <param name="defaultValue"/>.</returns>
         /// <remarks>The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is <c>false</c> (unlike the <see cref="Value"/> property, which throws an exception). </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetValueOrDefault(T defaultValue) {
+        public T GetValueOrDefault(T defaultValue)
+        {
             return HasValue ? _value : defaultValue;
         }
 
@@ -173,7 +186,8 @@ namespace WmcSoft
             get { return _exception; }
         }
 
-        public IEnumerable<Exception> GetExceptions() {
+        public IEnumerable<Exception> GetExceptions()
+        {
             if (IsFaulted) {
                 var aggregated = _exception as AggregateException;
                 if (aggregated != null)
@@ -188,38 +202,38 @@ namespace WmcSoft
         #region Methods
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static Exception PassThrough(Exception exception, Func<Exception, Exception> translate) {
+        static Exception PassThrough(Exception exception, Func<Exception, Exception> translate)
+        {
             if (translate == null)
                 return exception;
 
             try {
                 return translate(exception);
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 return exception; // do not let the janitor destroy the crime scene
             }
         }
 
-        public Expected<TResult> Apply<TResult>(Func<T, TResult> func, Func<Exception, Exception> translate) {
+        public Expected<TResult> Apply<TResult>(Func<T, TResult> func, Func<Exception, Exception> translate)
+        {
             if (IsFaulted)
                 return PassThrough(_exception, translate);
 
             try {
                 return func(_value);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return PassThrough(e, translate);
             }
         }
 
-        public Expected<TResult> Apply<TResult>(Func<T, TResult> func) {
+        public Expected<TResult> Apply<TResult>(Func<T, TResult> func)
+        {
             if (IsFaulted)
                 return _exception;
 
             try {
                 return func(_value);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return e;
             }
         }
@@ -228,7 +242,8 @@ namespace WmcSoft
 
         #region Overrides
 
-        public override bool Equals(object other) {
+        public override bool Equals(object other)
+        {
             if (other == null)
                 return false;
             if (other.GetType() == GetType()) {
@@ -241,14 +256,16 @@ namespace WmcSoft
             return false;
         }
 
-        public bool Equals(Expected<T> other) {
+        public bool Equals(Expected<T> other)
+        {
             if (_exception != null)
                 return _exception.Equals(other._exception);
             return Object.Equals(_value, other._value);
         }
 
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_exception != null)
                 return _exception.GetHashCode();
             if (Object.ReferenceEquals(_value, null))
@@ -256,7 +273,8 @@ namespace WmcSoft
             return _value.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return HasValue ? _value.ToString() : (@"/!\ " + _exception.Message);
         }
 
@@ -267,10 +285,12 @@ namespace WmcSoft
     {
         #region Factory functions
 
-        public static Expected<T> Success<T>(T value) {
+        public static Expected<T> Success<T>(T value)
+        {
             return value;
         }
-        public static Expected<T> Failed<T>(Exception exception) {
+        public static Expected<T> Failed<T>(Exception exception)
+        {
             return exception;
         }
 
@@ -278,7 +298,8 @@ namespace WmcSoft
 
         #region Functional helpers
 
-        static Exception Compose(Exception x, Exception y) {
+        static Exception Compose(Exception x, Exception y)
+        {
             if (x == null)
                 return y;
             if (y == null)
@@ -286,7 +307,8 @@ namespace WmcSoft
             return new AggregateException(x, y);
         }
 
-        static Exception Compose(params Exception[] exceptions) {
+        static Exception Compose(params Exception[] exceptions)
+        {
             if (exceptions == null)
                 return null;
             var x = exceptions.Where(e => e != null).ToList();
@@ -297,41 +319,41 @@ namespace WmcSoft
             }
         }
 
-        public static Expected<TResult> Apply<T1, T2, TResult>(Func<T1, T2, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>)) {
+        public static Expected<TResult> Apply<T1, T2, TResult>(Func<T1, T2, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>))
+        {
             var x = Compose(first.Exception, second.Exception);
             if (x != null)
                 return x;
 
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault());
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 return exception;
             }
         }
 
-        public static Expected<TResult> Apply<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>), Expected<T3> third = default(Expected<T3>)) {
+        public static Expected<TResult> Apply<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>), Expected<T3> third = default(Expected<T3>))
+        {
             var x = Compose(first.Exception, second.Exception, third.Exception);
             if (x != null)
                 return x;
 
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault());
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 return exception;
             }
         }
 
-        public static Expected<TResult> Apply<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>), Expected<T3> third = default(Expected<T3>), Expected<T4> fourth = default(Expected<T4>)) {
+        public static Expected<TResult> Apply<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> func, Expected<T1> first = default(Expected<T1>), Expected<T2> second = default(Expected<T2>), Expected<T3> third = default(Expected<T3>), Expected<T4> fourth = default(Expected<T4>))
+        {
             var x = Compose(first.Exception, second.Exception, third.Exception, fourth.Exception);
             if (x != null)
                 return x;
 
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault(), fourth.GetValueOrDefault());
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 return exception;
             }
         }
