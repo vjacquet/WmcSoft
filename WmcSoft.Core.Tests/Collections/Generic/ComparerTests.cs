@@ -8,8 +8,32 @@ namespace WmcSoft.Collections.Generic
     [TestClass]
     public class ComparerTests
     {
+
         [TestMethod]
-        public void CheckSelectCompare() {
+        public void CheckConformingReverseComparerWithNullValues()
+        {
+            var comparer = new ConformingReverseComparer<string>(StringComparer.Ordinal);
+
+            Assert.IsTrue(comparer.Compare(default(string), "x") < 0);
+            Assert.IsTrue(comparer.Compare("y", default(string)) > 0);
+            Assert.IsTrue(comparer.Compare(default(string), default(string)) == 0);
+            Assert.IsTrue(comparer.Compare("x", "y") > 0);
+        }
+
+        [TestMethod]
+        public void CheckReverseComparerWithNullValues()
+        {
+            var comparer = new ReverseComparer<string>(StringComparer.Ordinal);
+
+            Assert.IsTrue(comparer.Compare(default(string), "x") > 0);
+            Assert.IsTrue(comparer.Compare("y", default(string)) < 0);
+            Assert.IsTrue(comparer.Compare(default(string), default(string)) == 0);
+            Assert.IsTrue(comparer.Compare("x", "y") > 0);
+        }
+
+        [TestMethod]
+        public void CheckSelectCompare()
+        {
             var expected = new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
             var comparer = new SelectComparer<int, int>(x => -x);
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -18,7 +42,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckCustomSortCompare() {
+        public void CheckCustomSortCompare()
+        {
             var comparer = new CustomSortComparer<int>(2, 4, 8);
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 4 };
             Array.Sort(data, comparer);
@@ -29,7 +54,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckCompareBuilder() {
+        public void CheckCompareBuilder()
+        {
             var alicia = new Person { Name = "Alicia", Age = 11 };
             var annabelle = new Person { Name = "Annabelle", Age = 10 };
             var comparer = Compare.OrderOf<Person>().By(x => x.Age);
@@ -37,7 +63,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanAdaptComparerForEquality() {
+        public void CanAdaptComparerForEquality()
+        {
             var alicia = new Person { Name = "Alicia", Age = 11 };
             var annabelle = new Person { Name = "Annabelle", Age = 10 };
             var jessica = new Person { Name = "Jessica", Age = 11 };
@@ -47,7 +74,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanUseEqualityComparerAdapterInHashSet() {
+        public void CanUseEqualityComparerAdapterInHashSet()
+        {
             var alicia = new Person { Name = "Alicia", Age = 11 };
             var annabelle = new Person { Name = "Annabelle", Age = 10 };
             var jessica = new Person { Name = "Jessica", Age = 11 };
@@ -58,7 +86,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanUseEqualityComparerToCompareDefaultValue() {
+        public void CanUseEqualityComparerToCompareDefaultValue()
+        {
             var nobody = default(Person);
             var alicia = new Person { Name = "Alicia", Age = 11 };
             var jessica = new Person { Name = "Jessica", Age = 11 };
@@ -70,7 +99,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanCompareLexicographically() {
+        public void CanCompareLexicographically()
+        {
             int[] a = { 1, 2, 3, 4 };
             int[] b = { 1, 2, 3, 4, 5 };
             int[] c = { 4, 3, 2, 1 };

@@ -117,7 +117,8 @@ namespace WmcSoft.Collections.Generic
             char[] s2 = { 'M', 'N', 'P' };
             char[] s3 = { '1', '2', '3' };
             char[][] s = { s1, s2, s3 };
-            var actual = new String(s.Interleave().ToArray(s.Sum(i => i.Length)));
+            // extensions methods in the same namespace takes precedence over the others, so force Enumerable.Sum
+            var actual = new string(s.Interleave().ToArray(Enumerable.Sum(s, i => i.Length)));
             Assert.AreEqual("aM1bN2cP3", actual);
         }
 
@@ -128,7 +129,8 @@ namespace WmcSoft.Collections.Generic
             char[] s2 = { 'M', 'N', 'P' };
             char[] s3 = { '1', '2', '3', '4' };
             char[][] s = { s1, s2, s3 };
-            var actual = new String(s.Interleave().ToArray(s.Sum(i => i.Length)));
+            // extensions methods in the same namespace takes precedence over the others, so force Enumerable.Sum
+            var actual = new string(s.Interleave().ToArray(Enumerable.Sum(s, i => i.Length)));
             Assert.AreEqual("aM1bN2cP3d4e", actual);
         }
 
