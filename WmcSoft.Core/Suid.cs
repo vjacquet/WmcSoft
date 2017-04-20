@@ -48,7 +48,8 @@ namespace WmcSoft
 
         readonly byte[] _storage;
 
-        private Suid(byte[] g, PiecewiseConstruct tag) {
+        private Suid(byte[] g, PiecewiseConstruct tag)
+        {
             _storage = g;
         }
 
@@ -58,7 +59,8 @@ namespace WmcSoft
         /// <param name="g">A string that contains a GUID.</param>
         /// <exception cref="ArgumentNullException"><paramref name="g"/> is <c>null</c>.</exception>
         /// <exception cref="FormatException">The format of <paramref name="g"/> is invalid.</exception>
-        public Suid(string g) {
+        public Suid(string g)
+        {
             if (g == null) throw new ArgumentNullException("g");
 
             _storage = (g.Length == 22 && _validator.IsMatch(g))
@@ -70,7 +72,8 @@ namespace WmcSoft
         /// Initializes a new instance of the <see cref="Suid"/> structure by a <see cref="Guid"/>.
         /// </summary>
         /// <param name="guid">The GUID.</param>
-        public Suid(Guid guid) {
+        public Suid(Guid guid)
+        {
             _storage = guid.ToByteArray();
         }
 
@@ -80,7 +83,8 @@ namespace WmcSoft
         /// <param name="b">A 16-element byte array containing values with which to initialize the GUID.</param>
         /// <exception cref="ArgumentNullException"><paramref name="b"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException"><paramref name="b"/> is not 16 bytes long.</exception>
-        public Suid(params byte[] b) {
+        public Suid(params byte[] b)
+        {
             if (b == null) throw new ArgumentNullException("b");
             if (b.Length != 16) throw new ArgumentException("b");
             _storage = new byte[16];
@@ -91,7 +95,8 @@ namespace WmcSoft
         /// Initializes a new instance of the <see cref="Suid"/> structure.
         /// </summary>
         /// <returns>A new GUID object.</returns>
-        public static Suid NewSuid() {
+        public static Suid NewSuid()
+        {
             return new Suid(Guid.NewGuid());
         }
 
@@ -99,7 +104,8 @@ namespace WmcSoft
         /// Returns a 16-element byte array that contains the value of this instance.
         /// </summary>
         /// <returns>A 16-element byte array.</returns>
-        public byte[] ToByteArray() {
+        public byte[] ToByteArray()
+        {
             return (byte[])(_storage ?? Empty._storage).Clone();
         }
 
@@ -107,7 +113,8 @@ namespace WmcSoft
         /// Converts <see cref="Guid"/> to a <see cref="Suid"/>.
         /// </summary>
         /// <param name="g">The GUID.</param>
-        public static implicit operator Suid(Guid g) {
+        public static implicit operator Suid(Guid g)
+        {
             return new Suid(g);
         }
 
@@ -115,7 +122,8 @@ namespace WmcSoft
         /// Converts <see cref="Suid"/> to a <see cref="Guid"/>.
         /// </summary>
         /// <param name="g">The GUID.</param>
-        public static implicit operator Guid(Suid g) {
+        public static implicit operator Guid(Suid g)
+        {
             if (g._storage == null)
                 return Guid.Empty;
             return new Guid(g._storage);
@@ -127,7 +135,8 @@ namespace WmcSoft
         /// <param name="x">The first object to compare. </param>
         /// <param name="y">The second object to compare. </param>
         /// <returns><c>true</c> if <paramref name="x"/> and <paramref name="y"/> are equal; otherwise, <c>false</c>.</returns>
-        public static bool operator ==(Suid x, Suid y) {
+        public static bool operator ==(Suid x, Suid y)
+        {
             return x.Equals(y);
         }
 
@@ -137,7 +146,8 @@ namespace WmcSoft
         /// <param name="x">The first object to compare. </param>
         /// <param name="y">The second object to compare. </param>
         /// <returns><c>true</c> if <paramref name="x"/> and <paramref name="y"/> are not equal; otherwise, <c>false</c>.</returns>
-        public static bool operator !=(Suid x, Suid y) {
+        public static bool operator !=(Suid x, Suid y)
+        {
             return !x.Equals(y);
         }
 
@@ -148,7 +158,8 @@ namespace WmcSoft
         /// <returns>A structure that contains the value that was parsed.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
         /// <exception cref="FormatException"><paramref name="input"/> is not in a recognized format.</exception>
-        public static Suid Parse(string input) {
+        public static Suid Parse(string input)
+        {
             if (input == null) throw new ArgumentNullException("input");
 
             Suid suid;
@@ -167,7 +178,8 @@ namespace WmcSoft
         ///   If the method returns <c>false</c>, result equals <see cref="Suid.Empty"/>.
         /// </param>
         /// <returns>true if the parse operation was successful; otherwise, false.</returns>
-        public static bool TryParse(string input, out Suid result) {
+        public static bool TryParse(string input, out Suid result)
+        {
             if (input.Length != 22 || !_validator.IsMatch(input)) {
                 Guid guid;
                 if (!Guid.TryParse(input, out guid)) {
@@ -194,7 +206,8 @@ namespace WmcSoft
         ///   If the method returns <c>false</c>, result equals <see cref="Suid.Empty"/>.
         /// </param>
         /// <returns>true if the parse operation was successful; otherwise, false.</returns>
-        public static bool TryParseExact(string input, string format, out Suid result) {
+        public static bool TryParseExact(string input, string format, out Suid result)
+        {
             if (!string.IsNullOrEmpty(input)) {
                 switch (format) {
                 case "S":
@@ -221,17 +234,19 @@ namespace WmcSoft
         /// Formats the value of the current instance using the specified format.
         /// </summary>
         /// <param name="format">
-        ///   The format to use.-or- A null reference (Nothing in Visual Basic) to use the
-        ///   default format defined for the type of the System.IFormattable implementation.
+        ///   The format to use.
+        ///   -or- 
+        ///   A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="IFormattable"/> implementation.
         /// </param>
         /// <param name="formatProvider">
-        ///   The provider to use to format the value.-or- A null reference (Nothing in Visual
-        ///   Basic) to obtain the numeric format information from the current locale setting
+        ///   The provider to use to format the value.
+        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
         ///   of the operating system.
         /// </param>
         /// <returns>The value of the current instance in the specified format.</returns>
         /// <remarks>Supports <see cref="Guid"/> five format in addition to "S" for the 22 chars short version.</remarks>
-        public string ToString(string format, IFormatProvider formatProvider) {
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
             if (format == null || format == "S" || format == "s")
                 return Encode(_storage ?? Empty._storage);
 
@@ -243,7 +258,8 @@ namespace WmcSoft
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
 
@@ -251,7 +267,8 @@ namespace WmcSoft
         /// Serves as the default hash function. 
         /// </summary>
         /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_storage == null || _storage == Empty._storage)
                 return 0;
             return _storage.GetHashCode();
@@ -262,7 +279,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns><c>true</c> if the specified object is equal to the current object; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Suid))
                 return false;
             return Equals((Suid)obj);
@@ -273,7 +291,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns><c>true</c> if the current object is equal to the other parameter; otherwise, <c>false</c>.</returns>
-        public bool Equals(Suid other) {
+        public bool Equals(Suid other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -291,7 +310,8 @@ namespace WmcSoft
         ///   order.
         /// </returns>
         /// <remarks><see cref="Empty"/> is smaller than any other value.</remarks>
-        public int CompareTo(Suid other) {
+        public int CompareTo(Suid other)
+        {
             var x = _storage ?? Empty._storage;
             var y = other._storage ?? Empty._storage;
             int i = 0;
@@ -314,7 +334,8 @@ namespace WmcSoft
         ///   obj in the sort order. Zero This instance occurs in the same position in the
         ///   sort order as obj. Greater than zero This instance follows obj in the sort order.
         /// </returns>
-        public int CompareTo(object obj) {
+        public int CompareTo(object obj)
+        {
             if (obj == null)
                 return 1;
             if (obj.GetType() != typeof(Suid))
@@ -324,11 +345,13 @@ namespace WmcSoft
 
         #region Helpers
 
-        static bool IsValid(string input) {
+        static bool IsValid(string input)
+        {
             return input != null && input.Length == 22 && _validator.IsMatch(input);
         }
 
-        static byte Decode(char c) {
+        static byte Decode(char c)
+        {
             unchecked {
                 if (c <= '9')
                     return (c == '-') ? (byte)62 : (byte)(c - '0');
@@ -340,7 +363,8 @@ namespace WmcSoft
             }
         }
 
-        static byte[] Decode(string value) {
+        static byte[] Decode(string value)
+        {
             unchecked {
                 var bytes = new byte[16];
                 Debug.Assert(value.Length == 22);
@@ -361,7 +385,8 @@ namespace WmcSoft
             }
         }
 
-        static string Encode(byte[] bytes) {
+        static string Encode(byte[] bytes)
+        {
             var chars = new char[22];
 
             for (int i = 0, j = 0; i < 15; i += 3, j += 4) {
