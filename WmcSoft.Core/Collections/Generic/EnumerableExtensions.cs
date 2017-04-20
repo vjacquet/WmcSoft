@@ -359,6 +359,37 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region DrawLots
+
+        /// <summary>
+        /// Picks an element at random from the source sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of the element of the source</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to return the element from.</param>
+        /// <param name="random">The random.</param>
+        /// <returns>Returns an item from the <see cref="source"/> picked at random.</returns>
+        /// <remarks>Jon Skeet proposed a similar solution at stackoverflow http://stackoverflow.com/a/648240 </remarks>
+        public static T DrawLots<T>(this IEnumerable<T> source, Random random) {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (random == null) throw new ArgumentNullException(nameof(random));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var value = enumerator.Current;
+                    var count = 1;
+                    while (enumerator.MoveNext()) {
+                        if (random.Next(++count) == 0) {
+                            value = enumerator.Current;
+                        }
+                    }
+                    return value;
+                }
+                throw new InvalidOperationException();
+            }
+        }
+
+        #endregion
+
         #region ElementAt
 
         /// <summary>
@@ -849,12 +880,13 @@ namespace WmcSoft.Collections.Generic
         /// Returns every Nth element of the source, starting with the first one
         /// </summary>
         /// <typeparam name="T">The type of the element of the source</typeparam>
-        /// <param name="source">An IEnumerable&lt;T> to return the element from.</param>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to return the element from.</param>
         /// <param name="step">The step</param>
         /// <returns></returns>
         public static IEnumerable<T> Stride<T>(this IEnumerable<T> source, int step) {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (step < 1) throw new ArgumentOutOfRangeException(nameof(step));
+
             var i = step - 1;
             foreach (var item in source) {
                 if (++i == step) {

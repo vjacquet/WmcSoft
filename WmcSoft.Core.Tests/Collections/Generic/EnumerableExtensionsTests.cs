@@ -267,9 +267,32 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(new Tuple<int?, int?>(null, null), empty.MinMax());
 
             var data = new List<int?> { null, 1, 2, 3, 4, null, 5, 6, 7, 8, 9 };
-            var expected = Tuple.Create<int?,int?>(1, 9);
+            var expected = Tuple.Create<int?, int?>(1, 9);
             var actual = data.MinMax();
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void EnsureDrawLotsDistributionIsUniform() {
+            var counts = new int[6];
+            var values = Enumerable.Range(0, counts.Length).ToList();
+            var random = new Random(1664);
+            var N = 10_000;
+            for (int i = 0; i < N; i++) {
+                var n = values.DrawLots(random);
+                counts[n]++;
+            }
+
+            var r = counts.Length;
+            var Nr = (double)N / r;
+            var chi2 = 0d;
+            for (int i = 0; i < r; i++) {
+                var f = counts[i] - Nr;
+                chi2 += f * f;
+            }
+            chi2 /= Nr;
+            // critical value of 11.070 at 95% significance level
+            Assert.IsTrue(chi2 < 11.070d);
         }
     }
 }
