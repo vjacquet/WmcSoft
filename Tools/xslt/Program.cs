@@ -7,7 +7,8 @@ using System.Xml.Xsl;
 
 class Program
 {
-    static void Main(string[] args) {
+    static void Main(string[] args)
+    {
         var doc = new XPathDocument(args[0]);
         //// Locate the node fragment.
         //var selection = doc.CreateNavigator().SelectSingleNode("descendant::book[@ISBN = '0-201-63361-2']");

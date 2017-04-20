@@ -37,20 +37,19 @@ namespace WmcSoft.CustomToolRunner
 {
     class Program
     {
-        static void Main(string[] args) {
-            Hashtable customTools = (Hashtable)ConfigurationManager.GetSection("customTools");
-            string typeName = (string)customTools[args[0]];
-            Type type = Type.GetType(typeName);
+        static void Main(string[] args)
+        {
+            var customTools = (Hashtable)ConfigurationManager.GetSection("customTools");
+            var typeName = (string)customTools[args[0]];
+            var type = Type.GetType(typeName);
             var provider = new CSharpCodeProvider();
             var tool = (CustomToolBase)Activator.CreateInstance(type, provider);
 
-            string inputFileName = args[1];
-            string outputFileName = Path.ChangeExtension(inputFileName, tool.GetDefaultExtension());
-            TextReader reader = new StreamReader(inputFileName);
+            var inputFileName = args[1];
+            var outputFileName = Path.ChangeExtension(inputFileName, tool.GetDefaultExtension());
+            var reader = new StreamReader(inputFileName);
 
-            IntPtr ptr;
-            int count;
-            tool.Generate(inputFileName, reader.ReadToEnd(), "", out ptr, out count, new ConsoleProgress(inputFileName));
+            tool.Generate(inputFileName, reader.ReadToEnd(), "", out IntPtr ptr, out int count, new ConsoleProgress(inputFileName));
 
             byte[] buffer = new byte[count];
             Marshal.Copy(ptr, buffer, 0, count);
@@ -65,13 +64,15 @@ namespace WmcSoft.CustomToolRunner
     {
         string inputFileName;
 
-        public ConsoleProgress(string inputFileName) {
+        public ConsoleProgress(string inputFileName)
+        {
             this.inputFileName = inputFileName;
         }
 
         #region IVsGeneratorProgress Members
 
-        public void GeneratorError(bool fWarning, int dwLevel, string bstrError, int dwLine, int dwColumn) {
+        public void GeneratorError(bool fWarning, int dwLevel, string bstrError, int dwLine, int dwColumn)
+        {
             if (fWarning) {
                 Console.Error.WriteLine("{0}({1}) : warning #{2}: {3}", inputFileName, dwLine, dwLevel, bstrError);
             } else {
@@ -79,7 +80,8 @@ namespace WmcSoft.CustomToolRunner
             }
         }
 
-        public void Progress(int nComplete, int nTotal) {
+        public void Progress(int nComplete, int nTotal)
+        {
             if (nComplete == nTotal)
                 Console.Out.WriteLine("Done.");
         }

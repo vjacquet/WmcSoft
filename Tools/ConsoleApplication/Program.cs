@@ -20,13 +20,14 @@ namespace ConsoleApplication
 
         #region Entry point
 
-        static void Main(string[] args) {
+        static void Main(string[] args)
+        {
             var traceSource = new TraceSource("Program");
 
             using (new TraceSession(traceSource, typeof(Program))) {
                 // reading arguments & inputs
                 var inputs = new List<string>();
-                for (int i = 0; i < args.Length; i++) {
+                for (var i = 0; i < args.Length; i++) {
                     var arg = args[i];
                     if (string.IsNullOrWhiteSpace(arg))
                         continue;
