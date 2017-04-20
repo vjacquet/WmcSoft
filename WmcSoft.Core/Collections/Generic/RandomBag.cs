@@ -42,23 +42,28 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         class RandomAdapter : Random
         {
-            public override int Next(int minValue, int maxValue) {
+            public override int Next(int minValue, int maxValue)
+            {
                 return maxValue - 1;
             }
 
-            public override int Next(int maxValue) {
+            public override int Next(int maxValue)
+            {
                 return maxValue - 1;
             }
 
-            public override int Next() {
+            public override int Next()
+            {
                 throw new NotSupportedException();
             }
 
-            public override void NextBytes(byte[] buffer) {
+            public override void NextBytes(byte[] buffer)
+            {
                 throw new NotSupportedException();
             }
 
-            public override double NextDouble() {
+            public override double NextDouble()
+            {
                 throw new NotSupportedException();
             }
         }
@@ -69,33 +74,41 @@ namespace WmcSoft.Collections.Generic
 
         private readonly Random _random;
 
-        public RandomBag() : this(Default) {
+        public RandomBag() : this(Default)
+        {
         }
 
-        public RandomBag(int capacity) : this(capacity, Default) {
+        public RandomBag(int capacity) : this(capacity, Default)
+        {
         }
 
-        public RandomBag(IEnumerable<T> collection) : this(collection, Default) {
+        public RandomBag(IEnumerable<T> collection) : this(collection, Default)
+        {
         }
 
-        public RandomBag(Random random) : base() {
+        public RandomBag(Random random) : base()
+        {
             _random = random;
         }
 
-        public RandomBag(int capacity, Random random) : base(capacity) {
+        public RandomBag(int capacity, Random random) : base(capacity)
+        {
             _random = random;
         }
 
-        public RandomBag(IEnumerable<T> collection, Random random) : base(collection) {
+        public RandomBag(IEnumerable<T> collection, Random random) : base(collection)
+        {
             _random = random;
         }
 
-        public T Pick() {
+        public T Pick()
+        {
             var last = Count;
             return PopAt(_random.Next(last));
         }
 
-        public override Enumerator GetEnumerator() {
+        public override Enumerator GetEnumerator()
+        {
             var array = new T[Count];
             CopyTo(array, 0);
             array.Shuffle(_random);

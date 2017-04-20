@@ -38,53 +38,61 @@ namespace WmcSoft.Collections.Generic
     {
         private readonly Bag<T> _bag;
 
-        public ReadOnlyBag(Bag<T> bag) {
+        public ReadOnlyBag(Bag<T> bag)
+        {
             if (bag == null) throw new ArgumentNullException(nameof(bag));
+
             _bag = bag;
         }
 
-        public int Count { get { return _bag.Count; } }
+        public int Count => _bag.Count;
+        public bool IsReadOnly => true;
+        object ICollection.SyncRoot => ((ICollection)_bag).SyncRoot;
+        bool ICollection.IsSynchronized => ((ICollection)_bag).IsSynchronized;
 
-        public bool IsReadOnly { get { return true; } }
-
-        object ICollection.SyncRoot { get { return ((ICollection)_bag).SyncRoot; } }
-
-        bool ICollection.IsSynchronized { get { return ((ICollection)_bag).IsSynchronized; } }
-
-        public void Add(T item) {
+        public void Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return _bag.Contains(item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             _bag.CopyTo(array, arrayIndex);
         }
 
-        void ICollection.CopyTo(Array array, int index) {
+        void ICollection.CopyTo(Array array, int index)
+        {
             ((ICollection)_bag).CopyTo(array, index);
         }
 
-        public Bag<T>.Enumerator GetEnumerator() {
+        public Bag<T>.Enumerator GetEnumerator()
+        {
             return _bag.GetEnumerator();
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
-            return ((ICollection<T>)_bag).GetEnumerator();
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             throw new NotSupportedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            return ((ICollection<T>)_bag).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
