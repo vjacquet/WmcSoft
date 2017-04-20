@@ -44,7 +44,8 @@ namespace WmcSoft.Collections
         /// <param name="list">The list to add items to.</param>
         /// <param name="value">The value</param>
         /// <returns>True if the value was added, false it was already in the list</returns>
-        public static bool Ensure(this IList list, object value) {
+        public static bool Ensure(this IList list, object value)
+        {
             if (list.IsSynchronized) {
                 lock (list.SyncRoot) {
                     if (!list.Contains(value)) {
@@ -61,6 +62,13 @@ namespace WmcSoft.Collections
             return false;
         }
 
+        static void UnguardedAddRange(IList list, IEnumerable items)
+        {
+            foreach (var each in items) {
+                list.Add(each);
+            }
+        }
+
         /// <summary>
         /// Add a range of items to a list. 
         /// </summary>
@@ -70,7 +78,8 @@ namespace WmcSoft.Collections
         /// <returns>The list.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
         public static TList AddRange<TList>(this TList list, IEnumerable items)
-          where TList : IList {
+          where TList : IList
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
             if (items == null)
@@ -78,14 +87,10 @@ namespace WmcSoft.Collections
 
             if (list.IsSynchronized) {
                 lock (list.SyncRoot) {
-                    foreach (var each in items) {
-                        list.Add(each);
-                    }
+                    UnguardedAddRange(list, items);
                 }
             } else {
-                foreach (var each in items) {
-                    list.Add(each);
-                }
+                UnguardedAddRange(list, items);
             }
 
             return list;
@@ -95,8 +100,9 @@ namespace WmcSoft.Collections
 
         #region Backwards
 
-        public static IEnumerable Backwards(this IList source) {
-            for (int i = source.Count - 1; i >= 0; i--) {
+        public static IEnumerable Backwards(this IList source)
+        {
+            for (var i = source.Count - 1; i >= 0; i--) {
                 yield return source[i];
             }
         }
@@ -109,9 +115,9 @@ namespace WmcSoft.Collections
         /// <returns>A sequence whose elements correspond to those of the input sequence in reverse order.</returns>
         /// <remarks>Similar to <see cref="Enumerable.Reverse{TSource}(IEnumerable{TSource})"/> except that a copy 
         /// is avoided for classes implementing <see cref="IList"/>.</remarks>
-        public static IEnumerable Backwards(this IEnumerable source) {
-            var list = source as IList;
-            if (list != null)
+        public static IEnumerable Backwards(this IEnumerable source)
+        {
+            if (source is IList list)
                 return Backwards(list);
 
             return source.Cast<object>().Reverse();
@@ -121,6 +127,15 @@ namespace WmcSoft.Collections
 
         #region RemoveRange methods
 
+        static int UnguardedRemoveRange(IList source, IEnumerable items)
+        {
+            var count = source.Count;
+            foreach (var each in items) {
+                source.Remove(each);
+            }
+            return count - source.Count;
+        }
+
         /// <summary>
         /// Remove a range of items from a list. 
         /// </summary>
@@ -128,7 +143,8 @@ namespace WmcSoft.Collections
         /// <param name="items">The items to remove from the list.</param>
         /// <returns>The count of items removed from the collection.</returns>
         /// <remarks>Does nothing if items is null.</remarks>
-        public static int RemoveRange(this IList source, IEnumerable items) {
+        public static int RemoveRange(this IList source, IEnumerable items)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (items == null)
@@ -136,18 +152,10 @@ namespace WmcSoft.Collections
 
             if (source.IsSynchronized) {
                 lock (source.SyncRoot) {
-                    var count = source.Count;
-                    foreach (var each in items) {
-                        source.Remove(each);
-                    }
-                    return count - source.Count;
+                    return UnguardedRemoveRange(source, items);
                 }
             } else {
-                var count = source.Count;
-                foreach (var each in items) {
-                    source.Remove(each);
-                }
-                return count - source.Count;
+                return UnguardedRemoveRange(source, items);
             }
         }
 
@@ -160,26 +168,20 @@ namespace WmcSoft.Collections
         /// </summary>
         /// <param name="source">The list</param>
         /// <param name="items">The items to add</param>
-        public static void ReplaceAll(this IList source, IEnumerable items) {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
+        public static void ReplaceAll(this IList source, IEnumerable items)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (source.IsSynchronized) {
+            if (items == null) {
+                source.Clear();
+            } else if (source.IsSynchronized) {
                 lock (source.SyncRoot) {
                     source.Clear();
-                    if (items == null)
-                        return;
-                    foreach (var each in items) {
-                        source.Add(each);
-                    }
+                    UnguardedAddRange(source, items);
                 }
             } else {
                 source.Clear();
-                if (items == null)
-                    return;
-                foreach (var each in items) {
-                    source.Add(each);
-                }
+                UnguardedAddRange(source, items);
             }
         }
 
@@ -187,15 +189,26 @@ namespace WmcSoft.Collections
 
         #region Shuffle methods
 
+        static void UnguardedShuffle(this IList source, int startIndex, int count, Random random)
+        {
+            for (var i = startIndex; i < count; i++) {
+                SwapItems(source, i, random.Next(i, count));
+            }
+        }
+
         /// <summary>
         /// Suffles in place items of the list.
         /// </summary>
         /// <param name="source">The list.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        /// <exception cref="ArgumentNullException">Thrown when list is null</exception>
+        /// <exception cref="ArgumentException">Thrown when list is read only</exception>
         /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
-        public static void Shuffle(this IList source) {
-            Shuffle(source, new Random());
+        public static void Shuffle(this IList source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source.IsReadOnly) throw new ArgumentException();
+
+            UnguardedShuffle(source, 0, source.Count, new Random());
         }
 
         /// <summary>
@@ -203,33 +216,32 @@ namespace WmcSoft.Collections
         /// </summary>
         /// <param name="source">The list.</param>
         /// <param name="random">The random object to use to perfom the suffle.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when list or random is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when list is read only</exception>
+        /// <exception cref="ArgumentNullException">Thrown when list or random is null</exception>
+        /// <exception cref="ArgumentException">Thrown when list is read only</exception>
         /// <remarks>Implements Fisher-Yates suffle, https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle </remarks>
-        public static void Shuffle(this IList source, Random random) {
+        public static void Shuffle(this IList source, Random random)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (random == null) throw new ArgumentNullException(nameof(random));
             if (source.IsReadOnly) throw new ArgumentException();
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
-            int j;
-            for (int i = 0; i < source.Count; i++) {
-                j = random.Next(i, source.Count);
-                SwapItems(source, i, j);
-            }
+            UnguardedShuffle(source, 0, source.Count, random);
         }
 
-        public static void PartialShuffle(this IList source, int count) {
+        public static void PartialShuffle(this IList source, int count)
+        {
             PartialShuffle(source, count, new Random());
         }
 
-        public static void PartialShuffle(this IList source, int count, Random random) {
+        public static void PartialShuffle(this IList source, int count, Random random)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (random == null) throw new ArgumentNullException(nameof(random));
             if (source.IsReadOnly) throw new ArgumentException();
             if (count > source.Count) throw new ArgumentOutOfRangeException(nameof(count));
 
             int j;
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 j = random.Next(i, source.Count);
                 SwapItems(source, i, j);
             }
@@ -248,8 +260,9 @@ namespace WmcSoft.Collections
         /// <returns>The list</returns>
         /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
         public static TList SwapItems<TList>(this TList source, int i, int j)
-            where TList : IList {
-            object temp = source[i];
+            where TList : IList
+        {
+            var temp = source[i];
             source[i] = source[j];
             source[j] = temp;
             return source;
@@ -264,7 +277,8 @@ namespace WmcSoft.Collections
         /// </summary>
         /// <param name="source">The list</param>
         /// <returns>An array of objets containing all the items in the collection.</returns>
-        public static object[] ToArray(this IList source) {
+        public static object[] ToArray(this IList source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var items = new object[source.Count];
@@ -281,11 +295,10 @@ namespace WmcSoft.Collections
         /// <param name="convert">The converter from the input type to the output type.</param>
         /// <returns>An array</returns>
         /// <remarks>Uses the Count of items of the list to avoid amortizing reallocations.</remarks>
-        public static TOutput[] ToArray<TInput, TOutput>(this ICollection source, Converter<TInput, TOutput> convert) {
-            if (convert == null) throw new ArgumentNullException("convert");
-
-            if (source == null)
-                return null;
+        public static TOutput[] ToArray<TInput, TOutput>(this ICollection source, Converter<TInput, TOutput> convert)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (convert == null) throw new ArgumentNullException(nameof(convert));
 
             var length = source.Count;
             var output = new TOutput[length];
@@ -307,8 +320,11 @@ namespace WmcSoft.Collections
         /// <typeparam name="T">The type of the collection's items.</typeparam>
         /// <param name="source">The collection.</param>
         /// <returns>The array list</returns>
-        public static ArrayList ToArrayList<T>(this ICollection<T> source) {
-            return AddRange(new ArrayList(source.Count), source);
+        public static ArrayList ToArrayList<T>(this ICollection<T> source)
+        {
+            var result = new ArrayList(source.Count);
+            UnguardedAddRange(result, source);
+            return result;
         }
 
         #endregion

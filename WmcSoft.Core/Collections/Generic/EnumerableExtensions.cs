@@ -84,8 +84,7 @@ namespace WmcSoft.Collections.Generic
             if (traits.HasCount)
                 return traits.Count >= n;
             var count = 0;
-            foreach (var item in source)
-            {
+            foreach (var item in source) {
                 if (count++ > n)
                     return true;
             }
@@ -107,8 +106,7 @@ namespace WmcSoft.Collections.Generic
             if (n == Int32.MaxValue) throw new ArgumentOutOfRangeException(nameof(n));
 
             var count = 0;
-            foreach (var item in source.Where(predicate))
-            {
+            foreach (var item in source.Where(predicate)) {
                 if (count++ > n)
                     return true;
             }
@@ -131,8 +129,7 @@ namespace WmcSoft.Collections.Generic
             if (traits.HasCount)
                 return traits.Count <= n;
             var count = 0;
-            foreach (var item in source)
-            {
+            foreach (var item in source) {
                 if (count++ > n)
                     return false;
             }
@@ -154,8 +151,7 @@ namespace WmcSoft.Collections.Generic
             if (n == Int32.MaxValue) throw new ArgumentOutOfRangeException(nameof(n));
 
             var count = 0;
-            foreach (var item in source.Where(predicate))
-            {
+            foreach (var item in source.Where(predicate)) {
                 if (count++ > n)
                     return false;
             }
@@ -188,8 +184,7 @@ namespace WmcSoft.Collections.Generic
 
         public static IEnumerable<T> UnguardedBackwards<T>(IReadOnlyList<T> source)
         {
-            for (int i = source.Count - 1; i >= 0; i--)
-            {
+            for (int i = source.Count - 1; i >= 0; i--) {
                 yield return source[i];
             }
         }
@@ -264,10 +259,8 @@ namespace WmcSoft.Collections.Generic
 
         static IEnumerable<TSource> UnguardedFlush<TSource>(IEnumerator<TSource> enumerator)
         {
-            using (enumerator)
-            {
-                do
-                {
+            using (enumerator) {
+                do {
                     yield return enumerator.Current;
                 } while (enumerator.MoveNext());
             }
@@ -275,11 +268,9 @@ namespace WmcSoft.Collections.Generic
 
         static IEnumerable<TSource> UnguardedFlush<TSource>(IEnumerator<TSource> enumerator, Func<TSource, bool> predicate)
         {
-            using (enumerator)
-            {
+            using (enumerator) {
                 yield return enumerator.Current;
-                while (enumerator.MoveNext())
-                {
+                while (enumerator.MoveNext()) {
                     var current = enumerator.Current;
                     if (predicate(current))
                         yield return current;
@@ -291,29 +282,22 @@ namespace WmcSoft.Collections.Generic
         {
             var length = predicates.Length;
             var slots = new List<TSource>[length];
-            for (int i = 1; i < length; i++)
-            {
+            for (int i = 1; i < length; i++) {
                 slots[i] = new List<TSource>();
             }
             var enumerator = source.GetEnumerator();
-            try
-            {
+            try {
                 var predicate = predicates[0];
-                while (enumerator.MoveNext())
-                {
+                while (enumerator.MoveNext()) {
                     var item = enumerator.Current;
-                    if (predicate(item))
-                    {
+                    if (predicate(item)) {
                         return UnguardedFlush(Move(ref enumerator), predicate);
                     }
-                    for (int i = 1; i < length; i++)
-                    {
-                        if (predicates[i](item))
-                        {
+                    for (int i = 1; i < length; i++) {
+                        if (predicates[i](item)) {
                             slots[i].Add(item);
                             i++;
-                            while (length > i)
-                            {
+                            while (length > i) {
                                 length--;
                                 slots[length] = null; // not needed anymore
                             }
@@ -322,17 +306,13 @@ namespace WmcSoft.Collections.Generic
                 }
 
                 // exhausted items, return the first not empty slot.
-                for (int i = 1; i < length; i++)
-                {
-                    if (slots[i].Count > 0)
-                    {
+                for (int i = 1; i < length; i++) {
+                    if (slots[i].Count > 0) {
                         return slots[i];
                     }
                 }
                 return Enumerable.Empty<TSource>();
-            }
-            finally
-            {
+            } finally {
                 if (enumerator != null)
                     enumerator.Dispose();
             }
@@ -351,14 +331,13 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = predicates == null ? 0 : predicates.Length;
-            switch (length)
-            {
-                case 0:
-                    return source;
-                case 1:
-                    return source.Where(predicates[0]);
-                default:
-                    return UnguardedChoose(source, predicates);
+            switch (length) {
+            case 0:
+                return source;
+            case 1:
+                return source.Where(predicates[0]);
+            default:
+                return UnguardedChoose(source, predicates);
             }
         }
 
@@ -389,8 +368,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The corresponding sequence of buckets index.</returns>
         public static IEnumerable<int> Discretize<T>(this IEnumerable<T> source, IComparer<T> comparer, params T[] bounds)
         {
-            foreach (var item in source)
-            {
+            foreach (var item in source) {
                 var index = Array.BinarySearch(bounds, item, comparer);
                 if (index < 0)
                     yield return ~index;
@@ -403,18 +381,14 @@ namespace WmcSoft.Collections.Generic
 
         #region DrawLots
 
-        internal static T UnguardedDrawLots<T>(this IEnumerable<T> source, Random random)
+        static T UnguardedDrawLots<T>(IEnumerable<T> source, Random random)
         {
-            using (var enumerator = source.GetEnumerator())
-            {
-                if (enumerator.MoveNext())
-                {
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
                     var value = enumerator.Current;
                     var count = 1;
-                    while (enumerator.MoveNext())
-                    {
-                        if (random.Next(++count) == 0)
-                        {
+                    while (enumerator.MoveNext()) {
+                        if (random.Next(++count) == 0) {
                             value = enumerator.Current;
                         }
                     }
@@ -491,23 +465,17 @@ namespace WmcSoft.Collections.Generic
             // I would normally return default(TResult) but here I should be consistent with the framework.
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (index >= 0)
-            {
+            if (index >= 0) {
                 var list = source as IList<TSource>;
-                if (list == null)
-                {
-                    using (var enumerator = source.GetEnumerator())
-                    {
-                        while (enumerator.MoveNext())
-                        {
+                if (list == null) {
+                    using (var enumerator = source.GetEnumerator()) {
+                        while (enumerator.MoveNext()) {
                             if (index == 0)
                                 return selector(enumerator.Current);
                             index--;
                         }
                     }
-                }
-                else if (index < list.Count)
-                {
+                } else if (index < list.Count) {
                     return selector(list[index]);
                 }
             }
@@ -529,12 +497,10 @@ namespace WmcSoft.Collections.Generic
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            using (var enumerator = source.GetEnumerator())
-            {
+            using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     return true;
-                do
-                {
+                do {
                     if (predicate(enumerator.Current))
                         return true;
                 } while (enumerator.MoveNext());
@@ -548,16 +514,14 @@ namespace WmcSoft.Collections.Generic
 
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value)
         {
-            using (var enumerator = new CountingEnumerator<TSource>(source))
-            {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
                 value = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 return enumerator.Count;
             }
         }
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2)
         {
-            using (var enumerator = new CountingEnumerator<TSource>(source))
-            {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
                 value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 return enumerator.Count;
@@ -565,8 +529,7 @@ namespace WmcSoft.Collections.Generic
         }
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3)
         {
-            using (var enumerator = new CountingEnumerator<TSource>(source))
-            {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
                 value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
@@ -575,8 +538,7 @@ namespace WmcSoft.Collections.Generic
         }
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value1, out TSource value2, out TSource value3, out TSource value4)
         {
-            using (var enumerator = new CountingEnumerator<TSource>(source))
-            {
+            using (var enumerator = new CountingEnumerator<TSource>(source)) {
                 value1 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 value2 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
                 value3 = (enumerator.MoveNext()) ? enumerator.Current : default(TSource);
@@ -642,8 +604,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var i = 0;
-            foreach (var element in source)
-            {
+            foreach (var element in source) {
                 if (++i % n == 0)
                     yield return element;
             }
@@ -654,8 +615,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var i = 0;
-            foreach (var element in source)
-            {
+            foreach (var element in source) {
                 ++i;
                 if (i % n1 == 0 | i % n2 == 0)
                     yield return element;
@@ -667,8 +627,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var i = 0;
-            foreach (var element in source)
-            {
+            foreach (var element in source) {
                 ++i;
                 if (n.Any(x => i % x == 0))
                     yield return element;
@@ -709,8 +668,7 @@ namespace WmcSoft.Collections.Generic
         [DebuggerStepThrough]
         public static bool TryRead<T>(this IEnumerator<T> enumerator, out T value)
         {
-            if (enumerator.MoveNext())
-            {
+            if (enumerator.MoveNext()) {
                 value = enumerator.Current;
                 return true;
             }
@@ -721,8 +679,7 @@ namespace WmcSoft.Collections.Generic
         [DebuggerStepThrough]
         public static T Read<T>(this IEnumerator<T> enumerator)
         {
-            if (enumerator.MoveNext())
-            {
+            if (enumerator.MoveNext()) {
                 return enumerator.Current;
             }
             throw new InvalidOperationException();
@@ -731,8 +688,7 @@ namespace WmcSoft.Collections.Generic
         [DebuggerStepThrough]
         public static T ReadOrDefault<T>(this IEnumerator<T> enumerator, T defaultValue = default(T))
         {
-            if (enumerator.MoveNext())
-            {
+            if (enumerator.MoveNext()) {
                 return enumerator.Current;
             }
             return defaultValue;
@@ -786,10 +742,8 @@ namespace WmcSoft.Collections.Generic
                 public bool MoveNext()
                 {
                     _offset++;
-                    if (_offset >= _list.Count)
-                    {
-                        if (_countdown == 1)
-                        {
+                    if (_offset >= _list.Count) {
+                        if (_countdown == 1) {
                             _offset--; // to allow multiple call.
                             _current = default(T);
                             return false;
@@ -901,12 +855,10 @@ namespace WmcSoft.Collections.Generic
                         return false;// to allow multiple call.
 
                     _countdown--;
-                    if (_countdown == 0)
-                    {
+                    if (_countdown == 0) {
                         _countdown = _repeat;
                         _offset++;
-                        if (_offset == _list.Count)
-                        {
+                        if (_offset == _list.Count) {
                             _current = default(T);
                             return false;
                         }
@@ -982,17 +934,16 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            switch (count)
-            {
-                case 0:
-                    return Enumerable.Empty<T>();
-                case 1:
-                    return source;
-                default:
-                    // most optimized implementation tries to cast as ICollection<T>, not IReadOnlyCollection, to get the count of items.
-                    return collate
-                        ? new CollateRepeat<T>(source, count).AsCollection()
-                        : new GroupedRepeat<T>(source, count).AsCollection();
+            switch (count) {
+            case 0:
+                return Enumerable.Empty<T>();
+            case 1:
+                return source;
+            default:
+                // most optimized implementation tries to cast as ICollection<T>, not IReadOnlyCollection, to get the count of items.
+                return collate
+                    ? new CollateRepeat<T>(source, count).AsCollection()
+                    : new GroupedRepeat<T>(source, count).AsCollection();
             }
         }
 
@@ -1013,10 +964,8 @@ namespace WmcSoft.Collections.Generic
             if (step < 1) throw new ArgumentOutOfRangeException(nameof(step));
 
             var i = step - 1;
-            foreach (var item in source)
-            {
-                if (++i == step)
-                {
+            foreach (var item in source) {
+                if (++i == step) {
                     i = 0;
                     yield return item;
                 }
@@ -1044,8 +993,7 @@ namespace WmcSoft.Collections.Generic
                 return TailIterator1(source);
 
             var traits = new EnumerableTraits<TSource>(source);
-            if (traits.HasCount)
-            {
+            if (traits.HasCount) {
                 if (traits.Count <= count)
                     return source;
                 return source.Skip(traits.Count - count);
@@ -1065,24 +1013,19 @@ namespace WmcSoft.Collections.Generic
             var buffer = new TSource[count];
             var n = 0;
             var full = false;
-            foreach (var e in source)
-            {
+            foreach (var e in source) {
                 buffer[n++] = e;
-                if (n == count)
-                {
+                if (n == count) {
                     n = 0;
                     full = true;
                 }
             }
-            if (full)
-            {
+            if (full) {
                 for (int i = n; i < count; i++)
                     yield return buffer[i];
                 for (int i = 0; i < n; i++)
                     yield return buffer[i];
-            }
-            else
-            {
+            } else {
                 for (int i = 0; i < n; i++)
                     yield return buffer[i];
             }
@@ -1144,16 +1087,16 @@ namespace WmcSoft.Collections.Generic
 
         public static BitArray ToBitArray<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var traits = new EnumerableTraits<TSource>(source);
             if (!traits.HasCount)
                 return new BitArray(source.Select(_ => predicate(_)).ToArray());
 
             var result = new bool[traits.Count];
-            using (var enumerator = source.GetEnumerator())
-            {
-                int i = 0;
-                while (enumerator.MoveNext())
-                {
+            using (var enumerator = source.GetEnumerator()) {
+                var i = 0;
+                while (enumerator.MoveNext()) {
                     result[i++] = predicate(enumerator.Current);
                 }
             }
@@ -1162,9 +1105,7 @@ namespace WmcSoft.Collections.Generic
 
         private static List<TSource> MakeList<TSource>(this IEnumerable<TSource> source)
         {
-            var collection = source as IReadOnlyCollection<TSource>;
-            if (collection != null)
-            {
+            if (source is IReadOnlyCollection<TSource> collection) {
                 var list = new List<TSource>(collection.Count);
                 list.AddRange(source);
                 return list;
@@ -1174,16 +1115,16 @@ namespace WmcSoft.Collections.Generic
 
         public static TOutput[,] ToTwoDimensionalArray<TInput, TOutput>(this IEnumerable<TInput> source, params Converter<TInput, TOutput>[] converters)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var list = MakeList(source);
 
             var columns = converters.Length;
             var rows = list.Count;
             var array = new TOutput[rows, columns];
-            for (int i = 0; i < rows; i++)
-            {
+            for (var i = 0; i < rows; i++) {
                 var item = list[i];
-                for (int j = 0; j < columns; j++)
-                {
+                for (var j = 0; j < columns; j++) {
                     array[i, j] = converters[j](item);
                 }
             }
@@ -1202,12 +1143,12 @@ namespace WmcSoft.Collections.Generic
         public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source, int length)
             where TSource : new()
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             var array = new TSource[length];
             var i = 0;
-            using (var enumerator = source.GetEnumerator())
-            {
-                while (enumerator.MoveNext() && i < length)
-                {
+            using (var enumerator = source.GetEnumerator()) {
+                while (enumerator.MoveNext() && i < length) {
                     array[i++] = enumerator.Current;
                 }
             }
@@ -1219,8 +1160,7 @@ namespace WmcSoft.Collections.Generic
             if (values == null)
                 return null;
 
-            var array = values as T[];
-            if (array != null)
+            if (values is T[] array)
                 return array;
 
             return values.ToArray();
@@ -1258,6 +1198,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns></returns>
         public static IEnumerable<TSource> ToEnumerable<TSource>(this IEnumerable<TSource> source)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             return new ShieldEnumerable<TSource>(source);
         }
 
@@ -1277,28 +1219,24 @@ namespace WmcSoft.Collections.Generic
             if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
 
             var d = new Dictionary<TKey, TElement>(comparer);
-            switch (policy)
-            {
-                case DuplicatePolicy.ThrowException:
-                    foreach (TSource item in source)
-                    {
-                        d.Add(keySelector(item), elementSelector(item));
-                    }
-                    break;
-                case DuplicatePolicy.KeepFirst:
-                    foreach (TSource item in source)
-                    {
-                        var selector = keySelector(item);
-                        if (!d.ContainsKey(selector))
-                            d.Add(selector, elementSelector(item));
-                    }
-                    break;
-                case DuplicatePolicy.KeepLast:
-                    foreach (TSource item in source)
-                    {
-                        d[keySelector(item)] = elementSelector(item);
-                    }
-                    break;
+            switch (policy) {
+            case DuplicatePolicy.ThrowException:
+                foreach (TSource item in source) {
+                    d.Add(keySelector(item), elementSelector(item));
+                }
+                break;
+            case DuplicatePolicy.KeepFirst:
+                foreach (TSource item in source) {
+                    var selector = keySelector(item);
+                    if (!d.ContainsKey(selector))
+                        d.Add(selector, elementSelector(item));
+                }
+                break;
+            case DuplicatePolicy.KeepLast:
+                foreach (TSource item in source) {
+                    d[keySelector(item)] = elementSelector(item);
+                }
+                break;
             }
             return d;
         }
@@ -1321,16 +1259,12 @@ namespace WmcSoft.Collections.Generic
             if (merger == null) throw new ArgumentNullException(nameof(merger));
 
             var d = new Dictionary<TKey, TElement>(comparer);
-            foreach (TSource item in source)
-            {
+            foreach (TSource item in source) {
                 var selector = keySelector(item);
                 TElement element;
-                if (!d.TryGetValue(selector, out element))
-                {
+                if (!d.TryGetValue(selector, out element)) {
                     d.Add(selector, elementSelector(item));
-                }
-                else
-                {
+                } else {
                     d[selector] = merger(element, item);
                 }
             }
@@ -1343,20 +1277,15 @@ namespace WmcSoft.Collections.Generic
 
         public static IEnumerable<R> ToRanges<T, R>(this IEnumerable<T> values, Func<T, T, bool> isSuccessor, Func<T, T, R> factory)
         {
-            using (var enumerator = values.GetEnumerator())
-            {
+            using (var enumerator = values.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     yield break;
                 var start = enumerator.Current;
                 var end = start;
-                while (enumerator.MoveNext())
-                {
-                    if (isSuccessor(end, enumerator.Current))
-                    {
+                while (enumerator.MoveNext()) {
+                    if (isSuccessor(end, enumerator.Current)) {
                         end = enumerator.Current;
-                    }
-                    else
-                    {
+                    } else {
                         yield return factory(start, end);
                         end = start = enumerator.Current;
                     }
@@ -1382,22 +1311,29 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <param name="enumerable">The enumerable.</param>
+        /// <param name="source">The enumerable.</param>
+        /// <param name="format">
+        ///   The format to use.
+        ///   -or- 
+        ///   A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="IFormattable"/> implementation.
+        /// </param>
+        /// <param name="formatProvider">
+        ///   The provider to use to format the value.
+        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
+        ///   of the operating system.
+        /// </param>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public static string ToString<T>(this IEnumerable<T> enumerable, string format, IFormatProvider formatProvider = null)
+        public static string ToString<T>(this IEnumerable<T> source, string format, IFormatProvider formatProvider = null)
             where T : IFormattable
         {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var textInfo = GetTextInfo(formatProvider);
             var separator = textInfo.ListSeparator;
-            using (var it = enumerable.GetEnumerator())
-            {
-                if (it.MoveNext())
-                {
+            using (var it = source.GetEnumerator()) {
+                if (it.MoveNext()) {
                     var sb = new StringBuilder(it.Current.ToString(format, formatProvider));
-                    while (it.MoveNext())
-                    {
+                    while (it.MoveNext()) {
                         sb.Append(separator);
                         sb.Append(it.Current.ToString(format, formatProvider));
                     }
@@ -1407,10 +1343,20 @@ namespace WmcSoft.Collections.Generic
             return "";
         }
 
-        public static string ToString<T>(this IEnumerable<T> enumerable, IFormatProvider formatProvider)
+        /// <summary>
+        /// Returns a <see cref="string"/> that represents this instance.
+        /// </summary>
+        /// <param name="source">The enumerable.</param>
+        /// <param name="formatProvider">
+        ///   The provider to use to format the value.
+        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
+        ///   of the operating system.
+        /// </param>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public static string ToString<T>(this IEnumerable<T> source, IFormatProvider formatProvider)
             where T : IFormattable
         {
-            return enumerable.ToString(null, formatProvider);
+            return source.ToString(null, formatProvider);
         }
 
         #endregion
@@ -1420,22 +1366,16 @@ namespace WmcSoft.Collections.Generic
         public static IEnumerable<TResult> UnguardedZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
             using (var enumerator1 = first.GetEnumerator())
-            using (var enumerator2 = second.GetEnumerator())
-            {
-                while (true)
-                {
-                    if (!enumerator1.MoveNext())
-                    {
-                        while (enumerator2.MoveNext())
-                        {
+            using (var enumerator2 = second.GetEnumerator()) {
+                while (true) {
+                    if (!enumerator1.MoveNext()) {
+                        while (enumerator2.MoveNext()) {
                             yield return resultSelector(default(TFirst), enumerator2.Current);
                         }
                         yield break;
                     }
-                    if (!enumerator2.MoveNext())
-                    {
-                        do
-                        {
+                    if (!enumerator2.MoveNext()) {
+                        do {
                             yield return resultSelector(enumerator1.Current, default(TSecond));
                         } while (enumerator1.MoveNext());
                         yield break;

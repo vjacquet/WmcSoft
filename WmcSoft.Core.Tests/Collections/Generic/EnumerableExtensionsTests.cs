@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +9,8 @@ namespace WmcSoft.Collections.Generic
     public class EnumerableExtensionsTests
     {
         [TestMethod]
-        public void CheckToString() {
+        public void CheckToString()
+        {
             var list = new List<int> { 1, 2, 3, };
 
             var actual = list.ToString("g");
@@ -19,13 +19,15 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckQuorum() {
+        public void CheckQuorum()
+        {
             var list = new[] { 1, 2, 3, 4, 5, 6, 7 };
             Assert.IsTrue(list.Quorum(3, i => (i & 1) == 1));
         }
 
         [TestMethod]
-        public void CheckElectedOrDefaultWithPredicate() {
+        public void CheckElectedOrDefaultWithPredicate()
+        {
             string[] array;
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
@@ -39,7 +41,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckElectedOrDefaultWithoutPredicate() {
+        public void CheckElectedOrDefaultWithoutPredicate()
+        {
             string[] array;
 
             array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
@@ -53,7 +56,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckCollateRepeat() {
+        public void CheckCollateRepeat()
+        {
             var array = new[] { "a", "b", "c" };
             var actual = String.Concat(array.Repeat(3));
             var expected = "abcabcabc";
@@ -61,7 +65,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckEnumerableCollateRepeat() {
+        public void CheckEnumerableCollateRepeat()
+        {
             var array = new[] { "a", "b", "c" };
             var actual = String.Concat(array.Repeat(3, collate: true));
             var expected = "abcabcabc";
@@ -69,7 +74,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckEnumerableCollateRepeatToListOptimization() {
+        public void CheckEnumerableCollateRepeatToListOptimization()
+        {
             const int Repeat = 3;
             var array = new[] { "a", "b", "c" };
             var actual = array.Repeat(Repeat, collate: true).ToList();
@@ -82,7 +88,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckGroupedRepeat() {
+        public void CheckGroupedRepeat()
+        {
             var array = new[] { "a", "b", "c" };
             var actual = String.Concat(array.Repeat(3, collate: false));
             var expected = "aaabbbccc";
@@ -90,7 +97,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckCollateRepeatToListOptimization() {
+        public void CheckCollateRepeatToListOptimization()
+        {
             const int Repeat = 3;
             var array = new[] { "a", "b", "c" };
             var actual = array.Repeat(Repeat, collate: false).ToList();
@@ -103,7 +111,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckInterleavesWithIdenticalCount() {
+        public void CheckInterleavesWithIdenticalCount()
+        {
             char[] s1 = { 'a', 'b', 'c' };
             char[] s2 = { 'M', 'N', 'P' };
             char[] s3 = { '1', '2', '3' };
@@ -113,7 +122,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckInterleaves() {
+        public void CheckInterleaves()
+        {
             char[] s1 = { 'a', 'b', 'c', 'd', 'e' };
             char[] s2 = { 'M', 'N', 'P' };
             char[] s3 = { '1', '2', '3', '4' };
@@ -123,7 +133,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckTailOnCollection() {
+        public void CheckTailOnCollection()
+        {
             var collection = new[] { 1, 2, 3, 4, 5 };
             var expected = new[] { 3, 4, 5 };
             var actual = collection.Tail(3).ToArray();
@@ -131,21 +142,24 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckTailWhenCollectionHasLessElements() {
+        public void CheckTailWhenCollectionHasLessElements()
+        {
             var expected = new[] { 1, 2, 3, 4, 5 };
             var actual = expected.Tail(6).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void CheckTailWhenCollectionHasSameElementCount() {
+        public void CheckTailWhenCollectionHasSameElementCount()
+        {
             var expected = new[] { 1, 2, 3, 4, 5 };
             var actual = expected.Tail(5).ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void CheckTailOnEnumerable() {
+        public void CheckTailOnEnumerable()
+        {
             var enumerable = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
             var expected = new[] { 3, 4, 5 };
             var actual = enumerable.Tail(3).ToArray();
@@ -153,21 +167,24 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckTailWhenEnumerableHasLessElements() {
+        public void CheckTailWhenEnumerableHasLessElements()
+        {
             var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
             var actual = expected.Tail(6).ToArray();
             CollectionAssert.AreEqual(expected.ToArray(), actual);
         }
 
         [TestMethod]
-        public void CheckTailWhenEnumerableHasSameElementCount() {
+        public void CheckTailWhenEnumerableHasSameElementCount()
+        {
             var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
             var actual = expected.Tail(5).ToArray();
             CollectionAssert.AreEqual(expected.ToArray(), actual);
         }
 
         [TestMethod]
-        public void CheckStride() {
+        public void CheckStride()
+        {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 1, 4, 7 };
             var actual = collection.Stride(3).ToArray();
@@ -175,7 +192,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckNthElements() {
+        public void CheckNthElements()
+        {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 6, 9 };
             var actual = collection.NthElements(3).ToArray();
@@ -183,7 +201,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckNthElements2() {
+        public void CheckNthElements2()
+        {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 5, 6, 9 };
             var actual = collection.NthElements(3, 5).ToArray();
@@ -191,7 +210,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckNthElementsN() {
+        public void CheckNthElementsN()
+        {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var expected = new[] { 3, 5, 6, 8, 9, 10 };
             var actual = collection.NthElements(3, 5, 8).ToArray();
@@ -199,7 +219,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckNthElementsNWithMultiples() {
+        public void CheckNthElementsNWithMultiples()
+        {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var expected = new[] { 3, 5, 6, 8, 9, 10 };
             var actual = collection.NthElements(3, 6, 5, 8).ToArray();
@@ -207,7 +228,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckDiscretize() {
+        public void CheckDiscretize()
+        {
             var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
             var actual = data.Discretize(51, 91, 151, 231, 331, 451).ToArray();
             var expected = new[] { 0, 0, 0, 1, 5, 6, 4, 6 };
@@ -215,21 +237,24 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckAtLeast() {
+        public void CheckAtLeast()
+        {
             var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
             Assert.IsFalse(data.AtLeast(2, i => i < 10));
             Assert.IsTrue(data.AtLeast(2, i => i > 100));
         }
 
         [TestMethod]
-        public void CheckAtMost() {
+        public void CheckAtMost()
+        {
             var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
             Assert.IsTrue(data.AtMost(2, i => i < 10));
             Assert.IsFalse(data.AtMost(2, i => i > 100));
         }
 
         [TestMethod]
-        public void CheckChoose() {
+        public void CheckChoose()
+        {
             var data = new DisposeMonitorEnumerable<char>("a1bcd2ef3");
 
             Func<char, bool> vowel = c => "aeiouy".Contains(c);
@@ -250,15 +275,18 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckMinMax() {
+        public void CheckMinMax()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = Tuple.Create(1, 9);
             var actual = data.MinMax();
             Assert.AreEqual(expected, actual);
+
         }
 
         [TestMethod]
-        public void CheckMinMaxOnNullable() {
+        public void CheckMinMaxOnNullable()
+        {
             var empty = new List<int?>();
             Assert.AreEqual(new Tuple<int?, int?>(null, null), empty.MinMax());
 
@@ -273,7 +301,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void EnsureDrawLotsDistributionIsUniform() {
+        public void EnsureDrawLotsDistributionIsUniform()
+        {
             var counts = new int[6];
             var values = Enumerable.Range(0, counts.Length).ToList();
             var random = new Random(1664);
