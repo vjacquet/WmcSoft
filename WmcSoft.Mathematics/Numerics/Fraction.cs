@@ -51,17 +51,14 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        internal Fraction(NumericsUtilities.UninitializedTag tag, int numerator) {
-            _numerator = numerator;
-            _denominator = 1;
-        }
-
-        internal Fraction(NumericsUtilities.UninitializedTag tag, int numerator, int denominator) {
+        internal Fraction(NumericsUtilities.UninitializedTag tag, int numerator, int denominator = 1)
+        {
             _numerator = numerator;
             _denominator = denominator;
         }
 
-        public Fraction(int numerator, int denominator) {
+        public Fraction(int numerator, int denominator)
+        {
             if (denominator == 0) {
                 throw new DivideByZeroException();
             } else if (denominator > 0) {
@@ -79,23 +76,28 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
-        public int Numerator { get { return _numerator; } }
-        public int Denominator { get { return _denominator; } }
+        public int Numerator => _numerator;
+        public int Denominator => _denominator;
 
-        public bool IsInteger { get { return _denominator == 1; } }
+        public bool IsInteger => _denominator == 1;
+        public bool IsProper => _numerator < _denominator;
+        public bool IsImproper => !IsProper;
 
         #endregion
 
         #region Operators
 
-        public static implicit operator Fraction(int x) {
+        public static implicit operator Fraction(int x)
+        {
             return new Fraction(NumericsUtilities.Uninitialized, x);
         }
-        public static Fraction FromInt32(int x) {
+        public static Fraction FromInt32(int x)
+        {
             return x;
         }
 
-        public static explicit operator int(Fraction q) {
+        public static explicit operator int(Fraction q)
+        {
             if (q._denominator == 1)
                 return q._numerator;
             int rem;
@@ -104,11 +106,13 @@ namespace WmcSoft.Numerics
                 return n;
             throw new InvalidCastException();
         }
-        public static int FromInt32(Fraction q) {
+        public static int FromInt32(Fraction q)
+        {
             return (int)q;
         }
 
-        static Fraction Add(int un, int ud, int vn, int vd) {
+        static Fraction Add(int un, int ud, int vn, int vd)
+        {
             if (ud == vd)
                 return new Fraction(un + vn, ud);
 
@@ -121,28 +125,34 @@ namespace WmcSoft.Numerics
             return new Fraction(NumericsUtilities.Uninitialized, t / d2, (ud / d1) * (vd / d2));
         }
 
-        public static Fraction operator +(Fraction x, Fraction y) {
+        public static Fraction operator +(Fraction x, Fraction y)
+        {
             return Add(x._numerator, x._denominator, y._numerator, y._denominator);
         }
-        public static Fraction Add(Fraction x, Fraction y) {
+        public static Fraction Add(Fraction x, Fraction y)
+        {
             return x + y;
         }
 
-        public static Fraction operator -(Fraction x, Fraction y) {
+        public static Fraction operator -(Fraction x, Fraction y)
+        {
             return Add(x._numerator, x._denominator, -y._numerator, y._denominator);
         }
-        public static Fraction Subtract(Fraction x, Fraction y) {
+        public static Fraction Subtract(Fraction x, Fraction y)
+        {
             return x - y;
         }
 
-        static Fraction Multiply(int un, int ud, int vn, int vd) {
+        static Fraction Multiply(int un, int ud, int vn, int vd)
+        {
             // assumes all parameters are stricly positive
             var d1 = GreatestCommonDivisor(un, vd);
             var d2 = GreatestCommonDivisor(ud, vn);
             return new Fraction(NumericsUtilities.Uninitialized, (un / d1) * (vn / d2), (ud / d2) * (vd / d1));
         }
 
-        public static Fraction operator *(Fraction x, Fraction y) {
+        public static Fraction operator *(Fraction x, Fraction y)
+        {
             if (x._numerator == 0 || y._numerator == 0)
                 return Zero;
 
@@ -155,11 +165,13 @@ namespace WmcSoft.Numerics
             return -Multiply(-x._numerator, x._denominator, y._numerator, y._denominator);
         }
 
-        public static Fraction Multiply(Fraction x, Fraction y) {
+        public static Fraction Multiply(Fraction x, Fraction y)
+        {
             return x * y;
         }
 
-        public static Fraction operator /(Fraction x, Fraction y) {
+        public static Fraction operator /(Fraction x, Fraction y)
+        {
             if (x._numerator == 0)
                 return Zero;
             if (y._numerator == 0)
@@ -173,56 +185,69 @@ namespace WmcSoft.Numerics
                 return Multiply(-x._numerator, x._denominator, -y._denominator, -y._numerator);
             return -Multiply(-x._numerator, x._denominator, y._denominator, y._numerator);
         }
-        public static Fraction Divide(Fraction x, Fraction y) {
+        public static Fraction Divide(Fraction x, Fraction y)
+        {
             return x / y;
         }
 
-        public static Fraction operator -(Fraction x) {
+        public static Fraction operator -(Fraction x)
+        {
             return new Fraction(-x._numerator, x._denominator);
         }
-        public static Fraction Negate(Fraction x) {
+        public static Fraction Negate(Fraction x)
+        {
             return -x;
         }
 
-        public static Fraction operator +(Fraction x) {
+        public static Fraction operator +(Fraction x)
+        {
             return x;
         }
-        public static Fraction Plus(Fraction x) {
+        public static Fraction Plus(Fraction x)
+        {
             return x;
         }
 
-        public Fraction Inverse() {
+        public Fraction Inverse()
+        {
             if (_numerator > 0)
                 return new Fraction(NumericsUtilities.Uninitialized, _denominator, _numerator);
             if (_numerator < 0)
                 return new Fraction(NumericsUtilities.Uninitialized, -_denominator, -_numerator);
             throw new DivideByZeroException();
         }
-        public static Fraction Inverse(Fraction x) {
+        public static Fraction Inverse(Fraction x)
+        {
             return x.Inverse();
         }
 
-        public static bool operator ==(Fraction x, Fraction y) {
+        public static bool operator ==(Fraction x, Fraction y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Fraction x, Fraction y) {
+        public static bool operator !=(Fraction x, Fraction y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool operator <(Fraction x, Fraction y) {
+        public static bool operator <(Fraction x, Fraction y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator <=(Fraction x, Fraction y) {
+        public static bool operator <=(Fraction x, Fraction y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator >=(Fraction x, Fraction y) {
+        public static bool operator >=(Fraction x, Fraction y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static bool operator >(Fraction x, Fraction y) {
+        public static bool operator >(Fraction x, Fraction y)
+        {
             return x.CompareTo(y) > 0;
         }
 
@@ -230,7 +255,8 @@ namespace WmcSoft.Numerics
 
         #region Methods
 
-        static int GreatestCommonDivisor(int m, int n) {
+        static int GreatestCommonDivisor(int m, int n)
+        {
             // assumes m & n are striclty positive numbers
             while (n != 0) {
                 var t = m % n;
@@ -244,17 +270,20 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Fraction> Membres
 
-        public bool Equals(Fraction other) {
+        public bool Equals(Fraction other)
+        {
             return CompareTo(other) == 0;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return CompareTo((Fraction)obj) == 0;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _numerator ^ _denominator;
         }
 
@@ -262,7 +291,8 @@ namespace WmcSoft.Numerics
 
         #region IComparable<Fraction> Membres
 
-        public int CompareTo(Fraction other) {
+        public int CompareTo(Fraction other)
+        {
             long numerator = _numerator;
             long denominator = _denominator;
             return (numerator * other._denominator - denominator * other._numerator).Clamp();
@@ -272,13 +302,16 @@ namespace WmcSoft.Numerics
 
         #region IFormattable Membres
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
-        public string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider)
+        {
             return ToString(null, formatProvider);
         }
-        public string ToString(string format, IFormatProvider formatProvider = null) {
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
             if (_denominator == 1 || _numerator == 0)
                 return _numerator.ToString(format, formatProvider);
             return _numerator.ToString(format, formatProvider)
@@ -290,7 +323,8 @@ namespace WmcSoft.Numerics
 
         #region IStructuralEquatable
 
-        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer) {
+        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer)
+        {
             if (other == null || other.GetType() != GetType())
                 return false;
 
@@ -298,7 +332,8 @@ namespace WmcSoft.Numerics
             return comparer.Equals(_numerator, that._numerator) && comparer.Equals(_denominator, that._denominator);
         }
 
-        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
+        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer)
+        {
             return comparer.CombineHashCodes(_numerator, _denominator);
         }
 

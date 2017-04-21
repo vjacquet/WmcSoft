@@ -65,10 +65,12 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
-        public BigInteger Numerator { get { return _numerator; } }
-        public BigInteger Denominator { get { return _denominator; } }
+        public BigInteger Numerator => _numerator;
+        public BigInteger Denominator => _denominator;
 
-        public bool IsInteger { get { return _denominator == BigInteger.One; } }
+        public bool IsInteger => _denominator == BigInteger.One;
+        public bool IsProper => _numerator < _denominator;
+        public bool IsImproper => !IsProper;
 
         #endregion
 
