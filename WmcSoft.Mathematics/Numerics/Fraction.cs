@@ -208,7 +208,7 @@ namespace WmcSoft.Numerics
             return x;
         }
 
-        public Fraction Inverse()
+        public Fraction Reciprocal()
         {
             if (_numerator > 0)
                 return new Fraction(NumericsUtilities.Uninitialized, _denominator, _numerator);
@@ -216,9 +216,9 @@ namespace WmcSoft.Numerics
                 return new Fraction(NumericsUtilities.Uninitialized, -_denominator, -_numerator);
             throw new DivideByZeroException();
         }
-        public static Fraction Inverse(Fraction x)
+        public static Fraction Reciprocal(Fraction x)
         {
-            return x.Inverse();
+            return x.Reciprocal();
         }
 
         public static bool operator ==(Fraction x, Fraction y)

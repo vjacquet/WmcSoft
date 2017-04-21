@@ -6,7 +6,8 @@ namespace WmcSoft.Numerics.Tests
     public class FractionTests
     {
         [TestMethod]
-        public void CanAddWithRelativePrimeDenominators() {
+        public void CanAddWithRelativePrimeDenominators()
+        {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -14,7 +15,8 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanSubtractRelativePrimeDenominators() {
+        public void CanSubtractRelativePrimeDenominators()
+        {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -22,7 +24,8 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanAddFractions() {
+        public void CanAddFractions()
+        {
             var x = new Fraction(1, 4);
             var y = new Fraction(1, 6);
 
@@ -30,16 +33,17 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanSubtractFractions() {
+        public void CanSubtractFractions()
+        {
             var x = new Fraction(1, 4);
             var y = new Fraction(1, 6);
 
             Assert.AreEqual(new Fraction(1, 12), x - y);
         }
 
-
         [TestMethod]
-        public void CanMultiplyFractions() {
+        public void CanMultiplyFractions()
+        {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -47,7 +51,8 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanDivideFractions() {
+        public void CanDivideFractions()
+        {
             var x = new Fraction(1, 2);
             var y = new Fraction(1, 3);
 
@@ -55,14 +60,16 @@ namespace WmcSoft.Numerics.Tests
         }
 
         [TestMethod]
-        public void CanCastFractionToInt() {
+        public void CanCastFractionToInt()
+        {
             var q = new Fraction(4, 2);
 
             Assert.AreEqual(2, (int)q);
         }
 
         [TestMethod]
-        public void CanSimplifyFraction() {
+        public void CanSimplifyFraction()
+        {
             var x = new Fraction(2, 6);
             Assert.AreEqual(new Fraction(1, 3), x);
         }
