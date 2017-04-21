@@ -220,6 +220,10 @@ namespace WmcSoft.Numerics
         {
             return x.Reciprocal();
         }
+        public static Fraction Reciprocal(int x)
+        {
+            return new Fraction(NumericsUtilities.Uninitialized, 1, x);
+        }
 
         public static bool operator ==(Fraction x, Fraction y)
         {

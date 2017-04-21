@@ -193,6 +193,10 @@ namespace WmcSoft.Numerics
         {
             return x.Reciprocal();
         }
+        public static BigFraction Reciprocal(BigInteger x)
+        {
+            return new BigFraction(NumericsUtilities.Uninitialized, BigInteger.One, x);
+        }
 
         public static bool operator ==(BigFraction x, BigFraction y)
         {
