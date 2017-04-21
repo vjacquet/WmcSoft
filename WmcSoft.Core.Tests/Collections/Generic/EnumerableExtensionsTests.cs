@@ -59,7 +59,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckCollateRepeat()
         {
             var array = new[] { "a", "b", "c" };
-            var actual = String.Concat(array.Repeat(3));
+            var actual = string.Concat(array.Repeat(3));
             var expected = "abcabcabc";
             Assert.AreEqual(expected, actual);
         }
@@ -68,7 +68,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckEnumerableCollateRepeat()
         {
             var array = new[] { "a", "b", "c" };
-            var actual = String.Concat(array.Repeat(3, collate: true));
+            var actual = string.Concat(array.Repeat(3, collate: true));
             var expected = "abcabcabc";
             Assert.AreEqual(expected, actual);
         }
@@ -91,7 +91,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckGroupedRepeat()
         {
             var array = new[] { "a", "b", "c" };
-            var actual = String.Concat(array.Repeat(3, collate: false));
+            var actual = string.Concat(array.Repeat(3, collate: false));
             var expected = "aaabbbccc";
             Assert.AreEqual(expected, actual);
         }
@@ -299,6 +299,24 @@ namespace WmcSoft.Collections.Generic
             var data = new List<int?> { null, 1, 2, 3, 4, null, 5, 6, 7, 8, 9 };
             var expected = Tuple.Create<int?, int?>(1, 9);
             var actual = data.MinMax();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckMinOnExpectedDouble()
+        {
+            var data = new[] { -1d, 5d, double.NaN,-10d };
+            var expected = data.Min();
+            var actual = data.Select(x => Expected.Success(x)).Min().GetValueOrDefault();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckMaxOnExpectedDouble()
+        {
+            var data = new[] { -1d, 5d, double.NaN, -10d };
+            var expected = data.Max();
+            var actual = data.Select(x => Expected.Success(x)).Max().GetValueOrDefault();
             Assert.AreEqual(expected, actual);
         }
 

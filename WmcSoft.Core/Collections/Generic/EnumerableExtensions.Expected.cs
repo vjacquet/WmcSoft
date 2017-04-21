@@ -40,16 +40,16 @@ namespace WmcSoft.Collections.Generic
 
             using (var enumerator = source.GetEnumerator()) {
                 var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || double.IsNaN(enumerator.Current.GetValueOrDefault())))
+                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
                     return Expected.Failed<double>(new InvalidOperationException("No elements"));
 
                 var min = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || double.IsNaN(enumerator.Current.GetValueOrDefault()))
+                    if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
+                    if (enumerator.Current.GetValueOrDefault() < min || double.IsNaN(enumerator.Current.GetValueOrDefault()))
                         min = enumerator.Current.GetValueOrDefault();
                 }
                 return Expected.Success(min);
@@ -106,16 +106,16 @@ namespace WmcSoft.Collections.Generic
 
             using (var enumerator = source.GetEnumerator()) {
                 var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || float.IsNaN(enumerator.Current.Value)))
+                while (hasData = enumerator.MoveNext() && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
                     return Expected.Failed<float>(new InvalidOperationException("No elements"));
 
                 var min = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || float.IsNaN(enumerator.Current.GetValueOrDefault()))
+                    if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
+                    if (enumerator.Current.GetValueOrDefault() < min || float.IsNaN(enumerator.Current.GetValueOrDefault()))
                         min = enumerator.Current.GetValueOrDefault();
                 }
                 return Expected.Success(min);
@@ -184,16 +184,16 @@ namespace WmcSoft.Collections.Generic
 
             using (var enumerator = source.GetEnumerator()) {
                 var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || double.IsNaN(enumerator.Current.GetValueOrDefault())))
+                while (hasData = enumerator.MoveNext() && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
                     return Expected.Failed<double>(new InvalidOperationException("No elements"));
 
                 var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.GetValueOrDefault()))
+                    if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() >= max)
+                    if (enumerator.Current.GetValueOrDefault() > max || double.IsNaN(max))
                         max = enumerator.Current.GetValueOrDefault();
                 }
                 return Expected.Success(max);
@@ -257,9 +257,9 @@ namespace WmcSoft.Collections.Generic
 
                 var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.GetValueOrDefault()))
+                    if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() >= max)
+                    if (enumerator.Current.GetValueOrDefault() > max || float.IsNaN(enumerator.Current.GetValueOrDefault()))
                         max = enumerator.Current.GetValueOrDefault();
                 }
                 return Expected.Success(max);
