@@ -39,12 +39,14 @@ namespace WmcSoft.Collections.Generic
 {
     public static partial class EnumerableExtensions
     {
-        public static TSource Min<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+        public static TSource Min<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        {
             Comparison<TSource> comparison = comparer.Compare;
             return Min(source, comparison);
         }
 
-        public static TSource Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
+        public static TSource Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
@@ -60,12 +62,14 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static TSource Max<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+        public static TSource Max<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        {
             Comparison<TSource> comparison = comparer.Compare;
             return Max(source, comparison);
         }
 
-        public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
+        public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
@@ -81,74 +85,35 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static Tuple<double?, double?> MinMax(this IEnumerable<double?> source) {
+        static Tuple<T?, T?> ValueTypeMinMax<T>(this IEnumerable<T?> source)
+            where T : struct, IComparable<T>
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
-                bool hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.Value)))
-                    ;
-                if (!hasData)
-                    return Tuple.Create(default(double?), default(double?));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.GetValueOrDefault()))
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create((double?)min, (double?)max);
-            }
-        }
-
-        public static Tuple<double, double> MinMax(this IEnumerable<double> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    throw new InvalidOperationException();
-
-                var min = enumerator.Current;
-                var max = enumerator.Current;
-                while (enumerator.MoveNext()) {
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
-                }
-                return Tuple.Create(min, max);
-            }
-        }
-
-        public static Tuple<long?, long?> MinMax(this IEnumerable<long?> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                bool hasData = false;
+                var hasData = false;
                 while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
-                    return Tuple.Create(default(long?), default(long?));
+                    return Tuple.Create(default(T?), default(T?));
 
                 var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
+                var max = min;
                 while (enumerator.MoveNext()) {
                     if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
+                    if (enumerator.Current.GetValueOrDefault().CompareTo(min) < 0)
                         min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
+                    else if (max.CompareTo(enumerator.Current.GetValueOrDefault()) <= 0) // Ensure stability
                         max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create((long?)min, (long?)max);
+                return new Tuple<T?, T?>(min, max);
             }
         }
 
-        public static Tuple<long, long> MinMax(this IEnumerable<long> source) {
+        static Tuple<T, T> ValueTypeMinMax<T>(this IEnumerable<T> source)
+            where T : struct, IComparable<T>
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
@@ -156,195 +121,130 @@ namespace WmcSoft.Collections.Generic
                     throw new InvalidOperationException();
 
                 var min = enumerator.Current;
-                var max = enumerator.Current;
+                var max = min;
                 while (enumerator.MoveNext()) {
-                    if (enumerator.Current < min)
+                    if (enumerator.Current.CompareTo(min) < 0)
                         min = enumerator.Current;
-                    else if (enumerator.Current >= max)
+                    else if (max.CompareTo(enumerator.Current) <= 0) // Ensure stability
                         max = enumerator.Current;
                 }
                 return Tuple.Create(min, max);
             }
         }
 
-        public static Tuple<int?, int?> MinMax(this IEnumerable<int?> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                bool hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Tuple.Create(default(int?), default(int?));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create((int?)min, (int?)max);
-            }
+        public static Tuple<double?, double?> MinMax(this IEnumerable<double?> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
-        public static Tuple<int, int> MinMax(this IEnumerable<int> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    throw new InvalidOperationException();
-
-                var min = enumerator.Current;
-                var max = enumerator.Current;
-                while (enumerator.MoveNext()) {
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
-                }
-                return Tuple.Create(min, max);
-            }
+        public static Tuple<double, double> MinMax(this IEnumerable<double> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
-        public static Tuple<float?, float?> MinMax(this IEnumerable<float?> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                bool hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.Value)))
-                    ;
-                if (!hasData)
-                    return Tuple.Create(default(float?), default(float?));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.GetValueOrDefault()))
-                        continue;
-                    if (enumerator.Current < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create((float?)min, (float?)max);
-            }
+        public static Tuple<long?, long?> MinMax(this IEnumerable<long?> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
-        public static Tuple<float, float> MinMax(this IEnumerable<float> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    throw new InvalidOperationException();
-
-                var min = enumerator.Current;
-                var max = enumerator.Current;
-                while (enumerator.MoveNext()) {
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
-                }
-                return Tuple.Create(min, max);
-            }
+        public static Tuple<long, long> MinMax(this IEnumerable<long> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
-        public static Tuple<decimal?, decimal?> MinMax(this IEnumerable<decimal?> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                bool hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Tuple.Create(default(decimal?), default(decimal?));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create((decimal?)min, (decimal?)max);
-            }
+        public static Tuple<int?, int?> MinMax(this IEnumerable<int?> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
-        public static Tuple<decimal, decimal> MinMax(this IEnumerable<decimal> source) {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    throw new InvalidOperationException();
-
-                var min = enumerator.Current;
-                var max = enumerator.Current;
-                while (enumerator.MoveNext()) {
-                    if (enumerator.Current < min)
-                        min = enumerator.Current;
-                    else if (enumerator.Current >= max)
-                        max = enumerator.Current;
-                }
-                return Tuple.Create(min, max);
-            }
+        public static Tuple<int, int> MinMax(this IEnumerable<int> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
-        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source) {
+        public static Tuple<float?, float?> MinMax(this IEnumerable<float?> source)
+        {
+            return ValueTypeMinMax(source);
+        }
+
+        public static Tuple<float, float> MinMax(this IEnumerable<float> source)
+        {
+            return ValueTypeMinMax(source);
+        }
+
+        public static Tuple<decimal?, decimal?> MinMax(this IEnumerable<decimal?> source)
+        {
+            return ValueTypeMinMax(source);
+        }
+
+        public static Tuple<decimal, decimal> MinMax(this IEnumerable<decimal> source)
+        {
+            return ValueTypeMinMax(source);
+        }
+
+        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source)
+        {
             return MinMax(source, Comparer<TSource>.Default);
         }
 
-        public static Tuple<int, int> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector) {
+        public static Tuple<int, int> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+        {
             return source.Select(selector).MinMax();
         }
-        public static Tuple<int?, int?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector) {
-            return source.Select(selector).MinMax();
-        }
-
-        public static Tuple<long, long> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector) {
-            return source.Select(selector).MinMax();
-        }
-        public static Tuple<long?, long?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector) {
+        public static Tuple<int?, int?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
+        {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<float, float> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector) {
+        public static Tuple<long, long> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
+        {
             return source.Select(selector).MinMax();
         }
-        public static Tuple<float?, float?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector) {
-            return source.Select(selector).MinMax();
-        }
-
-        public static Tuple<double, double> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector) {
-            return source.Select(selector).MinMax();
-        }
-        public static Tuple<double?, double?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector) {
+        public static Tuple<long?, long?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
+        {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<decimal, decimal> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector) {
+        public static Tuple<float, float> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
+        {
             return source.Select(selector).MinMax();
         }
-        public static Tuple<decimal?, decimal?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector) {
+        public static Tuple<float?, float?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
+        {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<TResult, TResult> MinMax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) {
+        public static Tuple<double, double> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+        {
+            return source.Select(selector).MinMax();
+        }
+        public static Tuple<double?, double?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
+        {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer) {
+        public static Tuple<decimal, decimal> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
+        {
+            return source.Select(selector).MinMax();
+        }
+        public static Tuple<decimal?, decimal?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
+        {
+            return source.Select(selector).MinMax();
+        }
+
+        public static Tuple<TResult, TResult> MinMax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        {
+            return source.Select(selector).MinMax();
+        }
+
+        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        {
             Comparison<TSource> comparison = comparer.Compare;
             return MinMax(source, comparison);
         }
 
-        static Tuple<TSource, TSource> UnguardedMinMaxNeverNull<TSource>(IEnumerable<TSource> source, Comparison<TSource> comparison) {
+        static Tuple<TSource, TSource> UnguardedMinMaxNeverNull<TSource>(IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     throw new InvalidOperationException();
@@ -361,9 +261,10 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        static Tuple<TSource, TSource> UnguardedMinMaxMaybeNull<TSource>(IEnumerable<TSource> source, Comparison<TSource> comparison) {
+        static Tuple<TSource, TSource> UnguardedMinMaxMaybeNull<TSource>(IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
             using (var enumerator = source.GetEnumerator()) {
-                bool hasData = false;
+                var hasData = false;
                 while ((hasData = enumerator.MoveNext()) && enumerator.Current == null)
                     ;
                 if (!hasData)
@@ -383,7 +284,8 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison) {
+        public static Tuple<TSource, TSource> MinMax<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (default(TSource) == null)
