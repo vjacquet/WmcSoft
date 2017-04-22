@@ -337,6 +337,15 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
+        public void CheckSumOnDouble()
+        {
+            var data = new[] { 1d, 2d, 3d, 4d, 5d };
+            var expected = data.Max();
+            var actual = data.Max(x => Expected.Success(x));
+            Assert.AreEqual(expected, actual.GetValueOrDefault());
+        }
+
+        [TestMethod]
         public void EnsureDrawLotsDistributionIsUniform()
         {
             var counts = new int[6];

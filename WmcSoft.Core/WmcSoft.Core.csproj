@@ -58,6 +58,14 @@
     <Compile Include="CodeDom\CodeThrowNewExceptionStatement.cs" />
     <Compile Include="Collections\BitArrayExtensions.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\Generic\Accumulators\DecimalAdder.cs" />
+    <Compile Include="Collections\Generic\Accumulators\KahanAdder.cs" />
+    <Compile Include="Collections\Generic\Accumulators\DoubleAdder.cs" />
+    <Compile Include="Collections\Generic\Accumulators\IAccumulator.cs" />
+    <Compile Include="Collections\Generic\Accumulators\Int32Adder.cs" />
+    <Compile Include="Collections\Generic\Accumulators\Int64Adder.cs" />
+    <Compile Include="Collections\Generic\Accumulators\LongInt32Adder.cs" />
+    <Compile Include="Collections\Generic\Accumulators\SingleAdder.cs" />
     <Compile Include="Collections\Generic\Algorithms\IFinder.cs" />
     <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />

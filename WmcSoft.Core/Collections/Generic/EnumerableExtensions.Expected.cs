@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Collections.Generic.Accumulators;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -284,7 +285,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Sum
 
-        public static Expected<double> Sum(this IEnumerable<Expected<double>> source)
+        static Expected<T> ValueTypeAccumulate<T, TAccumulator>(this IEnumerable<Expected<T>> source, TAccumulator accumulator)
+           where TAccumulator : struct, IAccumulator<T, T>
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -293,94 +295,41 @@ namespace WmcSoft.Collections.Generic
                 while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
-                    return Expected.Failed<double>(new InvalidOperationException("No elements"));
+                    return Expected.Failed<T>(new InvalidOperationException("No elements"));
 
-                var sum = enumerator.Current.GetValueOrDefault();
+                var result = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    sum += enumerator.Current.GetValueOrDefault();
+                    if (enumerator.Current.HasValue) {
+                        result = accumulator.Accumulate(result, enumerator.Current.GetValueOrDefault());
+                    }
                 }
-                return Expected.Success(sum);
+                return Expected.Success(result);
             }
+        }
+
+        public static Expected<double> Sum(this IEnumerable<Expected<double>> source)
+        {
+            return ValueTypeAccumulate(source, new DoubleAdder());
         }
 
         public static Expected<long> Sum(this IEnumerable<Expected<long>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<long>(new InvalidOperationException("No elements"));
-
-                checked {
-                    var sum = enumerator.Current.GetValueOrDefault();
-                    while (enumerator.MoveNext()) {
-                        sum += enumerator.Current.GetValueOrDefault();
-                    }
-                    return Expected.Success(sum);
-                }
-            }
+            return ValueTypeAccumulate(source, new Int64Adder());
         }
 
         public static Expected<int> Sum(this IEnumerable<Expected<int>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<int>(new InvalidOperationException("No elements"));
-
-                checked {
-                    var sum = enumerator.Current.GetValueOrDefault();
-                    while (enumerator.MoveNext()) {
-                        sum += enumerator.Current.GetValueOrDefault();
-                    }
-                    return Expected.Success(sum);
-                }
-            }
+            return ValueTypeAccumulate(source, new Int32Adder());
         }
 
         public static Expected<float> Sum(this IEnumerable<Expected<float>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<float>(new InvalidOperationException("No elements"));
-
-                var sum = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    sum += enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(sum);
-            }
+            return ValueTypeAccumulate(source, new SingleAdder());
         }
 
         public static Expected<decimal> Sum(this IEnumerable<Expected<decimal>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<decimal>(new InvalidOperationException("No elements"));
-
-                var sum = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    sum += enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(sum);
-            }
+            return ValueTypeAccumulate(source, new DecimalAdder());
         }
 
         public static Expected<int> Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)
