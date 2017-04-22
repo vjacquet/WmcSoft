@@ -48,7 +48,8 @@ namespace WmcSoft.Collections.Generic
             private int _index;
             private KeyValuePair<TKey, TValue> _current;
 
-            public Enumerator(TKey[] keys, TValue[] values) {
+            public Enumerator(TKey[] keys, TValue[] values)
+            {
                 _keys = keys;
                 _values = values;
                 _index = 0;
@@ -65,10 +66,12 @@ namespace WmcSoft.Collections.Generic
                 }
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_index < _keys.Length) {
                     _current = new KeyValuePair<TKey, TValue>(_keys[_index], _values[_index]);
                     _index++;
@@ -77,7 +80,8 @@ namespace WmcSoft.Collections.Generic
                 return false;
             }
 
-            public void Reset() {
+            public void Reset()
+            {
                 _index = -1;
             }
         }
@@ -85,7 +89,8 @@ namespace WmcSoft.Collections.Generic
         private readonly TKey[] _keys;
         private readonly TValue[] _values;
 
-        public ZipReadOnlyDictionary(TKey[] keys, TValue[] values) {
+        public ZipReadOnlyDictionary(TKey[] keys, TValue[] values)
+        {
             if (keys == null) throw new ArgumentNullException(nameof(keys));
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (keys.Length != values.Length) throw new ArgumentException();
@@ -102,11 +107,13 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(_keys, _values);
         }
 
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() {
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -116,7 +123,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -138,7 +146,8 @@ namespace WmcSoft.Collections.Generic
         /// </returns>
         /// <param name="key">The key to locate.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             return Array.IndexOf(_keys, key) >= 0;
         }
 
@@ -151,7 +160,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="key">The key to locate.</param>
         /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool TryGetValue(TKey key, out TValue value) {
+        public bool TryGetValue(TKey key, out TValue value)
+        {
             var found = Array.IndexOf(_keys, key);
             if (found >= 0) {
                 value = _values[found];
