@@ -31,7 +31,8 @@ namespace WmcSoft.Collections.Generic
 {
     public static partial class EnumerableExtensions
     {
-        static bool UnguardedIsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
+        static bool UnguardedIsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var previous = enumerator.Current;
@@ -52,7 +53,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The sequence.</param>
         /// <param name="comparer">The comparer</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IEnumerable<T> source, IComparer<T> comparer) {
+        public static bool IsSorted<T>(this IEnumerable<T> source, IComparer<T> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return UnguardedIsSorted(source, comparer ?? Comparer<T>.Default);
@@ -64,14 +66,17 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of the elements</typeparam>
         /// <param name="source">The sequence.</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IEnumerable<T> source) {
+        public static bool IsSorted<T>(this IEnumerable<T> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
+
             return UnguardedIsSorted(source, Comparer<T>.Default);
         }
 
-        static bool UnguardedIsSorted<T>(IList<T> list, IComparer<T> comparer, int startIndex, int length) {
+        static bool UnguardedIsSorted<T>(IList<T> list, IComparer<T> comparer, int startIndex, int length)
+        {
             var end = startIndex + length;
-            for (int i = startIndex + 1; i < end; i++) {
+            for (var i = startIndex + 1; i < end; i++) {
                 if (comparer.Compare(list[i - 1], list[i]) > 0)
                     return false;
             }
@@ -87,7 +92,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="startIndex">he start index.</param>
         /// <param name="length">The length.</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IList<T> list, IComparer<T> comparer, int startIndex, int length) {
+        public static bool IsSorted<T>(this IList<T> list, IComparer<T> comparer, int startIndex, int length)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
@@ -104,7 +110,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="startIndex">he start index.</param>
         /// <param name="length">The length.</param>
         /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
-        public static bool IsSorted<T>(this IList<T> list, int startIndex, int length) {
+        public static bool IsSorted<T>(this IList<T> list, int startIndex, int length)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
@@ -117,10 +124,40 @@ namespace WmcSoft.Collections.Generic
         /// Check if a sequence of elements is sorted.
         /// </summary>
         /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="list">The sequence.</param>
+        /// <param name="comparer">The comparer</param>
+        /// <param name="startIndex">he start index.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
+        public static bool IsSorted<T>(this IList<T> list, IComparer<T> comparer)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            return UnguardedIsSorted(list, comparer ?? Comparer<T>.Default, 0, list.Count);
+        }
+
+        /// <summary>
+        /// Check if a sequence of elements is sorted, using the default comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
+        /// <param name="list">The sequence.</param>
+        /// <returns>Returns true if each element in the sequence is less than or equal to its successors; otherwise, false.</returns>
+        public static bool IsSorted<T>(this IList<T> list)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            return UnguardedIsSorted(list, Comparer<T>.Default, 0, list.Count);
+        }
+
+        /// <summary>
+        /// Check if a sequence of elements is sorted.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements</typeparam>
         /// <param name="enumerable">The sequence.</param>
         /// <returns>Returns true if each element in the sequence is less than to its successors; otherwise, false.</returns>
         /// <remarks>If true, then the elements are unique in the sequence.</remarks>
-        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable, IComparer<T> comparer) {
+        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var previous = enumerator.Current;
@@ -142,7 +179,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="comparer">The comparer</param>
         /// <returns>Returns true if each element in the sequence is less than to its successors; otherwise, false.</returns>
         /// <remarks>If true, then the elements are unique in the sequence.</remarks>
-        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable) {
+        public static bool IsSortedSet<T>(this IEnumerable<T> enumerable)
+        {
             return enumerable.IsSortedSet(Comparer<T>.Default);
         }
     }

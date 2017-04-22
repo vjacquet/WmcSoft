@@ -36,7 +36,8 @@ namespace WmcSoft.Collections.Generic
         private TreeNode<T> _followingSibling;
         private TreeNode<T> _precedingSibling;
 
-        public TreeNode(T value) {
+        public TreeNode(T value)
+        {
             Value = value;
         }
 
@@ -108,7 +109,8 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public TreeNode<T> InsertBefore(T value) {
+        public TreeNode<T> InsertBefore(T value)
+        {
             var node = new TreeNode<T>(value) {
                 Parent = Parent,
                 PrecedingSibling = _precedingSibling,
@@ -119,7 +121,8 @@ namespace WmcSoft.Collections.Generic
             return node;
         }
 
-        public TreeNode<T> InsertAfter(T value) {
+        public TreeNode<T> InsertAfter(T value)
+        {
             var node = new TreeNode<T>(value) {
                 Parent = Parent,
                 PrecedingSibling = this,
@@ -130,7 +133,8 @@ namespace WmcSoft.Collections.Generic
             return node;
         }
 
-        private TreeNode<T> AddEmpty(T value) {
+        private TreeNode<T> AddEmpty(T value)
+        {
             var node = new TreeNode<T>(value) {
                 Parent = this,
             };
@@ -139,21 +143,24 @@ namespace WmcSoft.Collections.Generic
             FirstChild = node;
             return node;
         }
-        public TreeNode<T> Append(T value) {
+        public TreeNode<T> Append(T value)
+        {
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
             return head.InsertBefore(value);
         }
 
-        public TreeNode<T> Preprend(T value) {
+        public TreeNode<T> Preprend(T value)
+        {
             var head = FirstChild;
             if (head == null)
                 return AddEmpty(value);
             return FirstChild = head.InsertBefore(value);
         }
 
-        public TreeNode<T> Find(T value) {
+        public TreeNode<T> Find(T value)
+        {
             var comparer = EqualityComparer<T>.Default;
             var p = FirstChild;
             while (p != null) {
@@ -164,19 +171,20 @@ namespace WmcSoft.Collections.Generic
             return null;
         }
 
-        public bool Remove(T value) {
+        public bool Remove(T value)
+        {
             var found = Find(value);
             if (found == null)
                 return false;
             found._followingSibling._precedingSibling = found._precedingSibling;
             found._precedingSibling._followingSibling = found._followingSibling;
-             if(found == FirstChild) {
+            if (found == FirstChild) {
                 FirstChild = found._followingSibling;
                 if (found == FirstChild)
                     FirstChild = null;
             }
             found.Value = default(T);
-           return true;
+            return true;
         }
     }
 }

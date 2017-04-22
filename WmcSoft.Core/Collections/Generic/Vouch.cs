@@ -25,96 +25,85 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
     public static class Vouch
     {
-        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
+        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
             return new EnumerableVoucher<T>(false, enumerable, comparer);
         }
-        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable) {
+        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable)
+        {
             return IsSorted(enumerable, Comparer<T>.Default);
         }
 
-        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer) {
+        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
             return new EnumerableVoucher<T>(true, enumerable, comparer);
         }
-        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable) {
+        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable)
+        {
             return IsSortedSet(enumerable, Comparer<T>.Default);
         }
 
-        public static EnumerableVoucher<T> IsSet<T>(IEnumerable<T> enumerable) {
+        public static EnumerableVoucher<T> IsSet<T>(IEnumerable<T> enumerable)
+        {
             return new EnumerableVoucher<T>(true, enumerable, null);
         }
 
-        public static SelectorVoucher<TSource, TReturn> SupportsNullArgument<TSource, TReturn>(Func<TSource, TReturn> selector) {
+        public static SelectorVoucher<TSource, TReturn> SupportsNullArgument<TSource, TReturn>(Func<TSource, TReturn> selector)
+        {
             return new SelectorVoucher<TSource, TReturn>(selector, true);
         }
     }
 
-    public sealed class EnumerableVoucher<T>
+    public sealed class EnumerableVoucher<T> : IEnumerable<T>
     {
         #region Fields
 
         readonly IEnumerable<T> _enumerable;
-        readonly IComparer<T> _comparer;
-        readonly bool _isSet;
 
         #endregion
 
-        internal EnumerableVoucher(bool isSet, IEnumerable<T> enumerable, IComparer<T> comparer) {
-            _isSet = isSet;
+        internal EnumerableVoucher(bool isSet, IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
             _enumerable = enumerable;
-            _comparer = comparer;
+            IsSet = isSet;
+            Comparer = comparer;
         }
 
-        public bool IsSet
+        public bool IsSet { get; }
+        public bool IsSorted => Comparer != null;
+        public IComparer<T> Comparer { get; }
+
+        public IEnumerator<T> GetEnumerator()
         {
-            get {
-                return _isSet;
-            }
-        }
-
-        public bool IsSorted
-        {
-            get {
-                return _comparer != null;
-            }
-        }
-
-        public IComparer<T> Comparer
-        {
-            get { return _comparer; }
-        }
-
-        public IEnumerator<T> GetEnumerator() {
             return _enumerable.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 
     public sealed class SelectorVoucher<TSource, TReturn>
     {
-        readonly Func<TSource, TReturn> _selector;
-        readonly bool _supportsNullArgument;
-
-        internal SelectorVoucher(Func<TSource, TReturn> selector, bool supportsNullArgument) {
-            _selector = selector;
-            _supportsNullArgument = supportsNullArgument;
-        }
-
-        public Func<TSource, TReturn> Selector
+        internal SelectorVoucher(Func<TSource, TReturn> selector, bool supportsNullArgument)
         {
-            get { return _selector; }
+            Selector = selector;
+            SupportsNullArgument = supportsNullArgument;
         }
 
-        public bool SupportsNullArgument
+        public Func<TSource, TReturn> Selector { get; }
+        public bool SupportsNullArgument { get; }
+
+        public static implicit operator Func<TSource, TReturn>(SelectorVoucher<TSource, TReturn> voucher)
         {
-            get { return _supportsNullArgument; }
-        }
-
-        public static implicit operator Func<TSource, TReturn>(SelectorVoucher<TSource, TReturn> voucher) {
             return voucher.Selector;
         }
     }

@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Collections.Generic.Accumulators;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -34,7 +35,8 @@ namespace WmcSoft.Collections.Generic
     {
         #region Min
 
-        public static Expected<double> Min(this IEnumerable<Expected<double>> source)
+        static Expected<T> ValueTypeMin<T>(this IEnumerable<Expected<T>> source)
+            where T : struct, IComparable<T>
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -43,105 +45,42 @@ namespace WmcSoft.Collections.Generic
                 while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
-                    return Expected.Failed<double>(new InvalidOperationException("No elements"));
+                    return Expected.Failed<T>(new InvalidOperationException("No elements"));
 
                 var min = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
                     if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() < min || double.IsNaN(enumerator.Current.GetValueOrDefault()))
+                    if (enumerator.Current.GetValueOrDefault().CompareTo(min) < 0)
                         min = enumerator.Current.GetValueOrDefault();
                 }
                 return Expected.Success(min);
             }
+        }
+
+        public static Expected<double> Min(this IEnumerable<Expected<double>> source)
+        {
+            return ValueTypeMin(source);
         }
 
         public static Expected<long> Min(this IEnumerable<Expected<long>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<long>(new InvalidOperationException("No elements"));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(min);
-            }
+            return ValueTypeMin(source);
         }
 
         public static Expected<int> Min(this IEnumerable<Expected<int>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<int>(new InvalidOperationException("No elements"));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(min);
-            }
+            return ValueTypeMin(source);
         }
 
         public static Expected<float> Min(this IEnumerable<Expected<float>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while (hasData = enumerator.MoveNext() && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<float>(new InvalidOperationException("No elements"));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min || float.IsNaN(enumerator.Current.GetValueOrDefault()))
-                        min = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(min);
-            }
+            return ValueTypeMin(source);
         }
 
         public static Expected<decimal> Min(this IEnumerable<Expected<decimal>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<decimal>(new InvalidOperationException("No elements"));
-
-                var min = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(min);
-            }
+            return ValueTypeMin(source);
         }
 
         public static Expected<int> Min<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)
@@ -178,114 +117,52 @@ namespace WmcSoft.Collections.Generic
 
         #region Max
 
-        public static Expected<double> Max(this IEnumerable<Expected<double>> source)
+        static Expected<T> ValueTypeMax<T>(this IEnumerable<Expected<T>> source)
+            where T : struct, IComparable<T>
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
                 var hasData = false;
-                while (hasData = enumerator.MoveNext() && !enumerator.Current.HasValue)
+                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
-                    return Expected.Failed<double>(new InvalidOperationException("No elements"));
+                    return Expected.Failed<T>(new InvalidOperationException("No elements"));
 
                 var max = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
                     if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() > max || double.IsNaN(max))
+                    if (max.CompareTo(enumerator.Current.GetValueOrDefault()) <= 0) // ensures stability
                         max = enumerator.Current.GetValueOrDefault();
                 }
                 return Expected.Success(max);
             }
+        }
+
+        public static Expected<double> Max(this IEnumerable<Expected<double>> source)
+        {
+            return ValueTypeMax(source);
         }
 
         public static Expected<long> Max(this IEnumerable<Expected<long>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<long>(new InvalidOperationException("No elements"));
-
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(max);
-            }
+            return ValueTypeMax(source);
         }
 
         public static Expected<int> Max(this IEnumerable<Expected<int>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<int>(new InvalidOperationException("No elements"));
-
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(max);
-            }
+            return ValueTypeMax(source);
         }
 
         public static Expected<float> Max(this IEnumerable<Expected<float>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || float.IsNaN(enumerator.Current.Value)))
-                    ;
-                if (!hasData)
-                    return Expected.Failed<float>(new InvalidOperationException("No elements"));
-
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() > max || float.IsNaN(enumerator.Current.GetValueOrDefault()))
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(max);
-            }
+            return ValueTypeMax(source);
         }
 
         public static Expected<decimal> Max(this IEnumerable<Expected<decimal>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<decimal>(new InvalidOperationException("No elements"));
-
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(max);
-            }
+            return ValueTypeMax(source);
         }
 
         public static Expected<int> Max<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)
@@ -322,139 +199,56 @@ namespace WmcSoft.Collections.Generic
 
         #region MinMax
 
-        public static Tuple<Expected<double>, Expected<double>> MinMax(this IEnumerable<Expected<double>> source)
+        static Tuple<Expected<T>, Expected<T>> ValueTypeMinMax<T>(this IEnumerable<Expected<T>> source)
+            where T : struct, IComparable<T>
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
                 var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || double.IsNaN(enumerator.Current.GetValueOrDefault())))
+                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData) {
-                    var noelements = Expected.Failed<double>(new InvalidOperationException("No elements"));
+                    var noelements = Expected.Failed<T>(new InvalidOperationException("No elements"));
                     return Tuple.Create(noelements, noelements);
                 }
-
                 var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
+                var max = min;
                 while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Double.IsNaN(enumerator.Current.GetValueOrDefault()))
+                    if (!enumerator.Current.HasValue)
                         continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
+                    if (enumerator.Current.GetValueOrDefault().CompareTo(min) < 0)
                         min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
+                    else if (max.CompareTo(enumerator.Current.GetValueOrDefault()) <= 0) // Ensure stability
                         max = enumerator.Current.GetValueOrDefault();
                 }
                 return Tuple.Create(Expected.Success(min), Expected.Success(max));
             }
+        }
+
+        public static Tuple<Expected<double>, Expected<double>> MinMax(this IEnumerable<Expected<double>> source)
+        {
+            return ValueTypeMinMax(source);
         }
 
         public static Tuple<Expected<long>, Expected<long>> MinMax(this IEnumerable<Expected<long>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData) {
-                    var noelements = Expected.Failed<long>(new InvalidOperationException("No elements"));
-                    return Tuple.Create(noelements, noelements);
-                }
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create(Expected.Success(min), Expected.Success(max));
-            }
+            return ValueTypeMinMax(source);
         }
 
         public static Tuple<Expected<int>, Expected<int>> MinMax(this IEnumerable<Expected<int>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData) {
-                    var noelements = Expected.Failed<int>(new InvalidOperationException("No elements"));
-                    return Tuple.Create(noelements, noelements);
-                }
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create(Expected.Success(min), Expected.Success(max));
-            }
+            return ValueTypeMinMax(source);
         }
 
         public static Tuple<Expected<float>, Expected<float>> MinMax(this IEnumerable<Expected<float>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && (!enumerator.Current.HasValue || float.IsNaN(enumerator.Current.Value)))
-                    ;
-                if (!hasData) {
-                    var noelements = Expected.Failed<float>(new InvalidOperationException("No elements"));
-                    return Tuple.Create(noelements, noelements);
-                }
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue || Single.IsNaN(enumerator.Current.GetValueOrDefault()))
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create(Expected.Success(min), Expected.Success(max));
-            }
+            return ValueTypeMinMax(source);
         }
 
         public static Tuple<Expected<decimal>, Expected<decimal>> MinMax(this IEnumerable<Expected<decimal>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData) {
-                    var noelements = Expected.Failed<decimal>(new InvalidOperationException("No elements"));
-                    return Tuple.Create(noelements, noelements);
-                }
-
-                var min = enumerator.Current.GetValueOrDefault();
-                var max = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    if (!enumerator.Current.HasValue)
-                        continue;
-                    if (enumerator.Current.GetValueOrDefault() < min)
-                        min = enumerator.Current.GetValueOrDefault();
-                    else if (enumerator.Current.GetValueOrDefault() >= max)
-                        max = enumerator.Current.GetValueOrDefault();
-                }
-                return Tuple.Create(Expected.Success(min), Expected.Success(max));
-            }
+            return ValueTypeMinMax(source);
         }
 
         public static Tuple<Expected<int>, Expected<int>> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)
@@ -491,7 +285,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Sum
 
-        public static Expected<double> Sum(this IEnumerable<Expected<double>> source)
+        static Expected<T> ValueTypeAccumulate<T, TAccumulator>(this IEnumerable<Expected<T>> source, TAccumulator accumulator)
+           where TAccumulator : struct, IAccumulator<T, T>
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -500,94 +295,41 @@ namespace WmcSoft.Collections.Generic
                 while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
                     ;
                 if (!hasData)
-                    return Expected.Failed<double>(new InvalidOperationException("No elements"));
+                    return Expected.Failed<T>(new InvalidOperationException("No elements"));
 
-                var sum = enumerator.Current.GetValueOrDefault();
+                var result = enumerator.Current.GetValueOrDefault();
                 while (enumerator.MoveNext()) {
-                    sum += enumerator.Current.GetValueOrDefault();
+                    if (enumerator.Current.HasValue) {
+                        result = accumulator.Accumulate(result, enumerator.Current.GetValueOrDefault());
+                    }
                 }
-                return Expected.Success(sum);
+                return Expected.Success(result);
             }
+        }
+
+        public static Expected<double> Sum(this IEnumerable<Expected<double>> source)
+        {
+            return ValueTypeAccumulate(source, new DoubleAdder());
         }
 
         public static Expected<long> Sum(this IEnumerable<Expected<long>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<long>(new InvalidOperationException("No elements"));
-
-                checked {
-                    var sum = enumerator.Current.GetValueOrDefault();
-                    while (enumerator.MoveNext()) {
-                        sum += enumerator.Current.GetValueOrDefault();
-                    }
-                    return Expected.Success(sum);
-                }
-            }
+            return ValueTypeAccumulate(source, new Int64Adder());
         }
 
         public static Expected<int> Sum(this IEnumerable<Expected<int>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<int>(new InvalidOperationException("No elements"));
-
-                checked {
-                    var sum = enumerator.Current.GetValueOrDefault();
-                    while (enumerator.MoveNext()) {
-                        sum += enumerator.Current.GetValueOrDefault();
-                    }
-                    return Expected.Success(sum);
-                }
-            }
+            return ValueTypeAccumulate(source, new Int32Adder());
         }
 
         public static Expected<float> Sum(this IEnumerable<Expected<float>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<float>(new InvalidOperationException("No elements"));
-
-                var sum = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    sum += enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(sum);
-            }
+            return ValueTypeAccumulate(source, new SingleAdder());
         }
 
         public static Expected<decimal> Sum(this IEnumerable<Expected<decimal>> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            using (var enumerator = source.GetEnumerator()) {
-                var hasData = false;
-                while ((hasData = enumerator.MoveNext()) && !enumerator.Current.HasValue)
-                    ;
-                if (!hasData)
-                    return Expected.Failed<decimal>(new InvalidOperationException("No elements"));
-
-                var sum = enumerator.Current.GetValueOrDefault();
-                while (enumerator.MoveNext()) {
-                    sum += enumerator.Current.GetValueOrDefault();
-                }
-                return Expected.Success(sum);
-            }
+            return ValueTypeAccumulate(source, new DecimalAdder());
         }
 
         public static Expected<int> Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)

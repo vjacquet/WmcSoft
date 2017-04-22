@@ -33,10 +33,12 @@ namespace WmcSoft.Collections.Generic
 {
     public class Tree<T> : IEnumerable<T>
     {
-        public Tree() {
+        public Tree()
+        {
         }
 
         public TreeNode<T> Root { get; set; }
+
         public T Value {
             get {
                 if (Root == null) throw new InvalidOperationException();
@@ -50,7 +52,8 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             Root = null;
         }
 
@@ -70,13 +73,15 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             if (Root == null)
                 return Enumerable.Empty<T>().GetEnumerator();
             return ((IEnumerable<T>)Root).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

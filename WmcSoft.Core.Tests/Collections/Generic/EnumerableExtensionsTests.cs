@@ -302,13 +302,20 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(expected, actual);
         }
 
+        static IEnumerable<Tuple<T, int>> ZipIndices<T>(IEnumerable<T> source)
+        {
+            var i = 0;
+            foreach (var item in source)
+                yield return Tuple.Create(item, i++);
+        }
+
         [TestMethod]
         public void CheckMinOnExpectedDouble()
         {
-            var data = new[] { -1d, 5d, double.NaN,-10d };
+            var data = new[] { -1d, 5d, double.NaN, -10d, 5d, -10d };
             var expected = data.Min();
-            var actual = data.Select(x => Expected.Success(x)).Min().GetValueOrDefault();
-            Assert.AreEqual(expected, actual);
+            var actual = data.Min(x => Expected.Success(x));
+            Assert.AreEqual(expected, actual.GetValueOrDefault());
         }
 
         [TestMethod]
@@ -316,8 +323,26 @@ namespace WmcSoft.Collections.Generic
         {
             var data = new[] { -1d, 5d, double.NaN, -10d };
             var expected = data.Max();
-            var actual = data.Select(x => Expected.Success(x)).Max().GetValueOrDefault();
-            Assert.AreEqual(expected, actual);
+            var actual = data.Max(x => Expected.Success(x));
+            Assert.AreEqual(expected, actual.GetValueOrDefault());
+        }
+
+        [TestMethod]
+        public void CheckMinMaxOnExpectedDouble()
+        {
+            var data = new[] { -1d, 5d, double.NaN, -10d };
+            var expected = Tuple.Create(data.Min(), data.Max());
+            var actual = data.MinMax(x => Expected.Success(x));
+            Assert.AreEqual(expected, Tuple.Create(actual.Item1.GetValueOrDefault(), actual.Item2.GetValueOrDefault()));
+        }
+
+        [TestMethod]
+        public void CheckSumOnDouble()
+        {
+            var data = new[] { 1d, 2d, 3d, 4d, 5d };
+            var expected = data.Max();
+            var actual = data.Max(x => Expected.Success(x));
+            Assert.AreEqual(expected, actual.GetValueOrDefault());
         }
 
         [TestMethod]

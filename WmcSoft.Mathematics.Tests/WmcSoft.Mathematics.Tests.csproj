@@ -63,6 +63,7 @@
     <Compile Include="Geometry2D\PolygonTests.cs" />
     <Compile Include="Geometry2D\PointTests.cs" />
     <Compile Include="Numerics\AlgorithmsTests.cs" />
+    <Compile Include="Numerics\BigFractionTests.cs" />
     <Compile Include="Numerics\Generic\VectorTests.cs" />
     <Compile Include="Numerics\Matrix3Tests.cs" />
     <Compile Include="Numerics\FractionTests.cs" />
