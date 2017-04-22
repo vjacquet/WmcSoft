@@ -327,7 +327,7 @@ namespace WmcSoft.Collections.Generic
             var values = Enumerable.Range(0, counts.Length).ToList();
             var random = new Random(1664);
             var N = 10_000;
-            for (int i = 0; i < N; i++) {
+            for (var i = 0; i < N; i++) {
                 var n = values.DrawLots(random);
                 counts[n]++;
             }
@@ -335,7 +335,7 @@ namespace WmcSoft.Collections.Generic
             var r = counts.Length;
             var Nr = (double)N / r;
             var chi2 = 0d;
-            for (int i = 0; i < r; i++) {
+            for (var i = 0; i < r; i++) {
                 var f = counts[i] - Nr;
                 chi2 += f * f;
             }

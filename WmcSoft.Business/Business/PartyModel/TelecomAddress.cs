@@ -58,6 +58,7 @@ namespace WmcSoft.Business.PartyModel
         public override string Address {
             get {
                 // TODO: decide how to render the address considering the locale.
+                // see <https://en.wikipedia.org/wiki/E.164>
                 return String.Empty;
             }
         }
