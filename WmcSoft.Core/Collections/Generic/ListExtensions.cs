@@ -36,13 +36,15 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class ListExtensions
     {
-        static void Guard<T>(IReadOnlyList<T> list, int startIndex, int count) {
+        static void Guard<T>(IReadOnlyList<T> list, int startIndex, int count)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
         }
 
-        static void Guard<T>(IList<T> list, int startIndex, int count) {
+        static void Guard<T>(IList<T> list, int startIndex, int count)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
@@ -50,7 +52,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Equals
 
-        static bool UnguardedStartsWith<T>(IReadOnlyList<T> list, IReadOnlyList<T> value, int startIndex, IEqualityComparer<T> comparer) {
+        static bool UnguardedStartsWith<T>(IReadOnlyList<T> list, IReadOnlyList<T> value, int startIndex, IEqualityComparer<T> comparer)
+        {
             var count = value.Count;
             for (int i = 0; i < count; i++, startIndex++) {
                 if (!comparer.Equals(list[startIndex], value[i]))
@@ -63,7 +66,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IndexOf
 
-        static int UnguardedIndexOf<T>(IReadOnlyList<T> list, T value, int startIndex, int endIndex, IEqualityComparer<T> comparer) {
+        static int UnguardedIndexOf<T>(IReadOnlyList<T> list, T value, int startIndex, int endIndex, IEqualityComparer<T> comparer)
+        {
             for (int i = startIndex; i < endIndex; i++) {
                 if (comparer.Equals(list[i], value))
                     return i;
@@ -71,14 +75,16 @@ namespace WmcSoft.Collections.Generic
             return -1;
         }
 
-        public static int IndexOf<T>(this IList<T> list, T value, int startIndex, int count) {
+        public static int IndexOf<T>(this IList<T> list, T value, int startIndex, int count)
+        {
             Guard(list, startIndex, count);
 
             var comparer = EqualityComparer<T>.Default;
             return UnguardedIndexOf(list.AsReadOnly(), value, startIndex, startIndex + count, comparer);
         }
 
-        static int UnguardedIndexOf<T>(IReadOnlyList<T> list, IReadOnlyList<T> value, int startIndex, int endIndex, IEqualityComparer<T> comparer) {
+        static int UnguardedIndexOf<T>(IReadOnlyList<T> list, IReadOnlyList<T> value, int startIndex, int endIndex, IEqualityComparer<T> comparer)
+        {
             endIndex -= value.Count - 1;
             if (endIndex < 0)
                 return -1;
@@ -91,7 +97,8 @@ namespace WmcSoft.Collections.Generic
             return -1;
         }
 
-        public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value, int startIndex, int count) {
+        public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value, int startIndex, int count)
+        {
             Guard(list, startIndex, count);
             if (value == null) throw new ArgumentNullException(nameof(value));
 
@@ -105,7 +112,8 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value) {
+        public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (value == null) throw new ArgumentNullException(nameof(value));
 
@@ -130,7 +138,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <param name="match">The <see cref="Predicate{T}"/> delegate that defines the conditions of the element to search for.</param>
         /// <returns><c>true</c> if item is successfully removed; otherwise, <c>false</c>.</returns>
-        public static bool Remove<T>(this List<T> list, Predicate<T> match) {
+        public static bool Remove<T>(this List<T> list, Predicate<T> match)
+        {
             var index = list.FindIndex(match);
             if (index >= 0) {
                 list.RemoveAt(index);
@@ -148,7 +157,8 @@ namespace WmcSoft.Collections.Generic
             readonly IReadOnlyList<T> _list;
             readonly int _count;
 
-            public RepeatedList(IReadOnlyList<T> list, int times) {
+            public RepeatedList(IReadOnlyList<T> list, int times)
+            {
                 _list = list;
                 _count = _list.Count * times;
             }
@@ -164,7 +174,8 @@ namespace WmcSoft.Collections.Generic
                 get { return _count; }
             }
 
-            public IEnumerator<T> GetEnumerator() {
+            public IEnumerator<T> GetEnumerator()
+            {
                 var times = _count / _list.Count;
                 while (times != 0) {
                     foreach (var item in _list)
@@ -173,12 +184,14 @@ namespace WmcSoft.Collections.Generic
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
 
-        public static IReadOnlyList<T> Repeat<T>(this IReadOnlyList<T> source, int count) {
+        public static IReadOnlyList<T> Repeat<T>(this IReadOnlyList<T> source, int count)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
@@ -196,7 +209,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Rotation
 
-        static int UnguardedFindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int endIndex) {
+        static int UnguardedFindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int endIndex)
+        {
             var doubled = rotation.Repeat(2);
             return UnguardedIndexOf(doubled, list.Sublist(startIndex, endIndex - startIndex).AsReadOnly(), 0, doubled.Count, EqualityComparer<T>.Default);
         }
@@ -208,7 +222,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <param name="rotation">The target rotation.</param>
         /// <returns>The amount by wich to rotate the list.</returns>
-        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation) {
+        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (rotation == null) throw new ArgumentNullException("rotation");
 
@@ -226,7 +241,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="startIndex">The start index in the list.</param>
         /// <param name="count">The end index in the list.</param>
         /// <returns>The amount by wich to rotate the list.</returns>
-        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count) {
+        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count)
+        {
             if (rotation == null) throw new ArgumentNullException("rotation");
             Guard(list, startIndex, count);
 
@@ -235,7 +251,8 @@ namespace WmcSoft.Collections.Generic
             return UnguardedFindRotationPoint(list, rotation, startIndex, startIndex + count);
         }
 
-        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation) {
+        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (rotation == null) throw new ArgumentNullException("rotation");
 
@@ -244,7 +261,8 @@ namespace WmcSoft.Collections.Generic
             return UnguardedFindRotationPoint(list, rotation, 0, list.Count) >= 0;
         }
 
-        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count) {
+        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (rotation == null) throw new ArgumentNullException("rotation");
 
@@ -263,13 +281,15 @@ namespace WmcSoft.Collections.Generic
             private int _startIndex;
             private int _endIndex;
 
-            public SublistAdapter(IList<T> list, int startIndex, int count) {
+            public SublistAdapter(IList<T> list, int startIndex, int count)
+            {
                 _base = list;
                 _startIndex = startIndex;
                 _endIndex = _startIndex + count;
             }
 
-            static int Clamp(int x, int min, int max) {
+            static int Clamp(int x, int min, int max)
+            {
                 if (x < min)
                     return min;
                 if (x > max)
@@ -278,9 +298,7 @@ namespace WmcSoft.Collections.Generic
             }
 
             public int Count {
-                get {
-                    return Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex);
-                }
+                get { return Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex); }
             }
 
             public bool IsReadOnly {
@@ -292,55 +310,64 @@ namespace WmcSoft.Collections.Generic
                 set { _base[_startIndex + index] = value; }
             }
 
-            public int IndexOf(T item) {
+            public int IndexOf(T item)
+            {
                 var comparer = EqualityComparer<T>.Default;
-                for (int i = _startIndex; i < _endIndex; i++) {
+                for (var i = _startIndex; i < _endIndex; i++) {
                     if (comparer.Equals(_base[i], item))
                         return i - _startIndex;
                 }
                 return -1;
             }
 
-            public void Insert(int index, T item) {
+            public void Insert(int index, T item)
+            {
                 if (index < 0 || index > Count)
                     throw new ArgumentOutOfRangeException();
                 _base.Insert(_startIndex + index, item);
                 _endIndex++;
             }
 
-            private void DoRemoveAt(int index) {
+            private void DoRemoveAt(int index)
+            {
                 _base.RemoveAt(_startIndex + index);
                 _endIndex--;
             }
 
-            public void RemoveAt(int index) {
+            public void RemoveAt(int index)
+            {
                 if (index < 0 || index > Count)
                     throw new ArgumentOutOfRangeException();
                 DoRemoveAt(index);
             }
 
-            public void Add(T item) {
+            public void Add(T item)
+            {
                 _base.Insert(_endIndex, item);
                 _endIndex++;
             }
 
-            public void Clear() {
+            public void Clear()
+            {
                 while (_endIndex > _startIndex) {
                     _base.RemoveAt(--_endIndex);
                 }
             }
 
-            public bool Contains(T item) {
+            public bool Contains(T item)
+            {
                 return IndexOf(item) >= 0;
             }
 
-            public void CopyTo(T[] array, int arrayIndex) {
+            public void CopyTo(T[] array, int arrayIndex)
+            {
                 var count = Count;
                 if (count > 0)
                     _base.CopyTo(_startIndex, array, arrayIndex, count);
             }
 
-            public bool Remove(T item) {
+            public bool Remove(T item)
+            {
                 var index = IndexOf(item);
                 if (index < 0)
                     return false;
@@ -348,16 +375,19 @@ namespace WmcSoft.Collections.Generic
                 return true;
             }
 
-            public IEnumerator<T> GetEnumerator() {
+            public IEnumerator<T> GetEnumerator()
+            {
                 return _base.Skip(_startIndex).Take(Count).GetEnumerator();
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
 
-        public static IList<T> Sublist<T>(this IList<T> list, int startIndex, int count) {
+        public static IList<T> Sublist<T>(this IList<T> list, int startIndex, int count)
+        {
             Guard(list, startIndex, count);
 
             return new SublistAdapter<T>(list, startIndex, count);
@@ -369,7 +399,8 @@ namespace WmcSoft.Collections.Generic
             private readonly int _startIndex;
             private readonly int _endIndex;
 
-            public ReadOnlySublistAdapter(IReadOnlyList<T> list, int startIndex, int count) {
+            public ReadOnlySublistAdapter(IReadOnlyList<T> list, int startIndex, int count)
+            {
                 _base = list;
                 _startIndex = startIndex;
                 _endIndex = _startIndex + count;
@@ -387,16 +418,19 @@ namespace WmcSoft.Collections.Generic
                 }
             }
 
-            public IEnumerator<T> GetEnumerator() {
+            public IEnumerator<T> GetEnumerator()
+            {
                 return _base.Skip(_startIndex).Take(Count).GetEnumerator();
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
 
-        public static IReadOnlyList<T> ReadOnlySublist<T>(this IReadOnlyList<T> list, int startIndex, int count) {
+        public static IReadOnlyList<T> ReadOnlySublist<T>(this IReadOnlyList<T> list, int startIndex, int count)
+        {
             Guard(list, startIndex, count);
 
             return new ReadOnlySublistAdapter<T>(list, startIndex, count);
@@ -410,9 +444,10 @@ namespace WmcSoft.Collections.Generic
         /// Sorts all the elements in the list in backwards order.
         /// </summary>
         /// <typeparam name="T">The type of elements</typeparam>
-        /// <param name="source">The source list</param>
-        public static void SortBackwards<T>(this List<T> source) {
-            SortBackwards(source, Comparer<T>.Default);
+        /// <param name="list">The source list</param>
+        public static void SortBackwards<T>(this List<T> list)
+        {
+            SortBackwards(list, Comparer<T>.Default);
         }
 
         /// <summary>
@@ -421,7 +456,10 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of elements</typeparam>
         /// <param name="list">The source list</param>
         /// <param name="comparison">The comparison function.</param>
-        public static void SortBackwards<T>(this List<T> list, Comparison<T> comparison) {
+        public static void SortBackwards<T>(this List<T> list, Comparison<T> comparison)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
             list.Sort((x, y) => comparison(y, x));
         }
 
@@ -431,8 +469,11 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of elements</typeparam>
         /// <param name="list">The source list</param>
         /// <param name="comparer">The comparer object.</param>
-        public static void SortBackwards<T>(this List<T> list, IComparer<T> comparer) {
-            list.Sort(new ReverseComparer<T>(comparer));
+        public static void SortBackwards<T>(this List<T> list, IComparer<T> comparer)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            list.Sort(new ReverseComparer<T>(comparer ?? Comparer<T>.Default));
         }
 
         /// <summary>
@@ -443,8 +484,10 @@ namespace WmcSoft.Collections.Generic
         /// <param name="startIndex">The start index</param>
         /// <param name="count">The count of element to sort</param>
         /// <param name="comparer">The comparer object.</param>
-        public static void SortBackwards<T>(this List<T> list, int startIndex, int count, IComparer<T> comparer) {
+        public static void SortBackwards<T>(this List<T> list, int startIndex, int count, IComparer<T> comparer)
+        {
             Guard((IReadOnlyList<T>)list, startIndex, count);
+
             list.Sort(startIndex, count, new ReverseComparer<T>(comparer));
         }
 
