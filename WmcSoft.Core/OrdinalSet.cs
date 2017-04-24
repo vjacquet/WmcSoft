@@ -44,11 +44,13 @@ namespace WmcSoft
             get { return _storage.Cardinality(); }
         }
 
-        private OrdinalSet(BitArray storage) {
+        private OrdinalSet(BitArray storage)
+        {
             _storage = storage;
         }
 
-        public OrdinalSet(IEnumerable<T> collection) {
+        public OrdinalSet(IEnumerable<T> collection)
+        {
             _storage = new BitArray(Ordinal.Count);
             var lowerBound = Ordinal[0];
             foreach (var item in collection) {
@@ -58,51 +60,71 @@ namespace WmcSoft
 
         #region Operators
 
-        public static OrdinalSet<T, TOrdinal> operator |(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> operator |(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             var result = x._storage.Clone<BitArray>();
             return new OrdinalSet<T, TOrdinal>(result.Or(y._storage));
         }
-        public static OrdinalSet<T, TOrdinal> Union(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> Union(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             return x | y;
         }
 
-        public static OrdinalSet<T, TOrdinal> operator &(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> operator &(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             var result = x._storage.Clone<BitArray>();
             return new OrdinalSet<T, TOrdinal>(result.And(y._storage));
         }
-        public static OrdinalSet<T, TOrdinal> Intersect(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> Intersect(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             return x & y;
         }
 
-        public static OrdinalSet<T, TOrdinal> operator ^(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> operator ^(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             var result = x._storage.Clone<BitArray>();
             return new OrdinalSet<T, TOrdinal>(result.Xor(y._storage));
         }
-        public static OrdinalSet<T, TOrdinal> SymmetricDifference(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> SymmetricDifference(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             return x ^ y;
         }
 
-        public static OrdinalSet<T, TOrdinal> operator ~(OrdinalSet<T, TOrdinal> x) {
+        public static OrdinalSet<T, TOrdinal> operator ~(OrdinalSet<T, TOrdinal> x)
+        {
             var result = x._storage.Clone<BitArray>();
             return new OrdinalSet<T, TOrdinal>(result.Not());
         }
-        public static OrdinalSet<T, TOrdinal> Complement(OrdinalSet<T, TOrdinal> x) {
+        public static OrdinalSet<T, TOrdinal> Complement(OrdinalSet<T, TOrdinal> x)
+        {
             return ~x;
         }
 
-        public static OrdinalSet<T, TOrdinal> operator -(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> operator -(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             var result = x._storage.Clone<BitArray>();
             return new OrdinalSet<T, TOrdinal>(result.Xor(y._storage).And(x._storage));
         }
-        public static OrdinalSet<T, TOrdinal> Difference(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y) {
+        public static OrdinalSet<T, TOrdinal> Difference(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
             return x - y;
+        }
+
+        public static bool operator ==(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
+            return x.Equals(y);
+        }
+        public static bool operator !=(OrdinalSet<T, TOrdinal> x, OrdinalSet<T, TOrdinal> y)
+        {
+            return !x.Equals(y);
         }
 
         #endregion
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return false;
 
@@ -111,7 +133,8 @@ namespace WmcSoft
             return Equals((OrdinalSet<T, TOrdinal>)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_storage == null || _storage.None())
                 return 0;
             return _storage.GetHashCode();
@@ -121,7 +144,8 @@ namespace WmcSoft
 
         #region IEquatable<T> Members
 
-        public bool Equals(OrdinalSet<T, TOrdinal> other) {
+        public bool Equals(OrdinalSet<T, TOrdinal> other)
+        {
             var x = BitArrayExtensions.DataOf(_storage);
             var y = BitArrayExtensions.DataOf(other._storage);
             var length = x.Length;
@@ -132,20 +156,23 @@ namespace WmcSoft
             return true;
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             for (int i = 0; i < _storage.Length; i++) {
                 if (_storage.Get(i))
                     yield return Ordinal[i];
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
         #endregion
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var sb = new StringBuilder();
             sb.Append('{');
             using (var enumerator = GetEnumerator()) {

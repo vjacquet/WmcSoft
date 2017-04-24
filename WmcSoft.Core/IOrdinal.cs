@@ -45,7 +45,8 @@ namespace WmcSoft
     {
         #region IOrdinal<int> Members
 
-        public int Advance(int x, int n) {
+        public int Advance(int x, int n)
+        {
             return checked(x + n);
         }
 
@@ -53,7 +54,8 @@ namespace WmcSoft
 
         #region IComparer<int> Members
 
-        public int Compare(int x, int y) {
+        public int Compare(int x, int y)
+        {
             return checked(x - y);
         }
 
@@ -64,7 +66,8 @@ namespace WmcSoft
     {
         #region IOrdinal<long> Members
 
-        public long Advance(long x, int n) {
+        public long Advance(long x, int n)
+        {
             return checked(x + n);
         }
 
@@ -72,7 +75,8 @@ namespace WmcSoft
 
         #region IComparer<int> Members
 
-        public int Compare(long x, long y) {
+        public int Compare(long x, long y)
+        {
             return checked((int)(x - y));
         }
 
@@ -83,7 +87,8 @@ namespace WmcSoft
     {
         #region IOrdinal<DateTime> Members
 
-        public DateTime Advance(DateTime x, int n) {
+        public DateTime Advance(DateTime x, int n)
+        {
             return x.AddDays(n);
         }
 
@@ -91,7 +96,8 @@ namespace WmcSoft
 
         #region IComparer<DateTime> Members
 
-        public int Compare(DateTime x, DateTime y) {
+        public int Compare(DateTime x, DateTime y)
+        {
             return (int)Math.Truncate((x - y).TotalDays);
         }
 
@@ -102,7 +108,8 @@ namespace WmcSoft
     {
         #region IOrdinal<DateTime> Members
 
-        public DateTime Advance(DateTime x, int n) {
+        public DateTime Advance(DateTime x, int n)
+        {
             return x.AddYears(n);
         }
 
@@ -110,7 +117,8 @@ namespace WmcSoft
 
         #region IComparer<DateTime> Members
 
-        public int Compare(DateTime x, DateTime y) {
+        public int Compare(DateTime x, DateTime y)
+        {
             return (x.Year - y.Year);
         }
 
@@ -122,11 +130,13 @@ namespace WmcSoft
     {
         readonly T[] _values;
 
-        public SequenceOrdinal(params T[] values) {
+        public SequenceOrdinal(params T[] values)
+        {
             _values = values;
         }
 
-        private int IndexOf(T value) {
+        private int IndexOf(T value)
+        {
             for (int i = 0; i < _values.Length; i++) {
                 if (_values[i].Equals(value))
                     return i;
@@ -136,7 +146,8 @@ namespace WmcSoft
 
         #region IOrdinal<DateTime> Members
 
-        public T Advance(T x, int n) {
+        public T Advance(T x, int n)
+        {
             var ix = IndexOf(x);
             return _values[ix + n];
         }
@@ -145,7 +156,8 @@ namespace WmcSoft
 
         #region IComparer<T> Members
 
-        public int Compare(T x, T y) {
+        public int Compare(T x, T y)
+        {
             var ix = IndexOf(x);
             var iy = IndexOf(y);
             return ix - iy;
@@ -163,7 +175,8 @@ namespace WmcSoft
             }
         }
 
-        public bool Equals(SequenceOrdinal<T> other) {
+        public bool Equals(SequenceOrdinal<T> other)
+        {
             if (ReferenceEquals(_values, other._values))
                 return true;
             if (Count != other.Count)
@@ -175,19 +188,22 @@ namespace WmcSoft
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(SequenceOrdinal<T>))
                 return false;
             return Equals((SequenceOrdinal<T>)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (Count == 0)
                 return 0;
             return _values.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var sb = new StringBuilder();
             sb.Append('{');
             var length = Count;
@@ -202,12 +218,27 @@ namespace WmcSoft
             return sb.ToString();
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return ((IReadOnlyList<T>)_values).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            return ((IReadOnlyList<T>)_values).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
+
+        #region Operators
+
+        public static bool operator ==(SequenceOrdinal<T> x, SequenceOrdinal<T> y)
+        {
+            return x.Equals(y);
+        }
+        public static bool operator !=(SequenceOrdinal<T> x, SequenceOrdinal<T> y)
+        {
+            return !x.Equals(y);
+        }
+
+        #endregion
     }
 }

@@ -36,39 +36,35 @@ namespace WmcSoft.Collections.Specialized
         private readonly SortedDictionary<int, T> _indexes;
         private readonly T _defaultValue;
 
-        public UnboundedSparseArray(T defaultValue = default(T)) {
+        public UnboundedSparseArray(T defaultValue = default(T))
+        {
             _indexes = new SortedDictionary<int, T>();
             _defaultValue = defaultValue;
         }
 
         public T this[int index] {
             get {
-                if (index < 0) throw new IndexOutOfRangeException();
+                if (index < 0) throw new ArgumentOutOfRangeException();
 
-                T value;
-                if (_indexes.TryGetValue(index, out value))
+                if (_indexes.TryGetValue(index, out T value))
                     return value;
                 return _defaultValue;
             }
             set {
-                if (index < 0) throw new IndexOutOfRangeException();
+                if (index < 0) throw new ArgumentOutOfRangeException();
                 _indexes[index] = value;
             }
         }
 
         public int Count { get { return MaxIndex + 1; } }
 
-        int MinIndex {
-            get {
-                return _indexes.Keys.First();
-            }
-        }
+        int MinIndex { get { return _indexes.Keys.First(); } }
 
         int MaxIndex {
             get {
                 using (var enumerator = _indexes.Keys.GetEnumerator()) {
                     if (enumerator.MoveNext()) {
-                        int countdown = _indexes.Count;
+                        var countdown = _indexes.Count;
                         while (--countdown != 0)
                             enumerator.MoveNext();
                         return enumerator.Current;
@@ -105,21 +101,25 @@ namespace WmcSoft.Collections.Specialized
 
         public bool IsReadOnly { get { return false; } }
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return IndexOf(item) >= 0;
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             var count = Count;
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 array[arrayIndex + i] = _defaultValue;
             }
             foreach (var entry in _indexes) {
@@ -127,14 +127,16 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _indexes.Values.GetEnumerator();
         }
 
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             var comparer = EqualityComparer<T>.Default;
             if (comparer.Equals(item, _defaultValue)) {
-                int i = 0;
+                var i = 0;
                 foreach (var entry in _indexes) {
                     if (entry.Key != i || comparer.Equals(item, entry.Value))
                         return i;
@@ -150,19 +152,23 @@ namespace WmcSoft.Collections.Specialized
             return -1;
         }
 
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             throw new NotImplementedException();
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             throw new NotImplementedException();
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }
