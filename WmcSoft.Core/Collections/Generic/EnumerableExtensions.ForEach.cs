@@ -76,7 +76,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null)
                 return true;
 
-            bool b = true;
+            var b = true;
             foreach (var item in source)
                 b &= predicate(item);
             return b;
@@ -96,7 +96,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null)
                 return false;
 
-            bool b = false;
+            var b = false;
             foreach (var item in source)
                 b |= predicate(item);
             return b;
