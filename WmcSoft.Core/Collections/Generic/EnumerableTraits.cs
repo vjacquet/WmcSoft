@@ -20,20 +20,6 @@ namespace WmcSoft.Collections.Generic
             IsSet = false;
             IsSorted = false;
             Count = ResolveCount(enumerable);
-            switch (enumerable) {
-            case ICollection<T> collection:
-                Count = collection.Count;
-                break;
-            case IReadOnlyCollection<T> collection:
-                Count = collection.Count;
-                break;
-            case ICollection collection:
-                Count = collection.Count;
-                break;
-            default:
-                Count = -1;
-                break;
-            }
         }
 
         public EnumerableTraits(IEnumerable<T> enumerable, IComparer<T> comparer)
