@@ -48,7 +48,8 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool Any(this char self, params char[] candidates) {
+        public static bool Any(this char self, params char[] candidates)
+        {
             for (int i = 0; i < candidates.Length; i++) {
                 if (self == candidates[i])
                     return true;
@@ -63,11 +64,13 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryAny(this char self, char[] candidates) {
+        public static bool BinaryAny(this char self, char[] candidates)
+        {
             return Array.BinarySearch(candidates, self) >= 0;
         }
 
-        public static bool ContainsAny(this string self, params char[] candidates) {
+        public static bool ContainsAny(this string self, params char[] candidates)
+        {
             return self.IndexOfAny(candidates) >= 0;
         }
 
@@ -78,7 +81,8 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryContainsAny(this string self, params char[] candidates) {
+        public static bool BinaryContainsAny(this string self, params char[] candidates)
+        {
             foreach (var c in self) {
                 if (Array.BinarySearch(candidates, c) >= 0)
                     return true;
@@ -86,7 +90,8 @@ namespace WmcSoft
             return false;
         }
 
-        public static bool EqualsAny(this char self, params string[] candidates) {
+        public static bool EqualsAny(this char self, params string[] candidates)
+        {
             var length = candidates.Length;
             for (int i = 0; i < length; i++) {
                 var candidate = candidates[i];
@@ -96,8 +101,9 @@ namespace WmcSoft
             return false;
         }
 
-        public static bool EqualsAny(this string self, StringComparison comparisonType, params string[] candidates) {
-            if (String.IsNullOrEmpty(self))
+        public static bool EqualsAny(this string self, StringComparison comparisonType, params string[] candidates)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             for (int i = 0; i < candidates.Length; i++) {
                 if (self.Equals(candidates[i], comparisonType))
@@ -106,7 +112,8 @@ namespace WmcSoft
             return false;
         }
 
-        public static bool EqualsAny(this string self, params string[] candidates) {
+        public static bool EqualsAny(this string self, params string[] candidates)
+        {
             return self.EqualsAny(StringComparison.CurrentCulture, candidates);
         }
 
@@ -118,7 +125,8 @@ namespace WmcSoft
         {
             private readonly string _value;
 
-            public ReadOnlyListAdapter(string value) {
+            public ReadOnlyListAdapter(string value)
+            {
                 _value = value;
             }
 
@@ -140,7 +148,8 @@ namespace WmcSoft
 
             #region IEnumerable<char> Membres
 
-            public IEnumerator<char> GetEnumerator() {
+            public IEnumerator<char> GetEnumerator()
+            {
                 return _value.GetEnumerator();
             }
 
@@ -148,14 +157,16 @@ namespace WmcSoft
 
             #region IEnumerable Membres
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
 
             #endregion
         }
 
-        public static IReadOnlyList<char> AsReadOnlyList(this string self) {
+        public static IReadOnlyList<char> AsReadOnlyList(this string self)
+        {
             return new ReadOnlyListAdapter(self);
         }
 
@@ -171,11 +182,13 @@ namespace WmcSoft
             NewWord,
         }
 
-        static bool IsWordDelimiter(char c) {
+        static bool IsWordDelimiter(char c)
+        {
             return char.IsWhiteSpace(c) || c == '_' || c == '-';
         }
 
-        static IEnumerable<string> UnguardedAsWords(string sentence) {
+        static IEnumerable<string> UnguardedAsWords(string sentence)
+        {
             var state = AsWordsState.Start;
             var first = 0;
             for (int i = 0; i < sentence.Length; i++) {
@@ -208,7 +221,8 @@ namespace WmcSoft
                 yield return sentence.Substring(first, sentence.Length - first);
         }
 
-        public static IEnumerable<string> AsWords(this string sentence) {
+        public static IEnumerable<string> AsWords(this string sentence)
+        {
             if (sentence == null) throw new ArgumentNullException(nameof(sentence));
 
             return UnguardedAsWords(sentence);
@@ -225,8 +239,9 @@ namespace WmcSoft
         /// <param name="culture">The culture.</param>
         /// <returns>The capitalized string</returns>
         [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
-        public static string Capitalize(this string self, CultureInfo culture) {
-            if (String.IsNullOrEmpty(self))
+        public static string Capitalize(this string self, CultureInfo culture)
+        {
+            if (string.IsNullOrEmpty(self))
                 return self;
             return Char.ToUpper(self[0], culture) + self.Substring(1).ToLower(culture);
         }
@@ -237,8 +252,9 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <returns>The capitalized string</returns>
         [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
-        public static string Capitalize(this string self) {
-            if (String.IsNullOrEmpty(self))
+        public static string Capitalize(this string self)
+        {
+            if (string.IsNullOrEmpty(self))
                 return self;
             return Char.ToUpper(self[0]) + self.Substring(1).ToLower();
         }
@@ -250,7 +266,8 @@ namespace WmcSoft
         /// <param name="culture">The culture.</param>
         /// <returns>The converted array of strings</returns>
         [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
-        public static string[] Capitalize(this string[] self, CultureInfo culture) {
+        public static string[] Capitalize(this string[] self, CultureInfo culture)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(Capitalize(s, culture));
@@ -264,7 +281,8 @@ namespace WmcSoft
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
         [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
-        public static string[] Capitalize(this string[] self) {
+        public static string[] Capitalize(this string[] self)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(Capitalize(s));
@@ -278,8 +296,9 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="culture">The culture.</param>
         /// <returns>The capitalized string</returns>
-        public static string ToTitleCase(this string self, CultureInfo culture) {
-            if (String.IsNullOrEmpty(self))
+        public static string ToTitleCase(this string self, CultureInfo culture)
+        {
+            if (string.IsNullOrEmpty(self))
                 return self;
             culture = culture ?? CultureInfo.CurrentCulture;
             return culture.TextInfo.ToTitleCase(self);
@@ -290,8 +309,9 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The string.</param>
         /// <returns>The capitalized string</returns>
-        public static string ToTitleCase(this string self) {
-            if (String.IsNullOrEmpty(self))
+        public static string ToTitleCase(this string self)
+        {
+            if (string.IsNullOrEmpty(self))
                 return self;
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(self);
         }
@@ -302,7 +322,8 @@ namespace WmcSoft
         /// <param name="self">The array of strings.</param>
         /// <param name="culture">The culture.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToTitleCase(this string[] self, CultureInfo culture) {
+        public static string[] ToTitleCase(this string[] self, CultureInfo culture)
+        {
             culture = culture ?? CultureInfo.CurrentCulture;
             var textinfo = culture.TextInfo;
             return self.ToArray(textinfo.ToTitleCase);
@@ -313,7 +334,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToTitleCase(this string[] self) {
+        public static string[] ToTitleCase(this string[] self)
+        {
             var textinfo = CultureInfo.CurrentCulture.TextInfo;
             return self.ToArray(textinfo.ToTitleCase);
         }
@@ -324,7 +346,8 @@ namespace WmcSoft
         /// <param name="self">The array of strings.</param>
         /// <param name="culture">The culture.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToUpper(this string[] self, CultureInfo culture) {
+        public static string[] ToUpper(this string[] self, CultureInfo culture)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(s.ToUpper(culture));
@@ -337,7 +360,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToUpper(this string[] self) {
+        public static string[] ToUpper(this string[] self)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(s.ToUpper());
@@ -350,7 +374,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToUpperInvariant(this string[] self) {
+        public static string[] ToUpperInvariant(this string[] self)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(s.ToUpperInvariant());
@@ -364,7 +389,8 @@ namespace WmcSoft
         /// <param name="self">The array of strings.</param>
         /// <param name="culture">The culture.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToLower(this string[] self, CultureInfo culture) {
+        public static string[] ToLower(this string[] self, CultureInfo culture)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(s.ToLower(culture));
@@ -377,7 +403,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToLower(this string[] self) {
+        public static string[] ToLower(this string[] self)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(s.ToLower());
@@ -390,7 +417,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The array of strings.</param>
         /// <returns>The converted array of strings</returns>
-        public static string[] ToLowerInvariant(this string[] self) {
+        public static string[] ToLowerInvariant(this string[] self)
+        {
             List<string> list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(s.ToLowerInvariant());
@@ -398,7 +426,8 @@ namespace WmcSoft
             return list.ToArray();
         }
 
-        public static string ToCamelCase(this string self) {
+        public static string ToCamelCase(this string self)
+        {
             if (string.IsNullOrEmpty(self) || !char.IsUpper(self[0]))
                 return self;
 
@@ -416,55 +445,65 @@ namespace WmcSoft
             return new string(array);
         }
 
-        public static string ToSnakeCase(this string source) {
+        public static string ToSnakeCase(this string source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).Join("_");
+            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).JoinWith("_");
         }
 
-        public static string ToKebabCase(this string source) {
+        public static string ToKebabCase(this string source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).Join("-");
+            return UnguardedAsWords(source).Select(w => w.ToLowerInvariant()).JoinWith("-");
         }
 
         #endregion
 
         #region EnsurePrefix/EnsureSuffix/EnsureAffixes
 
-        public static string EnsurePrefix(this string self, string prefix) {
+        public static string EnsurePrefix(this string self, string prefix)
+        {
             return EnsurePrefix(self, prefix, StringComparison.CurrentCulture);
         }
 
-        public static string EnsurePrefix(this string self, string prefix, StringComparison comparison) {
+        public static string EnsurePrefix(this string self, string prefix, StringComparison comparison)
+        {
             if (self == null || self.StartsWith(prefix, comparison))
                 return self;
             return prefix + self;
         }
 
-        public static string EnsureSuffix(this string self, string suffix) {
+        public static string EnsureSuffix(this string self, string suffix)
+        {
             return EnsureSuffix(self, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string EnsureSuffix(this string self, string suffix, StringComparison comparison) {
+        public static string EnsureSuffix(this string self, string suffix, StringComparison comparison)
+        {
             if (self == null || self.EndsWith(suffix, comparison))
                 return self;
             return self + suffix;
         }
 
-        public static string EnsureAffixes(this string self, string affix) {
+        public static string EnsureAffixes(this string self, string affix)
+        {
             return EnsureAffixes(self, affix, affix, StringComparison.CurrentCulture);
         }
 
-        public static string EnsureAffixes(this string self, string affix, StringComparison comparison) {
+        public static string EnsureAffixes(this string self, string affix, StringComparison comparison)
+        {
             return EnsureAffixes(self, affix, affix, comparison);
         }
 
-        public static string EnsureAffixes(this string self, string prefix, string suffix) {
+        public static string EnsureAffixes(this string self, string prefix, string suffix)
+        {
             return EnsureAffixes(self, prefix, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string EnsureAffixes(this string self, string prefix, string suffix, StringComparison comparison) {
+        public static string EnsureAffixes(this string self, string prefix, string suffix, StringComparison comparison)
+        {
             if (self == null)
                 return self;
             var starts = self.StartsWith(prefix, comparison);
@@ -489,8 +528,9 @@ namespace WmcSoft
         /// <param name="format">A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of the corresponding objects in <paramref name="args"/>.</returns>
-        public static string FormatWith(this string format, params object[] args) {
-            return String.Format(format, args);
+        public static string FormatWith(this string format, params object[] args)
+        {
+            return string.Format(format, args);
         }
 
         /// <summary>
@@ -499,8 +539,9 @@ namespace WmcSoft
         /// <param name="format">A composite format string.</param>
         /// <param name="arg0">The object to format.</param>
         /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of <paramref name="arg0"/>.</returns>
-        public static string FormatWith(this string format, object arg0) {
-            return String.Format(format, arg0);
+        public static string FormatWith(this string format, object arg0)
+        {
+            return string.Format(format, arg0);
         }
 
         /// <summary>
@@ -510,8 +551,9 @@ namespace WmcSoft
         /// <param name="arg0">The first object to format.</param>
         /// <param name="arg1">The second object to format.</param>
         /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of <paramref name="arg0"/> and <paramref name="arg1"/>.</returns>
-        public static string FormatWith(this string format, object arg0, object arg1) {
-            return String.Format(format, arg0, arg1);
+        public static string FormatWith(this string format, object arg0, object arg1)
+        {
+            return string.Format(format, arg0, arg1);
         }
 
         /// <summary>
@@ -522,8 +564,9 @@ namespace WmcSoft
         /// <param name="arg1">The second object to format.</param>
         /// <param name="arg2">The third object to format.</param>
         /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of <paramref name="arg0"/>, <paramref name="arg1"/> and <paramref name="arg2"/>.</returns>
-        public static string FormatWith(this string format, object arg0, object arg1, object arg2) {
-            return String.Format(format, arg0, arg1, arg2);
+        public static string FormatWith(this string format, object arg0, object arg1, object arg2)
+        {
+            return string.Format(format, arg0, arg1, arg2);
         }
 
         /// <summary>
@@ -534,15 +577,17 @@ namespace WmcSoft
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         /// <returns>A copy of <paramref name="format"/> in which any format items are replaced by the string representation of the corresponding objects in <paramref name="args"/>.</returns>
-        public static string FormatWith(this string format, IFormatProvider provider, params object[] args) {
-            return String.Format(format, provider, args);
+        public static string FormatWith(this string format, IFormatProvider provider, params object[] args)
+        {
+            return string.Format(format, provider, args);
         }
 
         #endregion
 
         #region Glob
 
-        private static bool Glob(string value, int startIndex, string pattern, int p) {
+        private static bool Glob(string value, int startIndex, string pattern, int p)
+        {
             while (pattern.Length != p) {
                 switch (pattern[p]) {
                 case '?':
@@ -574,7 +619,8 @@ namespace WmcSoft
         /// <param name="value">The string</param>
         /// <param name="pattern"></param>
         /// <returns>True if the value match the pattern; otherwise false.</returns>
-        public static bool Glob(this string value, string pattern) {
+        public static bool Glob(this string value, string pattern)
+        {
             // <https://en.wikipedia.org/wiki/Glob_%28programming%29>
             return Glob(value, 0, pattern, 0);
         }
@@ -589,8 +635,9 @@ namespace WmcSoft
         /// <param name="self">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is CultureInfo.CurrentCulture.TextInfo.ListSeparator.</remarks>
-        public static string Join(this IEnumerable<string> self) {
-            return Join(self, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        public static string JoinWithListSeparator(this IEnumerable<string> self)
+        {
+            return JoinWith(self, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -599,8 +646,9 @@ namespace WmcSoft
         /// <param name="self">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is currentCulture.TextInfo.ListSeparator.</remarks>
-        public static string Join(this IEnumerable<string> self, CultureInfo cultureInfo) {
-            return Join(self, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
+        public static string JoinWithListSeparator(this IEnumerable<string> self, CultureInfo cultureInfo)
+        {
+            return JoinWith(self, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
         }
 
         /// <summary>
@@ -609,7 +657,8 @@ namespace WmcSoft
         /// <param name="self">The sequence of strings.</param>
         /// <param name="separator">The separator.</param>
         /// <returns>The joined string.</returns>
-        public static string Join(this IEnumerable<string> self, string separator) {
+        public static string JoinWith(this IEnumerable<string> self, string separator)
+        {
             if (self == null)
                 return null;
 
@@ -630,7 +679,8 @@ namespace WmcSoft
         /// <param name="self">The sequence of strings.</param>
         /// <param name="separator">The separator.</param>
         /// <returns>The joined string.</returns>
-        public static string Join(this IEnumerable<string> self, char separator) {
+        public static string JoinWith(this IEnumerable<string> self, char separator)
+        {
             if (self == null)
                 return null;
 
@@ -654,8 +704,9 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The string.</param>
         /// <returns>Returns null if the string contains only whitespace; otherwise, the string.</returns>
-        public static string NullifyWhiteSpace(this string value) {
-            if (String.IsNullOrWhiteSpace(value))
+        public static string NullifyWhiteSpace(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
                 return null;
             return value;
         }
@@ -665,8 +716,9 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The string.</param>
         /// <returns>Returns null if the string is empty; otherwise, the string.</returns>
-        public static string NullifyEmpty(this string value) {
-            if (String.IsNullOrEmpty(value))
+        public static string NullifyEmpty(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
                 return null;
             return value;
         }
@@ -677,7 +729,8 @@ namespace WmcSoft
         /// <param name="value">The string.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns>Returns null if the string verifies the predicate; otherwise, the string.</returns>
-        public static string Nullify(this string value, Predicate<string> predicate) {
+        public static string Nullify(this string value, Predicate<string> predicate)
+        {
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
             if (value == null || predicate(value))
@@ -701,7 +754,8 @@ namespace WmcSoft
         /// However, if totalWidth is less than the length of this instance, the method returns a reference to the existing instance.
         /// If totalWidth is equal to the length of this instance, the method returns a new string that is identical to this instance.</returns>
         /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
-        public static string PadEnds(this string self, int totalWidth, char paddingChar) {
+        public static string PadEnds(this string self, int totalWidth, char paddingChar)
+        {
             if (self == null)
                 throw new NullReferenceException();
             if (totalWidth < 0)
@@ -731,7 +785,8 @@ namespace WmcSoft
         /// However, if totalWidth is less than the length of this instance, the method returns a reference to the existing instance.
         /// If totalWidth is equal to the length of this instance, the method returns a new string that is identical to this instance.</returns>
         /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
-        public static string PadEnds(this string self, int totalWidth) {
+        public static string PadEnds(this string self, int totalWidth)
+        {
             return PadEnds(self, totalWidth, ' ');
         }
 
@@ -745,7 +800,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="args">The chars to remove.</param>
         /// <returns>The string without the specified chars.</returns>
-        public static string Remove(this string self, params char[] args) {
+        public static string Remove(this string self, params char[] args)
+        {
             if (self == null || self.Length == 0)
                 return self;
 
@@ -759,7 +815,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="args">The substrings to remove.</param>
         /// <returns>The string without the specified substrings.</returns>
-        public static string Remove(this string self, params string[] args) {
+        public static string Remove(this string self, params string[] args)
+        {
             if (self == null || self.Length == 0)
                 return self;
 
@@ -772,37 +829,43 @@ namespace WmcSoft
 
         #region RemovePrefix/RemoveSuffix/RemoveAffixes
 
-        public static string RemovePrefix(this string self, string prefix) {
+        public static string RemovePrefix(this string self, string prefix)
+        {
             return RemovePrefix(self, prefix, StringComparison.CurrentCulture);
         }
 
-        public static string RemovePrefix(this string self, string prefix, StringComparison comparison) {
+        public static string RemovePrefix(this string self, string prefix, StringComparison comparison)
+        {
             if (self != null && self.StartsWith(prefix, comparison))
                 return self.Substring(prefix.Length);
             return self;
         }
 
-        public static string RemoveSuffix(this string self, string suffix) {
+        public static string RemoveSuffix(this string self, string suffix)
+        {
             return RemoveSuffix(self, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string RemoveSuffix(this string self, string suffix, StringComparison comparison) {
+        public static string RemoveSuffix(this string self, string suffix, StringComparison comparison)
+        {
             if (self != null && self.EndsWith(suffix, comparison))
                 return self.Substring(0, self.Length - suffix.Length);
             return self;
         }
 
-        public static string RemoveAffixes(this string self, string affix) {
+        public static string RemoveAffixes(this string self, string affix)
+        {
             return RemoveAffixes(self, affix, StringComparison.CurrentCulture);
         }
 
-        public static string RemoveAffixes(this string self, string affix, StringComparison comparison) {
+        public static string RemoveAffixes(this string self, string affix, StringComparison comparison)
+        {
             if (self == null || self.Length < affix.Length)
                 return self;
             var starts = self.StartsWith(affix, comparison);
             var ends = self.EndsWith(affix, comparison);
             if (starts & ends) {
-                if (String.Equals(self, affix, comparison))
+                if (string.Equals(self, affix, comparison))
                     return "";
                 return self.Substring(affix.Length, self.Length - 2 * affix.Length);
             } else if (starts) {
@@ -813,11 +876,13 @@ namespace WmcSoft
             return self;
         }
 
-        public static string RemoveAffixes(this string self, string prefix, string suffix) {
+        public static string RemoveAffixes(this string self, string prefix, string suffix)
+        {
             return RemoveAffixes(self, prefix, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string RemoveAffixes(this string self, string prefix, string suffix, StringComparison comparison) {
+        public static string RemoveAffixes(this string self, string prefix, string suffix, StringComparison comparison)
+        {
             if (self == null)
                 return self;
             var starts = self.StartsWith(prefix, comparison);
@@ -846,12 +911,14 @@ namespace WmcSoft
             readonly string _newWord;
             int _count;
 
-            public WordReplacer(string oldWord, string newWord) {
+            public WordReplacer(string oldWord, string newWord)
+            {
                 _oldWord = oldWord;
                 _newWord = newWord;
             }
 
-            string Substitute(Match match) {
+            string Substitute(Match match)
+            {
                 var value = match.ToString();
                 if (value != _oldWord)
                     return value;
@@ -859,7 +926,8 @@ namespace WmcSoft
                 return _newWord;
             }
 
-            public string Invoke(string source) {
+            public string Invoke(string source)
+            {
                 _count = 0;
                 var result = WordMatcher.Replace(source, Substitute);
                 if (_count > 0)
@@ -876,7 +944,8 @@ namespace WmcSoft
         /// <param name="newWord">The word to replace all occurrences of <paramref name="oldWord"/>. </param>
         /// <returns>A string that is equivalent to the current string except that all instances of oldWord are replaced with newWord.
         /// If oldWord is not found in the current instance, the method returns the current instance unchanged. </returns>
-        public static string ReplaceWord(this string self, string oldWord, string newWord) {
+        public static string ReplaceWord(this string self, string oldWord, string newWord)
+        {
             var substituer = new WordReplacer(oldWord, newWord);
             return substituer.Invoke(self);
         }
@@ -885,25 +954,30 @@ namespace WmcSoft
 
         #region StartsWith & EndsWith
 
-        public static bool StartsWith(this string self, char c) {
+        public static bool StartsWith(this string self, char c)
+        {
             return StartsWith(self, c, StringComparison.CurrentCulture);
         }
-        public static bool StartsWith(this string self, char c, StringComparison comparison) {
-            if (String.IsNullOrEmpty(self))
+        public static bool StartsWith(this string self, char c, StringComparison comparison)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             return self.StartsWith(Char.ToString(c), comparison);
         }
-        public static bool StartsWith(this string self, char c, bool ignoreCase, CultureInfo culture) {
-            if (String.IsNullOrEmpty(self))
+        public static bool StartsWith(this string self, char c, bool ignoreCase, CultureInfo culture)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             return self.StartsWith(Char.ToString(c), ignoreCase, culture);
         }
 
-        public static bool StartsWithAny(this string self, params string[] prefixes) {
+        public static bool StartsWithAny(this string self, params string[] prefixes)
+        {
             return StartsWithAny(self, StringComparison.CurrentCulture, prefixes);
         }
-        public static bool StartsWithAny(this string self, StringComparison comparison, params string[] prefixes) {
-            if (String.IsNullOrEmpty(self))
+        public static bool StartsWithAny(this string self, StringComparison comparison, params string[] prefixes)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             if (prefixes == null || prefixes.Length == 0)
                 return true;
@@ -914,25 +988,30 @@ namespace WmcSoft
             return false;
         }
 
-        public static bool EndsWith(this string self, char c) {
+        public static bool EndsWith(this string self, char c)
+        {
             return EndsWith(self, c, StringComparison.CurrentCulture);
         }
-        public static bool EndsWith(this string self, char c, StringComparison comparison) {
-            if (String.IsNullOrEmpty(self))
+        public static bool EndsWith(this string self, char c, StringComparison comparison)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             return self.EndsWith(Char.ToString(c), comparison);
         }
-        public static bool EndsWith(this string self, char c, bool ignoreCase, CultureInfo culture) {
-            if (String.IsNullOrEmpty(self))
+        public static bool EndsWith(this string self, char c, bool ignoreCase, CultureInfo culture)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             return self.EndsWith(Char.ToString(c), ignoreCase, culture);
         }
 
-        public static bool EndsWithAny(this string self, params string[] suffixes) {
+        public static bool EndsWithAny(this string self, params string[] suffixes)
+        {
             return EndsWithAny(self, StringComparison.CurrentCulture, suffixes);
         }
-        public static bool EndsWithAny(this string self, StringComparison comparison, params string[] suffixes) {
-            if (String.IsNullOrEmpty(self))
+        public static bool EndsWithAny(this string self, StringComparison comparison, params string[] suffixes)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
             if (suffixes == null || suffixes.Length == 0)
                 return true;
@@ -953,8 +1032,9 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
-        public static string SubstringBefore(this string self, char find) {
-            if (String.IsNullOrEmpty(self))
+        public static string SubstringBefore(this string self, char find)
+        {
+            if (string.IsNullOrEmpty(self))
                 return null;
 
             int index = self.IndexOf(find);
@@ -969,7 +1049,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
-        public static string SubstringBeforeOrSelf(this string self, char find) {
+        public static string SubstringBeforeOrSelf(this string self, char find)
+        {
             return SubstringBefore(self, find) ?? self;
         }
 
@@ -979,10 +1060,11 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static string SubstringBefore(this string self, string find) {
-            if (String.IsNullOrEmpty(self))
+        public static string SubstringBefore(this string self, string find)
+        {
+            if (string.IsNullOrEmpty(self))
                 return null;
-            if (String.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(find))
                 return self;
 
             int index = self.IndexOf(find, StringComparison.Ordinal);
@@ -997,7 +1079,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
-        public static string SubstringBeforeOrSelf(this string self, string find) {
+        public static string SubstringBeforeOrSelf(this string self, string find)
+        {
             return SubstringBefore(self, find) ?? self;
         }
 
@@ -1007,8 +1090,9 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
-        public static string SubstringAfter(this string self, char find) {
-            if (String.IsNullOrEmpty(self))
+        public static string SubstringAfter(this string self, char find)
+        {
+            if (string.IsNullOrEmpty(self))
                 return null;
 
             int index = self.IndexOf(find);
@@ -1023,7 +1107,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
-        public static string SubstringAfterOrSelf(this string self, char find) {
+        public static string SubstringAfterOrSelf(this string self, char find)
+        {
             return SubstringAfter(self, find) ?? self;
         }
 
@@ -1033,10 +1118,11 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static string SubstringAfter(this string self, string find) {
-            if (String.IsNullOrEmpty(self))
+        public static string SubstringAfter(this string self, string find)
+        {
+            if (string.IsNullOrEmpty(self))
                 return null;
-            if (String.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(find))
                 return self;
 
             int index = self.IndexOf(find, StringComparison.Ordinal);
@@ -1051,7 +1137,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
-        public static string SubstringAfterOrSelf(this string self, string find) {
+        public static string SubstringAfterOrSelf(this string self, string find)
+        {
             return SubstringAfter(self, find) ?? self;
         }
 
@@ -1062,10 +1149,11 @@ namespace WmcSoft
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The substring between the prefix and the suffix, or null if the prefix or the suffix is not found.</returns>
-        public static string SubstringBetween(this string self, string prefix, string suffix) {
-            if (String.IsNullOrEmpty(prefix))
+        public static string SubstringBetween(this string self, string prefix, string suffix)
+        {
+            if (string.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
-            else if (String.IsNullOrEmpty(suffix))
+            else if (string.IsNullOrEmpty(suffix))
                 return SubstringAfter(self, prefix);
 
             int start = self.IndexOf(prefix, StringComparison.Ordinal);
@@ -1085,7 +1173,8 @@ namespace WmcSoft
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The substring between the prefix and the suffix, or the string if the prefix or the suffix is not found.</returns>
-        public static string SubstringBetweenOrSelf(this string self, string prefix, string suffix) {
+        public static string SubstringBetweenOrSelf(this string self, string prefix, string suffix)
+        {
             return SubstringBetween(self, prefix, suffix) ?? self;
         }
 
@@ -1095,7 +1184,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
-        public static string Left(this string self, int length) {
+        public static string Left(this string self, int length)
+        {
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (self == null)
                 return self;
@@ -1113,7 +1203,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
-        public static string Right(this string self, int length) {
+        public static string Right(this string self, int length)
+        {
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (self == null)
                 return self;
@@ -1136,7 +1227,8 @@ namespace WmcSoft
         /// <param name="prefix">The prefix</param>
         /// <param name="suffix">The suffix</param>
         /// <returns>null if the string is null; otherwise, the concatenated string.</returns>
-        public static string SurroundWith(this string self, string prefix = null, string suffix = null) {
+        public static string SurroundWith(this string self, string prefix = null, string suffix = null)
+        {
             if (self == null)
                 return null;
             return prefix + self + suffix;
@@ -1154,7 +1246,8 @@ namespace WmcSoft
         /// <param name="tokenizer">The tokenizer.</param>
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize<TTokenizer>(this string self, TTokenizer tokenizer)
-            where TTokenizer : ITokenizer<string, string> {
+            where TTokenizer : ITokenizer<string, string>
+        {
             if (self == null)
                 return null;
             return tokenizer.Tokenize(self);
@@ -1166,7 +1259,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="separator">The separator.</param>
         /// <returns>The sequence of substrings.</returns>
-        public static IEnumerable<string> Tokenize(this string self, char separator) {
+        public static IEnumerable<string> Tokenize(this string self, char separator)
+        {
             return Tokenize(self, new CharTokenizer(separator));
         }
 
@@ -1176,7 +1270,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="separators">The set of separators</param>
         /// <returns>The sequence of substrings.</returns>
-        public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
+        public static IEnumerable<string> Tokenize(this string self, params char[] separators)
+        {
             if (separators == null || separators.Length == 0)
                 return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
             if (separators.Length == 1)
@@ -1190,7 +1285,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="isSeparator">The predicate.</param>
         /// <returns>The sequence of substrings.</returns>
-        public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator) {
+        public static IEnumerable<string> Tokenize(this string self, Predicate<char> isSeparator)
+        {
             return Tokenize(self, new PredicateTokenizer(isSeparator));
         }
 
@@ -1199,7 +1295,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The string.</param>
         /// <returns>The sequence of substrings.</returns>
-        public static IEnumerable<string> Tokenize(this string self) {
+        public static IEnumerable<string> Tokenize(this string self)
+        {
             return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
         }
 
@@ -1214,7 +1311,8 @@ namespace WmcSoft
         /// <param name="source">The source chars.</param>
         /// <param name="target">The target chars.</param>
         /// <returns>The translated string.</returns>
-        public static string Translate(this char[] self, string source, string target) {
+        public static string Translate(this char[] self, string source, string target)
+        {
             var normalized = target;
             if (target.Length < source.Length)
                 normalized += new string('\0', source.Length - target.Length);
@@ -1240,7 +1338,8 @@ namespace WmcSoft
         /// <param name="source">The source chars.</param>
         /// <param name="target">The target chars.</param>
         /// <returns>The translated string.</returns>
-        public static string Translate(this string self, string source, string target) {
+        public static string Translate(this string self, string source, string target)
+        {
             return Translate(self.ToCharArray(), source, target);
         }
 
@@ -1256,13 +1355,14 @@ namespace WmcSoft
         /// <param name="ellipsis">The substring added at the end of the string when it is longer than the maxLenght.</param>
         /// <returns>The shorten string when longer than the max length; otherwise, the string.</returns>
         /// <remarks>The ellipsis may be empty but not null.</remarks>
-        public static string Truncate(this string self, int maxLength, string ellipsis = "\u2026") {
+        public static string Truncate(this string self, int maxLength, string ellipsis = "\u2026")
+        {
             if (ellipsis == null)
                 throw new ArgumentNullException("ellipsis");
             if (maxLength < ellipsis.Length)
                 throw new ArgumentOutOfRangeException("maxLength");
 
-            if (!String.IsNullOrEmpty(self) && self.Length > maxLength)
+            if (!string.IsNullOrEmpty(self) && self.Length > maxLength)
                 return self.Substring(0, maxLength - ellipsis.Length) + ellipsis;
             return self;
         }
