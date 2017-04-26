@@ -83,23 +83,23 @@ namespace WmcSoft
         /// <summary>
         /// Joins the sequence of strings into a single string.
         /// </summary>
-        /// <param name="self">The sequence of strings.</param>
+        /// <param name="values">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is CultureInfo.CurrentCulture.TextInfo.ListSeparator.</remarks>
-        public static string JoinWithListSeparator(this IEnumerable<Strip> self)
+        public static string JoinWithListSeparator(this IEnumerable<Strip> values)
         {
-            return JoinWith(self, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+            return JoinWith(values, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
         }
 
         /// <summary>
         /// Joins the sequence of strings into a single string.
         /// </summary>
-        /// <param name="self">The sequence of strings.</param>
+        /// <param name="values">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is currentCulture.TextInfo.ListSeparator.</remarks>
-        public static string JoinWithListSeparator(this IEnumerable<Strip> self, CultureInfo cultureInfo)
+        public static string JoinWithListSeparator(this IEnumerable<Strip> values, CultureInfo cultureInfo)
         {
-            return JoinWith(self, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
+            return JoinWith(values, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
         }
 
         /// <summary>
