@@ -62,9 +62,9 @@ namespace WmcSoft
 
         public static bool EqualsAny(this Strip self, StringComparison comparisonType, params string[] candidates)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            for (int i = 0; i < candidates.Length; i++) {
+            for (var i = 0; i < candidates.Length; i++) {
                 if (self.Equals(candidates[i], comparisonType))
                     return true;
             }
@@ -176,8 +176,8 @@ namespace WmcSoft
         /// <returns>Returns null if the string verifies the predicate; otherwise, the string.</returns>
         public static Strip Nullify(this Strip value, Predicate<Strip> predicate)
         {
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
             if (value == null || predicate(value))
                 return null;
             return value;
@@ -349,7 +349,7 @@ namespace WmcSoft
             if (Strip.IsNullOrEmpty(self))
                 return null;
 
-            int index = self.IndexOf(find);
+            var index = self.IndexOf(find);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -376,10 +376,10 @@ namespace WmcSoft
         {
             if (Strip.IsNullOrEmpty(self))
                 return null;
-            if (String.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(find))
                 return self;
 
-            int index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -407,7 +407,7 @@ namespace WmcSoft
             if (Strip.IsNullOrEmpty(self))
                 return null;
 
-            int index = self.IndexOf(find);
+            var index = self.IndexOf(find);
             if (index < 0)
                 return null;
             return self.Substring(index + 1);
@@ -434,10 +434,10 @@ namespace WmcSoft
         {
             if (Strip.IsNullOrEmpty(self))
                 return null;
-            if (String.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(find))
                 return self;
 
-            int index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(index + find.Length);
@@ -468,11 +468,11 @@ namespace WmcSoft
             else if (String.IsNullOrEmpty(suffix))
                 return SubstringAfter(self, prefix);
 
-            int start = self.IndexOf(prefix, StringComparison.Ordinal);
+            var start = self.IndexOf(prefix, StringComparison.Ordinal);
             if (start < 0)
                 return null;
             start += prefix.Length;
-            int end = self.IndexOf(suffix, start, StringComparison.Ordinal);
+            var end = self.IndexOf(suffix, start, StringComparison.Ordinal);
             if (end < 0)
                 return null;
             return self.Substring(start, end - start);
@@ -617,8 +617,8 @@ namespace WmcSoft
         /// <remarks>The ellipsis may be empty but not null.</remarks>
         public static string Truncate(this Strip self, int maxLength, string ellipsis = "\u2026")
         {
-            if (ellipsis == null) throw new ArgumentNullException("ellipsis");
-            if (maxLength < ellipsis.Length) throw new ArgumentOutOfRangeException("maxLength");
+            if (ellipsis == null) throw new ArgumentNullException(nameof(ellipsis));
+            if (maxLength < ellipsis.Length) throw new ArgumentOutOfRangeException(nameof(maxLength));
 
             if (!Strip.IsNullOrEmpty(self) && self.Length > maxLength)
                 return self.Substring(0, maxLength - ellipsis.Length) + ellipsis;

@@ -50,7 +50,7 @@ namespace WmcSoft
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
         public static bool Any(this char self, params char[] candidates)
         {
-            for (int i = 0; i < candidates.Length; i++) {
+            for (var i = 0; i < candidates.Length; i++) {
                 if (self == candidates[i])
                     return true;
             }
@@ -93,7 +93,7 @@ namespace WmcSoft
         public static bool EqualsAny(this char self, params string[] candidates)
         {
             var length = candidates.Length;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 var candidate = candidates[i];
                 if (candidate != null && candidate.Length == 1 && self == candidate[0])
                     return true;
@@ -105,7 +105,7 @@ namespace WmcSoft
         {
             if (string.IsNullOrEmpty(self))
                 return false;
-            for (int i = 0; i < candidates.Length; i++) {
+            for (var i = 0; i < candidates.Length; i++) {
                 if (self.Equals(candidates[i], comparisonType))
                     return true;
             }
@@ -191,7 +191,7 @@ namespace WmcSoft
         {
             var state = AsWordsState.Start;
             var first = 0;
-            for (int i = 0; i < sentence.Length; i++) {
+            for (var i = 0; i < sentence.Length; i++) {
                 var c = sentence[i];
                 if (IsWordDelimiter(c)) {
                     if (state != AsWordsState.Start) {
@@ -243,7 +243,7 @@ namespace WmcSoft
         {
             if (string.IsNullOrEmpty(self))
                 return self;
-            return Char.ToUpper(self[0], culture) + self.Substring(1).ToLower(culture);
+            return char.ToUpper(self[0], culture) + self.Substring(1).ToLower(culture);
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace WmcSoft
         {
             if (string.IsNullOrEmpty(self))
                 return self;
-            return Char.ToUpper(self[0]) + self.Substring(1).ToLower();
+            return char.ToUpper(self[0]) + self.Substring(1).ToLower();
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace WmcSoft
         [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
         public static string[] Capitalize(this string[] self, CultureInfo culture)
         {
-            List<string> list = new List<string>(self.Length);
+            var list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(Capitalize(s, culture));
             }
@@ -283,7 +283,7 @@ namespace WmcSoft
         [Obsolete("Use ToTitleCase as it uses culture's text info.", false)]
         public static string[] Capitalize(this string[] self)
         {
-            List<string> list = new List<string>(self.Length);
+            var list = new List<string>(self.Length);
             foreach (string s in self) {
                 list.Add(Capitalize(s));
             }
@@ -348,8 +348,8 @@ namespace WmcSoft
         /// <returns>The converted array of strings</returns>
         public static string[] ToUpper(this string[] self, CultureInfo culture)
         {
-            List<string> list = new List<string>(self.Length);
-            foreach (string s in self) {
+            var list = new List<string>(self.Length);
+            foreach (var s in self) {
                 list.Add(s.ToUpper(culture));
             }
             return list.ToArray();
@@ -362,8 +362,8 @@ namespace WmcSoft
         /// <returns>The converted array of strings</returns>
         public static string[] ToUpper(this string[] self)
         {
-            List<string> list = new List<string>(self.Length);
-            foreach (string s in self) {
+            var list = new List<string>(self.Length);
+            foreach (var s in self) {
                 list.Add(s.ToUpper());
             }
             return list.ToArray();
@@ -376,8 +376,8 @@ namespace WmcSoft
         /// <returns>The converted array of strings</returns>
         public static string[] ToUpperInvariant(this string[] self)
         {
-            List<string> list = new List<string>(self.Length);
-            foreach (string s in self) {
+            var list = new List<string>(self.Length);
+            foreach (var s in self) {
                 list.Add(s.ToUpperInvariant());
             }
             return list.ToArray();
@@ -391,8 +391,8 @@ namespace WmcSoft
         /// <returns>The converted array of strings</returns>
         public static string[] ToLower(this string[] self, CultureInfo culture)
         {
-            List<string> list = new List<string>(self.Length);
-            foreach (string s in self) {
+            var list = new List<string>(self.Length);
+            foreach (var s in self) {
                 list.Add(s.ToLower(culture));
             }
             return list.ToArray();
@@ -405,8 +405,8 @@ namespace WmcSoft
         /// <returns>The converted array of strings</returns>
         public static string[] ToLower(this string[] self)
         {
-            List<string> list = new List<string>(self.Length);
-            foreach (string s in self) {
+            var list = new List<string>(self.Length);
+            foreach (var s in self) {
                 list.Add(s.ToLower());
             }
             return list.ToArray();
@@ -419,8 +419,8 @@ namespace WmcSoft
         /// <returns>The converted array of strings</returns>
         public static string[] ToLowerInvariant(this string[] self)
         {
-            List<string> list = new List<string>(self.Length);
-            foreach (string s in self) {
+            var list = new List<string>(self.Length);
+            foreach (var s in self) {
                 list.Add(s.ToLowerInvariant());
             }
             return list.ToArray();
@@ -433,9 +433,9 @@ namespace WmcSoft
 
             var culture = CultureInfo.InvariantCulture;
             char[] array = self.ToCharArray();
-            int i = 0;
+            var i = 0;
             while (i < array.Length && (i != 1 || char.IsUpper(array[i]))) {
-                bool flag = i + 1 < array.Length;
+                var flag = i + 1 < array.Length;
                 if ((i > 0 & flag) && !char.IsUpper(array[i + 1])) {
                     break;
                 }
@@ -593,7 +593,7 @@ namespace WmcSoft
                 case '?':
                     break;
                 case '*':
-                    for (int i = value.Length; i >= p; i--) {
+                    for (var i = value.Length; i >= p; i--) {
                         if (Glob(value, i, pattern, startIndex + 1)) {
                             return true;
                         }
@@ -711,8 +711,8 @@ namespace WmcSoft
         /// <returns>Returns null if the string verifies the predicate; otherwise, the string.</returns>
         public static string Nullify(this string value, Predicate<string> predicate)
         {
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
             if (value == null || predicate(value))
                 return null;
             return value;
@@ -736,10 +736,8 @@ namespace WmcSoft
         /// <exception cref="ArgumentOutOfRangceException">totalWidth is less than zero.</exception>
         public static string PadEnds(this string self, int totalWidth, char paddingChar)
         {
-            if (self == null)
-                throw new NullReferenceException();
-            if (totalWidth < 0)
-                throw new ArgumentOutOfRangeException("totalWith");
+            if (self == null) throw new NullReferenceException();
+            if (totalWidth < 0) throw new ArgumentOutOfRangeException("totalWith");
 
             var width = totalWidth - self.Length;
             if (width < 0)
@@ -1017,7 +1015,7 @@ namespace WmcSoft
             if (string.IsNullOrEmpty(self))
                 return null;
 
-            int index = self.IndexOf(find);
+            var index = self.IndexOf(find);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -1047,7 +1045,7 @@ namespace WmcSoft
             if (string.IsNullOrEmpty(find))
                 return self;
 
-            int index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -1075,7 +1073,7 @@ namespace WmcSoft
             if (string.IsNullOrEmpty(self))
                 return null;
 
-            int index = self.IndexOf(find);
+            var index = self.IndexOf(find);
             if (index < 0)
                 return null;
             return self.Substring(index + 1);
@@ -1105,7 +1103,7 @@ namespace WmcSoft
             if (string.IsNullOrEmpty(find))
                 return self;
 
-            int index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(index + find.Length);
@@ -1136,11 +1134,11 @@ namespace WmcSoft
             else if (string.IsNullOrEmpty(suffix))
                 return SubstringAfter(self, prefix);
 
-            int start = self.IndexOf(prefix, StringComparison.Ordinal);
+            var start = self.IndexOf(prefix, StringComparison.Ordinal);
             if (start < 0)
                 return null;
             start += prefix.Length;
-            int end = self.IndexOf(suffix, start, StringComparison.Ordinal);
+            var end = self.IndexOf(suffix, start, StringComparison.Ordinal);
             if (end < 0)
                 return null;
             return self.Substring(start, end - start);
@@ -1337,10 +1335,8 @@ namespace WmcSoft
         /// <remarks>The ellipsis may be empty but not null.</remarks>
         public static string Truncate(this string self, int maxLength, string ellipsis = "\u2026")
         {
-            if (ellipsis == null)
-                throw new ArgumentNullException("ellipsis");
-            if (maxLength < ellipsis.Length)
-                throw new ArgumentOutOfRangeException("maxLength");
+            if (ellipsis == null) throw new ArgumentNullException(nameof(ellipsis));
+            if (maxLength < ellipsis.Length) throw new ArgumentOutOfRangeException(nameof(maxLength));
 
             if (!string.IsNullOrEmpty(self) && self.Length > maxLength)
                 return self.Substring(0, maxLength - ellipsis.Length) + ellipsis;
