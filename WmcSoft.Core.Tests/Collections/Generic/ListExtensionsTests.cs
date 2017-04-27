@@ -9,8 +9,9 @@ namespace WmcSoft.Collections.Generic
     public class ListExtensionsTests
     {
         [TestMethod]
-        public void CheckIndexOfList() {
-            var data = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        public void CheckIndexOfList()
+        {
+            var data = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
             Assert.AreEqual(0, data.IndexOf(new[] { 0, 1, 2, 3 }));
             Assert.AreEqual(3, data.IndexOf(new[] { 3, 4, 5 }));
@@ -20,7 +21,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckIndexOfPartial() {
+        public void CheckIndexOfPartial()
+        {
             var data = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
             Assert.AreEqual(-1, data.IndexOf(0, 3, 3));
@@ -33,7 +35,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckSublistIndexOf() {
+        public void CheckSublistIndexOf()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             Assert.AreEqual(-1, data.IndexOf(0));
@@ -46,7 +49,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckSublistToArray() {
+        public void CheckSublistToArray()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             var actual = data.ToArray();
@@ -55,7 +59,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanAddInsideTheSublist() {
+        public void CanAddInsideTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.Add(10);
@@ -67,7 +72,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanInsertInsideTheSublist() {
+        public void CanInsertInsideTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.Insert(1, 10);
@@ -79,7 +85,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveAtInsideTheSublist() {
+        public void CanRemoveAtInsideTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.RemoveAt(1);
@@ -91,7 +98,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveInsideTheSublist() {
+        public void CanRemoveInsideTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             Assert.IsTrue(data.Remove(4));
@@ -103,7 +111,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveAfterTheSublist() {
+        public void CanRemoveAfterTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             Assert.IsFalse(data.Remove(8));
@@ -116,7 +125,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveBeforeTheSublist() {
+        public void CanRemoveBeforeTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             Assert.IsFalse(data.Remove(1));
@@ -129,7 +139,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanClearTheSublist() {
+        public void CanClearTheSublist()
+        {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.Clear();
@@ -141,8 +152,9 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanRemoveMoreThanTheSublistCapacity() {
-            var list = new List<int> { 0, 1, 2, 3, 4, 5, 6,  };
+        public void CanRemoveMoreThanTheSublistCapacity()
+        {
+            var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, };
             var data = list.Sublist(3, 3);
             list.RemoveAt(0);
             list.RemoveAt(0);
@@ -154,7 +166,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckRepeat() {
+        public void CheckRepeat()
+        {
             var data = new[] { 1, 2, 3 };
             var expected = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
             var actual = data.Repeat(3);
@@ -164,8 +177,9 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CanFindRotationPoint() {
-            var list= new[] { 1, 2, 3, 4, 5, 6 };
+        public void CanFindRotationPoint()
+        {
+            var list = new[] { 1, 2, 3, 4, 5, 6 };
             var target = new[] { 3, 4, 5, 6, 1, 2 };
 
             Assert.AreEqual(4, list.FindRotationPoint(target));
@@ -173,5 +187,79 @@ namespace WmcSoft.Collections.Generic
             list.Rotate(4);
             CollectionAssert.AreEqual(target, list);
         }
+
+        #region Splice
+
+        [TestMethod]
+        public void CanRemove0ElementsFromIndex2AndInsert1Element()
+        {
+            var myFish = new List<string> { "angel", "clown", "mandarin", "sturgeon" };
+            var removed = myFish.Splice(2, 0, "drum");
+
+            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "drum", "mandarin", "sturgeon" });
+            CollectionAssert.AreEqual(removed, new string[0]);
+        }
+
+        [TestMethod]
+        public void CanRemove1ElementFromIndex3()
+        {
+            var myFish = new List<string> { "angel", "clown", "drum", "mandarin", "sturgeon" };
+            var removed = myFish.Splice(3, 1);
+
+            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "drum", "sturgeon" });
+            CollectionAssert.AreEqual(removed, new[] { "mandarin" });
+        }
+
+        [TestMethod]
+        public void CanRemove1ElementFromIndex2AndInsert1Element()
+        {
+            var myFish = new List<string> { "angel", "clown", "drum", "sturgeon" };
+            var removed = myFish.Splice(2, 1, "trumpet");
+
+            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "trumpet", "sturgeon" });
+            CollectionAssert.AreEqual(removed, new[] { "drum" });
+        }
+
+        [TestMethod]
+        public void CanRemove2ElementsFromIndex0AndInsert3Elements()
+        {
+            var myFish = new List<string> { "angel", "clown", "trumpet", "sturgeon" };
+            var removed = myFish.Splice(0, 2, "parrot", "anemone", "blue");
+
+            CollectionAssert.AreEqual(myFish, new[] { "parrot", "anemone", "blue", "trumpet", "sturgeon" });
+            CollectionAssert.AreEqual(removed, new[] { "angel", "clown" });
+        }
+
+        [TestMethod]
+        public void CanRemove2ElementsFromIndex2()
+        {
+            var myFish = new List<string> { "parrot", "anemone", "blue", "trumpet", "sturgeon" };
+            var removed = myFish.Splice(myFish.Count - 3, 2);
+
+            CollectionAssert.AreEqual(myFish, new[] { "parrot", "anemone", "sturgeon" });
+            CollectionAssert.AreEqual(removed, new[] { "blue", "trumpet" });
+        }
+
+        [TestMethod]
+        public void CanRemove1ElementFromIndexMinus2()
+        {
+            var myFish = new List<string> { "angel", "clown", "mandarin", "sturgeon" };
+            var removed = myFish.Splice(-2, 1);
+
+            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "sturgeon" });
+            CollectionAssert.AreEqual(removed, new[] { "mandarin" });
+        }
+
+        [TestMethod]
+        public void CanRemoveAllElementsAfterIndex2()
+        {
+            var myFish = new List<string> { "angel", "clown", "mandarin", "sturgeon" };
+            var removed = myFish.Splice(2);
+
+            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown" });
+            CollectionAssert.AreEqual(removed, new[] { "mandarin", "sturgeon" });
+        }
+
+        #endregion
     }
 }
