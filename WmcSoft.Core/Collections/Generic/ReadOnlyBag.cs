@@ -47,8 +47,18 @@ namespace WmcSoft.Collections.Generic
 
         public int Count => _bag.Count;
         public bool IsReadOnly => true;
-        object ICollection.SyncRoot => ((ICollection)_bag).SyncRoot;
-        bool ICollection.IsSynchronized => ((ICollection)_bag).IsSynchronized;
+
+#pragma warning disable IDE0025 // Utiliser un corps d'expression pour les propriétés
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
+        object ICollection.SyncRoot {
+            get { return ((ICollection)_bag).SyncRoot; }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
+        bool ICollection.IsSynchronized {
+            get { return ((ICollection)_bag).IsSynchronized; }
+        }
+#pragma warning restore IDE0025 // Utiliser un corps d'expression pour les propriétés
 
         public void Add(T item)
         {

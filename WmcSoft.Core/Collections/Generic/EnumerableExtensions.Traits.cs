@@ -158,6 +158,8 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>If true, then the elements are unique in the sequence.</remarks>
         public static bool IsSortedSet<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
         {
+            comparer = comparer ?? Comparer<T>.Default;
+
             using (var enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var previous = enumerator.Current;
@@ -181,7 +183,7 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>If true, then the elements are unique in the sequence.</remarks>
         public static bool IsSortedSet<T>(this IEnumerable<T> enumerable)
         {
-            return enumerable.IsSortedSet(Comparer<T>.Default);
+            return IsSortedSet(enumerable, Comparer<T>.Default);
         }
     }
 }

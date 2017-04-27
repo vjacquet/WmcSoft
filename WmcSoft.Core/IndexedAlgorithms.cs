@@ -255,7 +255,7 @@ namespace WmcSoft
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 source[i] = i;
             }
         }
@@ -264,7 +264,7 @@ namespace WmcSoft
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 source[i] = i;
             }
         }
@@ -283,7 +283,7 @@ namespace WmcSoft
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 source[i] = startValue;
                 startValue += step;
             }
@@ -293,7 +293,7 @@ namespace WmcSoft
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 source[i] = startValue;
                 startValue += step;
             }

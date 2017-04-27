@@ -55,10 +55,12 @@ namespace WmcSoft.Collections.Generic
             private int _index;
             private T _current;
 
-            internal Enumerator(Bag<T> bag) : this(bag, bag._storage) {
+            internal Enumerator(Bag<T> bag) : this(bag, bag._storage)
+            {
             }
 
-            internal Enumerator(Bag<T> bag, T[] storage) {
+            internal Enumerator(Bag<T> bag, T[] storage)
+            {
                 Debug.Assert(bag != null && storage != null && bag.Count <= storage.Length);
 
                 _bag = bag;
@@ -68,10 +70,12 @@ namespace WmcSoft.Collections.Generic
                 _current = default(T);
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_version == _bag._version && _index > 0) {
                     _current = _storage[--_index];
                     return true;
@@ -79,7 +83,8 @@ namespace WmcSoft.Collections.Generic
                 return MoveNextRare();
             }
 
-            private bool MoveNextRare() {
+            private bool MoveNextRare()
+            {
                 if (_version != _bag._version)
                     throw new InvalidOperationException();
                 _index = -1;
@@ -97,7 +102,8 @@ namespace WmcSoft.Collections.Generic
                 }
             }
 
-            void IEnumerator.Reset() {
+            void IEnumerator.Reset()
+            {
                 if (_version != _bag._version)
                     throw new InvalidOperationException();
                 _index = 0;
@@ -116,7 +122,8 @@ namespace WmcSoft.Collections.Generic
         /// Initializes a new instance of the <see cref="Bag{T}"/> class that is empty and 
         /// has the default initial capacity.
         /// </summary>
-        public Bag() {
+        public Bag()
+        {
             _storage = ContiguousStorage<T>.Empty;
         }
 
@@ -125,7 +132,8 @@ namespace WmcSoft.Collections.Generic
         /// has the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The number of elements that the new bag can initially store.</param>
-        public Bag(int capacity) {
+        public Bag(int capacity)
+        {
             if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
             _storage = (capacity != 0) ? new T[capacity] : ContiguousStorage<T>.Empty;
@@ -137,7 +145,8 @@ namespace WmcSoft.Collections.Generic
         /// the number of elements copied.
         /// </summary>
         /// <param name="collection">The collection whose elements are copied to the new bag.</param>
-        public Bag(IEnumerable<T> collection) {
+        public Bag(IEnumerable<T> collection)
+        {
             _storage = collection.ToArray();
             _count = _storage.Length;
         }
@@ -156,6 +165,7 @@ namespace WmcSoft.Collections.Generic
             get { return false; }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
         object ICollection.SyncRoot {
             get {
                 if (_syncRoot == null)
@@ -166,17 +176,17 @@ namespace WmcSoft.Collections.Generic
         [NonSerialized]
         private object _syncRoot;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
         bool ICollection.IsSynchronized {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         /// <summary>
         /// Adds an item to the <see cref="Bag{T}"/>.
         /// </summary>
         /// <param name="item">The item to add to the <see cref="Bag{T}"/>.</param>
-        public void Add(T item) {
+        public void Add(T item)
+        {
             if (_count == _storage.Length)
                 ContiguousStorage<T>.Reserve(ref _storage, 1);
             _storage[_count++] = item;
@@ -187,7 +197,8 @@ namespace WmcSoft.Collections.Generic
         /// Removes all elements from the <see cref="Bag{T}"/>.
         /// </summary> 
         /// <remarks>This method is an O(n) when n is <see cref="Count"/>.</remarks>
-        public void Clear() {
+        public void Clear()
+        {
             for (int i = 0; i < _count; i++) {
                 _storage[i] = default(T);
             }
@@ -200,7 +211,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="item">The item to locate in the <see cref="Bag{T}"/>. The value can be <c>null</c> for reference types.</param>
         /// <returns><c>true</c> it <paramref name="item"/> is found in the <see cref="Bag{T}"/>; otherwise <c>false</c>.</returns>
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return Array.IndexOf(_storage, item, 0, _count) >= 0;
         }
 
@@ -211,11 +223,13 @@ namespace WmcSoft.Collections.Generic
         /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Bag{T}"/>. 
         /// The <see cref="Array"/> must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             _storage.CopyTo(array, arrayIndex, _count);
         }
 
-        void ICollection.CopyTo(Array array, int index) {
+        void ICollection.CopyTo(Array array, int index)
+        {
             _storage.CopyTo(array, index);
         }
 
@@ -225,7 +239,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="item">The item to remove from the <see cref="Bag{T}"/>. The value can be <c>null</c> for reference types.</param>
         /// <returns><c>true</c> it <paramref name="item"/> is successfully removed; otherwise <c>false</c>.</returns>
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             var index = Array.IndexOf(_storage, item, 0, _count);
             if (index < 0)
                 return false;
@@ -240,7 +255,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="match">The <see cref="Predicate{T}"/> delegate that defines the conditions of the elements to remove.</param>
         /// <returns>The number of elements removed from the <see cref="Bag{T}"/>.</returns>
-        public int RemoveAll(Predicate<T> match) {
+        public int RemoveAll(Predicate<T> match)
+        {
             int removed = 0;
             int i = _count;
 
@@ -263,15 +279,18 @@ namespace WmcSoft.Collections.Generic
             return removed;
         }
 
-        public virtual Enumerator GetEnumerator() {
+        public virtual Enumerator GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -281,7 +300,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="index">The index of the item to pop.</param>
         /// <returns>The item at the specified <paramref name="index"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">Thrown when the index is not in the range [0, Count).</exception>
-        protected T PopAt(int index) {
+        protected T PopAt(int index)
+        {
             Debug.Assert(index < _count);
 
             var item = _storage.Exchange(default(T), _count - 1, index);

@@ -11,82 +11,62 @@ namespace WmcSoft.Collections.Generic
     struct EnumerableTraits<T>
     {
         public int Count;
-        public bool HasCount;
+        public bool HasCount => Count >= 0;
         public bool IsSorted;
         public bool IsSet;
 
-        public EnumerableTraits(IEnumerable<T> enumerable) {
+        public EnumerableTraits(IEnumerable<T> enumerable)
+        {
             IsSet = false;
             IsSorted = false;
-
-            var count = GetCount(enumerable as ICollection<T>)
-                ?? GetCount(enumerable as IReadOnlyCollection<T>)
-                ?? GetCount(enumerable as ICollection);
-            if (!count.HasValue) {
-                Count = 0;
-                HasCount = false;
-                return;
-            }
-            Count = count.GetValueOrDefault();
-            HasCount = true;
+            Count = ResolveCount(enumerable);
         }
 
-        public EnumerableTraits(IEnumerable<T> enumerable, IComparer<T> comparer) {
-            var count = GetCount(enumerable as ICollection<T>)
-                ?? GetCount(enumerable as IReadOnlyCollection<T>)
-                ?? GetCount(enumerable as ICollection);
-            if (!count.HasValue) {
-                Count = 0;
-                HasCount = false;
+        public EnumerableTraits(IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
+            Count = ResolveCount(enumerable);
+            if (Count >= 0) {
+                switch (enumerable) {
+                case SortedSequenceSet<T> set:
+                    IsSet = true;
+                    IsSorted = comparer.Equals(set.Comparer);
+                    break;
+                case SortedSet<T> set:
+                    IsSet = true;
+                    IsSorted = comparer.Equals(set.Comparer);
+                    break;
+                case ISet<T> set:
+                    IsSet = true;
+                    IsSorted = false;
+                    break;
+                case SortedSequence<T> set:
+                    IsSet = false;
+                    IsSorted = comparer.Equals(set.Comparer);
+                    break;
+                default:
+                    IsSet = false;
+                    IsSorted = false;
+                    break;
+                }
+            } else {
                 IsSet = false;
                 IsSorted = false;
-                return;
-            }
-
-            Count = count.GetValueOrDefault();
-            HasCount = true;
-            IsSet = enumerable is ISet<T>;
-            if (IsSet) {
-                var sortedCollectionSet = enumerable as SortedSequenceSet<T>;
-                if (sortedCollectionSet != null) {
-                    IsSorted = comparer.Equals(sortedCollectionSet.Comparer);
-                    return;
-                }
-
-                var sortedSet = enumerable as SortedSet<T>;
-                if (sortedSet != null) {
-                    IsSorted = comparer.Equals(sortedSet.Comparer);
-                    return;
-                }
-
-                IsSorted = false;
-            } else {
-                var sorted = enumerable as SortedSequence<T>;
-                IsSorted = (sorted != null) && comparer.Equals(sorted.Comparer);
             }
         }
 
-        #region Collection resolver
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int? GetCount(ICollection<T> collection) {
-            if (collection != null)
+        static int ResolveCount(IEnumerable<T> enumerable)
+        {
+            switch (enumerable) {
+            case ICollection<T> collection:
                 return collection.Count;
-            return null;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int? GetCount(IReadOnlyCollection<T> collection) {
-            if (collection != null)
+            case IReadOnlyCollection<T> collection:
                 return collection.Count;
-            return null;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int? GetCount(ICollection collection) {
-            if (collection != null)
+            case ICollection collection:
                 return collection.Count;
-            return null;
+            default:
+                return -1;
+            }
         }
-
-        #endregion
     }
 }

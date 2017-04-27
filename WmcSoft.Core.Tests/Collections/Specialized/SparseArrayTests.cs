@@ -11,27 +11,30 @@ namespace WmcSoft.Collections.Specialized
     public class SparseArrayTests
     {
         [TestMethod]
-        public void CheckExtent() {
-            var array = new SparseArray<string>(100, "?");
-            array[24] = "24";
-            array[16] = "16";
-            array[33] = "33";
-            array[64] = "64";
-            array[48] = "48";
+        public void CheckExtent()
+        {
+            var array = new SparseArray<string>(100, "?") {
+                [24] = "24",
+                [16] = "16",
+                [33] = "33",
+                [64] = "64",
+                [48] = "48"
+            };
             var actual = array.Extent;
             var expected = Pair.Create(16, 64);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void CheckSpareArray() {
-            var array = new SparseArray<string>(100, "?");
-            array[24] = "24";
-            array[16] = "16";
-            array[33] = "33";
-            array[64] = "64";
-            array[48] = "48";
-
+        public void CheckSpareArray()
+        {
+            var array = new SparseArray<string>(100, "?") {
+                [24] = "24",
+                [16] = "16",
+                [33] = "33",
+                [64] = "64",
+                [48] = "48"
+            };
             Assert.AreEqual(100, array.Count);
             Assert.AreEqual("33", array[33]);
             Assert.AreEqual("?", array[27]);
@@ -39,14 +42,15 @@ namespace WmcSoft.Collections.Specialized
         }
 
         [TestMethod]
-        public void CheckIndexOf() {
-            var array = new SparseArray<string>(100, "?");
-            array[24] = "24";
-            array[16] = "16";
-            array[33] = "33";
-            array[64] = "64";
-            array[48] = "48";
-
+        public void CheckIndexOf()
+        {
+            var array = new SparseArray<string>(100, "?") {
+                [24] = "24",
+                [16] = "16",
+                [33] = "33",
+                [64] = "64",
+                [48] = "48"
+            };
             Assert.AreEqual(24, array.IndexOf("24"));
             Assert.AreEqual(16, array.IndexOf("16"));
             Assert.AreEqual(64, array.IndexOf("64"));
@@ -59,15 +63,16 @@ namespace WmcSoft.Collections.Specialized
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void CheckIndexOutOfBounds() {
-            var array = new SparseArray<string>(100, "?");
-            array[24] = "24";
-            array[16] = "16";
-            array[33] = "33";
-            array[64] = "64";
-            array[48] = "48";
-
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CheckIndexOutOfBounds()
+        {
+            var array = new SparseArray<string>(100, "?") {
+                [24] = "24",
+                [16] = "16",
+                [33] = "33",
+                [64] = "64",
+                [48] = "48"
+            };
             Assert.AreEqual("?", array[99]);
             Assert.AreEqual("?", array[100]);
 

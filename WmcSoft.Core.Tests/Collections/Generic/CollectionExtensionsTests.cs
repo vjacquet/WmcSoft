@@ -289,23 +289,23 @@ namespace WmcSoft.Collections.Generic
             Assert.IsTrue(actual.Toggle("four"));
             Assert.IsFalse(actual.Toggle("one"));
             var expected = new[] { "two", "three", "four" };
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void CheckElementsAt() {
-            var data = new List<string> { "zero", "one", "two", "three" };
-            var expected = new[] { "one", "two" };
-            var actual = data.ElementsAt(1, 2).ToArray();
-            CollectionAssert.AreEquivalent(expected, actual);
+            var data = new List<string> { "zero", "one", "two", "three", "four" };
+            var expected = new[] { "three", "one", "two" };
+            var actual = data.ElementsAt(3, 1, 2).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void CheckElementsAtOnEnumerable() {
-            var data = new List<string> { "zero", "one", "two", "three" };
+            var data = new List<string> { "zero", "one", "two", "three", "four" };
             var expected = new[] { "three", "one", "two" };
             var actual = data.Select(x => x).ElementsAt(3, 1, 2).ToArray();
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -313,7 +313,7 @@ namespace WmcSoft.Collections.Generic
             var data = new List<string> { "zero", "one", "two", "three" };
             var expected = new[] { "three", "one", null, "two" };
             var actual = data.Select(x => x).ElementsAtOrDefault(3, 1, 4, 2).ToArray();
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]

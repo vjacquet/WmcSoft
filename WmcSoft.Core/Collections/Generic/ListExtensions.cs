@@ -298,9 +298,7 @@ namespace WmcSoft.Collections.Generic
             }
 
             public int Count {
-                get {
-                    return Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex);
-                }
+                get { return Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex); }
             }
 
             public bool IsReadOnly {
@@ -315,7 +313,7 @@ namespace WmcSoft.Collections.Generic
             public int IndexOf(T item)
             {
                 var comparer = EqualityComparer<T>.Default;
-                for (int i = _startIndex; i < _endIndex; i++) {
+                for (var i = _startIndex; i < _endIndex; i++) {
                     if (comparer.Equals(_base[i], item))
                         return i - _startIndex;
                 }
@@ -446,10 +444,10 @@ namespace WmcSoft.Collections.Generic
         /// Sorts all the elements in the list in backwards order.
         /// </summary>
         /// <typeparam name="T">The type of elements</typeparam>
-        /// <param name="source">The source list</param>
-        public static void SortBackwards<T>(this List<T> source)
+        /// <param name="list">The source list</param>
+        public static void SortBackwards<T>(this List<T> list)
         {
-            SortBackwards(source, Comparer<T>.Default);
+            SortBackwards(list, Comparer<T>.Default);
         }
 
         /// <summary>
@@ -460,6 +458,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="comparison">The comparison function.</param>
         public static void SortBackwards<T>(this List<T> list, Comparison<T> comparison)
         {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
             list.Sort((x, y) => comparison(y, x));
         }
 
@@ -471,7 +471,9 @@ namespace WmcSoft.Collections.Generic
         /// <param name="comparer">The comparer object.</param>
         public static void SortBackwards<T>(this List<T> list, IComparer<T> comparer)
         {
-            list.Sort(new ReverseComparer<T>(comparer));
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            list.Sort(new ReverseComparer<T>(comparer ?? Comparer<T>.Default));
         }
 
         /// <summary>
@@ -485,6 +487,7 @@ namespace WmcSoft.Collections.Generic
         public static void SortBackwards<T>(this List<T> list, int startIndex, int count, IComparer<T> comparer)
         {
             Guard((IReadOnlyList<T>)list, startIndex, count);
+
             list.Sort(startIndex, count, new ReverseComparer<T>(comparer));
         }
 

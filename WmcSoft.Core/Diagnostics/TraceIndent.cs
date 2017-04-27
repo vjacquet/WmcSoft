@@ -26,6 +26,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace WmcSoft.Diagnostics
@@ -51,9 +52,12 @@ namespace WmcSoft.Diagnostics
 
         #region IDisposable Membres
 
+#if TRACE
+        [SuppressMessage("Microsoft.Performance", "CA1821", Justification = "The #if block invalidate this warning.")]
         ~TraceIndent() {
             Trace.TraceError("TraceIndent.Dispose should have been called.");
         }
+#endif
 
         public void Dispose() {
             if (Interlocked.Increment(ref _disposed) == 1) {

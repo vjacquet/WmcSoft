@@ -37,7 +37,8 @@ namespace WmcSoft.Collections.Specialized
         private readonly T _defaultValue;
         private int _count;
 
-        public SparseArray(int length, T defaultValue = default(T)) {
+        public SparseArray(int length, T defaultValue = default(T))
+        {
             if (length < 0) throw new ArgumentException(nameof(length));
 
             _indexes = new SortedDictionary<int, T>();
@@ -47,15 +48,14 @@ namespace WmcSoft.Collections.Specialized
 
         public T this[int index] {
             get {
-                if (index < 0 || index >= _count) throw new IndexOutOfRangeException();
+                if (index < 0 || index >= _count) throw new ArgumentOutOfRangeException();
 
-                T value;
-                if (_indexes.TryGetValue(index, out value))
+                if (_indexes.TryGetValue(index, out T value))
                     return value;
                 return _defaultValue;
             }
             set {
-                if (index < 0 || index >= _count) throw new IndexOutOfRangeException();
+                if (index < 0 || index >= _count) throw new ArgumentOutOfRangeException();
                 _indexes[index] = value;
             }
         }
@@ -76,7 +76,7 @@ namespace WmcSoft.Collections.Specialized
                     using (var enumerator = _indexes.Keys.GetEnumerator()) {
                         enumerator.MoveNext();
                         lower = enumerator.Current;
-                        int countdown = _indexes.Count;
+                        var countdown = _indexes.Count;
                         while (--countdown != 0)
                             enumerator.MoveNext();
                         upper = enumerator.Current;
@@ -89,20 +89,24 @@ namespace WmcSoft.Collections.Specialized
 
         public bool IsReadOnly { get { return false; } }
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return IndexOf(item) >= 0;
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
-            for (int i = 0; i < _count; i++) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            for (var i = 0; i < _count; i++) {
                 array[arrayIndex + i] = _defaultValue;
             }
             foreach (var entry in _indexes) {
@@ -110,14 +114,16 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _indexes.Values.GetEnumerator();
         }
 
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             var comparer = EqualityComparer<T>.Default;
             if (comparer.Equals(item, _defaultValue)) {
-                int i = 0;
+                var i = 0;
                 foreach (var entry in _indexes) {
                     if (entry.Key != i || comparer.Equals(item, entry.Value))
                         return i;
@@ -133,19 +139,23 @@ namespace WmcSoft.Collections.Specialized
             return -1;
         }
 
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             throw new NotImplementedException();
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             throw new NotImplementedException();
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

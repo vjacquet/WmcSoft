@@ -44,7 +44,8 @@ namespace WmcSoft
         /// <remarks>The chars are compared bytewise.</remarks>
         /// <exception cref="ArgumentNullException">Either <paramref name="x"/> pr <paramref name="y"/> is null.</exception>
         /// <exception cref="ArgumentException">The two strings have different length.</exception>
-        public static int Hamming(string x, string y) {
+        public static int Hamming(string x, string y)
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
@@ -59,7 +60,8 @@ namespace WmcSoft
         }
 
         public static int Hamming<TComparer>(string x, string y, TComparer comparer)
-            where TComparer : IEqualityComparer<char> {
+            where TComparer : IEqualityComparer<char>
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Length != y.Length) throw new ArgumentException();
@@ -77,7 +79,8 @@ namespace WmcSoft
         }
 
         public static int Hamming<T>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y)
-            where T : IEquatable<T> {
+            where T : IEquatable<T>
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Count != y.Count) throw new ArgumentException();
@@ -94,7 +97,8 @@ namespace WmcSoft
         }
 
         public static int Hamming<T, TComparer>(IReadOnlyCollection<T> x, IReadOnlyCollection<T> y, TComparer comparer)
-            where TComparer : IEqualityComparer<T> {
+            where TComparer : IEqualityComparer<T>
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (x.Count != y.Count) throw new ArgumentException();
@@ -118,7 +122,8 @@ namespace WmcSoft
         /// <param name="t">The second string</param>
         /// <returns>From <https://en.wikipedia.org/wiki/Levenshtein_distance></returns>
         /// <remarks>To use different weight for insertions, deletions and transposition, check <https://en.wikipedia.org/wiki/Edit_distance>.</remarks>
-        public static int Levenshtein(string s, string t) {
+        public static int Levenshtein(string s, string t)
+        {
             // degenerate cases
             if (s == t)
                 return 0;
@@ -158,7 +163,8 @@ namespace WmcSoft
         /// <param name="s">The first string</param>
         /// <param name="t">The second string</param>
         /// <returns>From <https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance></returns>
-        public static int DamerauLevenshtein(string s, string t) {
+        public static int DamerauLevenshtein(string s, string t)
+        {
             // degenerate cases
             if (s == t)
                 return 0;
@@ -201,7 +207,8 @@ namespace WmcSoft
         /// <param name="obj">The element.</param>
         /// <param name="value">The new value.</param>
         /// <returns>The old value.</returns>
-        public static T Exchange<T>(ref T obj, T value) {
+        public static T Exchange<T>(ref T obj, T value)
+        {
             var t = obj;
             obj = value;
             return t;
@@ -213,7 +220,8 @@ namespace WmcSoft
         /// <typeparam name="T">The type of element to assign.</typeparam>
         /// <param name="obj">The element.</param>
         /// <returns>The value.</returns>
-        public static T Move<T>(ref T obj) {
+        public static T Move<T>(ref T obj)
+        {
             var moved = obj;
             obj = default(T);
             return moved;
@@ -225,7 +233,8 @@ namespace WmcSoft
         /// <typeparam name="T">The type of element to swap.</typeparam>
         /// <param name="x">The first parameter.</param>
         /// <param name="y">The second parameter.</param>
-        public static void Swap<T>(ref T x, ref T y) {
+        public static void Swap<T>(ref T x, ref T y)
+        {
             var t = x;
             x = y;
             y = t;
@@ -240,7 +249,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="values">The values.</param>
         /// <returns>The coprimes.</returns>
-        public static IReadOnlyList<int> Coprimes(params int[] values) {
+        public static IReadOnlyList<int> Coprimes(params int[] values)
+        {
             var list = new List<int>(values);
             list.Sort();
             CollectionExtensions.RemoveIf(list, (x, index) => list.Take(index).Any(e => x % e == 0));
@@ -256,7 +266,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public static long Factorial(byte n) {
+        public static long Factorial(byte n)
+        {
             long result = 1;
             if (n <= 1)
                 return 1;
@@ -275,7 +286,8 @@ namespace WmcSoft
         /// <param name="first">First parameter.</param>
         /// <param name="second">Second parameter.</param>
         /// <returns>Returns the Greatest Common Divisor of both parameters</returns>
-        public static long GreatestCommonDivisor(long first, long second) {
+        public static long GreatestCommonDivisor(long first, long second)
+        {
             long tmp;
             while (first > 0) {
                 if (first < second) { // swap the values
@@ -307,6 +319,20 @@ namespace WmcSoft
         //    return Fn;
         //}
 
+        #region Iota
+
+        public static int[] Iota(int n)
+        {
+            var array = new int[n];
+            // array[0] = 0;
+            for (var i = 1; i < n; i++) {
+                array[i] = i;
+            }
+            return array;
+        }
+
+        #endregion
+
         #region Midpoint
 
         /// <summary>
@@ -315,7 +341,8 @@ namespace WmcSoft
         /// <param name="x">The first value</param>
         /// <param name="y">The second value.</param>
         /// <returns>The midpoint value.</returns>
-        public static int Midpoint(int x, int y) {
+        public static int Midpoint(int x, int y)
+        {
             var delta = y - x;
             if (delta > 0)
                 return x + delta / 2;
@@ -328,7 +355,8 @@ namespace WmcSoft
         /// <param name="x">The first value</param>
         /// <param name="y">The second value.</param>
         /// <returns>The midpoint value.</returns>
-        public static long Midpoint(long x, long y) {
+        public static long Midpoint(long x, long y)
+        {
             var delta = y - x;
             if (delta > 0)
                 return x + delta / 2;
@@ -344,7 +372,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The smaller of the n 32-bit signed integers.</returns>
-        public static int UnguardedMin(params int[] values) {
+        public static int UnguardedMin(params int[] values)
+        {
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 min = Math.Min(min, values[i]);
@@ -357,7 +386,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The smaller of the n 64-bit signed integers.</returns>
-        public static long UnguardedMin(params long[] values) {
+        public static long UnguardedMin(params long[] values)
+        {
             var min = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 min = Math.Min(min, values[i]);
@@ -370,7 +400,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The larger of the n 32-bit signed integers.</returns>
-        public static int UnguardedMax(params int[] values) {
+        public static int UnguardedMax(params int[] values)
+        {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 max = Math.Max(max, values[i]);
@@ -383,7 +414,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="values">The values</param>
         /// <returns>The larger of the n 64-bit signed integers.</returns>
-        public static long UnguardedMax(params long[] values) {
+        public static long UnguardedMax(params long[] values)
+        {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
                 max = System.Math.Max(max, values[i]);
@@ -398,7 +430,8 @@ namespace WmcSoft
         /// <returns>The smaller of the n 32-bit signed integers.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
-        public static int Min(params int[] values) {
+        public static int Min(params int[] values)
+        {
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
 
@@ -412,7 +445,8 @@ namespace WmcSoft
         /// <returns>The smaller of the n 64-bit signed integers.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
-        public static long Min(params long[] values) {
+        public static long Min(params long[] values)
+        {
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
 
@@ -426,7 +460,8 @@ namespace WmcSoft
         /// <returns>The larger of the n 32-bit signed integers.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
-        public static int Max(params int[] values) {
+        public static int Max(params int[] values)
+        {
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
 
@@ -440,7 +475,8 @@ namespace WmcSoft
         /// <returns>The larger of the n 64-bit signed integers.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="values"/> is empty.</exception>
-        public static long Max(params long[] values) {
+        public static long Max(params long[] values)
+        {
             if (values == null) throw new ArgumentNullException(nameof(values));
             if (values.Length == 0) throw new ArgumentOutOfRangeException(nameof(values));
 
@@ -454,7 +490,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of two instances.</returns>
-        public static T Min<T>(T x, T y) where T : IComparable<T> {
+        public static T Min<T>(T x, T y) where T : IComparable<T>
+        {
             return y.CompareTo(x) < 0 ? y : x;
         }
 
@@ -465,7 +502,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of n instances.</returns>
-        public static T Min<T>(params T[] args) where T : IComparable<T> {
+        public static T Min<T>(params T[] args) where T : IComparable<T>
+        {
             return args.Min();
         }
 
@@ -477,7 +515,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of two instances.</returns>
-        public static T Min<T>(Comparison<T> comparison, T x, T y) {
+        public static T Min<T>(Comparison<T> comparison, T x, T y)
+        {
             return comparison(y, x) < 0 ? y : x;
         }
 
@@ -489,7 +528,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of n instances.</returns>
-        public static T Min<T>(Comparison<T> comparison, params T[] args) {
+        public static T Min<T>(Comparison<T> comparison, params T[] args)
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
 
@@ -509,7 +549,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of two instances.</returns>
-        public static T Min<T>(Relation<T> relation, T x, T y) {
+        public static T Min<T>(Relation<T> relation, T x, T y)
+        {
             return relation(y, x) ? y : x;
         }
 
@@ -521,7 +562,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of n instances.</returns>
-        public static T Min<T>(Relation<T> relation, params T[] args) {
+        public static T Min<T>(Relation<T> relation, params T[] args)
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
 
@@ -541,7 +583,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of two instances.</returns>
-        public static T Min<T>(IComparer<T> comparer, T x, T y) {
+        public static T Min<T>(IComparer<T> comparer, T x, T y)
+        {
             Comparison<T> comparison = comparer.Compare;
             return Min(comparison, x, y);
         }
@@ -554,7 +597,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The smaller of n instances.</returns>
-        public static T Min<T>(IComparer<T> comparer, params T[] args) {
+        public static T Min<T>(IComparer<T> comparer, params T[] args)
+        {
             Comparison<T> comparison = comparer.Compare;
             return Min(comparison, args);
         }
@@ -566,7 +610,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of two instances.</returns>
-        public static T Max<T>(T x, T y) where T : IComparable<T> {
+        public static T Max<T>(T x, T y) where T : IComparable<T>
+        {
             return y.CompareTo(x) < 0 ? x : y;
         }
 
@@ -577,7 +622,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of n instances.</returns>
-        public static T Max<T>(params T[] args) where T : IComparable<T> {
+        public static T Max<T>(params T[] args) where T : IComparable<T>
+        {
             return args.Max();
         }
 
@@ -589,7 +635,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of two instances.</returns>
-        public static T Max<T>(Comparison<T> comparison, T x, T y) {
+        public static T Max<T>(Comparison<T> comparison, T x, T y)
+        {
             return comparison(y, x) < 0 ? x : y;
         }
 
@@ -601,7 +648,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of n instances.</returns>
-        public static T Max<T>(Comparison<T> comparison, params T[] args) {
+        public static T Max<T>(Comparison<T> comparison, params T[] args)
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
 
@@ -621,7 +669,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of two instances.</returns>
-        public static T Max<T>(Relation<T> relation, T x, T y) {
+        public static T Max<T>(Relation<T> relation, T x, T y)
+        {
             return relation(y, x) ? x : y;
         }
 
@@ -633,7 +682,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of n instances.</returns>
-        public static T Max<T>(Relation<T> relation, params T[] args) {
+        public static T Max<T>(Relation<T> relation, params T[] args)
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
 
@@ -653,7 +703,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of two instances.</returns>
-        public static T Max<T>(IComparer<T> comparer, T x, T y) {
+        public static T Max<T>(IComparer<T> comparer, T x, T y)
+        {
             Comparison<T> comparison = comparer.Compare;
             return Max(comparison, x, y);
         }
@@ -666,7 +717,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The larger of n instances.</returns>
-        public static T Max<T>(IComparer<T> comparer, params T[] args) {
+        public static T Max<T>(IComparer<T> comparer, params T[] args)
+        {
             Comparison<T> comparison = comparer.Compare;
             return Max(comparison, args);
         }
@@ -678,7 +730,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(params T[] args) where T : IComparable<T> {
+        public static Pair<T> MinMax<T>(params T[] args) where T : IComparable<T>
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
             if (args.Length == 1)
@@ -703,7 +756,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(Comparison<T> comparison, params T[] args) {
+        public static Pair<T> MinMax<T>(Comparison<T> comparison, params T[] args)
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
             if (args.Length == 1)
@@ -728,7 +782,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(Relation<T> relation, params T[] args) {
+        public static Pair<T> MinMax<T>(Relation<T> relation, params T[] args)
+        {
             if (args == null || args.Length == 0)
                 throw new ArgumentException("args");
             if (args.Length == 1)
@@ -753,7 +808,8 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(IComparer<T> comparer, params T[] args) {
+        public static Pair<T> MinMax<T>(IComparer<T> comparer, params T[] args)
+        {
             Comparison<T> comparison = comparer.Compare;
             return MinMax(comparison, args);
         }
@@ -772,7 +828,8 @@ namespace WmcSoft
         /// <param name="relation">The relation</param>
         /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns false.</returns>
         /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
-        public static IEnumerable<T> Mismatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation) {
+        public static IEnumerable<T> Mismatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation)
+        {
             using (var p = primary.GetEnumerator())
             using (var s = secondary.GetEnumerator()) {
                 while (p.MoveNext() & s.MoveNext()) {

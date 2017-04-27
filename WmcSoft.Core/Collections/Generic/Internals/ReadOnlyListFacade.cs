@@ -39,7 +39,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
-        public ReadOnlyListFacade(IList<T> list) {
+        public ReadOnlyListFacade(IList<T> list)
+        {
             Debug.Assert(list != null);
 
             _underlying = list;
@@ -65,7 +66,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _underlying.GetEnumerator();
         }
 
@@ -73,7 +75,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
