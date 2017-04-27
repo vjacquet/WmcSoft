@@ -112,7 +112,7 @@ namespace WmcSoft.Collections.Generic
             var max = source[index];
             var p = index;
             length += index;
-            for (int i = index + 1; i < length; i++) {
+            for (var i = index + 1; i < length; i++) {
                 if (comparison(source[i], max) >= 0) {
                     max = source[p = i];
                 }
@@ -192,7 +192,7 @@ namespace WmcSoft.Collections.Generic
             var max = source[index];
             var p = index;
             var q = index;
-            for (int i = index + 1; i < length; i++) {
+            for (var i = index + 1; i < length; i++) {
                 if (comparison(source[i], min) < 0) {
                     min = source[p = i];
                 } else if (comparison(source[i], max) >= 0) {

@@ -94,8 +94,7 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public void Vote(T candidate) {
             var finder = new Paper { Candidate = candidate };
-            Score score;
-            if (_votes.TryGetValue(finder, out score)) {
+            if (_votes.TryGetValue(finder, out Score score)) {
                 score.Count++;
             } else {
                 _votes.Add(new Paper { Candidate = candidate }, new Score { Rank = _votes.Count, Count = 1 });
