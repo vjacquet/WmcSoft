@@ -47,22 +47,26 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        public Vector(int n) {
+        public Vector(int n)
+        {
             _data = new double[n];
         }
 
-        public Vector(int n, Func<int, double> generator) {
+        public Vector(int n, Func<int, double> generator)
+        {
             _data = new double[n];
             for (int i = 0; i < n; i++) {
                 _data[i] = generator(i);
             }
         }
 
-        public Vector(params double[] values) {
+        public Vector(params double[] values)
+        {
             _data = (double[])values.Clone();
         }
 
-        public Vector(int n, double[] values) {
+        public Vector(int n, double[] values)
+        {
             _data = new double[n];
             Array.Copy(values, _data, Math.Min(n, values.Length));
         }
@@ -79,16 +83,19 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
-        public static explicit operator double[] (Vector x) {
+        public static explicit operator double[] (Vector x)
+        {
             return x._data == null
                 ? new double[0]
                 : (double[])x._data.Clone();
         }
-        public static double[] ToArray(Vector x) {
+        public static double[] ToArray(Vector x)
+        {
             return (double[])x;
         }
 
-        public static Vector operator +(Vector x, Vector y) {
+        public static Vector operator +(Vector x, Vector y)
+        {
             var length = x.Cardinality;
             if (y.Cardinality != length)
                 throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
@@ -99,11 +106,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Vector Add(Vector x, Vector y) {
+        public static Vector Add(Vector x, Vector y)
+        {
             return x + y;
         }
 
-        public static Vector operator -(Vector x, Vector y) {
+        public static Vector operator -(Vector x, Vector y)
+        {
             var length = x.Cardinality;
             if (y.Cardinality != length)
                 throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
@@ -114,11 +123,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Vector Subtract(Vector x, Vector y) {
+        public static Vector Subtract(Vector x, Vector y)
+        {
             return x - y;
         }
 
-        public static Vector operator *(double alpha, Vector x) {
+        public static Vector operator *(double alpha, Vector x)
+        {
             var length = x.Cardinality;
             var result = new Vector(length);
             for (int i = 0; i < length; i++) {
@@ -126,17 +137,21 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Vector Multiply(double alpha, Vector x) {
+        public static Vector Multiply(double alpha, Vector x)
+        {
             return alpha * x;
         }
-        public static Vector operator *(Vector x, double alpha) {
+        public static Vector operator *(Vector x, double alpha)
+        {
             return alpha * x;
         }
-        public static Vector Multiply(Vector x, double alpha) {
+        public static Vector Multiply(Vector x, double alpha)
+        {
             return alpha * x;
         }
 
-        public static Vector operator /(Vector x, double alpha) {
+        public static Vector operator /(Vector x, double alpha)
+        {
             var length = x.Cardinality;
             var result = new Vector(length);
             for (int i = 0; i < length; i++) {
@@ -144,11 +159,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Vector Divide(Vector x, double alpha) {
+        public static Vector Divide(Vector x, double alpha)
+        {
             return x / alpha;
         }
 
-        public static Vector operator -(Vector x) {
+        public static Vector operator -(Vector x)
+        {
             var length = x.Cardinality;
             var result = new Vector(length);
             for (int i = 0; i < length; i++) {
@@ -156,18 +173,22 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Vector Negate(Vector x) {
+        public static Vector Negate(Vector x)
+        {
             return -x;
         }
 
-        public static Vector operator +(Vector x) {
+        public static Vector operator +(Vector x)
+        {
             return x;
         }
-        public static Vector Plus(Vector x) {
+        public static Vector Plus(Vector x)
+        {
             return x;
         }
 
-        public static double DotProduct(Vector x, Vector y) {
+        public static double DotProduct(Vector x, Vector y)
+        {
             var length = x.Cardinality;
             if (y.Cardinality != length)
                 throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
@@ -179,7 +200,8 @@ namespace WmcSoft.Numerics
             return result;
         }
 
-        internal static double DotProductNotEmpty(int length, IEnumerator<double> x, IEnumerator<double> y) {
+        internal static double DotProductNotEmpty(int length, IEnumerator<double> x, IEnumerator<double> y)
+        {
             x.MoveNext();
             y.MoveNext();
 
@@ -193,11 +215,13 @@ namespace WmcSoft.Numerics
             return result;
         }
 
-        public static bool operator ==(Vector x, Vector y) {
+        public static bool operator ==(Vector x, Vector y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Vector x, Vector y) {
+        public static bool operator !=(Vector x, Vector y)
+        {
             return !x.Equals(y);
         }
 
@@ -205,7 +229,8 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Vector> Membres
 
-        public bool Equals(Vector other) {
+        public bool Equals(Vector other)
+        {
             var length = Cardinality;
             if (other.Cardinality != length)
                 return false;
@@ -216,13 +241,15 @@ namespace WmcSoft.Numerics
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Vector)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_data == null)
                 return 0;
             return _data.GetHashCode();
@@ -240,7 +267,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<double> Members
 
-        public IEnumerator<double> GetEnumerator() {
+        public IEnumerator<double> GetEnumerator()
+        {
             if (_data == null || _data.Length == 0)
                 return Enumerable.Empty<double>().GetEnumerator();
             return new StrideEnumerator<double>(_data);
@@ -250,7 +278,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return _data.GetEnumerator();
         }
 
@@ -258,15 +287,18 @@ namespace WmcSoft.Numerics
 
         #region IFormattable Membres
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
 
-        public string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider)
+        {
             return ToString(null, formatProvider);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider = null) {
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
             if (_data == null)
                 return "[]";
             return NumericsUtilities.FormatVector(_data, format, formatProvider);

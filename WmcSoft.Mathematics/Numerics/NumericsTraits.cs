@@ -14,25 +14,30 @@ namespace WmcSoft.Numerics
 
         public static bool IsInteger(BigInteger i) { return true; }
 
-        public static bool IsInteger(Complex i) {
+        public static bool IsInteger(Complex i)
+        {
             return i.Imaginary == 0d && IsInteger(i.Real);
         }
 
-        public static bool IsInteger(double i) {
+        public static bool IsInteger(double i)
+        {
             var j = Math.Abs(i);
             return (j - Math.Truncate(j)) == 0d;
         }
 
-        public static bool IsInteger(decimal i) {
+        public static bool IsInteger(decimal i)
+        {
             var j = Math.Abs(i);
-            return (j - Decimal.Truncate(j)) == 0m;
+            return (j - decimal.Truncate(j)) == 0m;
         }
 
-        public static bool IsInteger(Fraction i) {
+        public static bool IsInteger(Fraction i)
+        {
             return i.Denominator == 1;
         }
 
-        public static bool IsInteger(BigFraction i) {
+        public static bool IsInteger(BigFraction i)
+        {
             return i.Denominator == BigInteger.One;
         }
 

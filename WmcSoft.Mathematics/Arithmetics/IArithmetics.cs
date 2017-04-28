@@ -64,7 +64,8 @@ namespace WmcSoft.Arithmetics
     public static class ArithmeticsExtensions
     {
         static IRingLike<T> ToAdditiveMultiplicativeRing<T, A>(this A arithmetics)
-            where A : IArithmetics<T> {
+            where A : IArithmetics<T>
+        {
             return new AdditiveMultiplicativeRingAdapter<T, A>(arithmetics);
         }
     }

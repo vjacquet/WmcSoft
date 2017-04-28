@@ -32,35 +32,43 @@ namespace WmcSoft.Arithmetics
     {
         #region IArithmetics<int> Membres
 
-        public int Add(int x, int y) {
+        public int Add(int x, int y)
+        {
             return x + y;
         }
 
-        public int Subtract(int x, int y) {
+        public int Subtract(int x, int y)
+        {
             return x - y;
         }
 
-        public int Multiply(int x, int y) {
+        public int Multiply(int x, int y)
+        {
             return x * y;
         }
 
-        public int Divide(int x, int y) {
+        public int Divide(int x, int y)
+        {
             return x / y;
         }
 
-        public int Remainder(int x, int y) {
+        public int Remainder(int x, int y)
+        {
             return x % y;
         }
 
-        public int DivideRemainder(int x, int y, out int remainder) {
+        public int DivideRemainder(int x, int y, out int remainder)
+        {
             return Math.DivRem(x, y, out remainder);
         }
 
-        public int Negate(int x) {
+        public int Negate(int x)
+        {
             return -x;
         }
 
-        public int Reciprocal(int x) {
+        public int Reciprocal(int x)
+        {
             throw new NotSupportedException();
         }
 

@@ -28,19 +28,23 @@ namespace WmcSoft.Algebra
 {
     public static class GroupLikeExtensions
     {
-        public static bool IsSemiGroup<G>(this G g) where G : IGroupLikeTraits {
+        public static bool IsSemiGroup<G>(this G g) where G : IGroupLikeTraits
+        {
             return g.IsAssociative;
         }
 
-        public static bool IsMonoid<G>(this G g) where G : IGroupLikeTraits {
+        public static bool IsMonoid<G>(this G g) where G : IGroupLikeTraits
+        {
             return IsSemiGroup(g) && g.SupportIdentity;
         }
 
-        public static bool IsGroup<G>(this G g) where G : IGroupLikeTraits {
+        public static bool IsGroup<G>(this G g) where G : IGroupLikeTraits
+        {
             return IsMonoid(g) && g.SupportInverse;
         }
 
-        public static bool IsAbelianGroup<G>(this G g) where G : IGroupLikeTraits {
+        public static bool IsAbelianGroup<G>(this G g) where G : IGroupLikeTraits
+        {
             return IsGroup(g) && g.IsCommutative;
         }
     }

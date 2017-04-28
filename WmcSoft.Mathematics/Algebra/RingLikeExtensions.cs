@@ -28,23 +28,28 @@ namespace WmcSoft.Algebra
 {
     public static class RingLikeExtensions
     {
-        public static bool IsSemiRing<R>(this R r) where R : IRingLikeTraits {
+        public static bool IsSemiRing<R>(this R r) where R : IRingLikeTraits
+        {
             return r.Addition.IsMonoid() && r.Multiplication.IsMonoid();
         }
 
-        public static bool IsNearRing<R>(this R r) where R : IRingLikeTraits {
+        public static bool IsNearRing<R>(this R r) where R : IRingLikeTraits
+        {
             return r.Addition.IsGroup() && r.Multiplication.IsMonoid();
         }
 
-        public static bool IsRing<R>(this R r) where R : IRingLikeTraits {
+        public static bool IsRing<R>(this R r) where R : IRingLikeTraits
+        {
             return r.Addition.IsAbelianGroup() && r.Multiplication.IsMonoid();
         }
 
-        public static bool IsCommutativeRing<R>(this R r) where R : IRingLikeTraits {
+        public static bool IsCommutativeRing<R>(this R r) where R : IRingLikeTraits
+        {
             return r.IsRing() && r.Multiplication.IsCommutative;
         }
 
-        public static bool IsBooleanRing<R>(this R r) where R : IRingLikeTraits {
+        public static bool IsBooleanRing<R>(this R r) where R : IRingLikeTraits
+        {
             return r.IsCommutativeRing() && r.Multiplication.IsIdempotent;
         }
     }

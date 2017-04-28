@@ -31,7 +31,8 @@ namespace WmcSoft.Arithmetics
     public struct BooleRule : IIntegralRule<double>
     {
         public double Integrate<TFunction>(TFunction f, double a, double b)
-            where TFunction : IFunction<double> {
+            where TFunction : IFunction<double>
+        {
             var h = (b - a) / 4;
             var r = 7d * f.Eval(a) + 32d * f.Eval(a + h) + 12d * f.Eval(a + 2d * h) + 32d * f.Eval(a + 3d * h) + 7d * f.Eval(b);
             return 2d * h * r / 45d;

@@ -45,10 +45,12 @@ namespace WmcSoft.Numerics
         readonly int _count;
         readonly int _stride;
 
-        public StrideEnumerable(T[] data) : this(data, 0, data.Length, 1) {
+        public StrideEnumerable(T[] data) : this(data, 0, data.Length, 1)
+        {
         }
 
-        public StrideEnumerable(T[] data, int start, int count, int stride = 1) {
+        public StrideEnumerable(T[] data, int start, int count, int stride = 1)
+        {
             Debug.Assert(stride > 0);
             Debug.Assert(start >= 0);
             Debug.Assert(count >= 0);
@@ -79,7 +81,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return new StrideEnumerator<T>(_data, _start, _count, _stride);
         }
 
@@ -87,7 +90,8 @@ namespace WmcSoft.Numerics
 
         #region ICollection Membres
 
-        public void CopyTo(Array array, int index) {
+        public void CopyTo(Array array, int index)
+        {
             if (_stride == 1) {
                 Array.Copy(_data, 0, array, index, _count);
             } else {
@@ -110,7 +114,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable Membres
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

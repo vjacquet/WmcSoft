@@ -29,7 +29,7 @@ using WmcSoft.Algebra;
 
 namespace WmcSoft.Arithmetics
 {
-  public  struct DoubleMultiplicationGroup : IGroupLike<double>
+    public struct DoubleMultiplicationGroup : IGroupLike<double>
     {
         public double Identity { get { return 1d; } }
 
@@ -43,11 +43,13 @@ namespace WmcSoft.Arithmetics
 
         public bool SupportInverse { get { return true; } }
 
-        public double Eval(double x, double y) {
+        public double Eval(double x, double y)
+        {
             return x * y;
         }
 
-        public double Inverse(double x) {
+        public double Inverse(double x)
+        {
             return 1d / x;
         }
     }

@@ -41,7 +41,8 @@ namespace WmcSoft.Numerics
         {
             #region IComparer<Node> Membres
 
-            public int Compare(Node x, Node y) {
+            public int Compare(Node x, Node y)
+            {
                 return y.Exp - x.Exp;
             }
 
@@ -53,19 +54,22 @@ namespace WmcSoft.Numerics
             public readonly int Exp;
             public readonly double Coef;
 
-            public Node(int exponent, double coefficient) {
+            public Node(int exponent, double coefficient)
+            {
                 Exp = exponent;
                 Coef = coefficient;
             }
 
-            public Node(double coefficient) {
+            public Node(double coefficient)
+            {
                 Exp = 0;
                 Coef = coefficient;
             }
 
             #region IComparable<Node> Membres
 
-            public int CompareTo(Node other) {
+            public int CompareTo(Node other)
+            {
                 if (Exp == other.Exp)
                     return Comparer<double>.Default.Compare(Coef, other.Coef);
                 return Exp - other.Exp;
@@ -75,17 +79,20 @@ namespace WmcSoft.Numerics
 
             #region IEquatable<Node> Membres
 
-            public bool Equals(Node other) {
+            public bool Equals(Node other)
+            {
                 return CompareTo(other) == 0;
             }
 
-            public override bool Equals(object obj) {
+            public override bool Equals(object obj)
+            {
                 if (obj == null || GetType() != obj.GetType())
                     return false;
                 return Equals((Node)obj);
             }
 
-            public override int GetHashCode() {
+            public override int GetHashCode()
+            {
                 return (Coef.GetHashCode() * 397) ^ Exp;
             }
 
@@ -93,13 +100,16 @@ namespace WmcSoft.Numerics
 
             #region IFormattable Membres
 
-            public override string ToString() {
+            public override string ToString()
+            {
                 return ToString(null, null);
             }
-            public string ToString(IFormatProvider formatProvider) {
+            public string ToString(IFormatProvider formatProvider)
+            {
                 return ToString(null, formatProvider);
             }
-            public string ToString(string format, IFormatProvider formatProvider = null) {
+            public string ToString(string format, IFormatProvider formatProvider = null)
+            {
                 var one = 1d.ToString(format, formatProvider);
                 return Format(Exp, Coef, format, formatProvider, one);
             }
@@ -115,11 +125,13 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        Polynomial(Node[] nodes) {
+        Polynomial(Node[] nodes)
+        {
             _nodes = nodes;
         }
 
-        public Polynomial(params double[] coefficients) {
+        public Polynomial(params double[] coefficients)
+        {
             if (coefficients == null || coefficients.Length == 0) {
                 _nodes = null;
             } else {
@@ -151,11 +163,13 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
-        public static implicit operator Polynomial(double x) {
+        public static implicit operator Polynomial(double x)
+        {
             return new Polynomial(x);
         }
 
-        public static Polynomial operator +(Polynomial x, Polynomial y) {
+        public static Polynomial operator +(Polynomial x, Polynomial y)
+        {
             if (x._nodes == null)
                 return y;
             if (y._nodes == null)
@@ -165,11 +179,13 @@ namespace WmcSoft.Numerics
                 .Where(n => n.Coef != 0);
             return new Polynomial(nodes.ToArray());
         }
-        public static Polynomial Add(Polynomial x, Polynomial y) {
+        public static Polynomial Add(Polynomial x, Polynomial y)
+        {
             return x + y;
         }
 
-        public static Polynomial operator -(Polynomial x, Polynomial y) {
+        public static Polynomial operator -(Polynomial x, Polynomial y)
+        {
             if (x._nodes == null)
                 return -y;
             if (y._nodes == null)
@@ -179,44 +195,54 @@ namespace WmcSoft.Numerics
                 .Where(n => n.Coef != 0);
             return new Polynomial(nodes.ToArray());
         }
-        public static Polynomial Subtract(Polynomial x, Polynomial y) {
+        public static Polynomial Subtract(Polynomial x, Polynomial y)
+        {
             return x - y;
         }
 
-        public static Polynomial operator -(Polynomial x) {
+        public static Polynomial operator -(Polynomial x)
+        {
             if (x._nodes == null)
                 return x;
             var nodes = x._nodes.ToArray(n => new Node(n.Exp, -n.Coef));
             return new Polynomial(nodes);
         }
-        public static Polynomial Negate(Polynomial x) {
+        public static Polynomial Negate(Polynomial x)
+        {
             return -x;
         }
 
-        public static Polynomial operator +(Polynomial x) {
+        public static Polynomial operator +(Polynomial x)
+        {
             return x;
         }
-        public static Polynomial Plus(Polynomial x) {
+        public static Polynomial Plus(Polynomial x)
+        {
             return x;
         }
 
-        public static Polynomial operator *(double alpha, Polynomial x) {
+        public static Polynomial operator *(double alpha, Polynomial x)
+        {
             if (x._nodes == null)
                 return x;
             var nodes = x._nodes.ToArray(n => new Node(n.Exp, alpha * n.Coef));
             return new Polynomial(nodes);
         }
-        public static Polynomial Multiply(double alpha, Polynomial x) {
+        public static Polynomial Multiply(double alpha, Polynomial x)
+        {
             return alpha * x;
         }
-        public static Polynomial operator *(Polynomial x, double alpha) {
+        public static Polynomial operator *(Polynomial x, double alpha)
+        {
             return alpha * x;
         }
-        public static Polynomial Multiply(Polynomial x, double alpha) {
+        public static Polynomial Multiply(Polynomial x, double alpha)
+        {
             return alpha * x;
         }
 
-        public static Polynomial operator *(Polynomial x, Polynomial y) {
+        public static Polynomial operator *(Polynomial x, Polynomial y)
+        {
             if (x._nodes == null || y._nodes == null)
                 return y;
 
@@ -245,7 +271,8 @@ namespace WmcSoft.Numerics
             var nodes = list.ToArray();
             return new Polynomial(nodes);
         }
-        public static Polynomial Multiply(Polynomial x, Polynomial y) {
+        public static Polynomial Multiply(Polynomial x, Polynomial y)
+        {
             return x * y;
         }
 
@@ -253,7 +280,8 @@ namespace WmcSoft.Numerics
 
         #region Methods
 
-        public double Eval(double x) {
+        public double Eval(double x)
+        {
             if (_nodes == null)
                 return 0d;
 
@@ -269,7 +297,8 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Polynomial> Membres
 
-        public bool Equals(Polynomial other) {
+        public bool Equals(Polynomial other)
+        {
             if (_nodes == null)
                 return other._nodes == null;
             if (other._nodes == null)
@@ -285,13 +314,15 @@ namespace WmcSoft.Numerics
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Vector)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_nodes == null)
                 return 0;
             return _nodes.GetHashCode();
@@ -301,13 +332,16 @@ namespace WmcSoft.Numerics
 
         #region IFormattable Membres
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
-        public string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider)
+        {
             return ToString(null, formatProvider);
         }
-        public string ToString(string format, IFormatProvider formatProvider = null) {
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
             if (_nodes == null)
                 return 0d.ToString(format, formatProvider);
 
@@ -325,7 +359,8 @@ namespace WmcSoft.Numerics
             return sb.ToString();
         }
 
-        static string Format(int exp, double coef, string format, IFormatProvider formatProvider, string one) {
+        static string Format(int exp, double coef, string format, IFormatProvider formatProvider, string one)
+        {
             var coefficient = coef.ToString(format, formatProvider);
             if (exp == 0)
                 return coefficient;

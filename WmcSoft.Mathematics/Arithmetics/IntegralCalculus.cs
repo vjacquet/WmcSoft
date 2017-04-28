@@ -30,7 +30,8 @@ namespace WmcSoft.Arithmetics
     {
         public static double Integrate<TRule, TFunction>(this TFunction f, TRule rule, double a, double b)
             where TRule : IIntegralRule<double>
-            where TFunction : IFunction<double> {
+            where TFunction : IFunction<double>
+        {
             return rule.Integrate(f, a, b);
         }
     }

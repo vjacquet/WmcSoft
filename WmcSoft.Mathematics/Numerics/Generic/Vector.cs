@@ -32,7 +32,7 @@ using WmcSoft.Properties;
 
 namespace WmcSoft.Numerics.Generic
 {
-    public struct Vector<T, C> : IEquatable<Vector<T, C>>, IReadOnlyList<T> 
+    public struct Vector<T, C> : IEquatable<Vector<T, C>>, IReadOnlyList<T>
         where C : IArithmetics<T>, new()
     {
         public static Vector<T, C> Empty;
@@ -47,22 +47,26 @@ namespace WmcSoft.Numerics.Generic
 
         #region Lifecycle
 
-        public Vector(int n) {
+        public Vector(int n)
+        {
             _data = new T[n];
         }
 
-        public Vector(int n, Func<int, T> generator) {
+        public Vector(int n, Func<int, T> generator)
+        {
             _data = new T[n];
             for (int i = 0; i < n; i++) {
                 _data[i] = generator(i);
             }
         }
 
-        public Vector(params T[] values) {
+        public Vector(params T[] values)
+        {
             _data = values;
         }
 
-        public Vector(int n, T[] values) {
+        public Vector(int n, T[] values)
+        {
             _data = new T[n];
             Array.Copy(values, _data, Math.Min(n, values.Length));
         }
@@ -79,16 +83,19 @@ namespace WmcSoft.Numerics.Generic
 
         #region Operators
 
-        public static explicit operator T[](Vector<T, C> x) {
+        public static explicit operator T[] (Vector<T, C> x)
+        {
             return x._data == null
                 ? new T[0]
                 : (T[])x._data.Clone();
         }
-        public static T[] ToArray(Vector<T, C> x) {
+        public static T[] ToArray(Vector<T, C> x)
+        {
             return (T[])x;
         }
 
-        public static Vector<T, C> operator +(Vector<T, C> x, Vector<T, C> y) {
+        public static Vector<T, C> operator +(Vector<T, C> x, Vector<T, C> y)
+        {
             var length = x.Cardinality;
             if (y.Cardinality != length)
                 throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
@@ -99,11 +106,13 @@ namespace WmcSoft.Numerics.Generic
             }
             return result;
         }
-        public static Vector<T, C> Add(Vector<T, C> x, Vector<T, C> y) {
+        public static Vector<T, C> Add(Vector<T, C> x, Vector<T, C> y)
+        {
             return x + y;
         }
 
-        public static Vector<T, C> operator -(Vector<T, C> x, Vector<T, C> y) {
+        public static Vector<T, C> operator -(Vector<T, C> x, Vector<T, C> y)
+        {
             var length = x.Cardinality;
             if (y.Cardinality != length)
                 throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
@@ -114,11 +123,13 @@ namespace WmcSoft.Numerics.Generic
             }
             return result;
         }
-        public static Vector<T, C> Subtract(Vector<T, C> x, Vector<T, C> y) {
+        public static Vector<T, C> Subtract(Vector<T, C> x, Vector<T, C> y)
+        {
             return x - y;
         }
 
-        public static Vector<T, C> operator *(T alpha, Vector<T, C> x) {
+        public static Vector<T, C> operator *(T alpha, Vector<T, C> x)
+        {
             var length = x.Cardinality;
             var result = new Vector<T, C>(length);
             for (int i = 0; i < length; i++) {
@@ -126,10 +137,12 @@ namespace WmcSoft.Numerics.Generic
             }
             return result;
         }
-        public static Vector<T, C> Multiply(T alpha, Vector<T, C> x) {
+        public static Vector<T, C> Multiply(T alpha, Vector<T, C> x)
+        {
             return alpha * x;
         }
-        public static Vector<T, C> operator *(Vector<T, C> x, T alpha) {
+        public static Vector<T, C> operator *(Vector<T, C> x, T alpha)
+        {
             // do not reuse a*v as Multiply might not be commutative
             var length = x.Cardinality;
             var result = new Vector<T, C>(length);
@@ -138,11 +151,13 @@ namespace WmcSoft.Numerics.Generic
             }
             return result;
         }
-        public static Vector<T, C> Multiply(Vector<T, C> x, T alpha) {
+        public static Vector<T, C> Multiply(Vector<T, C> x, T alpha)
+        {
             return x * alpha;
         }
 
-        public static Vector<T, C> operator /(Vector<T, C> x, T alpha) {
+        public static Vector<T, C> operator /(Vector<T, C> x, T alpha)
+        {
             var length = x.Cardinality;
             var result = new Vector<T, C>(length);
             for (int i = 0; i < length; i++) {
@@ -150,11 +165,13 @@ namespace WmcSoft.Numerics.Generic
             }
             return result;
         }
-        public static Vector<T, C> Divide(Vector<T, C> x, T alpha) {
+        public static Vector<T, C> Divide(Vector<T, C> x, T alpha)
+        {
             return x / alpha;
         }
 
-        public static Vector<T, C> operator -(Vector<T, C> x) {
+        public static Vector<T, C> operator -(Vector<T, C> x)
+        {
             var length = x.Cardinality;
             var result = new Vector<T, C>(length);
             for (int i = 0; i < length; i++) {
@@ -162,18 +179,22 @@ namespace WmcSoft.Numerics.Generic
             }
             return result;
         }
-        public static Vector<T, C> Negate(Vector<T, C> x) {
+        public static Vector<T, C> Negate(Vector<T, C> x)
+        {
             return -x;
         }
 
-        public static Vector<T, C> operator +(Vector<T, C> x) {
+        public static Vector<T, C> operator +(Vector<T, C> x)
+        {
             return x;
         }
-        public static Vector<T, C> Plus(Vector<T, C> x) {
+        public static Vector<T, C> Plus(Vector<T, C> x)
+        {
             return x;
         }
 
-        public static T DotProduct(Vector<T, C> x, Vector<T, C> y) {
+        public static T DotProduct(Vector<T, C> x, Vector<T, C> y)
+        {
             var length = x.Cardinality;
             if (y.Cardinality != length)
                 throw new ArgumentException(Resources.VectorsMustHaveSameSizeError);
@@ -186,7 +207,8 @@ namespace WmcSoft.Numerics.Generic
 
         }
 
-        internal static T DotProductNotEmpty(int length, IEnumerator<T> x, IEnumerator<T> y) {
+        internal static T DotProductNotEmpty(int length, IEnumerator<T> x, IEnumerator<T> y)
+        {
             x.MoveNext();
             y.MoveNext();
 
@@ -204,7 +226,8 @@ namespace WmcSoft.Numerics.Generic
 
         #region IEquatable<Vector> Membres
 
-        public bool Equals(Vector<T, C> other) {
+        public bool Equals(Vector<T, C> other)
+        {
             var length = Cardinality;
             if (other.Cardinality != length)
                 return false;
@@ -215,13 +238,15 @@ namespace WmcSoft.Numerics.Generic
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Vector<T, C>)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_data == null)
                 return 0;
             return _data.GetHashCode();
@@ -239,7 +264,8 @@ namespace WmcSoft.Numerics.Generic
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             if (_data == null || _data.Length == 0)
                 return Enumerable.Empty<T>().GetEnumerator();
             return new StrideEnumerator<T>(_data);
@@ -249,7 +275,8 @@ namespace WmcSoft.Numerics.Generic
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return _data.GetEnumerator();
         }
 

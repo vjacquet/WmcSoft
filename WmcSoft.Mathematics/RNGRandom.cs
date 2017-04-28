@@ -43,14 +43,16 @@ namespace WmcSoft
         /// <summary>
         /// Initializes a new instance of the <see cref="RNGRandom"/> class.
         /// </summary>
-        public RNGRandom() {
+        public RNGRandom()
+        {
             _rng = new RNGCryptoServiceProvider();
             _buffer = new byte[1024];
             NextBytes(_buffer);
             _startIndex = 0;
         }
 
-        private void EnsureCapacity(int size) {
+        private void EnsureCapacity(int size)
+        {
             Debug.Assert(size < _buffer.Length);
             if ((_buffer.Length - _startIndex) < size) {
                 NextBytes(_buffer);
@@ -69,7 +71,8 @@ namespace WmcSoft
         /// However, if <paramref name="maxValue"/> equals zero, <paramref name="maxValue"/> is returned. 
         /// </returns>
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than zero. </exception>
-        public override int Next(int maxValue) {
+        public override int Next(int maxValue)
+        {
             if (maxValue < Byte.MaxValue) {
                 EnsureCapacity(1);
                 return (int)_buffer[_startIndex++] % maxValue;
@@ -89,7 +92,8 @@ namespace WmcSoft
         /// <returns>
         /// A 32-bit signed integer greater than or equal to zero and less than <see cref="F:System.Int32.MaxValue"/>.
         /// </returns>
-        public override int Next() {
+        public override int Next()
+        {
             EnsureCapacity(sizeof(int));
             int value = BitConverter.ToInt32(_buffer, _startIndex);
             _startIndex += sizeof(int);
@@ -101,11 +105,13 @@ namespace WmcSoft
         /// </summary>
         /// <param name="buffer">An array of bytes to contain random numbers. </param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="buffer"/> is null. </exception>
-        public override void NextBytes(byte[] buffer) {
+        public override void NextBytes(byte[] buffer)
+        {
             _rng.GetBytes(buffer);
         }
 
-        protected override double Sample() {
+        protected override double Sample()
+        {
             return ((double)Next()) / Int32.MaxValue;
         }
     }

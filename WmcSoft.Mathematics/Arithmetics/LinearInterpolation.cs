@@ -50,7 +50,8 @@ namespace WmcSoft.Arithmetics
         /// <param name="values">The values.</param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
-        public LinearInterpolation(double[] points, IReadOnlyList<double> values) {
+        public LinearInterpolation(double[] points, IReadOnlyList<double> values)
+        {
             if (points == null)
                 throw new ArgumentNullException("points");
             if (values == null)
@@ -73,7 +74,8 @@ namespace WmcSoft.Arithmetics
         /// </summary>
         /// <param name="xCoordinate">Point t to interpolate at.</param>
         /// <returns>Interpolated value x(xCoordinate).</returns>
-        public double Interpolate(double x) {
+        public double Interpolate(double x)
+        {
             var offset = Array.BinarySearch(_points, x);
             if (offset >= 0)
                 return _values[offset];
