@@ -20,14 +20,14 @@ namespace WmcSoft.Collections.Generic
             index.Add(2, "two");
 
             Assert.AreEqual(3, index.Count);
-            Assert.AreEqual("one un", index.GetValues(1).Join(' '));
+            Assert.AreEqual("one un", index.GetValues(1).JoinWith(' '));
 
             index.Remove(1, "one");
             Assert.AreEqual(2, index.Count);
-            Assert.AreEqual("un", index.GetValues(1).Join(' '));
+            Assert.AreEqual("un", index.GetValues(1).JoinWith(' '));
 
             index.Remove(1, "un");
-            Assert.AreEqual("", index.GetValues(1).Join(' '));
+            Assert.AreEqual("", index.GetValues(1).JoinWith(' '));
         }
     }
 }

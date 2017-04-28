@@ -39,7 +39,8 @@ namespace WmcSoft
     {
         #region Any
 
-        public static bool ContainsAny(this Strip self, params char[] candidates) {
+        public static bool ContainsAny(this Strip self, params char[] candidates)
+        {
             return self.IndexOfAny(candidates) >= 0;
         }
 
@@ -50,7 +51,8 @@ namespace WmcSoft
         /// <param name="self">The char to test</param>
         /// <param name="candidates">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryContainsAny(this Strip self, params char[] candidates) {
+        public static bool BinaryContainsAny(this Strip self, params char[] candidates)
+        {
             foreach (var c in self) {
                 if (Array.BinarySearch(candidates, c) >= 0)
                     return true;
@@ -58,17 +60,19 @@ namespace WmcSoft
             return false;
         }
 
-        public static bool EqualsAny(this Strip self, StringComparison comparisonType, params string[] candidates) {
-            if (String.IsNullOrEmpty(self))
+        public static bool EqualsAny(this Strip self, StringComparison comparisonType, params string[] candidates)
+        {
+            if (string.IsNullOrEmpty(self))
                 return false;
-            for (int i = 0; i < candidates.Length; i++) {
+            for (var i = 0; i < candidates.Length; i++) {
                 if (self.Equals(candidates[i], comparisonType))
                     return true;
             }
             return false;
         }
 
-        public static bool EqualsAny(this Strip self, params string[] candidates) {
+        public static bool EqualsAny(this Strip self, params string[] candidates)
+        {
             return self.EqualsAny(StringComparison.CurrentCulture, candidates);
         }
 
@@ -79,60 +83,58 @@ namespace WmcSoft
         /// <summary>
         /// Joins the sequence of strings into a single string.
         /// </summary>
-        /// <param name="self">The sequence of strings.</param>
+        /// <param name="values">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is CultureInfo.CurrentCulture.TextInfo.ListSeparator.</remarks>
-        public static string Join(this IEnumerable<Strip> self) {
-            return Join(self, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        public static string JoinWithListSeparator(this IEnumerable<Strip> values)
+        {
+            return JoinWith(values, CultureInfo.CurrentCulture.TextInfo.ListSeparator);
         }
 
         /// <summary>
         /// Joins the sequence of strings into a single string.
         /// </summary>
-        /// <param name="self">The sequence of strings.</param>
+        /// <param name="values">The sequence of strings.</param>
         /// <returns>The joined string.</returns>
         /// <remarks>The separator is currentCulture.TextInfo.ListSeparator.</remarks>
-        public static string Join(this IEnumerable<Strip> self, CultureInfo cultureInfo) {
-            return Join(self, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
+        public static string JoinWithListSeparator(this IEnumerable<Strip> values, CultureInfo cultureInfo)
+        {
+            return JoinWith(values, (cultureInfo ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator);
         }
 
         /// <summary>
         /// Joins the sequence of strings into a single string, using the specified separator.
         /// </summary>
-        /// <param name="self">The sequence of strings.</param>
+        /// <param name="values">The sequence of strings.</param>
         /// <param name="separator">The separator.</param>
         /// <returns>The joined string.</returns>
-        public static string Join(this IEnumerable<Strip> self, string separator) {
-            if (self == null)
-                return null;
+        public static string JoinWith(this IEnumerable<Strip> values, string separator)
+        {
+            if (values == null) throw new ArgumentNullException(nameof(values));
 
-            var sb = new StringBuilder();
-            using (var enumerator = self.GetEnumerator()) {
-                if (enumerator.MoveNext()) {
-                    sb.Append(enumerator.Current);
-                    while (enumerator.MoveNext())
-                        sb.Append(separator).Append(enumerator.Current);
-                }
-            }
-            return sb.ToString();
+            return UnguardedJoin(separator, values);
         }
 
         /// <summary>
         /// Joins the sequence of strings into a single string, using the specified separator.
         /// </summary>
-        /// <param name="self">The sequence of strings.</param>
+        /// <param name="values">The sequence of strings.</param>
         /// <param name="separator">The separator.</param>
         /// <returns>The joined string.</returns>
-        public static string Join(this IEnumerable<Strip> self, char separator) {
-            if (self == null)
-                return null;
+        public static string JoinWith(this IEnumerable<Strip> values, char separator)
+        {
+            return JoinWith(values, separator.ToString());
+        }
 
+        static string UnguardedJoin(string separator, IEnumerable<Strip> values)
+        {
             var sb = new StringBuilder();
-            using (var enumerator = self.GetEnumerator()) {
+            using (var enumerator = values.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
-                    sb.Append(enumerator.Current);
+                    enumerator.Current.AppendTo(sb);
                     while (enumerator.MoveNext())
-                        sb.Append(separator).Append(enumerator.Current);
+                        sb.Append(separator);
+                    enumerator.Current.AppendTo(sb);
                 }
             }
             return sb.ToString();
@@ -147,7 +149,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The string.</param>
         /// <returns>Returns null if the string contains only whitespace; otherwise, the string.</returns>
-        public static Strip NullifyWhiteSpace(this Strip value) {
+        public static Strip NullifyWhiteSpace(this Strip value)
+        {
             if (Strip.IsNullOrWhiteSpace(value))
                 return null;
             return value;
@@ -158,7 +161,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The string.</param>
         /// <returns>Returns null if the string is empty; otherwise, the string.</returns>
-        public static Strip NullifyEmpty(this Strip value) {
+        public static Strip NullifyEmpty(this Strip value)
+        {
             if (Strip.IsNullOrEmpty(value))
                 return null;
             return value;
@@ -170,9 +174,10 @@ namespace WmcSoft
         /// <param name="value">The string.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns>Returns null if the string verifies the predicate; otherwise, the string.</returns>
-        public static Strip Nullify(this Strip value, Predicate<Strip> predicate) {
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+        public static Strip Nullify(this Strip value, Predicate<Strip> predicate)
+        {
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
             if (value == null || predicate(value))
                 return null;
             return value;
@@ -188,7 +193,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="args">The chars to remove.</param>
         /// <returns>The string without the specified chars.</returns>
-        public static string Remove(this Strip self, params char[] args) {
+        public static string Remove(this Strip self, params char[] args)
+        {
             if (self == null || self.Length == 0)
                 return self;
 
@@ -202,7 +208,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="args">The substrings to remove.</param>
         /// <returns>The string without the specified substrings.</returns>
-        public static string Remove(this Strip self, params string[] args) {
+        public static string Remove(this Strip self, params string[] args)
+        {
             if (Strip.IsNullOrEmpty(self))
                 return self;
 
@@ -215,31 +222,37 @@ namespace WmcSoft
 
         #region RemovePrefix/RemoveSuffix/RemoveAffixes
 
-        public static string RemovePrefix(this Strip self, string prefix) {
+        public static string RemovePrefix(this Strip self, string prefix)
+        {
             return RemovePrefix(self, prefix, StringComparison.CurrentCulture);
         }
 
-        public static string RemovePrefix(this Strip self, string prefix, StringComparison comparison) {
+        public static string RemovePrefix(this Strip self, string prefix, StringComparison comparison)
+        {
             if (self != null && self.StartsWith(prefix, comparison))
                 return self.Substring(prefix.Length);
             return self;
         }
 
-        public static string RemoveSuffix(this Strip self, string suffix) {
+        public static string RemoveSuffix(this Strip self, string suffix)
+        {
             return RemoveSuffix(self, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string RemoveSuffix(this Strip self, string suffix, StringComparison comparison) {
+        public static string RemoveSuffix(this Strip self, string suffix, StringComparison comparison)
+        {
             if (self != null && self.EndsWith(suffix, comparison))
                 return self.Substring(0, self.Length - suffix.Length);
             return self;
         }
 
-        public static string RemoveAffixes(this Strip self, string affix) {
+        public static string RemoveAffixes(this Strip self, string affix)
+        {
             return RemoveAffixes(self, affix, StringComparison.CurrentCulture);
         }
 
-        public static Strip RemoveAffixes(this Strip self, string affix, StringComparison comparison) {
+        public static Strip RemoveAffixes(this Strip self, string affix, StringComparison comparison)
+        {
             if (self == null || self.Length < affix.Length)
                 return self;
             var starts = self.StartsWith(affix, comparison);
@@ -256,11 +269,13 @@ namespace WmcSoft
             return self;
         }
 
-        public static string RemoveAffixes(this Strip self, string prefix, string suffix) {
+        public static string RemoveAffixes(this Strip self, string prefix, string suffix)
+        {
             return RemoveAffixes(self, prefix, suffix, StringComparison.CurrentCulture);
         }
 
-        public static string RemoveAffixes(this Strip self, string prefix, string suffix, StringComparison comparison) {
+        public static string RemoveAffixes(this Strip self, string prefix, string suffix, StringComparison comparison)
+        {
             if (self == null)
                 return self;
             var starts = self.StartsWith(prefix, comparison);
@@ -281,33 +296,39 @@ namespace WmcSoft
 
         #region StartsWith & EndsWith
 
-        public static bool StartsWith(this Strip self, char c) {
+        public static bool StartsWith(this Strip self, char c)
+        {
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.StartsWith(Char.ToString(c));
         }
-        public static bool StartsWith(this Strip self, char c, StringComparison comparison) {
+        public static bool StartsWith(this Strip self, char c, StringComparison comparison)
+        {
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.StartsWith(Char.ToString(c), comparison);
         }
-        public static bool StartsWith(this Strip self, char c, bool ignoreCase, CultureInfo culture) {
+        public static bool StartsWith(this Strip self, char c, bool ignoreCase, CultureInfo culture)
+        {
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.StartsWith(Char.ToString(c), ignoreCase, culture);
         }
 
-        public static bool EndsWith(this Strip self, char c) {
+        public static bool EndsWith(this Strip self, char c)
+        {
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.EndsWith(Char.ToString(c));
         }
-        public static bool EndsWith(this Strip self, char c, StringComparison comparison) {
+        public static bool EndsWith(this Strip self, char c, StringComparison comparison)
+        {
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.EndsWith(Char.ToString(c), comparison);
         }
-        public static bool EndsWith(this Strip self, char c, bool ignoreCase, CultureInfo culture) {
+        public static bool EndsWith(this Strip self, char c, bool ignoreCase, CultureInfo culture)
+        {
             if (String.IsNullOrEmpty(self))
                 return false;
             return self.EndsWith(Char.ToString(c), ignoreCase, culture);
@@ -323,11 +344,12 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
-        public static Strip SubstringBefore(this Strip self, char find) {
+        public static Strip SubstringBefore(this Strip self, char find)
+        {
             if (Strip.IsNullOrEmpty(self))
                 return null;
 
-            int index = self.IndexOf(find);
+            var index = self.IndexOf(find);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -339,7 +361,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
-        public static Strip SubstringBeforeOrSelf(this Strip self, char find) {
+        public static Strip SubstringBeforeOrSelf(this Strip self, char find)
+        {
             return SubstringBefore(self, find) ?? self;
         }
 
@@ -349,13 +372,14 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static Strip SubstringBefore(this Strip self, string find) {
+        public static Strip SubstringBefore(this Strip self, string find)
+        {
             if (Strip.IsNullOrEmpty(self))
                 return null;
-            if (String.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(find))
                 return self;
 
-            int index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -367,7 +391,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
-        public static Strip SubstringBeforeOrSelf(this Strip self, string find) {
+        public static Strip SubstringBeforeOrSelf(this Strip self, string find)
+        {
             return SubstringBefore(self, find) ?? self;
         }
 
@@ -377,11 +402,12 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
-        public static Strip SubstringAfter(this Strip self, char find) {
+        public static Strip SubstringAfter(this Strip self, char find)
+        {
             if (Strip.IsNullOrEmpty(self))
                 return null;
 
-            int index = self.IndexOf(find);
+            var index = self.IndexOf(find);
             if (index < 0)
                 return null;
             return self.Substring(index + 1);
@@ -393,7 +419,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
-        public static Strip SubstringAfterOrSelf(this Strip self, char find) {
+        public static Strip SubstringAfterOrSelf(this Strip self, char find)
+        {
             return SubstringAfter(self, find) ?? self;
         }
 
@@ -403,13 +430,14 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static Strip SubstringAfter(this Strip self, string find) {
+        public static Strip SubstringAfter(this Strip self, string find)
+        {
             if (Strip.IsNullOrEmpty(self))
                 return null;
-            if (String.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(find))
                 return self;
 
-            int index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(find, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(index + find.Length);
@@ -421,7 +449,8 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
-        public static Strip SubstringAfterOrSelf(this Strip self, string find) {
+        public static Strip SubstringAfterOrSelf(this Strip self, string find)
+        {
             return SubstringAfter(self, find) ?? self;
         }
 
@@ -432,17 +461,18 @@ namespace WmcSoft
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The substring between the prefix and the suffix, or null if the prefix or the suffix is not found.</returns>
-        public static Strip SubstringBetween(this Strip self, string prefix, string suffix) {
+        public static Strip SubstringBetween(this Strip self, string prefix, string suffix)
+        {
             if (String.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
             else if (String.IsNullOrEmpty(suffix))
                 return SubstringAfter(self, prefix);
 
-            int start = self.IndexOf(prefix, StringComparison.Ordinal);
+            var start = self.IndexOf(prefix, StringComparison.Ordinal);
             if (start < 0)
                 return null;
             start += prefix.Length;
-            int end = self.IndexOf(suffix, start, StringComparison.Ordinal);
+            var end = self.IndexOf(suffix, start, StringComparison.Ordinal);
             if (end < 0)
                 return null;
             return self.Substring(start, end - start);
@@ -455,7 +485,8 @@ namespace WmcSoft
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The substring between the prefix and the suffix, or the string if the prefix or the suffix is not found.</returns>
-        public static Strip SubstringBetweenOrSelf(this Strip self, string prefix, string suffix) {
+        public static Strip SubstringBetweenOrSelf(this Strip self, string prefix, string suffix)
+        {
             return SubstringBetween(self, prefix, suffix) ?? self;
         }
 
@@ -465,7 +496,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
-        public static Strip Left(this Strip self, int length) {
+        public static Strip Left(this Strip self, int length)
+        {
             if (self == null)
                 return self;
             if (length < 0)
@@ -481,7 +513,8 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="length">The length.</param>
         /// <returns>The substring.</returns>
-        public static Strip Right(this Strip self, int length) {
+        public static Strip Right(this Strip self, int length)
+        {
             if (self == null)
                 return self;
             if (length < 0)
@@ -565,7 +598,8 @@ namespace WmcSoft
         /// <param name="source">The source chars.</param>
         /// <param name="target">The target chars.</param>
         /// <returns>The translated string.</returns>
-        public static string Translate(this Strip self, string source, string target) {
+        public static string Translate(this Strip self, string source, string target)
+        {
             return StringExtensions.Translate(self.ToCharArray(), source, target);
         }
 
@@ -581,9 +615,10 @@ namespace WmcSoft
         /// <param name="ellipsis">The substring added at the end of the string when it is longer than the maxLenght.</param>
         /// <returns>The shorten string when longer than the max length; otherwise, the string.</returns>
         /// <remarks>The ellipsis may be empty but not null.</remarks>
-        public static string Truncate(this Strip self, int maxLength, string ellipsis = "\u2026") {
-            if (ellipsis == null) throw new ArgumentNullException("ellipsis");
-            if (maxLength < ellipsis.Length) throw new ArgumentOutOfRangeException("maxLength");
+        public static string Truncate(this Strip self, int maxLength, string ellipsis = "\u2026")
+        {
+            if (ellipsis == null) throw new ArgumentNullException(nameof(ellipsis));
+            if (maxLength < ellipsis.Length) throw new ArgumentOutOfRangeException(nameof(maxLength));
 
             if (!Strip.IsNullOrEmpty(self) && self.Length > maxLength)
                 return self.Substring(0, maxLength - ellipsis.Length) + ellipsis;

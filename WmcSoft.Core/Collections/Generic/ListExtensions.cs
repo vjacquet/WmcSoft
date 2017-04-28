@@ -492,5 +492,52 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Splice
+
+        public static T[] Splice<T>(this IList<T> list, int start)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            start = Math.Max(start >= 0 ? start : list.Count + start, 0);
+            var count = list.Count - start;
+            if (count < 0)
+                return new T[0];
+            var removed = new T[count];
+            for (var i = list.Count - 1; i >= start; i--) {
+                removed[--count] = list[i];
+                list.RemoveAt(i);
+            }
+            return removed;
+        }
+
+        public static T[] Splice<T>(this IList<T> list, int start, int deleteCount, params T[] items)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            start = Math.Max(start >= 0 ? start : list.Count + start, 0);
+            deleteCount = Math.Min(list.Count - start, deleteCount);
+            var removed = new T[deleteCount];
+            list.CopyTo(start, removed, 0, deleteCount);
+            if (deleteCount < items.Length) {
+                int i = 0;
+                while (i != deleteCount) {
+                    list[start++] = items[i++];
+                }
+                while (i != items.Length) {
+                    list.Insert(start++, items[i++]);
+                }
+            } else {
+                for (int i = 0; i < items.Length; i++) {
+                    list[start++] = items[i];
+                }
+                deleteCount -= items.Length;
+                while (deleteCount-- != 0)
+                    list.RemoveAt(start);
+            }
+            return removed;
+        }
+
+        #endregion
     }
 }

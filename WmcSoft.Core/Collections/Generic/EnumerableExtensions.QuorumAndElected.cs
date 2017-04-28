@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
@@ -40,7 +41,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="quorum">The expected minimal number of occurences.</param>
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns>true if the quorum is reached; otherwise, false.</returns>
-        public static bool Quorum<TSource>(this IEnumerable<TSource> source, int quorum, Predicate<TSource> predicate) {
+        public static bool Quorum<TSource>(this IEnumerable<TSource> source, int quorum, Predicate<TSource> predicate)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (quorum < 1) throw new ArgumentOutOfRangeException(nameof(quorum));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
@@ -57,18 +59,8 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
-        /// <summary>
-        /// Returns the element with the most occurences.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
-        /// <param name="source">The elements.</param>
-        /// <param name="equalityComparer">The equality comparer.</param>
-        /// <returns>The element with the most occurences.</returns>
-        /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
-        public static TSource Elected<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
-            where TSource : IEquatable<TSource> {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
+        static TSource UnguardedElected<TSource>(IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer)
+        {
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     throw new InvalidOperationException();
@@ -82,6 +74,22 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
+        /// Returns the element with the most occurences.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the element of the source.</typeparam>
+        /// <param name="source">The elements.</param>
+        /// <param name="equalityComparer">The equality comparer.</param>
+        /// <returns>The element with the most occurences.</returns>
+        /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
+        public static TSource Elected<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
+            where TSource : IEquatable<TSource>
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedElected(source, equalityComparer);
+        }
+
+        /// <summary>
         /// Returns the element with the most occurences. Elements that are not eligible are discarded.
         /// </summary>
         /// <typeparam name="TSource">The type of the element of the source.</typeparam>
@@ -91,21 +99,13 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The element with the most occurences.</returns>
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource Elected<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
-            where TSource : IEquatable<TSource> {
+            where TSource : IEquatable<TSource>
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (eligible == null) throw new ArgumentNullException(nameof(eligible));
 
-            using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    throw new InvalidOperationException();
+            return UnguardedElected(source.Where(x => eligible(x)), equalityComparer);
 
-                var ballot = new Ballot<TSource>(equalityComparer);
-                do {
-                    if (eligible(enumerator.Current))
-                        ballot.Vote(enumerator.Current);
-                } while (enumerator.MoveNext());
-                return ballot.GetWinner();
-            }
         }
 
         /// <summary>
@@ -117,7 +117,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>default(TSource) if the source is empty; otherwise the element with the most occurences.</returns>
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> equalityComparer = null)
-            where TSource : IEquatable<TSource> {
+            where TSource : IEquatable<TSource>
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             using (var enumerator = source.GetEnumerator()) {
@@ -144,7 +145,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>default(TSource) if the source has no eligible elements; otherwise the element with the most occurences.</returns>
         /// <remarks>In case of ties, the element that appeared first in the sequence is returned.</remarks>
         public static TSource ElectedOrDefault<TSource>(this IEnumerable<TSource> source, Predicate<TSource> eligible, IEqualityComparer<TSource> equalityComparer = null)
-            where TSource : IEquatable<TSource> {
+            where TSource : IEquatable<TSource>
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (eligible == null) throw new ArgumentNullException(nameof(eligible));
 
