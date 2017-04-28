@@ -39,7 +39,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
-        public ReadOnlyDictionaryFacade(IDictionary<TKey, TValue> dictionary) {
+        public ReadOnlyDictionaryFacade(IDictionary<TKey, TValue> dictionary)
+        {
             Debug.Assert(dictionary != null);
 
             _underlying = dictionary;
@@ -49,7 +50,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IReadOnlyDictionary<TKey,TValue> Members
 
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             return _underlying.ContainsKey(key);
         }
 
@@ -57,7 +59,8 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return _underlying.Keys; }
         }
 
-        public bool TryGetValue(TKey key, out TValue value) {
+        public bool TryGetValue(TKey key, out TValue value)
+        {
             return _underlying.TryGetValue(key, out value);
         }
 
@@ -81,7 +84,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
             return _underlying.GetEnumerator();
         }
 
@@ -89,7 +93,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

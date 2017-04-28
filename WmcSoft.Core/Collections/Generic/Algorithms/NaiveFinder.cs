@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Algorithms
@@ -33,13 +34,17 @@ namespace WmcSoft.Collections.Generic.Algorithms
         readonly IReadOnlyList<T> _pattern;
         readonly IEqualityComparer<T> _comparer;
 
-        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer) {
+        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer)
+        {
+            if (pattern == null) throw new ArgumentNullException(nameof(pattern));
+
             _pattern = pattern;
-            _comparer = comparer;
+            _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
-        bool EqualsPattern(IReadOnlyList<T> t, int startIndex) {
-            var length =_pattern.Count;
+        bool EqualsPattern(IReadOnlyList<T> t, int startIndex)
+        {
+            var length = _pattern.Count;
             for (int i = 0, j = startIndex; i < length; i++, j++) {
                 if (!_comparer.Equals(t[j], _pattern[i]))
                     return false;
@@ -47,8 +52,9 @@ namespace WmcSoft.Collections.Generic.Algorithms
             return true;
         }
 
-        public int FindFirstOccurence(IReadOnlyList<T> t, int startIndex) {
-            var length = t.Count- _pattern.Count;
+        public int FindFirstOccurence(IReadOnlyList<T> t, int startIndex)
+        {
+            var length = t.Count - _pattern.Count;
             for (int i = startIndex; i < length; i++) {
                 if (EqualsPattern(t, i))
                     return i;

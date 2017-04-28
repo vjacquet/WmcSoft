@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -105,6 +104,7 @@ namespace WmcSoft
                 yield return vn;
             }
         }
+
         /// <summary>
         /// Generates a sequence.
         /// </summary>
@@ -206,13 +206,13 @@ namespace WmcSoft
         ///  If <see cref="maxValue"/> equals zero, <see cref="maxValue"/> is returned. </returns>
         public static IEnumerable<int> Random(Random random, int maxValue)
         {
-            if (random == null)
-                throw new ArgumentNullException("random");
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
             while (true) {
                 yield return random.Next(maxValue);
             }
         }
+
         /// <summary>
         /// Returns a nonnegative random number less than the specified maximum, using the default <see cref="Random"/> generator.
         /// </summary>
@@ -236,13 +236,13 @@ namespace WmcSoft
         ///  If <see cref="minValue"/> equals <see cref="maxValue"/>, <see cref="minValue"/> is returned. </returns>
         public static IEnumerable<int> Random(Random random, int minValue, int maxValue)
         {
-            if (random == null)
-                throw new ArgumentNullException("random");
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
             while (true) {
                 yield return random.Next(minValue, maxValue);
             }
         }
+
         /// <summary>
         /// Yields random numbers within a specified range, using the default <see cref="Random"/> generator.
         /// </summary>
@@ -263,8 +263,7 @@ namespace WmcSoft
         /// <returns>A double-precision floating point number greater than or equal to 0.0, and less than 1.0.</returns>
         public static IEnumerable<double> RandomDouble(Random random)
         {
-            if (random == null)
-                throw new ArgumentNullException("random");
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
             while (true) {
                 yield return random.Next();
@@ -345,7 +344,7 @@ namespace WmcSoft
             // Adapted from Knuth, TAoCP, Vol 4A, Page 329, Algorithm G
             var n = values.Length;
             var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
-            var a = Iota().ToArray(n);
+            var a = Algorithms.Iota(n);
             var list = new SourceReadOnlyList<T>(values, a);
             int k;
             while (true) {

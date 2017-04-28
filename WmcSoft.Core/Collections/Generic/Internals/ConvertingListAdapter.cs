@@ -36,7 +36,8 @@ namespace WmcSoft.Collections.Generic.Internals
         private readonly IReadOnlyList<TInput> _underlying;
         private readonly Converter<TInput, TOutput> _convert;
 
-        public ConvertingReadOnlyListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter) {
+        public ConvertingReadOnlyListAdapter(IReadOnlyList<TInput> list, Converter<TInput, TOutput> converter)
+        {
             Debug.Assert(list != null);
             Debug.Assert(converter != null);
 
@@ -62,7 +63,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<TOutput> Membres
 
-        public IEnumerator<TOutput> GetEnumerator() {
+        public IEnumerator<TOutput> GetEnumerator()
+        {
             return _underlying.Select(i => _convert(i)).GetEnumerator();
         }
 
@@ -70,7 +72,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -78,20 +81,24 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region ICollection<TOutput> Members
 
-        public void Add(TOutput item) {
+        public void Add(TOutput item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(TOutput item) {
+        public bool Contains(TOutput item)
+        {
             var comparer = EqualityComparer<TOutput>.Default;
             return _underlying.Any(x => comparer.Equals(_convert(x), item));
         }
 
-        public void CopyTo(TOutput[] array, int arrayIndex) {
+        public void CopyTo(TOutput[] array, int arrayIndex)
+        {
             var length = _underlying.Count;
             for (int i = 0; i != length; i++)
                 array[arrayIndex + i] = _convert(_underlying[i]);
@@ -101,7 +108,8 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return true; }
         }
 
-        public bool Remove(TOutput item) {
+        public bool Remove(TOutput item)
+        {
             throw new NotSupportedException();
         }
 

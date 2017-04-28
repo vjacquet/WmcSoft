@@ -31,22 +31,27 @@ namespace WmcSoft.Collections.Generic.Internals
 {
     sealed class BulkStack<T> : ContiguousStorage<T>
     {
-        public BulkStack() : base() {
+        public BulkStack() : base()
+        {
         }
 
-        public BulkStack(int capacity) : base(capacity) {
+        public BulkStack(int capacity) : base(capacity)
+        {
         }
 
-        public bool IsEmpty() {
+        public bool IsEmpty()
+        {
             return _count == 0;
         }
 
-        public void Push(T item) {
+        public void Push(T item)
+        {
             EnsureOne();
             _storage[_count++] = item;
         }
 
-        public void Push(IEnumerable<T> items) {
+        public void Push(IEnumerable<T> items)
+        {
             var list = new List<T>(items);
             BulkPush(list.Count, list.CopyTo);
         }
@@ -56,19 +61,22 @@ namespace WmcSoft.Collections.Generic.Internals
         /// </summary>
         /// <param name="count">The count of items</param>
         /// <param name="action">The action taking as parameters the buffer to copy to and the index where to start copying.</param>
-        public void BulkPush(int count, Action<T[], int> action) {
+        public void BulkPush(int count, Action<T[], int> action)
+        {
             Ensure(count);
             action(_storage, _count);
             _count += count;
         }
 
-        public T Peek() {
+        public T Peek()
+        {
             if (IsEmpty()) throw new InvalidOperationException();
 
             return _storage[_count - 1];
         }
 
-        public T Pop() {
+        public T Pop()
+        {
             var top = Peek();
             --_count;
             _storage[_count] = default(T);

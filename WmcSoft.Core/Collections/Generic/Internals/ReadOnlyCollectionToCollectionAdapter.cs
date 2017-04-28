@@ -41,11 +41,13 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
-        public ReadOnlyCollectionToCollectionAdapter(int count, IEnumerable<T> enumerable) {
+        public ReadOnlyCollectionToCollectionAdapter(int count, IEnumerable<T> enumerable)
+        {
             _underlying = new ReadOnlyCollectionAdapter<T>(count, enumerable);
         }
 
-        public ReadOnlyCollectionToCollectionAdapter(IReadOnlyCollection<T> collection) {
+        public ReadOnlyCollectionToCollectionAdapter(IReadOnlyCollection<T> collection)
+        {
             Debug.Assert(collection != null);
 
             _underlying = collection;
@@ -55,19 +57,23 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region ICollection<T> Membres
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return _underlying.Contains(item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             foreach (var item in _underlying) {
                 array[arrayIndex++] = item;
             }
@@ -81,7 +87,8 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return true; }
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             throw new NotSupportedException();
         }
 
@@ -89,7 +96,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _underlying.GetEnumerator();
         }
 
@@ -97,7 +105,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

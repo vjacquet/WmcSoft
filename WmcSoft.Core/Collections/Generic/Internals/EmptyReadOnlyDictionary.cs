@@ -65,47 +65,58 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return Values; }
         }
 
-        public void Add(KeyValuePair<TKey, TValue> item) {
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Add(TKey key, TValue value) {
+        public void Add(TKey key, TValue value)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(KeyValuePair<TKey, TValue> item) {
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
             return false;
         }
 
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             return false;
         }
 
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
             return Enumerable.Empty<KeyValuePair<TKey, TValue>>().GetEnumerator();
         }
 
-        public bool Remove(KeyValuePair<TKey, TValue> item) {
+        public bool Remove(KeyValuePair<TKey, TValue> item)
+        {
             throw new NotSupportedException();
         }
 
-        public bool Remove(TKey key) {
+        public bool Remove(TKey key)
+        {
             throw new NotSupportedException();
         }
 
-        public bool TryGetValue(TKey key, out TValue value) {
+        public bool TryGetValue(TKey key, out TValue value)
+        {
             value = default(TValue);
             return false;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

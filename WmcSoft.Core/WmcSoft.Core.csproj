@@ -66,6 +66,7 @@
     <Compile Include="Collections\Generic\Accumulators\Int64Adder.cs" />
     <Compile Include="Collections\Generic\Accumulators\LongInt32Adder.cs" />
     <Compile Include="Collections\Generic\Accumulators\SingleAdder.cs" />
+    <Compile Include="Collections\Generic\Algorithms\FinderExtensions.cs" />
     <Compile Include="Collections\Generic\Algorithms\IFinder.cs" />
     <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
