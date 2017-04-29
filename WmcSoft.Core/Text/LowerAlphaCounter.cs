@@ -43,13 +43,15 @@ namespace WmcSoft.Text
 
         readonly int _storage;
 
-        public LowerAlphaCounter(int value) {
+        public LowerAlphaCounter(int value)
+        {
             if (value > MaxStoredValue || value < MinStoredValue)
                 throw new OverflowException();
             _storage = value;
         }
 
-        public LowerAlphaCounter(string value) {
+        public LowerAlphaCounter(string value)
+        {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (!Validator.IsMatch(value)) throw new ArgumentException(nameof(value));
 
@@ -61,19 +63,23 @@ namespace WmcSoft.Text
             _storage = x - 1;
         }
 
-        public int CompareTo(LowerAlphaCounter other) {
+        public int CompareTo(LowerAlphaCounter other)
+        {
             return _storage - other._storage;
         }
 
-        public LowerAlphaCounter Increment(int n) {
+        public LowerAlphaCounter Increment(int n)
+        {
             return new LowerAlphaCounter(_storage + n);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (_storage < 26)
                 return ((char)(FirstLetter + _storage)).ToString();
 
@@ -88,11 +94,13 @@ namespace WmcSoft.Text
             return new string(chars, startIndex, 3 - startIndex);
         }
 
-        public bool Equals(LowerAlphaCounter other) {
+        public bool Equals(LowerAlphaCounter other)
+        {
             return _storage == other._storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(LowerAlphaCounter))
                 return false;
             return Equals((LowerAlphaCounter)obj);
@@ -100,19 +108,23 @@ namespace WmcSoft.Text
 
         #region Conversion operators
 
-        public static implicit operator int(LowerAlphaCounter x) {
+        public static implicit operator int(LowerAlphaCounter x)
+        {
             return x._storage;
         }
 
-        public static implicit operator string(LowerAlphaCounter x) {
+        public static implicit operator string(LowerAlphaCounter x)
+        {
             return x.ToString();
         }
 
-        public static implicit operator LowerAlphaCounter(int x) {
+        public static implicit operator LowerAlphaCounter(int x)
+        {
             return new LowerAlphaCounter(x);
         }
 
-        public static implicit operator LowerAlphaCounter(string x) {
+        public static implicit operator LowerAlphaCounter(string x)
+        {
             return new LowerAlphaCounter(x);
         }
 
@@ -120,23 +132,29 @@ namespace WmcSoft.Text
 
         #region Relational operators
 
-        public static bool operator ==(LowerAlphaCounter a, LowerAlphaCounter b) {
+        public static bool operator ==(LowerAlphaCounter a, LowerAlphaCounter b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(LowerAlphaCounter a, LowerAlphaCounter b) {
+        public static bool operator !=(LowerAlphaCounter a, LowerAlphaCounter b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(LowerAlphaCounter x, LowerAlphaCounter y) {
+        public static bool operator <(LowerAlphaCounter x, LowerAlphaCounter y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(LowerAlphaCounter x, LowerAlphaCounter y) {
+        public static bool operator <=(LowerAlphaCounter x, LowerAlphaCounter y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(LowerAlphaCounter x, LowerAlphaCounter y) {
+        public static bool operator >(LowerAlphaCounter x, LowerAlphaCounter y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(LowerAlphaCounter x, LowerAlphaCounter y) {
+        public static bool operator >=(LowerAlphaCounter x, LowerAlphaCounter y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -144,19 +162,23 @@ namespace WmcSoft.Text
 
         #region Arithmetic operators
 
-        public static LowerAlphaCounter operator +(LowerAlphaCounter x, int n) {
+        public static LowerAlphaCounter operator +(LowerAlphaCounter x, int n)
+        {
             return x.Increment(n);
         }
 
-        public static LowerAlphaCounter operator -(LowerAlphaCounter x, int n) {
+        public static LowerAlphaCounter operator -(LowerAlphaCounter x, int n)
+        {
             return x.Increment(-n);
         }
 
-        public static LowerAlphaCounter operator ++(LowerAlphaCounter x) {
+        public static LowerAlphaCounter operator ++(LowerAlphaCounter x)
+        {
             return x.Increment(1);
         }
 
-        public static LowerAlphaCounter operator --(LowerAlphaCounter x) {
+        public static LowerAlphaCounter operator --(LowerAlphaCounter x)
+        {
             return x.Increment(-1);
         }
 

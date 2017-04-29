@@ -34,13 +34,15 @@ namespace WmcSoft.Text
     {
         static readonly Regex regex = new Regex(@"{(?<name>\w+)(\:(?<format>.*))?}", RegexOptions.ExplicitCapture | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        static string Format(IFormatProvider provider, Match m, object value) {
+        static string Format(IFormatProvider provider, Match m, object value)
+        {
             string format = m.Groups["format"].Success
                 ? "{0:" + m.Groups["format"].Value + "}"
                 : "{0}";
             return String.Format(provider, format, value);
         }
-        static string ReplaceValue(IFormatProvider provider, Match m, IDictionary<string, object> values) {
+        static string ReplaceValue(IFormatProvider provider, Match m, IDictionary<string, object> values)
+        {
             string name = m.Groups["name"].Value;
             object value;
             if (values.TryGetValue(name, out value) && value != null) {
@@ -66,7 +68,8 @@ namespace WmcSoft.Text
         //    return "";
         //}
 
-        public static bool CanInject(string candidate, string format) {
+        public static bool CanInject(string candidate, string format)
+        {
             var m = regex.Match(format);
             while (m.Success) {
                 string name = m.Groups["name"].Value;
@@ -77,7 +80,8 @@ namespace WmcSoft.Text
             return false;
         }
 
-        public static string Inject(this IDictionary<string, object> values, IFormatProvider provider, string format) {
+        public static string Inject(this IDictionary<string, object> values, IFormatProvider provider, string format)
+        {
             return regex.Replace(format, m => ReplaceValue(provider, m, values));
         }
     }

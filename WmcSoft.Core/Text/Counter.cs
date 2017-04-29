@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 
 namespace WmcSoft.Text
 {
@@ -33,46 +32,53 @@ namespace WmcSoft.Text
     {
         readonly int _storage;
 
-        public Counter(int value) {
+        public Counter(int value)
+        {
             if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
             _storage = value;
         }
-        public int CompareTo(Counter other) {
+        public int CompareTo(Counter other)
+        {
             return _storage - other._storage;
         }
 
-        public Counter Increment(int n) {
+        public Counter Increment(int n)
+        {
             return new Counter(_storage + n);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString("1");
         }
 
-        public bool Equals(Counter other) {
+        public bool Equals(Counter other)
+        {
             return _storage == other._storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Counter))
                 return false;
             return Equals((Counter)obj);
         }
 
-        public static Counter Parse(string s) {
-            Counter counter;
-            if (TryParse(s, out counter))
+        public static Counter Parse(string s)
+        {
+            if (TryParse(s, out Counter counter))
                 return counter;
             throw new FormatException();
         }
 
-        public static bool TryParse(string s, out Counter result) {
-            int value;
-            if (Int32.TryParse(s, out value)) {
+        public static bool TryParse(string s, out Counter result)
+        {
+            if (int.TryParse(s, out int value)) {
                 result = new Counter(value - 1);
                 return true;
             }
@@ -82,11 +88,13 @@ namespace WmcSoft.Text
 
         #region Conversion operators
 
-        public static implicit operator int(Counter x) {
+        public static implicit operator int(Counter x)
+        {
             return x._storage;
         }
 
-        public static implicit operator Counter(int x) {
+        public static implicit operator Counter(int x)
+        {
             return new Counter(x);
         }
 
@@ -94,23 +102,29 @@ namespace WmcSoft.Text
 
         #region Relational operators
 
-        public static bool operator ==(Counter a, Counter b) {
+        public static bool operator ==(Counter a, Counter b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(Counter a, Counter b) {
+        public static bool operator !=(Counter a, Counter b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(Counter x, Counter y) {
+        public static bool operator <(Counter x, Counter y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(Counter x, Counter y) {
+        public static bool operator <=(Counter x, Counter y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(Counter x, Counter y) {
+        public static bool operator >(Counter x, Counter y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(Counter x, Counter y) {
+        public static bool operator >=(Counter x, Counter y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -118,19 +132,23 @@ namespace WmcSoft.Text
 
         #region Arithmetic operators
 
-        public static Counter operator +(Counter x, int n) {
+        public static Counter operator +(Counter x, int n)
+        {
             return x.Increment(n);
         }
 
-        public static Counter operator -(Counter x, int n) {
+        public static Counter operator -(Counter x, int n)
+        {
             return x.Increment(-n);
         }
 
-        public static Counter operator ++(Counter x) {
+        public static Counter operator ++(Counter x)
+        {
             return x.Increment(1);
         }
 
-        public static Counter operator --(Counter x) {
+        public static Counter operator --(Counter x)
+        {
             return x.Increment(-1);
         }
 
@@ -138,11 +156,13 @@ namespace WmcSoft.Text
 
         #region IFormattable members
 
-        public string ToString(string format) {
+        public string ToString(string format)
+        {
             return ToString(format, null);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider) {
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
             switch (format) {
             case "0":
                 return ((DecimalLeadingZeroCounter)_storage).ToString();

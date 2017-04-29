@@ -43,27 +43,32 @@ namespace WmcSoft.Text
         private readonly string[] _words;
         private readonly Random _random;
 
-        public LoremIpsumGenerator(Random random, params string[] words) {
+        public LoremIpsumGenerator(Random random, params string[] words)
+        {
             _words = words;
             _random = random;
         }
 
-        public IEnumerable<string> Words(int count) {
+        public IEnumerable<string> Words(int count)
+        {
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             _words.PartialShuffle(count, _random);
             return _words.Take(count);
         }
 
-        static string Pop<TEnumerator>(TEnumerator enumerator) where TEnumerator : IEnumerator<string> {
+        static string Pop<TEnumerator>(TEnumerator enumerator) where TEnumerator : IEnumerator<string>
+        {
             enumerator.MoveNext();
             return enumerator.Current;
         }
-        static string Capitalize(string sentence) {
+        static string Capitalize(string sentence)
+        {
             return Char.ToUpper(sentence[0]) + sentence.Substring(1);
         }
 
-        StringBuilder AppendSentence(StringBuilder sb, int minWordCount, int maxWordCount) {
+        StringBuilder AppendSentence(StringBuilder sb, int minWordCount, int maxWordCount)
+        {
             int count = _random.Next(minWordCount, maxWordCount);
             using (var enumerator = Words(count).GetEnumerator()) {
                 var first = Capitalize(Pop(enumerator));
@@ -77,7 +82,8 @@ namespace WmcSoft.Text
             return sb;
         }
 
-        public string Sentence(int minwWordCount = 4) {
+        public string Sentence(int minwWordCount = 4)
+        {
             if (minwWordCount <= 3) throw new ArgumentOutOfRangeException(nameof(minwWordCount));
 
             var sb = new StringBuilder();
@@ -85,7 +91,8 @@ namespace WmcSoft.Text
             return sb.ToString();
         }
 
-        StringBuilder AppendSentences(StringBuilder sb, int minWordCount, int maxWordCount, int count) {
+        StringBuilder AppendSentences(StringBuilder sb, int minWordCount, int maxWordCount, int count)
+        {
             AppendSentence(sb, minWordCount, maxWordCount);
             for (int i = 1; i < count; i++) {
                 sb.Append(' ');
@@ -94,7 +101,8 @@ namespace WmcSoft.Text
             return sb;
         }
 
-        public IEnumerable<string> Sentences(int count) {
+        public IEnumerable<string> Sentences(int count)
+        {
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             for (int i = 0; i < count; i++) {
@@ -102,7 +110,8 @@ namespace WmcSoft.Text
             }
         }
 
-        public string Paragraph(int minSentenceCount = 3) {
+        public string Paragraph(int minSentenceCount = 3)
+        {
             if (minSentenceCount <= 3) throw new ArgumentOutOfRangeException(nameof(minSentenceCount));
 
             var maxSentencecount = minSentenceCount + 3;
@@ -112,7 +121,8 @@ namespace WmcSoft.Text
             return sb.ToString();
         }
 
-        public IEnumerable<string> Paragraphs(int count) {
+        public IEnumerable<string> Paragraphs(int count)
+        {
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             for (int i = 0; i < count; i++) {

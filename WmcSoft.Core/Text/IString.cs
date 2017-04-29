@@ -15,7 +15,8 @@ namespace WmcSoft.Text
     internal static class IStringExtensions
     {
         internal static string Remove<S>(this S self, params char[] args)
-            where S : IString {
+            where S : IString
+        {
             var sb = new StringBuilder();
             int pos = 0;
             int count = self.Length;
@@ -42,25 +43,30 @@ namespace WmcSoft.Text
     {
         private readonly string _storage;
 
-        public StringAdapter(string value) {
+        public StringAdapter(string value)
+        {
             _storage = value;
         }
 
         public int Length { get { return _storage.Length; } }
 
-        public StringBuilder AppendTo(StringBuilder sb, int startIndex, int count) {
+        public StringBuilder AppendTo(StringBuilder sb, int startIndex, int count)
+        {
             return sb.Append(_storage, startIndex, count);
         }
 
-        public bool EndsWith(string value, StringComparison comparison) {
+        public bool EndsWith(string value, StringComparison comparison)
+        {
             return value.EndsWith(value, comparison);
         }
 
-        public int IndexOfAny(char[] anyOf, int startIndex, int count) {
+        public int IndexOfAny(char[] anyOf, int startIndex, int count)
+        {
             return _storage.IndexOfAny(anyOf, startIndex, count);
         }
 
-        public bool StartsWith(string value, StringComparison comparison) {
+        public bool StartsWith(string value, StringComparison comparison)
+        {
             return value.StartsWith(value, comparison);
         }
     }
@@ -69,25 +75,30 @@ namespace WmcSoft.Text
     {
         private readonly Strip _storage;
 
-        public StripAdapter(Strip value) {
+        public StripAdapter(Strip value)
+        {
             _storage = value;
         }
 
         public int Length { get { return _storage.Length; } }
 
-        public StringBuilder AppendTo(StringBuilder sb, int startIndex, int count) {
+        public StringBuilder AppendTo(StringBuilder sb, int startIndex, int count)
+        {
             return _storage.AppendTo(sb, startIndex, count);
         }
 
-        public bool EndsWith(string value, StringComparison comparison) {
+        public bool EndsWith(string value, StringComparison comparison)
+        {
             return value.EndsWith(value, comparison);
         }
 
-        public int IndexOfAny(char[] anyOf, int startIndex, int count) {
+        public int IndexOfAny(char[] anyOf, int startIndex, int count)
+        {
             return _storage.IndexOfAny(anyOf, startIndex, count);
         }
 
-        public bool StartsWith(string value, StringComparison comparison) {
+        public bool StartsWith(string value, StringComparison comparison)
+        {
             return value.StartsWith(value, comparison);
         }
     }

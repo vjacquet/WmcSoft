@@ -34,7 +34,8 @@ namespace WmcSoft.Text
         readonly Predicate<char> _isSeparator;
         readonly bool _keepEmptyToken;
 
-        public Tokenizer(StringSplitOptions options, params char[] separators) {
+        public Tokenizer(StringSplitOptions options, params char[] separators)
+        {
             _keepEmptyToken = options == StringSplitOptions.None;
             if (separators == null || separators.Length == 0) {
                 _isSeparator = c => c == ' ';
@@ -48,19 +49,23 @@ namespace WmcSoft.Text
         }
 
         public Tokenizer(params char[] separators)
-            : this(StringSplitOptions.RemoveEmptyEntries, separators) {
+            : this(StringSplitOptions.RemoveEmptyEntries, separators)
+        {
         }
 
-        public Tokenizer(StringSplitOptions options, Predicate<char> isSeparator) {
+        public Tokenizer(StringSplitOptions options, Predicate<char> isSeparator)
+        {
             _keepEmptyToken = options == StringSplitOptions.None;
             _isSeparator = isSeparator;
         }
 
         public Tokenizer(Predicate<char> isSeparator)
-            : this(StringSplitOptions.RemoveEmptyEntries, isSeparator) {
+            : this(StringSplitOptions.RemoveEmptyEntries, isSeparator)
+        {
         }
 
-        public IEnumerable<string> Tokenize(string value) {
+        public IEnumerable<string> Tokenize(string value)
+        {
             var start = 0;
             var length = 0;
             if (_keepEmptyToken) {

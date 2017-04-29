@@ -33,11 +33,13 @@ namespace WmcSoft.Text
     {
         readonly char _separator;
 
-        public CharTokenizer(char separator = ';') {
+        public CharTokenizer(char separator = ';')
+        {
             _separator = separator;
         }
 
-        public IEnumerable<string> Tokenize(string value) {
+        public IEnumerable<string> Tokenize(string value)
+        {
             if (String.IsNullOrEmpty(value))
                 yield break;
 

@@ -59,24 +59,28 @@ namespace WmcSoft.Text
             private string _fallback = String.Empty;
             private int _charIndex = 1;
 
-            public EncoderBestFitFallbackBuffer(EncoderBestFitFallback fallback, string unknown) {
+            public EncoderBestFitFallbackBuffer(EncoderBestFitFallback fallback, string unknown)
+            {
                 _parentEncoding = fallback.ParentEncoding;
                 _unknown = unknown;
             }
 
-            public override bool Fallback(char charUnknown, int index) {
+            public override bool Fallback(char charUnknown, int index)
+            {
                 // Since both fallback methods require normalizing a string, make a string out of our char
                 var s = new String(charUnknown, 1);
                 return Fallback(s);
             }
 
-            public override bool Fallback(char charUnknownHigh, char charUnknownLow, int index) {
+            public override bool Fallback(char charUnknownHigh, char charUnknownLow, int index)
+            {
                 // Since both fallback methods require normalizing a string, make a string out of our chars
                 var s = new String(new char[] { charUnknownHigh, charUnknownLow });
                 return Fallback(s);
             }
 
-            private bool Fallback(String unknown) {
+            private bool Fallback(String unknown)
+            {
                 if (_charIndex <= _fallback.Length) {
                     _charIndex = 1;
                     _fallback = String.Empty;
@@ -88,8 +92,7 @@ namespace WmcSoft.Text
                     s = unknown.Normalize(NormalizationForm.FormKD);
                     if (s == unknown)
                         s = "";
-                }
-                catch (ArgumentException) {
+                } catch (ArgumentException) {
                     // Allow the string to become a ? fallback
                 }
 
@@ -103,7 +106,8 @@ namespace WmcSoft.Text
                 return true;
             }
 
-            public override char GetNextChar() {
+            public override char GetNextChar()
+            {
                 if (_charIndex >= _fallback.Length) {
                     if (_charIndex == _fallback.Length)
                         _charIndex++;
@@ -112,7 +116,8 @@ namespace WmcSoft.Text
                 return _fallback[_charIndex++];
             }
 
-            public override bool MovePrevious() {
+            public override bool MovePrevious()
+            {
                 if (_charIndex <= _fallback.Length)
                     _charIndex--;
                 return (_charIndex >= 0 || _charIndex < _fallback.Length);
@@ -126,7 +131,8 @@ namespace WmcSoft.Text
                 }
             }
 
-            public override void Reset() {
+            public override void Reset()
+            {
                 _fallback = "";
                 _charIndex = 1;
             }
@@ -137,7 +143,8 @@ namespace WmcSoft.Text
         private readonly Encoding _parentEncoding;
         private readonly string _unknown;
 
-        public EncoderBestFitFallback(Encoding targetEncoding, string unknown = "?") {
+        public EncoderBestFitFallback(Encoding targetEncoding, string unknown = "?")
+        {
             _parentEncoding = (Encoding)targetEncoding.Clone();
             ParentEncoding.EncoderFallback = new EncoderReplacementFallback("");
             ParentEncoding.DecoderFallback = new DecoderReplacementFallback("");
@@ -147,7 +154,8 @@ namespace WmcSoft.Text
         public Encoding ParentEncoding { get { return _parentEncoding; } }
         public override int MaxCharCount { get { return 18; } }
 
-        public override EncoderFallbackBuffer CreateFallbackBuffer() {
+        public override EncoderFallbackBuffer CreateFallbackBuffer()
+        {
             return new EncoderBestFitFallbackBuffer(this, _unknown);
         }
     }
