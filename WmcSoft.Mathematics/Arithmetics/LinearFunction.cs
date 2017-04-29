@@ -31,7 +31,8 @@ namespace WmcSoft.Arithmetics
         readonly double _slope;
         readonly double _intercept;
 
-        public LinearFunction(double slope, double intercept) {
+        public LinearFunction(double slope, double intercept)
+        {
             _slope = slope;
             _intercept = intercept;
         }
@@ -41,7 +42,8 @@ namespace WmcSoft.Arithmetics
 
         #region IFunction<double> Members
 
-        public double Eval(double x) {
+        public double Eval(double x)
+        {
             return _slope * x + _intercept;
         }
 
@@ -49,7 +51,8 @@ namespace WmcSoft.Arithmetics
 
         #region IEquatable<IFunction<double>> Members
 
-        public bool Equals(IFunction<double> other) {
+        public bool Equals(IFunction<double> other)
+        {
             if (other == null || GetType() != other.GetType())
                 return false;
             var that = (LinearFunction)other;

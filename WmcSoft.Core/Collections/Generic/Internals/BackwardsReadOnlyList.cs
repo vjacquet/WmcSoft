@@ -36,7 +36,8 @@ namespace WmcSoft.Collections.Generic.Internals
     {
         private readonly IReadOnlyList<T> _underlying;
 
-        public BackwardsReadOnlyList(IReadOnlyList<T> underlying) {
+        public BackwardsReadOnlyList(IReadOnlyList<T> underlying)
+        {
             Debug.Assert(underlying != null);
 
             _underlying = underlying;
@@ -50,11 +51,13 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return _underlying.Count; }
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return UnguardedBackwards(_underlying).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return _underlying.GetEnumerator();
         }
     }

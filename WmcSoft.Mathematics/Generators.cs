@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using WmcSoft.Collections.Generic;
 
 namespace WmcSoft
 {
@@ -35,7 +34,8 @@ namespace WmcSoft
     {
         #region Iota
 
-        public static IEnumerable<int> Iota(int value = 0) {
+        public static IEnumerable<int> Iota(int value = 0)
+        {
             checked {
                 while (true) {
                     yield return value;
@@ -48,7 +48,8 @@ namespace WmcSoft
 
         #region Factorial
 
-        public static IEnumerable<BigInteger> Factorial() {
+        public static IEnumerable<BigInteger> Factorial()
+        {
             yield return BigInteger.One;
             yield return BigInteger.One;
 
@@ -65,7 +66,8 @@ namespace WmcSoft
 
         #region Fibonacci
 
-        public static IEnumerable<BigInteger> Fibonacci() {
+        public static IEnumerable<BigInteger> Fibonacci()
+        {
             BigInteger Fn = 0;
             BigInteger Fn1 = 1;
 
@@ -92,7 +94,8 @@ namespace WmcSoft
         /// <param name="func">The function to obtain the next element from the previous one.</param>
         /// <param name="v0">The initial value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<T, T> func, T v0 = default(T)) {
+        public static IEnumerable<T> Sequence<T>(Func<T, T> func, T v0 = default(T))
+        {
             yield return v0;
 
             var vn = v0;
@@ -101,6 +104,7 @@ namespace WmcSoft
                 yield return vn;
             }
         }
+
         /// <summary>
         /// Generates a sequence.
         /// </summary>
@@ -108,7 +112,8 @@ namespace WmcSoft
         /// <param name="func">The function to obtain the next element from the previous one, with the indice of the element as first parameter.</param>
         /// <param name="v0">The initial value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<int, T, T> func, T v0 = default(T)) {
+        public static IEnumerable<T> Sequence<T>(Func<int, T, T> func, T v0 = default(T))
+        {
             yield return v0;
 
             var vn = v0;
@@ -127,7 +132,8 @@ namespace WmcSoft
         /// <param name="v0">The first value.</param>
         /// <param name="v1">The second value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<T, T, T> func, T v0 = default(T), T v1 = default(T)) {
+        public static IEnumerable<T> Sequence<T>(Func<T, T, T> func, T v0 = default(T), T v1 = default(T))
+        {
             yield return v0;
             yield return v1;
 
@@ -148,7 +154,8 @@ namespace WmcSoft
         /// <param name="v0">The first value.</param>
         /// <param name="v1">The second value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<int, T, T, T> func, T v0 = default(T), T v1 = default(T)) {
+        public static IEnumerable<T> Sequence<T>(Func<int, T, T, T> func, T v0 = default(T), T v1 = default(T))
+        {
             yield return v0;
             yield return v1;
 
@@ -171,7 +178,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="random">The random generator.</param>
         /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="Int32.MaxValue"/>.</returns>
-        public static IEnumerable<int> Random(Random random) {
+        public static IEnumerable<int> Random(Random random)
+        {
             if (random == null)
                 throw new ArgumentNullException("random");
 
@@ -183,7 +191,8 @@ namespace WmcSoft
         /// Returns a nonnegative random number, using the default <see cref="Random"/> generator. 
         /// </summary>
         /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="Int32.MaxValue"/>.</returns>
-        public static IEnumerable<int> Random() {
+        public static IEnumerable<int> Random()
+        {
             return Random(new Random());
         }
 
@@ -195,14 +204,15 @@ namespace WmcSoft
         /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="maxValue"/>; that is, 
         /// the range of return values includes zero but not <see cref="maxValue"/>.
         ///  If <see cref="maxValue"/> equals zero, <see cref="maxValue"/> is returned. </returns>
-        public static IEnumerable<int> Random(Random random, int maxValue) {
-            if (random == null)
-                throw new ArgumentNullException("random");
+        public static IEnumerable<int> Random(Random random, int maxValue)
+        {
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
             while (true) {
                 yield return random.Next(maxValue);
             }
         }
+
         /// <summary>
         /// Returns a nonnegative random number less than the specified maximum, using the default <see cref="Random"/> generator.
         /// </summary>
@@ -210,7 +220,8 @@ namespace WmcSoft
         /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="maxValue"/>; that is, 
         /// the range of return values includes zero but not <see cref="maxValue"/>.
         ///  If <see cref="maxValue"/> equals zero, <see cref="maxValue"/> is returned. </returns>
-        public static IEnumerable<int> Random(int maxValue) {
+        public static IEnumerable<int> Random(int maxValue)
+        {
             return Random(new Random(), maxValue);
         }
 
@@ -223,14 +234,15 @@ namespace WmcSoft
         /// <returns>A 32-bit signed integer greater than or equal to <see cref="minValue"/> and less than <see cref="maxValue"/>; that is, 
         /// the range of return values includes <see cref="minValue"/> but not <see cref="maxValue"/>.
         ///  If <see cref="minValue"/> equals <see cref="maxValue"/>, <see cref="minValue"/> is returned. </returns>
-        public static IEnumerable<int> Random(Random random, int minValue, int maxValue) {
-            if (random == null)
-                throw new ArgumentNullException("random");
+        public static IEnumerable<int> Random(Random random, int minValue, int maxValue)
+        {
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
             while (true) {
                 yield return random.Next(minValue, maxValue);
             }
         }
+
         /// <summary>
         /// Yields random numbers within a specified range, using the default <see cref="Random"/> generator.
         /// </summary>
@@ -239,7 +251,8 @@ namespace WmcSoft
         /// <returns>A 32-bit signed integer greater than or equal to <see cref="minValue"/> and less than <see cref="maxValue"/>; that is, 
         /// the range of return values includes <see cref="minValue"/> but not <see cref="maxValue"/>.
         ///  If <see cref="minValue"/> equals <see cref="maxValue"/>, <see cref="minValue"/> is returned. </returns>
-        public static IEnumerable<int> Random(int minValue, int maxValue) {
+        public static IEnumerable<int> Random(int minValue, int maxValue)
+        {
             return Random(new Random(), minValue, maxValue);
         }
 
@@ -248,9 +261,9 @@ namespace WmcSoft
         /// </summary>
         /// <param name="random">The random generator.</param>
         /// <returns>A double-precision floating point number greater than or equal to 0.0, and less than 1.0.</returns>
-        public static IEnumerable<double> RandomDouble(Random random) {
-            if (random == null)
-                throw new ArgumentNullException("random");
+        public static IEnumerable<double> RandomDouble(Random random)
+        {
+            if (random == null) throw new ArgumentNullException(nameof(random));
 
             while (true) {
                 yield return random.Next();
@@ -260,7 +273,8 @@ namespace WmcSoft
         /// Returns a random number between 0.0 and 1.0, using the default <see cref="Random"/> generator. 
         /// </summary>
         /// <returns>A double-precision floating point number greater than or equal to 0.0, and less than 1.0.</returns>
-        public static IEnumerable<double> RandomDouble() {
+        public static IEnumerable<double> RandomDouble()
+        {
             var random = new Random();
             while (true) {
                 yield return random.NextDouble();
@@ -276,7 +290,8 @@ namespace WmcSoft
             readonly T[] _list;
             readonly int[] _indices;
 
-            public SourceReadOnlyList(T[] list, int[] indices) {
+            public SourceReadOnlyList(T[] list, int[] indices)
+            {
                 _list = list;
                 _indices = indices;
             }
@@ -299,7 +314,8 @@ namespace WmcSoft
 
             #region IEnumerable<T> Members
 
-            public IEnumerator<T> GetEnumerator() {
+            public IEnumerator<T> GetEnumerator()
+            {
                 var length = _indices.Length;
                 for (int i = 0; i < length; i++) {
                     yield return _list[_indices[i]];
@@ -310,22 +326,25 @@ namespace WmcSoft
 
             #region IEnumerable Members
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
 
             #endregion
         }
 
-        static bool IsOdd(int i) {
+        static bool IsOdd(int i)
+        {
             return (i & 1) == 0;
         }
 
-        public static IEnumerable<IReadOnlyList<T>> Permutations<T>(params T[] values) {
+        public static IEnumerable<IReadOnlyList<T>> Permutations<T>(params T[] values)
+        {
             // Adapted from Knuth, TAoCP, Vol 4A, Page 329, Algorithm G
             var n = values.Length;
             var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
-            var a = Iota().ToArray(n);
+            var a = Algorithms.Iota(n);
             var list = new SourceReadOnlyList<T>(values, a);
             int k;
             while (true) {

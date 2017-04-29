@@ -40,7 +40,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
-        public ReadOnlyCollectionFacade(ICollection<T> collection) {
+        public ReadOnlyCollectionFacade(ICollection<T> collection)
+        {
             _underlying = collection;
         }
 
@@ -48,20 +49,24 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region ICollection<T> Members
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             var comparer = EqualityComparer<T>.Default;
             return _underlying.Any(x => comparer.Equals(x, item));
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             foreach (var item in _underlying)
                 array[arrayIndex++] = item;
         }
@@ -70,7 +75,8 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return true; }
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             throw new NotSupportedException();
         }
 
@@ -86,7 +92,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _underlying.GetEnumerator();
         }
 
@@ -94,7 +101,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

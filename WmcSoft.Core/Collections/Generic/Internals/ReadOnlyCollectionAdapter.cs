@@ -41,7 +41,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
-        public ReadOnlyCollectionAdapter(int count, IEnumerable<T> enumerable) {
+        public ReadOnlyCollectionAdapter(int count, IEnumerable<T> enumerable)
+        {
             Debug.Assert(enumerable != null);
             Debug.Assert(count >= 0);
 
@@ -61,7 +62,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _enumerable.GetEnumerator();
         }
 
@@ -69,7 +71,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Members
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return _enumerable.GetEnumerator();
         }
 

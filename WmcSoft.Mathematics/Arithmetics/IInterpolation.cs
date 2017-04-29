@@ -9,7 +9,8 @@ namespace WmcSoft.Arithmetics
 
     public static class InterpolationExtensions
     {
-        public static Func<T, U> AsFunction<T, U>(this IInterpolation<T, U> interpolation) {
+        public static Func<T, U> AsFunction<T, U>(this IInterpolation<T, U> interpolation)
+        {
             return (t) => interpolation.Interpolate(t);
         }
     }

@@ -46,42 +46,52 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return true; }
         }
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return Enumerable.Empty<T>().GetEnumerator();
         }
 
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             return -1;
         }
 
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             throw new NotSupportedException();
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             throw new NotSupportedException();
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             throw new NotSupportedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

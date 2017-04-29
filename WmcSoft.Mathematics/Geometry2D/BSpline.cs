@@ -32,11 +32,13 @@ namespace WmcSoft.Geometry2D
     {
         private readonly double[] _knots;
 
-        public BSpline(params double[] knots) {
+        public BSpline(params double[] knots)
+        {
             _knots = knots;
         }
 
-        public double N(int i, int p, double x) {
+        public double N(int i, int p, double x)
+        {
             if (p == 1) {
                 if (x < _knots[i] || x >= _knots[i + 2]) return 0d;
                 if (x < _knots[i + 1]) return (x - _knots[i]) / (_knots[i + p] - _knots[i]);

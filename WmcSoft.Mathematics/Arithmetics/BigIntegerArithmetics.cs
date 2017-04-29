@@ -33,35 +33,43 @@ namespace WmcSoft.Arithmetics
     {
         #region IArithmetics<BigInteger> Membres
 
-        public BigInteger Add(BigInteger x, BigInteger y) {
+        public BigInteger Add(BigInteger x, BigInteger y)
+        {
             return x + y;
         }
 
-        public BigInteger Subtract(BigInteger x, BigInteger y) {
+        public BigInteger Subtract(BigInteger x, BigInteger y)
+        {
             return x - y;
         }
 
-        public BigInteger Multiply(BigInteger x, BigInteger y) {
+        public BigInteger Multiply(BigInteger x, BigInteger y)
+        {
             return x * y;
         }
 
-        public BigInteger Divide(BigInteger x, BigInteger y) {
+        public BigInteger Divide(BigInteger x, BigInteger y)
+        {
             return x / y;
         }
 
-        public BigInteger Remainder(BigInteger x, BigInteger y) {
+        public BigInteger Remainder(BigInteger x, BigInteger y)
+        {
             return x % y;
         }
 
-        public BigInteger DivideRemainder(BigInteger x, BigInteger y, out BigInteger remainder) {
+        public BigInteger DivideRemainder(BigInteger x, BigInteger y, out BigInteger remainder)
+        {
             return BigInteger.DivRem(x, y, out remainder);
         }
 
-        public BigInteger Negate(BigInteger x) {
+        public BigInteger Negate(BigInteger x)
+        {
             return -x;
         }
 
-        public BigInteger Reciprocal(BigInteger x) {
+        public BigInteger Reciprocal(BigInteger x)
+        {
             throw new NotSupportedException();
         }
 

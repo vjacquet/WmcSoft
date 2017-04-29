@@ -41,7 +41,8 @@ namespace WmcSoft.Collections.Generic.Internals
         {
             private readonly ContiguousStorage<T> _storage;
 
-            DebugView(ContiguousStorage<T> storage) {
+            DebugView(ContiguousStorage<T> storage)
+            {
                 _storage = storage;
             }
 
@@ -66,27 +67,32 @@ namespace WmcSoft.Collections.Generic.Internals
         protected T[] _storage;
         protected int _count;
 
-        protected ContiguousStorage() {
+        protected ContiguousStorage()
+        {
             _storage = Empty;
         }
 
-        protected ContiguousStorage(int capacity) {
+        protected ContiguousStorage(int capacity)
+        {
             _storage = (capacity > 0)
                 ? new T[capacity]
                 : Empty;
         }
 
-        protected void EnsureOne() {
+        protected void EnsureOne()
+        {
             if (_count == _storage.Length)
                 Reserve(ref _storage, 1, Copy);
         }
-        protected void Ensure(int count) {
+        protected void Ensure(int count)
+        {
             var requires = _storage.Length - _count - count;
             if (requires < 0)
                 Reserve(ref _storage, -requires, Copy);
         }
 
-        protected virtual void Copy(T[] source, T[] destination, int length) {
+        protected virtual void Copy(T[] source, T[] destination, int length)
+        {
             Array.Copy(source, destination, length);
         }
 
@@ -101,7 +107,8 @@ namespace WmcSoft.Collections.Generic.Internals
         /// <param name="length">The expected length.</param>
         /// <param name="count">The count of items to copy.</param>
         /// <remarks>Expects count < length.</remarks>
-        public static void Resize(ref T[] items, int length, int count) {
+        public static void Resize(ref T[] items, int length, int count)
+        {
             Debug.Assert(count < length);
 
             var buffer = new T[length];
@@ -109,7 +116,8 @@ namespace WmcSoft.Collections.Generic.Internals
             items = buffer;
         }
 
-        public static void Resize(ref T[] items, int length, int count, Action<T[], T[], int> copy) {
+        public static void Resize(ref T[] items, int length, int count, Action<T[], T[], int> copy)
+        {
             Debug.Assert(count < length);
 
             var buffer = new T[length];
@@ -123,7 +131,8 @@ namespace WmcSoft.Collections.Generic.Internals
         /// <param name="items">The array of items.</param>
         /// <param name="length">The expected length.</param>
         /// <remarks>Expects items.Length > length.</remarks>
-        public static void Truncate(ref T[] items, int length) {
+        public static void Truncate(ref T[] items, int length)
+        {
             Debug.Assert(items.Length > length);
 
             var buffer = new T[length];
@@ -137,7 +146,8 @@ namespace WmcSoft.Collections.Generic.Internals
         /// <param name="items">The array of items to grow.</param>
         /// <param name="n">The extra space to reserve.</param>
         /// <remarks>Expects n > 0</remarks>
-        public static void Reserve(ref T[] items, int n) {
+        public static void Reserve(ref T[] items, int n)
+        {
             Debug.Assert(n > 0);
 
             var length = items.Length;
@@ -150,7 +160,8 @@ namespace WmcSoft.Collections.Generic.Internals
             Resize(ref items, capacity, length);
         }
 
-        public static void Reserve(ref T[] items, int n, Action<T[], T[], int> copy) {
+        public static void Reserve(ref T[] items, int n, Action<T[], T[], int> copy)
+        {
             Debug.Assert(n > 0);
 
             var length = items.Length;
@@ -168,7 +179,8 @@ namespace WmcSoft.Collections.Generic.Internals
         /// </summary>
         /// <param name="items">The array of items to shrink.</param>
         /// <param name="count">The count of items.</param>
-        public static void Shrink(ref T[] items, int count) {
+        public static void Shrink(ref T[] items, int count)
+        {
             var length = items.Length;
             if (length > QuarterOfDefaultCapacity) {
                 if (count <= length / 4)
@@ -176,7 +188,8 @@ namespace WmcSoft.Collections.Generic.Internals
             }
         }
 
-        public static void Fill(T[] items, int startIndex, int count, T value = default(T)) {
+        public static void Fill(T[] items, int startIndex, int count, T value = default(T))
+        {
             var endIndex = startIndex + count;
             while (startIndex < endIndex)
                 items[startIndex++] = value;

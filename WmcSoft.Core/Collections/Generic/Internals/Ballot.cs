@@ -48,15 +48,18 @@ namespace WmcSoft.Collections.Generic.Internals
         {
             private readonly IEqualityComparer<T> _equalityComparer;
 
-            public CandidateComparer(IEqualityComparer<T> equalityComparer) {
+            public CandidateComparer(IEqualityComparer<T> equalityComparer)
+            {
                 _equalityComparer = equalityComparer;
             }
 
-            public bool Equals(Paper x, Paper y) {
+            public bool Equals(Paper x, Paper y)
+            {
                 return _equalityComparer.Equals(x.Candidate, y.Candidate);
             }
 
-            public int GetHashCode(Paper obj) {
+            public int GetHashCode(Paper obj)
+            {
                 return _equalityComparer.GetHashCode(obj.Candidate);
             }
         }
@@ -72,11 +75,13 @@ namespace WmcSoft.Collections.Generic.Internals
         {
             public static ScoresComparer Default = new ScoresComparer();
 
-            public int Compare(KeyValuePair<Paper, Score> x, KeyValuePair<Paper, Score> y) {
+            public int Compare(KeyValuePair<Paper, Score> x, KeyValuePair<Paper, Score> y)
+            {
                 return Compare(x.Value, y.Value);
             }
 
-            public int Compare(Score x, Score y) {
+            public int Compare(Score x, Score y)
+            {
                 var score = x.Count - y.Count;
                 if (score != 0)
                     return score;
@@ -88,11 +93,13 @@ namespace WmcSoft.Collections.Generic.Internals
 
         private readonly Dictionary<Paper, Score> _votes;
 
-        public Ballot(IEqualityComparer<T> equalityComparer = null) {
+        public Ballot(IEqualityComparer<T> equalityComparer = null)
+        {
             _votes = new Dictionary<Paper, Score>(new CandidateComparer(equalityComparer ?? EqualityComparer<T>.Default));
         }
 
-        public void Vote(T candidate) {
+        public void Vote(T candidate)
+        {
             var finder = new Paper { Candidate = candidate };
             if (_votes.TryGetValue(finder, out Score score)) {
                 score.Count++;
@@ -105,17 +112,20 @@ namespace WmcSoft.Collections.Generic.Internals
             get { return _votes.Count > 0; }
         }
 
-        public T GetWinner() {
+        public T GetWinner()
+        {
             return _votes.Max(ScoresComparer.Default).Key.Candidate;
         }
 
-        public IEnumerator<KeyValuePair<T, int>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<T, int>> GetEnumerator()
+        {
             return _votes.OrderByDescending(v => v.Value, ScoresComparer.Default)
                 .Select(v => new KeyValuePair<T, int>(v.Key.Candidate, v.Value.Count))
                 .GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

@@ -37,11 +37,13 @@ namespace WmcSoft
         readonly double[] _values;
         int _index;
 
-        public DeterministicRandom(params double[] values) {
+        public DeterministicRandom(params double[] values)
+        {
             _values = values;
         }
 
-        protected override double Sample() {
+        protected override double Sample()
+        {
             double result = _values[_index];
             _index = (_index + 1) % _values.Length;
             return result;

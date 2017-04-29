@@ -40,14 +40,15 @@ namespace WmcSoft.Geometry2D
 
         #region Lifecycle
 
-        public Polygon(params Point[] points) {
+        public Polygon(params Point[] points)
+        {
             if (points == null) throw new ArgumentNullException("points");
             if (points.Length < 3) throw new ArgumentOutOfRangeException("points");
 
             var n = points.Length;
             _points = new Point[n + 2];
             Array.Copy(points, 0, _points, 1, n);
-            _points[0] = points[n-1];
+            _points[0] = points[n - 1];
             _points[n + 1] = points[0];
         }
 
@@ -67,7 +68,8 @@ namespace WmcSoft.Geometry2D
 
         #region Methods
 
-        public bool Inside(Point t) {
+        public bool Inside(Point t)
+        {
             uint n = 0;
             var length = Count;
 
@@ -75,7 +77,7 @@ namespace WmcSoft.Geometry2D
             var j = 0;
             for (int i = 1; i <= length; i++) {
                 var sp = new Segment(_points[i], _points[i]);
-                if(!sp.Intersectwith(st)) {
+                if (!sp.Intersectwith(st)) {
                     sp = new Segment(_points[i], _points[j]);
                     j = i;
                     if (sp.Intersectwith(st))
@@ -94,14 +96,16 @@ namespace WmcSoft.Geometry2D
             get { return _points.Length - 2; }
         }
 
-        public IEnumerator<Point> GetEnumerator() {
+        public IEnumerator<Point> GetEnumerator()
+        {
             var n = _points.Length - 2;
             for (int i = 0; i < n; i++) {
                 yield return _points[i];
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

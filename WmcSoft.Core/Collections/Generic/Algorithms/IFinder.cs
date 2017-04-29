@@ -32,19 +32,4 @@ namespace WmcSoft.Collections.Generic.Algorithms
     {
         int FindFirstOccurence(IReadOnlyList<T> t, int startIndex);
     }
-
-    public static class FinderExtensions
-    {
-        public static int FindFirstOccurence<T>(this IFinder<T> finder, IReadOnlyList<T> t) {
-            return finder.FindFirstOccurence(t, 0);
-        }
-
-        public static IEnumerable<int> FindAllOccurences<T>(this IFinder<T> finder, IReadOnlyList<T> t) {
-            var found = finder.FindFirstOccurence(t, 0);
-            while (found >= 0) {
-                yield return found;
-                found = finder.FindFirstOccurence(t, found + 1);
-            }
-        }
-    }
 }

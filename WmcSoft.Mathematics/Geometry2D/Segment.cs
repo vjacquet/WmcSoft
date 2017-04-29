@@ -33,7 +33,8 @@ namespace WmcSoft.Geometry2D
     {
         #region Lifecycle
 
-        public Segment(Point p1, Point p2) {
+        public Segment(Point p1, Point p2)
+        {
             P1 = p1;
             P2 = p2;
         }
@@ -50,7 +51,8 @@ namespace WmcSoft.Geometry2D
 
         #region Methods
 
-        public bool Intersectwith(Segment s) {
+        public bool Intersectwith(Segment s)
+        {
             return (CounterClockwise(P1, P2, s.P1) * CounterClockwise(P1, P2, s.P2) <= 0)
                 && (CounterClockwise(s.P1, s.P2, P1) * CounterClockwise(s.P1, s.P2, P2) <= 0);
         }
@@ -60,7 +62,8 @@ namespace WmcSoft.Geometry2D
         /// </summary>
         /// <param name="s">The segment</param>
         /// <returns>The pseudo angle with the horizontal axis.</returns>
-        public double Theta() {
+        public double Theta()
+        {
             return Helpers.Theta(P1, P2);
         }
 
@@ -68,11 +71,13 @@ namespace WmcSoft.Geometry2D
 
         #region Operators
 
-        public static bool operator ==(Segment x, Segment y) {
+        public static bool operator ==(Segment x, Segment y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Segment x, Segment y) {
+        public static bool operator !=(Segment x, Segment y)
+        {
             return !x.Equals(y);
         }
 
@@ -80,17 +85,20 @@ namespace WmcSoft.Geometry2D
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Point))
                 return false;
             return Equals((Point)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return P1.GetHashCode() ^ P2.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (String.IsNullOrWhiteSpace(P1.Name) || String.IsNullOrWhiteSpace(P2.Name))
                 return $"[{P1},{P2}]";
             return $"[{P1.Name}{P2.Name}]";
@@ -100,7 +108,8 @@ namespace WmcSoft.Geometry2D
 
         #region IEquatable<Point> members
 
-        public bool Equals(Segment other) {
+        public bool Equals(Segment other)
+        {
             return P1 == other.P1 && P2 == other.P2;
         }
 

@@ -26,7 +26,7 @@
 
 namespace WmcSoft.Algebra
 {
-   public interface IGroupLike<T> : IGroupLikeTraits
+    public interface IGroupLike<T> : IGroupLikeTraits
     {
         T Identity { get; }
         T Eval(T x, T y);

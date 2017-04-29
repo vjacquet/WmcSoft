@@ -31,7 +31,7 @@ using System.Linq;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// The structure that models the dimensions of the Valarray.
+    /// The structure that models the dimensions of the <see cref="Valarray"/> or <see cref="Boolarray"/>.
     /// </summary>
     public struct Dimensions : IReadOnlyList<int>, IEquatable<Dimensions>
     {
@@ -39,11 +39,13 @@ namespace WmcSoft.Numerics
 
         private readonly int[] _dimensions;
 
-        public Dimensions(params int[] dimensions) {
+        public Dimensions(params int[] dimensions)
+        {
             _dimensions = (int[])dimensions.Clone();
         }
 
-        internal Dimensions(Dimensions min, Dimensions max) {
+        internal Dimensions(Dimensions min, Dimensions max)
+        {
             var length = max.Count;
             _dimensions = new int[length];
             for (var i = min.Count - 1; i >= 0; i--) {
@@ -53,39 +55,47 @@ namespace WmcSoft.Numerics
             Array.Copy(max._dimensions, _dimensions, length);
         }
 
-        public static implicit operator Dimensions(int n) {
+        public static implicit operator Dimensions(int n)
+        {
             return new Dimensions(n);
         }
-        public static implicit operator Dimensions(int[] dimensions) {
+        public static implicit operator Dimensions(int[] dimensions)
+        {
             return new Dimensions(dimensions);
         }
 
-        public static bool operator ==(Dimensions x, Dimensions y) {
+        public static bool operator ==(Dimensions x, Dimensions y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Dimensions x, Dimensions y) {
+        public static bool operator !=(Dimensions x, Dimensions y)
+        {
             return !x.Equals(y);
         }
 
         #region Methods
 
-        public int GetCardinality() {
+        public int GetCardinality()
+        {
             return _dimensions.Aggregate(1, (x, y) => x * y);
         }
 
-        public int GetDimension(int i) {
+        public int GetDimension(int i)
+        {
             if (_dimensions != null)
                 return _dimensions[Mod(i, _dimensions.Length)];
             return 0;
         }
 
-        static int Mod(int i, int n) {
+        static int Mod(int i, int n)
+        {
             //handle negatives indexes
             return (i + n) % n;
         }
 
-        internal int GetIndex(int[] indices) {
+        internal int GetIndex(int[] indices)
+        {
             if (indices == null)
                 throw new ArgumentNullException(nameof(indices));
 
@@ -120,13 +130,15 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<int> Membres
 
-        public static Dimensions Combine(Dimensions x, Dimensions y) {
+        public static Dimensions Combine(Dimensions x, Dimensions y)
+        {
             if (x.Count < y.Count)
                 return new Dimensions(x, y);
             return new Dimensions(y, x);
         }
 
-        public IEnumerator<int> GetEnumerator() {
+        public IEnumerator<int> GetEnumerator()
+        {
             var dimensions = _dimensions ?? new int[0];
             return dimensions.AsEnumerable<int>().GetEnumerator();
         }
@@ -135,7 +147,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             var dimensions = _dimensions ?? new int[0];
             return dimensions.GetEnumerator();
         }
@@ -144,7 +157,8 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Dimensions> Membres
 
-        public bool Equals(Dimensions other) {
+        public bool Equals(Dimensions other)
+        {
             var length = Count;
             if (length != other.Count)
                 return false;
@@ -155,13 +169,15 @@ namespace WmcSoft.Numerics
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Dimensions)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_dimensions == null)
                 return 0;
 
@@ -177,8 +193,9 @@ namespace WmcSoft.Numerics
 
         #region Overrides
 
-        public override string ToString() {
-            return String.Join(" x ", _dimensions);
+        public override string ToString()
+        {
+            return string.Join(" x ", _dimensions);
         }
         #endregion
     }

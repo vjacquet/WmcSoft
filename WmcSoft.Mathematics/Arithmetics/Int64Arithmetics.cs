@@ -32,35 +32,43 @@ namespace WmcSoft.Arithmetics
     {
         #region IArithmetics<long> Membres
 
-        public long Add(long x, long y) {
+        public long Add(long x, long y)
+        {
             return x + y;
         }
 
-        public long Subtract(long x, long y) {
+        public long Subtract(long x, long y)
+        {
             return x - y;
         }
 
-        public long Multiply(long x, long y) {
+        public long Multiply(long x, long y)
+        {
             return x * y;
         }
 
-        public long Divide(long x, long y) {
+        public long Divide(long x, long y)
+        {
             return x / y;
         }
 
-        public long Remainder(long x, long y) {
+        public long Remainder(long x, long y)
+        {
             return x % y;
         }
 
-        public long DivideRemainder(long x, long y, out long remainder) {
+        public long DivideRemainder(long x, long y, out long remainder)
+        {
             return Math.DivRem(x, y, out remainder);
         }
 
-        public long Negate(long x) {
+        public long Negate(long x)
+        {
             return -x;
         }
 
-        public long Reciprocal(long x) {
+        public long Reciprocal(long x)
+        {
             throw new NotSupportedException();
         }
 

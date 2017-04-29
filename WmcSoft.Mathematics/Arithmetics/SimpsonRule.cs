@@ -32,13 +32,16 @@ namespace WmcSoft.Arithmetics
     {
         private readonly int _steps;
 
-        public SimpsonRule(int steps) {
-            if (steps <= 0) throw new ArgumentOutOfRangeException("steps");
+        public SimpsonRule(int steps)
+        {
+            if (steps <= 0) throw new ArgumentOutOfRangeException(nameof(steps));
+
             _steps = steps;
         }
 
         public double Integrate<TFunction>(TFunction f, double a, double b)
-            where TFunction : IFunction<double> {
+            where TFunction : IFunction<double>
+        {
             var w = (b - a) / _steps;
             var w2 = w / 2d;
             var r = f.Eval(a) + f.Eval(b) + 4 * f.Eval(b - w2);

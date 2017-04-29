@@ -42,10 +42,12 @@ namespace WmcSoft.Numerics
         readonly int _end;
         int _pos;
 
-        public StrideEnumerator(T[] data) : this(data, 0, data.Length, 1) {
+        public StrideEnumerator(T[] data) : this(data, 0, data.Length, 1)
+        {
         }
 
-        public StrideEnumerator(T[] data, int start, int count, int stride = 1) {
+        public StrideEnumerator(T[] data, int start, int count, int stride = 1)
+        {
             int end = start + count * stride;
             _data = data;
             _start = start;
@@ -70,7 +72,8 @@ namespace WmcSoft.Numerics
 
         #region IDisposable Membres
 
-        public void Dispose() {
+        public void Dispose()
+        {
         }
 
         #endregion
@@ -81,7 +84,8 @@ namespace WmcSoft.Numerics
             get { return Current; }
         }
 
-        public bool MoveNext() {
+        public bool MoveNext()
+        {
             if (_pos < _end) {
                 _pos += _stride;
                 return true;
@@ -89,7 +93,8 @@ namespace WmcSoft.Numerics
             return false;
         }
 
-        public void Reset() {
+        public void Reset()
+        {
             _pos = _start - _stride;
         }
 

@@ -49,7 +49,8 @@ namespace WmcSoft
             public class RowView
             {
                 private readonly int[] _data;
-                public RowView(int count) {
+                public RowView(int count)
+                {
                     _data = new int[count];
                 }
 
@@ -58,7 +59,8 @@ namespace WmcSoft
                     set { _data[index] = value; }
                 }
 
-                public override string ToString() {
+                public override string ToString()
+                {
                     var sb = new StringBuilder();
                     for (int i = 0; i < _data.Length; i++) {
                         sb.AppendFormat("{0, 5}", _data[i]);
@@ -69,11 +71,13 @@ namespace WmcSoft
 
             private readonly Tableau _tableau;
 
-            public DebugView(Tableau tableau) {
+            public DebugView(Tableau tableau)
+            {
                 _tableau = tableau;
             }
 
-            public static string Flatten(string value) {
+            public static string Flatten(string value)
+            {
                 return '{' + value.Replace("\r\n", "|") + '}';
             }
 
@@ -108,7 +112,8 @@ namespace WmcSoft
             int[] _storage;
             int _count;
 
-            public Band(int capacity) {
+            public Band(int capacity)
+            {
                 _count = 0;
                 _storage = new int[capacity];
             }
@@ -134,30 +139,35 @@ namespace WmcSoft
                 }
             }
 
-            public override string ToString() {
+            public override string ToString()
+            {
                 return string.Join(" ", _storage.Select(i => i == Infinity ? "∞" : i.ToString()));
             }
         }
 
         private readonly List<List<int>> _data;
 
-        public Tableau() {
+        public Tableau()
+        {
             _data = new List<List<int>>();
         }
 
         public int Count => _data.Sum(x => x.Count);
         public bool IsReadOnly => false;
 
-        private bool IsZero(int i, int j) {
+        private bool IsZero(int i, int j)
+        {
             return i <= 0 | j <= 0;
         }
-        private bool IsInfinite(int i, int j) {
+        private bool IsInfinite(int i, int j)
+        {
             if (j >= _data.Count)
                 return true;
             return i >= _data[j].Count;
         }
 
-        private bool LessThan(int value, int i, int j) {
+        private bool LessThan(int value, int i, int j)
+        {
             if (i < 0 || j < 0)
                 return false;
             if (j >= _data.Count || i >= _data[j].Count)
@@ -165,7 +175,8 @@ namespace WmcSoft
             return value < this[i, j];
         }
 
-        public void Add(int item) {
+        public void Add(int item)
+        {
             if (item <= 0 || item == Infinity)
                 throw new ArgumentOutOfRangeException("item");
 
@@ -186,7 +197,8 @@ namespace WmcSoft
             }
         }
 
-        public bool Remove(int item) {
+        public bool Remove(int item)
+        {
             if (item <= 0 || item == Infinity)
                 throw new ArgumentOutOfRangeException("item");
 
@@ -210,11 +222,13 @@ namespace WmcSoft
             return true;
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _data.Clear();
         }
 
-        private int Find(IEnumerable<int> list, int x) {
+        private int Find(IEnumerable<int> list, int x)
+        {
             int index = 0;
             foreach (var item in list) {
                 if (item < x) {
@@ -228,7 +242,8 @@ namespace WmcSoft
             return ~index;
         }
 
-        public bool Find(int item, out int i, out int j) {
+        public bool Find(int item, out int i, out int j)
+        {
             if (item <= 0 || item == Infinity)
                 throw new ArgumentOutOfRangeException("item");
 
@@ -249,7 +264,8 @@ namespace WmcSoft
             return false;
         }
 
-        public bool Contains(int item) {
+        public bool Contains(int item)
+        {
             if (item <= 0 || item == Infinity)
                 throw new ArgumentOutOfRangeException("item");
 
@@ -265,7 +281,8 @@ namespace WmcSoft
             return false;
         }
 
-        public void CopyTo(int[] array, int arrayIndex) {
+        public void CopyTo(int[] array, int arrayIndex)
+        {
             var length = _data.Count;
             for (int i = 0; i < length; i++) {
                 var row = _data[i];
@@ -274,11 +291,13 @@ namespace WmcSoft
             }
         }
 
-        public IEnumerator<int> GetEnumerator() {
+        public IEnumerator<int> GetEnumerator()
+        {
             return _data.SelectMany(x => x).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -300,7 +319,8 @@ namespace WmcSoft
             }
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (_data.Count == 0) {
                 return "";
             }

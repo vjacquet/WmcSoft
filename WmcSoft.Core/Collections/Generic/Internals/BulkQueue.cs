@@ -34,13 +34,16 @@ namespace WmcSoft.Collections.Generic.Internals
         int _head;
         int _tail;
 
-        public BulkQueue() : base() {
+        public BulkQueue() : base()
+        {
         }
 
-        public BulkQueue(int capacity) : base(capacity) {
+        public BulkQueue(int capacity) : base(capacity)
+        {
         }
 
-        protected override void Copy(T[] source, T[] destination, int length) {
+        protected override void Copy(T[] source, T[] destination, int length)
+        {
             if (_count > 0) {
                 if (_head < _tail) {
                     Array.Copy(source, _head, destination, 0, _count);
@@ -52,11 +55,13 @@ namespace WmcSoft.Collections.Generic.Internals
             _head = 0;
             _tail = (_count == destination.Length) ? 0 : _count;
         }
-        public bool IsEmpty() {
+        public bool IsEmpty()
+        {
             return _count == 0;
         }
 
-        public void Enqueue(T item) {
+        public void Enqueue(T item)
+        {
             EnsureOne();
 
             _storage[_tail] = item;
@@ -69,24 +74,28 @@ namespace WmcSoft.Collections.Generic.Internals
         /// </summary>
         /// <param name="count">The count of items</param>
         /// <param name="action">The action taking as parameters the buffer to copy to and the index where to start copying.</param>
-        public void Enqueue(IEnumerable<T> items) {
+        public void Enqueue(IEnumerable<T> items)
+        {
             var list = new List<T>(items);
             BulkEnqueue(list.Count, list.CopyTo);
         }
 
-        public void BulkEnqueue(int count, Action<T[], int> action) {
+        public void BulkEnqueue(int count, Action<T[], int> action)
+        {
             Ensure(count);
             action(_storage, _count);
             _count += count;
         }
 
-        public T Peek() {
+        public T Peek()
+        {
             if (IsEmpty()) throw new InvalidOperationException();
 
             return _storage[_head];
         }
 
-        public T Dequeue() {
+        public T Dequeue()
+        {
             var head = Peek();
             _storage[_head] = default(T);
             _head = (_head + 1) % _storage.Length;

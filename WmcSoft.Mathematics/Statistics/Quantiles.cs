@@ -35,22 +35,26 @@ namespace WmcSoft.Statistics
 
         #region Lifecycle
 
-        public Quantiles(IEnumerable<T> values) {
+        public Quantiles(IEnumerable<T> values)
+        {
             _values = new List<T>(values);
             _values.Sort();
         }
 
-        public Quantiles(IComparer<T> comparer, IEnumerable<T> values) {
+        public Quantiles(IComparer<T> comparer, IEnumerable<T> values)
+        {
             _values = new List<T>(values);
             _values.Sort(comparer);
         }
 
-        public Quantiles(params T[] values) {
+        public Quantiles(params T[] values)
+        {
             _values = new List<T>(values);
             _values.Sort();
         }
 
-        public Quantiles(IComparer<T> comparer, params T[] values) {
+        public Quantiles(IComparer<T> comparer, params T[] values)
+        {
             _values = new List<T>(values);
             _values.Sort(comparer);
         }
@@ -61,8 +65,7 @@ namespace WmcSoft.Statistics
 
         public T this[double quantile] {
             get {
-                if (quantile < 0d || quantile >= 1d)
-                    throw new ArgumentOutOfRangeException("q");
+                if (quantile < 0d || quantile >= 1d) throw new ArgumentOutOfRangeException(nameof(quantile));
 
                 var n = _values.Count;
                 // nearest policy
@@ -79,7 +82,8 @@ namespace WmcSoft.Statistics
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _values.GetEnumerator();
         }
 
@@ -87,7 +91,8 @@ namespace WmcSoft.Statistics
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return _values.GetEnumerator();
         }
 

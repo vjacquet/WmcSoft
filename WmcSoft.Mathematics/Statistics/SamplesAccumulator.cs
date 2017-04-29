@@ -49,11 +49,13 @@ namespace WmcSoft.Statistics
 
         #region Lifecycle
 
-        public SamplesAccumulator() {
+        public SamplesAccumulator()
+        {
         }
 
         public SamplesAccumulator(params double[] values)
-            : this() {
+            : this()
+        {
             for (int i = 0; i < values.Length; i++) {
                 Add(values[i]);
             }
@@ -63,7 +65,8 @@ namespace WmcSoft.Statistics
 
         #region Methods
 
-        public void Add(double value) {
+        public void Add(double value)
+        {
             _count++;
             var delta = (value - _mean);
             var N = (double)_count;

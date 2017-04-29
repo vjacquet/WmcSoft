@@ -35,11 +35,13 @@ namespace WmcSoft.Arithmetics
 
     public static class FunctionExtensions
     {
-        public static Func<T, T> AsFunc<T>(this IFunction<T> function) {
+        public static Func<T, T> AsFunc<T>(this IFunction<T> function)
+        {
             return function.Eval;
         }
 
-        public static GenericFunction<T> AsFunction<T>(this Func<T,T> func) {
+        public static GenericFunction<T> AsFunction<T>(this Func<T, T> func)
+        {
             return new GenericFunction<T>(func);
         }
     }
@@ -48,20 +50,23 @@ namespace WmcSoft.Arithmetics
     {
         private readonly Func<T, T> _func;
 
-        public GenericFunction(Func<T, T> func) {
+        public GenericFunction(Func<T, T> func)
+        {
             if (func == null) throw new ArgumentNullException("func");
             _func = func;
         }
 
-        public bool Equals(IFunction<T> other) {
-            if(other is GenericFunction<T>) {
+        public bool Equals(IFunction<T> other)
+        {
+            if (other is GenericFunction<T>) {
                 var that = (GenericFunction<T>)other;
                 return _func.Equals(that._func);
             }
             return false;
         }
 
-        public T Eval(T x) {
+        public T Eval(T x)
+        {
             return _func(x);
         }
     }

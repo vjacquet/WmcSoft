@@ -35,12 +35,14 @@ namespace WmcSoft.Geometry2D
     {
         #region Lifecycle
 
-        public Point(string name, double x, double y) {
+        public Point(string name, double x, double y)
+        {
             Name = name;
             X = x;
             Y = y;
         }
-        public Point(double x, double y) : this(null, x, y) {
+        public Point(double x, double y) : this(null, x, y)
+        {
         }
 
         #endregion
@@ -55,11 +57,13 @@ namespace WmcSoft.Geometry2D
 
         #region Operators
 
-        public static bool operator ==(Point x, Point y) {
+        public static bool operator ==(Point x, Point y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Point x, Point y) {
+        public static bool operator !=(Point x, Point y)
+        {
             return !x.Equals(y);
         }
 
@@ -67,17 +71,20 @@ namespace WmcSoft.Geometry2D
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Point))
                 return false;
             return Equals((Point)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return X.GetHashCode() * 397 ^ Y.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString("G", null);
         }
 
@@ -85,7 +92,8 @@ namespace WmcSoft.Geometry2D
 
         #region IEquatable<Point> members
 
-        public bool Equals(Point other) {
+        public bool Equals(Point other)
+        {
             return X == other.X && Y == other.Y;
         }
 
@@ -93,15 +101,18 @@ namespace WmcSoft.Geometry2D
 
         #region IFormattable Membres
 
-        public string ToString(string format) {
+        public string ToString(string format)
+        {
             return ToString(format, null);
         }
 
-        public string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider)
+        {
             return ToString("G", formatProvider);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider) {
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
             formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
             var ti = formatProvider.GetFormat<TextInfo>() ?? CultureInfo.CurrentCulture.TextInfo;
             var ls = ti != null ? ti.ListSeparator : ",";

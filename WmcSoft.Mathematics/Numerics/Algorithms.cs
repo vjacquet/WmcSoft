@@ -30,7 +30,8 @@ namespace WmcSoft.Numerics
 {
     public static class Algorithms
     {
-        public static int EuclidGreatestCommonDivisor(int m, int n) {
+        public static int EuclidGreatestCommonDivisor(int m, int n)
+        {
             if (m < 0) m = -m;
             if (n < 0) n = -n;
 
@@ -42,7 +43,8 @@ namespace WmcSoft.Numerics
             return m;
         }
 
-        public static int SteinGreatestCommonDivisor(int m, int n) {
+        public static int SteinGreatestCommonDivisor(int m, int n)
+        {
             if (m < 0) m = -m;
             if (n < 0) n = -n;
             if (m == 0) return n;
@@ -78,7 +80,8 @@ namespace WmcSoft.Numerics
             return m << Math.Min(dm, dn);
         }
 
-        public static int GreatestCommonDivisor(params int[] u) {
+        public static int GreatestCommonDivisor(params int[] u)
+        {
             var n = u.Length;
             switch (n) {
             case 0:

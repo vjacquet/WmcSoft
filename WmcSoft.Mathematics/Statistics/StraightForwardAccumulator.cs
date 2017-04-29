@@ -50,11 +50,13 @@ namespace WmcSoft.Statistics
 
         #region Lifecycle
 
-        public StraightforwardAccumulator() {
+        public StraightforwardAccumulator()
+        {
         }
 
         public StraightforwardAccumulator(params double[] values)
-            : this() {
+            : this()
+        {
             AddRange(values);
         }
 
@@ -62,13 +64,15 @@ namespace WmcSoft.Statistics
 
         #region Methods
 
-        public void Reset() {
+        public void Reset()
+        {
             _count = 0;
             _sum = 0d;
             _sumOfSquares = 0d;
         }
 
-        public void AddRange(IEnumerable<double> values) {
+        public void AddRange(IEnumerable<double> values)
+        {
             if (values == null)
                 return;
 
@@ -77,19 +81,22 @@ namespace WmcSoft.Statistics
             }
         }
 
-        public void Add(double value) {
+        public void Add(double value)
+        {
             _count++;
             _sum += value;
             _sumOfSquares += value * value;
         }
 
-        public void Add(StraightforwardAccumulator accumulator) {
+        public void Add(StraightforwardAccumulator accumulator)
+        {
             _count += accumulator._count;
             _sum += accumulator._sum;
             _sumOfSquares += accumulator._sumOfSquares;
         }
 
-        public void RemoveRange(IEnumerable<double> values) {
+        public void RemoveRange(IEnumerable<double> values)
+        {
             var accumulator = new StraightforwardAccumulator();
             accumulator.AddRange(values);
             if (accumulator._count >= _count)
@@ -98,10 +105,11 @@ namespace WmcSoft.Statistics
             Remove(accumulator);
         }
 
-        public void Remove(double value) {
+        public void Remove(double value)
+        {
             if (_count == 0) throw new InvalidOperationException();
             if (_count == 1) {
-                if (!_sum.Equals(value)) throw new ArgumentOutOfRangeException("value");
+                if (!_sum.Equals(value)) throw new ArgumentOutOfRangeException(nameof(value));
 
                 Reset();
                 return;
@@ -112,10 +120,11 @@ namespace WmcSoft.Statistics
             _sumOfSquares -= value * value;
         }
 
-        public void Remove(StraightforwardAccumulator accumulator) {
+        public void Remove(StraightforwardAccumulator accumulator)
+        {
             if (_count < accumulator._count) throw new InvalidOperationException();
             if (_count == accumulator._count) {
-                if (!_sum.Equals(accumulator._sum)) throw new ArgumentOutOfRangeException("accumulator");
+                if (!_sum.Equals(accumulator._sum)) throw new ArgumentOutOfRangeException(nameof(accumulator));
 
                 Reset();
                 return;

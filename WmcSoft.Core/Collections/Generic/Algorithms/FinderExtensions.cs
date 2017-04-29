@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,33 +24,24 @@
 
 #endregion
 
-using System;
-using WmcSoft.Algebra;
+using System.Collections.Generic;
 
-namespace WmcSoft.Arithmetics
+namespace WmcSoft.Collections.Generic.Algorithms
 {
-    public struct DoubleMultiplicationGroup : IGroupLike<double>
+    public static class FinderExtensions
     {
-        public double Identity { get { return 1d; } }
-
-        public bool IsAssociative { get { return true; } }
-
-        public bool IsCommutative { get { return true; } }
-
-        public bool IsIdempotent { get { return false; } }
-
-        public bool SupportIdentity { get { return true; } }
-
-        public bool SupportInverse { get { return true; } }
-
-        public double Eval(double x, double y)
+        public static int FindFirstOccurence<T>(this IFinder<T> finder, IReadOnlyList<T> t)
         {
-            return x * y;
+            return finder.FindFirstOccurence(t, 0);
         }
 
-        public double Inverse(double x)
+        public static IEnumerable<int> FindAllOccurences<T>(this IFinder<T> finder, IReadOnlyList<T> t)
         {
-            return 1d / x;
+            var found = finder.FindFirstOccurence(t, 0);
+            while (found >= 0) {
+                yield return found;
+                found = finder.FindFirstOccurence(t, found + 1);
+            }
         }
     }
 }

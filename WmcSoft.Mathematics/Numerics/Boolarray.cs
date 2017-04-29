@@ -46,24 +46,28 @@ namespace WmcSoft.Numerics
             bool[] _data;
             Func<bool, bool, bool> _op;
 
-            public Writer(bool[] data, Func<bool, bool, bool> op) {
+            public Writer(bool[] data, Func<bool, bool, bool> op)
+            {
                 _data = data;
                 _op = op;
             }
 
-            public void Write(bool value, IEnumerator<bool> enumerator) {
+            public void Write(bool value, IEnumerator<bool> enumerator)
+            {
                 while (enumerator.MoveNext()) {
                     _data[_i++] = _op(value, enumerator.Current);
                 }
             }
 
-            public void Write(IEnumerator<bool> enumerator, bool value) {
+            public void Write(IEnumerator<bool> enumerator, bool value)
+            {
                 while (enumerator.MoveNext()) {
                     _data[_i++] = _op(enumerator.Current, value);
                 }
             }
 
-            public void Write(IEnumerator<bool> x, IEnumerator<bool> y) {
+            public void Write(IEnumerator<bool> x, IEnumerator<bool> y)
+            {
                 while (x.MoveNext()) {
                     if (!y.MoveNext()) {
                         do {
@@ -88,14 +92,17 @@ namespace WmcSoft.Numerics
             int _end;
 
             public SegmentEnumerator(Boolarray valarray)
-                : this(valarray._dimensions.GetDimension(-1), valarray._data) {
+                : this(valarray._dimensions.GetDimension(-1), valarray._data)
+            {
             }
-            public SegmentEnumerator(int length, bool[] data) {
+            public SegmentEnumerator(int length, bool[] data)
+            {
                 _length = length;
                 _data = data;
             }
 
-            public bool NextSegment() {
+            public bool NextSegment()
+            {
                 _begin = _end - 1;
                 _end += _length;
                 return _end <= _data.Length;
@@ -107,7 +114,8 @@ namespace WmcSoft.Numerics
                 get { return _data[_begin]; }
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 _begin++;
                 return _begin < _end;
             }
@@ -116,7 +124,8 @@ namespace WmcSoft.Numerics
                 get { return Current; }
             }
 
-            public void Reset() {
+            public void Reset()
+            {
                 _begin = 0;
                 _end = 0;
             }
@@ -125,7 +134,8 @@ namespace WmcSoft.Numerics
 
             #region IDisposable Membres
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
             #endregion
@@ -142,37 +152,44 @@ namespace WmcSoft.Numerics
 
         #region Lifecycle
 
-        internal Boolarray(Dimensions dimensions, bool[] data) {
+        internal Boolarray(Dimensions dimensions, bool[] data)
+        {
             _dimensions = dimensions;
             _data = data;
         }
         private Boolarray(Dimensions dimensions)
-            : this(dimensions, new bool[dimensions.GetCardinality()]) {
+            : this(dimensions, new bool[dimensions.GetCardinality()])
+        {
         }
 
         private Boolarray(int[] dimensions)
-            : this(new Dimensions(dimensions)) {
+            : this(new Dimensions(dimensions))
+        {
         }
 
         private Boolarray(bool value, int[] dimensions)
-            : this(value, new Dimensions(dimensions)) {
+            : this(value, new Dimensions(dimensions))
+        {
         }
 
         private Boolarray(bool value, Dimensions dimensions)
-            : this(dimensions) {
+            : this(dimensions)
+        {
             var length = _data.Length;
             for (int i = 0; i < length; i++) {
                 _data[i] = value;
             }
         }
-        public Boolarray(int n) {
+        public Boolarray(int n)
+        {
             if (n < 0) throw new ArgumentNullException("n");
 
             _dimensions = new Dimensions(n);
             _data = new bool[n];
         }
 
-        public Boolarray(int n, Func<int, bool> generator) {
+        public Boolarray(int n, Func<int, bool> generator)
+        {
             _dimensions = new Dimensions(n);
             _data = new bool[n];
             for (int i = 0; i < n; i++) {
@@ -185,7 +202,8 @@ namespace WmcSoft.Numerics
         /// </summary>
         /// <param name="values">The values.</param>
         /// <remarks>The <see cref="Boolarray"/> takes ownership of the values, it does not copy them.</remarks>
-        public Boolarray(params bool[] values) {
+        public Boolarray(params bool[] values)
+        {
             if (values == null) throw new ArgumentNullException("values");
             if (values.Length == 0) {
                 _dimensions = Empty._dimensions;
@@ -200,7 +218,8 @@ namespace WmcSoft.Numerics
         /// Construct a Boolarray filled with <c>false</c> values.
         /// </summary>
         /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
-        public static Boolarray Falsities(params int[] dimensions) {
+        public static Boolarray Falsities(params int[] dimensions)
+        {
             return new Boolarray(dimensions);
         }
 
@@ -208,7 +227,8 @@ namespace WmcSoft.Numerics
         /// Construct a Boolarray filled with <c>false</c> values.
         /// </summary>
         /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
-        public static Boolarray Falsities(Dimensions dimensions) {
+        public static Boolarray Falsities(Dimensions dimensions)
+        {
             return new Boolarray(dimensions);
         }
 
@@ -216,7 +236,8 @@ namespace WmcSoft.Numerics
         /// Construct a Boolarray filled with <c>true</c> values.
         /// </summary>
         /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
-        public static Boolarray Truths(params int[] dimensions) {
+        public static Boolarray Truths(params int[] dimensions)
+        {
             return new Boolarray(true, dimensions);
         }
 
@@ -224,7 +245,8 @@ namespace WmcSoft.Numerics
         /// Construct a Boolarray filled with <c>true</c> values.
         /// </summary>
         /// <param name="dimensions">The dimensions of the <see cref="Boolarray"/>.</param>
-        public static Boolarray Truths(Dimensions dimensions) {
+        public static Boolarray Truths(Dimensions dimensions)
+        {
             return new Boolarray(true, dimensions);
         }
 
@@ -307,7 +329,8 @@ namespace WmcSoft.Numerics
         /// <param name="dimensions">The new dimensions</param>
         /// <returns>The Boolarray</returns>
         /// <remarks>The internal storage is grown or shrinked when required.</remarks>
-        public Boolarray Reshape(params int[] dimensions) {
+        public Boolarray Reshape(params int[] dimensions)
+        {
             int length = dimensions.Aggregate(1, (x, y) => x * y);
             Array.Resize(ref _data, length);
             _dimensions = new Dimensions(dimensions);
@@ -319,14 +342,16 @@ namespace WmcSoft.Numerics
         /// </summary>
         /// <returns>The Boolarray</returns>
         /// <remarks>The internal storage is preserved.</remarks>
-        public Boolarray Ravel() {
+        public Boolarray Ravel()
+        {
             if (_data != null) {
                 _dimensions = new Dimensions(_data.Length);
             }
             return this;
         }
 
-        static void Combine(SegmentEnumerator x, SegmentEnumerator y, Writer writer) {
+        static void Combine(SegmentEnumerator x, SegmentEnumerator y, Writer writer)
+        {
             while (x.NextSegment()) {
                 if (!y.NextSegment()) {
                     do {
@@ -343,7 +368,8 @@ namespace WmcSoft.Numerics
             }
         }
 
-        static Boolarray Combine(Boolarray x, Boolarray y, Func<bool, bool, bool> op) {
+        static Boolarray Combine(Boolarray x, Boolarray y, Func<bool, bool, bool> op)
+        {
             if (x.Rank == 0)
                 return y.Clone();
             if (y.Rank == 0)
@@ -362,7 +388,8 @@ namespace WmcSoft.Numerics
         /// </summary>
         /// <param name="op">The unary operation.</param>
         /// <returns>A new <see cref="Boolarray"/>.</returns>
-        public Boolarray Map(Func<bool, bool> op) {
+        public Boolarray Map(Func<bool, bool> op)
+        {
             if (Rank == 0)
                 return Clone();
 
@@ -379,7 +406,8 @@ namespace WmcSoft.Numerics
         /// </summary>
         /// <param name="op">The unary operation.</param>
         /// <returns>The current <see cref="Boolarray"/>.</returns>
-        public Boolarray Transform(Func<bool, bool> op) {
+        public Boolarray Transform(Func<bool, bool> op)
+        {
             if (Rank > 0) {
                 var length = _data.Length;
                 for (int i = 0; i < length; i++) {
@@ -393,53 +421,66 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
-        public static Boolarray operator &(Boolarray x, Boolarray y) {
+        public static Boolarray operator &(Boolarray x, Boolarray y)
+        {
             return Combine(x, y, (a, b) => a && b);
         }
-        public static Boolarray And(Boolarray x, Boolarray y) {
+        public static Boolarray And(Boolarray x, Boolarray y)
+        {
             return x & y;
         }
 
-        public static Boolarray operator |(Boolarray x, Boolarray y) {
+        public static Boolarray operator |(Boolarray x, Boolarray y)
+        {
             return Combine(x, y, (a, b) => a | b);
         }
-        public static Boolarray Or(Boolarray x, Boolarray y) {
+        public static Boolarray Or(Boolarray x, Boolarray y)
+        {
             return x | y;
         }
 
-        public static Boolarray operator ^(Boolarray x, Boolarray y) {
+        public static Boolarray operator ^(Boolarray x, Boolarray y)
+        {
             return Combine(x, y, (a, b) => a ^ b);
         }
-        public static Boolarray Xor(Boolarray x, Boolarray y) {
+        public static Boolarray Xor(Boolarray x, Boolarray y)
+        {
             return x ^ y;
         }
 
-        public static Boolarray operator ~(Boolarray x) {
+        public static Boolarray operator ~(Boolarray x)
+        {
             return x.Map(v => !v);
         }
-        public static Boolarray Not(Boolarray x) {
+        public static Boolarray Not(Boolarray x)
+        {
             return ~x;
         }
 
-        public static bool operator ==(Boolarray x, Boolarray y) {
+        public static bool operator ==(Boolarray x, Boolarray y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Boolarray x, Boolarray y) {
+        public static bool operator !=(Boolarray x, Boolarray y)
+        {
             return !x.Equals(y);
         }
 
-        public static Boolarray operator !(Boolarray x) {
+        public static Boolarray operator !(Boolarray x)
+        {
             return x.All(v => v)
                 ? Falsities(x._dimensions)
                 : Truths(x._dimensions);
         }
 
-        public static bool operator true(Boolarray x) {
+        public static bool operator true(Boolarray x)
+        {
             return x.All(v => v);
         }
 
-        public static bool operator false(Boolarray x) {
+        public static bool operator false(Boolarray x)
+        {
             return !x.Any(v => !v);
         }
 
@@ -447,7 +488,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<bool> Membres
 
-        public IEnumerator<bool> GetEnumerator() {
+        public IEnumerator<bool> GetEnumerator()
+        {
             var data = _data ?? Empty._data;
             return data.AsEnumerable().GetEnumerator();
         }
@@ -456,7 +498,8 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             var data = _data ?? Empty._data;
             return data.GetEnumerator();
         }
@@ -465,7 +508,8 @@ namespace WmcSoft.Numerics
 
         #region ICloneable<Boolarray> Membres
 
-        public Boolarray Clone() {
+        public Boolarray Clone()
+        {
             return new Boolarray(_dimensions, (bool[])_data.Clone());
         }
 
@@ -473,7 +517,8 @@ namespace WmcSoft.Numerics
 
         #region ICloneable Membres
 
-        object ICloneable.Clone() {
+        object ICloneable.Clone()
+        {
             return Clone();
         }
 
@@ -481,7 +526,8 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Boolarray> Membres
 
-        public bool Equals(Boolarray other) {
+        public bool Equals(Boolarray other)
+        {
             if (_dimensions != other._dimensions)
                 return false;
             var length = _data.Length;
@@ -492,13 +538,15 @@ namespace WmcSoft.Numerics
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Boolarray)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_data == null)
                 return 0;
             return _data.GetHashCode();

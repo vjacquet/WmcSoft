@@ -31,7 +31,8 @@ namespace WmcSoft
 {
     public static class IntExtensions
     {
-        public static int Clamp(this long x) {
+        public static int Clamp(this long x)
+        {
             if (x < Int32.MinValue)
                 return Int32.MinValue;
             if (x > Int32.MaxValue)
@@ -39,7 +40,8 @@ namespace WmcSoft
             return (int)x;
         }
 
-        static int CheckDigit(int value) {
+        static int CheckDigit(int value)
+        {
             if (value < 0 || value > 9)
                 throw new ArgumentOutOfRangeException("value");
             return value;
@@ -50,7 +52,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="digits">The digits, from left to right.</param>
         /// <returns>The Int32.</returns>
-        public static int ToInt32(this IEnumerable<int> digits) {
+        public static int ToInt32(this IEnumerable<int> digits)
+        {
             if (digits == null)
                 return 0;
             using (var enumerator = digits.GetEnumerator()) {

@@ -43,7 +43,8 @@ namespace WmcSoft.Arithmetics
         /// <returns>The dot product.</returns>
         /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
         /// the smaller is padded with zeros.</remarks>
-        public static double DotProduct(double[] x, double[] y) {
+        public static double DotProduct(double[] x, double[] y)
+        {
             if (x == null || y == null)
                 return 0d;
             var length = Math.Min(x.Length, y.Length);
@@ -66,7 +67,8 @@ namespace WmcSoft.Arithmetics
         /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
         /// the small is padded with zeros.</remarks>
         public static T DotProduct<T, A>(this A arithmetics, T[] x, T[] y)
-            where A : IArithmetics<T> {
+            where A : IArithmetics<T>
+        {
             if (x == null || y == null)
                 return arithmetics.Zero;
             var length = Math.Min(x.Length, y.Length);
@@ -80,7 +82,8 @@ namespace WmcSoft.Arithmetics
         }
 
         public static T DotProduct<T, A>(T[] x, T[] y)
-            where A : IArithmetics<T>, new() {
+            where A : IArithmetics<T>, new()
+        {
             return DotProduct<T, A>(new A(), x, y);
         }
 
@@ -93,7 +96,8 @@ namespace WmcSoft.Arithmetics
         /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
         /// the small is padded with zeros.</remarks>
         public static T DotProductRing<T, R>(this R ring, T[] x, T[] y)
-            where R : IRingLike<T> {
+            where R : IRingLike<T>
+        {
             if (x == null || y == null)
                 return ring.Zero;
             var length = Math.Min(x.Length, y.Length);
@@ -114,7 +118,8 @@ namespace WmcSoft.Arithmetics
         /// <returns>The dot product.</returns>
         /// <remarks>null enumerable are consider like empty enumerable and if the two enumerables have different size, 
         /// the smaller is padded with zeros.</remarks>
-        public static double DotProduct(IEnumerable<double> x, IEnumerable<double> y) {
+        public static double DotProduct(IEnumerable<double> x, IEnumerable<double> y)
+        {
             if (x == null || y == null)
                 return 0d;
             using (var ex = x.GetEnumerator())
@@ -137,7 +142,8 @@ namespace WmcSoft.Arithmetics
         /// <remarks>null enumerable are consider like empty enumerable and if the two enumerables have different size, 
         /// the smaller is padded with zeros.</remarks>
         public static T DotProduct<T, A>(this A arithmetics, IEnumerable<T> x, IEnumerable<T> y)
-            where A : IArithmetics<T> {
+            where A : IArithmetics<T>
+        {
             var result = arithmetics.Zero;
             if (x == null || y == null)
                 return result;
@@ -151,7 +157,8 @@ namespace WmcSoft.Arithmetics
         }
 
         public static T DotProduct<T, A>(IEnumerable<T> x, IEnumerable<T> y)
-            where A : IArithmetics<T>, new() {
+            where A : IArithmetics<T>, new()
+        {
             return DotProduct<T, A>(new A(), x, y);
         }
 
@@ -164,7 +171,8 @@ namespace WmcSoft.Arithmetics
         /// <remarks>null vector are consider like empty vector and if the two vector have different size, 
         /// the small is padded with zeros.</remarks>
         public static T DotProductRing<T, R>(this R ring, IEnumerable<T> x, IEnumerable<T> y)
-            where R : IRingLike<T> {
+            where R : IRingLike<T>
+        {
             var result = ring.Zero;
             if (x == null || y == null)
                 return result;
@@ -177,18 +185,22 @@ namespace WmcSoft.Arithmetics
             }
         }
 
-        static bool Odd(int n) {
+        static bool Odd(int n)
+        {
             return (n % 2) == 1;
         }
-        static bool Even(int n) {
+        static bool Even(int n)
+        {
             return (n % 2) == 0;
         }
-        static int HalfNonNegative(int n) {
+        static int HalfNonNegative(int n)
+        {
             return n / 2;
         }
 
         static T PowerAccumulateSemiGroup<T, G>(this G group, T x, T y, int n)
-            where G : IGroupLike<T> {
+            where G : IGroupLike<T>
+        {
             // precondition: n >= 0
             if (n == 0)
                 return x;
@@ -204,7 +216,8 @@ namespace WmcSoft.Arithmetics
         }
 
         public static T PowerSemiGroup<T, G>(this G group, T x, int n)
-            where G : IGroupLike<T> {
+            where G : IGroupLike<T>
+        {
             // precondition: n > 0
             while (Even(n)) {
                 x = group.Eval(x, x);
@@ -216,14 +229,16 @@ namespace WmcSoft.Arithmetics
         }
 
         public static T PowerMonoid<T, G>(this G group, T x, int n)
-            where G : IGroupLike<T> {
+            where G : IGroupLike<T>
+        {
             if (n == 0)
                 return group.Identity;
             return PowerSemiGroup(group, x, n);
         }
 
         public static T Power<T, G>(this G group, T x, int n)
-            where G : IGroupLike<T> {
+            where G : IGroupLike<T>
+        {
             if (n < 0) {
                 n = -n;
                 x = group.Inverse(x);
@@ -232,17 +247,20 @@ namespace WmcSoft.Arithmetics
         }
 
         public static T PowerSemiGroup<T, G>(this T x, int n)
-            where G : IGroupLike<T>, new() {
+            where G : IGroupLike<T>, new()
+        {
             return PowerSemiGroup(new G(), x, n);
         }
 
         public static T PowerMonoid<T, G>(this T x, int n)
-            where G : IGroupLike<T>, new() {
+            where G : IGroupLike<T>, new()
+        {
             return PowerMonoid(new G(), x, n);
         }
 
         public static T Power<T, G>(this T x, int n)
-            where G : IGroupLike<T>, new() {
+            where G : IGroupLike<T>, new()
+        {
             return Power(new G(), x, n);
         }
     }

@@ -30,36 +30,44 @@ namespace WmcSoft.Arithmetics
     {
         #region IArithmetics<double> Membres
 
-        public double Add(double x, double y) {
+        public double Add(double x, double y)
+        {
             return x + y;
         }
 
-        public double Subtract(double x, double y) {
+        public double Subtract(double x, double y)
+        {
             return x - y;
         }
 
-        public double Multiply(double x, double y) {
+        public double Multiply(double x, double y)
+        {
             return x * y;
         }
 
-        public double Divide(double x, double y) {
+        public double Divide(double x, double y)
+        {
             return x / y;
         }
 
-        public double Remainder(double x, double y) {
+        public double Remainder(double x, double y)
+        {
             return x % y;
         }
 
-        public double DivideRemainder(double x, double y, out double remainder) {
+        public double DivideRemainder(double x, double y, out double remainder)
+        {
             remainder = x % y;
             return x / y;
         }
 
-        public double Negate(double x) {
+        public double Negate(double x)
+        {
             return -x;
         }
 
-        public double Reciprocal(double x) {
+        public double Reciprocal(double x)
+        {
             return 1d / x;
         }
 

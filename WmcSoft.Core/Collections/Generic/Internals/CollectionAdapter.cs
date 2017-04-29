@@ -43,7 +43,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Lifecycle
 
-        public CollectionAdapter(int count, IEnumerable<T> enumerable, IEqualityComparer<T> comparer = null) {
+        public CollectionAdapter(int count, IEnumerable<T> enumerable, IEqualityComparer<T> comparer = null)
+        {
             _enumerable = enumerable;
             _count = count;
             _comparer = comparer ?? EqualityComparer<T>.Default;
@@ -53,8 +54,7 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IReadOnlyCollection<T> Members
 
-        public int Count
-        {
+        public int Count {
             get { return _count; }
         }
 
@@ -62,7 +62,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _enumerable.GetEnumerator();
         }
 
@@ -70,7 +71,8 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region IEnumerable Members
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return _enumerable.GetEnumerator();
         }
 
@@ -78,29 +80,33 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region ICollection<T> Members
 
-        void ICollection<T>.Add(T item) {
+        void ICollection<T>.Add(T item)
+        {
             throw new NotSupportedException();
         }
 
-        void ICollection<T>.Clear() {
+        void ICollection<T>.Clear()
+        {
             throw new NotSupportedException();
         }
 
-        bool ICollection<T>.Contains(T item) {
+        bool ICollection<T>.Contains(T item)
+        {
             return _enumerable.Any(x => _comparer.Equals(x, item));
         }
 
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex) {
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
             foreach (var item in _enumerable)
                 array[arrayIndex++] = item;
         }
 
-        bool ICollection<T>.IsReadOnly
-        {
+        bool ICollection<T>.IsReadOnly {
             get { return true; }
         }
 
-        bool ICollection<T>.Remove(T item) {
+        bool ICollection<T>.Remove(T item)
+        {
             throw new NotSupportedException();
         }
 
