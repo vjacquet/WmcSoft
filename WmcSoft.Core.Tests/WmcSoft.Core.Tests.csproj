@@ -147,6 +147,7 @@
     <Compile Include="TestTools\UnitTesting\ContractAssert.cs" />
     <Compile Include="Text\DecimalLeadingZeroCounterTests.cs" />
     <Compile Include="Text\DecimalCounterTests.cs" />
+    <Compile Include="Text\RopeTests.cs" />
     <Compile Include="Text\UpperAlphaCounterTests.cs" />
     <Compile Include="Text\LowerAlphaCounterTests.cs" />
     <Compile Include="Text\EncoderBestFitFallbackTests.cs" />
