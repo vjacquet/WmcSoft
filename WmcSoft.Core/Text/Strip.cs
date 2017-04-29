@@ -41,7 +41,7 @@ namespace WmcSoft.Text
         #region Public fields
 
         internal static readonly Strip Null = new Strip();
-        public static readonly Strip Empty = new Strip(String.Empty, 0, 0);
+        public static readonly Strip Empty = new Strip(string.Empty, 0, 0);
 
         #endregion
 
@@ -183,13 +183,13 @@ namespace WmcSoft.Text
         public Strip Trim() {
             var end = _end - 1; ;
             for (; end >= _start; end--) {
-                if (!Char.IsWhiteSpace(_s[end]))
+                if (!char.IsWhiteSpace(_s[end]))
                     break;
             }
 
             var start = _start;
             for (; start < end; start++) {
-                if (!Char.IsWhiteSpace(_s[start]))
+                if (!char.IsWhiteSpace(_s[start]))
                     break;
             }
 
@@ -233,7 +233,7 @@ namespace WmcSoft.Text
             var end = _end - 1;
             if (trimChars == null || trimChars.Length == 0) {
                 for (; end >= _start; end--) {
-                    if (!Char.IsWhiteSpace(_s[end]))
+                    if (!char.IsWhiteSpace(_s[end]))
                         break;
                 }
             } else if (trimChars.Length == 1) {
@@ -256,7 +256,7 @@ namespace WmcSoft.Text
             var start = _start;
             if (trimChars == null || trimChars.Length == 0) {
                 for (; start < _end; start++) {
-                    if (!Char.IsWhiteSpace(_s[start]))
+                    if (!char.IsWhiteSpace(_s[start]))
                         break;
                 }
             } else if (trimChars.Length == 1) {
