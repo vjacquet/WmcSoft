@@ -51,7 +51,8 @@ namespace WmcSoft.Business
 
         #region Lifecycle
 
-        protected UnitOfWork() {
+        protected UnitOfWork()
+        {
             _identityMap = new IdentityMap();
             _newInstances = new List<TEntity>();
             _dirtyInstances = new List<TEntity>();
@@ -72,7 +73,8 @@ namespace WmcSoft.Business
 
         #region Methods
 
-        public void RegisterNew(TEntity instance) {
+        public void RegisterNew(TEntity instance)
+        {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
             Trace.Assert(!_dirtyInstances.Contains(instance), "Domain object should not be dirty");
@@ -81,7 +83,8 @@ namespace WmcSoft.Business
             _newInstances.Add(instance);
         }
 
-        public void RegisterDirty(TEntity instance) {
+        public void RegisterDirty(TEntity instance)
+        {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
             Trace.Assert(!_removeInstances.Contains(instance), "Domain object should not be removed");
@@ -90,13 +93,15 @@ namespace WmcSoft.Business
             }
         }
 
-        public void RegisterClean(TEntity instance) {
+        public void RegisterClean(TEntity instance)
+        {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
             _identityMap.Register(instance);
         }
 
-        public void RegisterRemoved(TEntity instance) {
+        public void RegisterRemoved(TEntity instance)
+        {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
             if (!_newInstances.Remove(instance)) {
@@ -107,7 +112,8 @@ namespace WmcSoft.Business
             }
         }
 
-        public void Commit() {
+        public void Commit()
+        {
             InsertNew();
             UpdateDirty();
             DeleteRemoved();
@@ -127,7 +133,8 @@ namespace WmcSoft.Business
 
         #region IChangeTracking Membres
 
-        void IChangeTracking.AcceptChanges() {
+        void IChangeTracking.AcceptChanges()
+        {
             Commit();
         }
 
@@ -141,7 +148,8 @@ namespace WmcSoft.Business
 
         #region IRevertibleChangeTracking Membres
 
-        void IRevertibleChangeTracking.RejectChanges() {
+        void IRevertibleChangeTracking.RejectChanges()
+        {
             _newInstances.Clear();
             _dirtyInstances.Clear();
             _removeInstances.Clear();

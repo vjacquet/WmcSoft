@@ -36,21 +36,25 @@ namespace WmcSoft.Business
         private readonly Action<IList<TEntity>> _update;
         private readonly Action<IList<TEntity>> _delete;
 
-        public ActionsUnitOfWork(Action<IList<TEntity>> create, Action<IList<TEntity>> update, Action<IList<TEntity>> delete) {
+        public ActionsUnitOfWork(Action<IList<TEntity>> create, Action<IList<TEntity>> update, Action<IList<TEntity>> delete)
+        {
             _create = create;
             _update = update;
             _delete = delete;
         }
 
-        protected override void DeleteRemoved() {
+        protected override void DeleteRemoved()
+        {
             _delete(_removeInstances);
         }
 
-        protected override void InsertNew() {
+        protected override void InsertNew()
+        {
             _create(_newInstances);
         }
 
-        protected override void UpdateDirty() {
+        protected override void UpdateDirty()
+        {
             _update(_dirtyInstances);
         }
     }
