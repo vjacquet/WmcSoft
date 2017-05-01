@@ -88,7 +88,8 @@ namespace WmcSoft.Configuration
             set { this["replyTo"] = value; }
         }
 
-        static IEnumerable<MailAddress> Forward(MailAddress address) {
+        static IEnumerable<MailAddress> Forward(MailAddress address)
+        {
             yield return address;
         }
 
@@ -98,7 +99,8 @@ namespace WmcSoft.Configuration
         /// <returns>The mail message.</returns>
         /// <remarks>Duplicates are removed per properties and across properties 
         /// (i.e. an email address in <see cref="MailMessage.To"/> will be removed from <see cref="MailMessage.CC"/> and <see cref="MailMessage.Bcc"/></remarks>
-        public MailMessage CreateMessage() {
+        public MailMessage CreateMessage()
+        {
             return CreateMessage(Forward);
         }
 
@@ -109,7 +111,8 @@ namespace WmcSoft.Configuration
         /// <returns>The mail message.</returns>
         /// <remarks>Duplicates are removed per properties and across properties 
         /// (i.e. an email address in <see cref="MailMessage.To"/> will be removed from <see cref="MailMessage.CC"/> and <see cref="MailMessage.Bcc"/></remarks>
-        public MailMessage CreateMessage(Func<MailAddress, IEnumerable<MailAddress>> interpreter) {
+        public MailMessage CreateMessage(Func<MailAddress, IEnumerable<MailAddress>> interpreter)
+        {
             var m = new MailMessage();
 
             m.Subject = Subject ?? "";

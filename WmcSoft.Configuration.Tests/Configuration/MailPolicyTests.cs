@@ -9,7 +9,8 @@ namespace WmcSoft.Configuration
     public class MailPolicyTests
     {
         [TestMethod]
-        public void CanLoadMailPolicies() {
+        public void CanLoadMailPolicies()
+        {
             var section = (TestSection)ConfigurationManager.GetSection("wmc");
             var policy = section.MailPolicies["SendNewsletter"];
             Assert.IsNotNull(policy);

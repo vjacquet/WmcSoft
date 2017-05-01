@@ -26,8 +26,8 @@
 
 using System;
 using System.Collections;
-using System.Linq;
 using System.Configuration;
+using System.Linq;
 using System.Xml;
 using WmcSoft.Collections;
 using WmcSoft.Properties;
@@ -46,7 +46,8 @@ namespace WmcSoft.Configuration
         /// Initializes a new instance of the 
         /// <see cref="ListSectionHandler"/> class.
         /// </summary>
-        public ListSectionHandler() {
+        public ListSectionHandler()
+        {
         }
 
         /// <summary>
@@ -75,7 +76,8 @@ namespace WmcSoft.Configuration
         /// <param name="section">The <see cref="System.Xml.XmlNode"/> that contains the configuration information to be handled. 
         /// Provides direct access to the XML contents of the configuration section.</param>
         /// <returns>A <see cref="System.Collections.ArrayList"/> that contains the section's configuration settings.</returns>
-        public virtual object Create(object parent, object configContext, XmlNode section) {
+        public virtual object Create(object parent, object configContext, XmlNode section)
+        {
             if (section.Attributes.Count > 0)
                 throw new ConfigurationErrorsException(String.Format(Resources.UnrecognizedAttributeFormat, section.Attributes[0]), section);
 

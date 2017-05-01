@@ -33,13 +33,15 @@ namespace WmcSoft.Configuration
 {
     public sealed class NullableIntConverter : ConfigurationConverterBase
     {
-        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data) {
+        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data)
+        {
             if (string.IsNullOrEmpty((string)data))
                 return null;
             return Convert.ToInt32((string)data, 10);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type) {
+        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+        {
             if (value == null)
                 return "";
             return ((int)value).ToString(CultureInfo.InvariantCulture);

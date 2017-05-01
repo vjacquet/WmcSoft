@@ -38,7 +38,8 @@ namespace WmcSoft.Configuration
     /// <remarks>Multiple e-mail addresses must be separated with a comma character (see <https://tools.ietf.org/html/rfc2822>).</remarks>
     public sealed class MailAddressCollectionConverter : ConfigurationConverterBase
     {
-        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data) {
+        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data)
+        {
             var collection = new MailAddressCollection();
             if (data != null) {
                 var addresses = data.ToString();
@@ -47,7 +48,8 @@ namespace WmcSoft.Configuration
             return collection;
         }
 
-        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type) {
+        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+        {
             var collection = value as MailAddressCollection;
             if (collection == null || collection.Count == 0)
                 return "";

@@ -26,15 +26,15 @@
 
 using System;
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using WmcSoft.Collections;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Properties;
 using WmcSoft.Xml;
-using System.Collections.Generic;
 
 namespace WmcSoft.Configuration
 {
@@ -43,7 +43,8 @@ namespace WmcSoft.Configuration
     /// </summary>
     public sealed class FileSearchSectionHandler : ListSectionHandler
     {
-        public FileSearchSectionHandler() {
+        public FileSearchSectionHandler()
+        {
         }
 
         /// <summary>
@@ -71,7 +72,8 @@ namespace WmcSoft.Configuration
         /// Provides direct access to the XML contents of the configuration section.</param>
         /// <returns>A <see cref="System.Collections.ArrayList"/> that 
         /// contains the section's configuration settings.</returns>
-        public override object Create(object parent, object context, XmlNode section) {
+        public override object Create(object parent, object context, XmlNode section)
+        {
             var paths = section.Attributes.RemoveNamedItem("root").GetValueOrNull()
                 ?? AppDomain.CurrentDomain.SetupInformation.PrivateBinPath;
 

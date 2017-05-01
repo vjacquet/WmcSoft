@@ -34,13 +34,15 @@ namespace WmcSoft.Configuration
 {
     public sealed class MailAddressConverter : ConfigurationConverterBase
     {
-        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data) {
+        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data)
+        {
             if (data != null)
                 return new MailAddress(data.ToString());
             return null;
         }
 
-        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type) {
+        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+        {
             var address = value as MailAddress;
             if (address == null)
                 return "";
