@@ -43,7 +43,8 @@ namespace WmcSoft
         /// <typeparam name="T">The type of the components of the triple.</typeparam>
         /// <param name="item">The value of the three component of the triple.</param>
         /// <returns>A triple whose value is (<paramref name="item"/>, <paramref name="item"/>, <paramref name="item"/>).</returns>
-        public static Triple<T> Create<T>(T item = default(T)) {
+        public static Triple<T> Create<T>(T item = default(T))
+        {
             return new Triple<T>(item, item, item);
         }
 
@@ -55,7 +56,8 @@ namespace WmcSoft
         /// <param name="item2">The value of the second component of the triple.</param>
         /// <param name="item3">The value of the third component of the triple.</param>
         /// <returns>A triple whose value is (<paramref name="item1"/>, <paramref name="item2"/>, <paramref name="item3"/>).</returns>
-        public static Triple<T> Create<T>(T item1, T item2, T item3) {
+        public static Triple<T> Create<T>(T item1, T item2, T item3)
+        {
             return new Triple<T>(item1, item2, item3);
         }
     }
@@ -72,53 +74,73 @@ namespace WmcSoft
         public T Item2 { get; }
         public T Item3 { get; }
 
-        public Triple(T item1, T item2, T item3) {
+        public Triple(T item1, T item2, T item3)
+        {
             Item1 = item1;
             Item2 = item2;
-            Item2 = item3;
+            Item3 = item3;
         }
 
-        public static implicit operator Tuple<T, T, T>(Triple<T> triple) {
+        public void Deconstruct(out T item1, out T item2, out T item3)
+        {
+            item1 = Item1;
+            item2 = Item2;
+            item3 = Item3;
+        }
+
+        public static implicit operator Tuple<T, T, T>(Triple<T> triple)
+        {
             return Tuple.Create(triple.Item1, triple.Item2, triple.Item3);
         }
 
-        public static implicit operator Triple<T>(Tuple<T, T, T> tuple) {
+        public static implicit operator Triple<T>(Tuple<T, T, T> tuple)
+        {
             return new Triple<T>(tuple.Item1, tuple.Item2, tuple.Item3);
         }
 
-        public static bool operator ==(Triple<T> a, Triple<T> b) {
+        public static bool operator ==(Triple<T> a, Triple<T> b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(Triple<T> a, Triple<T> b) {
+        public static bool operator !=(Triple<T> a, Triple<T> b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(Triple<T> x, Triple<T> y) {
+        public static bool operator <(Triple<T> x, Triple<T> y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(Triple<T> x, Triple<T> y) {
+        public static bool operator <=(Triple<T> x, Triple<T> y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(Triple<T> x, Triple<T> y) {
+        public static bool operator >(Triple<T> x, Triple<T> y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(Triple<T> x, Triple<T> y) {
+        public static bool operator >=(Triple<T> x, Triple<T> y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "(" + Item1 + ", " + Item2 + ", " + Item3 + ")";
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return ((IStructuralEquatable)this).Equals(obj, EqualityComparer<T>.Default);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return ((IStructuralEquatable)this).GetHashCode(EqualityComparer<T>.Default);
         }
 
-        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer) {
+        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer)
+        {
             if (other == null || other.GetType() != GetType())
                 return false;
 
@@ -128,11 +150,13 @@ namespace WmcSoft
                 && comparer.Equals(Item3, that.Item3);
         }
 
-        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
+        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer)
+        {
             return comparer.CombineHashCodes(Item1, Item2, Item3);
         }
 
-        int IStructuralComparable.CompareTo(object other, IComparer comparer) {
+        int IStructuralComparable.CompareTo(object other, IComparer comparer)
+        {
             if (other == null)
                 return 1;
             if (other.GetType() != GetType())
@@ -146,18 +170,21 @@ namespace WmcSoft
             return comparer.Compare(Item3, that.Item3);
         }
 
-        int IComparable.CompareTo(object obj) {
+        int IComparable.CompareTo(object obj)
+        {
             return ((IStructuralComparable)this).CompareTo(obj, Comparer<T>.Default);
         }
 
-        public bool Equals(Triple<T> other) {
+        public bool Equals(Triple<T> other)
+        {
             var comparer = EqualityComparer<T>.Default;
             return comparer.Equals(Item1, other.Item1)
                 && comparer.Equals(Item2, other.Item2)
                 && comparer.Equals(Item3, other.Item3);
         }
 
-        public int CompareTo(Triple<T> other) {
+        public int CompareTo(Triple<T> other)
+        {
             var comparer = Comparer<T>.Default;
             var result = comparer.Compare(Item1, other.Item1);
             if (result != 0) return result;
