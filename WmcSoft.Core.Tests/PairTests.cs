@@ -11,7 +11,8 @@ namespace WmcSoft
     public class PairTests
     {
         [TestMethod]
-        public void CanComparePair() {
+        public void CanComparePair()
+        {
             var p1 = Pair.Create(1, 2);
             var p2 = Pair.Create(1, 5);
             var p3 = Pair.Create(2, 2);
@@ -26,7 +27,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CanConvertToTuple() {
+        public void CanConvertPairToTuple()
+        {
             var p = Pair.Create(1, 2);
             Tuple<int, int> t = p;
 
@@ -35,12 +37,30 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CanConvertToFrom() {
+        public void CanConvertPairToFromTuple()
+        {
             var t = Tuple.Create(1, 2);
             Pair<int> p = t;
 
             Assert.AreEqual(t.Item1, p.Item1);
             Assert.AreEqual(t.Item2, p.Item2);
+        }
+
+        [TestMethod]
+        public void CanDeconstructPair()
+        {
+            var p = Pair.Create(16, 64);
+            var (first, last) = p;
+
+            Assert.AreEqual(16, first);
+            Assert.AreEqual(64, last);
+        }
+
+        [TestMethod]
+        public void CheckPairToString()
+        {
+            var p = Pair.Create(16, 64);
+            Assert.AreEqual("(16, 64)", p.ToString());
         }
     }
 }
