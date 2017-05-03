@@ -72,6 +72,12 @@ namespace WmcSoft.Numerics
             }
         }
 
+        public void Deconstruct(out int numerator, out int denominator)
+        {
+            numerator = _numerator;
+            denominator = _denominator;
+        }
+
         #endregion
 
         #region Properties

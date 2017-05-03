@@ -82,5 +82,15 @@ namespace WmcSoft.Numerics.Tests
             var x = new BigFraction(2, 6);
             Assert.AreEqual(new BigFraction(1, 3), x);
         }
+
+        [TestMethod]
+        public void CanDeconstructBigFraction()
+        {
+            var q = new BigFraction(4, 3);
+            var (n, d) = q;
+
+            Assert.AreEqual(4, n);
+            Assert.AreEqual(3, d);
+        }
     }
 }
