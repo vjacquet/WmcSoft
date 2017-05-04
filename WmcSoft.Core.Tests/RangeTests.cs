@@ -8,7 +8,8 @@ namespace WmcSoft.Business
     public class RangeTests
     {
         [TestMethod]
-        public void CanCreateRange() {
+        public void CanCreateRange()
+        {
             var actual = new Range<int>(2, 5);
 
             Assert.AreEqual(2, actual.Lower);
@@ -16,21 +17,33 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
+        public void CanDeconstructRange()
+        {
+            var actual = new Range<int>(2, 5);
+            var (lo, hi) = actual;
+            Assert.AreEqual(2, lo);
+            Assert.AreEqual(5, hi);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void CheckInvalidRange() {
+        public void CheckInvalidRange()
+        {
             var actual = new Range<int>(5, 2);
             Assert.Fail();
         }
 
         [TestMethod]
-        public void CanCreateEmptyRange() {
+        public void CanCreateEmptyRange()
+        {
             var actual = new Range<int>();
 
             Assert.AreEqual(true, actual.IsEmpty);
         }
 
         [TestMethod]
-        public void CanEqualRange() {
+        public void CanEqualRange()
+        {
             var x = new Range<int>(2, 5);
             var y = new Range<int>(2, 5);
 
@@ -38,14 +51,16 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CheckIsEmpty() {
+        public void CheckIsEmpty()
+        {
             var actual = new Range<int>(2, 2);
 
             Assert.AreEqual(true, actual.IsEmpty);
         }
 
         [TestMethod]
-        public void CheckIncludes() {
+        public void CheckIncludes()
+        {
             var actual = new Range<int>(2, 5);
             var included = new Range<int>(3, 4);
             var overlapped = new Range<int>(3, 7);
@@ -59,7 +74,8 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CheckOverlaps() {
+        public void CheckOverlaps()
+        {
             var actual = new Range<int>(2, 5);
             var included = new Range<int>(3, 4);
             var overlapped = new Range<int>(3, 7);
@@ -73,7 +89,8 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CheckIsDistinct() {
+        public void CheckIsDistinct()
+        {
             var actual = new Range<int>(2, 5);
             var included = new Range<int>(3, 4);
             var overlapped = new Range<int>(3, 7);
@@ -87,7 +104,8 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CheckIntersect() {
+        public void CheckIntersect()
+        {
             //  0    5   10   15   20
             //  !....!....!....!....!
             //    a  b  c d    e
@@ -100,7 +118,8 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CheckPartialMerge() {
+        public void CheckPartialMerge()
+        {
             var data = new[] {
                 Range.Create(1, 3),
                 Range.Create(4, 5),
@@ -116,7 +135,8 @@ namespace WmcSoft.Business
         }
 
         [TestMethod]
-        public void CheckPartialMergeOnOverlappingRanges() {
+        public void CheckPartialMergeOnOverlappingRanges()
+        {
             var data = new[] {
                 Range.Create(1, 3),
                 Range.Create(4, 5),
