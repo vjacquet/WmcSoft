@@ -5,12 +5,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WmcSoft
 {
     [TestClass]
-    public class LatitudeTests
+    public class LongitudeTests
     {
         [TestMethod]
-        public void CanToStringLatitude() {
+        public void CanToStringLongitude() {
             var iv = CultureInfo.InvariantCulture;
-            var l = new Latitude(49, 30);
+            var l = new Longitude(49, 30);
 
             Assert.AreEqual("49° 30' 00\"", l.ToString(iv));
             Assert.AreEqual("49° 30.00'", l.ToString("M", iv));
@@ -18,7 +18,7 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CanToStringLatitudeWithNegativeValues()
+        public void CanToStringLongitudeWithNegativeValues()
         {
             var iv = CultureInfo.InvariantCulture;
             var l = new Latitude(-49, 30);
@@ -29,9 +29,9 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CanDeconstructLatitude()
+        public void CanDeconstructLongitude()
         {
-            var l = new Latitude(10, 15, 30);
+            var l = new Longitude(10, 15, 30);
             var (d, m, s) = l;
 
             Assert.AreEqual(10, d);
@@ -40,7 +40,7 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CanDeconstructNegativeLatitude()
+        public void CanDeconstructLongitudeLatitude()
         {
             var l = new Latitude(-10, 15, 30);
             var (d, m, s) = l;
