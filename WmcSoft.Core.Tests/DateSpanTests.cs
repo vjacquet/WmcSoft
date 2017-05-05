@@ -18,5 +18,17 @@ namespace WmcSoft
             var y = new DateSpan(days: 7);
             Assert.IsTrue(x == y);
         }
+
+        [TestMethod]
+        public void CanDeconstructDateSpan()
+        {
+            var x = new DateSpan(1, 2, 3, 4);
+            var (y, m, w, d) = x;
+
+            Assert.AreEqual(1, y);
+            Assert.AreEqual(2, m);
+            Assert.AreEqual(3, w);
+            Assert.AreEqual(4, d);
+        }
     }
 }

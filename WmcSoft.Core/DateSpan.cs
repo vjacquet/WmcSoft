@@ -44,14 +44,24 @@ namespace WmcSoft
         readonly int _days;
         readonly int _months;
 
-        private DateSpan(int days, int month, PiecewiseConstruct tag) {
+        private DateSpan(int days, int month, PiecewiseConstruct tag)
+        {
             _days = days;
             _months = month;
         }
 
-        public DateSpan(int years = 0, int months = 0, int weeks = 0, int days = 0) {
+        public DateSpan(int years = 0, int months = 0, int weeks = 0, int days = 0)
+        {
             _days = DaysInWeek * weeks + days;
             _months = MonthsInYear * years + months;
+        }
+
+        public void Deconstruct(out int years, out int months, out int weeks, out int days)
+        {
+            years = _months / MonthsInYear;
+            months = _months % MonthsInYear;
+            weeks = _days / DaysInWeek;
+            days = _days % DaysInWeek;
         }
 
         #endregion
@@ -67,60 +77,75 @@ namespace WmcSoft
 
         #region Operators
 
-        public static DateSpan operator +(DateSpan x) {
+        public static DateSpan operator +(DateSpan x)
+        {
             return x;
         }
 
-        public static DateSpan operator -(DateSpan x) {
+        public static DateSpan operator -(DateSpan x)
+        {
             return new DateSpan(-x.Days, -x.Months, PiecewiseConstruct.Tag);
         }
-        public DateSpan Negate() {
+        public DateSpan Negate()
+        {
             return -this;
         }
 
-        public static DateSpan operator +(DateSpan x, DateSpan y) {
+        public static DateSpan operator +(DateSpan x, DateSpan y)
+        {
             return new DateSpan(x.Days + y.Days, x.Months + y.Months, PiecewiseConstruct.Tag);
         }
-        public DateSpan Add(DateSpan x) {
+        public DateSpan Add(DateSpan x)
+        {
             return this + x;
         }
 
-        public static DateSpan operator -(DateSpan x, DateSpan y) {
+        public static DateSpan operator -(DateSpan x, DateSpan y)
+        {
             return new DateSpan(x.Days - y.Days, x.Months - y.Months, PiecewiseConstruct.Tag);
         }
-        public DateSpan Substract(DateSpan x) {
+        public DateSpan Substract(DateSpan x)
+        {
             return this - x;
         }
 
-        public static bool operator ==(DateSpan x, DateSpan y) {
+        public static bool operator ==(DateSpan x, DateSpan y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(DateSpan x, DateSpan y) {
+        public static bool operator !=(DateSpan x, DateSpan y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool Equals(DateSpan x, DateSpan y) {
+        public static bool Equals(DateSpan x, DateSpan y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator <(DateSpan x, DateSpan y) {
+        public static bool operator <(DateSpan x, DateSpan y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator >(DateSpan x, DateSpan y) {
+        public static bool operator >(DateSpan x, DateSpan y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(DateSpan x, DateSpan y) {
+        public static bool operator <=(DateSpan x, DateSpan y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator >=(DateSpan x, DateSpan y) {
+        public static bool operator >=(DateSpan x, DateSpan y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static int Compare(DateSpan x, DateSpan y) {
+        public static int Compare(DateSpan x, DateSpan y)
+        {
             return x.CompareTo(y);
         }
 
@@ -128,11 +153,13 @@ namespace WmcSoft
 
         #region IComparable<DateSpan> members
 
-        public int CompareTo(DateSpan other) {
+        public int CompareTo(DateSpan other)
+        {
             return (_months * DaysInMonth + _days).CompareTo(other._months * DaysInMonth + other._days);
         }
 
-        public int CompareTo(object obj) {
+        public int CompareTo(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return 1;
             return CompareTo((DateSpan)obj);
@@ -142,7 +169,8 @@ namespace WmcSoft
 
         #region IEquatable<DateSpan> members
 
-        public bool Equals(DateSpan other) {
+        public bool Equals(DateSpan other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -150,13 +178,15 @@ namespace WmcSoft
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return false;
             return Equals((DateSpan)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return (_months * DaysInMonth + _days).GetHashCode();
         }
 
