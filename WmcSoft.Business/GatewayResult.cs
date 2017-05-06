@@ -43,7 +43,8 @@ namespace WmcSoft
 
         private readonly GatewayError[] _errors;
 
-        private GatewayResult(GatewayError[] errors) {
+        private GatewayResult(GatewayError[] errors)
+        {
             _errors = errors;
         }
 
@@ -55,13 +56,15 @@ namespace WmcSoft
             get { return new ReadOnlyCollection<GatewayError>(_errors); }
         }
 
-        public static GatewayResult Failed(params GatewayError[] errors) {
+        public static GatewayResult Failed(params GatewayError[] errors)
+        {
             if (errors == null || errors.Length == 0)
                 return new GatewayResult(Undefined);
             return new GatewayResult((GatewayError[])errors.Clone());
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (Succeeded)
                 return "Succeeded";
             if (_errors.Length == 0)
@@ -71,12 +74,14 @@ namespace WmcSoft
 
         #region Serialization
 
-        private GatewayResult(SerializationInfo info, StreamingContext context) {
+        private GatewayResult(SerializationInfo info, StreamingContext context)
+        {
             var succeeded = info.GetBoolean("Succeeded");
             _errors = succeeded ? None : info.GetValue<GatewayError[]>("Errors");
         }
 
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) {
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
             if (Succeeded) {
                 info.AddValue("Succeeded", true);
             } else {

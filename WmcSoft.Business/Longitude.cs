@@ -37,41 +37,42 @@ namespace WmcSoft
         public static readonly Longitude MaxValue = Unguarded(Amplitude);
         public static readonly Longitude MinValue = Unguarded(-Amplitude);
 
-        static Longitude Unguarded(int degrees, int minutes = 0, int seconds = 0)
+        static Longitude Unguarded(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
         {
             var value = new Longitude() {
-                _storage = Encode(degrees, minutes, seconds)
+                _storage = Encode(degrees, minutes, seconds, milliseconds)
             };
             return value;
         }
 
-        static int Encode(int degrees, int minutes, int seconds)
-        {
-            return degrees >= 0
-                ? degrees * 3600 + minutes * 60 + seconds
-                : degrees * 3600 - minutes * 60 - seconds;
-        }
-
         private int _storage;
 
-        public Longitude(int degrees, int minutes = 0, int seconds = 0)
+        public Longitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
         {
             if (degrees < -Amplitude | degrees > Amplitude) throw new ArgumentOutOfRangeException(nameof(degrees));
             if ((degrees == -Amplitude | degrees == Amplitude) & minutes != 0 & seconds != 0) throw new ArgumentOutOfRangeException(nameof(degrees));
             if (minutes < 0 | minutes > 59) throw new ArgumentOutOfRangeException(nameof(minutes));
             if (seconds < 0 | seconds > 59) throw new ArgumentOutOfRangeException(nameof(seconds));
+            if (milliseconds < 0 | milliseconds > 1000) throw new ArgumentOutOfRangeException(nameof(milliseconds));
 
-            _storage = Encode(degrees, minutes, seconds);
+            _storage = Encode(degrees, minutes, seconds, milliseconds);
         }
 
         public void Deconstruct(out int degrees, out int minutes, out int seconds)
         {
-            (degrees, minutes, seconds) = Decode(_storage);
+            int ms;
+            (degrees, minutes, seconds, ms) = Decode(_storage);
+        }
+
+        public void Deconstruct(out int degrees, out int minutes, out int seconds, out int milliseconds)
+        {
+            (degrees, minutes, seconds, milliseconds) = Decode(_storage);
         }
 
         public int Degrees => DecodeDegrees(_storage);
         public int Minutes => DecodeMinutes(_storage);
         public int Seconds => DecodeSeconds(_storage);
+        public int Milliseconds => DecodeMilliseconds(_storage);
 
         public override int GetHashCode()
         {
