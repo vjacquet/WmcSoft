@@ -39,16 +39,19 @@ namespace WmcSoft.Time
         private readonly int _month;
         private readonly int _day;
 
-        public FixedDateSpecification(int month, int day) {
+        public FixedDateSpecification(int month, int day)
+        {
             _month = month;
             _day = day;
         }
 
-        public override Date OfYear(int year) {
+        public override Date OfYear(int year)
+        {
             return new Date(year, _month, _day);
         }
 
-        public override bool IsSatisfiedBy(Date date) {
+        public override bool IsSatisfiedBy(Date date)
+        {
             DateTime dateTime = date;
             return dateTime.Day == _day && dateTime.Month == _month;
         }

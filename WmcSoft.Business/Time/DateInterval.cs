@@ -37,23 +37,27 @@ namespace WmcSoft.Time
 {
     public static class DateInterval
     {
-        public static Interval<Date> Inclusive(Date start, Date end) {
+        public static Interval<Date> Inclusive(Date start, Date end)
+        {
             return Interval.Closed(start, end);
         }
 
-        public static Interval<Date> Month(int year, int month) {
+        public static Interval<Date> Month(int year, int month)
+        {
             var start = new Date(year, month, 1);
             var end = new Date(year, month, DateTime.DaysInMonth(year, month));
             return Inclusive(start, end);
         }
 
-        public static Interval<Date> Year(int year) {
+        public static Interval<Date> Year(int year)
+        {
             var start = new Date(year, 1, 1);
             var end = new Date(year, 12, 31);
             return Inclusive(start, end);
         }
 
-        public static IEnumerable<Date> Days(this Interval<Date> interval) {
+        public static IEnumerable<Date> Days(this Interval<Date> interval)
+        {
             var start = interval.Lower.Value;
             var end = interval.Upper.Value;
             if (interval.IncludesLowerLimit())
@@ -66,7 +70,8 @@ namespace WmcSoft.Time
                 yield return end;
         }
 
-        public static IEnumerable<Date> DaysBackwards(this Interval<Date> interval) {
+        public static IEnumerable<Date> DaysBackwards(this Interval<Date> interval)
+        {
             var start = interval.Lower.Value;
             var end = interval.Upper.Value;
             if (interval.IncludesUpperLimit())

@@ -32,19 +32,23 @@ namespace WmcSoft.Time
     {
         private readonly SntpClient _client;
 
-        public SntpClientTimeSource() : this(new SntpClient()) {
+        public SntpClientTimeSource() : this(new SntpClient())
+        {
         }
 
-        public SntpClientTimeSource(SntpClient client) {
+        public SntpClientTimeSource(SntpClient client)
+        {
             if (client == null) throw new ArgumentNullException(nameof(client));
             _client = client;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _client.Dispose();
         }
 
-        public TimePoint Now() {
+        public TimePoint Now()
+        {
             return new TimePoint(_client.Query());
         }
     }

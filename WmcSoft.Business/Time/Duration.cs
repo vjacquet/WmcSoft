@@ -52,14 +52,16 @@ namespace WmcSoft.Time
         private readonly long _quantity;
         private readonly TimeUnit _unit;
 
-        public Duration(long quantity, TimeUnit unit) {
+        public Duration(long quantity, TimeUnit unit)
+        {
             if (quantity < 0L) throw new ArgumentOutOfRangeException(nameof(quantity));
 
             _quantity = quantity;
             _unit = unit;
         }
 
-        public Duration(int days, int hours, int minutes, int seconds, long milliseconds) {
+        public Duration(int days, int hours, int minutes, int seconds, long milliseconds)
+        {
             if (milliseconds < 0) throw new ArgumentOutOfRangeException(nameof(milliseconds));
             if (seconds < 0) throw new ArgumentOutOfRangeException(nameof(seconds));
             if (minutes < 0) throw new ArgumentOutOfRangeException(nameof(minutes));
@@ -106,59 +108,73 @@ namespace WmcSoft.Time
         public TimeUnit Unit { get { return _unit; } }
         public TimeUnit BaseUnit { get { return _unit.BaseUnit; } }
 
-        public static Duration Milliseconds(long howMany) {
+        public static Duration Milliseconds(long howMany)
+        {
             return new Duration(howMany, TimeUnit.Millisecond);
         }
 
-        public static Duration Seconds(int howMany) {
+        public static Duration Seconds(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Second);
         }
 
-        public static Duration Minutes(int howMany) {
+        public static Duration Minutes(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Minute);
         }
 
-        public static Duration Hours(int howMany) {
+        public static Duration Hours(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Hour);
         }
 
-        public static Duration Days(int howMany) {
+        public static Duration Days(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Day);
         }
 
-        public static Duration Weeks(int howMany) {
+        public static Duration Weeks(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Week);
         }
 
-        public static Duration Months(int howMany) {
+        public static Duration Months(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Month);
         }
 
-        public static Duration Quarters(int howMany) {
+        public static Duration Quarters(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Quarter);
         }
 
-        public static Duration Years(int howMany) {
+        public static Duration Years(int howMany)
+        {
             return new Duration(howMany, TimeUnit.Year);
         }
 
-        public static Duration Of(int howMany, TimeUnit unit) {
+        public static Duration Of(int howMany, TimeUnit unit)
+        {
             return new Duration(howMany, unit);
         }
 
-        public long InBaseUnits() {
+        public long InBaseUnits()
+        {
             return _quantity * _unit.Factor;
         }
 
-        public static Duration Between(TimePoint x, TimePoint y) {
+        public static Duration Between(TimePoint x, TimePoint y)
+        {
             return y - x;
         }
 
-        public static Duration Between(Date x, Date y) {
+        public static Duration Between(Date x, Date y)
+        {
             return BetweenDates(x, y);
         }
 
-        static Duration BetweenDates(DateTime x, DateTime y) {
+        static Duration BetweenDates(DateTime x, DateTime y)
+        {
             if (x.Day == y.Day) {
                 var years = y.Year - x.Year;
                 var months = y.Month - x.Month;
@@ -171,32 +187,38 @@ namespace WmcSoft.Time
 
         #region Operators
 
-        public static implicit operator Duration(TimeSpan x) {
+        public static implicit operator Duration(TimeSpan x)
+        {
             return new Duration(x.Days, x.Hours, x.Minutes, x.Seconds, x.Milliseconds);
         }
 
-        public static implicit operator Duration(Interval<Date> interval) {
+        public static implicit operator Duration(Interval<Date> interval)
+        {
             return BetweenDates(interval.Lower.Value, interval.Upper.Value);
         }
 
-        public static explicit operator TimeSpan(Duration x) {
+        public static explicit operator TimeSpan(Duration x)
+        {
             if (x.BaseUnit != TimeUnit.Millisecond) throw new InvalidCastException();
 
             var ticks = x.InBaseUnits() * TimeSpan.TicksPerMillisecond;
             return new TimeSpan(ticks);
         }
 
-        public static Duration operator +(Duration x, Duration y) {
+        public static Duration operator +(Duration x, Duration y)
+        {
             if (!x._unit.IsConvertibleTo(y._unit)) throw new ArgumentException();
 
             var quantity = x.InBaseUnits() + y.InBaseUnits();
             return new Duration(quantity, x._unit.BaseUnit);
         }
-        public static Duration Add(Duration x, Duration y) {
+        public static Duration Add(Duration x, Duration y)
+        {
             return x + y;
         }
 
-        public static Duration operator -(Duration x, Duration y) {
+        public static Duration operator -(Duration x, Duration y)
+        {
             if (!x._unit.IsConvertibleTo(y._unit)) throw new ArgumentException();
 
             var quantity = x.InBaseUnits() - y.InBaseUnits();
@@ -214,43 +236,53 @@ namespace WmcSoft.Time
             //}
             //return new Duration(x._quantity + y._quantity, y._unit);
         }
-        public static Duration Subtract(Duration x, Duration y) {
+        public static Duration Subtract(Duration x, Duration y)
+        {
             return x - y;
         }
 
-        public static bool operator ==(Duration x, Duration y) {
+        public static bool operator ==(Duration x, Duration y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Duration x, Duration y) {
+        public static bool operator !=(Duration x, Duration y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool Equals(Duration x, Duration y) {
+        public static bool Equals(Duration x, Duration y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator <(Duration x, Duration y) {
+        public static bool operator <(Duration x, Duration y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator >(Duration x, Duration y) {
+        public static bool operator >(Duration x, Duration y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(Duration x, Duration y) {
+        public static bool operator <=(Duration x, Duration y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator >=(Duration x, Duration y) {
+        public static bool operator >=(Duration x, Duration y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static int Compare(Duration x, Duration y) {
+        public static int Compare(Duration x, Duration y)
+        {
             return x.CompareTo(y);
         }
 
-        internal Ratio DividedBy(Duration divisor) {
+        internal Ratio DividedBy(Duration divisor)
+        {
             Debug.Assert(_unit.IsConvertibleTo(divisor._unit));
 
             return new Ratio(InBaseUnits(), divisor.InBaseUnits());
@@ -288,7 +320,8 @@ namespace WmcSoft.Time
         /// </item>
         /// </returns>
         /// <remarks><see cref="Duration"/>s in milliseconds are always less than <see cref="Duration"/>s in months.</remarks>
-        public int CompareTo(Duration other) {
+        public int CompareTo(Duration other)
+        {
             if (_unit.BaseUnit == other.BaseUnit) {
                 return InBaseUnits().CompareTo(other.InBaseUnits());
             }
@@ -299,7 +332,8 @@ namespace WmcSoft.Time
 
         #region IEquatable<Duration> members
 
-        public bool Equals(Duration other) {
+        public bool Equals(Duration other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -307,17 +341,20 @@ namespace WmcSoft.Time
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return false;
             return Equals((Duration)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _quantity.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Join(", ", TimeUnit.DecomposeForDisplay(_quantity, _unit).Select(p => p.Item2.ToString(p.Item1)));
         }
 

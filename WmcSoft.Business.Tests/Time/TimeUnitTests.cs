@@ -12,7 +12,8 @@ namespace WmcSoft.Time
     public class TimeUnitTests
     {
         [TestMethod]
-        public void AreTimeUnitsSorted() {
+        public void AreTimeUnitsSorted()
+        {
             var units = new[] {
                 TimeUnit.Millisecond,
                 TimeUnit.Second,
@@ -30,7 +31,8 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        public void CanFindNextFinerUnit() {
+        public void CanFindNextFinerUnit()
+        {
             Assert.AreEqual(TimeUnit.Day, TimeUnit.Week.NextFinerUnit());
             Assert.AreEqual(TimeUnit.Hour, TimeUnit.Day.NextFinerUnit());
             Assert.AreEqual(TimeUnit.Minute, TimeUnit.Hour.NextFinerUnit());
@@ -44,7 +46,8 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        public void CheckBaseUnits() {
+        public void CheckBaseUnits()
+        {
             var units = new[] {
                 TimeUnit.Millisecond,
                 TimeUnit.Second,

@@ -36,11 +36,13 @@ namespace WmcSoft.Time
 {
     public static class DateSpecification
     {
-        public static AnnualDateSpecification Fixed(int month, int day) {
+        public static AnnualDateSpecification Fixed(int month, int day)
+        {
             return new FixedDateSpecification(month, day);
         }
 
-        public static AnnualDateSpecification NthOccuranceOfWeekdayInMonth(int month, DayOfWeek dayOfWeek, int n) {
+        public static AnnualDateSpecification NthOccuranceOfWeekdayInMonth(int month, DayOfWeek dayOfWeek, int n)
+        {
             return new FloatingDateSpecification(month, dayOfWeek, n);
         }
     }

@@ -45,75 +45,92 @@ namespace WmcSoft.Time
     {
         private readonly short _storage;
 
-        public HourOfDay(int hour) {
+        public HourOfDay(int hour)
+        {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
             _storage = (short)hour;
         }
 
-        public HourOfDay(int hour, string am_pm) {
+        public HourOfDay(int hour, string am_pm)
+        {
             _storage = (short)ConvertTo24Hour(hour, am_pm);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return _storage + "h";
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(HourOfDay))
                 return false;
             return Equals((HourOfDay)obj);
         }
 
-        public bool Equals(HourOfDay other) {
+        public bool Equals(HourOfDay other)
+        {
             return _storage.Equals(other._storage);
         }
 
-        public int CompareTo(HourOfDay other) {
+        public int CompareTo(HourOfDay other)
+        {
             return _storage.CompareTo(other._storage);
         }
 
         public int Value { get { return _storage; } }
 
-        public bool IsAfter(HourOfDay other) {
+        public bool IsAfter(HourOfDay other)
+        {
             return CompareTo(other) > 0;
         }
 
-        public bool IsBefore(HourOfDay other) {
+        public bool IsBefore(HourOfDay other)
+        {
             return CompareTo(other) < 0;
         }
 
         #region Operators
 
-        public static implicit operator HourOfDay(int h) {
+        public static implicit operator HourOfDay(int h)
+        {
             return new HourOfDay(h);
         }
 
-        public static explicit operator int(HourOfDay h) {
+        public static explicit operator int(HourOfDay h)
+        {
             return h.Value;
         }
 
-        public static bool operator ==(HourOfDay x, HourOfDay y) {
+        public static bool operator ==(HourOfDay x, HourOfDay y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(HourOfDay x, HourOfDay y) {
+        public static bool operator !=(HourOfDay x, HourOfDay y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool operator <(HourOfDay x, HourOfDay y) {
+        public static bool operator <(HourOfDay x, HourOfDay y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(HourOfDay x, HourOfDay y) {
+        public static bool operator <=(HourOfDay x, HourOfDay y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(HourOfDay x, HourOfDay y) {
+        public static bool operator >(HourOfDay x, HourOfDay y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(HourOfDay x, HourOfDay y) {
+        public static bool operator >=(HourOfDay x, HourOfDay y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -121,7 +138,8 @@ namespace WmcSoft.Time
 
         #region Helpers
 
-        static int ConvertTo24Hour(int hour, string am_pm) {
+        static int ConvertTo24Hour(int hour, string am_pm)
+        {
             if (hour < 0 | hour > 12) throw new ArgumentOutOfRangeException("hour");
 
             var am = "AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
