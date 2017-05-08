@@ -44,12 +44,14 @@ namespace WmcSoft.Security
 
         #region Lifecycle
 
-        internal AccessControlEntry(Permission permission, Principal principal, UncheckedTag tag) {
+        internal AccessControlEntry(Permission permission, Principal principal, UncheckedTag tag)
+        {
             _permission = permission;
             _principal = principal;
         }
 
-        public AccessControlEntry(Permission permission, Principal principal) {
+        public AccessControlEntry(Permission permission, Principal principal)
+        {
             if (permission == null)
                 throw new ArgumentNullException("permission");
             if (principal == null)
@@ -75,7 +77,8 @@ namespace WmcSoft.Security
 
         #region Methods
 
-        public bool Match(Principal principal) {
+        public bool Match(Principal principal)
+        {
             return _principal.Match(principal);
         }
 
@@ -83,11 +86,13 @@ namespace WmcSoft.Security
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return Equals(obj as AccessControlEntry);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _permission.GetHashCode() * 397 ^ _principal.GetHashCode();
         }
 
@@ -95,7 +100,8 @@ namespace WmcSoft.Security
 
         #region IEquatable<AccessControlEntry> Membres
 
-        public bool Equals(AccessControlEntry other) {
+        public bool Equals(AccessControlEntry other)
+        {
             if (other == null)
                 return false;
             return _principal.Equals(other._principal)

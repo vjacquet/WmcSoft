@@ -201,6 +201,8 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />
+    <Compile Include="Security\AutorizedLevelPermission.cs" />
+    <Compile Include="Security\RequiredLevelPermission.cs" />
     <Compile Include="Specification.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="Longitude.cs" />

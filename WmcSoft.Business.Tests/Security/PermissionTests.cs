@@ -138,5 +138,14 @@ namespace WmcSoft.Security
             Assert.IsTrue(securable.AccessControl[user1, read]);
             Assert.IsTrue(securable.AccessControl[user2, read]);
         }
+
+        [TestMethod]
+        public void CannotCompareAuthorizeLevelPermissionAndRequiredLevelPermission()
+        {
+            var required = new RequiredLevelPermission("permission", 1);
+            var authorized = new AutorizedLevelPermission("permission", 1);
+
+            Assert.AreNotEqual(required, authorized);
+        }
     }
 }

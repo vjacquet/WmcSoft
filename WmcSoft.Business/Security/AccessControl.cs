@@ -34,7 +34,8 @@ namespace WmcSoft.Security
         IAccessControlLists _acls;
         bool _shared;
 
-        public AccessControl() {
+        public AccessControl()
+        {
             _acls = new AccessControlLists();
         }
 
@@ -44,25 +45,30 @@ namespace WmcSoft.Security
             get { return !_shared; }
         }
 
-        public void Grant(IEnumerable<Permission> permissions, params Principal[] principals) {
+        public void Grant(IEnumerable<Permission> permissions, params Principal[] principals)
+        {
             _acls.Grant(permissions, principals);
         }
 
-        public void Deny(IEnumerable<Permission> permissions, params Principal[] principals) {
+        public void Deny(IEnumerable<Permission> permissions, params Principal[] principals)
+        {
             _acls.Deny(permissions, principals);
         }
 
-        public void Revoke(IEnumerable<Permission> permissions, params Principal[] principals) {
+        public void Revoke(IEnumerable<Permission> permissions, params Principal[] principals)
+        {
             _acls.Revoke(permissions, principals);
         }
 
-        public IEnumerable<Permission> Verify(Principal principal, IEnumerable<Permission> permissions) {
+        public IEnumerable<Permission> Verify(Principal principal, IEnumerable<Permission> permissions)
+        {
             return _acls.Verify(principal, permissions);
         }
 
         #endregion
 
-        public void Assert(Principal principal, Permission permission) {
+        public void Assert(Principal principal, Permission permission)
+        {
             if (!_acls.Verify(principal, permission))
                 throw new SecurityException();
         }
@@ -73,14 +79,16 @@ namespace WmcSoft.Security
             }
         }
 
-        internal void MakeUnique() {
+        internal void MakeUnique()
+        {
             if (_shared) {
                 _acls = new AccessControlLists(_acls);
                 _shared = false;
             }
         }
 
-        internal void MergeWith(AccessControl acls) {
+        internal void MergeWith(AccessControl acls)
+        {
             _acls.GrantedPermissions.UnionWith(acls._acls.GrantedPermissions);
             _acls.DeniedPermissions.UnionWith(acls._acls.DeniedPermissions);
             acls._acls = _acls;

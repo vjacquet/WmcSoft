@@ -34,12 +34,13 @@ namespace WmcSoft.Security
 
         public abstract void RunWithElevatedPrivileges(Action action);
 
-        public static void Merge(params ISecurable[] securables) {
+        public static void Merge(params ISecurable[] securables)
+        {
             if (securables == null || securables.Length < 2)
                 return;
 
             var primary = securables[0];
-            for (int i =1; i < securables.Length; i++) {
+            for (int i = 1; i < securables.Length; i++) {
                 primary.AccessControl.MergeWith(securables[i].AccessControl);
             }
         }
@@ -48,7 +49,8 @@ namespace WmcSoft.Security
         //    throw new NotImplementedException();
         //}
 
-        public static void Unbind(ISecurable securable) {
+        public static void Unbind(ISecurable securable)
+        {
             securable.AccessControl.MakeUnique();
         }
 

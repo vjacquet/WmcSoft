@@ -42,11 +42,13 @@ namespace WmcSoft.Security
 
         #region Lifecycle
 
-        protected PermissionSet(PermissionSet permissions) {
+        protected PermissionSet(PermissionSet permissions)
+        {
             _permissions = new HashSet<Permission>(permissions);
         }
 
-        public PermissionSet(params Permission[] permissions) {
+        public PermissionSet(params Permission[] permissions)
+        {
             _permissions = new HashSet<Permission>(permissions);
         }
 
@@ -54,25 +56,30 @@ namespace WmcSoft.Security
 
         #region Operators
 
-        public static implicit operator PermissionSet(Permission permission) {
+        public static implicit operator PermissionSet(Permission permission)
+        {
             return new PermissionSet(permission);
         }
 
-        public static PermissionSet operator |(PermissionSet x, PermissionSet y) {
+        public static PermissionSet operator |(PermissionSet x, PermissionSet y)
+        {
             var r = new PermissionSet(x);
             r._permissions.UnionWith(y);
             return r;
         }
-        public static PermissionSet BitwiseOr(PermissionSet x, PermissionSet y) {
+        public static PermissionSet BitwiseOr(PermissionSet x, PermissionSet y)
+        {
             return x | y;
         }
 
-        public static PermissionSet operator &(PermissionSet x, PermissionSet y) {
+        public static PermissionSet operator &(PermissionSet x, PermissionSet y)
+        {
             var r = new PermissionSet(x);
             r._permissions.IntersectWith(y);
             return r;
         }
-        public static PermissionSet BitwiseAnd(PermissionSet x, PermissionSet y) {
+        public static PermissionSet BitwiseAnd(PermissionSet x, PermissionSet y)
+        {
             return x & y;
         }
 
@@ -80,19 +87,23 @@ namespace WmcSoft.Security
 
         #region ICollection<Permission> Members
 
-        public void Add(Permission permission) {
+        public void Add(Permission permission)
+        {
             _permissions.Add(permission);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _permissions.Clear();
         }
 
-        public bool Contains(Permission permission) {
+        public bool Contains(Permission permission)
+        {
             return _permissions.Contains(permission);
         }
 
-        public void CopyTo(Permission[] array, int arrayIndex) {
+        public void CopyTo(Permission[] array, int arrayIndex)
+        {
             _permissions.CopyTo(array, arrayIndex);
         }
 
@@ -104,7 +115,8 @@ namespace WmcSoft.Security
             get { return false; }
         }
 
-        public bool Remove(Permission permission) {
+        public bool Remove(Permission permission)
+        {
             return _permissions.Remove(permission);
         }
 
@@ -116,7 +128,8 @@ namespace WmcSoft.Security
         {
             private readonly HashSet<Permission>.Enumerator _enumerator;
 
-            internal Enumerator(HashSet<Permission>.Enumerator enumerator) {
+            internal Enumerator(HashSet<Permission>.Enumerator enumerator)
+            {
                 _enumerator = enumerator;
             }
 
@@ -128,24 +141,29 @@ namespace WmcSoft.Security
                 get { return _enumerator.Current; }
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 _enumerator.Dispose();
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 return _enumerator.MoveNext();
             }
 
-            public void Reset() {
+            public void Reset()
+            {
                 ((IEnumerator<Permission>)_enumerator).Reset();
             }
         }
 
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(_permissions.GetEnumerator());
         }
 
-        IEnumerator<Permission> IEnumerable<Permission>.GetEnumerator() {
+        IEnumerator<Permission> IEnumerable<Permission>.GetEnumerator()
+        {
             return _permissions.GetEnumerator();
         }
 
@@ -153,7 +171,8 @@ namespace WmcSoft.Security
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return _permissions.GetEnumerator();
         }
 

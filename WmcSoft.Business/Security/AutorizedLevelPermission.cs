@@ -25,48 +25,38 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace WmcSoft.Security
 {
     [DataContract]
-    [KnownType(typeof(Group))]
-    [KnownType(typeof(User))]
-    [DebuggerDisplay("User: {Name, nq}")]
-    public abstract class Principal : IEquatable<Principal>
+    public class AutorizedLevelPermission : Permission
     {
-        protected Principal(string name)
+        public AutorizedLevelPermission(string name, int level = 1)
+            : base(name)
         {
-            Name = name;
+            Level = level;
         }
 
         [DataMember]
-        public string Name { get; }
+        public int Level { get; private set; }
 
-        public virtual bool Match(Principal other)
-        {
-            return Equals(other);
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
-
-        #region IEquatable<Principal> Membres
-
-        public bool Equals(Principal other)
+        public AutorizedLevelPermission Merge(AutorizedLevelPermission other)
         {
             if (other == null)
-                return false;
-            return GetType() == other.GetType() && Name == other.Name;
+                return this;
+            if (Comparer.Equals(Name, other.Name))
+                return new AutorizedLevelPermission(Name, Math.Min(Level, other.Level));
+
+            throw new InvalidOperationException();
         }
 
-        #endregion
+        public override bool Equals(Permission other)
+        {
+            var that = other as AutorizedLevelPermission;
+            if (base.Equals(that))
+                return Level == that.Level;
+            return false;
+        }
     }
 }
