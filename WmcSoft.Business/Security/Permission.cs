@@ -95,7 +95,8 @@ namespace WmcSoft.Security
         {
             if (other == null)
                 return false;
-            return Comparer.Equals(Name, other.Name);
+            return GetType() == other.GetType()
+                && Comparer.Equals(Name, other.Name);
         }
 
         #endregion

@@ -53,9 +53,9 @@ namespace WmcSoft.Security
 
         public override bool Equals(Permission other)
         {
-            var that = other as RequiredLevelPermission;
-            if (base.Equals(that))
-                return Level == that.Level;
+            if (base.Equals(other)) {
+                return Level == ((RequiredLevelPermission)other).Level;
+            }
             return false;
         }
     }
