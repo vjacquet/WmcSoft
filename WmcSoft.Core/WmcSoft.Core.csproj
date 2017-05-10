@@ -95,6 +95,8 @@
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyList.cs" />
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\ConformingReverseComparer.cs" />
+    <Compile Include="Collections\Generic\KeyValuePairComparer.cs" />
+    <Compile Include="Collections\Generic\KeyValuePairEqualityComparer.cs" />
     <Compile Include="Collections\Generic\ZipReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\Forest.cs" />
     <Compile Include="Collections\Generic\Index.cs" />
