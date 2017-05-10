@@ -18,12 +18,14 @@ namespace WmcSoft.Collections.Generic
             {'u', 288},
         };
 
-        static char NthLowerASCIILetter(int n) {
+        static char NthLowerASCIILetter(int n)
+        {
             return (char)((short)'a' + n - 1);
         }
 
         [TestMethod]
-        public void CheckExceptWith() {
+        public void CheckExceptWith()
+        {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.ExceptWith(vowels);
@@ -37,7 +39,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckExceptWithWithPredicate() {
+        public void CheckExceptWithWithPredicate()
+        {
             var other = new Dictionary<char, int> {
                 { 'a', 2 },
                 { 'e', 5 },
@@ -54,7 +57,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckIntersectWith() {
+        public void CheckIntersectWith()
+        {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.IntersectWith(vowels);
@@ -64,7 +68,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckIntersectWithWithMerger() {
+        public void CheckIntersectWithWithMerger()
+        {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.IntersectWith(vowels, (x, y) => y);
@@ -74,7 +79,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckUnionWith() {
+        public void CheckUnionWith()
+        {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.UnionWith(vowels);
@@ -88,7 +94,8 @@ namespace WmcSoft.Collections.Generic
         }
 
         [TestMethod]
-        public void CheckUnionWithWithMerger() {
+        public void CheckUnionWithWithMerger()
+        {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.UnionWith(vowels, (x, y) => x);
@@ -99,6 +106,27 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(731, dictionary['i']);
             Assert.AreEqual(768, dictionary['o']);
             Assert.AreEqual(288, dictionary['u']);
+        }
+
+        [TestMethod]
+        public void CheckKeySymmetricDifferences()
+        {
+            var x = new Dictionary<int, string> {
+                { 0, "zero" },
+                { 2, "two" },
+                { 3, "three" },
+                { 5, "five" },
+            };
+            var y = new Dictionary<int, string> {
+                { 0, "naught" },
+                { 1, "one" },
+                { 2, "two" },
+                { 4, "four" },
+                { 5, "five" },
+            };
+            var actual = x.KeySymmetricDifferences(y);
+            var expected = new[] { 0, 1, 3, 4 };
+            CollectionAssert.AreEquivalent(expected, actual);
         }
     }
 }
