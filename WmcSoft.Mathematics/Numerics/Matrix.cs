@@ -45,7 +45,8 @@ namespace WmcSoft.Numerics
             public readonly int m;
             public readonly int n;
 
-            public Storage(int m, int n) {
+            public Storage(int m, int n)
+            {
                 this.m = m;
                 this.n = n;
                 data = new double[m * n];
@@ -64,14 +65,17 @@ namespace WmcSoft.Numerics
         #region Lifecycle
 
         public Matrix(int n)
-            : this(n, n) {
+            : this(n, n)
+        {
         }
 
-        public Matrix(int m, int n) {
+        public Matrix(int m, int n)
+        {
             _storage = new Storage(m, n);
         }
 
-        public Matrix(int m, int n, Func<int, int, double> generator) {
+        public Matrix(int m, int n, Func<int, int, double> generator)
+        {
             _storage = new Storage(m, n);
             var index = 0;
             for (int i = 0; i < m; i++) {
@@ -82,12 +86,14 @@ namespace WmcSoft.Numerics
         }
 
         public Matrix(int m, int n, double value)
-            : this(m, n) {
+            : this(m, n)
+        {
             NumericsUtilities.CopyValue(_storage.data, value);
         }
 
         public Matrix(double[,] values)
-            : this(values.GetLength(0), values.GetLength(1)) {
+            : this(values.GetLength(0), values.GetLength(1))
+        {
             var k = 0;
             var data = _storage.data;
             foreach (var value in values) {
@@ -95,7 +101,8 @@ namespace WmcSoft.Numerics
             }
         }
 
-        public static Matrix Identity(int n) {
+        public static Matrix Identity(int n)
+        {
             var result = new Matrix(n);
             var data = result._storage.data;
             var length = data.Length;
@@ -105,7 +112,8 @@ namespace WmcSoft.Numerics
             return result;
         }
 
-        public Matrix Transpose() {
+        public Matrix Transpose()
+        {
             var size = Size;
             var result = new Matrix(size[1], size[0]);
             var length = _storage.data.Length - _storage.m; // to avoid overflow for huge matrices
@@ -118,7 +126,8 @@ namespace WmcSoft.Numerics
             return result;
         }
 
-        public Matrix Inverse() {
+        public Matrix Inverse()
+        {
             throw new NotImplementedException();
         }
 
@@ -128,7 +137,8 @@ namespace WmcSoft.Numerics
         /// <param name="row">The vector used as the first row.</param>
         /// <returns>The Vandermonde's matrix.</returns>
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
-        public static Matrix Vandermonde(Vector row) {
+        public static Matrix Vandermonde(Vector row)
+        {
             var n = row.Cardinality;
             var result = new Matrix(n, n);
             var data = result._storage.data;
@@ -153,7 +163,8 @@ namespace WmcSoft.Numerics
         /// <param name="y">Second parameter.</param>
         /// <returns>The combinatorial matrix.</returns>
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
-        public static Matrix Combinatorial(int n, double x, double y) {
+        public static Matrix Combinatorial(int n, double x, double y)
+        {
             var result = new Matrix(n, n, y);
             var data = result._storage.data;
             var length = data.Length;
@@ -172,7 +183,8 @@ namespace WmcSoft.Numerics
         /// <param name="op">The combination function.</param>
         /// <returns>The combinatorial matrix.</returns>
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
-        public static Matrix Combinatorial(int n, double x, double y, Func<double, double, double> op) {
+        public static Matrix Combinatorial(int n, double x, double y, Func<double, double, double> op)
+        {
             if (op == null)
                 throw new ArgumentNullException("op");
 
@@ -185,7 +197,8 @@ namespace WmcSoft.Numerics
             return result;
         }
 
-        static int MaximizeCardinalities(ref Vector x, ref Vector y) {
+        static int MaximizeCardinalities(ref Vector x, ref Vector y)
+        {
             var n = x.Cardinality;
             var m = y.Cardinality;
 
@@ -208,7 +221,8 @@ namespace WmcSoft.Numerics
         /// <param name="y">The second vector</param>
         /// <returns>The Cauchy's matrix.</returns>
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
-        public static Matrix Cauchy(Vector x, Vector y) {
+        public static Matrix Cauchy(Vector x, Vector y)
+        {
             var n = MaximizeCardinalities(ref x, ref y);
             return new Matrix(n, n, (i, j) => 1d / (x[i] + y[j]));
         }
@@ -221,7 +235,8 @@ namespace WmcSoft.Numerics
         /// <param name="op">The combination function.</param>
         /// <returns>The Cauchy's matrix.</returns>
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
-        public static Matrix Cauchy(Vector x, Vector y, Func<double, double, double> op) {
+        public static Matrix Cauchy(Vector x, Vector y, Func<double, double, double> op)
+        {
             if (op == null)
                 throw new ArgumentNullException("op");
 
@@ -241,14 +256,14 @@ namespace WmcSoft.Numerics
             get {
                 try {
                     return _storage.data[i * _storage.n + j];
-                }
-                catch (NullReferenceException) {
+                } catch (NullReferenceException) {
                     throw new IndexOutOfRangeException();
                 }
             }
         }
 
-        public IReadOnlyList<double> Row(int i) {
+        public IReadOnlyList<double> Row(int i)
+        {
             if (_storage == null)
                 return StrideEnumerable<double>.Empty;
 
@@ -256,7 +271,8 @@ namespace WmcSoft.Numerics
             return new StrideEnumerable<double>(_storage.data, k, _storage.n, 1);
         }
 
-        public IReadOnlyList<double> Column(int j) {
+        public IReadOnlyList<double> Column(int j)
+        {
             if (_storage == null)
                 return StrideEnumerable<double>.Empty;
 
@@ -267,7 +283,8 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
-        public static explicit operator double[,] (Matrix x) {
+        public static explicit operator double[,] (Matrix x)
+        {
             if (x._storage == null)
                 return new double[0, 0];
             var result = new double[x._storage.m, x._storage.n];
@@ -281,11 +298,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static double[,] ToArray(Matrix x) {
+        public static double[,] ToArray(Matrix x)
+        {
             return (double[,])x;
         }
 
-        public static Matrix operator +(Matrix x, Matrix y) {
+        public static Matrix operator +(Matrix x, Matrix y)
+        {
             if (x.Size != y.Size)
                 throw new ArgumentException(Resources.MatricesMustHaveTheSameSizeError);
 
@@ -296,11 +315,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Matrix Add(Matrix x, Matrix y) {
+        public static Matrix Add(Matrix x, Matrix y)
+        {
             return x + y;
         }
 
-        public static Matrix operator -(Matrix x, Matrix y) {
+        public static Matrix operator -(Matrix x, Matrix y)
+        {
             if (x.Size != y.Size)
                 throw new ArgumentException(Resources.MatricesMustHaveTheSameSizeError);
 
@@ -311,11 +332,61 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Matrix Subtract(Matrix x, Matrix y) {
+        public static Matrix Subtract(Matrix x, Matrix y)
+        {
             return x - y;
         }
 
-        public static Matrix operator *(Matrix x, Matrix y) {
+        static Matrix Power(Matrix x, Matrix y, int n)
+        {
+            // precondition: n >= 0
+            if (n == 0)
+                return x;
+            for (;;) {
+                if (Odd(n)) {
+                    x = x * y;
+                    if (n == 1)
+                        return x;
+                }
+                y = y * y;
+                n /= 2;
+            }
+        }
+        public static Matrix Power(Matrix m, int n)
+        {
+            switch (n) {
+            case 0:
+                return Identity(n);
+            case 1:
+                return m;
+            case -1:
+                return m.Inverse();
+            }
+
+            if (n < 0) {
+                n = -1;
+                m = m.Inverse();
+            }
+
+            while (Even(n)) {
+                m = m * m;
+                n /= 2;
+            }
+            if (n == 1)
+                return m;
+            return Power(m, m * m, (n - 1) / 2);
+        }
+
+        static bool Even(int n)
+        {
+            return (n & 1) == 0;
+        }
+        static bool Odd(int n)
+        {
+            return (n & 1) == 1;
+        }
+        public static Matrix operator *(Matrix x, Matrix y)
+        {
             if (x._storage.m != y._storage.n || x._storage.n != y._storage.m)
                 throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError);
 
@@ -330,11 +401,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Matrix Multiply(Matrix x, Matrix y) {
+        public static Matrix Multiply(Matrix x, Matrix y)
+        {
             return x * y;
         }
 
-        public static Matrix operator -(Matrix x) {
+        public static Matrix operator -(Matrix x)
+        {
             var length = x.Cardinality;
             var result = new Matrix(length);
             for (int i = 0; i < length; i++) {
@@ -342,54 +415,59 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Matrix Negate(Matrix x) {
+        public static Matrix Negate(Matrix x)
+        {
             return -x;
         }
 
-        public static Matrix operator +(Matrix x) {
+        public static Matrix operator +(Matrix x)
+        {
             return x;
         }
-        public static Matrix Plus(Matrix x) {
+        public static Matrix Plus(Matrix x)
+        {
             return x;
         }
 
-        public static Matrix operator *(double scalar, Matrix matrix) {
-            var length = matrix.Cardinality;
-            var result = new Matrix(length);
+        public static Matrix operator *(double scalar, Matrix matrix)
+        {
+            var result = new Matrix(matrix._storage.m, matrix._storage.n);
+            var length = result._storage.data.Length;
             for (int i = 0; i < length; i++) {
                 result._storage.data[i] = scalar * matrix._storage.data[i];
             }
             return result;
         }
-        public static Matrix Multiply(double scalar, Matrix matrix) {
+        public static Matrix Multiply(double scalar, Matrix matrix)
+        {
             return scalar * matrix;
         }
 
-        public static Matrix operator *(Matrix matrix, double scalar) {
-            var length = matrix.Cardinality;
-            var result = new Matrix(length);
-            for (int i = 0; i < length; i++) {
-                result._storage.data[i] = scalar * matrix._storage.data[i];
-            }
-            return result;
+        public static Matrix operator *(Matrix matrix, double scalar)
+        {
+            return scalar * matrix;
         }
-        public static Matrix Multiply(Matrix matrix, double scalar) {
-            return matrix * scalar;
+        public static Matrix Multiply(Matrix matrix, double scalar)
+        {
+            return scalar * matrix;
         }
 
-        public static Matrix operator /(Matrix matrix, double scalar) {
-            var length = matrix.Cardinality;
-            var result = new Matrix(length);
+        public static Matrix operator /(Matrix matrix, double scalar)
+        {
+            var result = new Matrix(matrix._storage.m, matrix._storage.n);
+            var length = result._storage.data.Length;
             for (int i = 0; i < length; i++) {
                 result._storage.data[i] = matrix._storage.data[i] / scalar;
             }
             return result;
         }
-        public static Matrix Divide(Matrix matrix, double scalar) {
+        public static Matrix Divide(Matrix matrix, double scalar)
+        {
             return matrix / scalar;
         }
 
-        public static Vector operator *(Matrix x, Vector y) {
+        public static Vector operator *(Matrix x, Vector y)
+        {
             var n = x._storage.n;
             if (y.Cardinality != n)
                 throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError);
@@ -402,11 +480,13 @@ namespace WmcSoft.Numerics
             }
             return result;
         }
-        public static Vector Multiply(Matrix x, Vector y) {
+        public static Vector Multiply(Matrix x, Vector y)
+        {
             return x * y;
         }
 
-        public Vector MultiplyAndAdd(Vector v, Vector w) {
+        public Vector MultiplyAndAdd(Vector v, Vector w)
+        {
             var n = _storage.n;
             if (v.Cardinality != n)
                 throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "v");
@@ -426,7 +506,8 @@ namespace WmcSoft.Numerics
 
         #region IEquatable<Matrix> Membres
 
-        public bool Equals(Matrix other) {
+        public bool Equals(Matrix other)
+        {
             if (Size != other.Size)
                 return false;
             var length = _storage.data.Length;
@@ -437,13 +518,15 @@ namespace WmcSoft.Numerics
             return true;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Matrix)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_storage.data == null)
                 return 0;
             return _storage.data.GetHashCode();

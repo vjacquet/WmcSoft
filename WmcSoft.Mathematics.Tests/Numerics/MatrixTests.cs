@@ -144,5 +144,15 @@ namespace WmcSoft.Numerics.Tests
             var actual = x * y;
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CanPowerMatrice()
+        {
+            var m = Matrix.Identity(4) * 2;
+            var actual = Matrix.Power(m, 5);
+
+            var expected = Matrix.Identity(4) * (2 << 4);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
