@@ -72,6 +72,7 @@
     <Compile Include="Geometry2D\Point.cs" />
     <Compile Include="Geometry2D\Polygon.cs" />
     <Compile Include="Geometry2D\Segment.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="Numerics\Algorithms.cs" />
     <Compile Include="Numerics\Dimensions.cs" />

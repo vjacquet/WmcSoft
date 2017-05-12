@@ -28,6 +28,8 @@ using System;
 using System.Collections.Generic;
 using WmcSoft.Properties;
 
+using static WmcSoft.Helpers;
+
 namespace WmcSoft.Numerics
 {
     /// <summary>
@@ -377,14 +379,6 @@ namespace WmcSoft.Numerics
             return Power(m, m * m, (n - 1) / 2);
         }
 
-        static bool Even(int n)
-        {
-            return (n & 1) == 0;
-        }
-        static bool Odd(int n)
-        {
-            return (n & 1) == 1;
-        }
         public static Matrix operator *(Matrix x, Matrix y)
         {
             if (x._storage.m != y._storage.n || x._storage.n != y._storage.m)
