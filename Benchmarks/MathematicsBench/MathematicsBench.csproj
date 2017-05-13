@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="MatrixBench.cs" />
     <Compile Include="VectorBench.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

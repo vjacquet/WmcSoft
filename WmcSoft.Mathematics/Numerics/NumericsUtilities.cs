@@ -28,15 +28,5 @@ namespace WmcSoft.Numerics
             sb.Append(']');
             return sb.ToString();
         }
-
-        public static void CopyValue<T>(T[] data, T value) {
-            CopyValue(data, 0, data.Length, value);
-        }
-
-        public static void CopyValue<T>(T[] data, int begin, int end, T value) {
-            for (int i = begin; i < end; i++) {
-                data[i] = value;
-            }
-        }
     }
 }

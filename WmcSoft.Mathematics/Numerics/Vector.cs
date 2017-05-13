@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using WmcSoft.Properties;
@@ -200,21 +201,6 @@ namespace WmcSoft.Numerics
             return result;
         }
 
-        internal static double DotProductNotEmpty(int length, IEnumerator<double> x, IEnumerator<double> y)
-        {
-            x.MoveNext();
-            y.MoveNext();
-
-            var result = x.Current * y.Current;
-            length--;
-            while (length-- > 0) {
-                x.MoveNext();
-                y.MoveNext();
-                result += x.Current * y.Current;
-            }
-            return result;
-        }
-
         public static bool operator ==(Vector x, Vector y)
         {
             return x.Equals(y);
@@ -267,20 +253,21 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<double> Members
 
-        public IEnumerator<double> GetEnumerator()
+        public StrideEnumerator<double> GetEnumerator()
         {
             if (_data == null || _data.Length == 0)
-                return Enumerable.Empty<double>().GetEnumerator();
+                return Band<double>.Empty.GetEnumerator();
             return new StrideEnumerator<double>(_data);
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator<double> IEnumerable<double>.GetEnumerator()
         {
-            return _data.GetEnumerator();
+            return GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion

@@ -75,6 +75,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="Numerics\Algorithms.cs" />
+    <Compile Include="Numerics\Band.cs" />
     <Compile Include="Numerics\Dimensions.cs" />
     <Compile Include="Numerics\Generic\Vector.cs" />
     <Compile Include="Numerics\Matrix.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="Numerics\NumericsUtilities.cs" />
     <Compile Include="Numerics\Polynomial.cs" />
     <Compile Include="Numerics\Fraction.cs" />
-    <Compile Include="Numerics\StrideEnumerable.cs" />
     <Compile Include="Numerics\StrideEnumerator.cs" />
     <Compile Include="Numerics\Boolarray.cs" />
     <Compile Include="Numerics\Valarray.cs" />

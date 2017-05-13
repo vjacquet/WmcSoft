@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WmcSoft.Properties;
 
 using static WmcSoft.Helpers;
@@ -41,8 +42,26 @@ namespace WmcSoft.Numerics
     {
         public static Matrix Empty;
 
+        [DebuggerTypeProxy(typeof(Storage.DebugView))]
         class Storage
         {
+            class DebugView
+            {
+                private readonly Storage _storage;
+
+                DebugView(Storage storage)
+                {
+                    _storage = storage;
+                }
+
+                [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+                public double[] Items {
+                    get {
+                        return _storage.data;
+                    }
+                }
+            }
+
             public readonly double[] data;
             public readonly int m;
             public readonly int n;
@@ -90,7 +109,7 @@ namespace WmcSoft.Numerics
         public Matrix(int m, int n, double value)
             : this(m, n)
         {
-            NumericsUtilities.CopyValue(_storage.data, value);
+            Fill(_storage.data, value);
         }
 
         public Matrix(double[,] values)
@@ -187,8 +206,7 @@ namespace WmcSoft.Numerics
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Combinatorial(int n, double x, double y, Func<double, double, double> op)
         {
-            if (op == null)
-                throw new ArgumentNullException("op");
+            if (op == null) throw new ArgumentNullException(nameof(op));
 
             var result = new Matrix(n, n, y);
             var data = result._storage.data;
@@ -264,21 +282,21 @@ namespace WmcSoft.Numerics
             }
         }
 
-        public IReadOnlyList<double> Row(int i)
+        public Band<double> Row(int i)
         {
             if (_storage == null)
-                return StrideEnumerable<double>.Empty;
+                return Band<double>.Empty;
 
             var k = i * _storage.n;
-            return new StrideEnumerable<double>(_storage.data, k, _storage.n, 1);
+            return new Band<double>(_storage.data, k, _storage.n, 1);
         }
 
-        public IReadOnlyList<double> Column(int j)
+        public Band<double> Column(int j)
         {
             if (_storage == null)
-                return StrideEnumerable<double>.Empty;
+                return Band<double>.Empty;
 
-            return new StrideEnumerable<double>(_storage.data, j, _storage.m, _storage.n);
+            return new Band<double>(_storage.data, j, _storage.m, _storage.n);
         }
 
         #endregion
@@ -388,9 +406,13 @@ namespace WmcSoft.Numerics
             var n = y._storage.n;
             var k = 0;
             var result = new Matrix(m, n);
+            var buffer = new double[y._storage.m];
             for (int j = 0; j < n; j++) {
+                y.Column(j).CopyTo(buffer); // copying in a buffer and using array based dot product is 4-5 times faster.
                 for (int i = 0; i < m; i++) {
-                    result._storage.data[k++] = Vector.DotProductNotEmpty(m, x.Row(i).GetEnumerator(), y.Column(j).GetEnumerator());
+                    result._storage.data[k++] = DotProductNotEmpty(m, x._storage.data, i * x._storage.n, 1, buffer, 0, 1);
+                    //result._storage.data[k++] = DotProductNotEmpty(m, x._storage.data, i * x._storage.n, 1, y._storage.data, j, y._storage.n);
+                    //result._storage.data[k++] = DotProductNotEmpty(m, x.Row(i), y.Column(j));
                 }
             }
             return result;
@@ -470,7 +492,7 @@ namespace WmcSoft.Numerics
             var result = new Vector(n);
             var e = y.GetEnumerator();
             for (int i = 0; i < m; i++, e.Reset()) {
-                result._data[i] = Vector.DotProductNotEmpty(m, x.Row(i).GetEnumerator(), e);
+                result._data[i] = DotProductNotEmpty(m, x.Row(i).GetEnumerator(), e);
             }
             return result;
         }
@@ -491,7 +513,7 @@ namespace WmcSoft.Numerics
             var result = new Vector(w._data);
             var e = v.GetEnumerator();
             for (int i = 0; i < m; i++, e.Reset()) {
-                result._data[i] += Vector.DotProductNotEmpty(m, Row(i).GetEnumerator(), e);
+                result._data[i] += DotProductNotEmpty(m, Row(i).GetEnumerator(), e);
             }
             return result;
         }

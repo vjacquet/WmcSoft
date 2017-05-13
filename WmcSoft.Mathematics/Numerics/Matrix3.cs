@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using static WmcSoft.Helpers;
+
 namespace WmcSoft.Numerics
 {
     /// <summary>
@@ -96,21 +98,21 @@ namespace WmcSoft.Numerics
         public Dimensions Size => new Dimensions(N, N);
         public double this[int i, int j] => _storage[i * N + j];
 
-        public IReadOnlyList<double> Row(int i)
+        public Band<double> Row(int i)
         {
             if (_storage == null)
-                return new StrideEnumerable<double>(Vector3.Zero._data);
+                return new Band<double>(Vector3.Zero._data);
 
             var k = i * N;
-            return new StrideEnumerable<double>(_storage, k, N, 1);
+            return new Band<double>(_storage, k, N, 1);
         }
 
-        public IReadOnlyList<double> Column(int j)
+        public Band<double> Column(int j)
         {
             if (_storage == null)
-                return new StrideEnumerable<double>(Vector3.Zero._data);
+                return new Band<double>(Vector3.Zero._data);
 
-            return new StrideEnumerable<double>(_storage, j, N, N);
+            return new Band<double>(_storage, j, N, N);
         }
 
         #endregion
@@ -246,7 +248,7 @@ namespace WmcSoft.Numerics
             var result = new Matrix3(NumericsUtilities.Uninitialized);
             for (int j = 0; j < N; j++) {
                 for (int i = 0; i < N; i++) {
-                    result._storage[k++] = Vector.DotProductNotEmpty(N, x.Row(i).GetEnumerator(), y.Column(j).GetEnumerator());
+                    result._storage[k++] = DotProductNotEmpty(N, x.Row(i).GetEnumerator(), y.Column(j).GetEnumerator());
                 }
             }
             return result;

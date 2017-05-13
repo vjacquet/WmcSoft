@@ -36,20 +36,20 @@ namespace WmcSoft.Numerics
     /// </summary>
     /// <typeparam name="T">The type of the items of the array</typeparam>
     /// <remarks>This class is private because it has some undefined behavior in release mode.</remarks>
-    sealed class StrideEnumerable<T> : IEnumerable<T>, IReadOnlyList<T>, ICollection
+    public class Band<T> : IEnumerable<T>, IReadOnlyList<T>, ICollection
     {
-        public static readonly StrideEnumerable<T> Empty = new StrideEnumerable<T>(null, 0, 0);
+        public static readonly Band<T> Empty = new Band<T>(null, 0, 0);
 
         readonly T[] _data;
         readonly int _start;
         readonly int _count;
         readonly int _stride;
 
-        public StrideEnumerable(T[] data) : this(data, 0, data.Length, 1)
+        internal Band(T[] data) : this(data, 0, data.Length, 1)
         {
         }
 
-        public StrideEnumerable(T[] data, int start, int count, int stride = 1)
+        internal Band(T[] data, int start, int count, int stride = 1)
         {
             Debug.Assert(stride > 0);
             Debug.Assert(start >= 0);
@@ -81,19 +81,26 @@ namespace WmcSoft.Numerics
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return new StrideEnumerator<T>(_data, _start, _count, _stride);
-        }
-
         #endregion
 
         #region ICollection Membres
 
+        public void CopyTo(T[] array, int index = 0)
+        {
+            if (_stride == 1) {
+                Array.Copy(_data, _start, array, index, _count);
+            } else {
+                int end = _start + _count * _stride;
+                for (int i = _start; i < end; i += _stride) {
+                    array[index++] = _data[i];
+                }
+            }
+        }
+
         public void CopyTo(Array array, int index)
         {
             if (_stride == 1) {
-                Array.Copy(_data, 0, array, index, _count);
+                Array.Copy(_data, _start, array, index, _count);
             } else {
                 int end = _start + _count * _stride;
                 for (int i = _start; i < end; i += _stride) {
@@ -113,6 +120,16 @@ namespace WmcSoft.Numerics
         #endregion
 
         #region IEnumerable Membres
+
+        public StrideEnumerator<T> GetEnumerator()
+        {
+            return new StrideEnumerator<T>(_data, _start, _count, _stride);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
