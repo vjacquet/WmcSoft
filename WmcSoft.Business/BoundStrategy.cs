@@ -38,12 +38,14 @@ namespace WmcSoft
 
         public struct InclusiveStrategy : IBoundStrategy<T>
         {
-            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 return (comparer.Compare(lower, value) <= 0)
                     && (comparer.Compare(value, upper) <= 0);
             }
 
-            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 if (comparer.Compare(value, lower) < 0)
                     return -1;
                 if (comparer.Compare(upper, value) < 0)
@@ -54,12 +56,14 @@ namespace WmcSoft
 
         public struct ExclusiveStrategy : IBoundStrategy<T>
         {
-            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 return (comparer.Compare(lower, value) < 0)
                     && (comparer.Compare(value, upper) < 0);
             }
 
-            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 if (comparer.Compare(value, lower) <= 0)
                     return -1;
                 if (comparer.Compare(upper, value) <= 0)
@@ -70,12 +74,14 @@ namespace WmcSoft
 
         public struct LowerExclusiveStrategy : IBoundStrategy<T>
         {
-            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 return (comparer.Compare(lower, value) < 0)
                     && (comparer.Compare(value, upper) <= 0);
             }
 
-            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 if (comparer.Compare(value, lower) <= 0)
                     return -1;
                 if (comparer.Compare(upper, value) < 0)
@@ -86,12 +92,14 @@ namespace WmcSoft
 
         public struct UpperExclusiveStrategy : IBoundStrategy<T>
         {
-            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+            public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 return (comparer.Compare(lower, value) <= 0)
                     && (comparer.Compare(value, upper) < 0);
             }
 
-            public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+            public int Compare(IComparer<T> comparer, T value, T lower, T upper)
+            {
                 if (comparer.Compare(value, lower) < 0)
                     return -1;
                 if (comparer.Compare(upper, value) <= 0)
@@ -115,7 +123,8 @@ namespace WmcSoft
 
         #region Lifecycle
 
-        public BoundStrategy(IBoundStrategy<T> strategy) {
+        public BoundStrategy(IBoundStrategy<T> strategy)
+        {
             _underlying = strategy;
         }
 
@@ -123,11 +132,13 @@ namespace WmcSoft
 
         #region IBoundStrategy<T> Members
 
-        public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper) {
+        public bool IsWithinRange(IComparer<T> comparer, T value, T lower, T upper)
+        {
             return _underlying.IsWithinRange(comparer, value, lower, upper);
         }
 
-        public int Compare(IComparer<T> comparer, T value, T lower, T upper) {
+        public int Compare(IComparer<T> comparer, T value, T lower, T upper)
+        {
             return _underlying.Compare(comparer, value, lower, upper);
         }
 

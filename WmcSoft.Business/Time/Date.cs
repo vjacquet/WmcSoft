@@ -41,86 +41,106 @@ namespace WmcSoft.Time
     {
         readonly DateTime _storage;
 
-        private Date(DateTime date) {
+        private Date(DateTime date)
+        {
             _storage = DateTime.SpecifyKind(date.Date, DateTimeKind.Unspecified);
         }
 
-        public Date(int year, int month, int day) {
+        public Date(int year, int month, int day)
+        {
             _storage = new DateTime(year, month, day);
         }
 
-        public bool IsAfter(Date other) {
+        public bool IsAfter(Date other)
+        {
             return CompareTo(other) > 0;
         }
 
-        public bool IsBefore(Date other) {
+        public bool IsBefore(Date other)
+        {
             return CompareTo(other) < 0;
         }
 
-        public Date NextDay() {
+        public Date NextDay()
+        {
             return new Date(_storage.AddDays(1));
         }
 
-        public Date PreviousDay() {
+        public Date PreviousDay()
+        {
             return new Date(_storage.AddDays(-1));
         }
 
-        public TimePoint AsTimePoint(TimeZoneInfo zone) {
+        public TimePoint AsTimePoint(TimeZoneInfo zone)
+        {
             var dateTime = TimeZoneInfo.ConvertTimeToUtc(_storage, zone);
             return new TimePoint(dateTime);
         }
 
-        public DateTime At(TimeOfDay time) {
+        public DateTime At(TimeOfDay time)
+        {
             return time.On(this);
         }
 
-        public DateTimeOffset At(TimeOfDay time, TimeZoneInfo timeZone) {
+        public DateTimeOffset At(TimeOfDay time, TimeZoneInfo timeZone)
+        {
             return time.On(this, timeZone);
         }
 
         #region Operators
 
-        public static explicit operator Date(DateTime date) {
+        public static explicit operator Date(DateTime date)
+        {
             return new Date(date);
         }
 
-        public static explicit operator Date(DateTimeOffset date) {
+        public static explicit operator Date(DateTimeOffset date)
+        {
             return new Date(date.Date);
         }
 
-        public static implicit operator DateTime(Date date) {
+        public static implicit operator DateTime(Date date)
+        {
             return date._storage;
         }
 
-        public static bool operator ==(Date x, Date y) {
+        public static bool operator ==(Date x, Date y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Date x, Date y) {
+        public static bool operator !=(Date x, Date y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool Equals(Date x, Date y) {
+        public static bool Equals(Date x, Date y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator <(Date x, Date y) {
+        public static bool operator <(Date x, Date y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator >(Date x, Date y) {
+        public static bool operator >(Date x, Date y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(Date x, Date y) {
+        public static bool operator <=(Date x, Date y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator >=(Date x, Date y) {
+        public static bool operator >=(Date x, Date y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static int Compare(Date x, Date y) {
+        public static int Compare(Date x, Date y)
+        {
             return x.CompareTo(y);
         }
 
@@ -128,11 +148,13 @@ namespace WmcSoft.Time
 
         #region IComparable<Date> members
 
-        public int CompareTo(Date other) {
+        public int CompareTo(Date other)
+        {
             return _storage.CompareTo(other._storage);
         }
 
-        public int CompareTo(object obj) {
+        public int CompareTo(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return 1;
             return CompareTo((Date)obj);
@@ -142,7 +164,8 @@ namespace WmcSoft.Time
 
         #region IEquatable<Date> members
 
-        public bool Equals(Date other) {
+        public bool Equals(Date other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -150,13 +173,15 @@ namespace WmcSoft.Time
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return false;
             return Equals((Date)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage.GetHashCode();
         }
 

@@ -39,7 +39,8 @@ namespace WmcSoft.Time
     {
         public abstract Date OfYear(int year);
 
-        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval) {
+        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval)
+        {
             var start = interval.Lower.GetValueOrDefault();
             var year = ((DateTime)start).Year;
 
@@ -54,7 +55,8 @@ namespace WmcSoft.Time
             }
         }
 
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval) {
+        public IEnumerable<Date> EnumerateOver(Interval<Date> interval)
+        {
             if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
 
             return UnguardedEnumerateOver(interval);

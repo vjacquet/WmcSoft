@@ -7,7 +7,8 @@ namespace WmcSoft.Time
     public class DateSpecificationTests
     {
         [TestMethod]
-        public void CanSpecifyChristmas() {
+        public void CanSpecifyChristmas()
+        {
             var christmas = DateSpecification.Fixed(12, 25);
 
             var actual = christmas.OfYear(2016);
@@ -21,7 +22,8 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        public void CanSpecifySecondTuesday() {
+        public void CanSpecifySecondTuesday()
+        {
             var february = DateSpecification.NthOccuranceOfWeekdayInMonth(2, DayOfWeek.Tuesday, 2);
             var february2016 = february.OfYear(2016);
             Assert.AreEqual(new DateTime(2016, 2, 9), february2016);

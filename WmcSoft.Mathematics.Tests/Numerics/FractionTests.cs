@@ -73,5 +73,15 @@ namespace WmcSoft.Numerics.Tests
             var x = new Fraction(2, 6);
             Assert.AreEqual(new Fraction(1, 3), x);
         }
+
+        [TestMethod]
+        public void CanDeconstructFraction()
+        {
+            var q = new Fraction(4, 3);
+            var (n, d) = q;
+
+            Assert.AreEqual(4, n);
+            Assert.AreEqual(3, d);
+        }
     }
 }

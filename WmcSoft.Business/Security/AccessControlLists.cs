@@ -41,12 +41,14 @@ namespace WmcSoft.Security
 
         #region Lifecycle
 
-        public AccessControlLists() {
+        public AccessControlLists()
+        {
             _grant = new HashSet<AccessControlEntry>();
             _deny = new HashSet<AccessControlEntry>();
         }
 
-        public AccessControlLists(IAccessControlLists other) {
+        public AccessControlLists(IAccessControlLists other)
+        {
             _grant = new HashSet<AccessControlEntry>(other.GrantedPermissions);
             _deny = new HashSet<AccessControlEntry>(other.DeniedPermissions);
         }
@@ -55,17 +57,16 @@ namespace WmcSoft.Security
 
         #region IAccessControlList Membres
 
-        public ISet<AccessControlEntry> GrantedPermissions
-        {
+        public ISet<AccessControlEntry> GrantedPermissions {
             get { return _grant; }
         }
 
-        public ISet<AccessControlEntry> DeniedPermissions
-        {
+        public ISet<AccessControlEntry> DeniedPermissions {
             get { return _deny; }
         }
 
-        public void Grant(IEnumerable<Permission> permissions, params Principal[] principals) {
+        public void Grant(IEnumerable<Permission> permissions, params Principal[] principals)
+        {
             if (principals == null) throw new ArgumentNullException("principals");
             if (principals.Any(p => p == null)) throw new ArgumentException();
 
@@ -80,7 +81,8 @@ namespace WmcSoft.Security
             }
         }
 
-        public void Deny(IEnumerable<Permission> permissions, params Principal[] principals) {
+        public void Deny(IEnumerable<Permission> permissions, params Principal[] principals)
+        {
             if (principals == null) throw new ArgumentNullException("principals");
             if (principals.Any(p => p == null)) throw new ArgumentException();
 
@@ -95,7 +97,8 @@ namespace WmcSoft.Security
             }
         }
 
-        public void Revoke(IEnumerable<Permission> permissions, params Principal[] principals) {
+        public void Revoke(IEnumerable<Permission> permissions, params Principal[] principals)
+        {
             if (principals == null) throw new ArgumentNullException("principals");
             if (principals.Any(p => p == null)) throw new ArgumentException();
 
@@ -110,7 +113,8 @@ namespace WmcSoft.Security
             }
         }
 
-        public bool Verify(Principal principal, Permission permission) {
+        public bool Verify(Principal principal, Permission permission)
+        {
             if (principal == null) throw new ArgumentNullException("principal");
             if (permission == null)
                 return false;
@@ -120,7 +124,8 @@ namespace WmcSoft.Security
             return acl.Contains(permission);
         }
 
-        public IEnumerable<Permission> Verify(Principal principal, IEnumerable<Permission> permissions) {
+        public IEnumerable<Permission> Verify(Principal principal, IEnumerable<Permission> permissions)
+        {
             if (principal == null) throw new ArgumentNullException("principal");
             if (permissions == null)
                 return Enumerable.Empty<Permission>();

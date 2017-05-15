@@ -34,7 +34,7 @@ namespace WmcSoft.Numerics
     /// </summary>
     /// <typeparam name="T">The type of the items of the array</typeparam>
     /// <remarks>This class is private because it has some undefined behavior in release mode.</remarks>
-    sealed class StrideEnumerator<T> : IEnumerator<T>
+    public struct StrideEnumerator<T> : IEnumerator<T>
     {
         readonly T[] _data;
         readonly int _start;
@@ -53,19 +53,13 @@ namespace WmcSoft.Numerics
             _start = start;
             _stride = stride;
             _end = end - _stride;
-            Reset();
+            _pos = _start - _stride;
         }
 
         #region IEnumerator<T> Membres
 
         public T Current {
-            get {
-#if DEBUG
-                if (_pos < _start | _end < _pos)
-                    throw new InvalidOperationException();
-#endif
-                return _data[_pos];
-            }
+            get { return _data[_pos]; }
         }
 
         #endregion
@@ -81,7 +75,13 @@ namespace WmcSoft.Numerics
         #region IEnumerator Membres
 
         object System.Collections.IEnumerator.Current {
-            get { return Current; }
+            get {
+#if DEBUG
+                if (_pos < _start | _end < _pos)
+                    throw new InvalidOperationException();
+#endif
+                return Current;
+            }
         }
 
         public bool MoveNext()

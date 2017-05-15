@@ -42,42 +42,49 @@ namespace WmcSoft
     public static class BoundStrategyExtensions
     {
         public static bool IsWithinRange<TStrategy, T>(this TStrategy strategy, T value, T lower, T upper)
-            where TStrategy : IBoundStrategy<T> {
+            where TStrategy : IBoundStrategy<T>
+        {
             return strategy.IsWithinRange(Comparer<T>.Default, value, lower, upper);
         }
 
         public static bool IsWithinRange<TStrategy, T>(this TStrategy strategy, T value, Range<T> range)
             where T : IComparable<T>
-            where TStrategy : IBoundStrategy<T> {
+            where TStrategy : IBoundStrategy<T>
+        {
             return strategy.IsWithinRange(Comparer<T>.Default, value, range.Lower, range.Upper);
         }
 
         public static bool IsWithinAnyRanges<TStrategy, T>(this TStrategy strategy, T value, params Range<T>[] ranges)
             where T : IComparable<T>
-            where TStrategy : IBoundStrategy<T> {
+            where TStrategy : IBoundStrategy<T>
+        {
             return Array.FindIndex(ranges, r => strategy.IsWithinRange(Comparer<T>.Default, value, r.Lower, r.Upper)) >= 0;
         }
 
         public static bool IsWithinRange<TStrategy, T>(this TStrategy strategy, Range<T> range, params T[] values)
             where T : IComparable<T>
-            where TStrategy : IBoundStrategy<T> {
+            where TStrategy : IBoundStrategy<T>
+        {
             return Array.FindIndex(values, v => strategy.IsWithinRange(Comparer<T>.Default, v, range.Lower, range.Upper)) >= 0;
         }
 
         public static bool AreAllWithinRange<TStrategy, T>(this TStrategy strategy, Range<T> range, params T[] values)
             where T : IComparable<T>
-            where TStrategy : IBoundStrategy<T> {
+            where TStrategy : IBoundStrategy<T>
+        {
             return Array.TrueForAll(values, v => strategy.IsWithinRange(Comparer<T>.Default, v, range.Lower, range.Upper));
         }
 
         public static int Compare<TStrategy, T>(this TStrategy strategy, T value, T lower, T upper)
-        where TStrategy : IBoundStrategy<T> {
+        where TStrategy : IBoundStrategy<T>
+        {
             return strategy.Compare(Comparer<T>.Default, value, lower, upper);
         }
 
         public static int Compare<TStrategy, T>(this TStrategy strategy, T value, Range<T> range)
             where T : IComparable<T>
-            where TStrategy : IBoundStrategy<T> {
+            where TStrategy : IBoundStrategy<T>
+        {
             return strategy.Compare(Comparer<T>.Default, value, range.Lower, range.Upper);
         }
     }

@@ -35,17 +35,20 @@ namespace WmcSoft.Configuration
     {
         private readonly InfiniteIntConverter _converter;
 
-        public InfiniteNullableIntConverter() {
+        public InfiniteNullableIntConverter()
+        {
             _converter = new InfiniteIntConverter();
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data) {
+        public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data)
+        {
             if (string.IsNullOrEmpty((string)data))
                 return null;
             return _converter.ConvertFrom(ctx, ci, data);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type) {
+        public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+        {
             if (value == null)
                 return "";
             return _converter.ConvertTo(ctx, ci, value, type);

@@ -31,57 +31,75 @@ namespace WmcSoft
     [Serializable]
     public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>, IFormattable
     {
-        public GeographicPosition(Latitude latitude, Longitude longitude) {
+        public GeographicPosition(Latitude latitude, Longitude longitude)
+        {
             Latitude = latitude;
             Longitude = longitude;
         }
+
+        public void Deconstruct(out Latitude latitude, out Longitude longitude)
+        {
+            latitude = Latitude;
+            longitude = Longitude;
+        }
+
         public Latitude Latitude { get; }
         public Longitude Longitude { get; }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             var h1 = Latitude.GetHashCode();
             var h2 = Longitude.GetHashCode();
             return (((h1 << 5) + h1) ^ h2);
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(GeographicPosition))
                 return false;
             return Equals((GeographicPosition)obj);
         }
 
-        public bool Equals(GeographicPosition other) {
+        public bool Equals(GeographicPosition other)
+        {
             return Latitude.Equals(other.Latitude)
                 && Longitude.Equals(other.Longitude);
         }
 
-        public int CompareTo(GeographicPosition other) {
-            var tri = Latitude.CompareTo(other.Latitude);
-            if(tri == 0)
-                tri= Longitude.CompareTo(other.Longitude);
-            return tri;
+        public int CompareTo(GeographicPosition other)
+        {
+            var result = Latitude.CompareTo(other.Latitude);
+            if (result == 0)
+                result = Longitude.CompareTo(other.Longitude);
+            return result;
         }
 
         #region Operators
 
-        public static bool operator ==(GeographicPosition x, GeographicPosition y) {
+        public static bool operator ==(GeographicPosition x, GeographicPosition y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(GeographicPosition a, GeographicPosition b) {
+        public static bool operator !=(GeographicPosition a, GeographicPosition b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(GeographicPosition x, GeographicPosition y) {
+        public static bool operator <(GeographicPosition x, GeographicPosition y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(GeographicPosition x, GeographicPosition y) {
+        public static bool operator <=(GeographicPosition x, GeographicPosition y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(GeographicPosition x, GeographicPosition y) {
+        public static bool operator >(GeographicPosition x, GeographicPosition y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(GeographicPosition x, GeographicPosition y) {
+        public static bool operator >=(GeographicPosition x, GeographicPosition y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -89,15 +107,18 @@ namespace WmcSoft
 
         #region IFormattable Membres
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
-        public string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider)
+        {
             return ToString(null, formatProvider);
         }
-        public string ToString(string format, IFormatProvider formatProvider = null) {
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
             var formatter = new GeoFormatter(format, formatProvider);
-            return formatter.Format(Latitude. Degrees, Latitude.Minutes, Latitude.Seconds)
+            return formatter.Format(Latitude.Degrees, Latitude.Minutes, Latitude.Seconds)
                 + ';'
                 + formatter.Format(Longitude.Degrees, Longitude.Minutes, Longitude.Seconds);
         }

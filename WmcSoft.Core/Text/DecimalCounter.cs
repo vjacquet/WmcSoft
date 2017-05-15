@@ -42,43 +42,51 @@ namespace WmcSoft.Text
 
         readonly int _storage;
 
-        public DecimalCounter(int value) {
+        public DecimalCounter(int value)
+        {
             if (value > MaxStoredValue || value < MinStoredValue)
                 throw new OverflowException();
             _storage = value;
         }
 
-        public DecimalCounter(string value) {
+        public DecimalCounter(string value)
+        {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (!Validator.IsMatch(value)) throw new ArgumentException(nameof(value));
 
-            var x = Int32.Parse(value, CultureInfo.InvariantCulture);
+            var x = int.Parse(value, CultureInfo.InvariantCulture);
             if (x > MaxStoredValue || x < MinStoredValue)
                 throw new OverflowException();
             _storage = x - 1;
         }
 
-        public int CompareTo(DecimalCounter other) {
+        public int CompareTo(DecimalCounter other)
+        {
             return _storage - other._storage;
         }
 
-        public DecimalCounter Increment(int n) {
+        public DecimalCounter Increment(int n)
+        {
             return new DecimalCounter(_storage + n);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return (_storage + 1).ToString(CultureInfo.InvariantCulture);
         }
 
-        public bool Equals(DecimalCounter other) {
+        public bool Equals(DecimalCounter other)
+        {
             return _storage == other._storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(DecimalCounter))
                 return false;
             return Equals((DecimalCounter)obj);
@@ -86,19 +94,23 @@ namespace WmcSoft.Text
 
         #region Conversion operators
 
-        public static implicit operator int(DecimalCounter x) {
+        public static implicit operator int(DecimalCounter x)
+        {
             return x._storage;
         }
 
-        public static implicit operator string(DecimalCounter x) {
+        public static implicit operator string(DecimalCounter x)
+        {
             return x.ToString();
         }
 
-        public static implicit operator DecimalCounter(int x) {
+        public static implicit operator DecimalCounter(int x)
+        {
             return new DecimalCounter(x);
         }
 
-        public static implicit operator DecimalCounter(string x) {
+        public static implicit operator DecimalCounter(string x)
+        {
             return new DecimalCounter(x);
         }
 
@@ -106,23 +118,29 @@ namespace WmcSoft.Text
 
         #region Relational operators
 
-        public static bool operator ==(DecimalCounter a, DecimalCounter b) {
+        public static bool operator ==(DecimalCounter a, DecimalCounter b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(DecimalCounter a, DecimalCounter b) {
+        public static bool operator !=(DecimalCounter a, DecimalCounter b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(DecimalCounter x, DecimalCounter y) {
+        public static bool operator <(DecimalCounter x, DecimalCounter y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(DecimalCounter x, DecimalCounter y) {
+        public static bool operator <=(DecimalCounter x, DecimalCounter y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(DecimalCounter x, DecimalCounter y) {
+        public static bool operator >(DecimalCounter x, DecimalCounter y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(DecimalCounter x, DecimalCounter y) {
+        public static bool operator >=(DecimalCounter x, DecimalCounter y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -130,19 +148,23 @@ namespace WmcSoft.Text
 
         #region Arithmetic operators
 
-        public static DecimalCounter operator +(DecimalCounter x, int n) {
+        public static DecimalCounter operator +(DecimalCounter x, int n)
+        {
             return x.Increment(n);
         }
 
-        public static DecimalCounter operator -(DecimalCounter x, int n) {
+        public static DecimalCounter operator -(DecimalCounter x, int n)
+        {
             return x.Increment(-n);
         }
 
-        public static DecimalCounter operator ++(DecimalCounter x) {
+        public static DecimalCounter operator ++(DecimalCounter x)
+        {
             return x.Increment(1);
         }
 
-        public static DecimalCounter operator --(DecimalCounter x) {
+        public static DecimalCounter operator --(DecimalCounter x)
+        {
             return x.Increment(-1);
         }
 

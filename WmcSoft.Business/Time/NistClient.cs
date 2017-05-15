@@ -45,24 +45,29 @@ namespace WmcSoft.Time
 
         private readonly IPEndPoint _endpoint;
 
-        public NistClient() : this(ServerDefault, PortDefault) {
+        public NistClient() : this(ServerDefault, PortDefault)
+        {
         }
 
-        public NistClient(string hostNameOrAddress) : this(hostNameOrAddress, PortDefault) {
+        public NistClient(string hostNameOrAddress) : this(hostNameOrAddress, PortDefault)
+        {
         }
 
         public NistClient(string hostNameOrAddress, int port)
-            : this(new IPEndPoint(Dns.GetHostEntry(hostNameOrAddress).AddressList[0], port)) {
+            : this(new IPEndPoint(Dns.GetHostEntry(hostNameOrAddress).AddressList[0], port))
+        {
         }
 
-        internal NistClient(IPEndPoint endpoint) {
+        internal NistClient(IPEndPoint endpoint)
+        {
             _endpoint = endpoint;
             Timeout = TimeSpan.FromSeconds(30);
         }
 
         public TimeSpan Timeout { get; set; }
 
-        public DateTime Query() {
+        public DateTime Query()
+        {
             var buffer = new byte[256];
             int length;
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)) {
@@ -77,7 +82,8 @@ namespace WmcSoft.Time
             return DateTime.SpecifyKind(DateTime.ParseExact(time, "y-M-d HH:mm:ss", CultureInfo.InvariantCulture), DateTimeKind.Utc);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             // implement IDisposable in case the socket should be recycled.
         }
     }

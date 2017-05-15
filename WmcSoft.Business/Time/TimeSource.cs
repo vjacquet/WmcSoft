@@ -34,8 +34,8 @@ namespace WmcSoft.Time
         static readonly Lazy<ITimeSource> _nist = new Lazy<ITimeSource>(() => new NistClientTimeSource());
         static readonly Lazy<ITimeSource> _sntp = new Lazy<ITimeSource>(() => new SntpClientTimeSource());
 
-        static public ITimeSource SystemClock { get { return _systemClock.Value; } }
-        static public ITimeSource Nist { get { return _nist.Value; } }
-        static public ITimeSource Sntp { get { return _sntp.Value; } }
+        static public ITimeSource SystemClock => _systemClock.Value;
+        static public ITimeSource Nist => _nist.Value;
+        static public ITimeSource Sntp => _sntp.Value;
     }
 }

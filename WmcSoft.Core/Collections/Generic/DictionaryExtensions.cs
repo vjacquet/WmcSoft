@@ -42,17 +42,17 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <typeparam name="TValue">The type of the value</typeparam>
-        /// <param name="source">The source dictionary</param>
+        /// <param name="dictionary">The source dictionary</param>
         /// <param name="key">The key</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The converted value if present, otherwise the default value.</returns>
         /// <remarks>Returns the default value if the source parameter is null.</remarks>
-        public static TValue ConvertOrDefault<TKey, TValue>(this IDictionary<TKey, object> source, TKey key, TValue defaultValue = default(TValue)) {
-            if (source != null) {
-                object value;
-                if (source.TryGetValue(key, out value))
-                    return (TValue)Convert.ChangeType(value, typeof(TValue));
-            }
+        public static TValue ConvertOrDefault<TKey, TValue>(this IDictionary<TKey, object> dictionary, TKey key, TValue defaultValue = default(TValue))
+        {
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.TryGetValue(key, out object value))
+                return (TValue)Convert.ChangeType(value, typeof(TValue));
             return defaultValue;
         }
 
@@ -65,17 +65,17 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <typeparam name="TValue">The type of the value</typeparam>
-        /// <param name="source">The source dictionary</param>
+        /// <param name="dictionary">The source dictionary</param>
         /// <param name="key">The key</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value if present, otherwise the default value.</returns>
         /// <remarks>Returns the default value if the source parameter is null.</remarks>
-        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue defaultValue = default(TValue)) {
-            if (source != null) {
-                TValue value;
-                if (source.TryGetValue(key, out value))
-                    return value;
-            }
+        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+        {
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
+            if (dictionary.TryGetValue(key, out TValue value))
+                return value;
             return defaultValue;
         }
 
@@ -83,17 +83,20 @@ namespace WmcSoft.Collections.Generic
 
         #region Pop
 
-        public static TValue Pop<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key) {
-            var value = source[key];
-            source.Remove(key);
+        public static TValue Pop<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
+
+            var value = dictionary[key];
+            dictionary.Remove(key);
             return value;
         }
 
-        public static TValue PopOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key, TValue defaultValue = default(TValue)) {
-            if (source != null) {
-                TValue value;
-                if (source.TryGetValue(key, out value)) {
-                    source.Remove(key);
+        public static TValue PopOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+        {
+            if (dictionary != null) {
+                if (dictionary.TryGetValue(key, out TValue value)) {
+                    dictionary.Remove(key);
                     return value;
                 }
             }
@@ -114,7 +117,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The other dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other)
-            where TDictionary : IDictionary<TKey, TValue> {
+            where TDictionary : IDictionary<TKey, TValue>
+        {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             if (other != null) {
@@ -136,13 +140,13 @@ namespace WmcSoft.Collections.Generic
         /// <param name="comparer">A function to combine the values when the key exists in both dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary ExceptWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other, IEqualityComparer<TValue> comparer)
-            where TDictionary : IDictionary<TKey, TValue> {
+            where TDictionary : IDictionary<TKey, TValue>
+        {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             if (other != null) {
                 foreach (var entry in other) {
-                    TValue existing;
-                    if (dictionary.TryGetValue(entry.Key, out existing) && comparer.Equals(existing, entry.Value)) {
+                    if (dictionary.TryGetValue(entry.Key, out TValue existing) && comparer.Equals(existing, entry.Value)) {
                         dictionary.Remove(entry.Key);
                     }
                 }
@@ -160,7 +164,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The other dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary IntersectWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other)
-            where TDictionary : IDictionary<TKey, TValue> {
+            where TDictionary : IDictionary<TKey, TValue>
+        {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             if (other != null) {
@@ -182,13 +187,13 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The other dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary IntersectWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IDictionary<TKey, TValue> other, Func<TValue, TValue, TValue> merger)
-            where TDictionary : IDictionary<TKey, TValue> {
+            where TDictionary : IDictionary<TKey, TValue>
+        {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             if (other != null) {
                 foreach (var entry in dictionary.ToArray()) {
-                    TValue existing;
-                    if (other.TryGetValue(entry.Key, out existing)) {
+                    if (other.TryGetValue(entry.Key, out TValue existing)) {
                         dictionary[entry.Key] = merger(entry.Value, existing);
                     } else {
                         dictionary.Remove(entry.Key);
@@ -209,7 +214,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The <paramref name="dictionary"/>.</returns>
         /// <remarks>When the key exists in both dictionary, the value is overwritten.</remarks>
         public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other)
-            where TDictionary : IDictionary<TKey, TValue> {
+            where TDictionary : IDictionary<TKey, TValue>
+        {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             if (other != null) {
@@ -232,13 +238,13 @@ namespace WmcSoft.Collections.Generic
         /// <param name="merger">A function to combine the values when the key exists in both dictionary.</param>
         /// <returns>The <paramref name="dictionary"/>.</returns>
         public static TDictionary UnionWith<TKey, TValue, TDictionary>(this TDictionary dictionary, IEnumerable<KeyValuePair<TKey, TValue>> other, Func<TValue, TValue, TValue> merger)
-            where TDictionary : IDictionary<TKey, TValue> {
+            where TDictionary : IDictionary<TKey, TValue>
+        {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             if (other != null) {
                 foreach (var entry in other) {
-                    TValue existing;
-                    if (dictionary.TryGetValue(entry.Key, out existing)) {
+                    if (dictionary.TryGetValue(entry.Key, out TValue existing)) {
                         dictionary[entry.Key] = merger(existing, entry.Value);
                     } else {
                         dictionary.Add(entry.Key, entry.Value);
@@ -246,6 +252,37 @@ namespace WmcSoft.Collections.Generic
                 }
             }
             return dictionary;
+        }
+
+        #endregion
+
+        #region DifferencesKeys
+
+        /// <summary>
+        /// Returns the list of keys for which values from one dictionary are different in the other.
+        /// </summary>
+        /// <typeparam name="TKey">The type of keys.</typeparam>
+        /// <typeparam name="TValue">The type of values.</typeparam>
+        /// <param name="first">The first dictionary.</param>
+        /// <param name="second">The second dictionary.</param>
+        /// <returns>The list of keys for which values from one dictionary are different in the other.</returns>
+        public static List<TKey> KeySymmetricDifferences<TKey, TValue>(this Dictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+
+            if (second == null)
+                return first.Keys.ToList();
+
+            var comparer = EqualityComparer<TValue>.Default;
+            var set = new Dictionary<TKey, TValue>(first, first.Comparer);
+            foreach (var kv in second) {
+                if (!set.TryGetValue(kv.Key, out TValue value)) {
+                    set.Add(kv.Key, kv.Value);
+                } else if (comparer.Equals(kv.Value, value)) {
+                    set.Remove(kv.Key);
+                }
+            }
+            return set.Keys.ToList();
         }
 
         #endregion

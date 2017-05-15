@@ -6,7 +6,8 @@ namespace WmcSoft.Configuration
 {
     public class TestSection : ConfigurationSection
     {
-        public TestSection() {
+        public TestSection()
+        {
         }
 
         [ConfigurationProperty("mailPolicies")]

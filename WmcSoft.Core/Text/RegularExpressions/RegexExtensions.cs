@@ -29,23 +29,84 @@ using System.Text.RegularExpressions;
 
 namespace WmcSoft.Text.RegularExpressions
 {
+    /// <summary>
+    /// Provides a set of static methods to extend the <see cref="Regex"/> class.
+    /// This is a static class.
+    /// </summary>
     public static class RegexExtensions
     {
-        public static string GetGroupValue(this Match match, string groupName) {
+        /// <summary>
+        /// Gets the value of the specified group if successful.
+        /// </summary>
+        /// <param name="match">The match.</param>
+        /// <param name="groupName">The group's name.</param>
+        /// <returns>The value of the group if successful; otherwise, <c>null</c>.</returns>
+        public static string GetGroupValue(this Match match, string groupName)
+        {
             var value = match.Groups[groupName];
             if (value.Success)
                 return value.Value;
             return null;
         }
 
-        public static T? GetGroupValue<T>(this Match match, string groupName, IFormatProvider provider = null) where T : struct {
+        /// <summary>
+        /// Gets the value of the specified group if successful.
+        /// </summary>
+        /// <typeparam name="T">The type to convert the value to.</typeparam>
+        /// <param name="match">The match.</param>
+        /// <param name="groupName">The group's name.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information. </param>
+        /// <returns>The value of the group if successful; otherwise, <c>null</c>.</returns>
+        public static T? GetNullableGroupValue<T>(this Match match, string groupName, IFormatProvider provider = null)
+            where T : struct
+        {
             var value = match.Groups[groupName];
             if (value.Success)
                 return (T)Convert.ChangeType(value.Value, typeof(T), provider);
             return null;
         }
 
-        public static bool TryMatch(this Regex regex, string input, out Match match) {
+        /// <summary>
+        /// Gets the value of the specified group if successful.
+        /// </summary>
+        /// <typeparam name="T">The type to convert the value to.</typeparam>
+        /// <param name="match">The match.</param>
+        /// <param name="groupName">The group's name.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information. </param>
+        /// <returns>The value of the group if successful; otherwise, <c>null</c>.</returns>
+        public static T GetGroupValue<T>(this Match match, string groupName, IFormatProvider provider = null)
+        {
+            var value = match.Groups[groupName];
+            if (value.Success)
+                return (T)Convert.ChangeType(value.Value, typeof(T), provider);
+            throw new IndexOutOfRangeException();
+        }
+
+        /// <summary>
+        /// Gets the value of the specified group if successful.
+        /// </summary>
+        /// <typeparam name="T">The type to convert the value to.</typeparam>
+        /// <param name="match">The match.</param>
+        /// <param name="groupName">The group's name.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information. </param>
+        /// <returns>The value of the group if successful; otherwise, <c>null</c>.</returns>
+        public static T GetGroupValueOrDefault<T>(this Match match, string groupName, T defaultValue = default(T), IFormatProvider provider = null)
+        {
+            var value = match.Groups[groupName];
+            if (value.Success)
+                return (T)Convert.ChangeType(value.Value, typeof(T), provider);
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// Searches the specified input string for the first occurrence of the regular expression specified in the <see cref="Regex"/>constructor.
+        /// </summary>
+        /// <param name="regex">The regular expression.</param>
+        /// <param name="input">The string to search for a match. </param>
+        /// <param name="match">An object that contains information about the match.</param>
+        /// <returns><c>true</c> if the match is successfull; otherwise, <c>false</c>.</returns>
+        public static bool TryMatch(this Regex regex, string input, out Match match)
+        {
             match = regex.Match(input);
             return match.Success;
         }

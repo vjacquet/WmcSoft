@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using static WmcSoft.GeoFormatter;
 
 namespace WmcSoft
 {
@@ -36,69 +37,96 @@ namespace WmcSoft
         public static readonly Latitude MaxValue = Unguarded(Amplitude);
         public static readonly Latitude MinValue = Unguarded(-Amplitude);
 
-        static Latitude Unguarded(int degrees, int minutes = 0, int seconds = 0) {
-            var value = new Latitude();
-            value._storage = degrees * 3600 + minutes * 60 + seconds;
+        static Latitude Unguarded(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
+        {
+            var value = new Latitude() {
+                _storage = Encode(degrees, minutes, seconds, milliseconds)
+            };
             return value;
         }
 
         private int _storage;
 
-        public Latitude(int degrees, int minutes = 0, int seconds = 0) {
+        public Latitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
+        {
             if (degrees < -Amplitude | degrees > Amplitude) throw new ArgumentOutOfRangeException(nameof(degrees));
-            if ((degrees == -Amplitude | degrees == Amplitude) & minutes != 0 & seconds != 0) throw new ArgumentOutOfRangeException(nameof(degrees));
+            if ((degrees == -Amplitude | degrees == Amplitude) & minutes != 0 & seconds != 0 & milliseconds != 0) throw new ArgumentOutOfRangeException(nameof(degrees));
             if (minutes < 0 | minutes > 59) throw new ArgumentOutOfRangeException(nameof(minutes));
             if (seconds < 0 | seconds > 59) throw new ArgumentOutOfRangeException(nameof(seconds));
+            if (milliseconds < 0 | milliseconds > 1000) throw new ArgumentOutOfRangeException(nameof(milliseconds));
 
-            _storage = degrees * 3600 + minutes * 60 + seconds;
+            _storage = Encode(degrees, minutes, seconds, milliseconds);
         }
 
-        public int Degrees { get { return _storage / 3600; } }
-        public int Minutes { get { return (_storage / 60) % 60; } }
-        public int Seconds { get { return _storage % 60; } }
+        public void Deconstruct(out int degrees, out int minutes, out int seconds)
+        {
+            int ms;
+            (degrees, minutes, seconds, ms) = Decode(_storage);
+        }
 
-        public override int GetHashCode() {
+        public void Deconstruct(out int degrees, out int minutes, out int seconds, out int milliseconds)
+        {
+            (degrees, minutes, seconds, milliseconds) = Decode(_storage);
+        }
+
+        public int Degrees => DecodeDegrees(_storage);
+        public int Minutes => DecodeMinutes(_storage);
+        public int Seconds => DecodeSeconds(_storage);
+        public int Milliseconds => DecodeMilliseconds(_storage);
+
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Latitude))
                 return false;
             return Equals((Latitude)obj);
         }
 
-        public bool Equals(Latitude other) {
+        public bool Equals(Latitude other)
+        {
             return _storage.Equals(other._storage);
         }
 
-        public int CompareTo(Latitude other) {
+        public int CompareTo(Latitude other)
+        {
             return _storage.CompareTo(other._storage);
         }
 
         #region Operators
 
-        public static implicit operator decimal(Latitude x) {
+        public static implicit operator decimal(Latitude x)
+        {
             return x._storage / 3600m;
         }
 
-        public static bool operator ==(Latitude x, Latitude y) {
+        public static bool operator ==(Latitude x, Latitude y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(Latitude a, Latitude b) {
+        public static bool operator !=(Latitude a, Latitude b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(Latitude x, Latitude y) {
+        public static bool operator <(Latitude x, Latitude y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(Latitude x, Latitude y) {
+        public static bool operator <=(Latitude x, Latitude y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(Latitude x, Latitude y) {
+        public static bool operator >(Latitude x, Latitude y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(Latitude x, Latitude y) {
+        public static bool operator >=(Latitude x, Latitude y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -106,15 +134,19 @@ namespace WmcSoft
 
         #region IFormattable Membres
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
-        public string ToString(IFormatProvider formatProvider) {
+        public string ToString(IFormatProvider formatProvider)
+        {
             return ToString(null, formatProvider);
         }
-        public string ToString(string format, IFormatProvider formatProvider = null) {
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
             var formatter = new GeoFormatter(format, formatProvider);
-            return formatter.Format(Degrees, Minutes, Seconds);
+            Deconstruct(out int d, out int m, out int s);
+            return formatter.Format(d, m, s);
         }
 
         #endregion

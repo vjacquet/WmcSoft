@@ -37,7 +37,8 @@ namespace WmcSoft.Configuration
     {
         readonly ConfigurationElementCollectionType _collectionType;
 
-        protected ConfigurationElementCollection() {
+        protected ConfigurationElementCollection()
+        {
             var attr = GetType().GetCustomAttributes<ConfigurationCollectionAttribute>(true).FirstOrDefault();
             if (attr != null) {
                 _collectionType = attr.CollectionType;
@@ -54,29 +55,35 @@ namespace WmcSoft.Configuration
             get { return _collectionType; }
         }
 
-        protected override ConfigurationElement CreateNewElement() {
+        protected override ConfigurationElement CreateNewElement()
+        {
             return new T();
         }
 
-        protected virtual object GetElementKey(T element) {
+        protected virtual object GetElementKey(T element)
+        {
             return element.ElementInformation.Properties.Cast<PropertyInformation>()
                 .Single(p => p.IsKey);
         }
-        protected sealed override object GetElementKey(ConfigurationElement element) {
+        protected sealed override object GetElementKey(ConfigurationElement element)
+        {
             return GetElementKey((T)element);
         }
 
         #region ICollection<T> Membres
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             BaseAdd(item);
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return BaseIndexOf(item) >= 0;
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             var count = Count;
             BaseRemove(GetElementKey(item));
             return Count != count;
@@ -87,11 +94,13 @@ namespace WmcSoft.Configuration
             get { return base.IsReadOnly(); }
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             BaseClear();
         }
 
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex) {
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
             CopyTo(array, arrayIndex);
         }
 
@@ -99,11 +108,13 @@ namespace WmcSoft.Configuration
 
         #region IEnumerable<T> Membres
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        public new EnumeratorAdapter<T> GetEnumerator() {
+        public new EnumeratorAdapter<T> GetEnumerator()
+        {
             var enumerator = base.GetEnumerator();
             return new EnumeratorAdapter<T>(enumerator);
         }

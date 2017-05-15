@@ -43,7 +43,8 @@ namespace WmcSoft
         /// <typeparam name="T">The type of the components of the pair.</typeparam>
         /// <param name="item">The value of the first and second component of the pair.</param>
         /// <returns>A pair whose value is (<paramref name="item"/>, <paramref name="item"/>).</returns>
-        public static Pair<T> Create<T>(T item = default(T)) {
+        public static Pair<T> Create<T>(T item = default(T))
+        {
             return new Pair<T>(item, item);
         }
 
@@ -54,7 +55,8 @@ namespace WmcSoft
         /// <param name="item1">The value of the first component of the pair.</param>
         /// <param name="item2">The value of the second component of the pair.</param>
         /// <returns>A pair whose value is (<paramref name="item1"/>, <paramref name="item2"/>).</returns>
-        public static Pair<T> Create<T>(T item1, T item2) {
+        public static Pair<T> Create<T>(T item1, T item2)
+        {
             return new Pair<T>(item1, item2);
         }
     }
@@ -70,52 +72,71 @@ namespace WmcSoft
         public T Item1 { get; }
         public T Item2 { get; }
 
-        public Pair(T item1, T item2) {
+        public Pair(T item1, T item2)
+        {
             Item1 = item1;
             Item2 = item2;
         }
 
-        public static implicit operator Tuple<T, T>(Pair<T> pair) {
+        public void Deconstruct(out T item1, out T item2)
+        {
+            item1 = Item1;
+            item2 = Item2;
+        }
+
+        public static implicit operator Tuple<T, T>(Pair<T> pair)
+        {
             return Tuple.Create(pair.Item1, pair.Item2);
         }
 
-        public static implicit operator Pair<T>(Tuple<T, T> tuple) {
+        public static implicit operator Pair<T>(Tuple<T, T> tuple)
+        {
             return new Pair<T>(tuple.Item1, tuple.Item2);
         }
 
-        public static bool operator ==(Pair<T> a, Pair<T> b) {
+        public static bool operator ==(Pair<T> a, Pair<T> b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(Pair<T> a, Pair<T> b) {
+        public static bool operator !=(Pair<T> a, Pair<T> b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(Pair<T> x, Pair<T> y) {
+        public static bool operator <(Pair<T> x, Pair<T> y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(Pair<T> x, Pair<T> y) {
+        public static bool operator <=(Pair<T> x, Pair<T> y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(Pair<T> x, Pair<T> y) {
+        public static bool operator >(Pair<T> x, Pair<T> y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(Pair<T> x, Pair<T> y) {
+        public static bool operator >=(Pair<T> x, Pair<T> y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "(" + Item1 + ", " + Item2 + ")";
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return ((IStructuralEquatable)this).Equals(obj, EqualityComparer<T>.Default);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return ((IStructuralEquatable)this).GetHashCode(EqualityComparer<T>.Default);
         }
 
-        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer) {
+        bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer)
+        {
             if (other == null || other.GetType() != GetType())
                 return false;
 
@@ -123,11 +144,13 @@ namespace WmcSoft
             return comparer.Equals(Item1, that.Item1) && comparer.Equals(Item2, that.Item2);
         }
 
-        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
+        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer)
+        {
             return comparer.CombineHashCodes(Item1, Item2);
         }
 
-        int IStructuralComparable.CompareTo(object other, IComparer comparer) {
+        int IStructuralComparable.CompareTo(object other, IComparer comparer)
+        {
             if (other == null)
                 return 1;
             if (other.GetType() != GetType())
@@ -139,18 +162,21 @@ namespace WmcSoft
             return comparer.Compare(Item2, that.Item2);
         }
 
-        int IComparable.CompareTo(object obj) {
+        int IComparable.CompareTo(object obj)
+        {
             return ((IStructuralComparable)this).CompareTo(obj, Comparer<T>.Default);
         }
 
-        public bool Equals(Pair<T> other) {
+        public bool Equals(Pair<T> other)
+        {
             if (ReferenceEquals(this, other)) return true;
 
             var comparer = EqualityComparer<T>.Default;
             return comparer.Equals(Item1, other.Item1) && comparer.Equals(Item2, other.Item2);
         }
 
-        public int CompareTo(Pair<T> other) {
+        public int CompareTo(Pair<T> other)
+        {
             var comparer = Comparer<T>.Default;
             var result = comparer.Compare(Item1, other.Item1);
             if (result != 0) return result;

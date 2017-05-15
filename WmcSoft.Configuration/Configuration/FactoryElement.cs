@@ -61,12 +61,14 @@ namespace WmcSoft.Configuration
             get { return _parameters; }
         }
 
-        protected override bool OnDeserializeUnrecognizedAttribute(string name, string value) {
+        protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
+        {
             Parameters[name] = value;
             return true;
         }
 
-        public virtual T CreateInstance(params object[] args) {
+        public virtual T CreateInstance(params object[] args)
+        {
             var type = Type;
             return (T)Activator.CreateInstance(type, args);
         }

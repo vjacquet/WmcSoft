@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -33,36 +34,41 @@ namespace WmcSoft.Collections.Generic
     {
         #region Fields
 
-        private bool _hasValue;
         private T _item;
+        private bool _hasValue;
 
         #endregion
 
         #region Lifecycle
 
-        public SingleItemList() {
+        public SingleItemList()
+        {
         }
 
-        public SingleItemList(T item) {
-            _hasValue = true;
+        public SingleItemList(T item)
+        {
             _item = item;
+            _hasValue = true;
         }
 
         #endregion
 
         #region IList<T> Membres
 
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             return Contains(item) ? 0 : -1;
         }
 
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             if (_hasValue | index != 0) throw new ArgumentOutOfRangeException(nameof(index));
 
             _item = item;
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
 
             _hasValue = false;
@@ -85,23 +91,27 @@ namespace WmcSoft.Collections.Generic
 
         #region ICollection<T> Membres
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             if (_hasValue)
                 throw new NotSupportedException();
             _item = item;
             _hasValue = true;
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _hasValue = false;
             _item = default(T);
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return _hasValue && _item.Equals(item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             if (_hasValue)
                 array[arrayIndex] = _item;
         }
@@ -114,7 +124,8 @@ namespace WmcSoft.Collections.Generic
             get { return false; }
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             if (Contains(item)) {
                 _hasValue = false;
                 _item = default(T);
@@ -127,7 +138,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             if (_hasValue)
                 yield return _item;
         }
@@ -136,7 +148,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

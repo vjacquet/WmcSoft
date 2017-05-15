@@ -42,7 +42,8 @@ namespace WmcSoft.Text
             readonly string[] _values;
             int index;
 
-            internal Enumerator(string[] values) {
+            internal Enumerator(string[] values)
+            {
                 _values = values;
                 index = -1;
             }
@@ -51,10 +52,12 @@ namespace WmcSoft.Text
 
             object IEnumerator.Current { get { return Current; } }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (index < _values.Length) {
                     ++index;
                     return index < _values.Length;
@@ -62,7 +65,8 @@ namespace WmcSoft.Text
                 return false;
             }
 
-            public void Reset() {
+            public void Reset()
+            {
                 index = -1;
             }
         }
@@ -72,25 +76,30 @@ namespace WmcSoft.Text
 
         private readonly string[] _values;
 
-        public Strings(params string[] values) {
+        public Strings(params string[] values)
+        {
             _values = values;
         }
 
         private string[] Values { get { return _values ?? EmptyArray; } }
 
-        public static implicit operator Strings(string value) {
+        public static implicit operator Strings(string value)
+        {
             return new Strings(value);
         }
 
-        public static implicit operator Strings(string[] values) {
+        public static implicit operator Strings(string[] values)
+        {
             return new Strings(values);
         }
 
-        public static explicit operator string(Strings values) {
+        public static explicit operator string(Strings values)
+        {
             return values.ToString();
         }
 
-        public static explicit operator string[] (Strings value) {
+        public static explicit operator string[] (Strings value)
+        {
             return value.ToArray();
         }
 
@@ -104,7 +113,8 @@ namespace WmcSoft.Text
             }
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             var values = Values;
             switch (Values.Length) {
             case 0: return string.Empty;
@@ -113,11 +123,13 @@ namespace WmcSoft.Text
             }
         }
 
-        public string[] ToArray() {
+        public string[] ToArray()
+        {
             return Values;
         }
 
-        public int IndexOf(string item) {
+        public int IndexOf(string item)
+        {
             if (_values == null)
                 return -1;
             for (int i = 0; i < _values.Length; i++) {
@@ -128,25 +140,30 @@ namespace WmcSoft.Text
             return -1;
         }
 
-        public bool Contains(string item) {
+        public bool Contains(string item)
+        {
             return IndexOf(item) >= 0;
         }
 
-        public void CopyTo(string[] array, int arrayIndex) {
+        public void CopyTo(string[] array, int arrayIndex)
+        {
             if (_values == null)
                 return;
             Array.Copy(_values, 0, array, arrayIndex, _values.Length);
         }
 
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(Values);
         }
 
-        IEnumerator<string> IEnumerable<string>.GetEnumerator() {
+        IEnumerator<string> IEnumerable<string>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -161,7 +178,8 @@ namespace WmcSoft.Text
             }
         }
 
-        public static bool IsNullOrEmpty(Strings value) {
+        public static bool IsNullOrEmpty(Strings value)
+        {
             var values = value.Values;
             switch (values.Length) {
             case 0: return true;
@@ -170,7 +188,8 @@ namespace WmcSoft.Text
             }
         }
 
-        public static bool IsNullOrWhiteSpace(Strings value) {
+        public static bool IsNullOrWhiteSpace(Strings value)
+        {
             var values = value.Values;
             switch (values.Length) {
             case 0: return true;
@@ -185,7 +204,8 @@ namespace WmcSoft.Text
         /// <param name="x">The first argument.</param>
         /// <param name="y">The second argument.</param>
         /// <returns>The concatenated values.</returns>
-        public static Strings Concat(Strings x, Strings y) {
+        public static Strings Concat(Strings x, Strings y)
+        {
             var cx = x.Count;
             if (cx == 0)
                 return y;
@@ -206,7 +226,8 @@ namespace WmcSoft.Text
         /// <param name="x">The first argument.</param>
         /// <param name="y">The second argument.</param>
         /// <returns>The zipped values.</returns>
-        public static Strings Zip(Strings x, Strings y) {
+        public static Strings Zip(Strings x, Strings y)
+        {
             var cx = x.Count;
             var cy = y.Count;
             var count = Math.Min(cx, cy);
@@ -220,7 +241,8 @@ namespace WmcSoft.Text
             return new Strings(values);
         }
 
-        public static bool Equals(Strings x, Strings y) {
+        public static bool Equals(Strings x, Strings y)
+        {
             var count = x.Count;
             if (count != y.Count)
                 return false;
@@ -232,27 +254,30 @@ namespace WmcSoft.Text
             return true;
         }
 
-        public bool Equals(Strings other) {
+        public bool Equals(Strings other)
+        {
             return Equals(this, other);
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return Equals(this, Strings.Empty);
 
-            if (obj is string)
-                return Equals(this, (string)obj);
-
-            if (obj is string[])
-                return Equals(this, (string[])obj);
-
-            if (obj is Strings)
-                return Equals(this, (Strings)obj);
+            switch(obj) {
+            case string s:
+                return Equals(this, s);
+            case string[] s:
+                return Equals(this, s);
+            case Strings s:
+                return Equals(this, s);
+            }
 
             return false;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (Count == 0)
                 return 0;
             var values = _values;
@@ -263,49 +288,60 @@ namespace WmcSoft.Text
             return h;
         }
 
-        public bool Equals(string other) {
+        public bool Equals(string other)
+        {
             return Equals(new Strings(other));
         }
 
-        public bool Equals(string[] other) {
+        public bool Equals(string[] other)
+        {
             return Equals(new Strings(other));
         }
 
         #region Operators
 
-        public static bool operator ==(Strings x, Strings y) {
+        public static bool operator ==(Strings x, Strings y)
+        {
             return Equals(x, y);
         }
 
-        public static bool operator !=(Strings x, Strings y) {
+        public static bool operator !=(Strings x, Strings y)
+        {
             return !Equals(x, y);
         }
 
-        public static bool operator ==(Strings left, object right) {
+        public static bool operator ==(Strings left, object right)
+        {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Strings left, object right) {
+        public static bool operator !=(Strings left, object right)
+        {
             return !left.Equals(right);
         }
 
-        public static bool operator ==(object left, Strings right) {
+        public static bool operator ==(object left, Strings right)
+        {
             return right.Equals(left);
         }
 
-        public static bool operator !=(object left, Strings right) {
+        public static bool operator !=(object left, Strings right)
+        {
             return !right.Equals(left);
         }
 
-        public static bool operator !(Strings x) {
+        public static bool operator !(Strings x)
+        {
             return !x.HasValue;
         }
 
-        public static bool operator true(Strings x) {
+        public static bool operator true(Strings x)
+        {
             return x.HasValue;
         }
 
-        public static bool operator false(Strings x) {
+        public static bool operator false(Strings x)
+        {
             return !x.HasValue;
         }
 
@@ -315,7 +351,8 @@ namespace WmcSoft.Text
         /// <param name="x">The first argument.</param>
         /// <param name="y">The second argument.</param>
         /// <returns>The <see cref="Zip(Strings, Strings)"/> of the two <see cref="Strings"/>.</returns>
-        public static Strings operator &(Strings x, Strings y) {
+        public static Strings operator &(Strings x, Strings y)
+        {
             return Zip(x, y);
         }
 
@@ -325,7 +362,8 @@ namespace WmcSoft.Text
         /// <param name="x">The first argument.</param>
         /// <param name="y">The second argument.</param>
         /// <returns>The <see cref="Concat(Strings, Strings)"/> of the two <see cref="Strings"/>.</returns>
-        public static Strings operator |(Strings x, Strings y) {
+        public static Strings operator |(Strings x, Strings y)
+        {
             return Concat(x, y);
         }
 

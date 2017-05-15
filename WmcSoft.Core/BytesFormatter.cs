@@ -138,9 +138,9 @@ namespace WmcSoft
             if (format == null || format == "G")
                 return DoFormat("X", 4, arg);
 
-            Match match;
-            if (regex.TryMatch(format, out match))
-                return DoFormat(match.GetGroupValue("format"), match.GetGroupValue<int>("group"), arg);
+            if (regex.TryMatch(format, out Match match)) {
+                return DoFormat(match.GetGroupValue("format"), match.GetNullableGroupValue<int>("group"), arg);
+            }
 
             return null;
         }

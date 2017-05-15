@@ -33,7 +33,8 @@ using WmcSoft.Text;
 namespace WmcSoft
 {
     /// <summary>
-    /// Provides a set of static methods to extend the <see cref="Strip"/> class. This is a static class.
+    /// Provides a set of static methods to extend the <see cref="Strip"/> class.
+    /// This is a static class.
     /// </summary>
     public static class StripExtensions
     {

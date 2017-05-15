@@ -36,15 +36,18 @@ namespace WmcSoft
     {
         private readonly Version _version;
 
-        private SemVer(Version version, PiecewiseConstruct tag) {
+        private SemVer(Version version, PiecewiseConstruct tag)
+        {
             _version = version;
         }
 
-        public SemVer(int major, int minor = 0, int patch = 0) {
+        public SemVer(int major, int minor = 0, int patch = 0)
+        {
             _version = new Version(major, minor, patch);
         }
 
-        public SemVer(Version version) {
+        public SemVer(Version version)
+        {
             if (version == null) throw new ArgumentNullException(nameof(version));
 
             _version = (version.Revision != 0)
@@ -52,37 +55,51 @@ namespace WmcSoft
                 : version;
         }
 
+        public void Deconstruct(out int major, out int minor, out int patch)
+        {
+            major = _version.Major;
+            minor = _version.Minor;
+            patch = _version.Build;
+        }
+
         public int Major { get { return _version.Major; } }
         public int Minor { get { return _version.Minor; } }
         public int Patch { get { return _version.Build; } }
 
-        public SemVer Clone() {
+        public SemVer Clone()
+        {
             return new SemVer(_version, PiecewiseConstruct.Tag);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _version.GetHashCode();
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return Equals(obj as SemVer);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return _version.ToString(3);
         }
 
-        object ICloneable.Clone() {
+        object ICloneable.Clone()
+        {
             return Clone();
         }
 
-        public int CompareTo(SemVer other) {
+        public int CompareTo(SemVer other)
+        {
             if (ReferenceEquals(other, null))
                 return 1;
             return _version.CompareTo(other._version);
         }
 
-        int IComparable.CompareTo(object obj) {
+        int IComparable.CompareTo(object obj)
+        {
             if (obj == null)
                 return 1;
 
@@ -92,63 +109,75 @@ namespace WmcSoft
             return _version.CompareTo(other._version);
         }
 
-        public bool Equals(SemVer other) {
+        public bool Equals(SemVer other)
+        {
             if (ReferenceEquals(other, null))
                 return false;
             return _version.Equals(other._version);
         }
 
-        public static implicit operator SemVer(Version version) {
+        public static implicit operator SemVer(Version version)
+        {
             return new SemVer(version);
         }
 
-        public SemVer NextMajor() {
+        public SemVer NextMajor()
+        {
             return new SemVer(_version.Major + 1, 0, 0);
         }
 
-        public SemVer NextMinor() {
+        public SemVer NextMinor()
+        {
             return new SemVer(_version.Major, _version.Minor + 1, 0);
         }
 
-        public SemVer Increment() {
+        public SemVer Increment()
+        {
             return new SemVer(_version.Major, _version.Minor, _version.Build + 1);
         }
 
-        public static SemVer operator ++(SemVer value) {
+        public static SemVer operator ++(SemVer value)
+        {
             return value.Increment();
         }
 
-        public static bool operator <(SemVer x, SemVer y) {
+        public static bool operator <(SemVer x, SemVer y)
+        {
             if (ReferenceEquals(y, null))
                 return false;
             return y.CompareTo(x) > 0;
         }
 
-        public static bool operator >=(SemVer x, SemVer y) {
+        public static bool operator >=(SemVer x, SemVer y)
+        {
             if (ReferenceEquals(x, null))
                 return ReferenceEquals(y, null);
             return x.CompareTo(y) >= 0;
         }
 
-        public static bool operator >(SemVer x, SemVer y) {
+        public static bool operator >(SemVer x, SemVer y)
+        {
             if (ReferenceEquals(x, null))
                 return false;
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(SemVer x, SemVer y) {
+        public static bool operator <=(SemVer x, SemVer y)
+        {
             if (ReferenceEquals(x, null))
                 return ReferenceEquals(y, null);
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator ==(SemVer x, SemVer y) {
+        public static bool operator ==(SemVer x, SemVer y)
+        {
             if (ReferenceEquals(x, null))
                 return ReferenceEquals(y, null);
             return x.Equals(y);
         }
 
-        public static bool operator !=(SemVer x, SemVer y) {
+        public static bool operator !=(SemVer x, SemVer y)
+        {
             return !(x == y);
         }
     }

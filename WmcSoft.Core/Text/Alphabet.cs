@@ -58,8 +58,9 @@ namespace WmcSoft.Text
         private readonly int[] _inverse;
         private readonly int _radix;
 
-        static void ThrowOnDuplicate(IEnumerable<char> alphabet) {
-            var unicode = new bool[Char.MaxValue];
+        static void ThrowOnDuplicate(IEnumerable<char> alphabet)
+        {
+            var unicode = new bool[char.MaxValue];
             foreach (var c in alphabet) {
                 if (unicode[c])
                     throw new ArgumentException(nameof(alphabet));
@@ -67,7 +68,8 @@ namespace WmcSoft.Text
             }
         }
 
-        public Alphabet(string alphabet) {
+        public Alphabet(string alphabet)
+        {
             if (alphabet == null) throw new ArgumentNullException(nameof(alphabet));
             ThrowOnDuplicate(alphabet);
 
@@ -82,7 +84,8 @@ namespace WmcSoft.Text
                 _inverse[alphabet[c]] = c;
         }
 
-        private Alphabet(int radix) {
+        private Alphabet(int radix)
+        {
             _radix = radix;
             _alphabet = new char[radix];
             _inverse = new int[radix];
@@ -92,10 +95,12 @@ namespace WmcSoft.Text
             }
         }
 
-        public Alphabet() : this(256) {
+        public Alphabet() : this(256)
+        {
         }
 
-        public bool Contains(char c) {
+        public bool Contains(char c)
+        {
             return _inverse[c] != -1;
         }
 
@@ -111,7 +116,8 @@ namespace WmcSoft.Text
             }
         }
 
-        public IEnumerable<int> ToIndices(IEnumerable<char> sequence) {
+        public IEnumerable<int> ToIndices(IEnumerable<char> sequence)
+        {
             return sequence.Select(c => this[c]).ToArray();
         }
 
@@ -119,7 +125,8 @@ namespace WmcSoft.Text
             get { return _alphabet[index]; }
         }
 
-        public IEnumerable<char> ToChars(IEnumerable<int> sequence) {
+        public IEnumerable<char> ToChars(IEnumerable<int> sequence)
+        {
             return sequence.Select(i => _alphabet[i]).ToArray();
         }
     }

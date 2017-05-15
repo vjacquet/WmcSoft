@@ -7,7 +7,8 @@ namespace WmcSoft
     public class SemVerTests
     {
         [TestMethod]
-        public void CanCreateSemVerFromVersion() {
+        public void CanCreateSemVerFromVersion()
+        {
             var version = new Version(1, 2, 3, 4);
             var semver = (SemVer)version;
 
@@ -17,20 +18,33 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckToString() {
+        public void CanDeconstructSemVer()
+        {
+            var semver = new SemVer(1, 2, 3);
+            var (major, minor, patch) = semver;
+            Assert.AreEqual(1, major);
+            Assert.AreEqual(2, minor);
+            Assert.AreEqual(3, patch);
+        }
+
+        [TestMethod]
+        public void CheckToString()
+        {
             var semver = new SemVer(1, 2, 3);
             Assert.AreEqual("1.2.3", semver.ToString());
         }
 
         [TestMethod]
-        public void CanIncrement() {
+        public void CanIncrement()
+        {
             var semver = new SemVer(1, 2, 3);
             semver++;
             Assert.AreEqual("1.2.4", semver.ToString());
         }
 
         [TestMethod]
-        public void CanCompare() {
+        public void CanCompare()
+        {
             SemVer v0 = null;
             SemVer w0 = null;
             var v1 = new SemVer(1, 2, 3);

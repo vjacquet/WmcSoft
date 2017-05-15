@@ -40,7 +40,8 @@ namespace WmcSoft.Text
         /// <param name="value">The <see cref="Strip"/> to append.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
-        public static StringBuilder Append(this StringBuilder sb, Strip value) {
+        public static StringBuilder Append(this StringBuilder sb, Strip value)
+        {
             return (value ?? Strip.Null).AppendTo(sb);
         }
 
@@ -59,7 +60,8 @@ namespace WmcSoft.Text
         ///   greater than the length of value.
         ///   -or- Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.
         /// </exception>
-        public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count) {
+        public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count)
+        {
             return (value ?? Strip.Null).AppendTo(sb, startIndex, count);
         }
 
@@ -74,7 +76,8 @@ namespace WmcSoft.Text
         /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
         /// <param name="parts">An array that contains the elements to concatenate.</param>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
-        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, object[] parts) {
+        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, object[] parts)
+        {
             if (parts.Length > 0) {
                 sb.Append(parts[0]);
                 for (int i = 1; i < parts.Length; i++) {
@@ -91,7 +94,8 @@ namespace WmcSoft.Text
         /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
         /// <param name="parts">An array that contains the elements to concatenate.</param>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
-        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, string[] parts) {
+        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, string[] parts)
+        {
             if (parts.Length > 0) {
                 sb.Append(parts[0]);
                 for (int i = 1; i < parts.Length; i++) {
@@ -110,7 +114,8 @@ namespace WmcSoft.Text
         /// <param name="parts">An array that contains the elements to concatenate.</param>
         /// <param name="converter">The converter from the type <typeparamref name="T"/> to string.</param>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
-        public static StringBuilder AppendJoin<T>(this StringBuilder sb, string separator, T[] parts, Converter<T, string> converter) {
+        public static StringBuilder AppendJoin<T>(this StringBuilder sb, string separator, T[] parts, Converter<T, string> converter)
+        {
             if (parts.Length > 0) {
                 sb.Append(converter(parts[0]));
                 for (int i = 1; i < parts.Length; i++) {
@@ -124,11 +129,13 @@ namespace WmcSoft.Text
 
         #region Insert
 
-        public static StringBuilder Insert(this StringBuilder sb, int index, string value, int startIndex, int count) {
+        public static StringBuilder Insert(this StringBuilder sb, int index, string value, int startIndex, int count)
+        {
             return sb.Insert(index, value.Substring(startIndex, count));
         }
 
-        public static StringBuilder Insert(this StringBuilder sb, int index, Strip value) {
+        public static StringBuilder Insert(this StringBuilder sb, int index, Strip value)
+        {
             return value.InsertInto(sb, index);
         }
 
@@ -136,79 +143,98 @@ namespace WmcSoft.Text
 
         #region Prepend 
 
-        public static StringBuilder Prepend(this StringBuilder sb, bool value) {
+        public static StringBuilder Prepend(this StringBuilder sb, bool value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, byte value) {
+        public static StringBuilder Prepend(this StringBuilder sb, byte value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, char value) {
+        public static StringBuilder Prepend(this StringBuilder sb, char value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, char[] value) {
+        public static StringBuilder Prepend(this StringBuilder sb, char[] value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, decimal value) {
+        public static StringBuilder Prepend(this StringBuilder sb, decimal value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, double value) {
+        public static StringBuilder Prepend(this StringBuilder sb, double value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, float value) {
+        public static StringBuilder Prepend(this StringBuilder sb, float value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, int value) {
+        public static StringBuilder Prepend(this StringBuilder sb, int value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, long value) {
+        public static StringBuilder Prepend(this StringBuilder sb, long value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, object value) {
+        public static StringBuilder Prepend(this StringBuilder sb, object value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, sbyte value) {
+        public static StringBuilder Prepend(this StringBuilder sb, sbyte value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, short value) {
+        public static StringBuilder Prepend(this StringBuilder sb, short value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, uint value) {
+        public static StringBuilder Prepend(this StringBuilder sb, uint value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, ulong value) {
+        public static StringBuilder Prepend(this StringBuilder sb, ulong value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, ushort value) {
+        public static StringBuilder Prepend(this StringBuilder sb, ushort value)
+        {
             return sb.Insert(0, value);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, char[] value, int startIndex, int charCount) {
+        public static StringBuilder Prepend(this StringBuilder sb, char[] value, int startIndex, int charCount)
+        {
             return sb.Insert(0, value, startIndex, charCount);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, string value, int count) {
+        public static StringBuilder Prepend(this StringBuilder sb, string value, int count)
+        {
             return sb.Insert(0, value, count);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, string value, int startIndex, int count) {
+        public static StringBuilder Prepend(this StringBuilder sb, string value, int startIndex, int count)
+        {
             return Insert(sb, 0, value, startIndex, count);
         }
 
-        public static StringBuilder Prepend(this StringBuilder sb, Strip value) {
+        public static StringBuilder Prepend(this StringBuilder sb, Strip value)
+        {
             return value.PrependTo(sb);
         }
 
@@ -222,7 +248,8 @@ namespace WmcSoft.Text
         /// <param name="self">The string.</param>
         /// <param name="args">The substrings to remove.</param>
         /// <returns>The string without the specified substrings.</returns>
-        public static StringBuilder Remove(this StringBuilder self, params string[] args) {
+        public static StringBuilder Remove(this StringBuilder self, params string[] args)
+        {
             foreach (var arg in args) {
                 self.Replace(arg, "");
             }
@@ -240,7 +267,8 @@ namespace WmcSoft.Text
         /// <param name="prefix">The prefix</param>
         /// <param name="suffix">The suffix</param>
         /// <returns>null if the string is null; otherwise, the concatenated string.</returns>
-        public static StringBuilder SurroundWith(this StringBuilder self, string prefix = null, string suffix = null) {
+        public static StringBuilder SurroundWith(this StringBuilder self, string prefix = null, string suffix = null)
+        {
             if (self == null)
                 return null;
             self.Prepend(prefix);

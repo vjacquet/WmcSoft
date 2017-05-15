@@ -8,7 +8,8 @@ namespace WmcSoft.Time
     {
         [TestMethod]
         [Ignore]
-        public void CanQueryNistTime() {
+        public void CanQueryNistTime()
+        {
             using (var client = new NistClient()) {
                 var today = DateTime.UtcNow.Date;
                 var dateTime = client.Query();
@@ -20,7 +21,8 @@ namespace WmcSoft.Time
 
         [TestMethod]
         [Ignore]
-        public void CanQuerySntpTime() {
+        public void CanQuerySntpTime()
+        {
             using (var client = new SntpClient()) {
                 var today = DateTime.UtcNow.Date;
                 var dateTime = client.Query();

@@ -61,17 +61,20 @@ namespace WmcSoft
         private readonly T _value;
         private readonly State _state;
 
-        private IntervalLimit(State state, T value = default(T)) {
+        private IntervalLimit(State state, T value = default(T))
+        {
             _value = value;
             _state = state;
         }
 
         public IntervalLimit(T value, bool lower)
-            : this(State.Closed | (lower ? State.Lower : State.Upper), value) {
+            : this(State.Closed | (lower ? State.Lower : State.Upper), value)
+        {
         }
 
         public IntervalLimit(T value, bool lower, bool closed)
-            : this((closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper), value) {
+            : this((closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper), value)
+        {
         }
 
         public bool IsLower { get { return (_state & State.Lower) != 0; } }
@@ -87,11 +90,13 @@ namespace WmcSoft
                 return _value;
             }
         }
-        public T GetValueOrDefault() {
+        public T GetValueOrDefault()
+        {
             return _value;
         }
 
-        internal bool IsOutside(T value) {
+        internal bool IsOutside(T value)
+        {
             switch (_state) {
             case State.Lower | State.Closed:
                 return value.CompareTo(_value) < 0;
@@ -106,7 +111,8 @@ namespace WmcSoft
             }
         }
 
-        public int CompareTo(IntervalLimit<T> other) {
+        public int CompareTo(IntervalLimit<T> other)
+        {
             // `null` is lesser than lower bounds, but greater than upper bounds
             // to mimic -∞ < limit < ∞
 #if WORKINPROGRESS
@@ -149,7 +155,8 @@ namespace WmcSoft
 #endif
         }
 
-        public bool Equals(IntervalLimit<T> other) {
+        public bool Equals(IntervalLimit<T> other)
+        {
 #if WORKINPROGRESS
             return _state == other._state && _value.Equals(other._state);
 #else
@@ -157,14 +164,16 @@ namespace WmcSoft
 #endif
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(IntervalLimit<T>))
                 return false;
             var other = (IntervalLimit<T>)obj;
             return Equals(other);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             var h1 = _state.GetHashCode();
             var h2 = _value.GetHashCode();
             return (((h1 << 5) + h1) ^ h2);
@@ -172,29 +181,36 @@ namespace WmcSoft
 
         #region Operators
 
-        public static explicit operator T? (IntervalLimit<T> x) {
+        public static explicit operator T? (IntervalLimit<T> x)
+        {
             if (x.HasValue)
                 return x.Value;
             return null;
         }
 
-        public static bool operator ==(IntervalLimit<T> a, IntervalLimit<T> b) {
+        public static bool operator ==(IntervalLimit<T> a, IntervalLimit<T> b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(IntervalLimit<T> a, IntervalLimit<T> b) {
+        public static bool operator !=(IntervalLimit<T> a, IntervalLimit<T> b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(IntervalLimit<T> x, IntervalLimit<T> y) {
+        public static bool operator <(IntervalLimit<T> x, IntervalLimit<T> y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(IntervalLimit<T> x, IntervalLimit<T> y) {
+        public static bool operator <=(IntervalLimit<T> x, IntervalLimit<T> y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(IntervalLimit<T> x, IntervalLimit<T> y) {
+        public static bool operator >(IntervalLimit<T> x, IntervalLimit<T> y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(IntervalLimit<T> x, IntervalLimit<T> y) {
+        public static bool operator >=(IntervalLimit<T> x, IntervalLimit<T> y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -204,22 +220,26 @@ namespace WmcSoft
     public static class IntervalLimit
     {
         public static IntervalLimit<T> Lower<T>(T value)
-          where T : struct, IComparable<T> {
+          where T : struct, IComparable<T>
+        {
             return new IntervalLimit<T>(value, true);
         }
 
         public static IntervalLimit<T> Lower<T>(T value, bool closed)
-            where T : struct, IComparable<T> {
+            where T : struct, IComparable<T>
+        {
             return new IntervalLimit<T>(value, true, closed);
         }
 
         public static IntervalLimit<T> Upper<T>(T value)
-         where T : struct, IComparable<T> {
+         where T : struct, IComparable<T>
+        {
             return new IntervalLimit<T>(value, false);
         }
 
         public static IntervalLimit<T> Upper<T>(T value, bool closed)
-            where T : struct, IComparable<T> {
+            where T : struct, IComparable<T>
+        {
             return new IntervalLimit<T>(value, false, closed);
         }
     }

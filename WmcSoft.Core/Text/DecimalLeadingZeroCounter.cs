@@ -42,43 +42,52 @@ namespace WmcSoft.Text
 
         readonly int _storage;
 
-        public DecimalLeadingZeroCounter(int value) {
+        public DecimalLeadingZeroCounter(int value)
+        {
             if (value > MaxStoredValue || value < MinStoredValue)
                 throw new OverflowException();
+
             _storage = value;
         }
 
-        public DecimalLeadingZeroCounter(string value) {
+        public DecimalLeadingZeroCounter(string value)
+        {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (!Validator.IsMatch(value)) throw new ArgumentException(nameof(value));
 
-            var x = Int32.Parse(value, CultureInfo.InvariantCulture);
+            var x = int.Parse(value, CultureInfo.InvariantCulture);
             if (x > MaxStoredValue || x < MinStoredValue)
                 throw new OverflowException();
             _storage = x - 1;
         }
 
-        public int CompareTo(DecimalLeadingZeroCounter other) {
+        public int CompareTo(DecimalLeadingZeroCounter other)
+        {
             return _storage - other._storage;
         }
 
-        public DecimalLeadingZeroCounter Increment(int n) {
+        public DecimalLeadingZeroCounter Increment(int n)
+        {
             return new DecimalLeadingZeroCounter(_storage + n);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return (_storage + 1).ToString(CultureInfo.InvariantCulture);
         }
 
-        public bool Equals(DecimalLeadingZeroCounter other) {
+        public bool Equals(DecimalLeadingZeroCounter other)
+        {
             return _storage == other._storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(DecimalLeadingZeroCounter))
                 return false;
             return Equals((DecimalLeadingZeroCounter)obj);
@@ -86,19 +95,23 @@ namespace WmcSoft.Text
 
         #region Conversion operators
 
-        public static implicit operator int(DecimalLeadingZeroCounter x) {
+        public static implicit operator int(DecimalLeadingZeroCounter x)
+        {
             return x._storage;
         }
 
-        public static implicit operator string(DecimalLeadingZeroCounter x) {
+        public static implicit operator string(DecimalLeadingZeroCounter x)
+        {
             return x.ToString();
         }
 
-        public static implicit operator DecimalLeadingZeroCounter(int x) {
+        public static implicit operator DecimalLeadingZeroCounter(int x)
+        {
             return new DecimalLeadingZeroCounter(x);
         }
 
-        public static implicit operator DecimalLeadingZeroCounter(string x) {
+        public static implicit operator DecimalLeadingZeroCounter(string x)
+        {
             return new DecimalLeadingZeroCounter(x);
         }
 
@@ -106,23 +119,29 @@ namespace WmcSoft.Text
 
         #region Relational operators
 
-        public static bool operator ==(DecimalLeadingZeroCounter a, DecimalLeadingZeroCounter b) {
+        public static bool operator ==(DecimalLeadingZeroCounter a, DecimalLeadingZeroCounter b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(DecimalLeadingZeroCounter a, DecimalLeadingZeroCounter b) {
+        public static bool operator !=(DecimalLeadingZeroCounter a, DecimalLeadingZeroCounter b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y) {
+        public static bool operator <(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y) {
+        public static bool operator <=(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y) {
+        public static bool operator >(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y) {
+        public static bool operator >=(DecimalLeadingZeroCounter x, DecimalLeadingZeroCounter y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -130,19 +149,23 @@ namespace WmcSoft.Text
 
         #region Arithmetic operators
 
-        public static DecimalLeadingZeroCounter operator +(DecimalLeadingZeroCounter x, int n) {
+        public static DecimalLeadingZeroCounter operator +(DecimalLeadingZeroCounter x, int n)
+        {
             return x.Increment(n);
         }
 
-        public static DecimalLeadingZeroCounter operator -(DecimalLeadingZeroCounter x, int n) {
+        public static DecimalLeadingZeroCounter operator -(DecimalLeadingZeroCounter x, int n)
+        {
             return x.Increment(-n);
         }
 
-        public static DecimalLeadingZeroCounter operator ++(DecimalLeadingZeroCounter x) {
+        public static DecimalLeadingZeroCounter operator ++(DecimalLeadingZeroCounter x)
+        {
             return x.Increment(1);
         }
 
-        public static DecimalLeadingZeroCounter operator --(DecimalLeadingZeroCounter x) {
+        public static DecimalLeadingZeroCounter operator --(DecimalLeadingZeroCounter x)
+        {
             return x.Increment(-1);
         }
 

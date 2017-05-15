@@ -35,7 +35,8 @@ namespace WmcSoft
         private readonly string _precision;
         private readonly IFormatProvider _formatProvider;
 
-        public GeoFormatter(string format, IFormatProvider formatProvider) {
+        public GeoFormatter(string format, IFormatProvider formatProvider)
+        {
             _formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
 
             int precision;
@@ -51,7 +52,8 @@ namespace WmcSoft
             }
         }
 
-        static void ParseFormat(string format, IFormatProvider formatProvider, out char specifier, out int precision) {
+        static void ParseFormat(string format, IFormatProvider formatProvider, out char specifier, out int precision)
+        {
             if (string.IsNullOrWhiteSpace(format))
                 throw new FormatException();
 
@@ -81,23 +83,70 @@ namespace WmcSoft
             }
         }
 
-        string Format(int degrees, decimal minutes) {
+        string Format(int degrees, decimal minutes)
+        {
             return degrees + "° " + minutes.ToString(_precision, _formatProvider) + "'";
         }
 
-        string Format(decimal degrees) {
+        string Format(decimal degrees)
+        {
             return degrees.ToString(_precision, _formatProvider) + '°';
         }
 
-        public string Format(int degrees, int minutes, int seconds) {
+        public string Format(int degrees, int minutes, int seconds)
+        {
             switch (_specifier) {
             case 'M': // 49° 30,25′
                 return Format(degrees, minutes + seconds / 60m);
             case 'D': // 49,5000°
-                return Format(degrees + minutes / 60m + seconds / 3600m);
+                return Format(degrees > 0 ? (degrees + minutes / 60m + seconds / 3600m) : (degrees - minutes / 60m - seconds / 3600m));
             default:
                 return degrees + "° " + minutes.ToString("00") + @"' " + seconds.ToString("00") + "\"";
             }
+        }
+
+        public static int Encode(int degrees, int minutes, int seconds, int milliseconds)
+        {
+            return degrees >= 0
+                ? degrees * 3600_000 + minutes * 60_000 + seconds * 1000 + milliseconds
+                : degrees * 3600_000 - minutes * 60_000 - seconds * 1000 - milliseconds;
+        }
+
+        public static (int degrees, int minutes, int seconds, int milliseconds) Decode(int x)
+        {
+            var degrees = x / 3600_000;
+            if (x < 0) {
+                x = -x;
+            }
+            var minutes = (x / 60_000) % 60;
+            var seconds = (x / 1000) % 60;
+            var milliseconds = x / 1000;
+            return (degrees, minutes, seconds, milliseconds);
+        }
+
+        public static int DecodeDegrees(int x)
+        {
+            return x / 3600_000;
+        }
+
+        public static int DecodeMinutes(int x)
+        {
+            return (Abs(x) / 60_000) % 60;
+        }
+
+        public static int DecodeSeconds(int x)
+        {
+            return Abs(x / 1000) % 60;
+        }
+
+        public static int DecodeMilliseconds(int x)
+        {
+            return Abs(x) % 1000;
+        }
+
+        static int Abs(int x)
+        {
+            return (x >= 0) ? x : -x;
         }
     }
 }

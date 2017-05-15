@@ -32,19 +32,23 @@ namespace WmcSoft.Time
     {
         private readonly NistClient _client;
 
-        public NistClientTimeSource() : this(new NistClient()) {
+        public NistClientTimeSource() : this(new NistClient())
+        {
         }
 
-        public NistClientTimeSource(NistClient client) {
+        public NistClientTimeSource(NistClient client)
+        {
             if (client == null) throw new ArgumentNullException(nameof(client));
             _client = client;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _client.Dispose();
         }
 
-        public TimePoint Now() {
+        public TimePoint Now()
+        {
             return new TimePoint(_client.Query());
         }
     }

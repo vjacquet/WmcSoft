@@ -9,7 +9,8 @@ namespace WmcSoft.Configuration
     [TestClass]
     public class FactoryElementTests
     {
-        static System.Configuration.Configuration OpenConfiguration(string name) {
+        static System.Configuration.Configuration OpenConfiguration(string name)
+        {
             var path = Path.Combine(Environment.CurrentDirectory, @"Configuration\" + name + ".test.config");
             var fileMap = new ExeConfigurationFileMap {
                 ExeConfigFilename = path
@@ -17,28 +18,29 @@ namespace WmcSoft.Configuration
             return ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
         }
 
-        static bool Thrown<TException>(Action action) where TException : Exception {
+        static bool Thrown<TException>(Action action) where TException : Exception
+        {
             try {
                 action();
                 return false;
-            }
-            catch (TException) {
+            } catch (TException) {
                 return true;
             }
         }
 
-        static bool Thrown<TException>(Func<object> func) where TException : Exception {
+        static bool Thrown<TException>(Func<object> func) where TException : Exception
+        {
             try {
                 var r = func();
                 return false;
-            }
-            catch (TException) {
+            } catch (TException) {
                 return true;
             }
         }
 
         [TestMethod]
-        public void CanLoadFactorySection() {
+        public void CanLoadFactorySection()
+        {
             var configuration = OpenConfiguration("factory-valid");
             var section = (TestSection)configuration.GetSection("wmc");
             var checkpoints = section.Checkpoints;
@@ -55,7 +57,8 @@ namespace WmcSoft.Configuration
         }
 
         [TestMethod]
-        public void CannotAccessInvalidProperty() {
+        public void CannotAccessInvalidProperty()
+        {
             var configuration = OpenConfiguration("factory-errors");
             var section = (TestSection)configuration.GetSection("wmc");
             var checkpoints = section.Checkpoints;
@@ -79,17 +82,20 @@ namespace WmcSoft.Configuration
 
     public class CheckpointA : CheckpointBase
     {
-        public CheckpointA(string name) : base(name) {
+        public CheckpointA(string name) : base(name)
+        {
         }
 
-        protected override CheckpointResult DoVerify(int level) {
+        protected override CheckpointResult DoVerify(int level)
+        {
             return Success();
         }
     }
 
     public class CheckpointB
     {
-        public CheckpointB(string name) {
+        public CheckpointB(string name)
+        {
             Name = name;
         }
 

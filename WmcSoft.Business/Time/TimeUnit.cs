@@ -78,7 +78,8 @@ namespace WmcSoft.Time
         private readonly Type _type;
         private readonly int _factor;
 
-        private TimeUnit(Type type, int factor) {
+        private TimeUnit(Type type, int factor)
+        {
             _type = type;
             _factor = factor;
         }
@@ -104,7 +105,8 @@ namespace WmcSoft.Time
             }
         }
 
-        public static TimeUnit NormalizeUnit(long quantity, TimeUnit unit) {
+        public static TimeUnit NormalizeUnit(long quantity, TimeUnit unit)
+        {
             var baseAmount = quantity * unit._factor;
             var units = unit.DescendingUnits;
             for (var i = 0; i < units.Length; i++) {
@@ -116,7 +118,8 @@ namespace WmcSoft.Time
             throw new InvalidOperationException();
         }
 
-        static IEnumerable<Tuple<long, TimeUnit>> Decompose(long remainder, TimeUnit[] units) {
+        static IEnumerable<Tuple<long, TimeUnit>> Decompose(long remainder, TimeUnit[] units)
+        {
             for (int i = 0; i < units.Length; i++) {
                 var aUnit = units[i];
                 var factor = aUnit.Factor;
@@ -126,15 +129,18 @@ namespace WmcSoft.Time
             }
         }
 
-        public static IEnumerable<Tuple<long, TimeUnit>> Decompose(long quantity, TimeUnit unit) {
+        public static IEnumerable<Tuple<long, TimeUnit>> Decompose(long quantity, TimeUnit unit)
+        {
             return Decompose(quantity * unit._factor, unit.DescendingUnits);
         }
 
-        public static IEnumerable<Tuple<long, TimeUnit>> DecomposeForDisplay(long quantity, TimeUnit unit) {
+        public static IEnumerable<Tuple<long, TimeUnit>> DecomposeForDisplay(long quantity, TimeUnit unit)
+        {
             return Decompose(quantity * unit._factor, unit.DescendingUnitsForDisplay);
         }
 
-        public TimeUnit NextFinerUnit() {
+        public TimeUnit NextFinerUnit()
+        {
             TimeUnit[] descending = DescendingUnits;
             int index = Array.IndexOf(descending, this, 0, descending.Length - 1);
             if (index == -1)
@@ -142,53 +148,65 @@ namespace WmcSoft.Time
             return descending[index + 1];
         }
 
-        public bool IsConvertibleToMilliseconds() {
+        public bool IsConvertibleToMilliseconds()
+        {
             return (_type & Type.Millisecond) != 0;
         }
 
-        public bool IsConvertibleTo(TimeUnit other) {
+        public bool IsConvertibleTo(TimeUnit other)
+        {
             return BaseType == other.BaseType;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return _type.ToString().ToLowerInvariant();
         }
 
-        internal string ToString(long quantity) {
+        internal string ToString(long quantity)
+        {
             return string.Concat(quantity, ' ', this, quantity == 1 ? "" : "s");
         }
 
         #region Operators
 
-        public static bool operator ==(TimeUnit x, TimeUnit y) {
+        public static bool operator ==(TimeUnit x, TimeUnit y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(TimeUnit x, TimeUnit y) {
+        public static bool operator !=(TimeUnit x, TimeUnit y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool Equals(TimeUnit x, TimeUnit y) {
+        public static bool Equals(TimeUnit x, TimeUnit y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator <(TimeUnit x, TimeUnit y) {
+        public static bool operator <(TimeUnit x, TimeUnit y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator >(TimeUnit x, TimeUnit y) {
+        public static bool operator >(TimeUnit x, TimeUnit y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(TimeUnit x, TimeUnit y) {
+        public static bool operator <=(TimeUnit x, TimeUnit y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator >=(TimeUnit x, TimeUnit y) {
+        public static bool operator >=(TimeUnit x, TimeUnit y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static int Compare(TimeUnit x, TimeUnit y) {
+        public static int Compare(TimeUnit x, TimeUnit y)
+        {
             return x.CompareTo(y);
         }
 
@@ -196,7 +214,8 @@ namespace WmcSoft.Time
 
         #region IComparable<TimeUnit> members
 
-        public int CompareTo(TimeUnit other) {
+        public int CompareTo(TimeUnit other)
+        {
             if (other.BaseType.Equals(BaseType))
                 return _factor.CompareTo(other._factor);
             if (BaseType.Equals(Type.Month))
@@ -208,7 +227,8 @@ namespace WmcSoft.Time
 
         #region IEquatable<TimeUnit> members
 
-        public bool Equals(TimeUnit other) {
+        public bool Equals(TimeUnit other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -216,13 +236,15 @@ namespace WmcSoft.Time
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return false;
             return Equals((TimeUnit)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             // CHECK: is it a good hash function?
             return _factor + BaseType.GetHashCode() + _type.GetHashCode();
         }

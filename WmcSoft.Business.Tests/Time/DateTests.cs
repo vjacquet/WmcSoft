@@ -7,7 +7,8 @@ namespace WmcSoft.Time
     public class DateTests
     {
         [TestMethod]
-        public void AssertDateIsOfUnspecifiedKind() {
+        public void AssertDateIsOfUnspecifiedKind()
+        {
             var manual = new Date(1973, 5, 2);
             Assert.AreEqual(DateTimeKind.Unspecified, ((DateTime)manual).Kind);
 
@@ -17,7 +18,8 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        public void CheckAsTimePoint() {
+        public void CheckAsTimePoint()
+        {
             var manual = new Date(1973, 5, 2);
             var zone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
             var tp = manual.AsTimePoint(zone);

@@ -39,24 +39,29 @@ namespace WmcSoft.Time
 
         private readonly IPEndPoint _endpoint;
 
-        public SntpClient() : this(ServerDefault, PortDefault) {
+        public SntpClient() : this(ServerDefault, PortDefault)
+        {
         }
 
-        public SntpClient(string hostNameOrAddress) : this(hostNameOrAddress, PortDefault) {
+        public SntpClient(string hostNameOrAddress) : this(hostNameOrAddress, PortDefault)
+        {
         }
 
         public SntpClient(string hostNameOrAddress, int port)
-            : this(new IPEndPoint(Dns.GetHostEntry(hostNameOrAddress).AddressList[0], port)) {
+            : this(new IPEndPoint(Dns.GetHostEntry(hostNameOrAddress).AddressList[0], port))
+        {
         }
 
-        internal SntpClient(IPEndPoint endpoint) {
+        internal SntpClient(IPEndPoint endpoint)
+        {
             _endpoint = endpoint;
             Timeout = TimeSpan.FromSeconds(30);
         }
 
         public TimeSpan Timeout { get; set; }
 
-        public DateTime Query() {
+        public DateTime Query()
+        {
             // adapted from <http://stackoverflow.com/a/12150289>
 
             // NTP message size - 16 bytes of the digest (RFC 2030)
@@ -88,12 +93,14 @@ namespace WmcSoft.Time
             return Epoch.AddTicks(milliseconds * TimeSpan.TicksPerMillisecond);
         }
 
-        static long ReadPart(byte[] buffer, int offset) {
+        static long ReadPart(byte[] buffer, int offset)
+        {
             // ensures correct endianness
             return (uint)IPAddress.NetworkToHostOrder(BitConverter.ToInt32(buffer, offset));
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             // implement IDisposable in case the socket should be recycled.
         }
     }

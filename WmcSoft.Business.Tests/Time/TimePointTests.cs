@@ -10,7 +10,8 @@ namespace WmcSoft.Time
     public class TimePointTests
     {
         [TestMethod]
-        public void AssertDateTimeKindIsPreservedWhileSerializing() {
+        public void AssertDateTimeKindIsPreservedWhileSerializing()
+        {
             using (var ms = new MemoryStream()) {
                 var serializer = new BinarySerializer<DateTime>();
 
@@ -25,7 +26,8 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        public void CanAddMonthsToTimePoint() {
+        public void CanAddMonthsToTimePoint()
+        {
             var date = new DateTime(1973, 05, 02, 0, 0, 0, DateTimeKind.Local);
             var timepoint = new TimePoint(date);
             var duration = Duration.Months(15);
@@ -35,7 +37,8 @@ namespace WmcSoft.Time
         }
 
         [TestMethod]
-        public void CanAddMSecondsToTimePoint() {
+        public void CanAddMSecondsToTimePoint()
+        {
             var date = new DateTime(1973, 05, 02, 0, 0, 0, DateTimeKind.Local);
             var timepoint = new TimePoint(date);
             var duration = Duration.Seconds(15);

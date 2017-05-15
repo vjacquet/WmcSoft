@@ -33,11 +33,13 @@ namespace WmcSoft.Text
     {
         readonly Predicate<char> _isSeparator;
 
-        public PredicateTokenizer(Predicate<char> isSeparator) {
+        public PredicateTokenizer(Predicate<char> isSeparator)
+        {
             _isSeparator = isSeparator;
         }
 
-        public IEnumerable<string> Tokenize(string value) {
+        public IEnumerable<string> Tokenize(string value)
+        {
             var start = 0;
             var length = 0;
             foreach (var c in value) {

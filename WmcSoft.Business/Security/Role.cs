@@ -40,12 +40,14 @@ namespace WmcSoft.Security
 
         #region Lifecycle
 
-        public Role(string name, params Permission[] permissions) {
+        public Role(string name, params Permission[] permissions)
+        {
             Name = name;
             _permissions = new HashSet<Permission>(permissions);
         }
 
-        public Role(string name, IEnumerable<Permission> permissions) {
+        public Role(string name, IEnumerable<Permission> permissions)
+        {
             Name = name;
             _permissions = new HashSet<Permission>(permissions);
         }
@@ -55,21 +57,24 @@ namespace WmcSoft.Security
         #region Properties
 
         [DataMember]
-        public string Name { get; private set; }
+        public string Name { get; }
 
         #endregion
 
         #region Methods
 
-        public bool Add(Permission permission) {
+        public bool Add(Permission permission)
+        {
             return _permissions.Add(permission);
         }
 
-        public bool Remove(Permission permission) {
+        public bool Remove(Permission permission)
+        {
             return _permissions.Remove(permission);
         }
 
-        public bool Contains(Permission permission) {
+        public bool Contains(Permission permission)
+        {
             return _permissions.Contains(permission);
         }
 
@@ -77,7 +82,8 @@ namespace WmcSoft.Security
 
         #region IEnumerable<Permission> Members
 
-        public IEnumerator<Permission> GetEnumerator() {
+        public IEnumerator<Permission> GetEnumerator()
+        {
             return _permissions.GetEnumerator();
         }
 
@@ -85,7 +91,8 @@ namespace WmcSoft.Security
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return _permissions.GetEnumerator();
         }
 

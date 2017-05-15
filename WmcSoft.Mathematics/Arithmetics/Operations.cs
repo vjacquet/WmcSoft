@@ -28,6 +28,8 @@ using System;
 using System.Collections.Generic;
 using WmcSoft.Algebra;
 
+using static WmcSoft.Helpers;
+
 namespace WmcSoft.Arithmetics
 {
     /// <summary>
@@ -183,19 +185,6 @@ namespace WmcSoft.Arithmetics
                 }
                 return result;
             }
-        }
-
-        static bool Odd(int n)
-        {
-            return (n % 2) == 1;
-        }
-        static bool Even(int n)
-        {
-            return (n % 2) == 0;
-        }
-        static int HalfNonNegative(int n)
-        {
-            return n / 2;
         }
 
         static T PowerAccumulateSemiGroup<T, G>(this G group, T x, T y, int n)

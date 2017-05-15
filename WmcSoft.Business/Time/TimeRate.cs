@@ -42,20 +42,24 @@ namespace WmcSoft.Time
         private readonly decimal _quantity;
         private readonly Duration _unit;
 
-        public TimeRate(decimal quantity, Duration unit) {
+        public TimeRate(decimal quantity, Duration unit)
+        {
             _quantity = quantity;
             _unit = unit;
         }
 
-        public decimal Over(Duration duration) {
+        public decimal Over(Duration duration)
+        {
             return Over(duration, RoundingMode.Unnecessary);
         }
 
-        public decimal Over(Duration duration, RoundingMode rounding) {
+        public decimal Over(Duration duration, RoundingMode rounding)
+        {
             return Over(duration, Scale, rounding);
         }
 
-        public decimal Over(Duration duration, int scale, RoundingMode rounding) {
+        public decimal Over(Duration duration, int scale, RoundingMode rounding)
+        {
             return duration.DividedBy(_unit).MultipliedBy(_quantity).GetDecimalValue(scale, rounding);
         }
 
@@ -65,11 +69,13 @@ namespace WmcSoft.Time
 
         #region Operators
 
-        public static bool operator ==(TimeRate x, TimeRate y) {
+        public static bool operator ==(TimeRate x, TimeRate y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(TimeRate x, TimeRate y) {
+        public static bool operator !=(TimeRate x, TimeRate y)
+        {
             return !x.Equals(y);
         }
 
@@ -77,7 +83,8 @@ namespace WmcSoft.Time
 
         #region IEquatable<TimeRate> members
 
-        public bool Equals(TimeRate other) {
+        public bool Equals(TimeRate other)
+        {
             return _quantity == other._quantity && _unit == other._unit;
         }
 
@@ -85,13 +92,15 @@ namespace WmcSoft.Time
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != GetType())
                 return false;
             return Equals((TimeRate)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return Hash(_quantity.GetHashCode(), _unit.GetHashCode());
         }
 
@@ -99,7 +108,8 @@ namespace WmcSoft.Time
 
         #region Overrides
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return _quantity + " per " + _unit;
         }
 

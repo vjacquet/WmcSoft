@@ -45,71 +45,87 @@ namespace WmcSoft.Time
     {
         private readonly short _storage;
 
-        public MinuteOfHour(int minute) {
+        public MinuteOfHour(int minute)
+        {
             if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));
             _storage = unchecked((short)minute);
         }
 
         public int Value { get { return _storage; } }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return _storage + "mn";
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(MinuteOfHour))
                 return false;
             return Equals((MinuteOfHour)obj);
         }
 
-        public bool Equals(MinuteOfHour other) {
+        public bool Equals(MinuteOfHour other)
+        {
             return _storage.Equals(other._storage);
         }
 
-        public int CompareTo(MinuteOfHour other) {
+        public int CompareTo(MinuteOfHour other)
+        {
             return _storage.CompareTo(other._storage);
         }
 
-        public bool IsAfter(MinuteOfHour other) {
+        public bool IsAfter(MinuteOfHour other)
+        {
             return CompareTo(other) > 0;
         }
 
-        public bool IsBefore(MinuteOfHour other) {
+        public bool IsBefore(MinuteOfHour other)
+        {
             return CompareTo(other) < 0;
         }
 
         #region Operators
 
-        public static implicit operator MinuteOfHour(int h) {
+        public static implicit operator MinuteOfHour(int h)
+        {
             return new MinuteOfHour(h);
         }
 
-        public static explicit operator int(MinuteOfHour h) {
+        public static explicit operator int(MinuteOfHour h)
+        {
             return h.Value;
         }
 
-        public static bool operator ==(MinuteOfHour x, MinuteOfHour y) {
+        public static bool operator ==(MinuteOfHour x, MinuteOfHour y)
+        {
             return x.Equals(y);
         }
 
-        public static bool operator !=(MinuteOfHour x, MinuteOfHour y) {
+        public static bool operator !=(MinuteOfHour x, MinuteOfHour y)
+        {
             return !x.Equals(y);
         }
 
-        public static bool operator <(MinuteOfHour x, MinuteOfHour y) {
+        public static bool operator <(MinuteOfHour x, MinuteOfHour y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(MinuteOfHour x, MinuteOfHour y) {
+        public static bool operator <=(MinuteOfHour x, MinuteOfHour y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(MinuteOfHour x, MinuteOfHour y) {
+        public static bool operator >(MinuteOfHour x, MinuteOfHour y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(MinuteOfHour x, MinuteOfHour y) {
+        public static bool operator >=(MinuteOfHour x, MinuteOfHour y)
+        {
             return x.CompareTo(y) >= 0;
         }
 

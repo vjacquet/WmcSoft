@@ -34,33 +34,37 @@ namespace WmcSoft.Security
     [KnownType(typeof(Group))]
     [KnownType(typeof(User))]
     [DebuggerDisplay("User: {Name, nq}")]
-    public abstract class Principal: IEquatable<Principal>
+    public abstract class Principal : IEquatable<Principal>
     {
-        protected Principal(string name) {
+        protected Principal(string name)
+        {
             Name = name;
         }
 
         [DataMember]
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public virtual bool Match(Principal other) {
+        public virtual bool Match(Principal other)
+        {
             return Equals(other);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Name;
         }
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return Name.GetHashCode();
         }
 
         #region IEquatable<Principal> Membres
 
-        public bool Equals(Principal other) {
-            if(other == null)
+        public bool Equals(Principal other)
+        {
+            if (other == null)
                 return false;
-            return GetType() == other.GetType()
-                && Name == other.Name;
+            return GetType() == other.GetType() && Name == other.Name;
         }
 
         #endregion

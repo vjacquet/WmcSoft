@@ -42,7 +42,8 @@ namespace WmcSoft.Security
         #region Lifecycle
 
         public Group(string name)
-            : base(name) {
+            : base(name)
+        {
             _members = new HashSet<Principal>();
         }
 
@@ -50,7 +51,8 @@ namespace WmcSoft.Security
 
         #region Overrides
 
-        public override bool Match(Principal other) {
+        public override bool Match(Principal other)
+        {
             return base.Match(other)
                 && _members.Any(p => p.Match(other));
         }
@@ -63,15 +65,18 @@ namespace WmcSoft.Security
             get { return _members.AsEnumerable(); }
         }
 
-        public virtual bool Add(Principal principal) {
+        public virtual bool Add(Principal principal)
+        {
             return _members.Add(principal);
         }
 
-        public virtual bool Remove(Principal principal) {
+        public virtual bool Remove(Principal principal)
+        {
             return _members.Remove(principal);
         }
 
-        public virtual bool Contains(Principal principal) {
+        public virtual bool Contains(Principal principal)
+        {
             return _members.Contains(principal);
         }
 
@@ -79,7 +84,8 @@ namespace WmcSoft.Security
 
         #region IEnumerable<Principal> Members
 
-        public IEnumerator<Principal> GetEnumerator() {
+        public IEnumerator<Principal> GetEnumerator()
+        {
             return Members.GetEnumerator();
         }
 
@@ -87,7 +93,8 @@ namespace WmcSoft.Security
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

@@ -33,17 +33,17 @@ namespace WmcSoft.Text
     {
         readonly char[] _separators;
 
-        public CharsTokenizer(params char[] separators) {
-            if (separators == null)
-                throw new ArgumentNullException("separators");
-            if (separators.Length == 0)
-                throw new ArgumentOutOfRangeException("separators");
+        public CharsTokenizer(params char[] separators)
+        {
+            if (separators == null) throw new ArgumentNullException(nameof(separators));
+            if (separators.Length == 0) throw new ArgumentOutOfRangeException(nameof(separators));
 
             _separators = separators;
         }
 
-        public IEnumerable<string> Tokenize(string value) {
-            if (String.IsNullOrEmpty(value))
+        public IEnumerable<string> Tokenize(string value)
+        {
+            if (string.IsNullOrEmpty(value))
                 yield break;
 
             var start = 0;

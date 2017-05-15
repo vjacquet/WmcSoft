@@ -37,7 +37,8 @@ namespace WmcSoft.Time
     public static class DateSpecificationExtensions
     {
         public static Date? FirstOccurrenceIn<TSpecification>(this TSpecification specification, Interval<Date> interval)
-            where TSpecification : IDateSpecification {
+            where TSpecification : IDateSpecification
+        {
             return specification.EnumerateOver(interval).FirstOrDefault();
         }
     }

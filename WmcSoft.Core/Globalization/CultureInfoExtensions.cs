@@ -24,15 +24,53 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace WmcSoft.Globalization
 {
     public static class CultureInfoExtensions
     {
-        public static string ToList(this TextInfo textInfo, params string[] values) {
-            var separator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+        #region ToList 
+
+        public static string ToList(this CultureInfo culture, params string[] values)
+        {
+            return ToList(culture.TextInfo, values);
+        }
+        public static string ToList(this CultureInfo culture, IEnumerable<string> values)
+        {
+            return ToList(culture.TextInfo, values);
+        }
+        public static string ToList(this CultureInfo culture, params object[] values)
+        {
+            return ToList(culture.TextInfo, values);
+        }
+        public static string ToList<T>(this CultureInfo culture, IEnumerable<T> values)
+        {
+            return ToList(culture.TextInfo, values);
+        }
+
+        public static string ToList(this TextInfo textInfo, params string[] values)
+        {
+            var separator = textInfo.ListSeparator;
             return string.Join(separator, values);
         }
+        public static string ToList(this TextInfo textInfo, IEnumerable<string> values)
+        {
+            var separator = textInfo.ListSeparator;
+            return string.Join(separator, values);
+        }
+        public static string ToList(this TextInfo textInfo, params object[] values)
+        {
+            var separator = textInfo.ListSeparator;
+            return string.Join(separator, values);
+        }
+        public static string ToList<T>(this TextInfo textInfo, IEnumerable<T> values)
+        {
+            var separator = textInfo.ListSeparator;
+            return string.Join(separator, values);
+        }
+
+        #endregion
     }
 }

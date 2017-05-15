@@ -26,7 +26,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WmcSoft.Properties;
+
+using static WmcSoft.Helpers;
 
 namespace WmcSoft.Numerics
 {
@@ -39,8 +42,26 @@ namespace WmcSoft.Numerics
     {
         public static Matrix Empty;
 
+        [DebuggerTypeProxy(typeof(Storage.DebugView))]
         class Storage
         {
+            class DebugView
+            {
+                private readonly Storage _storage;
+
+                DebugView(Storage storage)
+                {
+                    _storage = storage;
+                }
+
+                [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+                public double[] Items {
+                    get {
+                        return _storage.data;
+                    }
+                }
+            }
+
             public readonly double[] data;
             public readonly int m;
             public readonly int n;
@@ -96,7 +117,7 @@ namespace WmcSoft.Numerics
         public Matrix(int m, int n, double value)
             : this(m, n)
         {
-            NumericsUtilities.CopyValue(_storage.data, value);
+            Fill(_storage.data, value);
         }
 
         public Matrix(double[,] values)
@@ -193,8 +214,7 @@ namespace WmcSoft.Numerics
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Combinatorial(int n, double x, double y, Func<double, double, double> op)
         {
-            if (op == null)
-                throw new ArgumentNullException("op");
+            if (op == null) throw new ArgumentNullException(nameof(op));
 
             var result = new Matrix(n, n, y);
             var data = result._storage.data;
@@ -272,21 +292,21 @@ namespace WmcSoft.Numerics
             }
         }
 
-        public IReadOnlyList<double> Row(int i)
+        public Band<double> Row(int i)
         {
             if (_storage == null)
-                return StrideEnumerable<double>.Empty;
+                return Band<double>.Empty;
 
             var k = i * _storage.n;
-            return new StrideEnumerable<double>(_storage.data, k, _storage.n, 1);
+            return new Band<double>(_storage.data, k, _storage.n, 1);
         }
 
-        public IReadOnlyList<double> Column(int j)
+        public Band<double> Column(int j)
         {
             if (_storage == null)
-                return StrideEnumerable<double>.Empty;
+                return Band<double>.Empty;
 
-            return new StrideEnumerable<double>(_storage.data, j, _storage.m, _storage.n);
+            return new Band<double>(_storage.data, j, _storage.m, _storage.n);
         }
 
         #endregion
@@ -347,6 +367,46 @@ namespace WmcSoft.Numerics
             return x - y;
         }
 
+        static Matrix Power(Matrix x, Matrix y, int n)
+        {
+            // precondition: n >= 0
+            if (n == 0)
+                return x;
+            for (;;) {
+                if (Odd(n)) {
+                    x = x * y;
+                    if (n == 1)
+                        return x;
+                }
+                y = y * y;
+                n /= 2;
+            }
+        }
+        public static Matrix Power(Matrix m, int n)
+        {
+            switch (n) {
+            case 0:
+                return Identity(n);
+            case 1:
+                return m;
+            case -1:
+                return m.Inverse();
+            }
+
+            if (n < 0) {
+                n = -1;
+                m = m.Inverse();
+            }
+
+            while (Even(n)) {
+                m = m * m;
+                n /= 2;
+            }
+            if (n == 1)
+                return m;
+            return Power(m, m * m, (n - 1) / 2);
+        }
+
         public static Matrix operator *(Matrix x, Matrix y)
         {
             if (x._storage.m != y._storage.n || x._storage.n != y._storage.m)
@@ -356,9 +416,13 @@ namespace WmcSoft.Numerics
             var n = y._storage.n;
             var k = 0;
             var result = new Matrix(m, n);
-            for (var j = 0; j < n; j++) {
-                for (var i = 0; i < m; i++) {
-                    result._storage.data[k++] = Vector.DotProductNotEmpty(m, x.Row(i).GetEnumerator(), y.Column(j).GetEnumerator());
+            var buffer = new double[y._storage.m];
+            for (int j = 0; j < n; j++) {
+                y.Column(j).CopyTo(buffer); // copying in a buffer and using array based dot product is 4-5 times faster.
+                for (int i = 0; i < m; i++) {
+                    result._storage.data[k++] = DotProductNotEmpty(m, x._storage.data, i * x._storage.n, 1, buffer, 0, 1);
+                    //result._storage.data[k++] = DotProductNotEmpty(m, x._storage.data, i * x._storage.n, 1, y._storage.data, j, y._storage.n);
+                    //result._storage.data[k++] = DotProductNotEmpty(m, x.Row(i), y.Column(j));
                 }
             }
             return result;
@@ -393,9 +457,9 @@ namespace WmcSoft.Numerics
 
         public static Matrix operator *(double scalar, Matrix matrix)
         {
-            var length = matrix.Cardinality;
-            var result = new Matrix(length);
-            for (var i = 0; i < length; i++) {
+            var result = new Matrix(matrix._storage.m, matrix._storage.n);
+            var length = result._storage.data.Length;
+            for (int i = 0; i < length; i++) {
                 result._storage.data[i] = scalar * matrix._storage.data[i];
             }
             return result;
@@ -407,23 +471,18 @@ namespace WmcSoft.Numerics
 
         public static Matrix operator *(Matrix matrix, double scalar)
         {
-            var length = matrix.Cardinality;
-            var result = new Matrix(length);
-            for (var i = 0; i < length; i++) {
-                result._storage.data[i] = scalar * matrix._storage.data[i];
-            }
-            return result;
+            return scalar * matrix;
         }
         public static Matrix Multiply(Matrix matrix, double scalar)
         {
-            return matrix * scalar;
+            return scalar * matrix;
         }
 
         public static Matrix operator /(Matrix matrix, double scalar)
         {
-            var length = matrix.Cardinality;
-            var result = new Matrix(length);
-            for (var i = 0; i < length; i++) {
+            var result = new Matrix(matrix._storage.m, matrix._storage.n);
+            var length = result._storage.data.Length;
+            for (int i = 0; i < length; i++) {
                 result._storage.data[i] = matrix._storage.data[i] / scalar;
             }
             return result;
@@ -442,8 +501,8 @@ namespace WmcSoft.Numerics
             var m = x._storage.m;
             var result = new Vector(n);
             var e = y.GetEnumerator();
-            for (var i = 0; i < m; i++, e.Reset()) {
-                result._data[i] = Vector.DotProductNotEmpty(m, x.Row(i).GetEnumerator(), e);
+            for (int i = 0; i < m; i++, e.Reset()) {
+                result._data[i] = DotProductNotEmpty(m, x.Row(i).GetEnumerator(), e);
             }
             return result;
         }
@@ -461,8 +520,8 @@ namespace WmcSoft.Numerics
             var m = _storage.m;
             var result = new Vector(w._data);
             var e = v.GetEnumerator();
-            for (var i = 0; i < m; i++, e.Reset()) {
-                result._data[i] += Vector.DotProductNotEmpty(m, Row(i).GetEnumerator(), e);
+            for (int i = 0; i < m; i++, e.Reset()) {
+                result._data[i] += DotProductNotEmpty(m, Row(i).GetEnumerator(), e);
             }
             return result;
         }

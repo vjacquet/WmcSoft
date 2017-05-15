@@ -33,14 +33,16 @@ namespace WmcSoft
     {
         #region Helpers
 
-        static internal void UnguardedCopy<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
+        static internal void UnguardedCopy<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length)
+        {
             var end = sourceIndex + length;
             for (int i = sourceIndex, j = destinationIndex; i < end; i++, j++) {
                 destination[j] = source[i];
             }
         }
 
-        static internal void UnguardedCopyBackwards<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length) {
+        static internal void UnguardedCopyBackwards<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length)
+        {
             var end = sourceIndex + length;
             for (int i = sourceIndex + length - 1, j = destinationIndex + length - 1; i >= sourceIndex; i--, j--) {
                 destination[j] = source[i];
@@ -51,12 +53,14 @@ namespace WmcSoft
 
         #region CopyTo methods
 
-        public static void CopyTo<T>(this T[] source, T[] array, int arrayIndex, int length) {
+        public static void CopyTo<T>(this T[] source, T[] array, int arrayIndex, int length)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             Array.Copy(source, 0, array, arrayIndex, length);
         }
 
-        public static void CopyTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length) {
+        public static void CopyTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (array == null) throw new ArgumentNullException(nameof(array));
@@ -69,12 +73,14 @@ namespace WmcSoft
             }
         }
 
-        public static void CopyTo<T>(this T[] source, int sourceIndex, T[] array, int arrayIndex, int length) {
+        public static void CopyTo<T>(this T[] source, int sourceIndex, T[] array, int arrayIndex, int length)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             Array.Copy(source, sourceIndex, array, arrayIndex, length);
         }
 
-        public static void CopyTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length) {
+        public static void CopyTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (array == null) throw new ArgumentNullException(nameof(array));
@@ -92,7 +98,8 @@ namespace WmcSoft
 
         #region CopyBackwardsTo methods
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length) {
+        public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length)
+        {
             if (array == null) throw new ArgumentNullException(nameof(array));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
@@ -103,7 +110,8 @@ namespace WmcSoft
             }
         }
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length) {
+        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length)
+        {
             if (array == null) throw new ArgumentNullException(nameof(array));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
@@ -114,7 +122,8 @@ namespace WmcSoft
             }
         }
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex) {
+        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (array == null) throw new ArgumentNullException(nameof(array));
             if (array.Count < arrayIndex) throw new ArgumentException(nameof(array));
@@ -136,7 +145,8 @@ namespace WmcSoft
         /// <param name="value">The new value.</param>
         /// <param name="index">The index.</param>
         /// <returns>The old value at the specified index.</returns>
-        public static T Exchange<T>(this IList<T> source, T value, int index) {
+        public static T Exchange<T>(this IList<T> source, T value, int index)
+        {
             var temp = source[index];
             source[index] = value;
             return temp;
@@ -152,7 +162,8 @@ namespace WmcSoft
         /// <param name="index1">The first index.</param>
         /// <param name="index2">The second index.</param>
         /// <returns>The old value at the second index.</returns>
-        public static T Exchange<T>(this IList<T> source, T value, int index1, int index2) {
+        public static T Exchange<T>(this IList<T> source, T value, int index1, int index2)
+        {
             var temp = source[index2];
             source[index2] = source[index1];
             source[index1] = value;
@@ -163,8 +174,18 @@ namespace WmcSoft
 
         #region Fill
 
+        public static void UnguardedFill<TList, T>(this TList source, T value, int startIndex, int length)
+          where TList : IList<T>
+        {
+            var endIndex = startIndex + length;
+            for (int i = startIndex; i < endIndex; i++) {
+                source[i] = value;
+            }
+        }
+
         public static void UnguardedFill<TList, T>(this TList source, T value)
-            where TList : IList<T> {
+            where TList : IList<T>
+        {
             var length = source.Count;
             for (int i = 0; i < length; i++) {
                 source[i] = value;
@@ -172,7 +193,8 @@ namespace WmcSoft
         }
 
         public static void Fill<TList, T>(this TList source, T value)
-            where TList : IList<T> {
+            where TList : IList<T>
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             UnguardedFill(source, value);
@@ -182,7 +204,8 @@ namespace WmcSoft
 
         #region InsertionSort
 
-        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer) {
+        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer)
+        {
             var endIndex = index + length;
             for (int i = index + 1; i < endIndex; i++) {
                 var value = source[i];
@@ -195,23 +218,28 @@ namespace WmcSoft
             }
         }
 
-        public static void InsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer) {
+        public static void InsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer)
+        {
             UnguardedInsertionSort(source, index, length, comparer ?? Comparer<T>.Default);
         }
 
-        public static void InsertionSort<T>(this IList<T> source, int index, int length) {
+        public static void InsertionSort<T>(this IList<T> source, int index, int length)
+        {
             UnguardedInsertionSort(source, index, length, Comparer<T>.Default);
         }
 
-        public static void InsertionSort<T>(this IList<T> source, IComparer<T> comparer) {
+        public static void InsertionSort<T>(this IList<T> source, IComparer<T> comparer)
+        {
             UnguardedInsertionSort(source, 0, source.Count, comparer ?? Comparer<T>.Default);
         }
 
-        public static void InsertionSort<T>(this IList<T> source) {
+        public static void InsertionSort<T>(this IList<T> source)
+        {
             UnguardedInsertionSort(source, 0, source.Count, Comparer<T>.Default);
         }
 
-        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation) {
+        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation)
+        {
             var endIndex = index + length;
             for (int i = index + 1; i < endIndex; i++) {
                 var value = source[i];
@@ -224,14 +252,16 @@ namespace WmcSoft
             }
         }
 
-        public static void InsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation) {
+        public static void InsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (relation == null) throw new ArgumentNullException(nameof(relation));
 
             UnguardedInsertionSort(source, index, length, relation);
         }
 
-        public static void InsertionSort<T>(this IList<T> source, Relation<T> relation) {
+        public static void InsertionSort<T>(this IList<T> source, Relation<T> relation)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (relation == null) throw new ArgumentNullException(nameof(relation));
 
@@ -242,7 +272,8 @@ namespace WmcSoft
 
         #region Iota
 
-        public static void Iota(this IList<short> source) {
+        public static void Iota(this IList<short> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = checked((short)source.Count);
@@ -251,7 +282,8 @@ namespace WmcSoft
             }
         }
 
-        public static void Iota(this IList<int> source) {
+        public static void Iota(this IList<int> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
@@ -260,7 +292,8 @@ namespace WmcSoft
             }
         }
 
-        public static void Iota(this IList<long> source) {
+        public static void Iota(this IList<long> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
@@ -269,7 +302,8 @@ namespace WmcSoft
             }
         }
 
-        public static void Iota(this IList<short> source, short startValue, short step = 1) {
+        public static void Iota(this IList<short> source, short startValue, short step = 1)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = checked((short)source.Count);
@@ -279,7 +313,8 @@ namespace WmcSoft
             }
         }
 
-        public static void Iota(this IList<int> source, int startValue, int step = 1) {
+        public static void Iota(this IList<int> source, int startValue, int step = 1)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
@@ -289,7 +324,8 @@ namespace WmcSoft
             }
         }
 
-        public static void Iota(this IList<long> source, long startValue, long step = 1) {
+        public static void Iota(this IList<long> source, long startValue, long step = 1)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var length = source.Count;
@@ -304,7 +340,8 @@ namespace WmcSoft
         #region KeyIndexCountingSort
 
         static void UnguardedKeyIndexCountingSort<T, TCounter>(IList<T> source, Func<T, int> keySelector, TCounter counters)
-            where TCounter : IList<int> {
+            where TCounter : IList<int>
+        {
             var length = source.Count;
             var aux = new T[length];
             source.CopyTo(aux, 0);
@@ -324,7 +361,8 @@ namespace WmcSoft
         }
 
         /// <remarks>The sort is stable.</remarks>
-        public static void KeyIndexCountingSort<T>(this IList<T> source, Func<T, int> keySelector, int maxKey) {
+        public static void KeyIndexCountingSort<T>(this IList<T> source, Func<T, int> keySelector, int maxKey)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             if (maxKey <= 0 || maxKey > UInt16.MaxValue) throw new ArgumentOutOfRangeException(nameof(maxKey));
@@ -337,7 +375,8 @@ namespace WmcSoft
 
         #region Rotate
 
-        public static int UnguardedRotate<T>(this IList<T> source, int n, int startIndex, int length) {
+        public static int UnguardedRotate<T>(this IList<T> source, int n, int startIndex, int length)
+        {
             if (n == 0)
                 return startIndex;
 
@@ -369,7 +408,8 @@ namespace WmcSoft
         /// <param name="startIndex">The start index of the range</param>
         /// <param name="length">The length of the range</param>
         /// <returns>The new position of the <paramref name="startIndex"/>.</returns>
-        public static int Rotate<T>(this IList<T> source, int n, int startIndex, int length) {
+        public static int Rotate<T>(this IList<T> source, int n, int startIndex, int length)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (source.Count < (startIndex + length)) throw new ArgumentException(nameof(source));
@@ -385,7 +425,8 @@ namespace WmcSoft
         /// <param name="source">The source sequence</param>
         /// <param name="n">The number of elements to move</param>
         /// <returns>The new position of the first element</returns>
-        public static int Rotate<T>(this IList<T> source, int n) {
+        public static int Rotate<T>(this IList<T> source, int n)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             var length = source.Count;
             if (n > length || -n > length) throw new ArgumentException(nameof(n));
@@ -408,7 +449,8 @@ namespace WmcSoft
         /// <param name="i">The item at the <paramref name="i"/> index.</param>
         /// <param name="j">The item at the <paramref name="j"/> index.</param>
         /// <remarks>This function does not guard against null list or out of bound indices.</remarks>
-        public static void SwapItems<T>(this T[] list, int i, int j) {
+        public static void SwapItems<T>(this T[] list, int i, int j)
+        {
             T temp = list[i];
             list[i] = list[j];
             list[j] = temp;

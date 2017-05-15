@@ -48,7 +48,8 @@ namespace WmcSoft
         private readonly IntervalLimit<T> _lower;
         private readonly IntervalLimit<T> _upper;
 
-        public Interval(IntervalLimit<T> lower, IntervalLimit<T> upper) {
+        public Interval(IntervalLimit<T> lower, IntervalLimit<T> upper)
+        {
             if (!lower.IsLower) throw new ArgumentException(nameof(lower));
             if (!upper.IsUpper) throw new ArgumentException(nameof(upper));
 
@@ -59,7 +60,8 @@ namespace WmcSoft
         }
 
         /// <remarks>Uses the common default for time intervals, [start, end)</remarks>
-        public Interval(T lower, T upper) {
+        public Interval(T lower, T upper)
+        {
             if (lower.CompareTo(upper) > 0) throw new ArgumentException();
 
             _lower = new IntervalLimit<T>(lower, lower: true, closed: true);
@@ -68,50 +70,61 @@ namespace WmcSoft
 
         public T? Lower { get { return (T?)_lower; } }
         public bool HasLowerLimit { get { return _lower.HasValue; } }
-        public T GetLowerOrDefault() {
+        public T GetLowerOrDefault()
+        {
             return _lower.GetValueOrDefault();
         }
-        public bool IncludesLowerLimit() {
+        public bool IncludesLowerLimit()
+        {
             return _lower.IsClosed;
         }
 
         public T? Upper { get { return (T?)_upper; } }
         public bool HasUpperLimit { get { return _upper.HasValue; } }
-        public T GetUpperOrDefault() {
+        public T GetUpperOrDefault()
+        {
             return _upper.GetValueOrDefault();
         }
-        public bool IncludesUpperLimit() {
+        public bool IncludesUpperLimit()
+        {
             return _upper.IsClosed;
         }
 
-        public bool IsOpen() {
+        public bool IsOpen()
+        {
             return !IncludesLowerLimit() && !IncludesUpperLimit();
         }
-        public bool IsClosed() {
+        public bool IsClosed()
+        {
             return IncludesLowerLimit() && IncludesUpperLimit();
         }
 
-        public bool IsEmpty() {
+        public bool IsEmpty()
+        {
             return IsOpen() && _lower.HasValue && _lower.CompareTo(_upper) == 0;
         }
 
-        public bool IsSingleElement() {
+        public bool IsSingleElement()
+        {
             return IsClosed() && _lower.HasValue && _lower.CompareTo(_upper) == 0;
         }
 
-        public bool IsBelow(T value) {
+        public bool IsBelow(T value)
+        {
             if (!HasUpperLimit) return false;
             int comparison = GetUpperOrDefault().CompareTo(value);
             return comparison < 0 || (comparison == 0 && !IncludesUpperLimit());
         }
 
-        public bool IsAbove(T value) {
+        public bool IsAbove(T value)
+        {
             if (!HasLowerLimit) return false;
             int comparison = GetLowerOrDefault().CompareTo(value);
             return comparison < 0 || (comparison == 0 && !IncludesLowerLimit());
         }
 
-        public int CompareTo(Interval<T> other) {
+        public int CompareTo(Interval<T> other)
+        {
             var result = _upper.CompareTo(other._upper);
             if (result != 0)
                 return result;
@@ -122,7 +135,8 @@ namespace WmcSoft
             return _lower.CompareTo(other._lower);
         }
 
-        public bool Equals(Interval<T> other) {
+        public bool Equals(Interval<T> other)
+        {
             switch ((IsEmpty() ? 0 : 1) | (other.IsEmpty() ? 0 : 2)) {
             case 0:
                 return true;
@@ -142,20 +156,23 @@ namespace WmcSoft
             return CompareTo(other) == 0;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Interval<T>))
                 return false;
             var other = (Interval<T>)obj;
             return Equals(other);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             var h1 = _lower.GetHashCode();
             var h2 = _upper.GetHashCode();
             return h1 ^ h2;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (IsEmpty())
                 return "{}";
             if (IsSingleElement())
@@ -177,7 +194,8 @@ namespace WmcSoft
             return sb.ToString();
         }
 
-        public bool IsBelow(T? value) {
+        public bool IsBelow(T? value)
+        {
             if (!HasUpperLimit) return false;
             if (!value.HasValue)
                 return true;
@@ -185,7 +203,8 @@ namespace WmcSoft
             return comparison < 0 || (comparison == 0 && !IncludesUpperLimit());
         }
 
-        public bool IsAbove(T? value) {
+        public bool IsAbove(T? value)
+        {
             if (!HasLowerLimit) return false;
             if (!value.HasValue)
                 return true;
@@ -193,49 +212,61 @@ namespace WmcSoft
             return comparison > 0 || (comparison == 0 && !IncludesLowerLimit());
         }
 
-        public bool Includes(T? value) {
+        public bool Includes(T? value)
+        {
             return !IsBelow(value) && !IsAbove(value);
         }
 
-        public bool Includes(T value) {
+        public bool Includes(T value)
+        {
             return !_lower.IsOutside(value) && !_upper.IsOutside(value);
         }
 
-        public bool Covers(T value) {
+        public bool Covers(T value)
+        {
             throw new NotImplementedException();
         }
 
-        public bool Intersects(Interval<T> other) {
+        public bool Intersects(Interval<T> other)
+        {
             throw new NotImplementedException();
         }
 
-        public Interval<T> Intersect(Interval<T> other) {
+        public Interval<T> Intersect(Interval<T> other)
+        {
             throw new NotImplementedException();
         }
 
-        public Interval<T> Gap(Interval<T> other) {
+        public Interval<T> Gap(Interval<T> other)
+        {
             throw new NotImplementedException();
         }
 
         #region Operators
 
-        public static bool operator ==(Interval<T> a, Interval<T> b) {
+        public static bool operator ==(Interval<T> a, Interval<T> b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(Interval<T> a, Interval<T> b) {
+        public static bool operator !=(Interval<T> a, Interval<T> b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(Interval<T> x, Interval<T> y) {
+        public static bool operator <(Interval<T> x, Interval<T> y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(Interval<T> x, Interval<T> y) {
+        public static bool operator <=(Interval<T> x, Interval<T> y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(Interval<T> x, Interval<T> y) {
+        public static bool operator >(Interval<T> x, Interval<T> y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(Interval<T> x, Interval<T> y) {
+        public static bool operator >=(Interval<T> x, Interval<T> y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -243,7 +274,8 @@ namespace WmcSoft
 
         #region Helpers
 
-        private T? LesserOfLowerLimits(Interval<T> other) {
+        private T? LesserOfLowerLimits(Interval<T> other)
+        {
             if (!HasLowerLimit)
                 return null;
             int comparison = _lower.CompareTo(other._lower);
@@ -252,7 +284,8 @@ namespace WmcSoft
             return (T?)other._lower;
         }
 
-        private T? GreaterOfLowerLimits(Interval<T> other) {
+        private T? GreaterOfLowerLimits(Interval<T> other)
+        {
             if (!HasLowerLimit)
                 return (T?)other._lower;
             int comparison = _lower.CompareTo(other._lower);
@@ -261,7 +294,8 @@ namespace WmcSoft
             return (T?)other._lower;
         }
 
-        private T? LesserOfUpperLimits(Interval<T> other) {
+        private T? LesserOfUpperLimits(Interval<T> other)
+        {
             if (!HasUpperLimit)
                 return (T?)other._upper;
             int comparison = _upper.CompareTo(other._upper);
@@ -270,7 +304,8 @@ namespace WmcSoft
             return (T?)other._upper;
         }
 
-        private T? GreaterOfUpperLimits(Interval<T> other) {
+        private T? GreaterOfUpperLimits(Interval<T> other)
+        {
             if (!HasUpperLimit)
                 return (T?)other._upper;
             int comparison = _upper.CompareTo(other._upper);
@@ -279,22 +314,26 @@ namespace WmcSoft
             return (T?)other._upper;
         }
 
-        private bool GreaterOfLowerIncludedInIntersection(Interval<T> other) {
+        private bool GreaterOfLowerIncludedInIntersection(Interval<T> other)
+        {
             var limit = GreaterOfLowerLimits(other);
             return Includes(limit) && other.Includes(limit);
         }
 
-        private bool LesserOfUpperIncludedInIntersection(Interval<T> other) {
+        private bool LesserOfUpperIncludedInIntersection(Interval<T> other)
+        {
             var limit = LesserOfUpperLimits(other);
             return Includes(limit) && other.Includes(limit);
         }
 
-        private bool GreaterOfLowerIncludedInUnion(Interval<T> other) {
+        private bool GreaterOfLowerIncludedInUnion(Interval<T> other)
+        {
             var limit = GreaterOfLowerLimits(other);
             return Includes(limit) || other.Includes(limit);
         }
 
-        private bool LesserOfUpperIncludedInUnion(Interval<T> other) {
+        private bool LesserOfUpperIncludedInUnion(Interval<T> other)
+        {
             var limit = LesserOfUpperLimits(other);
             return Includes(limit) || other.Includes(limit);
         }
@@ -305,17 +344,20 @@ namespace WmcSoft
     public static class Interval
     {
         public static Interval<T> Closed<T>(T lower, T upper)
-            where T : struct, IComparable<T> {
+            where T : struct, IComparable<T>
+        {
             return new Interval<T>(IntervalLimit.Lower(lower, true), IntervalLimit.Upper(upper, true));
         }
 
         public static Interval<T> Open<T>(T lower, T upper)
-            where T : struct, IComparable<T> {
+            where T : struct, IComparable<T>
+        {
             return new Interval<T>(IntervalLimit.Lower(lower, false), IntervalLimit.Upper(upper, false));
         }
 
         public static Interval<T> Over<T>(T lower, bool lowerIncluded, T upper, bool upperIncluded)
-            where T : struct, IComparable<T> {
+            where T : struct, IComparable<T>
+        {
             return new Interval<T>(IntervalLimit.Lower(lower, lowerIncluded), IntervalLimit.Upper(upper, upperIncluded));
         }
     }
