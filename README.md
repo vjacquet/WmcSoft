@@ -43,6 +43,8 @@ To improve readability:
   instead of `NullReferenceException`. Not only the latter is what calling a method on a null reference would throw but also we would not
   have to always guard for null.
 
+- Linq-like extensions methods should not mutate the enumerable, therefore `ForEach` on an enumerable is not recommended, as stated by Eric Lippert in [“foreach” vs “ForEach”](https://blogs.msdn.microsoft.com/ericlippert/2009/05/18/foreach-vs-foreach/).
+
 - Operator overloads should provide the equivalent with a named function. Apparently, the framework does not have 
 a clear policy on whether the function should be static or not. It is static for `Complex` but not for `TimeSpan`.
 
