@@ -37,15 +37,18 @@ namespace WmcSoft
     {
         readonly Stack<IDisposable> _stack;
 
-        public DisposableStack() {
+        public DisposableStack()
+        {
             _stack = new Stack<IDisposable>();
         }
 
-        ~DisposableStack() {
+        ~DisposableStack()
+        {
             Dispose(false);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -55,22 +58,26 @@ namespace WmcSoft
         /// </summary>
         /// <param name="disposable">The disposable</param>
         /// <returns>Always <code>true</code></returns>
-        public bool Add(IDisposable disposable) {
+        public bool Add(IDisposable disposable)
+        {
             _stack.Push(disposable);
             return true;
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
             while (_stack.Count != 0) {
                 _stack.Pop().Dispose();
             }
         }
 
-        public IEnumerator<IDisposable> GetEnumerator() {
+        public IEnumerator<IDisposable> GetEnumerator()
+        {
             return _stack.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

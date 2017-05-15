@@ -36,7 +36,8 @@ namespace WmcSoft
     {
         sealed class EmptyDisposable : IDisposable
         {
-            void IDisposable.Dispose() {
+            void IDisposable.Dispose()
+            {
             }
         };
 
@@ -47,7 +48,8 @@ namespace WmcSoft
 
         #region Extensions
 
-        public static void Push(this IDisposableBin bin, Action action) {
+        public static void Push(this IDisposableBin bin, Action action)
+        {
             bin.Add(new Disposer(action));
         }
 

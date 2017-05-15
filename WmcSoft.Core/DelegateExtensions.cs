@@ -47,7 +47,8 @@ namespace WmcSoft
         /// Executes the specified delegate with the specified arguments
         /// asynchronously on a thread pool thread.
         /// </summary>
-        public static void InvokeAsyncAndForget(this Delegate d, params object[] args) {
+        public static void InvokeAsyncAndForget(this Delegate d, params object[] args)
+        {
             wrapper.BeginInvoke(d, args, callback, null);
         }
 
@@ -57,7 +58,8 @@ namespace WmcSoft
         /// <param name="self">The delegate.</param>
         /// <param name="predicate">The predicate the filter the invocation list.</param>
         /// <returns>The filtered invocation list of the delegate.</returns>
-        public static IEnumerable<Delegate> GetInvocationList(this Delegate self, Predicate<Delegate> predicate) {
+        public static IEnumerable<Delegate> GetInvocationList(this Delegate self, Predicate<Delegate> predicate)
+        {
             return self.GetInvocationList().Where(d => predicate(d));
         }
     }

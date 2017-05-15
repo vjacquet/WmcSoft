@@ -38,13 +38,15 @@ namespace WmcSoft
     public class BytesFormatter : IFormatProvider, ICustomFormatter
     {
         static readonly Regex regex;
-        static BytesFormatter() {
+        static BytesFormatter()
+        {
             regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
         }
 
         #region IFormatProvider Members
 
-        public object GetFormat(Type formatType) {
+        public object GetFormat(Type formatType)
+        {
             if (formatType == typeof(ICustomFormatter))
                 return this;
             return null;
@@ -54,16 +56,17 @@ namespace WmcSoft
 
         #region ICustomFormatter Members
 
-        public string Format(string format, object arg, IFormatProvider formatProvider) {
+        public string Format(string format, object arg, IFormatProvider formatProvider)
+        {
             try {
                 return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
-            }
-            catch (FormatException e) {
+            } catch (FormatException e) {
                 throw new FormatException(Resources.InvalidFormatMessage.FormatWith(format), e);
             }
         }
 
-        private static byte[] ToBytes(object arg) {
+        private static byte[] ToBytes(object arg)
+        {
             switch (Convert.GetTypeCode(arg)) {
             case TypeCode.SByte:
                 return new byte[1] { Byte.Parse(((sbyte)arg).ToString("X2"), NumberStyles.HexNumber) };
@@ -92,7 +95,8 @@ namespace WmcSoft
             return null;
         }
 
-        private static string Format(Func<int, string> reader, int lo, int hi, int groupSize) {
+        private static string Format(Func<int, string> reader, int lo, int hi, int groupSize)
+        {
             var sb = new StringBuilder();
 
             if (groupSize == 0) {
@@ -113,13 +117,15 @@ namespace WmcSoft
             return sb.ToString();
         }
 
-        private static string Format(byte[] bytes, Func<byte, string> converter, int padding, int groupSize) {
+        private static string Format(byte[] bytes, Func<byte, string> converter, int padding, int groupSize)
+        {
             var lo = bytes.GetLowerBound(0);
             var hi = bytes.GetUpperBound(0);
             return Format(i => converter(bytes[i]).PadLeft(padding, '0'), lo, hi, groupSize);
         }
 
-        private string DoFormat(string format, int? group, object arg) {
+        private string DoFormat(string format, int? group, object arg)
+        {
             var bytes = ToBytes(arg);
 
             switch (format) {
@@ -134,7 +140,8 @@ namespace WmcSoft
             }
         }
 
-        private string DoFormat(string format, object arg) {
+        private string DoFormat(string format, object arg)
+        {
             if (format == null || format == "G")
                 return DoFormat("X", 4, arg);
 

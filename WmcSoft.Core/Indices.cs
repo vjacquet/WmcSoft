@@ -7,13 +7,15 @@ namespace WmcSoft
         readonly int[] _dimensions;
         readonly int[] _indices;
 
-        public Indices(Array array) {
+        public Indices(Array array)
+        {
             _dimensions = array.GetDimensions();
             var rank = _dimensions.Length;
             _indices = new int[rank];
         }
 
-        public bool Increment() {
+        public bool Increment()
+        {
             var rank = _dimensions.Length;
             for (int i = rank - 1; i >= 0; i--) {
                 if (++_indices[i] != _dimensions[i])

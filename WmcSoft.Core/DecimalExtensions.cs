@@ -33,7 +33,8 @@ namespace WmcSoft
         const int MaxPower = 29; // last power before overflow
         private static readonly decimal[] Powers;
 
-        static DecimalExtensions() {
+        static DecimalExtensions()
+        {
 
             Powers = new decimal[MaxPower];
             Powers[0] = 1m;
@@ -45,7 +46,8 @@ namespace WmcSoft
             }
         }
 
-        public static decimal Pow10(this decimal d, int n) {
+        public static decimal Pow10(this decimal d, int n)
+        {
             if (n > 0) return d * Powers[n];
             else if (n < 0) return d / Powers[-n];
             return 1m;
@@ -56,7 +58,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The decimal value.</param>
         /// <returns>Returns the <paramref name="value"/>'s precision.</returns>
-        public static int Precision(this decimal value) {
+        public static int Precision(this decimal value)
+        {
             if (value < 0m)
                 value = -value;
             var scale = Scale(value);
@@ -72,7 +75,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The decimal value.</param>
         /// <returns>Returns the <paramref name="value"/>'s scale.</returns>
-        public static int Scale(this decimal value) {
+        public static int Scale(this decimal value)
+        {
             // Scale mask for the flags field. This byte in the flags field contains
             // the power of 10 to divide the Decimal value by. The scale byte must
             // contain a value between 0 and 28 inclusive.
@@ -85,7 +89,8 @@ namespace WmcSoft
             return (bits[3] & ScaleMask) >> ScaleShift;
         }
 
-        public static decimal Round(this decimal value, RoundingMode rounding) {
+        public static decimal Round(this decimal value, RoundingMode rounding)
+        {
             switch (rounding) {
             case RoundingMode.Ceiling:
                 return decimal.Ceiling(value);
@@ -109,7 +114,8 @@ namespace WmcSoft
             throw new NotSupportedException();
         }
 
-        public static decimal Round(this decimal value, int scale, RoundingMode rounding) {
+        public static decimal Round(this decimal value, int scale, RoundingMode rounding)
+        {
             return value.Pow10(scale).Round(rounding).Pow10(-scale);
         }
     }
@@ -123,14 +129,14 @@ namespace WmcSoft
         /// <summary>Rounding mode to round towards negative infinity.</summary>
         Floor,
         /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.</summary>
-        HalfDown, // 
-                  /// <summary>Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.</summary>
+        HalfDown,
+        /// <summary>Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.</summary>
         HalfEven,
         /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.</summary>
         HalfUp,
         /// <summary>Rounding mode to assert that the requested operation has an exact result, hence no rounding is necessary.</summary>
         Unnecessary,
         /// <summary>Rounding mode to round away from zero.</summary>
-        Up, // 
+        Up,
     }
 }

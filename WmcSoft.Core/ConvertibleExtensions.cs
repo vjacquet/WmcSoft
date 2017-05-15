@@ -30,11 +30,14 @@ namespace WmcSoft
 {
     public static class ConvertibleExtensions
     {
-        public static T ConvertTo<T>(this IConvertible convertible) {
+        public static T ConvertTo<T>(this IConvertible convertible)
+        {
             return Data.DataConvert.ChangeType<T>(convertible);
         }
 
-        public static T? ConvertTo<T>(this T? convertible) where T : struct, IConvertible {
+        public static T? ConvertTo<T>(this T? convertible)
+            where T : struct, IConvertible
+        {
             return Data.DataConvert.ChangeType<T?>(convertible);
         }
     }
