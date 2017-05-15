@@ -2,7 +2,7 @@
 
 namespace WmcSoft
 {
-    public class Indices
+    internal class Indices
     {
         readonly int[] _dimensions;
         readonly int[] _indices;
@@ -14,6 +14,10 @@ namespace WmcSoft
             _indices = new int[rank];
         }
 
+        /// <summary>
+        /// Increments the indices to reference the next cell in the array.
+        /// </summary>
+        /// <returns>Returns <c>true</c> if the indices were incremented to point to a new cell; otherwise, <c>false</c>.</returns>
         public bool Increment()
         {
             var rank = _dimensions.Length;
