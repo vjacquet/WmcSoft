@@ -49,11 +49,13 @@ namespace WmcSoft.ComponentModel.Design
         #region Methods
 
         public TypeResolutionService()
-            : this(AppDomain.CurrentDomain.BaseDirectory) {
+            : this(AppDomain.CurrentDomain.BaseDirectory)
+        {
         }
 
-        public TypeResolutionService(string basePath) {
-            if (String.IsNullOrEmpty(basePath)) 
+        public TypeResolutionService(string basePath)
+        {
+            if (String.IsNullOrEmpty(basePath))
                 throw new ArgumentNullException("basePath");
 
             _basePath = Path.GetFullPath(basePath);
@@ -61,15 +63,18 @@ namespace WmcSoft.ComponentModel.Design
         }
 
         public TypeResolutionService(string basePath, ITypeResolutionService parentService)
-            : this(basePath) {
+            : this(basePath)
+        {
             _parentService = parentService;
         }
 
-        public Assembly GetAssembly(AssemblyName assemblyName) {
+        public Assembly GetAssembly(AssemblyName assemblyName)
+        {
             return GetAssembly(assemblyName, false);
         }
 
-        public virtual Assembly GetAssembly(AssemblyName assemblyName, bool throwOnError) {
+        public virtual Assembly GetAssembly(AssemblyName assemblyName, bool throwOnError)
+        {
             if (assemblyName == null)
                 throw new ArgumentNullException("assemblyName");
 
@@ -77,8 +82,7 @@ namespace WmcSoft.ComponentModel.Design
             if (assembly == null) {
                 try {
                     assembly = Assembly.Load(assemblyName);
-                }
-                catch (FileNotFoundException) {
+                } catch (FileNotFoundException) {
                     string path = Path.Combine(_basePath, assemblyName.Name + ".dll");
                     if (File.Exists(path)) {
                         assembly = Assembly.LoadFrom(path);
@@ -97,7 +101,8 @@ namespace WmcSoft.ComponentModel.Design
             return assembly;
         }
 
-        public virtual string GetPathOfAssembly(AssemblyName assemblyName) {
+        public virtual string GetPathOfAssembly(AssemblyName assemblyName)
+        {
             var assembly = GetAssembly(assemblyName);
             if (assembly == null)
                 return null;
@@ -109,15 +114,18 @@ namespace WmcSoft.ComponentModel.Design
             return assembly.CodeBase;
         }
 
-        public Type GetType(string typeName) {
+        public Type GetType(string typeName)
+        {
             return GetType(typeName, false, false);
         }
 
-        public Type GetType(string typeName, bool throwOnError) {
+        public Type GetType(string typeName, bool throwOnError)
+        {
             return GetType(typeName, throwOnError, false);
         }
 
-        public virtual Type GetType(string typeName, bool throwOnError, bool ignoreCase) {
+        public virtual Type GetType(string typeName, bool throwOnError, bool ignoreCase)
+        {
             if (typeName == null)
                 throw new ArgumentNullException("typeName");
 
@@ -128,8 +136,7 @@ namespace WmcSoft.ComponentModel.Design
                     type = Type.GetType(typeName.Trim(), throwOnError, false);
                     if (type != null)
                         return type;
-                }
-                catch (Exception exception) {
+                } catch (Exception exception) {
                     inner = exception;
                 }
                 if (!ReflectionHelper.IsAssemblyQualifiedTypeName(typeName)) {
@@ -159,8 +166,7 @@ namespace WmcSoft.ComponentModel.Design
                     Assembly assembly = null;
                     try {
                         assembly = this.GetAssembly(new AssemblyName(assemblyString), throwOnError);
-                    }
-                    catch (Exception exception) {
+                    } catch (Exception exception) {
                         inner = exception;
                     }
                     string[] strArray = typeName.Split(new char[] { ',' });
@@ -180,7 +186,8 @@ namespace WmcSoft.ComponentModel.Design
             return type;
         }
 
-        public virtual void ReferenceAssembly(AssemblyName assemblyName) {
+        public virtual void ReferenceAssembly(AssemblyName assemblyName)
+        {
             _parentService.ReferenceAssembly(assemblyName);
         }
 

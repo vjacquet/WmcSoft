@@ -37,11 +37,13 @@ namespace WmcSoft.ComponentModel
         private readonly Type _resourceBase;
 
         public CategoryResourceAttribute(Type resourceBase, string resourceName)
-            : base(resourceName) {
+            : base(resourceName)
+        {
             _resourceBase = resourceBase;
         }
 
-        protected override string GetLocalizedString(string value) {
+        protected override string GetLocalizedString(string value)
+        {
             return ResourceHelpers.GetString(_resourceBase, value);
         }
     }

@@ -32,11 +32,13 @@ namespace WmcSoft.Drawing
 {
     public static class ImageExtensions
     {
-        public static Bitmap ToBitmap(this Image image, bool preserveResolution = true) {
+        public static Bitmap ToBitmap(this Image image, bool preserveResolution = true)
+        {
             return ToBitmap(image, image.Width, image.Height, preserveResolution);
         }
 
-        public static Bitmap ToBitmap(this Image image, int width, int height, bool preserveResolution = true) {
+        public static Bitmap ToBitmap(this Image image, int width, int height, bool preserveResolution = true)
+        {
             var indexed = (image.PixelFormat & PixelFormat.Indexed) == PixelFormat.Indexed;
             var bitmap = new Bitmap(width, height, indexed ? PixelFormat.Format32bppArgb : image.PixelFormat);
             if (preserveResolution)

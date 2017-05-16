@@ -54,7 +54,8 @@ namespace WmcSoft.ComponentModel
 
         #region Lifecycle
 
-        public ServiceContainerComponent(IContainer container) {
+        public ServiceContainerComponent(IContainer container)
+        {
             _serviceContainer = new ServiceContainer();
 
             container.Add(this);
@@ -74,7 +75,8 @@ namespace WmcSoft.ComponentModel
         /// Event initializeComponent for the <see cref="ServiceResolve"/> event.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnServiceResolve(ServiceResolveEventArgs e) {
+        protected virtual void OnServiceResolve(ServiceResolveEventArgs e)
+        {
             Delegate handler = Events[ServiceResolveEvent];
             if (handler != null) {
                 foreach (Delegate @delegate in handler.GetInvocationList()) {
@@ -108,27 +110,33 @@ namespace WmcSoft.ComponentModel
         }
         IServiceContainer _serviceContainer;
 
-        public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote) {
+        public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote)
+        {
             _serviceContainer.AddService(serviceType, callback, promote);
         }
 
-        public void AddService(Type serviceType, ServiceCreatorCallback callback) {
+        public void AddService(Type serviceType, ServiceCreatorCallback callback)
+        {
             _serviceContainer.AddService(serviceType, callback);
         }
 
-        public void AddService(Type serviceType, object serviceInstance, bool promote) {
+        public void AddService(Type serviceType, object serviceInstance, bool promote)
+        {
             _serviceContainer.AddService(serviceType, serviceInstance, promote);
         }
 
-        public void AddService(Type serviceType, object serviceInstance) {
+        public void AddService(Type serviceType, object serviceInstance)
+        {
             _serviceContainer.AddService(serviceType, serviceInstance);
         }
 
-        public void RemoveService(Type serviceType, bool promote) {
+        public void RemoveService(Type serviceType, bool promote)
+        {
             _serviceContainer.RemoveService(serviceType, promote);
         }
 
-        public void RemoveService(Type serviceType) {
+        public void RemoveService(Type serviceType)
+        {
             _serviceContainer.RemoveService(serviceType);
         }
 
@@ -136,7 +144,8 @@ namespace WmcSoft.ComponentModel
 
         #region IServiceProvider Members
 
-        protected override object GetService(Type serviceType) {
+        protected override object GetService(Type serviceType)
+        {
             object instance = _serviceContainer.GetService(serviceType);
             if (instance == null) {
                 var e = new ServiceResolveEventArgs(serviceType);
@@ -149,11 +158,13 @@ namespace WmcSoft.ComponentModel
             return instance;
         }
 
-        object IServiceProvider.GetService(Type service) {
+        object IServiceProvider.GetService(Type service)
+        {
             return GetService(service);
         }
 
-        public T GetService<T>() where T : class {
+        public T GetService<T>() where T : class
+        {
             object service = GetService(typeof(T));
             return service as T;
         }
@@ -163,14 +174,16 @@ namespace WmcSoft.ComponentModel
         #region IExtenderProvider Membres
 
         [DebuggerStepThrough]
-        bool IExtenderProvider.CanExtend(object extendee) {
+        bool IExtenderProvider.CanExtend(object extendee)
+        {
             return extendee is IComponent && extendee != this;
         }
 
         [TypeConverter(typeof(WmcSoft.ComponentModel.Design.ServiceableTypesConverter))]
         [Editor(typeof(WmcSoft.ComponentModel.Design.ServiceableTypesEditor), typeof(System.Drawing.Design.UITypeEditor))]
         [DefaultValue(null)]
-        public Type GetRegisterAs(IComponent service) {
+        public Type GetRegisterAs(IComponent service)
+        {
             Type serviceType;
             if (servicesToRegister.TryGetValue(service, out serviceType)) {
                 return serviceType;
@@ -178,7 +191,8 @@ namespace WmcSoft.ComponentModel
             return null;
         }
 
-        public void SetRegisterAs(IComponent service, Type serviceType) {
+        public void SetRegisterAs(IComponent service, Type serviceType)
+        {
             Type previousServiceType = null;
             servicesToRegister.TryGetValue(service, out previousServiceType);
             if (serviceType != previousServiceType) {
@@ -195,7 +209,8 @@ namespace WmcSoft.ComponentModel
             }
         }
 
-        void service_Disposed(object sender, EventArgs e) {
+        void service_Disposed(object sender, EventArgs e)
+        {
             var service = sender as IComponent;
             if (service != null) {
                 ServiceContainer.RemoveService(servicesToRegister[service]);
@@ -206,10 +221,12 @@ namespace WmcSoft.ComponentModel
 
         #region ISupportInitialize Membres
 
-        void ISupportInitialize.BeginInit() {
+        void ISupportInitialize.BeginInit()
+        {
         }
 
-        void ISupportInitialize.EndInit() {
+        void ISupportInitialize.EndInit()
+        {
         }
 
         #endregion
@@ -223,7 +240,8 @@ namespace WmcSoft.ComponentModel
     {
         private readonly Type _serviceType;
 
-        public ServiceResolveEventArgs(Type serviceType) {
+        public ServiceResolveEventArgs(Type serviceType)
+        {
             _serviceType = serviceType;
             _serviceInstance = null;
         }
@@ -266,7 +284,8 @@ namespace WmcSoft.ComponentModel
         internal class ServingNestedContainerCodeDomProvider : CodeDomSerializer, IDesignerSerializationProvider
         {
             private static ServingNestedContainerCodeDomProvider _defaultSerializer;
-            static ServingNestedContainerCodeDomProvider() {
+            static ServingNestedContainerCodeDomProvider()
+            {
                 _defaultSerializer = new ServingNestedContainerCodeDomProvider();
             }
 
@@ -277,11 +296,13 @@ namespace WmcSoft.ComponentModel
             private const string containerName = "components";
             private readonly Type _typeToProvide;
 
-            public ServingNestedContainerCodeDomProvider() {
+            public ServingNestedContainerCodeDomProvider()
+            {
                 _typeToProvide = typeof(NestedContainerWithServiceContainer);
             }
 
-            protected override object DeserializeInstance(IDesignerSerializationManager manager, Type type, object[] parameters, string name, bool addToContainer) {
+            protected override object DeserializeInstance(IDesignerSerializationManager manager, Type type, object[] parameters, string name, bool addToContainer)
+            {
                 if (typeof(IContainer).IsAssignableFrom(type)) {
                     var service = manager.GetService(typeof(IContainer));
                     if (service != null) {
@@ -292,7 +313,8 @@ namespace WmcSoft.ComponentModel
                 return base.DeserializeInstance(manager, type, parameters, name, addToContainer);
             }
 
-            public override object Serialize(IDesignerSerializationManager manager, object value) {
+            public override object Serialize(IDesignerSerializationManager manager, object value)
+            {
                 CodeExpression codeExpression;
                 CodeTypeDeclaration codeTypeDeclaration = manager.Context[typeof(CodeTypeDeclaration)] as CodeTypeDeclaration;
                 RootContext rootContext = manager.Context[typeof(RootContext)] as RootContext;
@@ -319,7 +341,8 @@ namespace WmcSoft.ComponentModel
 
             #region IDesignerSerializationProvider Members
 
-            public object GetSerializer(IDesignerSerializationManager manager, object currentSerializer, Type objectType, Type serializerType) {
+            public object GetSerializer(IDesignerSerializationManager manager, object currentSerializer, Type objectType, Type serializerType)
+            {
                 if (typeof(IContainer).IsAssignableFrom(objectType))
                     return ServingNestedContainerCodeDomProvider.Default;
                 //if (typeof(System.Resources.ResourceManager).IsAssignableFrom(objectType)) 
@@ -336,10 +359,12 @@ namespace WmcSoft.ComponentModel
         IDesignerSerializationManager _manager;
         IDesignerSerializationProvider _provider;
 
-        public ServiceContainerComponentDesigner() {
+        public ServiceContainerComponentDesigner()
+        {
         }
 
-        public override void Initialize(IComponent component) {
+        public override void Initialize(IComponent component)
+        {
             base.Initialize(component);
 
             // Obtain an IDesignerHost service from the design environment.
@@ -353,7 +378,8 @@ namespace WmcSoft.ComponentModel
             _manager.AddSerializationProvider(_provider);
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             if (_manager != null && _provider != null) {
                 _manager.RemoveSerializationProvider(_provider);
             }

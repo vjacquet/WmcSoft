@@ -45,7 +45,8 @@ namespace WmcSoft.ComponentModel
 
             #region Lifecycle
 
-            public OwnerServiceProvider(IComponent component) {
+            public OwnerServiceProvider(IComponent component)
+            {
                 _component = component;
             }
 
@@ -53,7 +54,8 @@ namespace WmcSoft.ComponentModel
 
             #region IServiceProvider Membres
 
-            public object GetService(Type serviceType) {
+            public object GetService(Type serviceType)
+            {
                 if (serviceType.IsAssignableFrom(_component.GetType())) {
                     return _component;
                 }
@@ -78,7 +80,8 @@ namespace WmcSoft.ComponentModel
         #region Lifecycle
 
         public NestedContainerWithServiceContainer(IComponent owner)
-            : base(owner) {
+            : base(owner)
+        {
             _serviceContainer = new ServiceContainer(new OwnerServiceProvider(owner));
             _serviceProviders = new List<IServiceProvider>();
         }
@@ -95,24 +98,28 @@ namespace WmcSoft.ComponentModel
 
         #region Overridables
 
-        public override void Add(IComponent component) {
+        public override void Add(IComponent component)
+        {
             base.Add(component);
             RegisterServiceProvider(component);
         }
 
-        public override void Add(IComponent component, string name) {
+        public override void Add(IComponent component, string name)
+        {
             base.Add(component, name);
             RegisterServiceProvider(component);
         }
 
-        private void RegisterServiceProvider(IComponent component) {
+        private void RegisterServiceProvider(IComponent component)
+        {
             var serviceProvider = component as IServiceProvider;
             if (serviceProvider != null) {
                 _serviceProviders.Add(serviceProvider);
             }
         }
 
-        public override void Remove(IComponent component) {
+        public override void Remove(IComponent component)
+        {
             base.Remove(component);
 
             var serviceProvider = component as IServiceProvider;
@@ -125,7 +132,8 @@ namespace WmcSoft.ComponentModel
 
         #region IServiceProvider Members
 
-        protected override object GetService(Type service) {
+        protected override object GetService(Type service)
+        {
             var serviceInstance = base.GetService(service);
             if (serviceInstance != null)
                 return serviceInstance;
@@ -140,7 +148,8 @@ namespace WmcSoft.ComponentModel
             return serviceInstance;
         }
 
-        object IServiceProvider.GetService(Type serviceType) {
+        object IServiceProvider.GetService(Type serviceType)
+        {
             return GetService(serviceType);
         }
 

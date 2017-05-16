@@ -26,14 +26,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
-using System.Drawing.Design;
-using System.Security.Permissions;
 using System.ComponentModel.Design.Serialization;
 using System.Reflection;
 using System.Globalization;
-using System.ComponentModel.Design;
 
 namespace WmcSoft.ComponentModel.Design
 {
@@ -45,7 +41,8 @@ namespace WmcSoft.ComponentModel.Design
         {
             #region IComparer<Type> Membres
 
-            public int Compare(Type x, Type y) {
+            public int Compare(Type x, Type y)
+            {
                 return String.Compare(x.AssemblyQualifiedName, y.AssemblyQualifiedName, true);
             }
 
@@ -61,19 +58,20 @@ namespace WmcSoft.ComponentModel.Design
         static Type[] excludedTypes;
         static Type[] excludedInterfaceTypes;
 
-        static ServiceableTypesConverter() {
-            excludedTypes = new Type[] { 
-                typeof(Object), 
-                typeof(Component), 
-                typeof(MarshalByRefObject), 
-                typeof(MarshalByValueComponent), 
+        static ServiceableTypesConverter()
+        {
+            excludedTypes = new Type[] {
+                typeof(Object),
+                typeof(Component),
+                typeof(MarshalByRefObject),
+                typeof(MarshalByValueComponent),
             };
             Array.Sort(excludedTypes, comparer);
-            excludedInterfaceTypes = new Type[] { 
-                typeof(IComponent), 
-                typeof(IContainer), 
-                typeof(IServiceProvider), 
-                typeof(IDisposable), 
+            excludedInterfaceTypes = new Type[] {
+                typeof(IComponent),
+                typeof(IContainer),
+                typeof(IServiceProvider),
+                typeof(IDisposable),
             };
             Array.Sort(excludedInterfaceTypes, comparer);
         }
@@ -82,7 +80,8 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Methods
 
-        IEnumerable<Type> GetTypes(ITypeDescriptorContext context) {
+        IEnumerable<Type> GetTypes(ITypeDescriptorContext context)
+        {
             if (context != null && context.Instance != null) {
                 var type = context.Instance.GetType();
                 var baseType = type;
@@ -101,15 +100,18 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Overridables
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
             return ((sourceType == typeof(string)) || base.CanConvertFrom(context, sourceType));
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
             return ((destinationType == typeof(InstanceDescriptor)) || base.CanConvertTo(context, destinationType));
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
             if (value is string) {
                 if (String.IsNullOrEmpty((string)value))
                     return null;
@@ -122,7 +124,8 @@ namespace WmcSoft.ComponentModel.Design
             return base.ConvertFrom(context, culture, value);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
             if (destinationType == null) {
                 throw new ArgumentNullException("destinationType");
             }
@@ -141,16 +144,19 @@ namespace WmcSoft.ComponentModel.Design
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
+        public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
             List<Type> types = new List<Type>(GetTypes(context));
             return new TypeConverter.StandardValuesCollection(types);
         }
 
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) {
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context)
+        {
             return false;
         }
 
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
+        {
             return true;
         }
 

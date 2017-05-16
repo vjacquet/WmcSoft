@@ -44,11 +44,13 @@ namespace WmcSoft.ComponentModel
 
         #region Lifecycle
 
-        public TracingComponent() {
+        public TracingComponent()
+        {
             InitializeComponent();
         }
 
-        public TracingComponent(IContainer container) {
+        public TracingComponent(IContainer container)
+        {
             container.Add(this);
 
             InitializeComponent();
@@ -58,11 +60,13 @@ namespace WmcSoft.ComponentModel
 
         #region ISupportInitialize Membres
 
-        void ISupportInitialize.BeginInit() {
+        void ISupportInitialize.BeginInit()
+        {
             Trace.TraceInformation("ISupportInitialize.BeginInit");
         }
 
-        void ISupportInitialize.EndInit() {
+        void ISupportInitialize.EndInit()
+        {
             if (LaunchDebugger && !Debugger.IsAttached)
                 Debugger.Break();
             Trace.TraceInformation("ISupportInitialize.EndInit");
@@ -95,7 +99,8 @@ namespace WmcSoft.ComponentModel
 
         #region Methods
 
-        public void TraceMessage(string category, string message) {
+        public void TraceMessage(string category, string message)
+        {
             if (_traceSource != null) {
                 _traceSource.TraceInformation(category + ": " + message);
             } else {

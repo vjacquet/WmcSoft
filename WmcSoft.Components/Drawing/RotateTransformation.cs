@@ -30,13 +30,15 @@ namespace WmcSoft.Drawing
 {
     public class RotateTransformation : ImageTransformation
     {
-        public RotateTransformation(RotateFlipType direction) {
+        public RotateTransformation(RotateFlipType direction)
+        {
             Direction = direction;
         }
 
         public RotateFlipType Direction { get; }
 
-        public override Image Apply(Image image) {
+        public override Image Apply(Image image)
+        {
             image.RotateFlip(Direction);
             return image;
         }

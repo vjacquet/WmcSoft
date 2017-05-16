@@ -62,18 +62,21 @@ namespace WmcSoft.ComponentModel
             private readonly TypeDescriptionProvider _provider;
             private readonly Type _type;
 
-            public AddProviderWithTypeScope(TypeDescriptionProvider provider, Type type) {
+            public AddProviderWithTypeScope(TypeDescriptionProvider provider, Type type)
+            {
                 _provider = provider;
                 _type = type;
                 TypeDescriptor.AddProvider(_provider, _type);
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 TypeDescriptor.RemoveProvider(_provider, _type);
             }
         }
 
-        public static IDisposable AddProvider(TypeDescriptionProvider provider, Type type) {
+        public static IDisposable AddProvider(TypeDescriptionProvider provider, Type type)
+        {
             return new AddProviderWithTypeScope(provider, type);
         }
     }

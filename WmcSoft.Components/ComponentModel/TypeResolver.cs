@@ -14,12 +14,14 @@ namespace WmcSoft.ComponentModel
 
         #region Lifecycle
 
-        public TypeResolver(ITypeResolutionService resolutionService) {
+        public TypeResolver(ITypeResolutionService resolutionService)
+        {
             _resolutionService = resolutionService;
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(OnAssemblyResolve);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(OnAssemblyResolve);
             GC.SuppressFinalize(this);
         }
@@ -28,14 +30,14 @@ namespace WmcSoft.ComponentModel
 
         #region Methods
 
-        private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args) {
+        private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
             Assembly assembly;
             AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(this.OnAssemblyResolve);
             try {
                 var name = new AssemblyName(args.Name);
                 assembly = _resolutionService.GetAssembly(name, false);
-            }
-            finally {
+            } finally {
                 AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(this.OnAssemblyResolve);
             }
             return assembly;

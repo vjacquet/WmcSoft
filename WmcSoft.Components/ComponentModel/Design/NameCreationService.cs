@@ -45,11 +45,13 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Lifecycle
 
-        public NameCreationService(IEqualityComparer<string> comparer) {
+        public NameCreationService(IEqualityComparer<string> comparer)
+        {
             _comparer = comparer;
         }
 
-        public NameCreationService() : this(StringComparer.InvariantCulture) {
+        public NameCreationService() : this(StringComparer.InvariantCulture)
+        {
 
         }
 
@@ -64,7 +66,8 @@ namespace WmcSoft.ComponentModel.Design
         /// <param name="container">The container where the new object is added.</param>
         /// <param name="dataType">The data type of the object that receives the name.</param>
         /// <returns>A unique name for the data type.</returns>
-        public virtual string CreateName(IContainer container, Type dataType) {
+        public virtual string CreateName(IContainer container, Type dataType)
+        {
             string baseName = dataType.Name.Substring(0, 1).ToLower() + dataType.Name.Substring(1);
             string candidateName;
             int uniqueID = 1;
@@ -94,7 +97,8 @@ namespace WmcSoft.ComponentModel.Design
         /// </summary>
         /// <param name="name">The name to validate.</param>
         /// <returns>true if the name is valid; otherwise, false.</returns>
-        public bool IsValidName(string name) {
+        public bool IsValidName(string name)
+        {
             return DoValidateName(name) == null;
         }
 
@@ -103,7 +107,8 @@ namespace WmcSoft.ComponentModel.Design
         /// all valid character types.
         /// </summary>
         /// <param name="name">The name to validate. </param>
-        public void ValidateName(string name) {
+        public void ValidateName(string name)
+        {
             var exception = DoValidateName(name);
             if (exception != null)
                 throw exception;
@@ -113,7 +118,8 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Overridables
 
-        protected virtual Exception DoValidateName(string name) {
+        protected virtual Exception DoValidateName(string name)
+        {
             for (int i = 0; i < name.Length; i++) {
                 var uc = Char.GetUnicodeCategory(name, i);
                 switch (uc) {

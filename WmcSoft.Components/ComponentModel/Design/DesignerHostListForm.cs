@@ -32,11 +32,13 @@ namespace WmcSoft.ComponentModel.Design
 {
     public partial class DesignerHostListForm : Form
     {
-        public DesignerHostListForm() {
+        public DesignerHostListForm()
+        {
             InitializeComponent();
         }
 
-        public DialogResult ShowDialog(IDesignerHost host) {
+        public DialogResult ShowDialog(IDesignerHost host)
+        {
             var collection = componentListBox.Items;
 
             collection.Clear();

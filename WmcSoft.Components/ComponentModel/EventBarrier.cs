@@ -25,9 +25,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace WmcSoft.ComponentModel
 {
@@ -40,7 +38,8 @@ namespace WmcSoft.ComponentModel
         EventHandlerList _sourceList;
         EventHandlerList _restorationList = new EventHandlerList();
 
-        public EventBarrier(EventHandlerList eventHandlerList, object target, params object[] events) {
+        public EventBarrier(EventHandlerList eventHandlerList, object target, params object[] events)
+        {
             _sourceList = eventHandlerList;
 
             foreach (object @event in events) {
@@ -57,7 +56,8 @@ namespace WmcSoft.ComponentModel
 
         #region IDisposable Membres
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _sourceList.AddHandlers(_restorationList);
         }
 

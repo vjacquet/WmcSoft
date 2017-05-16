@@ -41,11 +41,13 @@ namespace WmcSoft.ComponentModel.Design
             private readonly TypeConverter _converter;
 
             public ConverterOverrideTypeDescriptor()
-                : base(TypeDescriptor.GetProvider(typeof(T)).GetTypeDescriptor(typeof(T))) {
+                : base(TypeDescriptor.GetProvider(typeof(T)).GetTypeDescriptor(typeof(T)))
+            {
                 _converter = new C();
             }
 
-            public override TypeConverter GetConverter() {
+            public override TypeConverter GetConverter()
+            {
                 return _converter;
             }
         }
@@ -53,11 +55,13 @@ namespace WmcSoft.ComponentModel.Design
         ICustomTypeDescriptor _descriptor;
 
         public ConverterOverrideTypeDescriptionProvider()
-            : base(TypeDescriptor.GetProvider(typeof(T))) {
+            : base(TypeDescriptor.GetProvider(typeof(T)))
+        {
             _descriptor = new ConverterOverrideTypeDescriptor();
         }
 
-        public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance) {
+        public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance)
+        {
             return _descriptor;
         }
     }

@@ -33,16 +33,20 @@ namespace WmcSoft.ComponentModel.Design
     {
         private readonly DisposableStack _disposables;
 
-        public ComponentDesignerBase() {
+        public ComponentDesignerBase()
+        {
             _disposables = new DisposableStack();
         }
 
-        protected void DeclareConverter<T, C>() where C : TypeConverter, new() {
+        protected void DeclareConverter<T, C>()
+            where C : TypeConverter, new()
+        {
             var provider = new ConverterOverrideTypeDescriptionProvider<T, C>();
             _disposables.Add(TypeDescriptorScope.AddProvider(provider, typeof(T)));
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             _disposables.Dispose();
             base.Dispose(disposing);
         }

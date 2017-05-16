@@ -38,14 +38,15 @@ namespace WmcSoft.CommandLine
     [DesignTimeVisible(false)]
     [ToolboxItem(false)]
     [DesignerSerializer(typeof(OptionSerializer), typeof(CodeDomSerializer))]
-    [System.ComponentModel.DesignerCategory("Code")]
+    [DesignerCategory("Code")]
     public abstract class Option : Component
     {
         internal bool _processed;
 
         #region Helpers
 
-        protected static bool ValidateName(string name) {
+        protected static bool ValidateName(string name)
+        {
             foreach (char c in name) {
                 if (!((c == '?') || Char.IsLetterOrDigit(c)))
                     return false;
@@ -58,18 +59,22 @@ namespace WmcSoft.CommandLine
         #region Lifecycle
 
         protected Option()
-            : this("", "", false) {
+            : this("", "", false)
+        {
         }
 
         protected Option(string name)
-            : this(name, "", false) {
+            : this(name, "", false)
+        {
         }
 
         protected Option(string name, string description)
-            : this(name, description, false) {
+            : this(name, description, false)
+        {
         }
 
-        protected Option(string name, string description, bool required) {
+        protected Option(string name, string description, bool required)
+        {
             if (!ValidateName(name))
                 throw new ArgumentException("Names must consist of letters.", "name");
             this.name = name;
@@ -156,13 +161,15 @@ namespace WmcSoft.CommandLine
 
         #region Members
 
-        internal void Reset() {
+        internal void Reset()
+        {
             _processed = false;
             _present = false;
             _value = null;
         }
 
-        internal ParseResult ParseArgument(string argument) {
+        internal ParseResult ParseArgument(string argument)
+        {
             if (!ValidateArgument(argument))
                 return ParseResult.MalformedArgument;
 
@@ -185,7 +192,7 @@ namespace WmcSoft.CommandLine
         protected char OptionDelimiter {
             get {
                 if (collection != null)
-                    return collection.commandLine.OptionDelimiter;
+                    return collection._commandLine.OptionDelimiter;
                 return '/';
             }
         }
@@ -202,7 +209,8 @@ namespace WmcSoft.CommandLine
     class OptionDesigner : ComponentDesigner
     {
 
-        protected override void PreFilterProperties(IDictionary properties) {
+        protected override void PreFilterProperties(IDictionary properties)
+        {
             base.PreFilterProperties(properties);
 
             properties.Remove("Modifiers");
@@ -212,7 +220,8 @@ namespace WmcSoft.CommandLine
             properties.Remove("Value");
         }
 
-        public override void InitializeNewComponent(IDictionary defaultValues) {
+        public override void InitializeNewComponent(IDictionary defaultValues)
+        {
             base.InitializeNewComponent(defaultValues);
 
             var service = GetService(typeof(IDictionaryService)) as IDictionaryService;
@@ -226,7 +235,8 @@ namespace WmcSoft.CommandLine
         /// <summary>
         /// Creates an instance of <enumerable>OptionCollectionSerializer</enumerable>
         /// </summary>
-        public OptionSerializer() {
+        public OptionSerializer()
+        {
         }
 
         /// <summary>
@@ -248,7 +258,8 @@ namespace WmcSoft.CommandLine
         /// The function simply lets the <paramref name="manager"/>-supplied 
         /// base serializer to actually do the deserialization.
         /// </remarks>
-        public override object Deserialize(IDesignerSerializationManager manager, object codeObject) {
+        public override object Deserialize(IDesignerSerializationManager manager, object codeObject)
+        {
             var serializer = GetBaseSerializer(manager);
             return serializer.Deserialize(manager, codeObject);
         }
@@ -269,7 +280,8 @@ namespace WmcSoft.CommandLine
         /// source code statements that represent <paramref name="value"/> in
         /// source-code form.
         /// </returns>
-        public override object Serialize(IDesignerSerializationManager manager, object value) {
+        public override object Serialize(IDesignerSerializationManager manager, object value)
+        {
             var name = manager.GetName(value);
             var csc = (CodeStatementCollection)GetBaseSerializer(manager).Serialize(manager, value);
 
@@ -298,7 +310,8 @@ namespace WmcSoft.CommandLine
         /// Returns a <see cref="CodeDomSerializer"/> that is capable of deserializing
         /// the <see cref="PropertyTree"/>.
         /// </returns>
-        private CodeDomSerializer GetBaseSerializer(IDesignerSerializationManager manager) {
+        private CodeDomSerializer GetBaseSerializer(IDesignerSerializationManager manager)
+        {
             return (CodeDomSerializer)manager.GetSerializer(typeof(Option).BaseType, typeof(CodeDomSerializer));
         }
     }

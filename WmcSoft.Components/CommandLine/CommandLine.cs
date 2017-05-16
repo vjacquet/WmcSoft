@@ -18,31 +18,35 @@ namespace WmcSoft.CommandLine
     [DefaultProperty("Options")]
     public class CommandLine : Component
     {
+        readonly Dictionary<string, ParseResult> errors = new Dictionary<string, ParseResult>();
+        readonly List<string> nonoptions = new List<string>();
         bool processed;
-        Dictionary<string, ParseResult> errors = new Dictionary<string, ParseResult>();
-        List<string> nonoptions = new List<string>();
 
-        OptionCollection options;
+        readonly OptionCollection options;
 
-        public CommandLine() {
+        public CommandLine()
+        {
             processed = false;
             options = new OptionCollection(this);
         }
 
-        public bool ParseArguments() {
+        public bool ParseArguments()
+        {
             return ParseArguments(Environment.GetCommandLineArgs());
         }
 
-        public bool ParseArguments(params string[] args) {
+        public bool ParseArguments(params string[] args)
+        {
             return ParseArguments((IEnumerable<string>)args);
         }
-        public bool ParseArguments(IEnumerable<string> args) {
+        public bool ParseArguments(IEnumerable<string> args)
+        {
             if (processed) {
                 foreach (Option option in options) {
                     option.Reset();
                 }
             }
-            this.DoParseArguments(args);
+            DoParseArguments(args);
             processed = true;
             return (errors.Count == 0);
         }
@@ -56,7 +60,8 @@ namespace WmcSoft.CommandLine
         }
         char optionDelimiter = '/';
 
-        private void DoParseArguments(IEnumerable<string> args) {
+        private void DoParseArguments(IEnumerable<string> args)
+        {
             foreach (string arg in args) {
                 if (arg.Length == 0)
                     continue;
@@ -110,7 +115,8 @@ namespace WmcSoft.CommandLine
             }
         }
 
-        public void WriteBanner(TextWriter writer) {
+        public void WriteBanner(TextWriter writer)
+        {
             if (writer == null) {
                 throw new ArgumentNullException("writer");
             }
@@ -123,7 +129,8 @@ namespace WmcSoft.CommandLine
             }
         }
 
-        public void WriteUsage(TextWriter writer, bool showOptions) {
+        public void WriteUsage(TextWriter writer, bool showOptions)
+        {
             if (writer == null) {
                 throw new ArgumentNullException("writer");
             }
@@ -133,7 +140,8 @@ namespace WmcSoft.CommandLine
                 WriteOptionSummary(writer);
         }
 
-        public void WriteOptionSummary(TextWriter writer) {
+        public void WriteOptionSummary(TextWriter writer)
+        {
             if (writer == null) {
                 throw new ArgumentNullException("writer");
             }
@@ -144,7 +152,8 @@ namespace WmcSoft.CommandLine
             }
         }
 
-        public void WriteParseErrors(TextWriter writer) {
+        public void WriteParseErrors(TextWriter writer)
+        {
             if (writer == null) {
                 throw new ArgumentNullException("writer");
             }

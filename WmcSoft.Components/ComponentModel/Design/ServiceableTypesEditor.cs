@@ -12,7 +12,8 @@ namespace WmcSoft.ComponentModel.Design
     {
         #region Lifecycle
 
-        public ServiceableTypesEditor() {
+        public ServiceableTypesEditor()
+        {
         }
 
         #endregion
@@ -21,18 +22,19 @@ namespace WmcSoft.ComponentModel.Design
             get { return true; }
         }
 
-        public override bool GetPaintValueSupported(ITypeDescriptorContext context) {
+        public override bool GetPaintValueSupported(ITypeDescriptorContext context)
+        {
             return false;
         }
 
-        public override void PaintValue(PaintValueEventArgs e) {
+        public override void PaintValue(PaintValueEventArgs e)
+        {
             base.PaintValue(e);
         }
 
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) {
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
             return UITypeEditorEditStyle.None;
         }
-
     }
-
 }

@@ -42,25 +42,29 @@ namespace WmcSoft.ComponentModel.Design
 
         #endregion
 
-        public RevertibleChangeTrackingDictionaryService(IDictionaryService dictionaryService) {
+        public RevertibleChangeTrackingDictionaryService(IDictionaryService dictionaryService)
+        {
             _dictionaryService = dictionaryService;
             _changes = new Hashtable();
         }
 
         #region IDictionaryService Members
 
-        public object GetKey(object value) {
+        public object GetKey(object value)
+        {
             throw new NotImplementedException();
         }
 
-        public object GetValue(object key) {
+        public object GetValue(object key)
+        {
             var value = _changes[key] ?? _dictionaryService.GetValue(key);
             if (ReferenceEquals(Removed, value))
                 return null;
             return value;
         }
 
-        public void SetValue(object key, object value) {
+        public void SetValue(object key, object value)
+        {
             _changes[key] = value ?? Removed;
         }
 
@@ -68,7 +72,8 @@ namespace WmcSoft.ComponentModel.Design
 
         #region IRevertibleChangeTracking Members
 
-        public void RejectChanges() {
+        public void RejectChanges()
+        {
             _changes.Clear();
         }
 
@@ -76,7 +81,8 @@ namespace WmcSoft.ComponentModel.Design
 
         #region IChangeTracking Members
 
-        public void AcceptChanges() {
+        public void AcceptChanges()
+        {
             foreach (DictionaryEntry dictionaryEntry in _changes) {
                 var value = ReferenceEquals(Removed, dictionaryEntry.Value) ? null : dictionaryEntry.Value;
                 _dictionaryService.SetValue(dictionaryEntry.Key, value);

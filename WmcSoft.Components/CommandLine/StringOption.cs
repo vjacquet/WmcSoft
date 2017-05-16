@@ -34,19 +34,23 @@ namespace WmcSoft.CommandLine
         #region Lifecycle
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public StringOption() {
+        public StringOption()
+        {
         }
 
         public StringOption(string name)
-            : base(name) {
+            : base(name)
+        {
         }
 
         public StringOption(string name, string description)
-            : base(name, description) {
+            : base(name, description)
+        {
         }
 
         public StringOption(string name, string description, string template)
-            : base(name, description) {
+            : base(name, description)
+        {
             _template = template;
         }
 
@@ -54,15 +58,18 @@ namespace WmcSoft.CommandLine
 
         #region Overrides
 
-        protected override bool ValidateArgument(string argument) {
+        protected override bool ValidateArgument(string argument)
+        {
             return (argument.Length > 0 && argument[0] == ':');
         }
 
-        protected override void DoParseArgument(string argument) {
+        protected override void DoParseArgument(string argument)
+        {
             base.Value = argument.Substring(1);
         }
 
-        public override void WriteTemplate(TextWriter writer) {
+        public override void WriteTemplate(TextWriter writer)
+        {
             writer.WriteLine(OptionDelimiter + OptionName + ':' + _template);
         }
 

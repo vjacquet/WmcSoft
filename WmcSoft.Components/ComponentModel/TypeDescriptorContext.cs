@@ -31,7 +31,7 @@ using System.ComponentModel.Design;
 namespace WmcSoft.ComponentModel
 {
     /// <summary>
-    /// Simple implementation of the ITypeDescriptorContext interface.
+    /// Simple implementation of the <see cref="ITypeDescriptorContext"/> interface.
     /// </summary>
     public class TypeDescriptorContext : ITypeDescriptorContext
     {
@@ -45,7 +45,8 @@ namespace WmcSoft.ComponentModel
 
         #region Lifecycle
 
-        public TypeDescriptorContext(IServiceProvider serviceProvider, PropertyDescriptor descriptor, object instance) {
+        public TypeDescriptorContext(IServiceProvider serviceProvider, PropertyDescriptor descriptor, object instance)
+        {
             _serviceProvider = serviceProvider;
             _descriptor = descriptor;
             _instance = instance;
@@ -65,20 +66,21 @@ namespace WmcSoft.ComponentModel
             get { return _instance; }
         }
 
-        void ITypeDescriptorContext.OnComponentChanged() {
+        void ITypeDescriptorContext.OnComponentChanged()
+        {
             IComponentChangeService service = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
             if (service != null) {
                 service.OnComponentChanged(_instance, _descriptor, null, null);
             }
         }
 
-        bool ITypeDescriptorContext.OnComponentChanging() {
+        bool ITypeDescriptorContext.OnComponentChanging()
+        {
             IComponentChangeService service = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
             if (service != null) {
                 try {
                     service.OnComponentChanging(_instance, _descriptor);
-                }
-                catch (CheckoutException exception) {
+                } catch (CheckoutException exception) {
                     if (CheckoutException.Canceled != exception) {
                         throw;
                     }
@@ -96,7 +98,8 @@ namespace WmcSoft.ComponentModel
 
         #region IServiceProvider Members
 
-        public object GetService(Type serviceType) {
+        public object GetService(Type serviceType)
+        {
             if (_serviceProvider == null)
                 return null;
             return _serviceProvider.GetService(serviceType);

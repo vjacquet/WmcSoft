@@ -31,13 +31,14 @@ namespace WmcSoft.CommandLine.Design
 {
     public class CommandLineDesigner : ComponentDesigner
     {
-        public override void Initialize(IComponent component) {
+        public override void Initialize(IComponent component)
+        {
             base.Initialize(component);
-            var designerHost = (IDesignerHost)this.GetService(typeof(IDesignerHost));
+            var designerHost = (IDesignerHost)GetService(typeof(IDesignerHost));
             if (designerHost != null) {
-                var commandLine = (CommandLine)base.Component;
+                var commandLine = (CommandLine)Component;
                 if ((commandLine.Owner == null) && (designerHost.RootComponent is IComponent)) {
-                    commandLine.Owner = (IComponent)designerHost.RootComponent;
+                    commandLine.Owner = designerHost.RootComponent;
                 }
             }
         }

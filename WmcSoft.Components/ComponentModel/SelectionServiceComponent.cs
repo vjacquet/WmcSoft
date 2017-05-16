@@ -26,9 +26,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Collections;
@@ -39,7 +36,8 @@ namespace WmcSoft.ComponentModel
     public partial class SelectionServiceComponent : Component,
         ISelectionService
     {
-        public IDisposable SelectionEventBarrier(object target) {
+        public IDisposable SelectionEventBarrier(object target)
+        {
             return new EventBarrier(this.Events, target, SelectionChangingEvent, SelectionChangedEvent);
         }
 
@@ -49,7 +47,8 @@ namespace WmcSoft.ComponentModel
         {
             // Methods
             public ObjectReferenceConverter()
-                : base(typeof(IComponent)) {
+                : base(typeof(IComponent))
+            {
             }
         }
 
@@ -63,11 +62,13 @@ namespace WmcSoft.ComponentModel
 
         #region Lifecycle
 
-        public SelectionServiceComponent() {
+        public SelectionServiceComponent()
+        {
             InitializeComponent();
         }
 
-        public SelectionServiceComponent(IContainer container) {
+        public SelectionServiceComponent(IContainer container)
+        {
             container.Add(this);
 
             InitializeComponent();
@@ -77,11 +78,13 @@ namespace WmcSoft.ComponentModel
 
         #region ISelectionService Membres
 
-        bool ISelectionService.GetComponentSelected(object component) {
+        bool ISelectionService.GetComponentSelected(object component)
+        {
             return SelectionService.GetComponentSelected(component);
         }
 
-        System.Collections.ICollection ISelectionService.GetSelectedComponents() {
+        System.Collections.ICollection ISelectionService.GetSelectedComponents()
+        {
             return SelectionService.GetSelectedComponents();
         }
 
@@ -109,7 +112,8 @@ namespace WmcSoft.ComponentModel
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnSelectionChanged(EventArgs e) {
+        protected virtual void OnSelectionChanged(EventArgs e)
+        {
             if (raisesSelectionChangedEvents) {
                 EventHandler handler = (EventHandler)this.Events[SelectionChangedEvent];
                 if (handler != null) {
@@ -131,7 +135,8 @@ namespace WmcSoft.ComponentModel
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnSelectionChanging(EventArgs e) {
+        protected virtual void OnSelectionChanging(EventArgs e)
+        {
             if (raisesSelectionChangedEvents) {
                 EventHandler handler = (EventHandler)this.Events[SelectionChangingEvent];
                 if (handler != null) {
@@ -144,11 +149,13 @@ namespace WmcSoft.ComponentModel
             get { return this.SelectionService.SelectionCount; }
         }
 
-        void ISelectionService.SetSelectedComponents(System.Collections.ICollection components, SelectionTypes selectionType) {
+        void ISelectionService.SetSelectedComponents(System.Collections.ICollection components, SelectionTypes selectionType)
+        {
             this.SelectionService.SetSelectedComponents(components, selectionType);
         }
 
-        void ISelectionService.SetSelectedComponents(System.Collections.ICollection components) {
+        void ISelectionService.SetSelectedComponents(System.Collections.ICollection components)
+        {
             this.SelectionService.SetSelectedComponents(components);
         }
 
@@ -175,11 +182,13 @@ namespace WmcSoft.ComponentModel
             }
         }
 
-        void selectionService_SelectionChanging(object sender, EventArgs e) {
+        void selectionService_SelectionChanging(object sender, EventArgs e)
+        {
             OnSelectionChanging(e);
         }
 
-        void selectionService_SelectionChanged(object sender, EventArgs e) {
+        void selectionService_SelectionChanged(object sender, EventArgs e)
+        {
             OnSelectionChanged(e);
         }
 
@@ -219,7 +228,8 @@ namespace WmcSoft.ComponentModel
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnPrimarySelectionChanged(EventArgs e) {
+        protected virtual void OnPrimarySelectionChanged(EventArgs e)
+        {
             EventHandler handler = (EventHandler)this.Events[PrimarySelectionChangedEvent];
             if (handler != null) {
                 handler(this, e);

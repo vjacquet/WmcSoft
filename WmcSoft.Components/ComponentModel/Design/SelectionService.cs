@@ -36,7 +36,8 @@ namespace WmcSoft.ComponentModel.Design
         private readonly object _rootComponent;
         private readonly ArrayList _selectedComponents;
 
-        public SelectionService(IServiceProvider serviceProvider, object rootComponent) {
+        public SelectionService(IServiceProvider serviceProvider, object rootComponent)
+        {
             _rootComponent = rootComponent;
 
             _selectedComponents = new ArrayList();
@@ -53,7 +54,8 @@ namespace WmcSoft.ComponentModel.Design
             }
         }
 
-        public ICollection GetSelectedComponents() {
+        public ICollection GetSelectedComponents()
+        {
             return _selectedComponents.ToArray();
         }
 
@@ -67,7 +69,8 @@ namespace WmcSoft.ComponentModel.Design
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnSelectionChanging(EventArgs e) {
+        protected virtual void OnSelectionChanging(EventArgs e)
+        {
             ((EventHandler)_events[SelectionChangingEvent])?.Invoke(this, e);
         }
 
@@ -81,7 +84,8 @@ namespace WmcSoft.ComponentModel.Design
         /// Fire the SelectionChanging event if anything is bound to it
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnSelectionChanged(EventArgs e) {
+        protected virtual void OnSelectionChanged(EventArgs e)
+        {
             ((EventHandler)_events[SelectionChangedEvent])?.Invoke(this, e);
         }
 
@@ -98,11 +102,13 @@ namespace WmcSoft.ComponentModel.Design
             get { return _selectedComponents.Count; }
         }
 
-        public bool GetComponentSelected(object component) {
+        public bool GetComponentSelected(object component)
+        {
             return _selectedComponents.Contains(component);
         }
 
-        public void SetSelectedComponents(ICollection components, SelectionTypes selectionType) {
+        public void SetSelectedComponents(ICollection components, SelectionTypes selectionType)
+        {
             // Interpret the selection type
             bool primary = (selectionType & SelectionTypes.Primary) == SelectionTypes.Primary;
             bool toggle = (selectionType & SelectionTypes.Toggle) == SelectionTypes.Toggle;
@@ -116,11 +122,11 @@ namespace WmcSoft.ComponentModel.Design
             }
             foreach (object component in components) {
                 if (component == null) {
-                    throw new ArgumentNullException("components");
+                    throw new ArgumentNullException(nameof(components));
                 }
             }
             if (primary && components.Count != 1) {
-                throw new ArgumentException("components");
+                throw new ArgumentException(nameof(components));
             }
 
             // If the selection type is Click, we want to know if shift or control is being held
@@ -181,12 +187,14 @@ namespace WmcSoft.ComponentModel.Design
             OnSelectionChanged(EventArgs.Empty);
         }
 
-        public void SetSelectedComponents(ICollection components) {
+        public void SetSelectedComponents(ICollection components)
+        {
             // Use the Replace selection type because this needs to replace anything already selected
             SetSelectedComponents(components, SelectionTypes.Replace);
         }
 
-        internal void OnComponentRemoved(object sender, ComponentEventArgs e) {
+        internal void OnComponentRemoved(object sender, ComponentEventArgs e)
+        {
             if (_selectedComponents.Contains(e.Component)) {
                 OnSelectionChanging(EventArgs.Empty);
 
