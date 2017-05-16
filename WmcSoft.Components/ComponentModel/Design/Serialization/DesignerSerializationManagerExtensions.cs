@@ -36,7 +36,8 @@ namespace WmcSoft.ComponentModel.Design.Serialization
 {
     public static class DesignerSerializationManagerExtensions
     {
-        public static IEnumerable<string> GetComponentsOnDesignerSurface(IDesignerSerializationManager manager) {
+        public static IEnumerable<string> GetComponentsOnDesignerSurface(IDesignerSerializationManager manager)
+        {
             var designerHost = manager.GetService<IDesignerHost>();
             var rootComponent = designerHost.RootComponent;
             foreach (IComponent component in designerHost.Container.Components) {
@@ -46,19 +47,22 @@ namespace WmcSoft.ComponentModel.Design.Serialization
             }
         }
 
-        public static CodeMemberMethod FindInitializeComponent(this CodeTypeDeclaration declaration) {
+        public static CodeMemberMethod FindInitializeComponent(this CodeTypeDeclaration declaration)
+        {
             return declaration.FindMember<CodeMemberMethod>("InitializeComponent");
         }
 
-        public static void AddStatementToInitializeComponent(this CodeTypeDeclaration declaration, CodeStatement statement) {
-            CodeMemberMethod method = FindInitializeComponent(declaration);
+        public static void AddStatementToInitializeComponent(this CodeTypeDeclaration declaration, CodeStatement statement)
+        {
+            var method = FindInitializeComponent(declaration);
             if (method != null) {
                 method.Statements.Add(statement);
             }
         }
 
-        public static void RemoveFromInitializeComponent<T>(this CodeTypeDeclaration declaration, Predicate<T> shouldRemove) where T : CodeObject {
-            CodeMemberMethod method = FindInitializeComponent(declaration);
+        public static void RemoveFromInitializeComponent<T>(this CodeTypeDeclaration declaration, Predicate<T> shouldRemove) where T : CodeObject
+        {
+            var method = FindInitializeComponent(declaration);
             if (method != null) {
                 method.Statements.RemoveFromStatements<T>(shouldRemove);
             }

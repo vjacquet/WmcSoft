@@ -40,11 +40,13 @@ namespace WmcSoft.CommandLine
         {
             #region Lifecycle
 
-            public Choice() {
+            public Choice()
+            {
                 Description = String.Empty;
             }
 
-            public Choice(string name, string description) {
+            public Choice(string name, string description)
+            {
                 Name = name;
                 Description = description;
             }
@@ -62,7 +64,8 @@ namespace WmcSoft.CommandLine
 
             #region Methods
 
-            public void WriteTemplate(TextWriter writer) {
+            public void WriteTemplate(TextWriter writer)
+            {
                 writer.Write(Name);
                 writer.Write("  ");
                 writer.WriteLine(Description);
@@ -76,19 +79,23 @@ namespace WmcSoft.CommandLine
         #region Lifecycle
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ChoiceOption() {
+        public ChoiceOption()
+        {
         }
 
         public ChoiceOption(string name)
-            : base(name) {
+            : base(name)
+        {
         }
 
         public ChoiceOption(string name, string description)
-            : base(name, description) {
+            : base(name, description)
+        {
         }
 
         public ChoiceOption(string name, string description, string template)
-            : base(name, description) {
+            : base(name, description)
+        {
             _template = template;
         }
 
@@ -96,7 +103,8 @@ namespace WmcSoft.CommandLine
 
         #region Overrides
 
-        protected override bool ValidateArgument(string argument) {
+        protected override bool ValidateArgument(string argument)
+        {
             if (argument.Length == 0 || argument[0] != ':')
                 return false;
 
@@ -108,11 +116,13 @@ namespace WmcSoft.CommandLine
             return false;
         }
 
-        protected override void DoParseArgument(string argument) {
+        protected override void DoParseArgument(string argument)
+        {
             base.Value = argument.Substring(1);
         }
 
-        public override void WriteTemplate(TextWriter writer) {
+        public override void WriteTemplate(TextWriter writer)
+        {
             writer.WriteLine("{0}:{1}", OptionDelimiter + OptionName, _template);
             using (var enumerator = choices.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
@@ -143,10 +153,12 @@ namespace WmcSoft.CommandLine
         }
         IList<Choice> choices = new List<Choice>();
 
-        public void AddChoice(string name, string description) {
+        public void AddChoice(string name, string description)
+        {
             choices.Add(new Choice(name, description));
         }
-        public void RemoveChoice(string name) {
+        public void RemoveChoice(string name)
+        {
             Choice toRemove = null;
             foreach (Choice choice in choices) {
                 if (StringComparer.InvariantCultureIgnoreCase.Equals(name, choice.Name)) {
@@ -177,14 +189,17 @@ namespace WmcSoft.CommandLine
     class ChoiceCollectionEditor : CollectionEditor
     {
         public ChoiceCollectionEditor()
-            : base(typeof(List<ChoiceOption.Choice>)) {
+            : base(typeof(List<ChoiceOption.Choice>))
+        {
         }
 
-        protected override Type CreateCollectionItemType() {
+        protected override Type CreateCollectionItemType()
+        {
             return typeof(ChoiceOption.Choice);
         }
 
-        protected override string GetDisplayText(object value) {
+        protected override string GetDisplayText(object value)
+        {
             var choice = value as ChoiceOption.Choice;
             return String.IsNullOrEmpty(choice.Name)
                 ? "Choice"

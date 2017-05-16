@@ -39,14 +39,16 @@ namespace WmcSoft.CommandLine
     [ListBindable(false)]
     public class OptionCollection : KeyedCollection<string, Option>
     {
-        internal CommandLine commandLine;
+        internal readonly CommandLine _commandLine;
 
         public OptionCollection(CommandLine commandLine)
-            : base() {
-            this.commandLine = commandLine;
+            : base()
+        {
+            _commandLine = commandLine;
         }
 
-        public void AddRange(Option[] options) {
+        public void AddRange(Option[] options)
+        {
             foreach (Option option in options) {
                 this.Add(option);
             }
@@ -54,12 +56,14 @@ namespace WmcSoft.CommandLine
 
         #region Overridables
 
-        protected override string GetKeyForItem(Option item) {
+        protected override string GetKeyForItem(Option item)
+        {
             // In this example, the key is the part number.
             return item.OptionName;
         }
 
-        protected override void InsertItem(int index, Option newItem) {
+        protected override void InsertItem(int index, Option newItem)
+        {
             if (newItem.collection != null)
                 throw new ArgumentException("The item already belongs to a collection.");
 
@@ -67,7 +71,8 @@ namespace WmcSoft.CommandLine
             newItem.collection = this;
         }
 
-        protected override void SetItem(int index, Option newItem) {
+        protected override void SetItem(int index, Option newItem)
+        {
             Option replaced = Items[index];
 
             if (newItem.collection != null)
@@ -78,14 +83,16 @@ namespace WmcSoft.CommandLine
             replaced.collection = null;
         }
 
-        protected override void RemoveItem(int index) {
+        protected override void RemoveItem(int index)
+        {
             Option removedItem = Items[index];
 
             base.RemoveItem(index);
             removedItem.collection = null;
         }
 
-        protected override void ClearItems() {
+        protected override void ClearItems()
+        {
             foreach (Option option in Items) {
                 option.collection = null;
             }
@@ -93,21 +100,21 @@ namespace WmcSoft.CommandLine
             base.ClearItems();
         }
 
-        internal void ChangeKey(Option item, string newKey) {
+        internal void ChangeKey(Option item, string newKey)
+        {
             base.ChangeItemKey(item, newKey);
         }
 
         #endregion
 
-        public bool TryGetValue(string key, out Option value) {
+        public bool TryGetValue(string key, out Option value)
+        {
             value = null;
-            foreach (Option option in this.Items) {
+            foreach (var option in Items) {
                 if (StringComparer.InvariantCultureIgnoreCase.Equals(key, GetKeyForItem(option))) {
                     value = option;
                     return true;
                 }
-            }
-            foreach (Option option in this.Items) {
             }
             return false;
         }
@@ -118,10 +125,12 @@ namespace WmcSoft.CommandLine
     class OptionCollectionEditor : CollectionEditor
     {
         public OptionCollectionEditor()
-            : base(typeof(OptionCollection)) {
+            : base(typeof(OptionCollection))
+        {
         }
 
-        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value) {
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        {
             this.editValue = value;
             object result = base.EditValue(context, provider, value);
             this.editValue = null;
@@ -129,7 +138,8 @@ namespace WmcSoft.CommandLine
         }
         private object editValue;
 
-        protected override Type[] CreateNewItemTypes() {
+        protected override Type[] CreateNewItemTypes()
+        {
             if (base.Context != null) {
                 var typeDiscoveryService = base.Context.GetService<ITypeDiscoveryService>();
                 if (typeDiscoveryService != null) {
@@ -150,7 +160,8 @@ namespace WmcSoft.CommandLine
             return new Type[0];
         }
 
-        protected override object CreateInstance(Type itemType) {
+        protected override object CreateInstance(Type itemType)
+        {
             string name = itemType.Name.Substring(0, 1).ToLower() + itemType.Name.Substring(1);
 
             var service = base.GetService(typeof(INameCreationService)) as INameCreationService;
@@ -178,11 +189,13 @@ namespace WmcSoft.CommandLine
             return instance;
         }
 
-        protected override Type CreateCollectionItemType() {
+        protected override Type CreateCollectionItemType()
+        {
             return typeof(Option);
         }
 
-        protected override string GetDisplayText(object value) {
+        protected override string GetDisplayText(object value)
+        {
             using (var writer = new StringWriter()) {
                 ((Option)value).WriteTemplate(writer);
                 return writer.ToString();

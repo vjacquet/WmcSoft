@@ -50,7 +50,8 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Lifecycle
 
-        public override void Initialize(IComponent component) {
+        public override void Initialize(IComponent component)
+        {
             base.Initialize(component);
 
             _disposables = new DisposableStack();
@@ -106,18 +107,21 @@ namespace WmcSoft.ComponentModel.Design
             }
         }
 
-        private void OnLaunchDebugger(object sender, EventArgs e) {
+        private void OnLaunchDebugger(object sender, EventArgs e)
+        {
             if (!Debugger.IsAttached)
                 Debugger.Break();
         }
 
-        private void OnListComponents(object sender, EventArgs e) {
+        private void OnListComponents(object sender, EventArgs e)
+        {
             using (var listform = new DesignerHostListForm()) {
                 listform.ShowDialog(_designerHost);
             }
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             if (_manager != null && _provider != null) {
                 _manager.RemoveSerializationProvider(_provider);
                 _provider = null;
@@ -131,7 +135,8 @@ namespace WmcSoft.ComponentModel.Design
             base.Dispose(disposing);
         }
 
-        void manager_SerializationComplete(object sender, EventArgs e) {
+        void manager_SerializationComplete(object sender, EventArgs e)
+        {
             var manager = sender as IDesignerSerializationManager;
             if (manager != null) {
                 var codeTypeDeclaration = manager.Context[typeof(CodeTypeDeclaration)] as CodeTypeDeclaration;
@@ -143,39 +148,47 @@ namespace WmcSoft.ComponentModel.Design
 
         #region IComponentChangeService
 
-        private void OnComponentChanged(object sender, ComponentChangedEventArgs e) {
+        private void OnComponentChanged(object sender, ComponentChangedEventArgs e)
+        {
             var component = e.Component as IComponent;
             if (component != null && component.Site != null && e.Member != null)
                 Trace("IComponentChangeService", "The member `{0}` of the component `{1}` has changed.", e.Member.Name, component.Site.Name);
         }
 
-        private void OnComponentChanging(object sender, ComponentChangingEventArgs e) {
+        private void OnComponentChanging(object sender, ComponentChangingEventArgs e)
+        {
             var component = e.Component as IComponent;
             if (component != null && component.Site != null && e.Member != null)
                 Trace("IComponentChangeService", "The member `{0}` of the component `{1}` is changing.", e.Member.Name, component.Site.Name);
         }
 
-        private void OnComponentAdded(object sender, ComponentEventArgs e) {
+        private void OnComponentAdded(object sender, ComponentEventArgs e)
+        {
             Trace("IComponentChangeService", "The component of type `{0}` has been added under the name `{1}`.", e.Component.GetType().FullName, e.Component.Site.Name);
         }
 
-        private void OnComponentAdding(object sender, ComponentEventArgs e) {
+        private void OnComponentAdding(object sender, ComponentEventArgs e)
+        {
             Trace("IComponentChangeService", "The component of type `{0}` is being added.", e.Component.GetType().FullName);
         }
 
-        private void OnComponentRemoved(object sender, ComponentEventArgs e) {
+        private void OnComponentRemoved(object sender, ComponentEventArgs e)
+        {
             Trace("IComponentChangeService", "The component `{0}` has been removed.", e.Component.Site.Name);
         }
 
-        private void OnComponentRemoving(object sender, ComponentEventArgs e) {
+        private void OnComponentRemoving(object sender, ComponentEventArgs e)
+        {
             Trace("IComponentChangeService", "The component `{0}` is being removed.", e.Component.Site.Name);
         }
 
-        private void OnComponentRename(object sender, ComponentRenameEventArgs e) {
+        private void OnComponentRename(object sender, ComponentRenameEventArgs e)
+        {
             Trace("IComponentChangeService", "The component `{0}` was renamed to `{1}`.", e.OldName, e.NewName);
         }
 
-        void Trace(string category, string format, params object[] args) {
+        void Trace(string category, string format, params object[] args)
+        {
             if (_tracingComponent != null) {
                 _tracingComponent.TraceMessage(category, String.Format(format, args));
             }
@@ -189,11 +202,13 @@ namespace WmcSoft.ComponentModel.Design
     {
         TracingComponent _tracingComponent;
 
-        public TraceComponentSerializationProvider(TracingComponent tracingComponent) {
+        public TraceComponentSerializationProvider(TracingComponent tracingComponent)
+        {
             _tracingComponent = tracingComponent;
         }
 
-        void Trace(string format, params object[] args) {
+        void Trace(string format, params object[] args)
+        {
             if (_tracingComponent != null) {
                 _tracingComponent.TraceMessage("DesignerSerialization", String.Format(format, args));
             }
@@ -201,7 +216,8 @@ namespace WmcSoft.ComponentModel.Design
 
         #region IDesignerSerializationProvider Membres
 
-        public object GetSerializer(IDesignerSerializationManager manager, object currentSerializer, Type objectType, Type serializerType) {
+        public object GetSerializer(IDesignerSerializationManager manager, object currentSerializer, Type objectType, Type serializerType)
+        {
             Trace("Request serialization for `{0}`.", objectType);
 
             if (typeof(IContainer).IsAssignableFrom(objectType)) {

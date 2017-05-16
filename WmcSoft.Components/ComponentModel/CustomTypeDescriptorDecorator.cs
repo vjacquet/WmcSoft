@@ -39,59 +39,72 @@ namespace WmcSoft.ComponentModel
     {
         private readonly ICustomTypeDescriptor _descriptor;
 
-        protected CustomTypeDescriptorDecorator(ICustomTypeDescriptor descriptor) {
+        protected CustomTypeDescriptorDecorator(ICustomTypeDescriptor descriptor)
+        {
             if (descriptor == null)
-                throw new ArgumentNullException("descriptor");
+                throw new ArgumentNullException(nameof(descriptor));
             _descriptor = descriptor;
         }
 
         #region ICustomTypeDescriptor Membres
 
-        public virtual AttributeCollection GetAttributes() {
+        public virtual AttributeCollection GetAttributes()
+        {
             return _descriptor.GetAttributes();
         }
 
-        public virtual string GetClassName() {
+        public virtual string GetClassName()
+        {
             return _descriptor.GetClassName();
         }
 
-        public virtual string GetComponentName() {
+        public virtual string GetComponentName()
+        {
             return _descriptor.GetComponentName();
         }
 
-        public virtual TypeConverter GetConverter() {
+        public virtual TypeConverter GetConverter()
+        {
             return _descriptor.GetConverter();
         }
 
-        public virtual EventDescriptor GetDefaultEvent() {
+        public virtual EventDescriptor GetDefaultEvent()
+        {
             return _descriptor.GetDefaultEvent();
         }
 
-        public virtual PropertyDescriptor GetDefaultProperty() {
+        public virtual PropertyDescriptor GetDefaultProperty()
+        {
             return _descriptor.GetDefaultProperty();
         }
 
-        public virtual object GetEditor(Type editorBaseType) {
+        public virtual object GetEditor(Type editorBaseType)
+        {
             return _descriptor.GetEditor(editorBaseType);
         }
 
-        public virtual EventDescriptorCollection GetEvents(Attribute[] attributes) {
+        public virtual EventDescriptorCollection GetEvents(Attribute[] attributes)
+        {
             return _descriptor.GetEvents(attributes);
         }
 
-        public EventDescriptorCollection GetEvents() {
+        public EventDescriptorCollection GetEvents()
+        {
             return GetEvents(null);
         }
 
-        public virtual PropertyDescriptorCollection GetProperties(Attribute[] attributes) {
+        public virtual PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+        {
             return _descriptor.GetProperties(attributes);
         }
 
-        public PropertyDescriptorCollection GetProperties() {
+        public PropertyDescriptorCollection GetProperties()
+        {
             return GetProperties(null);
         }
 
-        public virtual object GetPropertyOwner(PropertyDescriptor pd) {
+        public virtual object GetPropertyOwner(PropertyDescriptor pd)
+        {
             return _descriptor.GetPropertyOwner(pd);
         }
 

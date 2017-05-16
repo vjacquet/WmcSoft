@@ -26,15 +26,14 @@
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Resources;
 
 namespace WmcSoft.ComponentModel
 {
     public class DisplayNameResourceAttribute : DisplayNameAttribute
     {
         public DisplayNameResourceAttribute(Type resourceBase, string resourceName)
-            : base(ResourceHelpers.GetString(resourceBase, resourceName)) {
+            : base(ResourceHelpers.GetString(resourceBase, resourceName))
+        {
         }
     }
 }

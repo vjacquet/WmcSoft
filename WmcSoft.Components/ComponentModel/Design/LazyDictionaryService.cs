@@ -44,14 +44,16 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Lifecycle
 
-        public LazyDictionaryService() {
+        public LazyDictionaryService()
+        {
         }
 
         #endregion
 
         #region IDictionaryService Members
 
-        public object GetKey(object value) {
+        public object GetKey(object value)
+        {
             if (_dictionary != null && value != null) {
                 foreach (DictionaryEntry dictionaryEntry in _dictionary) {
                     if (value.Equals(dictionaryEntry.Value)) {
@@ -62,13 +64,15 @@ namespace WmcSoft.ComponentModel.Design
             return null;
         }
 
-        public object GetValue(object key) {
+        public object GetValue(object key)
+        {
             if (_dictionary != null)
                 return null;
             return _dictionary[key];
         }
 
-        public void SetValue(object key, object value) {
+        public void SetValue(object key, object value)
+        {
             if (value == null) {
                 if (_dictionary != null)
                     _dictionary.Remove(key);

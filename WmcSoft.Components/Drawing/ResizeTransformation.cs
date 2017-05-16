@@ -32,9 +32,10 @@ namespace WmcSoft.Drawing
 {
     public class ResizeTransformation : ImageTransformation
     {
-        public ResizeTransformation(int width, int height, bool preserveAspectRatio = true, bool preventEnlarge = true) {
-            if (width < 0) throw new ArgumentOutOfRangeException("width");
-            if (height < 0) throw new ArgumentOutOfRangeException("height");
+        public ResizeTransformation(int width, int height, bool preserveAspectRatio = true, bool preventEnlarge = true)
+        {
+            if (width < 0) throw new ArgumentOutOfRangeException(nameof(width));
+            if (height < 0) throw new ArgumentOutOfRangeException(nameof(height));
 
             Width = width;
             Height = height;
@@ -42,12 +43,13 @@ namespace WmcSoft.Drawing
             PreventEnlarge = preventEnlarge;
         }
 
-        public int Height { get;  }
+        public int Height { get; }
         public int Width { get; }
         public bool PreserveAspectRatio { get; }
         public bool PreventEnlarge { get; }
 
-        public override Image Apply(Image image) {
+        public override Image Apply(Image image)
+        {
             var h = Height;
             var w = Width;
             if (PreserveAspectRatio) {

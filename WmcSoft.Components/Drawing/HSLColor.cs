@@ -45,13 +45,15 @@ namespace WmcSoft.Drawing
 
         #region Lifecycle
 
-        public HSLColor(int hue, int saturation, int luminosity) {
+        public HSLColor(int hue, int saturation, int luminosity)
+        {
             _hue = hue;
             _saturation = saturation;
             _luminosity = luminosity;
         }
 
-        public HSLColor(Color color) {
+        public HSLColor(Color color)
+        {
             int r = color.R;
             int g = color.G;
             int b = color.B;
@@ -101,15 +103,18 @@ namespace WmcSoft.Drawing
 
         #region Operators
 
-        public static bool operator ==(HSLColor a, HSLColor b) {
+        public static bool operator ==(HSLColor a, HSLColor b)
+        {
             return a.Equals(b);
         }
 
-        public static bool operator !=(HSLColor a, HSLColor b) {
+        public static bool operator !=(HSLColor a, HSLColor b)
+        {
             return !a.Equals(b);
         }
 
-        public override bool Equals(object o) {
+        public override bool Equals(object o)
+        {
             if (o is HSLColor) {
                 HSLColor color = (HSLColor)o;
                 return (_hue == color._hue) && (_saturation == color._saturation) && (_luminosity == color._luminosity);
@@ -117,42 +122,51 @@ namespace WmcSoft.Drawing
             return false;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return (_hue << 6) | (_saturation << 2) | _luminosity;
         }
 
-        public static implicit operator Color(HSLColor hsl) {
+        public static implicit operator Color(HSLColor hsl)
+        {
             return ToColor(hsl._hue, hsl._saturation, hsl._luminosity);
         }
-        public static Color ToColor(HSLColor hsl) {
+        public static Color ToColor(HSLColor hsl)
+        {
             return hsl;
         }
 
-        public static implicit operator HSLColor(Color rgb) {
+        public static implicit operator HSLColor(Color rgb)
+        {
             return new HSLColor(rgb);
         }
-        public static HSLColor FromColor(Color rgb) {
+        public static HSLColor FromColor(Color rgb)
+        {
             return rgb;
         }
 
         #endregion
 
-        static int MulDiv(int number, long numerator, int denominator) {
+        static int MulDiv(int number, long numerator, int denominator)
+        {
             return (int)(number * numerator / denominator);
         }
 
-        static int Mod(int x) {
+        static int Mod(int x)
+        {
             if (x < 0)
                 x += HSLMax;
             else if (x > HSLMax)
                 x -= HSLMax;
             return x;
         }
-        static byte Normalize(int value) {
+        static byte Normalize(int value)
+        {
             return (byte)((255 * value + HSLMax / 2) / HSLMax);
         }
 
-        static Color ToColor(int hue, int saturation, int luminosity) {
+        static Color ToColor(int hue, int saturation, int luminosity)
+        {
             // see http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
             if (saturation == 0) {
                 var c = Normalize(luminosity);
@@ -169,7 +183,8 @@ namespace WmcSoft.Drawing
             return Color.FromArgb(r, g, b);
         }
 
-        private static int HueToRGB(int p, int q, int t) {
+        private static int HueToRGB(int p, int q, int t)
+        {
             t = Mod(t);
 
             if (t < HSLMax / 6)
@@ -181,7 +196,8 @@ namespace WmcSoft.Drawing
             return p;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Concat(new object[] { _hue, ", ", _luminosity, ", ", _saturation });
         }
     }

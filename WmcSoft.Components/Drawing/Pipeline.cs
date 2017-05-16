@@ -36,7 +36,8 @@ namespace WmcSoft.Drawing
     {
         private readonly List<ImageTransformation> _transformations;
 
-        Pipeline() {
+        Pipeline()
+        {
             _transformations = new List<ImageTransformation>();
         }
 
@@ -54,11 +55,13 @@ namespace WmcSoft.Drawing
 
         public bool PreserveProperties { get; set; }
 
-        public void Add(ImageTransformation item) {
+        public void Add(ImageTransformation item)
+        {
             _transformations.Add(item);
         }
 
-        public override Image Apply(Image image) {
+        public override Image Apply(Image image)
+        {
             Image result = image;
             if (_transformations.Any()) {
                 var properties = image.PropertyItems;
@@ -73,8 +76,7 @@ namespace WmcSoft.Drawing
                     for (int i = 0; i < properties.Length; i++) {
                         try {
                             result.SetPropertyItem(properties[i]);
-                        }
-                        catch (ArgumentException) {
+                        } catch (ArgumentException) {
                         }
                     }
                 }
@@ -82,27 +84,33 @@ namespace WmcSoft.Drawing
             return result;
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _transformations.Clear();
         }
 
-        public bool Contains(ImageTransformation item) {
+        public bool Contains(ImageTransformation item)
+        {
             return _transformations.Contains(item);
         }
 
-        public void CopyTo(ImageTransformation[] array, int arrayIndex) {
+        public void CopyTo(ImageTransformation[] array, int arrayIndex)
+        {
             _transformations.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<ImageTransformation> GetEnumerator() {
+        public IEnumerator<ImageTransformation> GetEnumerator()
+        {
             return ((ICollection<ImageTransformation>)_transformations).GetEnumerator();
         }
 
-        public bool Remove(ImageTransformation item) {
+        public bool Remove(ImageTransformation item)
+        {
             return _transformations.Remove(item);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return ((ICollection<ImageTransformation>)_transformations).GetEnumerator();
         }
     }

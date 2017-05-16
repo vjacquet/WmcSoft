@@ -33,7 +33,8 @@ namespace WmcSoft.ComponentModel
     {
         private readonly Type _service;
 
-        public ServiceDependencyAttribute(Type serviceType) {
+        public ServiceDependencyAttribute(Type serviceType)
+        {
             _service = serviceType;
         }
 

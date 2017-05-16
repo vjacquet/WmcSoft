@@ -45,11 +45,13 @@ namespace WmcSoft.IO
         #region Lifecycle
 
         public ReportProgressStream(Stream stream, BackgroundWorker worker)
-            : this(stream, stream.Length, worker) {
+            : this(stream, stream.Length, worker)
+        {
         }
 
         public ReportProgressStream(Stream stream, long length, BackgroundWorker worker)
-            : base(stream) {
+            : base(stream)
+        {
             _worker = worker;
             _length = length;
         }
@@ -58,7 +60,8 @@ namespace WmcSoft.IO
 
         #region Overrides
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             var read = base.Read(buffer, offset, count);
 
             _read += read;

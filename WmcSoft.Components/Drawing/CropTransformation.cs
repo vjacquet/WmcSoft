@@ -31,11 +31,12 @@ namespace WmcSoft.Drawing
 {
     public class CropTransformation : ImageTransformation
     {
-        public CropTransformation(int top, int right, int bottom, int left) {
-            if (top < 0) throw new ArgumentOutOfRangeException("top");
-            if (right < 0) throw new ArgumentOutOfRangeException("right");
-            if (bottom < 0) throw new ArgumentOutOfRangeException("bottom");
-            if (left < 0) throw new ArgumentOutOfRangeException("left");
+        public CropTransformation(int top, int right, int bottom, int left)
+        {
+            if (top < 0) throw new ArgumentOutOfRangeException(nameof(top));
+            if (right < 0) throw new ArgumentOutOfRangeException(nameof(right));
+            if (bottom < 0) throw new ArgumentOutOfRangeException(nameof(bottom));
+            if (left < 0) throw new ArgumentOutOfRangeException(nameof(left));
 
             Top = top;
             Right = right;
@@ -48,7 +49,8 @@ namespace WmcSoft.Drawing
         public int Bottom { get; }
         public int Left { get; }
 
-        public override Image Apply(Image image) {
+        public override Image Apply(Image image)
+        {
             var h = Top + Bottom;
             var w = Left + Right;
             if (h > image.Height | w > image.Width) {
@@ -59,8 +61,7 @@ namespace WmcSoft.Drawing
                 try {
                     var rect = new Rectangle(Left, Top, image.Width - w, image.Height - h);
                     return bitmap.Clone(rect, image.PixelFormat);
-                }
-                catch (OutOfMemoryException) {
+                } catch (OutOfMemoryException) {
                     return image;
                 }
             }

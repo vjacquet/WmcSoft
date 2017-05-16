@@ -35,29 +35,35 @@ namespace WmcSoft.CommandLine
         #region Lifecycle
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public SwitchOption() {
+        public SwitchOption()
+        {
         }
 
         public SwitchOption(string name)
-            : base(name) {
+            : base(name)
+        {
         }
 
         public SwitchOption(string name, string description)
-            : base(name, description) {
+            : base(name, description)
+        {
         }
 
         #endregion
 
         #region Overrides
 
-        protected override bool ValidateArgument(string argument) {
+        protected override bool ValidateArgument(string argument)
+        {
             return String.IsNullOrEmpty(argument);
         }
 
-        protected override void DoParseArgument(string argument) {
+        protected override void DoParseArgument(string argument)
+        {
         }
 
-        public override void WriteTemplate(TextWriter writer) {
+        public override void WriteTemplate(TextWriter writer)
+        {
             writer.WriteLine(OptionDelimiter + OptionName);
         }
 

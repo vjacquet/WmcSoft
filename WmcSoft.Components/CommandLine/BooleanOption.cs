@@ -34,30 +34,36 @@ namespace WmcSoft.CommandLine
         #region Lifecycle
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public BooleanOption() {
+        public BooleanOption()
+        {
         }
 
         public BooleanOption(string name)
-            : base(name) {
+            : base(name)
+        {
         }
 
         public BooleanOption(string name, string description)
-            : base(name, description) {
+            : base(name, description)
+        {
         }
 
         #endregion
 
         #region Overrides
 
-        protected override bool ValidateArgument(string argument) {
+        protected override bool ValidateArgument(string argument)
+        {
             return !((argument != "+") && (argument != "-"));
         }
 
-        protected override void DoParseArgument(string argument) {
+        protected override void DoParseArgument(string argument)
+        {
             base.Value = (argument == "+");
         }
 
-        public override void WriteTemplate(TextWriter writer) {
+        public override void WriteTemplate(TextWriter writer)
+        {
             writer.WriteLine("{0}+|-", OptionDelimiter + OptionName);
         }
 

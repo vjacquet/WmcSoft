@@ -37,19 +37,23 @@ namespace WmcSoft.CommandLine
         #region Lifecycle
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ListOption() {
+        public ListOption()
+        {
         }
 
         public ListOption(string name)
-            : base(name) {
+            : base(name)
+        {
         }
 
         public ListOption(string name, string description)
-            : base(name, description) {
+            : base(name, description)
+        {
         }
 
         public ListOption(string name, string description, string template)
-            : base(name, description) {
+            : base(name, description)
+        {
             _template = template;
         }
 
@@ -61,16 +65,19 @@ namespace WmcSoft.CommandLine
             get { return true; }
         }
 
-        protected override bool ValidateArgument(string argument) {
+        protected override bool ValidateArgument(string argument)
+        {
             return !String.IsNullOrEmpty(argument) && (argument[0] == ':');
         }
 
-        protected override void DoParseArgument(string argument) {
+        protected override void DoParseArgument(string argument)
+        {
             List<string> values = new List<string>(argument.Substring(1).Split(new char[] { ',' }));
             base.Value = values.ToArray();
         }
 
-        public override void WriteTemplate(TextWriter writer) {
+        public override void WriteTemplate(TextWriter writer)
+        {
             writer.WriteLine("{0}:{1}[,{1},{1},...]", OptionDelimiter + OptionName, _template);
         }
 

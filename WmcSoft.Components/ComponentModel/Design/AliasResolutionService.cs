@@ -43,14 +43,16 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Lifecycle
 
-        static string ResolveBasePath(TypeResolutionService typeResolutionService) {
+        static string ResolveBasePath(TypeResolutionService typeResolutionService)
+        {
             if (typeResolutionService != null)
                 return typeResolutionService.BasePath;
             return typeof(AliasResolutionService).Assembly.CodeBase.Replace(@"\\", @"\");
         }
 
         public AliasResolutionService(IDictionary aliases, ITypeResolutionService parentLoader)
-            : base(ResolveBasePath(parentLoader as TypeResolutionService)) {
+            : base(ResolveBasePath(parentLoader as TypeResolutionService))
+        {
             if (parentLoader == null)
                 throw new ArgumentNullException("parentLoader");
 
@@ -62,25 +64,28 @@ namespace WmcSoft.ComponentModel.Design
 
         #region Overrides
 
-        public override Assembly GetAssembly(AssemblyName assemblyName, bool throwOnError) {
+        public override Assembly GetAssembly(AssemblyName assemblyName, bool throwOnError)
+        {
             return _parentLoader.GetAssembly(assemblyName, throwOnError);
         }
 
-        public override string GetPathOfAssembly(AssemblyName assemblyName) {
+        public override string GetPathOfAssembly(AssemblyName assemblyName)
+        {
             return _parentLoader.GetPathOfAssembly(assemblyName);
         }
 
-        public override Type GetType(string typeName, bool throwOnError, bool ignoreCase) {
+        public override Type GetType(string typeName, bool throwOnError, bool ignoreCase)
+        {
             if (typeName == null)
                 throw new ArgumentNullException("typeName");
 
             object alias = _typeAliases[typeName];
-            if (alias == null) 
+            if (alias == null)
                 // not found
                 return _parentLoader.GetType(typeName, throwOnError, ignoreCase);
 
             var type = alias as Type;
-            if (type != null) 
+            if (type != null)
                 // already resolved
                 return type;
 
@@ -91,7 +96,8 @@ namespace WmcSoft.ComponentModel.Design
             return type;
         }
 
-        public override void ReferenceAssembly(AssemblyName assemblyName) {
+        public override void ReferenceAssembly(AssemblyName assemblyName)
+        {
             _parentLoader.ReferenceAssembly(assemblyName);
         }
 

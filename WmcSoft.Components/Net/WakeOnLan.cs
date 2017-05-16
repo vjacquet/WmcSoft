@@ -45,7 +45,8 @@ namespace WmcSoft.Net
     {
         #region Lifecycle
 
-        public WakeOnLan() {
+        public WakeOnLan()
+        {
             ResetMacAddress();
             ResetAddress();
             ResetSubnetMask();
@@ -53,7 +54,8 @@ namespace WmcSoft.Net
         }
 
         public WakeOnLan(IContainer container)
-            : this() {
+            : this()
+        {
             container.Add(this);
         }
 
@@ -64,30 +66,36 @@ namespace WmcSoft.Net
         [TypeConverter(typeof(PhysicalAddressTypeConverter))]
         public PhysicalAddress MacAddress { get; set; }
 
-        bool ShouldSerializeMacAddress() {
+        bool ShouldSerializeMacAddress()
+        {
             return MacAddress != PhysicalAddress.None;
         }
-        void ResetMacAddress() {
+        void ResetMacAddress()
+        {
             MacAddress = PhysicalAddress.None;
         }
 
         [TypeConverter(typeof(IPAddressTypeConverter))]
         public IPAddress Address { get; set; }
 
-        bool ShouldSerializeAddress() {
+        bool ShouldSerializeAddress()
+        {
             return Address.ToString() != "0.0.0.0";
         }
-        void ResetAddress() {
+        void ResetAddress()
+        {
             Address = IPAddress.Parse("0.0.0.0");
         }
 
         [TypeConverter(typeof(IPAddressTypeConverter))]
         public IPAddress SubnetMask { get; set; }
 
-        bool ShouldSerializeSubnetMask() {
+        bool ShouldSerializeSubnetMask()
+        {
             return SubnetMask.ToString() != "255.255.255.255";
         }
-        void ResetSubnetMask() {
+        void ResetSubnetMask()
+        {
             SubnetMask = IPAddress.Parse("255.255.255.255");
         }
 
@@ -104,7 +112,8 @@ namespace WmcSoft.Net
         /// <summary>
         /// 
         /// </summary>
-        public void WakeUp() {
+        public void WakeUp()
+        {
             PhysicalAddress macAddress = MacAddress;
             IPAddress address = Address;
             IPAddress subnetMask = SubnetMask;
@@ -122,7 +131,8 @@ namespace WmcSoft.Net
         /// <param name="subnetMask"></param>
         /// <returns></returns>
         /// <remarks>The Broadcast address is address | ~subnetMask.</remarks>
-        public static IPAddress MakeBroadcastIPAddress(IPAddress address, IPAddress subnetMask) {
+        public static IPAddress MakeBroadcastIPAddress(IPAddress address, IPAddress subnetMask)
+        {
             byte[] broadcast = address.GetAddressBytes();
             byte[] mask = subnetMask.GetAddressBytes();
 
@@ -141,7 +151,8 @@ namespace WmcSoft.Net
         /// </summary>
         /// <param name="macAddress"></param>
         /// <param name="endPoint"></param>
-        public static void WakeUp(PhysicalAddress macAddress, IPEndPoint endPoint) {
+        public static void WakeUp(PhysicalAddress macAddress, IPEndPoint endPoint)
+        {
             UdpClient udpClient = new UdpClient();
             byte[] magicPacket = new byte[102];
             int offset = 0;
@@ -180,12 +191,14 @@ namespace WmcSoft.Net
 
         #region IDisposable Membres
 
-        public void Dispose() {
+        public void Dispose()
+        {
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
             if (disposing) {
                 lock (this) {
                     if ((_site != null) && (_site.Container != null)) {
@@ -207,13 +220,15 @@ namespace WmcSoft.Net
 
     public class PhysicalAddressTypeConverter : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
             if (sourceType == typeof(string) || sourceType == typeof(byte[]))
                 return true;
             return base.CanConvertFrom(context, sourceType);
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
             if (value == null)
                 return null;
 
@@ -232,13 +247,15 @@ namespace WmcSoft.Net
             return base.ConvertFrom(context, culture, value);
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
             if (destinationType == typeof(InstanceDescriptor) || destinationType == typeof(byte[]))
                 return true;
             return base.CanConvertTo(context, destinationType);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
             if (value == null)
                 return null;
 
@@ -264,13 +281,15 @@ namespace WmcSoft.Net
 
     public class IPAddressTypeConverter : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
             if (sourceType == typeof(string) || sourceType == typeof(byte[]))
                 return true;
             return base.CanConvertFrom(context, sourceType);
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
             if (value == null)
                 return null;
 
@@ -291,13 +310,15 @@ namespace WmcSoft.Net
             return base.ConvertFrom(context, culture, value);
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
             if (destinationType == typeof(InstanceDescriptor) || destinationType == typeof(byte[]))
                 return true;
             return base.CanConvertTo(context, destinationType);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
             if (value == null)
                 return null;
 
@@ -320,10 +341,12 @@ namespace WmcSoft.Net
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     public class WakeOnLanDesigner : ComponentDesignerBase
     {
-        public WakeOnLanDesigner() {
+        public WakeOnLanDesigner()
+        {
         }
 
-        public override void Initialize(IComponent component) {
+        public override void Initialize(IComponent component)
+        {
             base.Initialize(component);
 
             // HACK: The codedom serializer only understands TypeConverter on type and not on properties.
