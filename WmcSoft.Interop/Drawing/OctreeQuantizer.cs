@@ -32,7 +32,8 @@ namespace WmcSoft.Drawing
                 /// <param name="level">The level in the tree = 0 - 7</param>
                 /// <param name="colorBits">The number of significant color bits in the image</param>
                 /// <param name="octree">The tree to which this node belongs</param>
-                public OctreeNode(int level, int colorBits, Octree octree) {
+                public OctreeNode(int level, int colorBits, Octree octree)
+                {
                     // Construct the new node
                     _leaf = (level == colorBits);
 
@@ -59,7 +60,8 @@ namespace WmcSoft.Drawing
                 /// <param name="colorBits">The number of significant color bits</param>
                 /// <param name="level">The level in the tree</param>
                 /// <param name="octree">The tree to which this node belongs</param>
-                public void AddColor(Color32* pixel, int colorBits, int level, Octree octree) {
+                public void AddColor(Color32* pixel, int colorBits, int level, Octree octree)
+                {
                     // Update the color information if this is a leaf
                     if (_leaf) {
                         Increment(pixel);
@@ -105,7 +107,8 @@ namespace WmcSoft.Drawing
                 /// Reduce this node by removing all of its children
                 /// </summary>
                 /// <returns>The number of leaves removed</returns>
-                public int Reduce() {
+                public int Reduce()
+                {
                     _red = _green = _blue = 0;
                     int children = 0;
 
@@ -133,7 +136,8 @@ namespace WmcSoft.Drawing
                 /// </summary>
                 /// <param name="palette">The palette</param>
                 /// <param name="paletteIndex">The current palette index</param>
-                public void ConstructPalette(List<Color> palette, ref int paletteIndex) {
+                public void ConstructPalette(List<Color> palette, ref int paletteIndex)
+                {
                     if (_leaf) {
                         // Consume the next palette index
                         _paletteIndex = paletteIndex++;
@@ -152,7 +156,8 @@ namespace WmcSoft.Drawing
                 /// <summary>
                 /// Return the palette index for the passed color
                 /// </summary>
-                public int GetPaletteIndex(Color32* pixel, int level) {
+                public int GetPaletteIndex(Color32* pixel, int level)
+                {
                     int paletteIndex = _paletteIndex;
 
                     if (!_leaf) {
@@ -173,7 +178,8 @@ namespace WmcSoft.Drawing
                 /// <summary>
                 /// Increment the pixel count and add to the color information
                 /// </summary>
-                public void Increment(Color32* pixel) {
+                public void Increment(Color32* pixel)
+                {
                     _pixelCount++;
                     _red += pixel->Red;
                     _green += pixel->Green;
@@ -228,7 +234,8 @@ namespace WmcSoft.Drawing
             /// Construct the octree
             /// </summary>
             /// <param name="maxColorBits">The maximum number of significant bits in the image</param>
-            public Octree(int maxColorBits) {
+            public Octree(int maxColorBits)
+            {
                 _maxColorBits = maxColorBits;
                 _leafCount = 0;
                 _reducibleNodes = new OctreeNode[9];
@@ -241,7 +248,8 @@ namespace WmcSoft.Drawing
             /// Add a given color value to the octree
             /// </summary>
             /// <param name="pixel"></param>
-            public void AddColor(Color32* pixel) {
+            public void AddColor(Color32* pixel)
+            {
                 // Check if this request is for the same color as the last
                 if (_previousColor == pixel->ARGB) {
                     // If so, check if I have a previous node setup. This will only ocurr if the first color in the image
@@ -261,7 +269,8 @@ namespace WmcSoft.Drawing
             /// <summary>
             /// Reduce the depth of the tree
             /// </summary>
-            public void Reduce() {
+            public void Reduce()
+            {
                 int index;
 
                 // Find the deepest level containing at least one reducible node
@@ -298,7 +307,8 @@ namespace WmcSoft.Drawing
             /// Keep track of the previous node that was quantized
             /// </summary>
             /// <param name="node">The node last quantized</param>
-            protected void TrackPrevious(OctreeNode node) {
+            protected void TrackPrevious(OctreeNode node)
+            {
                 _previousNode = node;
             }
 
@@ -307,7 +317,8 @@ namespace WmcSoft.Drawing
             /// </summary>
             /// <param name="colorCount">The maximum number of colors</param>
             /// <returns>An arraylist with the palettized colors</returns>
-            public List<Color> Palletize(int colorCount) {
+            public List<Color> Palletize(int colorCount)
+            {
                 while (Leaves > colorCount)
                     Reduce();
 
@@ -325,7 +336,8 @@ namespace WmcSoft.Drawing
             /// </summary>
             /// <param name="pixel"></param>
             /// <returns></returns>
-            public int GetPaletteIndex(Color32* pixel) {
+            public int GetPaletteIndex(Color32* pixel)
+            {
                 return _root.GetPaletteIndex(pixel, 0);
             }
 
@@ -378,12 +390,13 @@ namespace WmcSoft.Drawing
         /// <param name="maxColors">The maximum number of colors to return</param>
         /// <param name="maxColorBits">The number of significant bits</param>
         public OctreeQuantizer(int maxColors, int maxColorBits)
-            : base(false) {
+            : base(false)
+        {
             if (maxColors > 255)
-                throw new ArgumentOutOfRangeException("maxColors", maxColors, "The number of colors should be less than 256");
+                throw new ArgumentOutOfRangeException(nameof(maxColors), maxColors, "The number of colors should be less than 256");
 
             if ((maxColorBits < 1) || (maxColorBits > 8))
-                throw new ArgumentOutOfRangeException("maxColorBits", maxColorBits, "This should be between 1 and 8");
+                throw new ArgumentOutOfRangeException(nameof(maxColorBits), maxColorBits, "This should be between 1 and 8");
 
             // Construct the octree
             _octree = new Octree(maxColorBits);
@@ -399,7 +412,8 @@ namespace WmcSoft.Drawing
         /// This function need only be overridden if your quantize algorithm needs two passes,
         /// such as an Octree quantizer.
         /// </remarks>
-        protected override void InitialQuantizePixel(Color32* pixel) {
+        protected override void InitialQuantizePixel(Color32* pixel)
+        {
             // Add the color to the octree
             _octree.AddColor(pixel);
         }
@@ -409,7 +423,8 @@ namespace WmcSoft.Drawing
         /// </summary>
         /// <param name="pixel">The pixel to quantize</param>
         /// <returns>The quantized value</returns>
-        protected override byte QuantizePixel(Color32* pixel) {
+        protected override byte QuantizePixel(Color32* pixel)
+        {
             byte paletteIndex = (byte)_maxColors;	// The color at [_maxColors] is set to transparent
 
             // Get the palette index if this non-transparent
@@ -424,7 +439,8 @@ namespace WmcSoft.Drawing
         /// </summary>
         /// <param name="original">Any old palette, this is overrwritten</param>
         /// <returns>The new color palette</returns>
-        protected override ColorPalette GetPalette(ColorPalette original) {
+        protected override ColorPalette GetPalette(ColorPalette original)
+        {
             // First off convert the octree to _maxColors colors
             List<Color> palette = _octree.Palletize(_maxColors - 1);
 

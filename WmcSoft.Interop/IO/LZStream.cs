@@ -62,11 +62,13 @@ namespace WmcSoft.IO
 
         #endregion
 
-        public LZStream(string fileName) {
+        public LZStream(string fileName)
+        {
             hfFile = LZOpenFile(fileName, ref ofstruct, OFEnum.Read | OFEnum.ShareDenyWrite);
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             if (hfFile >= 0) {
                 LZClose(hfFile);
                 hfFile = -1;
@@ -91,7 +93,8 @@ namespace WmcSoft.IO
             }
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
         }
 
         public override long Length {
@@ -109,7 +112,8 @@ namespace WmcSoft.IO
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             if (hfFile < 0)
                 throw new InvalidOperationException();
 
@@ -120,15 +124,18 @@ namespace WmcSoft.IO
             return readCount;
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             throw new NotSupportedException();
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             throw new NotSupportedException();
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             throw new NotSupportedException();
         }
     }

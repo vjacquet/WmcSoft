@@ -9,228 +9,208 @@ using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
 namespace WmcSoft.IO
 {
-	public class Com2ManagedStreamAdapater : IStream
-	{
-		protected Stream stream;
-		private long position;
+    public class Com2ManagedStreamAdapater : IStream
+    {
+        private readonly Stream _stream;
+        private long _position;
 
-		// Methods
-		protected Com2ManagedStreamAdapater()
-		{
-			position = -1;
-		}
+        // Methods
+        protected Com2ManagedStreamAdapater()
+        {
+            _position = -1;
+        }
 
-		public Com2ManagedStreamAdapater(Stream stream)
-			: this()
-		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException("stream");
-			}
-			this.stream = stream;
-		}
+        public Com2ManagedStreamAdapater(Stream stream)
+            : this()
+        {
+            if (stream == null) {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            _stream = stream;
+        }
 
-		private void ActualizePosition()
-		{
-			if (this.position != -1)
-			{
-				if (this.position > this.stream.Length)
-				{
-					this.stream.SetLength(this.position);
-				}
-				this.stream.Position = this.position;
-				this.position = -1;
-			}
-		}
+        protected Stream BaseStream { get { return _stream; } }
 
-		void IStream.Clone(out IStream ppstm)
-		{
-			ppstm = null;
-			Marshal.ThrowExceptionForHR(HResult.E_NOTIMPL);
-		}
+        private void ActualizePosition()
+        {
+            if (_position != -1) {
+                if (_position > _stream.Length) {
+                    _stream.SetLength(_position);
+                }
+                _stream.Position = _position;
+                _position = -1;
+            }
+        }
 
-		void IStream.Commit(int grfCommitFlags)
-		{
-			this.stream.Flush();
-			this.ActualizePosition();
-		}
+        void IStream.Clone(out IStream ppstm)
+        {
+            ppstm = null;
+            Marshal.ThrowExceptionForHR(HResult.E_NOTIMPL);
+        }
 
-		//CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten);
-		public void CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten)
-		{
-			IStream istream = (IStream)this;
-			int bufferSize = 0x1000;
-			byte[] buffer = new byte[bufferSize];
+        void IStream.Commit(int grfCommitFlags)
+        {
+            _stream.Flush();
+            ActualizePosition();
+        }
 
-			long written = 0;
-			int read;
-			IntPtr ptr = new IntPtr();
+        //CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten);
+        public void CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten)
+        {
+            var istream = (IStream)this;
+            int bufferSize = 0x1000;
+            byte[] buffer = new byte[bufferSize];
 
-			while (written < cb)
-			{
-				read = bufferSize;
-				if ((written + read) > cb)
-				{
-					read = (int)(cb - written);
-				}
-				// TODO: handle bug int (lo + hi)
-				istream.Read(buffer, read, ptr);
-				read = ptr.ToInt32();
-				if (read != 0)
-				{
-					pstm.Write(buffer, read, ptr);
-					if (ptr.ToInt32() != read)
-					{
-						Marshal.ThrowExceptionForHR(HResult.E_FAIL);
-					}
-					written += read;
-				}
-			}
+            long written = 0;
+            int read;
+            var ptr = new IntPtr();
 
-			if (pcbRead != IntPtr.Zero)
-			{
-				Marshal.WriteInt64(pcbRead, written);
-			}
-			if (pcbWritten != IntPtr.Zero)
-			{
-				Marshal.WriteInt64(pcbWritten, written);
-			}
-		}
+            while (written < cb) {
+                read = bufferSize;
+                if ((written + read) > cb) {
+                    read = (int)(cb - written);
+                }
+                // TODO: handle bug int (lo + hi)
+                istream.Read(buffer, read, ptr);
+                read = ptr.ToInt32();
+                if (read != 0) {
+                    pstm.Write(buffer, read, ptr);
+                    if (ptr.ToInt32() != read) {
+                        Marshal.ThrowExceptionForHR(HResult.E_FAIL);
+                    }
+                    written += read;
+                }
+            }
 
-		public Stream BaseStream
-		{
-		[System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.stream;
-			}
-		}
+            if (pcbRead != IntPtr.Zero) {
+                Marshal.WriteInt64(pcbRead, written);
+            }
+            if (pcbWritten != IntPtr.Zero) {
+                Marshal.WriteInt64(pcbWritten, written);
+            }
+        }
 
-		void IStream.LockRegion(long libOffset, long cb, int dwLockType)
-		{
-		}
+        public Stream BaseStream {
+            [System.Diagnostics.DebuggerStepThrough]
+            get {
+                return _stream;
+            }
+        }
 
-		void IStream.Read(byte[] pv, int cb, IntPtr pcbRead)
-		{
-			int read = this.Read(pv, cb);
-			if (pcbRead != IntPtr.Zero)
-			{
-				Marshal.WriteInt32(pcbRead, read);
-			}
-		}
+        void IStream.LockRegion(long libOffset, long cb, int dwLockType)
+        {
+        }
 
-		void IStream.Revert()
-		{
-			Marshal.ThrowExceptionForHR(HResult.E_NOTIMPL);
-		}
+        void IStream.Read(byte[] pv, int cb, IntPtr pcbRead)
+        {
+            int read = Read(pv, cb);
+            if (pcbRead != IntPtr.Zero) {
+                Marshal.WriteInt32(pcbRead, read);
+            }
+        }
 
-		public void Seek(long dlibMove, int dwOrigin, IntPtr plibNewPosition)
-		{
-			long pos = this.position;
-			if (this.position == -1)
-			{
-				pos = this.stream.Position;
-			}
-			long length = this.stream.Length;
-			switch (dwOrigin)
-			{
-				case 0:
-					{
-						if (dlibMove > length)
-						{
-							this.position = dlibMove;
-							break;
-						}
-						this.stream.Position = dlibMove;
-						this.position = -1;
-						break;
-					}
-				case 1:
-					{
-						if ((dlibMove + pos) > length)
-						{
-							this.position = dlibMove + pos;
-							break;
-						}
-						this.stream.Position = pos + dlibMove;
-						this.position = -1;
-						break;
-					}
-				case 2:
-					{
-						if (dlibMove > 0)
-						{
-							this.position = length + dlibMove;
-							break;
-						}
-						this.stream.Position = length + dlibMove;
-						this.position = -1;
-						break;
-					}
-			}
+        void IStream.Revert()
+        {
+            Marshal.ThrowExceptionForHR(HResult.E_NOTIMPL);
+        }
 
-			if (plibNewPosition != IntPtr.Zero)
-			{
-				long position;
-				position =  (this.position != -1) 
-					? this.position
-					: this.stream.Position;
-				Marshal.WriteInt64(plibNewPosition, position);
-			}
-		}
+        public void Seek(long dlibMove, int dwOrigin, IntPtr plibNewPosition)
+        {
+            long pos = _position;
+            if (_position == -1) {
+                pos = _stream.Position;
+            }
+            long length = _stream.Length;
+            switch (dwOrigin) {
+            case 0: {
+                    if (dlibMove > length) {
+                        _position = dlibMove;
+                        break;
+                    }
+                    _stream.Position = dlibMove;
+                    _position = -1;
+                    break;
+                }
+            case 1: {
+                    if ((dlibMove + pos) > length) {
+                        _position = dlibMove + pos;
+                        break;
+                    }
+                    _stream.Position = pos + dlibMove;
+                    _position = -1;
+                    break;
+                }
+            case 2: {
+                    if (dlibMove > 0) {
+                        _position = length + dlibMove;
+                        break;
+                    }
+                    _stream.Position = length + dlibMove;
+                    _position = -1;
+                    break;
+                }
+            }
 
-		void IStream.SetSize(long value)
-		{
-			this.stream.SetLength(value);
-		}
+            if (plibNewPosition != IntPtr.Zero) {
+                long position;
+                position = (_position != -1)
+                    ? _position
+                    : _stream.Position;
+                Marshal.WriteInt64(plibNewPosition, position);
+            }
+        }
 
-		void IStream.Stat(out STATSTG pstatstg, int grfStatFlag)
-		{
-			pstatstg = new STATSTG();
-			pstatstg.type = 2;
-			pstatstg.cbSize = this.stream.Length;
-			pstatstg.grfLocksSupported = 2;
-		}
+        void IStream.SetSize(long value)
+        {
+            _stream.SetLength(value);
+        }
 
-		void IStream.UnlockRegion(long libOffset, long cb, int dwLockType)
-		{
-		}
+        void IStream.Stat(out STATSTG pstatstg, int grfStatFlag)
+        {
+            pstatstg = new STATSTG() {
+                type = 2,
+                cbSize = _stream.Length,
+                grfLocksSupported = 2
+            };
+        }
 
-		//Write(byte[] pv, int cb, IntPtr pcbWritten)
-		void IStream.Write(byte[] pv, int cb, IntPtr pcbWritten)
-		{
-			this.Write(pv, cb);
-			if (pcbWritten != IntPtr.Zero)
-			{
-				Marshal.WriteInt32(pcbWritten, cb);
-			}
-		}
+        void IStream.UnlockRegion(long libOffset, long cb, int dwLockType)
+        {
+        }
 
-		#region Stream-like methods
+        //Write(byte[] pv, int cb, IntPtr pcbWritten)
+        void IStream.Write(byte[] pv, int cb, IntPtr pcbWritten)
+        {
+            Write(pv, cb);
+            if (pcbWritten != IntPtr.Zero) {
+                Marshal.WriteInt32(pcbWritten, cb);
+            }
+        }
 
-		public void SetLength(long value)
-		{
-			this.stream.SetLength(value);
-		}
+        #region Stream-like methods
 
-		public void Flush()
-		{
-			((IStream)this).Commit(0);
-		}
+        public void SetLength(long value)
+        {
+            _stream.SetLength(value);
+        }
 
-		public int Read(byte[] buffer, int length)
-		{
-			this.ActualizePosition();
-			return this.stream.Read(buffer, 0, length);
-		}
+        public void Flush()
+        {
+            ((IStream)this).Commit(0);
+        }
 
-		public void Write(byte[] buffer, int length)
-		{
-			this.ActualizePosition();
-			this.stream.Write(buffer, 0, length);
-		}
-		#endregion
+        public int Read(byte[] buffer, int length)
+        {
+            ActualizePosition();
+            return _stream.Read(buffer, 0, length);
+        }
 
-	}
+        public void Write(byte[] buffer, int length)
+        {
+            ActualizePosition();
+            _stream.Write(buffer, 0, length);
+        }
 
+        #endregion
+    }
 }

@@ -1,8 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.IO;
 
 namespace WmcSoft.Interop.Microsoft
 {
@@ -154,7 +150,8 @@ namespace WmcSoft.Interop.Microsoft
         /// <param name="path">path to the file or folder</param>
         /// <param name="flags">Type of icon</param>
         /// <returns>requested icon</returns>
-        public static System.Drawing.Icon GetIcon(string path, IconFlags flags) {
+        public static System.Drawing.Icon GetIcon(string path, IconFlags flags)
+        {
             var dwFileAttributes = ShellFileInfoFlags.ICON | ShellFileInfoFlags.USEFILEATTRIBUTES;
 
             // get open version

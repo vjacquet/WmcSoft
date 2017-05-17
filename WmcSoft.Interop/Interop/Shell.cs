@@ -46,11 +46,13 @@ namespace WmcSoft.Interop
         internal static extern bool CreateHardLink(string lpFileName, string lpExistingFileName,
            IntPtr lpSecurityAttributes);
 
-        public static Image CreateThumbnail(string fileName) {
+        public static Image CreateThumbnail(string fileName)
+        {
             return CreateThumbnail(fileName, new Size(96, 96));
         }
 
-        public static Image CreateThumbnail(string fileName, Size size) {
+        public static Image CreateThumbnail(string fileName, Size size)
+        {
             IMalloc pMalloc;
             IntPtr ppMalloc = IntPtr.Zero;
 
@@ -192,7 +194,7 @@ namespace WmcSoft.Interop
         /* this version is good if cidl is one
          * void GetAttributesOf(UInt32 cidl, ref IntPtr apidl, ref ESFGAO rgfInOut);
          */
-        int GetAttributesOf(UInt32 cidl, 
+        int GetAttributesOf(UInt32 cidl,
             [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl,
             ref ESFGAO rgfInOut);
 
@@ -325,7 +327,8 @@ namespace WmcSoft.Interop
         public int cx;
         public int cy;
 
-        public SIZE(int cx, int cy) {
+        public SIZE(int cx, int cy)
+        {
             this.cx = cx;
             this.cy = cy;
         }

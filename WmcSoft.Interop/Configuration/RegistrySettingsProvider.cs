@@ -54,11 +54,13 @@ namespace WmcSoft.Configuration
         }
         string applicationName;
 
-        RegistrySettingsProvider() {
+        RegistrySettingsProvider()
+        {
             applicationName = Application.ProductName;
         }
 
-        public override void Initialize(string name, NameValueCollection values) {
+        public override void Initialize(string name, NameValueCollection values)
+        {
             if (string.IsNullOrEmpty(name)) {
                 name = "RegistrySettingsProvider";
             }
@@ -68,7 +70,8 @@ namespace WmcSoft.Configuration
         // SetPropertyValue is invoked when ApplicationSettingsBase.Save is called
         // ASB makes sure to pass each provider only the values marked for that provider,
         // whether on a per setting or setting class-wide basis
-        public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection values) {
+        public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection values)
+        {
             // Iterate through the settings to be stored
             string version = GetCurrentVersionNumber();
             foreach (SettingsPropertyValue propval in values) {
@@ -87,7 +90,8 @@ namespace WmcSoft.Configuration
             }
         }
 
-        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection properties) {
+        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection properties)
+        {
             // Create new collection of values
             SettingsPropertyValueCollection values = new SettingsPropertyValueCollection();
             string version = GetCurrentVersionNumber();
@@ -102,7 +106,8 @@ namespace WmcSoft.Configuration
             return values;
         }
 
-        SettingsPropertyValue GetPropertyValue(SettingsProperty prop, string version) {
+        SettingsPropertyValue GetPropertyValue(SettingsProperty prop, string version)
+        {
             SettingsPropertyValue value = new SettingsPropertyValue(prop);
 
             // Only User-scoped settings can be found in the Registry.
@@ -119,19 +124,22 @@ namespace WmcSoft.Configuration
         }
 
         // Looks in the "attribute bag" for a given property to determine if it is app-scoped
-        bool IsApplicationScoped(SettingsProperty prop) {
+        bool IsApplicationScoped(SettingsProperty prop)
+        {
             return HasSettingScope(prop, typeof(ApplicationScopedSettingAttribute));
         }
 
         // Looks in the "attribute bag" for a given property to determine if it is user-scoped
-        bool IsUserScoped(SettingsProperty prop) {
+        bool IsUserScoped(SettingsProperty prop)
+        {
             return HasSettingScope(prop, typeof(UserScopedSettingAttribute));
         }
 
         // Checks for app or user-scoped based on the attributeType argument
         // Also checks for sanity, i.e. a setting not marked as both or neither scope
         // (just like the LFSP)
-        bool HasSettingScope(SettingsProperty prop, Type attributeType) {
+        bool HasSettingScope(SettingsProperty prop, Type attributeType)
+        {
             // TODO: add support for roaming
             Debug.Assert((attributeType == typeof(ApplicationScopedSettingAttribute)) || (attributeType == typeof(UserScopedSettingAttribute)));
             bool isAppScoped = prop.Attributes[typeof(ApplicationScopedSettingAttribute)] != null;
@@ -156,24 +164,28 @@ namespace WmcSoft.Configuration
         }
 
         // Creates a sub-key under HKCU\Software\CompanyName\ProductName\version
-        RegistryKey CreateRegKey(SettingsProperty prop, string version) {
+        RegistryKey CreateRegKey(SettingsProperty prop, string version)
+        {
             Debug.Assert(!IsApplicationScoped(prop), "Can't get Registry key for a read-only Application scoped setting: " + prop.Name);
             return Registry.CurrentUser.CreateSubKey(GetSubKeyPath(version));
         }
 
         // Adds a specific version to the version-independent key path
-        string GetSubKeyPath(string version) {
+        string GetSubKeyPath(string version)
+        {
             Debug.Assert(!string.IsNullOrEmpty(version));
             return GetVersionIndependentSubKeyPath() + "\\" + version;
         }
 
         // Builds a key path based on the CompanyName and ProductName attributes in 
         // the AssemblyInfo file (editable directly or within the Project Properties UI)
-        string GetVersionIndependentSubKeyPath() {
+        string GetVersionIndependentSubKeyPath()
+        {
             return "Software\\" + Application.CompanyName + "\\" + Application.ProductName;
         }
 
-        string GetPreviousVersionNumber() {
+        string GetPreviousVersionNumber()
+        {
             Version current = new Version(GetCurrentVersionNumber());
             Version previous = null;
 
@@ -184,8 +196,7 @@ namespace WmcSoft.Configuration
                         Version version = new Version(keyName);
                         if (version >= current) { continue; }
                         if (previous == null || version > previous) { previous = version; }
-                    }
-                    catch {
+                    } catch {
                         // If the version can't be created, don't cry about it...
                         continue;
                     }
@@ -196,7 +207,8 @@ namespace WmcSoft.Configuration
             return (previous != null ? previous.ToString() : null);
         }
 
-        string GetCurrentVersionNumber() {
+        string GetCurrentVersionNumber()
+        {
             // The compiler will make sure this is a sane value
             return Application.ProductVersion;
         }
@@ -206,7 +218,8 @@ namespace WmcSoft.Configuration
         // Will be called when MySettingsClass.GetPreviousVersion(propName) is called
         // This method's job is to retrieve a setting value from the previous version
         // of the settings w/o updating the setting at the storage location
-        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty prop) {
+        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty prop)
+        {
             // If there's no previous setting version, return an empty property
             // NOTE: the LFSP returns an empty property for all app-scoped settings, so so do we
             string previousVersion = GetPreviousVersionNumber();
@@ -231,12 +244,12 @@ namespace WmcSoft.Configuration
         // with the default settings values. GetPropertyValues, overriden from the
         // SettingsProvider base, will be called to retrieve the new values from the
         // storage location
-        public void Reset(SettingsContext context) {
+        public void Reset(SettingsContext context)
+        {
             // Delete the user's current settings so that default values are used
             try {
                 Registry.CurrentUser.DeleteSubKeyTree(GetSubKeyPath(GetCurrentVersionNumber()));
-            }
-            catch (ArgumentException) {
+            } catch (ArgumentException) {
                 // If the key's not there, this is the exception we'll get
                 // TODO: figure out a way to detect that w/o consuming
                 // an overly generic exception...
@@ -248,7 +261,8 @@ namespace WmcSoft.Configuration
         // with the previous version's values. GetPropertyValues, overriden from the
         // SettingsProvider base, will be called to retrieve the new values from the
         // storage location
-        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties) {
+        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
+        {
             // If there's no previous version, do nothing (just like the LFSP)
             string previousVersion = GetPreviousVersionNumber();
             if (string.IsNullOrEmpty(previousVersion)) { return; }
