@@ -37,7 +37,8 @@ namespace WmcSoft.Threading
         /// Dispatches the specified job.
         /// </summary>
         /// <param name="job">An <see cref="Object"/> that implements <see cref="IJob"/>.</param>
-        public override void Dispatch(IJob job) {
+        public override void Dispatch(IJob job)
+        {
             if (job == null) {
                 throw new ArgumentNullException("job");
             }
@@ -60,7 +61,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
         /// <returns><c>true</c> if the current instance receives a signal; otherwise, <c>false</c>.</returns>
-        public bool WaitAll(int millisecondsTimeout) {
+        public bool WaitAll(int millisecondsTimeout)
+        {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
                 return _onIdle.WaitOne(millisecondsTimeout, false);
@@ -75,13 +77,13 @@ namespace WmcSoft.Threading
         private int _workingJobs;
         private readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
 
-        private void DoJob(object obj) {
+        private void DoJob(object obj)
+        {
             IJob job = null;
             try {
                 job = (IJob)obj;
                 job.Execute(this);
-            }
-            finally {
+            } finally {
                 if (0 == Interlocked.Decrement(ref _workingJobs))
                     _onIdle.Set();
                 Dispose(job);

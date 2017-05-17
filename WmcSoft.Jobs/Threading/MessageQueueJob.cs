@@ -54,7 +54,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
         /// <remarks>The <paramref name="serviceProvider"/> must provide an instance of <see cref="IMessageService"/>.</remarks>
-        protected override void DoExecute(IServiceProvider serviceProvider) {
+        protected override void DoExecute(IServiceProvider serviceProvider)
+        {
             var dispatcher = serviceProvider.GetService<JobDispatcher>();
             var messageService = serviceProvider.GetService<IMessageService>();
             var instrumentation = serviceProvider.GetService<IJobInstrumentationProvider>();
@@ -77,8 +78,7 @@ namespace WmcSoft.Threading
                 } else {
                     messageService.RollbackTransaction();
                 }
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 Trace.TraceWarning(Resources.UnexceptedErrorMessage, exception.Message);
                 if (Interlocked.Increment(ref attempt) >= DefaultAttempts) {
                     Trace.TraceError(Resources.TooManyConsecutiveFailedAttempts);
@@ -87,8 +87,7 @@ namespace WmcSoft.Threading
                 } else {
                     messageService.RollbackTransaction();
                 }
-            }
-            finally {
+            } finally {
                 dispatcher.Dispatch(new MessageQueueJob());
             }
         }

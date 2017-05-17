@@ -16,16 +16,20 @@ namespace WmcSoft.Threading
         {
             #region IJobDisptacherInstrumentationProvider Membres
 
-            public void FireJobDispatched() {
+            public void FireJobDispatched()
+            {
             }
 
-            public void FireJobExecuted() {
+            public void FireJobExecuted()
+            {
             }
 
-            public void FireJobCompleted() {
+            public void FireJobCompleted()
+            {
             }
 
-            public void FireJobFailed(Exception exception) {
+            public void FireJobFailed(Exception exception)
+            {
             }
 
             #endregion

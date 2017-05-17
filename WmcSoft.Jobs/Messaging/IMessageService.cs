@@ -68,7 +68,8 @@ namespace WmcSoft.Messaging
         /// Receives the next incoming job.
         /// </summary>
         /// <returns>A job.</returns>
-        public static IJob Receive(this IMessageService messageService) {
+        public static IJob Receive(this IMessageService messageService)
+        {
             return messageService.Receive(Infinite);
         }
     }

@@ -37,10 +37,12 @@ namespace WmcSoft.Threading
 
     public static class WaitableJobDispatcherExtensions
     {
-        public static bool WaitAll(this IWaitableJobDispatcher jobDispatcher) {
+        public static bool WaitAll(this IWaitableJobDispatcher jobDispatcher)
+        {
             return jobDispatcher.WaitAll(Timeout.Infinite);
         }
-        public static bool WaitUntilAllJobsAreExecuted(this IWaitableJobDispatcher jobDispatcher, TimeSpan timeout) {
+        public static bool WaitUntilAllJobsAreExecuted(this IWaitableJobDispatcher jobDispatcher, TimeSpan timeout)
+        {
             return jobDispatcher.WaitAll((int)timeout.TotalMilliseconds);
         }
     }

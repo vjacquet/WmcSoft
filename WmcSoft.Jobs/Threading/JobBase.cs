@@ -40,7 +40,8 @@ namespace WmcSoft.Threading
         /// Performs the job to be done.
         /// </summary>
         /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
-        public void Execute(IServiceProvider serviceProvider) {
+        public void Execute(IServiceProvider serviceProvider)
+        {
             DoExecute(serviceProvider);
         }
 
@@ -61,7 +62,8 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Releases all resources used by the <see cref="JobDispatcher"/>.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -71,13 +73,15 @@ namespace WmcSoft.Threading
         /// the <see cref="JobDispatcher"/>, and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. </param>
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         /// <summary>
         /// Releases the resources held by the current instance.
         /// </summary>
-        ~JobBase() {
+        ~JobBase()
+        {
             Dispose(false);
         }
 

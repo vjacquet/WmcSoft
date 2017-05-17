@@ -74,6 +74,5 @@ namespace WmcSoft.Messaging
         }
 
         #endregion
-
     }
 }

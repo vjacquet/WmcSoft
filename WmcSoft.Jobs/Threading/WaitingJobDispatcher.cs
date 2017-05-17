@@ -38,11 +38,13 @@ namespace WmcSoft.Threading
             private readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
 
             public WaitingDecorator(JobDispatcher jobDispatcher)
-                : base(jobDispatcher) {
+                : base(jobDispatcher)
+            {
 
             }
 
-            public override void Dispatch(IJob job) {
+            public override void Dispatch(IJob job)
+            {
                 var monitored = new MonitoredJob(job);
                 monitored.Executed += monitored_Executed;
 
@@ -52,7 +54,8 @@ namespace WmcSoft.Threading
                 base.Dispatch(monitored);
             }
 
-            void monitored_Executed(object sender, JobMonitoringEventArgs e) {
+            void monitored_Executed(object sender, JobMonitoringEventArgs e)
+            {
                 // unregister to prevent being called twice if dispatched again.
                 var monitored = (MonitoredJob)sender;
                 monitored.Executed -= monitored_Executed;
@@ -67,7 +70,8 @@ namespace WmcSoft.Threading
                 get { return _workingJobs > 0; }
             }
 
-            public bool WaitAll(int millisecondsTimeout) {
+            public bool WaitAll(int millisecondsTimeout)
+            {
                 bool isBusy = IsBusy;
                 if (isBusy && millisecondsTimeout != 0) {
                     return _onIdle.WaitOne(millisecondsTimeout, false);
@@ -84,7 +88,8 @@ namespace WmcSoft.Threading
 
         #region Lifecycle
 
-        static JobDispatcher Decorate(JobDispatcher jobDispatcher) {
+        static JobDispatcher Decorate(JobDispatcher jobDispatcher)
+        {
             var waiting = jobDispatcher as IWaitableJobDispatcher;
             if (waiting != null)
                 return jobDispatcher;
@@ -92,7 +97,8 @@ namespace WmcSoft.Threading
         }
 
         public WaitingJobDispatcher(JobDispatcher jobDispatcher)
-            : base(Decorate(jobDispatcher)) {
+            : base(Decorate(jobDispatcher))
+        {
             _jobDispatcher = Inner as IWaitableJobDispatcher;
         }
 
@@ -100,7 +106,8 @@ namespace WmcSoft.Threading
 
         #region IWaitingJobDispatcher Membres
 
-        public bool WaitAll(int millisecondsTimeout) {
+        public bool WaitAll(int millisecondsTimeout)
+        {
             return _jobDispatcher.WaitAll(millisecondsTimeout);
         }
 

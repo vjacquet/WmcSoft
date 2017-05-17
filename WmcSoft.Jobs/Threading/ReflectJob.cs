@@ -41,12 +41,14 @@ namespace WmcSoft.Threading
         static IDictionary<string, ConstructorInfo> constructors;
         static object syncRoot;
 
-        static ReflectJob() {
+        static ReflectJob()
+        {
             syncRoot = new object();
             constructors = new Dictionary<string, ConstructorInfo>();
         }
 
-        static ConstructorInfo GetConstructor(string typeName, Type[] parameters) {
+        static ConstructorInfo GetConstructor(string typeName, Type[] parameters)
+        {
             lock (syncRoot) {
                 ConstructorInfo ctor;
                 if (!constructors.TryGetValue(typeName, out ctor)) {
@@ -74,7 +76,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
         /// <param name="parameters">The parameters.</param>
-        public ReflectJob(string typeName, params object[] parameters) {
+        public ReflectJob(string typeName, params object[] parameters)
+        {
             TypeName = typeName;
             Parameters = parameters;
         }
@@ -95,7 +98,8 @@ namespace WmcSoft.Threading
         /// Instanciates the job of the specified type and parameters and executes it.
         /// </summary>
         /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
-        protected override void DoExecute(IServiceProvider serviceProvider) {
+        protected override void DoExecute(IServiceProvider serviceProvider)
+        {
             var instance = Instance;
             instance.Execute(serviceProvider);
         }
@@ -103,8 +107,7 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Gets the job instance.
         /// </summary>
-        public IJob Instance
-        {
+        public IJob Instance {
             get {
                 if (instance == null) {
                     var type = Type.GetType(TypeName, true);
