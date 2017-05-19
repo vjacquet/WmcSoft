@@ -18,7 +18,8 @@ namespace WmcSoft.Drawing
         /// Palette quantization only requires a single quantization step
         /// </remarks>
         public PaletteQuantizer(List<Color> palette)
-            : base(true) {
+            : base(true)
+        {
             _colorMap = new Dictionary<int, byte>();
 
             _colors = new Color[palette.Count];
@@ -30,7 +31,8 @@ namespace WmcSoft.Drawing
         /// </summary>
         /// <param name="pixel">The pixel to quantize</param>
         /// <returns>The quantized value</returns>
-        protected override byte QuantizePixel(Color32* pixel) {
+        protected override byte QuantizePixel(Color32* pixel)
+        {
             byte colorIndex = 0;
             int colorHash = pixel->ARGB;
 
@@ -88,7 +90,8 @@ namespace WmcSoft.Drawing
         /// </summary>
         /// <param name="palette">Any old palette, this is overrwritten</param>
         /// <returns>The new color palette</returns>
-        protected override ColorPalette GetPalette(ColorPalette palette) {
+        protected override ColorPalette GetPalette(ColorPalette palette)
+        {
             for (int index = 0; index < _colors.Length; index++)
                 palette.Entries[index] = _colors[index];
 

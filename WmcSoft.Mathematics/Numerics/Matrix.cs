@@ -66,6 +66,13 @@ namespace WmcSoft.Numerics
             public readonly int m;
             public readonly int n;
 
+            public Storage(Storage x)
+            {
+                data = (double[])x.data.Clone();
+                m = x.m;
+                n = x.n;
+
+            }
             public Storage(int m, int n)
             {
                 this.m = m;
@@ -73,8 +80,9 @@ namespace WmcSoft.Numerics
                 data = new double[m * n];
             }
 
-            public int Length { get { return data.Length; } }
-            public Dimensions Size { get { return new Dimensions(m, n); } }
+            public int Length => data.Length;
+            public Dimensions Size => new Dimensions(m, n);
+
         }
 
         #region Fields
@@ -127,7 +135,7 @@ namespace WmcSoft.Numerics
             var result = new Matrix(n);
             var data = result._storage.data;
             var length = data.Length;
-            for (int i = 0; i < length; i += n + 1) {
+            for (var i = 0; i < length; i += n + 1) {
                 data[i] = 1d;
             }
             return result;
@@ -257,8 +265,7 @@ namespace WmcSoft.Numerics
         /// <remarks>See Knuth's TAoCP, Vol 1, Page 37.</remarks>
         public static Matrix Cauchy(Vector x, Vector y, Func<double, double, double> op)
         {
-            if (op == null)
-                throw new ArgumentNullException("op");
+            if (op == null) throw new ArgumentNullException(nameof(op));
 
             var n = MaximizeCardinalities(ref x, ref y);
             return new Matrix(n, n, (i, j) => op(x[i], y[j]));
@@ -268,9 +275,12 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
-        public int Rank { get { return _storage == null ? 0 : 2; } }
-        public int Cardinality { get { return _storage == null ? 0 : _storage.Length; } }
-        public Dimensions Size { get { return _storage == null ? Dimensions.Empty : _storage.Size; } }
+        public int Rank => _storage == null ? 0 : 2;
+        public int Cardinality => _storage == null ? 0 : _storage.Length;
+        public Dimensions Size => _storage == null ? Dimensions.Empty : _storage.Size;
+
+        public int Columns => _storage == null ? 0 : _storage.n;
+        public int Rows => _storage == null ? 0 : _storage.m;
 
         public double this[int i, int j] {
             get {
@@ -330,7 +340,7 @@ namespace WmcSoft.Numerics
 
             var result = new Matrix(x._storage.m, x._storage.n);
             var length = result._storage.data.Length;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 result._storage.data[i] = y._storage.data[i] + y._storage.data[i];
             }
             return result;
@@ -347,7 +357,7 @@ namespace WmcSoft.Numerics
 
             var result = new Matrix(x._storage.m, x._storage.n);
             var length = result._storage.data.Length;
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 result._storage.data[i] = y._storage.data[i] - y._storage.data[i];
             }
             return result;
@@ -426,7 +436,7 @@ namespace WmcSoft.Numerics
         {
             var length = x.Cardinality;
             var result = new Matrix(length);
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 result._storage.data[i] = -x._storage.data[i];
             }
             return result;
@@ -504,10 +514,8 @@ namespace WmcSoft.Numerics
         public Vector MultiplyAndAdd(Vector v, Vector w)
         {
             var n = _storage.n;
-            if (v.Cardinality != n)
-                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "v");
-            if (w.Cardinality != n)
-                throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "w");
+            if (v.Cardinality != n) throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "v");
+            if (w.Cardinality != n) throw new ArgumentException(Resources.MatricesMustHaveTheCompatibleSizeError, "w");
 
             var m = _storage.m;
             var result = new Vector(w._data);
@@ -546,6 +554,28 @@ namespace WmcSoft.Numerics
             if (_storage.data == null)
                 return 0;
             return _storage.data.GetHashCode();
+        }
+
+        #endregion
+
+        #region LUDecomposition
+
+        struct LUDecomposition
+        {
+            int n;
+            Matrix a;
+            Storage lu;
+            int[] indx;
+            double d;
+
+            public LUDecomposition(Matrix a)
+            {
+                this.a = a;
+                n = a.Rows;
+                lu = new Storage(a._storage);
+                indx = new int[n];
+                d = 0d;
+            }
         }
 
         #endregion

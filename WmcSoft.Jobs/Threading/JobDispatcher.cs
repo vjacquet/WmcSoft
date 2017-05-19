@@ -37,7 +37,8 @@ namespace WmcSoft.Threading
 
         sealed class NullJobDispatcher : JobDispatcher
         {
-            public override void Dispatch(IJob job) {
+            public override void Dispatch(IJob job)
+            {
             }
         }
 
@@ -49,7 +50,8 @@ namespace WmcSoft.Threading
         {
             ThreadStart _start;
 
-            internal ThreadStartJob(ThreadStart start) {
+            internal ThreadStartJob(ThreadStart start)
+            {
                 if (start == null)
                     throw new ArgumentNullException("start");
 
@@ -58,7 +60,8 @@ namespace WmcSoft.Threading
 
             #region IJob Membres
 
-            void IJob.Execute(IServiceProvider serviceProvider) {
+            void IJob.Execute(IServiceProvider serviceProvider)
+            {
                 _start();
             }
 
@@ -69,7 +72,8 @@ namespace WmcSoft.Threading
         {
             Action<T> _action;
 
-            internal ActionJob(Action<T> action) {
+            internal ActionJob(Action<T> action)
+            {
                 if (action == null)
                     throw new ArgumentNullException("action");
 
@@ -78,7 +82,8 @@ namespace WmcSoft.Threading
 
             #region IJob Membres
 
-            void IJob.Execute(IServiceProvider serviceProvider) {
+            void IJob.Execute(IServiceProvider serviceProvider)
+            {
                 object service = serviceProvider.GetService(typeof(T));
                 T t = service == null ? default(T) : (T)service;
                 _action(t);
@@ -91,11 +96,13 @@ namespace WmcSoft.Threading
 
         #region Lifecycle
 
-        protected JobDispatcher() {
+        protected JobDispatcher()
+        {
             _serviceContainer = new ServiceContainer();
         }
 
-        protected JobDispatcher(IServiceProvider parentProvider) {
+        protected JobDispatcher(IServiceProvider parentProvider)
+        {
             _serviceContainer = new ServiceContainer(parentProvider);
         }
 
@@ -125,7 +132,8 @@ namespace WmcSoft.Threading
         /// Dispatches the specified job.
         /// </summary>
         /// <param name="job"></param>
-        public void Dispatch(ThreadStart job) {
+        public void Dispatch(ThreadStart job)
+        {
             Dispatch(new ThreadStartJob(job));
         }
 
@@ -134,7 +142,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="job"></param>
-        public void Dispatch<T>(Action<T> job) {
+        public void Dispatch<T>(Action<T> job)
+        {
             Dispatch(new ActionJob<T>(job));
         }
 
@@ -142,7 +151,8 @@ namespace WmcSoft.Threading
         /// Disposes the specified job if it implements the interface
         /// </summary>
         /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
-        protected virtual void Dispose(IJob job) {
+        protected virtual void Dispose(IJob job)
+        {
             IDisposable disposable = job as IDisposable;
             if (disposable != null) {
                 disposable.Dispose();
@@ -187,7 +197,8 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Requests to cancel the job dispatcher.
         /// </summary>
-        public virtual void CancelAsync() {
+        public virtual void CancelAsync()
+        {
             throw new NotSupportedException(Resources.DispatcherDoesntSuppportCancellation);
         }
 
@@ -200,7 +211,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public virtual object GetService(Type serviceType) {
+        public virtual object GetService(Type serviceType)
+        {
             if ((serviceType == typeof(IServiceProvider))
                 || (serviceType == typeof(JobDispatcher)))
                 return this;
@@ -214,7 +226,8 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Releases all resources used by the <see cref="JobDispatcher"/>.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -224,13 +237,15 @@ namespace WmcSoft.Threading
         /// the <see cref="JobDispatcher"/>, and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. </param>
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         /// <summary>
         /// Releases the resources held by the current instance.
         /// </summary>
-        ~JobDispatcher() {
+        ~JobDispatcher()
+        {
             Dispose(false);
         }
 

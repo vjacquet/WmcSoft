@@ -28,37 +28,39 @@ using System;
 
 namespace WmcSoft.Threading
 {
-    public class LifecycleWrappingJob<T> : JobBase where T : IJob
+    public class LifecycleWrappingJob<T> : JobBase
+        where T : IJob
     {
-        #region fields
+        #region Fields
 
-        T job;
-        Action<T> initialization;
-        Action<T> cleanup;
+        readonly T _job;
+        readonly Action<T> _initialization;
+        readonly Action<T> _cleanup;
 
         #endregion
 
         #region Lifecycle
 
-        public LifecycleWrappingJob(T job, Action<T> initialization, Action<T> cleanup) {
-            this.job = job;
-            this.initialization = initialization;
-            this.cleanup = cleanup;
+        public LifecycleWrappingJob(T job, Action<T> initialization, Action<T> cleanup)
+        {
+            _job = job;
+            _initialization = initialization;
+            _cleanup = cleanup;
         }
 
         #endregion
 
         #region Overrides
 
-        protected override void DoExecute(IServiceProvider serviceProvider) {
-            if (initialization != null)
-                initialization(job);
-            job.Execute(serviceProvider);
-            if (cleanup != null)
-                cleanup(job);
+        protected override void DoExecute(IServiceProvider serviceProvider)
+        {
+            if (_initialization != null)
+                _initialization(_job);
+            _job.Execute(serviceProvider);
+            if (_cleanup != null)
+                _cleanup(_job);
         }
 
         #endregion
     }
-
 }

@@ -44,7 +44,8 @@ namespace WmcSoft.Threading
 
         #region Lifecycle
 
-        protected JobDispatcherDecorator(JobDispatcher jobDispatcher) {
+        protected JobDispatcherDecorator(JobDispatcher jobDispatcher)
+        {
             _jobDispatcher = jobDispatcher;
         }
 
@@ -52,7 +53,8 @@ namespace WmcSoft.Threading
 
         #region Overrides
 
-        public override void CancelAsync() {
+        public override void CancelAsync()
+        {
             _jobDispatcher.CancelAsync();
         }
 
@@ -68,11 +70,13 @@ namespace WmcSoft.Threading
             }
         }
 
-        public override void Dispatch(IJob job) {
+        public override void Dispatch(IJob job)
+        {
             _jobDispatcher.Dispatch(job);
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             if (_jobDispatcher != null) {
                 _jobDispatcher.Dispose();
                 _jobDispatcher = null;
@@ -80,7 +84,8 @@ namespace WmcSoft.Threading
             base.Dispose(disposing);
         }
 
-        public override object GetService(Type serviceType) {
+        public override object GetService(Type serviceType)
+        {
             if (serviceType == typeof(JobDispatcher))
                 return this;
             object instance = base.GetService(serviceType);

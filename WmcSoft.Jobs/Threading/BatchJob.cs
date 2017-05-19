@@ -43,14 +43,16 @@ namespace WmcSoft.Threading
                 BatchJobDispatcher batch;
                 IJob job;
 
-                internal WrapJob(BatchJobDispatcher batch, IJob job) {
+                internal WrapJob(BatchJobDispatcher batch, IJob job)
+                {
                     this.batch = batch;
                     this.job = job;
                 }
 
                 #region IJob Membres
 
-                void IJob.Execute(IServiceProvider serviceProvider) {
+                void IJob.Execute(IServiceProvider serviceProvider)
+                {
                     job.Execute(batch);
                     batch.JobExecuted(this);
                 }
@@ -64,17 +66,20 @@ namespace WmcSoft.Threading
             readonly BatchJob _batch;
 
             public BatchJobDispatcher(BatchJob batch, JobDispatcher dispatcher)
-                : base(dispatcher) {
+                : base(dispatcher)
+            {
                 _batch = batch;
                 _jobCount = 0;
             }
 
-            public override void Dispatch(IJob job) {
+            public override void Dispatch(IJob job)
+            {
                 Interlocked.Increment(ref _jobCount);
                 Inner.Dispatch(new WrapJob(this, job));
             }
 
-            protected void JobExecuted(IJob job) {
+            protected void JobExecuted(IJob job)
+            {
                 Interlocked.Decrement(ref _jobCount);
                 if (_jobCount == 0)
                     _batch.OnBatchComplete(EventArgs.Empty);
@@ -90,7 +95,8 @@ namespace WmcSoft.Threading
         /// Performs the job to be done.
         /// </summary>
         /// <param name="serviceProvider">An <see cref="System.Object"/> that implements <see cref="System.IServiceProvider"/>.</param>
-        public void Execute(IServiceProvider serviceProvider) {
+        public void Execute(IServiceProvider serviceProvider)
+        {
             var parent = serviceProvider.GetService<JobDispatcher>();
             var dispatcher = new BatchJobDispatcher(this, parent);
             DoExecute(dispatcher);
@@ -113,7 +119,8 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Releases all resources used by the <see cref="JobDispatcher"/>.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -123,13 +130,15 @@ namespace WmcSoft.Threading
         /// the <see cref="JobDispatcher"/>, and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. </param>
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         /// <summary>
         /// Releases the resources held by the current instance.
         /// </summary>
-        ~BatchJob() {
+        ~BatchJob()
+        {
             Dispose(false);
         }
 
@@ -139,7 +148,8 @@ namespace WmcSoft.Threading
 
         public event EventHandler BatchComplete;
 
-        protected virtual void OnBatchComplete(EventArgs e) {
+        protected virtual void OnBatchComplete(EventArgs e)
+        {
             EventHandler handler = BatchComplete;
             if (handler != null) {
                 handler(this, e);

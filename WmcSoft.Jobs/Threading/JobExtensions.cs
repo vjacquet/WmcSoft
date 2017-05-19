@@ -37,7 +37,8 @@ namespace WmcSoft.Threading
         /// <typeparam name="T">type of the service to get.</typeparam>
         /// <param name="self">The service provider</param>
         /// <returns>The service</returns>
-        internal static T GetService<T>(this IServiceProvider self) where T : class {
+        internal static T GetService<T>(this IServiceProvider self) where T : class
+        {
             var service = (T)self.GetService(typeof(T));
             Debug.Assert(service != null);
             return service;

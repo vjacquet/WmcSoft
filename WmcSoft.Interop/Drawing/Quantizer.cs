@@ -16,7 +16,8 @@ namespace WmcSoft.Drawing
         /// only call the 'QuantizeImage' function. If two passes are required, the code will call 'InitialQuantizeImage'
         /// and then 'QuantizeImage'.
         /// </remarks>
-        protected Quantizer(bool singlePass) {
+        protected Quantizer(bool singlePass)
+        {
             _singlePass = singlePass;
         }
 
@@ -25,7 +26,8 @@ namespace WmcSoft.Drawing
         /// </summary>
         /// <param name="source">The image to quantize</param>
         /// <returns>A quantized version of the image</returns>
-        public Bitmap Quantize(Image source) {
+        public Bitmap Quantize(Image source)
+        {
             // Get the size of the source image
             int height = source.Height;
             int width = source.Width;
@@ -67,8 +69,7 @@ namespace WmcSoft.Drawing
 
                 // Then call the second pass which actually does the conversion
                 SecondPass(sourceData, output, width, height, bounds);
-            }
-            finally {
+            } finally {
                 // Ensure that the bits are unlocked
                 copy.UnlockBits(sourceData);
             }
@@ -83,7 +84,8 @@ namespace WmcSoft.Drawing
         /// <param name="sourceData">The source data</param>
         /// <param name="width">The width in pixels of the image</param>
         /// <param name="height">The height in pixels of the image</param>
-        protected virtual void FirstPass(BitmapData sourceData, int width, int height) {
+        protected virtual void FirstPass(BitmapData sourceData, int width, int height)
+        {
             // Define the source data pointers. The source row is a byte to
             // keep addition of the stride value easier (as this is in bytes)
             byte* pSourceRow = (byte*)sourceData.Scan0.ToPointer();
@@ -112,7 +114,8 @@ namespace WmcSoft.Drawing
         /// <param name="width">The width in pixels of the image</param>
         /// <param name="height">The height in pixels of the image</param>
         /// <param name="bounds">The bounding rectangle</param>
-        protected virtual void SecondPass(BitmapData sourceData, Bitmap output, int width, int height, Rectangle bounds) {
+        protected virtual void SecondPass(BitmapData sourceData, Bitmap output, int width, int height, Rectangle bounds)
+        {
             BitmapData outputData = null;
 
             try {
@@ -165,8 +168,7 @@ namespace WmcSoft.Drawing
                     // And to the destination row
                     pDestinationRow += outputData.Stride;
                 }
-            }
-            finally {
+            } finally {
                 // Ensure that I unlock the output bits
                 output.UnlockBits(outputData);
             }
@@ -180,7 +182,8 @@ namespace WmcSoft.Drawing
         /// This function need only be overridden if your quantize algorithm needs two passes,
         /// such as an Octree quantizer.
         /// </remarks>
-        protected virtual void InitialQuantizePixel(Color32* pixel) {
+        protected virtual void InitialQuantizePixel(Color32* pixel)
+        {
         }
 
         /// <summary>

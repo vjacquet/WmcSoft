@@ -37,11 +37,13 @@ namespace WmcSoft
     {
         private Action _action;
 
-        public Disposer(Action action) {
+        public Disposer(Action action)
+        {
             _action = action;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             var action = Interlocked.Exchange(ref _action, null);
             if (action != null)
                 action();

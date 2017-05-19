@@ -1,9 +1,5 @@
 using System;
-using System.IO;
-using System.Collections;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
-using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using WmcSoft.Interop;
 
@@ -38,7 +34,8 @@ namespace WmcSoft.IO
         // The constructors.
         public SharedMemory(Int32 size) : this(size, null) { }
 
-        public SharedMemory(Int32 size, String name) {
+        public SharedMemory(Int32 size, String name)
+        {
             m_hFileMap = Kernel.CreateFileMapping(Kernel.InvalidHandleValue,
                 IntPtr.Zero, Kernel.PAGE_READWRITE,
                 0, unchecked((UInt32)size), name);
@@ -50,35 +47,41 @@ namespace WmcSoft.IO
         }
 
         // The cleanup methods.
-        public void Dispose() {
+        public void Dispose()
+        {
             GC.SuppressFinalize(this);
             Dispose(true);
         }
 
-        private void Dispose(Boolean disposing) {
+        private void Dispose(Boolean disposing)
+        {
             Kernel.UnmapViewOfFile(m_address);
             Kernel.CloseHandle(m_hFileMap);
             m_address = IntPtr.Zero;
             m_hFileMap = IntPtr.Zero;
         }
 
-        ~SharedMemory() {
+        ~SharedMemory()
+        {
             Dispose(false);
         }
 
         // Private helper methods.
-        private static Boolean AllFlagsSet(Int32 flags, Int32 flagsToTest) {
+        private static Boolean AllFlagsSet(Int32 flags, Int32 flagsToTest)
+        {
             return (flags & flagsToTest) == flagsToTest;
         }
 
-        private static Boolean AnyFlagsSet(Int32 flags, Int32 flagsToTest) {
+        private static Boolean AnyFlagsSet(Int32 flags, Int32 flagsToTest)
+        {
             return (flags & flagsToTest) != 0;
         }
 
         // The security attribute demands that code that calls  
         // this method have permission to perform serialization.
         [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) {
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
             // The context's State member indicates
             // where the object will be deserialized.
 
@@ -91,13 +94,13 @@ namespace WmcSoft.IO
 
             const StreamingContextStates DeserializableByHandle =
                       StreamingContextStates.Clone |
-                // The same process.
+                      // The same process.
                       StreamingContextStates.CrossAppDomain;
             if (AnyFlagsSet((Int32)context.State, (Int32)DeserializableByHandle))
                 info.AddValue("hFileMap", m_hFileMap);
 
             const StreamingContextStates DeserializableByName =
-                // The same computer.
+                      // The same computer.
                       StreamingContextStates.CrossProcess;
             if (AnyFlagsSet((Int32)context.State, (Int32)DeserializableByName)) {
                 if (m_name == null)
@@ -111,7 +114,8 @@ namespace WmcSoft.IO
         // The security attribute demands that code that calls  
         // this method have permission to perform serialization.
         [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-        private SharedMemory(SerializationInfo info, StreamingContext context) {
+        private SharedMemory(SerializationInfo info, StreamingContext context)
+        {
             // The context's State member indicates 
             // where the object was serialized from.
 
@@ -122,7 +126,7 @@ namespace WmcSoft.IO
 
             const StreamingContextStates SerializedByHandle =
                       StreamingContextStates.Clone |
-                // The same process.
+                      // The same process.
                       StreamingContextStates.CrossAppDomain;
             if (AnyFlagsSet((Int32)context.State, (Int32)SerializedByHandle)) {
                 try {
@@ -130,8 +134,7 @@ namespace WmcSoft.IO
                         (IntPtr)info.GetValue("hFileMap", typeof(IntPtr)),
                         Kernel.GetCurrentProcess(), ref m_hFileMap, 0, false,
                         Kernel.DUPLICATE_SAME_ACCESS);
-                }
-                catch (SerializationException) {
+                } catch (SerializationException) {
                     throw new SerializationException("A SharedMemory was not serialized " +
                         "using any of the following streaming contexts: " +
                         SerializedByHandle);
@@ -139,13 +142,12 @@ namespace WmcSoft.IO
             }
 
             const StreamingContextStates SerializedByName =
-                // The same computer.
+                      // The same computer.
                       StreamingContextStates.CrossProcess;
             if (AnyFlagsSet((Int32)context.State, (Int32)SerializedByName)) {
                 try {
                     m_name = info.GetString("name");
-                }
-                catch (SerializationException) {
+                } catch (SerializationException) {
                     throw new SerializationException("A SharedMemory object was not " +
                         "serialized using any of the following streaming contexts: " +
                         SerializedByName);

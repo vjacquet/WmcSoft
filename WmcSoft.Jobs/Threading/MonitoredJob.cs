@@ -43,7 +43,8 @@ namespace WmcSoft.Threading
 
         #region Lifecycle
 
-        public MonitoredJob(IJob decorated) {
+        public MonitoredJob(IJob decorated)
+        {
             _decorated = decorated;
             _delayBeforeExecute = -1;
             _totalTime = -1;
@@ -94,7 +95,8 @@ namespace WmcSoft.Threading
 
         #region Overridables
 
-        protected sealed override void DoExecute(IServiceProvider serviceProvider) {
+        protected sealed override void DoExecute(IServiceProvider serviceProvider)
+        {
             _delayBeforeExecute = _stopWatch.ElapsedTicks;
             JobMonitoringEventArgs e = new JobMonitoringEventArgs(_decorated);
             JobMonitoringEventHandler handler;
@@ -105,8 +107,7 @@ namespace WmcSoft.Threading
 
             try {
                 _decorated.Execute(serviceProvider);
-            }
-            finally {
+            } finally {
                 _stopWatch.Stop();
                 _totalTime = _stopWatch.ElapsedTicks;
 
@@ -126,7 +127,8 @@ namespace WmcSoft.Threading
     {
         private readonly IJob _job;
 
-        public JobMonitoringEventArgs(IJob job) {
+        public JobMonitoringEventArgs(IJob job)
+        {
             _job = job;
         }
 

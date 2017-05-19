@@ -31,7 +31,8 @@ namespace WmcSoft
 {
     public static class FormatProviderExtensions
     {
-        public static T GetFormat<T>(this IFormatProvider formatProvider) {
+        public static T GetFormat<T>(this IFormatProvider formatProvider)
+        {
             formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
             var result = (T)formatProvider.GetFormat(typeof(T));
             if (result == null) {

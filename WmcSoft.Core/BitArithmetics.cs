@@ -36,35 +36,43 @@ namespace WmcSoft
     {
         #region Arithmetics on uint
 
-        public static uint TurnOffRightMostOne(uint x) {
+        public static uint TurnOffRightMostOne(uint x)
+        {
             return x & (x - 1);
         }
 
-        public static uint TurnOnRightMostZero(uint x) {
+        public static uint TurnOnRightMostZero(uint x)
+        {
             return x | (x + 1);
         }
 
-        public static uint TurnOffTrailingOnes(uint x) {
+        public static uint TurnOffTrailingOnes(uint x)
+        {
             return x & (x + 1);
         }
 
-        public static uint TurnOnTrailingZeroes(uint x) {
+        public static uint TurnOnTrailingZeroes(uint x)
+        {
             return x | (x - 1);
         }
 
-        public static uint MarkRightMostZero(uint x) {
+        public static uint MarkRightMostZero(uint x)
+        {
             return ~x & (x + 1);
         }
 
-        public static uint MarkRightMostOne(uint x) {
+        public static uint MarkRightMostOne(uint x)
+        {
             return ~(~x | (x - 1));
         }
 
-        public static bool IsPowerOfTwo(uint x) {
+        public static bool IsPowerOfTwo(uint x)
+        {
             return 0 == (x & (x - 1));
         }
 
-        public static int CountBits(uint x) {
+        public static int CountBits(uint x)
+        {
             int n = 0;
             while (x != 0) {
                 ++n;
@@ -73,7 +81,8 @@ namespace WmcSoft
             return n;
         }
 
-        public static int FastCountBits(uint x) {
+        public static int FastCountBits(uint x)
+        {
             // magic (http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel)
             unchecked {
                 x = x - ((x >> 1) & 0x55555555);
@@ -93,7 +102,8 @@ namespace WmcSoft
         /// <param name="x">The first number.</param>
         /// <param name="y">The second number.</param>
         /// <returns>The number of positions at which the bits of <paramref name="x"/> and <paramref name="y"/> are different.</returns>
-        public static int Hamming(uint x, uint y) {
+        public static int Hamming(uint x, uint y)
+        {
             return CountBits(x ^ y);
         }
 
@@ -107,7 +117,8 @@ namespace WmcSoft
         /// <param name="i">The number.</param>
         /// <returns>The encoded number.</returns>
         /// <remarks>See https://en.wikipedia.org/wiki/Gray_code for more information.</remarks>
-        public static uint ToGray(uint i) {
+        public static uint ToGray(uint i)
+        {
             return i ^ (i >> 1);
         }
 
@@ -117,7 +128,8 @@ namespace WmcSoft
         /// <param name="i">The encoded number.</param>
         /// <returns>The number.</returns>
         /// <remarks>See https://en.wikipedia.org/wiki/Gray_code for more information.</remarks>
-        public static uint FromGray(uint i) {
+        public static uint FromGray(uint i)
+        {
             i ^= i >> 16;
             i ^= i >> 8;
             i ^= i >> 4;
@@ -130,7 +142,8 @@ namespace WmcSoft
 
         #region Lb
 
-        public static int Lb(int x) {
+        public static int Lb(int x)
+        {
             if (x < 0) throw new ArgumentOutOfRangeException(nameof(x));
 
             var lb = 0;

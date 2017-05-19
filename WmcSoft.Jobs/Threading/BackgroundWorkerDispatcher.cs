@@ -71,13 +71,15 @@ namespace WmcSoft.Threading
 
         #region Lifecycle
 
-        public BackgroundWorkerDispatcher(BackgroundWorker backgroundWorker) {
+        public BackgroundWorkerDispatcher(BackgroundWorker backgroundWorker)
+        {
             _queue = new Queue<IJob>();
             _backgroundWorker = backgroundWorker;
             _backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
         }
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
             while (_queue.Count > 0) {
                 if (_backgroundWorker.CancellationPending) {
                     _queue.Clear();
@@ -87,8 +89,7 @@ namespace WmcSoft.Threading
                 var job = _queue.Dequeue();
                 try {
                     job.Execute(this);
-                }
-                catch (Exception exception) {
+                } catch (Exception exception) {
                     Trace.TraceError(exception.Message);
                 }
             }
@@ -98,7 +99,8 @@ namespace WmcSoft.Threading
 
         #region IJobDispatcher Membres
 
-        public override void Dispatch(IJob job) {
+        public override void Dispatch(IJob job)
+        {
             _queue.Enqueue(job);
         }
 
@@ -106,7 +108,8 @@ namespace WmcSoft.Threading
             get { return _backgroundWorker.WorkerSupportsCancellation; }
         }
 
-        public override void CancelAsync() {
+        public override void CancelAsync()
+        {
             _backgroundWorker.CancelAsync();
         }
 

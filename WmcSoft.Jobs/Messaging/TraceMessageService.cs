@@ -48,7 +48,8 @@ namespace WmcSoft.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="TraceMessageService"/> class.
         /// </summary>
-        public TraceMessageService(IMessageService messageService, TraceSource source, int id = 0) {
+        public TraceMessageService(IMessageService messageService, TraceSource source, int id = 0)
+        {
             _messageService = messageService;
             _traceSource = source;
             _id = id;
@@ -58,28 +59,28 @@ namespace WmcSoft.Messaging
 
         #region Helpers
 
-        void Eval(string message, Action<IMessageService> action) {
+        void Eval(string message, Action<IMessageService> action)
+        {
             try {
                 var stopwatch = Stopwatch.StartNew();
                 _traceSource.TraceInformation(">> " + message);
                 action(_messageService);
                 _traceSource.TraceInformation("<< " + message + " - " + stopwatch);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 _traceSource.TraceEvent(TraceEventType.Error, _id, "<< " + message + ": " + e.Message + "\r\n" + e.StackTrace);
                 throw;
             }
         }
 
-        T Eval<T>(string message, Func<IMessageService, T> action) {
+        T Eval<T>(string message, Func<IMessageService, T> action)
+        {
             try {
                 var stopwatch = Stopwatch.StartNew();
                 _traceSource.TraceInformation(">> " + message);
                 var result = action(_messageService);
                 _traceSource.TraceInformation("<< " + message + " - " + stopwatch);
                 return result;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 _traceSource.TraceEvent(TraceEventType.Error, _id, "<< " + message + ": " + e.Message + "\r\n" + e.StackTrace);
                 throw;
             }
@@ -92,19 +93,22 @@ namespace WmcSoft.Messaging
         /// <summary>
         /// Starts a transaction.
         /// </summary>
-        public void BeginTransaction() {
+        public void BeginTransaction()
+        {
             Eval("BeginTransaction", ms => ms.BeginTransaction());
         }
         /// <summary>
         /// Commits the transaction.
         /// </summary>
-        public void CommitTransaction() {
+        public void CommitTransaction()
+        {
             Eval("CommitTransaction", ms => ms.CommitTransaction());
         }
         /// <summary>
         /// Rolls back the transaction.
         /// </summary>
-        public void RollbackTransaction() {
+        public void RollbackTransaction()
+        {
             Eval("RollbackTransaction", ms => ms.RollbackTransaction());
         }
 
@@ -112,7 +116,8 @@ namespace WmcSoft.Messaging
         /// Sends a job request as a message.
         /// </summary>
         /// <param name="message">The job.</param>
-        public void Send(IJob message) {
+        public void Send(IJob message)
+        {
             Eval("Send", ms => ms.Send(message));
         }
 
@@ -123,7 +128,8 @@ namespace WmcSoft.Messaging
         /// <returns>
         /// A job or null if the specific time elapsed.
         /// </returns>
-        public IJob Receive(TimeSpan timeout) {
+        public IJob Receive(TimeSpan timeout)
+        {
             return Eval("Receive", ms => ms.Receive(timeout));
         }
 

@@ -39,12 +39,14 @@ namespace WmcSoft.Threading
 
         #region Life cycle
 
-        public SequenceJob() {
+        public SequenceJob()
+        {
             queue = new Queue<IJob>();
         }
 
         public SequenceJob(params IJob[] jobs)
-            : this() {
+            : this()
+        {
             for (int i = 0; i < jobs.Length; i++) {
                 queue.Enqueue(jobs[i]);
             }
@@ -54,7 +56,8 @@ namespace WmcSoft.Threading
 
         #region Methods
 
-        public SequenceJob ContinueWith(IJob job) {
+        public SequenceJob ContinueWith(IJob job)
+        {
             queue.Enqueue(job);
             return this;
         }
@@ -63,8 +66,9 @@ namespace WmcSoft.Threading
 
         #region Overrides
 
-        protected override void DoExecute(IServiceProvider serviceProvider) {
-            if(queue.Count > 0) {
+        protected override void DoExecute(IServiceProvider serviceProvider)
+        {
+            if (queue.Count > 0) {
                 IJob job = queue.Dequeue();
                 job.Execute(serviceProvider);
 

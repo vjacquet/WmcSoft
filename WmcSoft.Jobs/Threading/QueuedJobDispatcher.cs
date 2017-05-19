@@ -45,19 +45,23 @@ namespace WmcSoft.Threading
         #region Lifecycle
 
         public QueuedJobDispatcher(int threadCount)
-            : this(null, threadCount, null) {
+            : this(null, threadCount, null)
+        {
         }
 
         public QueuedJobDispatcher(IServiceProvider parentProvider, int threadCount)
-            : this(parentProvider, threadCount, null) {
+            : this(parentProvider, threadCount, null)
+        {
         }
 
         public QueuedJobDispatcher(int threadCount, Action<Thread> initializer)
-            : this(null, threadCount, initializer) {
+            : this(null, threadCount, initializer)
+        {
         }
 
         public QueuedJobDispatcher(IServiceProvider parentProvider, int threadCount, Action<Thread> initializer)
-            : base(parentProvider) {
+            : base(parentProvider)
+        {
             continuationTicks = TimeSpan.FromMilliseconds(1000).Ticks;
 
             if (threadCount < 1)
@@ -100,7 +104,8 @@ namespace WmcSoft.Threading
         }
         bool cancellationPending;
 
-        public override void CancelAsync() {
+        public override void CancelAsync()
+        {
             if (!cancellationPending) {
                 base.CancelAsync();
                 cancellationPending = true;
@@ -108,7 +113,8 @@ namespace WmcSoft.Threading
             }
         }
 
-        public override void Dispatch(IJob job) {
+        public override void Dispatch(IJob job)
+        {
             if (!CancellationPending) {
                 Interlocked.Increment(ref _workingJobs);
                 _jobs.Enqueue(job);
@@ -120,7 +126,8 @@ namespace WmcSoft.Threading
             get { return _workingJobs != 0; }
         }
 
-        public bool WaitAll(int millisecondsTimeout) {
+        public bool WaitAll(int millisecondsTimeout)
+        {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
                 return _onIdle.WaitOne(millisecondsTimeout, false);
@@ -128,7 +135,8 @@ namespace WmcSoft.Threading
             return !isBusy;
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             for (int i = 0; i < _threads.Length; i++) {
                 if (_threads[i] != null) {
                     if (!_threads[i].Join(0))
@@ -144,7 +152,8 @@ namespace WmcSoft.Threading
 
         #region Internals
 
-        void Worker() {
+        void Worker()
+        {
             IJob job;
 
             while (!CancellationPending) {
@@ -152,8 +161,7 @@ namespace WmcSoft.Threading
                 if (_jobs.TryDequeue(out job, timeout)) {
                     try {
                         job.Execute(this);
-                    }
-                    finally {
+                    } finally {
                         Dispose(job);
 
                         if (0 == Interlocked.Decrement(ref _workingJobs))

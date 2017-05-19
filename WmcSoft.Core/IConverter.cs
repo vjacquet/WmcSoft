@@ -24,7 +24,7 @@
 
 #endregion
 
- namespace WmcSoft
+namespace WmcSoft
 {
     /// <summary>
     /// Defines a generalized strategy to convert values from a given input type 

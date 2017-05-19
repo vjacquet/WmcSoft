@@ -40,7 +40,8 @@ namespace WmcSoft.Threading
 
         #region IJobQueue Membres
 
-        public void Enqueue(IJob item) {
+        public void Enqueue(IJob item)
+        {
             lock (_queue) {
                 _queue.Enqueue(item);
                 Monitor.Pulse(_queue);
@@ -48,7 +49,8 @@ namespace WmcSoft.Threading
             }
         }
 
-        public IJob Dequeue() {
+        public IJob Dequeue()
+        {
             IJob item;
             lock (_queue) {
                 while (_queue.Count == 0)
@@ -59,7 +61,8 @@ namespace WmcSoft.Threading
             return item;
         }
 
-        public bool TryDequeue(out IJob item, TimeSpan timeout) {
+        public bool TryDequeue(out IJob item, TimeSpan timeout)
+        {
             lock (_queue) {
                 if (_queue.Count == 0) {
                     if (!Monitor.Wait(_queue, timeout) || _queue.Count == 0) {
@@ -77,7 +80,8 @@ namespace WmcSoft.Threading
             get { return _queue.Count == 0; }
         }
 
-        public void Clear(Action<IJob> action) {
+        public void Clear(Action<IJob> action)
+        {
             lock (_queue) {
                 while (_queue.Count > 0) {
                     IJob job = _queue.Dequeue();

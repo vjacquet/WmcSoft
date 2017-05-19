@@ -83,7 +83,7 @@ namespace WmcSoft
         #endregion
     }
 
-    public struct DateTimeOrdinal : IOrdinal<DateTime>
+    public struct DayOrdinal : IOrdinal<DateTime>
     {
         #region IOrdinal<DateTime> Members
 

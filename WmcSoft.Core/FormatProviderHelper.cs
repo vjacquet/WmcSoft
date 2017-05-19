@@ -31,9 +31,9 @@ namespace WmcSoft
 {
     public static class FormatProviderHelper
     {
-        public static string HandleOtherFormats(string format, object arg) {
-            var formattable = arg as IFormattable;
-            if (formattable != null)
+        public static string HandleOtherFormats(string format, object arg)
+        {
+            if (arg is IFormattable formattable)
                 return formattable.ToString(format, CultureInfo.CurrentCulture);
             if (arg != null)
                 return arg.ToString();
