@@ -32,7 +32,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using WmcSoft.Collections.Generic.Internals;
-
+using WmcSoft.Diagnostics;
 using static WmcSoft.Algorithms;
 
 namespace WmcSoft.Collections.Generic
@@ -1221,19 +1221,26 @@ namespace WmcSoft.Collections.Generic
             var d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
             case DuplicatePolicy.ThrowException:
-                foreach (TSource item in source) {
-                    d.Add(keySelector(item), elementSelector(item));
+                foreach (var item in source) {
+                    var key = keySelector(item);
+                    var value = elementSelector(item);
+                    try {
+                        d.Add(key, value);
+                    } catch (ArgumentException e) {
+                        e.CaptureContext(new { key });
+                        throw;
+                     }
                 }
                 break;
             case DuplicatePolicy.KeepFirst:
-                foreach (TSource item in source) {
+                foreach (var item in source) {
                     var selector = keySelector(item);
                     if (!d.ContainsKey(selector))
                         d.Add(selector, elementSelector(item));
                 }
                 break;
             case DuplicatePolicy.KeepLast:
-                foreach (TSource item in source) {
+                foreach (var item in source) {
                     d[keySelector(item)] = elementSelector(item);
                 }
                 break;
@@ -1363,20 +1370,20 @@ namespace WmcSoft.Collections.Generic
 
         #region ZipAll methods
 
-        public static IEnumerable<TResult> UnguardedZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> UnguardedZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector, TFirst defaultFirst = default(TFirst), TSecond defaultSecond = default(TSecond))
         {
             using (var enumerator1 = first.GetEnumerator())
             using (var enumerator2 = second.GetEnumerator()) {
                 while (true) {
                     if (!enumerator1.MoveNext()) {
                         while (enumerator2.MoveNext()) {
-                            yield return resultSelector(default(TFirst), enumerator2.Current);
+                            yield return resultSelector(defaultFirst, enumerator2.Current);
                         }
                         yield break;
                     }
                     if (!enumerator2.MoveNext()) {
                         do {
-                            yield return resultSelector(enumerator1.Current, default(TSecond));
+                            yield return resultSelector(enumerator1.Current, defaultSecond);
                         } while (enumerator1.MoveNext());
                         yield break;
                     }
@@ -1385,13 +1392,13 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static IEnumerable<TResult> ZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector, TFirst defaultFirst = default(TFirst), TSecond defaultSecond = default(TSecond))
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return UnguardedZipAll(first, second, resultSelector);
+            return UnguardedZipAll(first, second, resultSelector, defaultFirst, defaultSecond);
         }
 
         #endregion

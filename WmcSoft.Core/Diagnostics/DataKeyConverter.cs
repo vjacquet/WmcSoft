@@ -41,11 +41,13 @@ namespace WmcSoft.Diagnostics
         {
             #region IKeyConverter Membres
 
-            public object ConvertTo(string name) {
+            public object ConvertTo(string name)
+            {
                 return name;
             }
 
-            public string ConvertFrom(object key) {
+            public string ConvertFrom(object key)
+            {
                 return key as string;
             }
 
@@ -59,37 +61,44 @@ namespace WmcSoft.Diagnostics
             {
                 readonly string _name;
 
-                public NoKeyConflict(string name) {
+                public NoKeyConflict(string name)
+                {
                     _name = name;
                 }
 
-                public override int GetHashCode() {
+                public override int GetHashCode()
+                {
                     return _name.GetHashCode();
                 }
 
-                public override bool Equals(object obj) {
+                public override bool Equals(object obj)
+                {
                     if (obj == null || obj.GetType() != typeof(NoKeyConflict))
                         return false;
 
                     return _name.Equals(((NoKeyConflict)obj)._name);
                 }
 
-                public override string ToString() {
+                public override string ToString()
+                {
                     return _name.ToString();
                 }
 
-                public bool Match(Predicate<string> predicate) {
+                public bool Match(Predicate<string> predicate)
+                {
                     return predicate(_name);
                 }
             }
 
             #region IKeyConverter Membres
 
-            public object ConvertTo(string name) {
+            public object ConvertTo(string name)
+            {
                 return new NoKeyConflict(name);
             }
 
-            public string ConvertFrom(object key) {
+            public string ConvertFrom(object key)
+            {
                 var name = key as NoKeyConflict;
                 if (name != null) {
                     return name.ToString();
@@ -105,18 +114,21 @@ namespace WmcSoft.Diagnostics
             internal readonly IDataKeyConverter _converter;
             internal readonly string _prefix;
 
-            public PrefixedKeyConverter(IDataKeyConverter converter, string prefix) {
+            public PrefixedKeyConverter(IDataKeyConverter converter, string prefix)
+            {
                 _converter = converter;
                 _prefix = prefix;
             }
 
             #region IKeyConverter Membres
 
-            public object ConvertTo(string name) {
+            public object ConvertTo(string name)
+            {
                 return _converter.ConvertTo(_prefix + name);
             }
 
-            public string ConvertFrom(object key) {
+            public string ConvertFrom(object key)
+            {
                 var name = _converter.ConvertFrom(key);
                 if (name == null || !name.StartsWith(_prefix))
                     return null;
@@ -128,7 +140,8 @@ namespace WmcSoft.Diagnostics
 
         #endregion
 
-        static DataKeyConverter() {
+        static DataKeyConverter()
+        {
             Basic = new BasicKeyConverter();
             PreventConflict = new PreventConflictKeyConverter();
             Default = PreventConflict;
@@ -138,21 +151,23 @@ namespace WmcSoft.Diagnostics
         public static BasicKeyConverter Basic { get; private set; }
         public static PreventConflictKeyConverter PreventConflict { get; private set; }
 
-        public static PrefixedKeyConverter WithPrefix(this IDataKeyConverter converter, string prefix) {
-            if (converter is PrefixedKeyConverter) {
-                // decorating a PrefixedKeyConverter by another one would invert the prefixes.
-                // and it is better to concatenate only onces.
-                var decorated = (PrefixedKeyConverter)converter;
+        public static PrefixedKeyConverter WithPrefix(this IDataKeyConverter converter, string prefix)
+        {
+            // decorating a PrefixedKeyConverter by another one would invert the prefixes.
+            // and it is better to concatenate only onces.
+            if (converter is PrefixedKeyConverter decorated) {
                 return new PrefixedKeyConverter(decorated._converter, prefix + decorated._prefix);
             }
             return new PrefixedKeyConverter(converter, prefix);
         }
 
-        public static bool IsSupported(this IDataKeyConverter converter, object key) {
+        public static bool IsSupported(this IDataKeyConverter converter, object key)
+        {
             return converter.ConvertFrom(key) != null;
         }
 
-        public static bool IsSupported(this IDataKeyConverter converter, DictionaryEntry entry) {
+        public static bool IsSupported(this IDataKeyConverter converter, DictionaryEntry entry)
+        {
             return IsSupported(converter, entry.Key);
         }
     }
