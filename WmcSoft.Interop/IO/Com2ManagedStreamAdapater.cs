@@ -29,8 +29,6 @@ namespace WmcSoft.IO
             _stream = stream;
         }
 
-        protected Stream BaseStream { get { return _stream; } }
-
         private void ActualizePosition()
         {
             if (_position != -1) {
