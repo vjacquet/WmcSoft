@@ -7,7 +7,8 @@ namespace WmcSoft.Units
     public class ConversionTests
     {
         [TestMethod]
-        public void FahrenheitAndCelsiusEqualPoint() {
+        public void FahrenheitAndCelsiusEqualPoint()
+        {
             var expected = new Quantity(-40, SI.Celsius);
             var value = new Quantity(-40, ImperialSystemOfUnit.Fahrenheit);
             var actual = UnitConverter.Convert(value, SI.Celsius);
@@ -15,7 +16,8 @@ namespace WmcSoft.Units
         }
 
         [TestMethod]
-        public void ConvertYardToMeter() {
+        public void ConvertYardToMeter()
+        {
             var expected = new Quantity(0.9144m, SI.Meter);
             var value = new Quantity(1, ImperialSystemOfUnit.Yard);
             var actual = UnitConverter.Convert(value, SI.Meter);
@@ -23,7 +25,8 @@ namespace WmcSoft.Units
         }
 
         [TestMethod]
-        public void ConvertMeterToKilometer() {
+        public void ConvertMeterToKilometer()
+        {
             var m = SI.Meter;
             var km = m.WithPrefix(SIPrefix.Kilo);
             var value = new Quantity(1000, m);
@@ -33,7 +36,8 @@ namespace WmcSoft.Units
         }
 
         [TestMethod]
-        public void ConvertKilogramToGram() {
+        public void ConvertKilogramToGram()
+        {
             var kg = SI.Kilogram;
             var g = kg.WithPrefix(SIPrefix.None);
             var value = new Quantity(1, kg);
@@ -43,7 +47,8 @@ namespace WmcSoft.Units
         }
 
         [TestMethod]
-        public void CanCreateCompositeConversion() {
+        public void CanCreateCompositeConversion()
+        {
             var yd2ft = new LinearConversion(ImperialSystemOfUnit.Yard, ImperialSystemOfUnit.Foot, 3m);
             var ft2in = new LinearConversion(ImperialSystemOfUnit.Foot, ImperialSystemOfUnit.Inch, 12m);
             var composite = UnitConverter.Compose(yd2ft, ft2in);

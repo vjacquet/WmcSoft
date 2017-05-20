@@ -34,7 +34,8 @@ namespace WmcSoft.Units
     /// </summary>
     public sealed class ManHour : Unit
     {
-        public ManHour() {
+        public ManHour()
+        {
         }
 
         public override SystemOfUnits SystemOfUnits {

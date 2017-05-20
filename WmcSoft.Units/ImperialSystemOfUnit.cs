@@ -38,7 +38,8 @@ namespace WmcSoft.Units
         static readonly ImperialSystemOfUnit _systemOfUnits;
         static readonly Unit[] Units;
 
-        static ImperialSystemOfUnit() {
+        static ImperialSystemOfUnit()
+        {
             _systemOfUnits = new ImperialSystemOfUnit();
 
             var inch = new ScaledUnit("inch", "in", 0.0254m, SI.Meter);
@@ -66,14 +67,17 @@ namespace WmcSoft.Units
         }
 
         private ImperialSystemOfUnit()
-            : base("Imperial", null) {
+            : base("Imperial", null)
+        {
         }
 
-        public static ImperialSystemOfUnit GetSystemOfUnit() {
+        public static ImperialSystemOfUnit GetSystemOfUnit()
+        {
             return _systemOfUnits;
         }
 
-        static public Unit GetUnit(KnownImperialUnits unit) {
+        static public Unit GetUnit(KnownImperialUnits unit)
+        {
             return Units[(int)unit];
         }
 
@@ -131,7 +135,8 @@ namespace WmcSoft.Units
     [LinearConversion(typeof(Inch), typeof(Meter), 0.0254)]
     public sealed class Inch : Unit
     {
-        public Inch() {
+        public Inch()
+        {
         }
 
         public override string Name {
@@ -153,7 +158,8 @@ namespace WmcSoft.Units
     [UnitConversion(typeof(FahrenheitToKelvinConversion))]
     sealed class Fahrenheit : Unit
     {
-        public Fahrenheit() {
+        public Fahrenheit()
+        {
         }
 
         public override string Name {

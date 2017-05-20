@@ -34,14 +34,17 @@ namespace WmcSoft.Units.Conversion
     public class FahrenheitToCelsiusConversion : UnitConversion
     {
         public FahrenheitToCelsiusConversion()
-            : base(ImperialSystemOfUnit.Fahrenheit, SI.Celsius) {
+            : base(ImperialSystemOfUnit.Fahrenheit, SI.Celsius)
+        {
         }
 
-        public override decimal Convert(decimal value) {
+        public override decimal Convert(decimal value)
+        {
             return 5m * (value - 32m) / 9m;
         }
 
-        public override decimal ConvertBack(decimal value) {
+        public override decimal ConvertBack(decimal value)
+        {
             return (9m * value / 5m) + 32m;
         }
     }
@@ -50,14 +53,17 @@ namespace WmcSoft.Units.Conversion
     public class FahrenheitToKelvinConversion : UnitConversion
     {
         public FahrenheitToKelvinConversion()
-            : base(ImperialSystemOfUnit.Fahrenheit, SI.Kelvin) {
+            : base(ImperialSystemOfUnit.Fahrenheit, SI.Kelvin)
+        {
         }
 
-        public override decimal Convert(decimal value) {
+        public override decimal Convert(decimal value)
+        {
             return 5m * (value - 32m) / 9m;
         }
 
-        public override decimal ConvertBack(decimal value) {
+        public override decimal ConvertBack(decimal value)
+        {
             return (9m * value / 5m) + 32m;
         }
     }
@@ -65,14 +71,17 @@ namespace WmcSoft.Units.Conversion
     public class CelsiusToKelvinConversion : UnitConversion
     {
         public CelsiusToKelvinConversion()
-            : base(SI.Celsius, SI.Kelvin) {
+            : base(SI.Celsius, SI.Kelvin)
+        {
         }
 
-        public override decimal Convert(decimal value) {
+        public override decimal Convert(decimal value)
+        {
             return value + 273.15m;
         }
 
-        public override decimal ConvertBack(decimal value) {
+        public override decimal ConvertBack(decimal value)
+        {
             return value - 273.15m;
         }
     }

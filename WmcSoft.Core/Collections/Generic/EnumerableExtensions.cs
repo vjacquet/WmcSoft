@@ -1229,7 +1229,7 @@ namespace WmcSoft.Collections.Generic
                     } catch (ArgumentException e) {
                         e.CaptureContext(new { key });
                         throw;
-                     }
+                    }
                 }
                 break;
             case DuplicatePolicy.KeepFirst:

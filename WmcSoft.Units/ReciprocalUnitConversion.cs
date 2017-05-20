@@ -35,7 +35,8 @@ namespace WmcSoft.Units
         readonly UnitConversion _base;
 
         internal ReciprocalUnitConversion(UnitConversion conversion)
-            : base(conversion.Target, conversion.Source) {
+            : base(conversion.Target, conversion.Source)
+        {
             _base = conversion;
         }
 
@@ -43,11 +44,13 @@ namespace WmcSoft.Units
             get { return _base; }
         }
 
-        public override decimal Convert(decimal value) {
+        public override decimal Convert(decimal value)
+        {
             return _base.ConvertBack(value);
         }
 
-        public override decimal ConvertBack(decimal value) {
+        public override decimal ConvertBack(decimal value)
+        {
             return _base.Convert(value);
         }
     }

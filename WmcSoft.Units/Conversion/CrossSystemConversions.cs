@@ -34,7 +34,8 @@ namespace WmcSoft.Units.Conversion
     /// </summary>
     internal class CrossSystemConversions
     {
-        internal static void RegisterImperialToSIConversions() {
+        internal static void RegisterImperialToSIConversions()
+        {
             if (!_isImperialToSIConversionsRegistered) {
                 //UnitConverter.RegisterConversion(new FahrenheitToCelsiusConversion(),false);
                 //UnitConverter.RegisterConversion(new FahrenheitToKelvinConversion(), false);
@@ -45,14 +46,16 @@ namespace WmcSoft.Units.Conversion
         }
         static bool _isImperialToSIConversionsRegistered;
 
-        internal static void RegisterUSCustomaryToSIConversions() {
+        internal static void RegisterUSCustomaryToSIConversions()
+        {
             if (!isUSCustomaryToSIRegistered) {
                 isUSCustomaryToSIRegistered = true;
             }
         }
         static bool isUSCustomaryToSIRegistered;
 
-        internal static void RegisterNaturalToSIConversions() {
+        internal static void RegisterNaturalToSIConversions()
+        {
             if (!isNaturalToSIConversionsRegistered) {
 
                 isNaturalToSIConversionsRegistered = true;

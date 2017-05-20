@@ -45,7 +45,8 @@ namespace WmcSoft.Units
 
         #region Lifecycle
 
-        protected SystemOfUnits(string nameOfSystem, string nameOfStandardizationBody) {
+        protected SystemOfUnits(string nameOfSystem, string nameOfStandardizationBody)
+        {
             _nameOfSystem = nameOfSystem;
             _nameOfStandardizationBody = nameOfStandardizationBody;
         }
@@ -91,14 +92,16 @@ namespace WmcSoft.Units
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if ((obj == null) || (GetType() != obj.GetType()))
                 return false;
             SystemOfUnits that = (SystemOfUnits)obj;
             return (_nameOfSystem == that._nameOfSystem) && (_nameOfStandardizationBody == that._nameOfStandardizationBody);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             int hash = 0;
 
             if (_nameOfSystem != null)

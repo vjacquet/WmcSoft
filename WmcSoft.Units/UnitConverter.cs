@@ -27,7 +27,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 using WmcSoft.Units.Properties;
 
@@ -43,7 +42,8 @@ namespace WmcSoft.Units
         static object syncRoot = new Object();
         static IDictionary<Unit, Hashtable> unitConversions;
 
-        static UnitConverter() {
+        static UnitConverter()
+        {
             unitConversions = new Dictionary<Unit, Hashtable>();
         }
 
@@ -51,11 +51,13 @@ namespace WmcSoft.Units
 
         public delegate decimal ConvertCallback(decimal value);
 
-        public static bool RegisterConversion(UnitConversion conversion) {
+        public static bool RegisterConversion(UnitConversion conversion)
+        {
             return RegisterConversion(conversion, true);
         }
 
-        static bool Register(Unit source, Unit target, ConvertCallback convert, bool throwOnDuplicates) {
+        static bool Register(Unit source, Unit target, ConvertCallback convert, bool throwOnDuplicates)
+        {
             Hashtable table;
             if (!unitConversions.TryGetValue(source, out table)) {
                 table = new Hashtable();
@@ -71,7 +73,8 @@ namespace WmcSoft.Units
             return false;
         }
 
-        internal static bool RegisterConversion(UnitConversion conversion, bool throwOnDuplicate) {
+        internal static bool RegisterConversion(UnitConversion conversion, bool throwOnDuplicate)
+        {
             lock (syncRoot) {
                 if (unitConversions == null) {
                     unitConversions = new Dictionary<Unit, Hashtable>();
@@ -83,7 +86,8 @@ namespace WmcSoft.Units
             }
         }
 
-        public static bool RegisterUnit(ScaledUnit scaledUnit) {
+        public static bool RegisterUnit(ScaledUnit scaledUnit)
+        {
             if (!unitConversions.ContainsKey(scaledUnit)) {
                 var factor = 1m;
                 var source = scaledUnit;
@@ -98,7 +102,8 @@ namespace WmcSoft.Units
             return false;
         }
 
-        public static bool RegisterUnit(Unit unit) {
+        public static bool RegisterUnit(Unit unit)
+        {
             if (!unitConversions.ContainsKey(unit)) {
 
                 //if (scaledUnit != null) {
@@ -116,7 +121,8 @@ namespace WmcSoft.Units
             return false;
         }
 
-        public static Quantity Convert(Quantity quantity, Unit target) {
+        public static Quantity Convert(Quantity quantity, Unit target)
+        {
             if (quantity.Metric == target)
                 return quantity;
 
@@ -144,7 +150,8 @@ namespace WmcSoft.Units
         /// <param name="quantity">The quantity.</param>
         /// <param name="target">The target unit.</param>
         /// <returns>The converted quantity.</returns>
-        public static Quantity ConvertTo(this Quantity quantity, Unit target) {
+        public static Quantity ConvertTo(this Quantity quantity, Unit target)
+        {
             return Convert(quantity, target);
         }
 
@@ -154,7 +161,8 @@ namespace WmcSoft.Units
         /// <typeparam name="U">The target unit type.</typeparam>
         /// <param name="quantity">The quantity.</param>
         /// <returns>The converted quantity.</returns>
-        public static Quantity<U> ConvertTo<U>(this Quantity quantity) where U : Unit, new() {
+        public static Quantity<U> ConvertTo<U>(this Quantity quantity) where U : Unit, new()
+        {
             var result = Convert(quantity, new U());
             return new Quantity<U>(result.Amount);
         }
@@ -165,7 +173,8 @@ namespace WmcSoft.Units
         /// <param name="conversion">The unit conversion.</param>
         /// <returns>The reciprocal unit conversion.</returns>
         /// <remarks>This function guarantee that <code>Reciprocal(Reciprocal(conversion)) == conversion</code>.</remarks>
-        public static UnitConversion Reciprocal(this UnitConversion conversion) {
+        public static UnitConversion Reciprocal(this UnitConversion conversion)
+        {
             if (conversion == null)
                 throw new ArgumentNullException("conversion");
 
@@ -175,27 +184,33 @@ namespace WmcSoft.Units
             return reciprocal.BaseUnitConversion;
         }
 
-        static UnitConversion DoCompose(LinearConversion x, LinearConversion y) {
+        static UnitConversion DoCompose(LinearConversion x, LinearConversion y)
+        {
             return new LinearConversion(x.Source, y.Target, x.ConversionFactor * y.ConversionFactor);
         }
 
-        static UnitConversion DoCompose(UnitConversion x, UnitConversion y) {
+        static UnitConversion DoCompose(UnitConversion x, UnitConversion y)
+        {
             return new CompositeConversion(x, y);
         }
 
-        static UnitConversion DoCompose(CompositeConversion x, UnitConversion y) {
+        static UnitConversion DoCompose(CompositeConversion x, UnitConversion y)
+        {
             return new CompositeConversion(x, y);
         }
 
-        static UnitConversion DoCompose(UnitConversion x, CompositeConversion y) {
+        static UnitConversion DoCompose(UnitConversion x, CompositeConversion y)
+        {
             return new CompositeConversion(x, y);
         }
 
-        static UnitConversion DoCompose(CompositeConversion x, CompositeConversion y) {
+        static UnitConversion DoCompose(CompositeConversion x, CompositeConversion y)
+        {
             return new CompositeConversion(x, y);
         }
 
-        public static UnitConversion Compose(UnitConversion x, UnitConversion y) {
+        public static UnitConversion Compose(UnitConversion x, UnitConversion y)
+        {
             if (x.Target != y.Source) throw new ArgumentException(string.Format(Resources.InvalidUnitConversionPath, x.Target, y.Source));
 
             if (x.Source == y.Target)

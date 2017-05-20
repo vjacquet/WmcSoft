@@ -31,7 +31,8 @@ namespace WmcSoft.Units
     public class LinearConversionAttribute : UnitConversionAttribute
     {
         public LinearConversionAttribute(Type source, Type target, double factor)
-            : base(new LinearConversion((Unit)Activator.CreateInstance(source), (Unit)Activator.CreateInstance(target), (decimal)factor)) {
+            : base(new LinearConversion((Unit)Activator.CreateInstance(source), (Unit)Activator.CreateInstance(target), (decimal)factor))
+        {
         }
 
         public decimal ConversionFactor {

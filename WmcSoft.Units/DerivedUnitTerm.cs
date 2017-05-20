@@ -50,7 +50,8 @@ namespace WmcSoft.Units
 
         #region Lifecycle
 
-        public DerivedUnitTerm(Unit unit, int power) {
+        public DerivedUnitTerm(Unit unit, int power)
+        {
             if (unit == null)
                 throw new ArgumentNullException("unit");
             _unit = unit;
@@ -85,17 +86,17 @@ namespace WmcSoft.Units
 
         #endregion
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if ((obj == null) || (GetType() != obj.GetType()))
                 return false;
             DerivedUnitTerm that = (DerivedUnitTerm)obj;
             return (_power == that._power) && _unit.Equals(that._unit);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return (_unit.GetHashCode() * 397) ^ _power;
         }
     }
-
-
 }

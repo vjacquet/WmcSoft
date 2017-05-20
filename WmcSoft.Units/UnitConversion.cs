@@ -42,7 +42,8 @@ namespace WmcSoft.Units
 
         #region Lifecycle
 
-        protected UnitConversion(Unit source, Unit target) {
+        protected UnitConversion(Unit source, Unit target)
+        {
             _source = source;
             _target = target;
         }
@@ -70,7 +71,8 @@ namespace WmcSoft.Units
 
         #region Helpers
 
-        internal static bool CanMakePath(params UnitConversion[] conversions) {
+        internal static bool CanMakePath(params UnitConversion[] conversions)
+        {
             for (int i = 1; i < conversions.Length; i++) {
                 if (conversions[i - 1].Target != conversions[i].Source)
                     return false;

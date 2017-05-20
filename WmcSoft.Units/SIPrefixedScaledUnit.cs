@@ -34,11 +34,13 @@ namespace WmcSoft.Units
     internal class SIPrefixedScaledUnit : ScaledUnit
     {
         internal SIPrefixedScaledUnit(SIPrefix prefix, SIBaseUnit reference)
-            : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, (decimal)Math.Pow(10, (int)prefix), reference) {
+            : base(RM.FormatSIPrefixName((int)prefix, reference.Name), RM.FormatSIPrefixSymbol((int)prefix, reference.Symbol), null, (decimal)Math.Pow(10, (int)prefix), reference)
+        {
         }
 
         internal SIPrefixedScaledUnit(SIPrefix prefix, Kilogram reference)
-            : base(RM.FormatSIPrefixName((int)prefix, RM.GetName("Gram")), RM.FormatSIPrefixSymbol((int)prefix, RM.GetSymbol("Gram")), null, (decimal)Math.Pow(10, (int)prefix - 3), reference) {
+            : base(RM.FormatSIPrefixName((int)prefix, RM.GetName("Gram")), RM.FormatSIPrefixSymbol((int)prefix, RM.GetSymbol("Gram")), null, (decimal)Math.Pow(10, (int)prefix - 3), reference)
+        {
         }
     }
 }

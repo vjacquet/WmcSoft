@@ -45,10 +45,12 @@ namespace WmcSoft.Units
         #region Lifecycle
 
         public Quantity(Metric metric)
-            : this(Decimal.Zero, metric) {
+            : this(Decimal.Zero, metric)
+        {
         }
 
-        public Quantity(decimal amount, Metric metric) {
+        public Quantity(decimal amount, Metric metric)
+        {
             if (metric == null)
                 throw new ArgumentNullException("metric");
             _amount = amount;
@@ -71,7 +73,8 @@ namespace WmcSoft.Units
 
         #region Methods
 
-        public Quantity Round(RoundingPolicy policy) {
+        public Quantity Round(RoundingPolicy policy)
+        {
             if (policy == null)
                 throw new ArgumentNullException("policy");
 
@@ -82,29 +85,35 @@ namespace WmcSoft.Units
 
         #region Operators
 
-        public static implicit operator decimal(Quantity that) {
+        public static implicit operator decimal(Quantity that)
+        {
             return that._amount;
         }
 
-        public static Quantity operator +(Quantity x, Quantity y) {
+        public static Quantity operator +(Quantity x, Quantity y)
+        {
             if (x.Metric != y.Metric) throw new IncompatibleMetricException();
             return new Quantity(x._amount + y._amount, x.Metric);
         }
 
-        public static Quantity Add(Quantity x, Quantity y) {
+        public static Quantity Add(Quantity x, Quantity y)
+        {
             return x + y;
         }
 
-        public static Quantity operator -(Quantity x, Quantity y) {
+        public static Quantity operator -(Quantity x, Quantity y)
+        {
             if (x.Metric != y.Metric) throw new IncompatibleMetricException();
             return new Quantity(x._amount - y._amount, x.Metric);
         }
 
-        public static Quantity Subtract(Quantity x, Quantity y) {
+        public static Quantity Subtract(Quantity x, Quantity y)
+        {
             return x - y;
         }
 
-        public static Quantity operator *(Quantity x, Quantity y) {
+        public static Quantity operator *(Quantity x, Quantity y)
+        {
             int count = 0;
             int index = 0;
             if (x.Metric is DerivedUnit) {
@@ -133,19 +142,23 @@ namespace WmcSoft.Units
             return new Quantity(x._amount * y._amount, new DerivedUnit(terms));
         }
 
-        public static Quantity Multiply(Quantity x, Quantity y) {
+        public static Quantity Multiply(Quantity x, Quantity y)
+        {
             return x * y;
         }
 
-        public static Quantity operator *(Quantity value, decimal multiplier) {
+        public static Quantity operator *(Quantity value, decimal multiplier)
+        {
             return new Quantity(multiplier * value._amount, value.Metric);
         }
 
-        public static Quantity Multiply(Quantity value, decimal multiplier) {
+        public static Quantity Multiply(Quantity value, decimal multiplier)
+        {
             return value * multiplier;
         }
 
-        public static Quantity operator /(Quantity x, Quantity y) {
+        public static Quantity operator /(Quantity x, Quantity y)
+        {
             int count = 0;
             int index = 0;
             if (x.Metric is DerivedUnit) {
@@ -179,45 +192,56 @@ namespace WmcSoft.Units
             return new Quantity(x._amount / y._amount, new DerivedUnit(terms));
         }
 
-        public static Quantity Divide(Quantity x, Quantity y) {
+        public static Quantity Divide(Quantity x, Quantity y)
+        {
             return x / y;
         }
 
-        public static Quantity operator /(Quantity value, decimal divider) {
+        public static Quantity operator /(Quantity value, decimal divider)
+        {
             return new Quantity(value._amount / divider, value.Metric);
         }
 
-        public static Quantity Divide(Quantity value, decimal divider) {
+        public static Quantity Divide(Quantity value, decimal divider)
+        {
             return value / divider;
         }
 
-        public static bool operator ==(Quantity x, Quantity y) {
+        public static bool operator ==(Quantity x, Quantity y)
+        {
             return ((IComparable)x).CompareTo(y) == 0;
         }
-        public static bool operator !=(Quantity x, Quantity y) {
+        public static bool operator !=(Quantity x, Quantity y)
+        {
             return x.CompareTo(y) != 0;
         }
 
-        public static bool operator <(Quantity x, Quantity y) {
+        public static bool operator <(Quantity x, Quantity y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(Quantity x, Quantity y) {
+        public static bool operator <=(Quantity x, Quantity y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(Quantity x, Quantity y) {
+        public static bool operator >(Quantity x, Quantity y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(Quantity x, Quantity y) {
+        public static bool operator >=(Quantity x, Quantity y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return false;
             return CompareTo((Quantity)obj) == 0;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_metric == null)
                 return 0;
             return _amount.GetHashCode() ^ _metric.GetHashCode();
@@ -227,7 +251,8 @@ namespace WmcSoft.Units
 
         #region Membres de IComparable
 
-        int IComparable.CompareTo(object obj) {
+        int IComparable.CompareTo(object obj)
+        {
             if (obj == null)
                 return 1;
             return CompareTo((Quantity)obj);
@@ -237,7 +262,8 @@ namespace WmcSoft.Units
 
         #region IEquatable<Quantity> Membres
 
-        public bool Equals(Quantity other) {
+        public bool Equals(Quantity other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -245,7 +271,8 @@ namespace WmcSoft.Units
 
         #region IComparable<Quantity> Membres
 
-        public int CompareTo(Quantity other) {
+        public int CompareTo(Quantity other)
+        {
             // TODO: attempt to convert before deciding...
             if (this.Metric != other.Metric)
                 throw new IncompatibleMetricException();
@@ -260,7 +287,7 @@ namespace WmcSoft.Units
     /// </summary>
     /// <typeparam name="M">The metric</typeparam>
     public struct Quantity<M> : IComparable<Quantity<M>>, IComparable, IEquatable<Quantity<M>>
-        where M : Metric, new ()
+        where M : Metric, new()
     {
         #region Fields
 
@@ -270,7 +297,8 @@ namespace WmcSoft.Units
 
         #region Lifecycle
 
-        public Quantity(decimal amount) {
+        public Quantity(decimal amount)
+        {
             _amount = amount;
         }
 
@@ -278,109 +306,136 @@ namespace WmcSoft.Units
 
         #region Operators
 
-        public static implicit operator Quantity<M>(int value) {
+        public static implicit operator Quantity<M>(int value)
+        {
             return new Quantity<M>(value);
         }
-        public static implicit operator Quantity<M>(double value) {
+        public static implicit operator Quantity<M>(double value)
+        {
             return new Quantity<M>((decimal)value);
         }
-        public static implicit operator Quantity<M>(decimal value) {
+        public static implicit operator Quantity<M>(decimal value)
+        {
             return new Quantity<M>(value);
         }
 
-        public static explicit operator decimal(Quantity<M> that) {
+        public static explicit operator decimal(Quantity<M> that)
+        {
             return that._amount;
         }
 
-        public static implicit operator Quantity(Quantity<M> that) {
+        public static implicit operator Quantity(Quantity<M> that)
+        {
             return new Quantity(that._amount, new M());
         }
 
-        public static Quantity<M> operator +(Quantity<M> x, Quantity<M> y) {
+        public static Quantity<M> operator +(Quantity<M> x, Quantity<M> y)
+        {
             return new Quantity<M>(x._amount + y._amount);
         }
 
-        public static Quantity<M> Add(Quantity<M> x, Quantity<M> y) {
+        public static Quantity<M> Add(Quantity<M> x, Quantity<M> y)
+        {
             return x + y;
         }
 
-        public static Quantity<M> operator -(Quantity<M> x, Quantity<M> y) {
+        public static Quantity<M> operator -(Quantity<M> x, Quantity<M> y)
+        {
             return new Quantity<M>(x._amount - y._amount);
         }
 
-        public static Quantity<M> Subtract(Quantity<M> x, Quantity<M> y) {
+        public static Quantity<M> Subtract(Quantity<M> x, Quantity<M> y)
+        {
             return x - y;
         }
 
-        public static Quantity<M> operator *(decimal multiplier, Quantity<M> value) {
+        public static Quantity<M> operator *(decimal multiplier, Quantity<M> value)
+        {
             return new Quantity<M>(multiplier * value._amount);
         }
 
-        public static Quantity<M> Multiply(decimal multiplier, Quantity<M> value) {
+        public static Quantity<M> Multiply(decimal multiplier, Quantity<M> value)
+        {
             return value * multiplier;
         }
 
-        public static Quantity<M> operator *(Quantity<M> value, decimal multiplier) {
+        public static Quantity<M> operator *(Quantity<M> value, decimal multiplier)
+        {
             return new Quantity<M>(multiplier * value._amount);
         }
 
-        public static Quantity<M> Multiply(Quantity<M> value, decimal multiplier) {
+        public static Quantity<M> Multiply(Quantity<M> value, decimal multiplier)
+        {
             return value * multiplier;
         }
 
-        public static Quantity operator *(Quantity<M> x, Quantity y) {
+        public static Quantity operator *(Quantity<M> x, Quantity y)
+        {
             return ((Quantity)x) * y;
         }
 
-        public static Quantity Multiply(Quantity<M> x, Quantity y) {
+        public static Quantity Multiply(Quantity<M> x, Quantity y)
+        {
             return x * y;
         }
 
-        public static Quantity<M> operator /(Quantity<M> value, decimal divider) {
+        public static Quantity<M> operator /(Quantity<M> value, decimal divider)
+        {
             return new Quantity<M>(value._amount / divider);
         }
 
-        public static Quantity<M> Divide(Quantity<M> value, decimal divider) {
+        public static Quantity<M> Divide(Quantity<M> value, decimal divider)
+        {
             return value / divider;
         }
 
-        public static Quantity operator /(decimal divider, Quantity<M> value) {
+        public static Quantity operator /(decimal divider, Quantity<M> value)
+        {
             return new Quantity(divider / value._amount, new DerivedUnit(new DerivedUnitTerm((Unit)Activator.CreateInstance(typeof(M)), -1)));
         }
 
-        public static Quantity Divide(decimal divider, Quantity<M> value) {
+        public static Quantity Divide(decimal divider, Quantity<M> value)
+        {
             return divider / value;
         }
 
-        public static Quantity operator /(Quantity<M> x, Quantity y) {
+        public static Quantity operator /(Quantity<M> x, Quantity y)
+        {
             return ((Quantity)x) / y;
         }
 
-        public static Quantity Divide(Quantity<M> x, Quantity y) {
+        public static Quantity Divide(Quantity<M> x, Quantity y)
+        {
             return x / y;
         }
 
-        public static bool operator >=(Quantity<M> x, Quantity<M> y) {
+        public static bool operator >=(Quantity<M> x, Quantity<M> y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static bool operator >(Quantity<M> x, Quantity<M> y) {
+        public static bool operator >(Quantity<M> x, Quantity<M> y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(Quantity<M> x, Quantity<M> y) {
+        public static bool operator <=(Quantity<M> x, Quantity<M> y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator <(Quantity<M> x, Quantity<M> y) {
+        public static bool operator <(Quantity<M> x, Quantity<M> y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator ==(Quantity<M> x, Quantity<M> y) {
+        public static bool operator ==(Quantity<M> x, Quantity<M> y)
+        {
             return x.CompareTo(y) == 0;
         }
 
-        public static bool operator !=(Quantity<M> x, Quantity<M> y) {
+        public static bool operator !=(Quantity<M> x, Quantity<M> y)
+        {
             return x.CompareTo(y) != 0;
         }
 
@@ -388,7 +443,8 @@ namespace WmcSoft.Units
 
         #region IComparable<Quantity<M>> Members
 
-        public int CompareTo(Quantity<M> other) {
+        public int CompareTo(Quantity<M> other)
+        {
             return _amount.CompareTo(other._amount);
         }
 
@@ -396,7 +452,8 @@ namespace WmcSoft.Units
 
         #region IEquatable<Quantity<M>> Members
 
-        public bool Equals(Quantity<M> other) {
+        public bool Equals(Quantity<M> other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -404,7 +461,8 @@ namespace WmcSoft.Units
 
         #region IComparable Members
 
-        public int CompareTo(object obj) {
+        public int CompareTo(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return 1;
             var other = (Quantity<M>)obj;
@@ -413,14 +471,16 @@ namespace WmcSoft.Units
 
         #endregion
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             var that = (Quantity<M>)obj;
             return (that == this);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _amount.GetHashCode();
         }
     }
