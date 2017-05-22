@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using WmcSoft.Properties;
 
@@ -42,7 +41,7 @@ namespace WmcSoft.Numerics
     {
         public static Matrix Empty;
 
-        [DebuggerTypeProxy(typeof(Storage.DebugView))]
+        [DebuggerTypeProxy(typeof(DebugView))]
         class Storage
         {
             class DebugView
