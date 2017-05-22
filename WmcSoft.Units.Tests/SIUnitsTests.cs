@@ -1,4 +1,3 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Units
@@ -7,14 +6,16 @@ namespace WmcSoft.Units
     public class SIUnitsTests
     {
         [TestMethod]
-        public void CanGetKilometer() {
+        public void CanGetKilometer()
+        {
             var m = SI.Meter;
             var km = m.WithPrefix(SIPrefix.Kilo);
             Assert.AreEqual("km", km.Symbol);
         }
 
         [TestMethod]
-        public void ConvertGetGram() {
+        public void ConvertGetGram()
+        {
             var kg = SI.Kilogram;
             var g = kg.WithPrefix(SIPrefix.None);
             Assert.AreEqual("g", g.Symbol);

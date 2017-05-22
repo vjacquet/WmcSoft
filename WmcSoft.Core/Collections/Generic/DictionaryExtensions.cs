@@ -286,5 +286,35 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region RenameKey
+
+        /// <summary>
+        /// Renames a key.
+        /// </summary>
+        /// <typeparam name="TKey">The type of key.</typeparam>
+        /// <typeparam name="TValue">The type of value.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="oldKey">The old key.</param>
+        /// <param name="newKey">The new key.</param>
+        /// <returns>Returns <c>true</c> if the <paramref name="oldKey"/> existed and was renamed; otherwise, <c>false</c>.</returns>
+        public static bool RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey oldKey, TKey newKey)
+        {
+            if (oldKey == null) throw new ArgumentNullException(nameof(oldKey));
+            try {
+                if (dictionary.TryGetValue(oldKey, out TValue value)) {
+                    dictionary.Add(newKey, value);
+                    dictionary.Remove(oldKey);
+                    return true;
+                }
+                return false;
+            } catch (ArgumentNullException e) {
+                throw new ArgumentNullException(nameof(newKey), e.Message);
+            } catch (ArgumentException e) {
+                throw new ArgumentException(nameof(newKey), e.Message);
+            }
+        }
+
+        #endregion
     }
 }

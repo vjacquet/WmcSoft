@@ -36,16 +36,19 @@ namespace WmcSoft.Units
     {
         readonly UnitConversion _conversion;
 
-        protected UnitConversionAttribute(UnitConversion conversion) {
+        protected UnitConversionAttribute(UnitConversion conversion)
+        {
             _conversion = conversion;
         }
 
-        public UnitConversionAttribute(Type type) {
+        public UnitConversionAttribute(Type type)
+        {
             _conversion = (UnitConversion)Activator.CreateInstance(type);
         }
 
         public UnitConversionAttribute(string typeName)
-            : this(Type.GetType(typeName)) {
+            : this(Type.GetType(typeName))
+        {
         }
 
         public Unit Source {

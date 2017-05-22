@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.Diagnostics;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -367,6 +368,53 @@ namespace WmcSoft.Collections.Generic
             chi2 /= Nr;
             // critical value of 11.070 at 95% significance level
             Assert.IsTrue(chi2 < 11.070d);
+        }
+
+        [TestMethod]
+        public void CheckZipAll()
+        {
+            var x = new[] { "A", "B", "C", "D" };
+            var y = new[] { "A", "B", "C", "D", "E", "F" };
+
+            Assert.AreEqual("AABBCCDDXEXF", string.Concat(x.ZipAll(y, (a, b) => a + b, "X", "Y")));
+            Assert.AreEqual("AABBCCDDEYFY", string.Concat(y.ZipAll(x, (a, b) => a + b, "X", "Y")));
+            Assert.AreEqual("AABBCCDD", string.Concat(x.ZipAll(x, (a, b) => a + b, "X", "Y")));
+        }
+
+        [TestMethod]
+        public void CheckToDictionaryThrowExceptionPolicy()
+        {
+            var source = new[] { 0, 1, 2, 3, 2, 4, 5 };
+            try {
+                var dictionary = source.ToDictionary(DuplicatePolicy.ThrowException, x => 'A' + x);
+                Assert.Inconclusive();
+            } catch (Exception e) {
+                Assert.AreEqual(67, e.GetCapturedEntry("key"));
+            }
+        }
+
+        [TestMethod]
+        public void CheckToDictionaryKeepFirstPolicy()
+        {
+            var source = new[] { 0, 1, 2, 3, 4, 5 };
+            var dictionary = source.ToDictionary(DuplicatePolicy.KeepFirst, x => x % 3);
+            Assert.AreEqual(3, dictionary.Count);
+            Assert.AreEqual(0, dictionary[0]);
+            Assert.AreEqual(1, dictionary[1]);
+            Assert.AreEqual(2, dictionary[2]);
+            Assert.IsFalse(dictionary.ContainsKey(3));
+        }
+
+        [TestMethod]
+        public void CheckToDictionaryKeepLastPolicy()
+        {
+            var source = new[] { 0, 1, 2, 3, 4, 5 };
+            var dictionary = source.ToDictionary(DuplicatePolicy.KeepLast, x => x % 3);
+            Assert.AreEqual(3, dictionary.Count);
+            Assert.AreEqual(3, dictionary[0]);
+            Assert.AreEqual(4, dictionary[1]);
+            Assert.AreEqual(5, dictionary[2]);
+            Assert.IsFalse(dictionary.ContainsKey(3));
         }
     }
 }

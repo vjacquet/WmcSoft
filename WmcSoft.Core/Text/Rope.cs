@@ -146,7 +146,6 @@ namespace WmcSoft.Text
             Adjust();
         }
 
-
         public void Append(string value)
         {
             Insert(_length, value);

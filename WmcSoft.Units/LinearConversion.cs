@@ -43,7 +43,8 @@ namespace WmcSoft.Units
         #region Lifecycle
 
         public LinearConversion(Unit source, Unit target, decimal factor)
-            : base(source, target) {
+            : base(source, target)
+        {
             _factor = factor;
         }
 
@@ -59,11 +60,13 @@ namespace WmcSoft.Units
 
         #region Overrides
 
-        public override decimal Convert(decimal value) {
+        public override decimal Convert(decimal value)
+        {
             return value * _factor;
         }
 
-        public override decimal ConvertBack(decimal value) {
+        public override decimal ConvertBack(decimal value)
+        {
             return value / _factor;
         }
 

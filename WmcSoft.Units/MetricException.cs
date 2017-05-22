@@ -36,15 +36,18 @@ namespace WmcSoft.Units
     public abstract class MetricException : ApplicationException
     {
         protected MetricException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         protected MetricException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
 
         protected MetricException(string message, Exception innerException)
-            : base(message, innerException) {
+            : base(message, innerException)
+        {
         }
     }
 }

@@ -128,5 +128,51 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 0, 1, 3, 4 };
             CollectionAssert.AreEquivalent(expected, actual);
         }
+
+        [TestMethod]
+        public void CanRenameExistingKey()
+        {
+            var dictionary = new Dictionary<int, string> {
+                { 1, "zero" },
+                { 2, "two" },
+                { 3, "three" },
+                { 5, "five" },
+            };
+
+            var result = dictionary.RenameKey(1, 0);
+            Assert.IsTrue(result);
+            Assert.IsTrue(dictionary.ContainsKey(0));
+            Assert.IsFalse(dictionary.ContainsKey(1));
+            Assert.AreEqual("zero", dictionary[0]);
+        }
+
+        [TestMethod]
+        public void CheckRenamingNonExistingKeyReturnsFalse()
+        {
+            var dictionary = new Dictionary<int, string> {
+                { 0, "zero" },
+                { 2, "two" },
+                { 3, "three" },
+                { 5, "five" },
+            };
+            var result = dictionary.RenameKey(1, 0);
+            Assert.IsFalse(result);
+            Assert.IsTrue(dictionary.ContainsKey(0));
+            Assert.IsFalse(dictionary.ContainsKey(1));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = false)]
+        public void CheckConflictingKeyRenamesThrows()
+        {
+            var dictionary = new Dictionary<int, string> {
+                { 0, "zero" },
+                { 2, "two" },
+                { 3, "three" },
+                { 5, "five" },
+            };
+            var result = dictionary.RenameKey(0, 2);
+            Assert.Inconclusive();
+        }
     }
 }

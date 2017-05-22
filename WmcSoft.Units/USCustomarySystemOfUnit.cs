@@ -36,20 +36,24 @@ namespace WmcSoft.Units
     {
         static USCustomarySystemOfUnit systemOfUnits;
 
-        static USCustomarySystemOfUnit() {
+        static USCustomarySystemOfUnit()
+        {
             systemOfUnits = new USCustomarySystemOfUnit();
         }
 
         private USCustomarySystemOfUnit()
-            : base("US Customary", null) {
+            : base("US Customary", null)
+        {
         }
 
-        public static USCustomarySystemOfUnit GetSystemOfUnit() {
+        public static USCustomarySystemOfUnit GetSystemOfUnit()
+        {
             return systemOfUnits;
         }
 
         static Unit[] units;
-        static public Unit GetUnit(KnownUSCustomaryUnits unit) {
+        static public Unit GetUnit(KnownUSCustomaryUnits unit)
+        {
             if (units == null) {
                 InitializeKnownUnits();
             }
@@ -62,7 +66,8 @@ namespace WmcSoft.Units
             }
         }
 
-        static void InitializeKnownUnits() {
+        static void InitializeKnownUnits()
+        {
             lock (systemOfUnits) {
                 if (units == null) {
                     units = new Unit[1];

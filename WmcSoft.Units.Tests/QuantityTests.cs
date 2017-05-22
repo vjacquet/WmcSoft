@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WmcSoft.Units
 {
@@ -7,7 +6,8 @@ namespace WmcSoft.Units
     public class QuantityTests
     {
         [TestMethod]
-        public void CanCreateSpeed() {
+        public void CanCreateSpeed()
+        {
             Quantity<Meter> m = 1m;
             Quantity<Second> s = 1m;
 

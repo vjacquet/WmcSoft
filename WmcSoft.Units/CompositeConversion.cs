@@ -37,14 +37,16 @@ namespace WmcSoft.Units
         private readonly UnitConversion[] _sequence;
 
         internal CompositeConversion(UnitConversion x, UnitConversion y)
-            : base(x.Source, y.Target) {
+            : base(x.Source, y.Target)
+        {
             Debug.Assert(CanMakePath(x, y));
 
             _sequence = new UnitConversion[] { x, y };
         }
 
         internal CompositeConversion(UnitConversion x, CompositeConversion y)
-            : base(x.Source, y.Target) {
+            : base(x.Source, y.Target)
+        {
             Debug.Assert(CanMakePath(x, y));
 
             _sequence = new UnitConversion[y._sequence.Length + 1];
@@ -53,7 +55,8 @@ namespace WmcSoft.Units
         }
 
         internal CompositeConversion(CompositeConversion x, UnitConversion y)
-            : base(x.Source, y.Target) {
+            : base(x.Source, y.Target)
+        {
             Debug.Assert(CanMakePath(x, y));
 
             _sequence = new UnitConversion[x._sequence.Length + 1];
@@ -62,7 +65,8 @@ namespace WmcSoft.Units
         }
 
         internal CompositeConversion(CompositeConversion x, CompositeConversion y)
-            : base(x.Source, y.Target) {
+            : base(x.Source, y.Target)
+        {
             Debug.Assert(CanMakePath(x, y));
 
             _sequence = new UnitConversion[x._sequence.Length + y._sequence.Length];
@@ -72,32 +76,37 @@ namespace WmcSoft.Units
 
 
         internal CompositeConversion(params UnitConversion[] conversions)
-            : base(conversions.First().Source, conversions.Last().Target) {
+            : base(conversions.First().Source, conversions.Last().Target)
+        {
             Debug.Assert(CanMakePath(conversions));
 
             _sequence = new UnitConversion[conversions.Length];
             conversions.CopyTo(_sequence, 0);
         }
 
-        public override decimal Convert(decimal value) {
+        public override decimal Convert(decimal value)
+        {
             for (int i = 0; i < _sequence.Length; i++) {
                 value = _sequence[i].Convert(value);
             }
             return value;
         }
 
-        public override decimal ConvertBack(decimal value) {
+        public override decimal ConvertBack(decimal value)
+        {
             for (int i = _sequence.Length - 1; i >= 0; i--) {
                 value = _sequence[i].ConvertBack(value);
             }
             return value;
         }
 
-        public IEnumerator<UnitConversion> GetEnumerator() {
+        public IEnumerator<UnitConversion> GetEnumerator()
+        {
             return ((IEnumerable<UnitConversion>)_sequence).GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return ((IEnumerable<UnitConversion>)_sequence).GetEnumerator();
         }
     }

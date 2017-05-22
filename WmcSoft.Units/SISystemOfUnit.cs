@@ -37,7 +37,8 @@ namespace WmcSoft.Units
         static readonly SI si;
         static readonly Unit[] Units;
 
-        static SI() {
+        static SI()
+        {
             si = new SI();
 
             Units = new Unit[] {
@@ -58,14 +59,17 @@ namespace WmcSoft.Units
         }
 
         private SI()
-            : base("SI", "BIPM") {
+            : base("SI", "BIPM")
+        {
         }
 
-        public static SI GetSystemOfUnit() {
+        public static SI GetSystemOfUnit()
+        {
             return si;
         }
 
-        static public Unit GetUnit(KnownSIUnits unit) {
+        static public Unit GetUnit(KnownSIUnits unit)
+        {
             return Units[(int)unit];
         }
 

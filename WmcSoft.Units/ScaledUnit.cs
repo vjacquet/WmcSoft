@@ -49,14 +49,17 @@ namespace WmcSoft.Units
         #region Lifecycle
 
         public ScaledUnit(string name, decimal scaleFactor, Unit reference)
-            : this(name, null, null, scaleFactor, reference) {
+            : this(name, null, null, scaleFactor, reference)
+        {
         }
 
         public ScaledUnit(string name, string symbol, decimal scaleFactor, Unit reference)
-            : this(name, symbol, null, scaleFactor, reference) {
+            : this(name, symbol, null, scaleFactor, reference)
+        {
         }
 
-        public ScaledUnit(string name, string symbol, string definition, decimal scaleFactor, Unit reference) {
+        public ScaledUnit(string name, string symbol, string definition, decimal scaleFactor, Unit reference)
+        {
             if (reference == null) throw new ArgumentNullException("reference");
             if (name == null) throw new ArgumentNullException("name");
             if (scaleFactor <= Decimal.Zero) throw new ArgumentException(Resources.InvalidScaleFactorException, "scaleFactor");

@@ -37,19 +37,23 @@ namespace WmcSoft.Units
     public class IncompatibleMetricException : MetricException
     {
         public IncompatibleMetricException()
-            : base(DefaultMessage) {
+            : base(DefaultMessage)
+        {
         }
 
         public IncompatibleMetricException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         protected IncompatibleMetricException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
 
         public IncompatibleMetricException(string message, Exception innerException)
-            : base(message, innerException) {
+            : base(message, innerException)
+        {
         }
 
         #region DefaultMessage
@@ -60,7 +64,8 @@ namespace WmcSoft.Units
                 }
                 return _defaultMessage;
             }
-        } static string _defaultMessage;
+        }
+        static string _defaultMessage;
         #endregion
     }
 }

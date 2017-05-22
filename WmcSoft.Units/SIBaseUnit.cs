@@ -38,17 +38,20 @@ namespace WmcSoft.Units
     {
         readonly string _symbol;
 
-        internal SIBaseUnit() {
+        internal SIBaseUnit()
+        {
             _symbol = RM.GetSymbol(GetType().Name);
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return false;
             return GetType() == obj.GetType();
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return GetType().GetHashCode();
         }
 
@@ -68,7 +71,8 @@ namespace WmcSoft.Units
             get { return RM.GetDefinition(GetType().Name); }
         }
 
-        public virtual Unit WithPrefix(SIPrefix prefix) {
+        public virtual Unit WithPrefix(SIPrefix prefix)
+        {
             if (prefix == SIPrefix.None)
                 return this;
             return new SIPrefixedScaledUnit(prefix, this);
@@ -79,16 +83,19 @@ namespace WmcSoft.Units
 
     public sealed class Meter : SIBaseUnit
     {
-        public Meter() {
+        public Meter()
+        {
         }
     }
 
     public sealed class Kilogram : SIBaseUnit
     {
-        public Kilogram() {
+        public Kilogram()
+        {
         }
 
-        public override Unit WithPrefix(SIPrefix prefix) {
+        public override Unit WithPrefix(SIPrefix prefix)
+        {
             if (prefix == SIPrefix.Kilo)
                 return this;
             return new SIPrefixedScaledUnit(prefix, this);
@@ -97,28 +104,33 @@ namespace WmcSoft.Units
 
     public sealed class Second : SIBaseUnit
     {
-        public Second() {
+        public Second()
+        {
         }
     }
 
     public sealed class Ampere : SIBaseUnit
     {
-        public Ampere() {
+        public Ampere()
+        {
         }
     }
     public sealed class Kelvin : SIBaseUnit
     {
-        public Kelvin() {
+        public Kelvin()
+        {
         }
     }
     public sealed class Mole : SIBaseUnit
     {
-        public Mole() {
+        public Mole()
+        {
         }
     }
     public sealed class Candela : SIBaseUnit
     {
-        public Candela() {
+        public Candela()
+        {
         }
     }
 

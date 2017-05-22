@@ -51,26 +51,30 @@ namespace WmcSoft.Units
 
         #region Equal overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if ((obj == null) || (GetType() != obj.GetType()))
                 return false;
             Metric other = (Metric)obj;
             return (Name == other.Name) && (Symbol == other.Symbol) && (Definition == other.Definition);
         }
 
-        public static bool operator ==(Metric left, Metric right) {
+        public static bool operator ==(Metric left, Metric right)
+        {
             if (((object)left) == null)
                 return ((object)right) == null;
             return left.Equals(right);
         }
 
-        public static bool operator !=(Metric left, Metric right) {
+        public static bool operator !=(Metric left, Metric right)
+        {
             if (((object)left) == null)
                 return ((object)right) != null;
             return !left.Equals(right);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             string value;
             int hash = 0;
 
@@ -88,7 +92,8 @@ namespace WmcSoft.Units
 
         #region IEquatable<Metric> Members
 
-        public bool Equals(Metric other) {
+        public bool Equals(Metric other)
+        {
             if (other == null)
                 return false;
             return (Name == other.Name) && (Symbol == other.Symbol) && (Definition == other.Definition);
@@ -98,15 +103,18 @@ namespace WmcSoft.Units
 
         #region IFormattable Membres
 
-        public sealed override string ToString() {
+        public sealed override string ToString()
+        {
             return ToString("G", null);
         }
 
-        public string ToString(string format) {
+        public string ToString(string format)
+        {
             return ToString(format, null);
         }
 
-        public virtual string ToString(string format, IFormatProvider formatProvider) {
+        public virtual string ToString(string format, IFormatProvider formatProvider)
+        {
             switch (format) {
             case "S":
             case "s":

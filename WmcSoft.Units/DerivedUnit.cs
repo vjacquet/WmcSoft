@@ -50,30 +50,37 @@ namespace WmcSoft.Units
         #region Lifecycle
 
         public DerivedUnit(params DerivedUnitTerm[] terms)
-            : this(null, null, null, null, terms) {
+            : this(null, null, null, null, terms)
+        {
         }
 
         public DerivedUnit(string name, params DerivedUnitTerm[] terms)
-            : this(name, null, null, null, terms) {
+            : this(name, null, null, null, terms)
+        {
         }
 
         public DerivedUnit(string name, string symbol, params DerivedUnitTerm[] terms)
-            : this(name, symbol, null, null, terms) {
+            : this(name, symbol, null, null, terms)
+        {
         }
 
         public DerivedUnit(string name, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms)
-            : this(name, null, null, systemOfUnits, terms) {
+            : this(name, null, null, systemOfUnits, terms)
+        {
         }
 
         public DerivedUnit(string name, string symbol, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms)
-            : this(name, symbol, null, systemOfUnits, terms) {
+            : this(name, symbol, null, systemOfUnits, terms)
+        {
         }
 
         public DerivedUnit(string name, string symbol, string definition, params DerivedUnitTerm[] terms)
-            : this(name, symbol, definition, null, terms) {
+            : this(name, symbol, definition, null, terms)
+        {
         }
 
-        public DerivedUnit(string name, string symbol, string definition, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms) {
+        public DerivedUnit(string name, string symbol, string definition, SystemOfUnits systemOfUnits, params DerivedUnitTerm[] terms)
+        {
             if (terms == null || terms.Length == 0)
                 throw new ArgumentNullException("terms");
             this.name = name;
@@ -84,7 +91,8 @@ namespace WmcSoft.Units
         }
 
         public DerivedUnit(string name, string symbol, Unit unit)
-            : this(name, symbol, null, null, new[] { new DerivedUnitTerm(unit, 1) }) {
+            : this(name, symbol, null, null, new[] { new DerivedUnitTerm(unit, 1) })
+        {
         }
 
         #endregion

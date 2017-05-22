@@ -41,13 +41,15 @@ namespace WmcSoft.Units
 
         #region Equal overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (base.Equals(obj))
                 return SystemOfUnits == ((Unit)obj).SystemOfUnits;
             return false;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             int hash = base.GetHashCode();
             SystemOfUnits systemOfUnits = this.SystemOfUnits;
             if (systemOfUnits != null)
@@ -59,10 +61,12 @@ namespace WmcSoft.Units
 
         #region Sugar operators
 
-        public static implicit operator DerivedUnitTerm(Unit u) {
+        public static implicit operator DerivedUnitTerm(Unit u)
+        {
             return new DerivedUnitTerm(u, 1);
         }
-        public static DerivedUnitTerm operator ^(Unit u, int power) {
+        public static DerivedUnitTerm operator ^(Unit u, int power)
+        {
             return new DerivedUnitTerm(u, power);
         }
 

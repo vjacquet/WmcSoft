@@ -36,20 +36,24 @@ namespace WmcSoft.Units
     {
         static NaturalSystemOfUnit _systemOfUnits;
 
-        static NaturalSystemOfUnit() {
+        static NaturalSystemOfUnit()
+        {
             _systemOfUnits = new NaturalSystemOfUnit();
         }
 
         private NaturalSystemOfUnit()
-            : base("Natural", null) {
+            : base("Natural", null)
+        {
         }
 
-        public static NaturalSystemOfUnit GetSystemOfUnit() {
+        public static NaturalSystemOfUnit GetSystemOfUnit()
+        {
             return _systemOfUnits;
         }
 
         static Unit[] _units;
-        static public Unit GetUnit(KnownNaturalUnits unit) {
+        static public Unit GetUnit(KnownNaturalUnits unit)
+        {
             if (_units == null) {
                 InitializeKnownUnits();
             }
@@ -62,7 +66,8 @@ namespace WmcSoft.Units
             }
         }
 
-        static void InitializeKnownUnits() {
+        static void InitializeKnownUnits()
+        {
             lock (_systemOfUnits) {
                 if (_units == null) {
                     _units = new Unit[5];
