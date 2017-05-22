@@ -94,6 +94,80 @@ namespace WmcSoft.Statistics
 
         #endregion
 
+        #region Specialized
+
+        public T Median()
+        {
+            return this[1, 2];
+        }
+
+        public T Tercile(int nth)
+        {
+            return this[nth, 3];
+        }
+
+        public T Quartile(int nth)
+        {
+            return this[nth, 4];
+        }
+
+        public T Quintile(int nth)
+        {
+            return this[nth, 5];
+        }
+
+        public T Sextile(int nth)
+        {
+            return this[nth, 6];
+        }
+
+        public T Septile(int nth)
+        {
+            return this[nth, 7];
+        }
+
+        public T Octile(int nth)
+        {
+            return this[nth, 8];
+        }
+
+        public T Decile(int nth)
+        {
+            return this[nth, 10];
+        }
+
+        public T Duodecile(int nth)
+        {
+            return this[nth, 12];
+        }
+
+        public T Hexadecile(int nth)
+        {
+            return this[nth, 16];
+        }
+
+        public T Vigintile(int nth)
+        {
+            return this[nth, 20];
+        }
+
+        public T Trigintatrecile(int nth)
+        {
+            return this[nth, 30];
+        }
+
+        public T Percentile(int nth)
+        {
+            return this[nth, 100];
+        }
+
+        public T Permille(int nth)
+        {
+            return this[nth, 1000];
+        }
+
+        #endregion
+
         #region IEnumerable<T> Membres
 
         public IEnumerator<T> GetEnumerator()
