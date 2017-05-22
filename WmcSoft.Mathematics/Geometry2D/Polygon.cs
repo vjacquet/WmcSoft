@@ -28,6 +28,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using static System.Double;
+
 namespace WmcSoft.Geometry2D
 {
     public sealed class Polygon : IReadOnlyList<Point>
@@ -42,8 +44,8 @@ namespace WmcSoft.Geometry2D
 
         public Polygon(params Point[] points)
         {
-            if (points == null) throw new ArgumentNullException("points");
-            if (points.Length < 3) throw new ArgumentOutOfRangeException("points");
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            if (points.Length < 3) throw new ArgumentOutOfRangeException(nameof(points));
 
             var n = points.Length;
             _points = new Point[n + 2];
@@ -58,7 +60,7 @@ namespace WmcSoft.Geometry2D
 
         public Point this[int index] {
             get {
-                if (index >= Count) throw new ArgumentOutOfRangeException("index");
+                if (index >= Count) throw new ArgumentOutOfRangeException(nameof(index));
 
                 return _points[index - 1];
             }
@@ -73,7 +75,7 @@ namespace WmcSoft.Geometry2D
             uint n = 0;
             var length = Count;
 
-            var st = new Segment(t, new Point(Double.PositiveInfinity, t.Y));
+            var st = new Segment(t, new Point(PositiveInfinity, t.Y));
             var j = 0;
             for (int i = 1; i <= length; i++) {
                 var sp = new Segment(_points[i], _points[i]);

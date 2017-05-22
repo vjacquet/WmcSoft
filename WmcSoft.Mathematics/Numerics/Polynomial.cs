@@ -39,14 +39,10 @@ namespace WmcSoft.Numerics
 
         struct ExponentComparer : IComparer<Node>
         {
-            #region IComparer<Node> Membres
-
             public int Compare(Node x, Node y)
             {
                 return y.Exp - x.Exp;
             }
-
-            #endregion
         }
 
         struct Node : IComparable<Node>, IEquatable<Node>, IFormattable
@@ -71,7 +67,7 @@ namespace WmcSoft.Numerics
             public int CompareTo(Node other)
             {
                 if (Exp == other.Exp)
-                    return Comparer<double>.Default.Compare(Coef, other.Coef);
+                    return Coef.CompareTo(other.Coef);
                 return Exp - other.Exp;
             }
 

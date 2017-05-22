@@ -29,34 +29,40 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Statistics
 {
+    /// <summary>
+    /// Utility to retrieve the closest quantile from a given set.
+    /// </summary>
+    /// <typeparam name="T">The type of values.</typeparam>
     public struct Quantiles<T> : IEnumerable<T>
     {
         readonly List<T> _values;
 
         #region Lifecycle
 
-        public Quantiles(IEnumerable<T> values)
+        private Quantiles(List<T> values, IComparer<T> comparer)
         {
-            _values = new List<T>(values);
-            _values.Sort();
+            _values = values;
+            _values.Sort(comparer ?? Comparer<T>.Default);
+        }
+
+        public Quantiles(IEnumerable<T> values)
+            : this(new List<T>(values), Comparer<T>.Default)
+        {
         }
 
         public Quantiles(IComparer<T> comparer, IEnumerable<T> values)
+            : this(new List<T>(values), comparer ?? Comparer<T>.Default)
         {
-            _values = new List<T>(values);
-            _values.Sort(comparer);
         }
 
         public Quantiles(params T[] values)
+            : this(new List<T>(values), Comparer<T>.Default)
         {
-            _values = new List<T>(values);
-            _values.Sort();
         }
 
         public Quantiles(IComparer<T> comparer, params T[] values)
+            : this(new List<T>(values), comparer ?? Comparer<T>.Default)
         {
-            _values = new List<T>(values);
-            _values.Sort(comparer);
         }
 
         #endregion
@@ -75,6 +81,14 @@ namespace WmcSoft.Statistics
                 if (g > 0.5d)
                     return _values[j];
                 return _values[j - 1];
+            }
+        }
+
+        public T this[int nth, int quantiles] {
+            get {
+                if (nth < 0 || nth >= quantiles) throw new ArgumentOutOfRangeException(nameof(nth));
+
+                return this[(double)nth / quantiles];
             }
         }
 

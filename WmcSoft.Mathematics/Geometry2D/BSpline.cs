@@ -39,16 +39,17 @@ namespace WmcSoft.Geometry2D
 
         public double N(int i, int p, double x)
         {
-            if (p == 1) {
+            switch (p) {
+            case 0:
+                return (_knots[i] <= x && x < _knots[i + 1]) ? 1d : 0d;
+            case 1:
                 if (x < _knots[i] || x >= _knots[i + 2]) return 0d;
                 if (x < _knots[i + 1]) return (x - _knots[i]) / (_knots[i + p] - _knots[i]);
                 return (_knots[i + p + 1] - x) / (_knots[i + p + 1] - _knots[i + 1]);
+            default:
+                return ((x - _knots[i]) / (_knots[i + p] - _knots[i])) * N(i, p - 1, x)
+                    + ((_knots[i + p + 1] - x) / (_knots[i + p + 1] - _knots[i + 1])) * N(i + 1, p - 1, x);
             }
-            if (p == 0) {
-                return (_knots[i] <= x && x < _knots[i + 1]) ? 1d : 0d;
-            }
-            return ((x - _knots[i]) / (_knots[i + p] - _knots[i])) * N(i, p - 1, x)
-                + ((_knots[i + p + 1] - x) / (_knots[i + p + 1] - _knots[i + 1])) * N(i + 1, p - 1, x);
         }
     }
 }
