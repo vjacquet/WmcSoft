@@ -1368,6 +1368,36 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Unless
+
+        /// <summary>
+        /// Filters a sequence of values based on a predicate evaluating to false.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to filter.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that contains elements from the input sequence that does not satisfy the condition.</returns>
+        public static IEnumerable<TSource> Unless<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            return source.Where(x => !predicate(x));
+        }
+
+        /// <summary>
+        /// Filters a sequence of values based on a predicate evaluating to false. Each element's index is used in the logic of the predicate function.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to filter.</param>
+        /// <param name="predicate">A function to test each element for a condition; the second parameter of the function represents the index of the source element.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that contains elements from the input sequence that does not satisfy the condition.</returns>
+        public static IEnumerable<TSource> Unless<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate)
+        {
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            return source.Where((x, i) => !predicate(x, i));
+        }
+
+        #endregion
+
         #region ZipAll methods
 
         public static IEnumerable<TResult> UnguardedZipAll<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector, TFirst defaultFirst = default(TFirst), TSecond defaultSecond = default(TSecond))

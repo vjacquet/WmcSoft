@@ -416,5 +416,23 @@ namespace WmcSoft.Collections.Generic
             Assert.AreEqual(5, dictionary[2]);
             Assert.IsFalse(dictionary.ContainsKey(3));
         }
+
+        [TestMethod]
+        public void CheckUnless()
+        {
+            var source = new[] { 1, 2, 3, 4, 5, 6, 7 };
+            var actual = source.Unless(x => x % 3 == 0).ToArray();
+            var expected = new[] { 1, 2, 4, 5, 7 };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckUnlessWithIndex()
+        {
+            var source = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G','H' };
+            var actual = source.Unless((x,i) => i % 3 == 0).ToArray();
+            var expected = new[] { 'B', 'C', 'E', 'F', 'H' };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
