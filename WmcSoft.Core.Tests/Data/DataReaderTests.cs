@@ -7,12 +7,14 @@ namespace WmcSoft.Data
     [TestClass]
     public class DataReaderTests
     {
-        Model Make(int i, string s) {
+        Model Make(int i, string s)
+        {
             return new Model(i, s);
         }
 
         [TestMethod]
-        public void CanMaterialize() {
+        public void CanMaterialize()
+        {
             var materializer = DbCommandExtensions.MakeMaterializer((int i, string s) => new Model(i, s));
             var reader = new DataReaderAdapter(1, "two");
             var actual = materializer(reader);
@@ -21,7 +23,8 @@ namespace WmcSoft.Data
         }
 
         [TestMethod]
-        public void CanFillTable() {
+        public void CanFillTable()
+        {
             var reader = new TypeDescriptorDataReader<Model>(new[] {
                 new Model(1, "one"),
                 new Model(2, "two"),
@@ -42,7 +45,8 @@ namespace WmcSoft.Data
         }
 
         [TestMethod]
-        public void CheckHasRowsForAdapter() {
+        public void CheckHasRowsForAdapter()
+        {
             var underlying = new TypeDescriptorDataReader<Model>(new[] {
                 new Model(1, "one"),
                 new Model(2, "two"),
@@ -57,7 +61,8 @@ namespace WmcSoft.Data
         }
 
         [TestMethod]
-        public void CheckReadForAdapter() {
+        public void CheckReadForAdapter()
+        {
             var underlying = new TypeDescriptorDataReader<Model>(new[] {
                 new Model(1, "one"),
                 new Model(2, "two"),
@@ -73,7 +78,8 @@ namespace WmcSoft.Data
 
     class Model
     {
-        public Model(int i, string s) {
+        public Model(int i, string s)
+        {
             First = i;
             Second = s;
         }
@@ -87,33 +93,38 @@ namespace WmcSoft.Data
         bool _read;
         readonly object[] _data;
 
-        public DataReaderAdapter(params object[] data) {
+        public DataReaderAdapter(params object[] data)
+        {
             _read = false;
             _data = data;
         }
 
-        public override int FieldCount
-        {
+        public override int FieldCount {
             get { return _data.Length; }
         }
 
-        public override Type GetFieldType(int i) {
+        public override Type GetFieldType(int i)
+        {
             throw new NotImplementedException();
         }
 
-        public override string GetName(int i) {
+        public override string GetName(int i)
+        {
             throw new NotImplementedException();
         }
 
-        public override int GetOrdinal(string name) {
+        public override int GetOrdinal(string name)
+        {
             throw new NotImplementedException();
         }
 
-        public override object GetValue(int i) {
+        public override object GetValue(int i)
+        {
             return _data[i];
         }
 
-        public override bool Read() {
+        public override bool Read()
+        {
             if (!_read) {
                 _read = true;
                 return true;

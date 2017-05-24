@@ -8,7 +8,8 @@ namespace WmcSoft.Data
     public class DataRowCollectionExtensionsTests
     {
         [TestMethod]
-        public void CanQueryDataRowCollection() {
+        public void CanQueryDataRowCollection()
+        {
             var dt = new DataTable();
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Age", typeof(int));
