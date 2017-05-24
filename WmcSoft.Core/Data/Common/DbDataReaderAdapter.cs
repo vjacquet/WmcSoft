@@ -37,7 +37,8 @@ namespace WmcSoft.Data.Common
         bool _readOnce;
         bool? _hasData;
 
-        public DbDataReaderAdapter(IDataReader reader) {
+        public DbDataReaderAdapter(IDataReader reader)
+        {
             _reader = reader;
         }
 
@@ -75,109 +76,135 @@ namespace WmcSoft.Data.Common
             get { return _reader.RecordsAffected; }
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             _reader.Close();
         }
 
-        public override bool GetBoolean(int ordinal) {
+        public override bool GetBoolean(int ordinal)
+        {
             return _reader.GetBoolean(ordinal);
         }
 
-        public override byte GetByte(int ordinal) {
+        public override byte GetByte(int ordinal)
+        {
             return _reader.GetByte(ordinal);
         }
 
-        public override long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length) {
+        public override long GetBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
+        {
             return _reader.GetBytes(ordinal, dataOffset, buffer, bufferOffset, length);
         }
 
-        public override char GetChar(int ordinal) {
+        public override char GetChar(int ordinal)
+        {
             return _reader.GetChar(ordinal);
         }
 
-        public override long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length) {
+        public override long GetChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
+        {
             return _reader.GetChars(ordinal, dataOffset, buffer, bufferOffset, length);
         }
 
-        public override string GetDataTypeName(int ordinal) {
+        public override string GetDataTypeName(int ordinal)
+        {
             return _reader.GetDataTypeName(ordinal);
         }
 
-        public override DateTime GetDateTime(int ordinal) {
+        public override DateTime GetDateTime(int ordinal)
+        {
             return _reader.GetDateTime(ordinal);
         }
 
-        public override decimal GetDecimal(int ordinal) {
+        public override decimal GetDecimal(int ordinal)
+        {
             return _reader.GetDecimal(ordinal);
         }
 
-        public override double GetDouble(int ordinal) {
+        public override double GetDouble(int ordinal)
+        {
             return _reader.GetDouble(ordinal);
         }
 
-        public override IEnumerator GetEnumerator() {
+        public override IEnumerator GetEnumerator()
+        {
             return new DbEnumerator(_reader);
         }
 
-        public override Type GetFieldType(int ordinal) {
+        public override Type GetFieldType(int ordinal)
+        {
             return _reader.GetFieldType(ordinal);
         }
 
-        public override float GetFloat(int ordinal) {
+        public override float GetFloat(int ordinal)
+        {
             return _reader.GetFloat(ordinal);
         }
 
-        public override Guid GetGuid(int ordinal) {
+        public override Guid GetGuid(int ordinal)
+        {
             return _reader.GetGuid(ordinal);
         }
 
-        public override short GetInt16(int ordinal) {
+        public override short GetInt16(int ordinal)
+        {
             return _reader.GetInt16(ordinal);
         }
 
-        public override int GetInt32(int ordinal) {
+        public override int GetInt32(int ordinal)
+        {
             return _reader.GetInt32(ordinal);
         }
 
-        public override long GetInt64(int ordinal) {
+        public override long GetInt64(int ordinal)
+        {
             return _reader.GetInt64(ordinal);
         }
 
-        public override string GetName(int ordinal) {
+        public override string GetName(int ordinal)
+        {
             return _reader.GetName(ordinal);
         }
 
-        public override int GetOrdinal(string name) {
+        public override int GetOrdinal(string name)
+        {
             return _reader.GetOrdinal(name);
         }
 
-        public override DataTable GetSchemaTable() {
+        public override DataTable GetSchemaTable()
+        {
             return _reader.GetSchemaTable();
         }
 
-        public override string GetString(int ordinal) {
+        public override string GetString(int ordinal)
+        {
             return _reader.GetString(ordinal);
         }
 
-        public override object GetValue(int ordinal) {
+        public override object GetValue(int ordinal)
+        {
             return _reader.GetValue(ordinal);
         }
 
-        public override int GetValues(object[] values) {
+        public override int GetValues(object[] values)
+        {
             return _reader.GetValues(values);
         }
 
-        public override bool IsDBNull(int ordinal) {
+        public override bool IsDBNull(int ordinal)
+        {
             return _reader.GetBoolean(ordinal);
         }
 
-        public override bool NextResult() {
+        public override bool NextResult()
+        {
             _hasData = null;
             _readOnce = false;
             return _reader.NextResult();
         }
 
-        public override bool Read() {
+        public override bool Read()
+        {
             if (!_hasData.HasValue) {
                 _hasData = _reader.Read();
                 return _hasData.GetValueOrDefault();

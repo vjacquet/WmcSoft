@@ -30,11 +30,13 @@ namespace WmcSoft.Data
 {
     public static class DataColumnCollectionExtensions
     {
-        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName) {
+        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName)
+        {
             return columns.Add(columnName, typeof(T));
         }
 
-        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName, T defaultValue) {
+        public static DataColumn Add<T>(this DataColumnCollection columns, string columnName, T defaultValue)
+        {
             var column = columns.Add(columnName, typeof(T));
             column.DefaultValue = defaultValue;
             return column;

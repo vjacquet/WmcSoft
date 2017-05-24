@@ -33,42 +33,52 @@ namespace WmcSoft.Data
 {
     public static class DataRowCollectionExtensions
     {
-        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, bool> predicate) {
+        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, bool> predicate)
+        {
             return collection.Cast<DataRow>().Where(predicate);
         }
 
-        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, int, bool> predicate) {
+        public static IEnumerable<DataRow> Where(this DataRowCollection collection, Func<DataRow, int, bool> predicate)
+        {
             return collection.Cast<DataRow>().Where(predicate);
         }
 
-        public static IEnumerable<U> Select<U>(this DataRowCollection collection, Func<DataRow, U> selector) {
+        public static IEnumerable<U> Select<U>(this DataRowCollection collection, Func<DataRow, U> selector)
+        {
             return collection.Cast<DataRow>().Select(selector);
         }
-        public static IEnumerable<V> SelectMany<U, V>(this DataRowCollection collection, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector) {
+        public static IEnumerable<V> SelectMany<U, V>(this DataRowCollection collection, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector)
+        {
             return collection.Cast<DataRow>().SelectMany(selector, resultSelector);
         }
 
-        public static IEnumerable<V> Join<U, K, V>(this DataRowCollection collection, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector) {
+        public static IEnumerable<V> Join<U, K, V>(this DataRowCollection collection, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector)
+        {
             return collection.Cast<DataRow>().Join(inner, outerKeySelector, innerKeySelector, resultSelector);
         }
 
-        public static IEnumerable<V> GroupJoin<U, K, V>(this DataRowCollection collection, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector) {
+        public static IEnumerable<V> GroupJoin<U, K, V>(this DataRowCollection collection, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector)
+        {
             return collection.Cast<DataRow>().GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
         }
 
-        public static IOrderedEnumerable<DataRow> OrderBy<K>(this DataRowCollection collection, Func<DataRow, K> keySelector) {
+        public static IOrderedEnumerable<DataRow> OrderBy<K>(this DataRowCollection collection, Func<DataRow, K> keySelector)
+        {
             return collection.Cast<DataRow>().OrderBy(keySelector);
         }
 
-        public static IOrderedEnumerable<DataRow> OrderByDescending<K>(this DataRowCollection collection, Func<DataRow, K> keySelector) {
+        public static IOrderedEnumerable<DataRow> OrderByDescending<K>(this DataRowCollection collection, Func<DataRow, K> keySelector)
+        {
             return collection.Cast<DataRow>().OrderByDescending(keySelector);
         }
 
-        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataRowCollection collection, Func<DataRow, K> keySelector) {
+        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataRowCollection collection, Func<DataRow, K> keySelector)
+        {
             return collection.Cast<DataRow>().GroupBy(keySelector);
         }
 
-        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataRowCollection collection, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector) {
+        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataRowCollection collection, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector)
+        {
             return collection.Cast<DataRow>().GroupBy(keySelector, elementSelector);
         }
     }

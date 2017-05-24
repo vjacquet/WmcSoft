@@ -40,15 +40,15 @@ namespace WmcSoft.Data
         /// <summary>
         /// Closes the <see cref="IDataReader"/> Object.
         /// </summary>
-        public void Close() {
+        public void Close()
+        {
             Dispose();
         }
 
         /// <summary>
         /// Gets a value indicating the depth of nesting for the current row.
         /// </summary>
-        public int Depth
-        {
+        public int Depth {
             get { return 0; }
         }
 
@@ -57,7 +57,8 @@ namespace WmcSoft.Data
         /// </summary>
         /// <returns>A <see cref="DataTable"/> that describes the column metadata</returns>
         /// <exception cref="InvalidOperationException">The <see cref="IDataReader"/> is closed.</exception>
-        public virtual DataTable GetSchemaTable() {
+        public virtual DataTable GetSchemaTable()
+        {
             var dt = new DataTable("SchemaTable");
             dt.Locale = System.Globalization.CultureInfo.InvariantCulture;
 
@@ -89,7 +90,8 @@ namespace WmcSoft.Data
         /// <param name="dataTable">The data table.</param>
         /// <param name="i">The index of the column.</param>
         /// <returns>A <see cref="DataRow"/> that describes one column.</returns>
-        protected virtual DataRow GetSchemaRow(DataTable dataTable, int i) {
+        protected virtual DataRow GetSchemaRow(DataTable dataTable, int i)
+        {
             var dr = dataTable.NewRow();
             dr[0] = GetName(i);
             dr[1] = i;
@@ -100,8 +102,7 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets a value indicating whether the data reader is closed.
         /// </summary>
-        public bool IsClosed
-        {
+        public bool IsClosed {
             get { return _disposed; }
         }
 
@@ -109,7 +110,8 @@ namespace WmcSoft.Data
         /// Advances the data reader to the next result, when reading the results of SQL statements.
         /// </summary>
         /// <returns>true if there are more rows; otherwise, false.</returns>
-        public bool NextResult() {
+        public bool NextResult()
+        {
             return false;
         }
 
@@ -122,8 +124,7 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
         /// </summary>
-        public int RecordsAffected
-        {
+        public int RecordsAffected {
             get { return -1; }
         }
 
@@ -136,7 +137,8 @@ namespace WmcSoft.Data
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             if (_disposed)
                 return;
 
@@ -145,10 +147,12 @@ namespace WmcSoft.Data
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
-        ~DataReaderBase() {
+        ~DataReaderBase()
+        {
             Dispose(false);
         }
 
@@ -160,8 +164,7 @@ namespace WmcSoft.Data
         /// Gets the number of columns in the current row.
         /// </summary>
         /// <value>When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.</value>
-        public abstract int FieldCount
-        {
+        public abstract int FieldCount {
             get;
         }
 
@@ -171,7 +174,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public bool GetBoolean(int i) {
+        public bool GetBoolean(int i)
+        {
             return (bool)GetValue(i);
         }
 
@@ -181,7 +185,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public byte GetByte(int i) {
+        public byte GetByte(int i)
+        {
             return (byte)GetValue(i);
         }
 
@@ -195,7 +200,8 @@ namespace WmcSoft.Data
         /// <param name="length">The number of bytes to read.</param>
         /// <returns>The actual number of bytes read.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public long GetBytes(int i, long fieldoffset, byte[] buffer, int bufferoffset, int length) {
+        public long GetBytes(int i, long fieldoffset, byte[] buffer, int bufferoffset, int length)
+        {
             var source = (byte[])GetValue(i);
             if (buffer == null)
                 return source.LongLength;
@@ -210,7 +216,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public char GetChar(int i) {
+        public char GetChar(int i)
+        {
             return (char)GetValue(i);
         }
 
@@ -225,7 +232,8 @@ namespace WmcSoft.Data
         /// <param name="length">The number of bytes to read.</param>
         /// <returns>The actual number of characters read.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length) {
+        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        {
             var source = (char[])GetValue(i);
             if (buffer == null)
                 return source.LongLength;
@@ -240,7 +248,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The <see cref="System.Data.IDataReader"/> for the specified column ordinal.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public virtual IDataReader GetData(int i) {
+        public virtual IDataReader GetData(int i)
+        {
             return (IDataReader)GetValue(i);
         }
 
@@ -250,7 +259,8 @@ namespace WmcSoft.Data
         /// <param name="i">The index of the field to find.</param>
         /// <returns>The data type information for the specified field.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public virtual string GetDataTypeName(int i) {
+        public virtual string GetDataTypeName(int i)
+        {
             return GetFieldType(i).Name;
         }
 
@@ -260,7 +270,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public DateTime GetDateTime(int i) {
+        public DateTime GetDateTime(int i)
+        {
             return (DateTime)GetValue(i);
         }
 
@@ -270,7 +281,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public decimal GetDecimal(int i) {
+        public decimal GetDecimal(int i)
+        {
             return (decimal)GetValue(i);
         }
 
@@ -280,7 +292,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public double GetDouble(int i) {
+        public double GetDouble(int i)
+        {
             return (double)GetValue(i);
         }
 
@@ -300,7 +313,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public float GetFloat(int i) {
+        public float GetFloat(int i)
+        {
             return (float)GetValue(i);
         }
 
@@ -310,7 +324,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public Guid GetGuid(int i) {
+        public Guid GetGuid(int i)
+        {
             return (Guid)GetValue(i);
         }
 
@@ -320,7 +335,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public short GetInt16(int i) {
+        public short GetInt16(int i)
+        {
             return (short)GetValue(i);
         }
 
@@ -330,7 +346,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public int GetInt32(int i) {
+        public int GetInt32(int i)
+        {
             return (int)GetValue(i);
         }
 
@@ -340,7 +357,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public long GetInt64(int i) {
+        public long GetInt64(int i)
+        {
             return (long)GetValue(i);
         }
 
@@ -365,7 +383,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public string GetString(int i) {
+        public string GetString(int i)
+        {
             return (string)GetValue(i);
         }
 
@@ -382,7 +401,8 @@ namespace WmcSoft.Data
         /// </summary>
         /// <param name="values">An array of <see cref="System.Object"/> to copy the attribute fields into.</param>
         /// <returns>The number of instances of <see cref="System.Object"/> in the array.</returns>
-        public virtual int GetValues(object[] values) {
+        public virtual int GetValues(object[] values)
+        {
             int count = Math.Min(values.Length, FieldCount);
             for (int i = 0; i != count; ++i) {
                 values[i] = GetValue(i);
@@ -396,7 +416,8 @@ namespace WmcSoft.Data
         /// <param name="i">The index of the field to find.</param>
         /// <returns>true if the specified field is set to null; otherwise, false.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public virtual bool IsDBNull(int i) {
+        public virtual bool IsDBNull(int i)
+        {
             var value = GetValue(i);
             return value == null || value == System.DBNull.Value;
         }
@@ -407,8 +428,7 @@ namespace WmcSoft.Data
         /// <param name="name">The name of the column to find.</param>
         /// <returns>The column with the specified name as an <see cref="System.Object"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">No column with the specified name was found.</exception>
-        public object this[string name]
-        {
+        public object this[string name] {
             get { return GetValue(name); }
         }
 
@@ -418,12 +438,12 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based index of the column to get.</param>
         /// <returns>The column with the specified name as an <see cref="System.Object"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public object this[int i]
-        {
+        public object this[int i] {
             get { return GetValue(i); }
         }
 
-        protected virtual object GetValue(string name) {
+        protected virtual object GetValue(string name)
+        {
             return GetValue(GetOrdinal(name));
         }
 

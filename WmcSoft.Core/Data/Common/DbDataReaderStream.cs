@@ -39,7 +39,8 @@ namespace WmcSoft.Data.Common
         readonly int _ordinal;
         long _position;
 
-        public DbDataReaderStream(IDataReader reader, int ordinal) {
+        public DbDataReaderStream(IDataReader reader, int ordinal)
+        {
             if (reader == null) throw new ArgumentNullException("reader");
 
             _reader = reader;
@@ -68,10 +69,12 @@ namespace WmcSoft.Data.Common
             set { Seek(value, SeekOrigin.Begin); }
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             var length = Length;
             switch (origin) {
             case SeekOrigin.Current:
@@ -92,17 +95,20 @@ namespace WmcSoft.Data.Common
             return _position;
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             throw new NotSupportedException();
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             var read = _reader.GetBytes(_ordinal, _position, buffer, offset, count);
             _position += read;
             return checked((int)read);
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             throw new NotSupportedException();
         }
     }

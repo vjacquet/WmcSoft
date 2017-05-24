@@ -36,7 +36,8 @@ namespace WmcSoft.Data
         /// <typeparam name="T">The type of object to return.</typeparam>
         /// <param name="value">An object that implements the <see cref="IConvertible"/> interface.</param>
         /// <returns>An object whose type is <typeparamref name="T"/> and whose value is equivalent to value or a null reference, if value is null or DBNull and <typeparamref name="T"/> is not a value type. </returns>
-        public static T ChangeType<T>(object value) {
+        public static T ChangeType<T>(object value)
+        {
             var underlyingType = Nullable.GetUnderlyingType(typeof(T));
             if (value == DBNull.Value) {
                 if (underlyingType != null || !typeof(T).IsValueType)
@@ -53,7 +54,8 @@ namespace WmcSoft.Data
         /// <param name="value">An object that implements the <see cref="IConvertible"/> interface.</param>
         /// <param name="defaultValue">The default value if the value is null or DBNull</param>
         /// <returns>An object whose type is <typeparamref name="T"/> and whose value is equivalent to value or default, if value is null or DBNull and <typeparamref name="T"/> is not a value type. </returns>
-        public static T ChangeTypeOrDefault<T>(object value, T defaultValue = default(T)) {
+        public static T ChangeTypeOrDefault<T>(object value, T defaultValue = default(T))
+        {
             if (value == DBNull.Value)
                 return defaultValue;
 

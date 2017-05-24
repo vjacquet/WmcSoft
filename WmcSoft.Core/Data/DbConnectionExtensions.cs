@@ -31,7 +31,7 @@ using System.Data.Common;
 
 namespace WmcSoft.Data
 {
-    public static class DbConnectionExtensions
+    public static partial class DbConnectionExtensions
     {
         #region Factory methods
 

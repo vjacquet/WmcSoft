@@ -33,50 +33,62 @@ namespace WmcSoft.Data
 {
     public static class DataTableCollectionExtensions
     {
-        public static EnumerableRowCollection<DataRow> Where(this DataTable table, Func<DataRow, bool> predicate) {
+        public static EnumerableRowCollection<DataRow> Where(this DataTable table, Func<DataRow, bool> predicate)
+        {
             return table.AsEnumerable().Where(predicate);
         }
 
-        public static EnumerableRowCollection<U> Select<U>(this DataTable table, Func<DataRow, U> selector) {
+        public static EnumerableRowCollection<U> Select<U>(this DataTable table, Func<DataRow, U> selector)
+        {
             return table.AsEnumerable().Select(selector);
         }
-        public static IEnumerable<V> SelectMany<U, V>(this DataTable table, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector) {
+        public static IEnumerable<V> SelectMany<U, V>(this DataTable table, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector)
+        {
             return table.AsEnumerable().SelectMany(selector, resultSelector);
         }
 
-        public static IEnumerable<V> Join<U, K, V>(this DataTable table, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector) {
+        public static IEnumerable<V> Join<U, K, V>(this DataTable table, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector)
+        {
             return table.AsEnumerable().Join(inner, outerKeySelector, innerKeySelector, resultSelector);
         }
 
-        public static IEnumerable<V> GroupJoin<U, K, V>(this DataTable table, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector) {
+        public static IEnumerable<V> GroupJoin<U, K, V>(this DataTable table, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector)
+        {
             return table.AsEnumerable().GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
         }
 
-        public static OrderedEnumerableRowCollection<DataRow> OrderBy<K>(this DataTable table, Func<DataRow, K> keySelector) {
+        public static OrderedEnumerableRowCollection<DataRow> OrderBy<K>(this DataTable table, Func<DataRow, K> keySelector)
+        {
             return table.AsEnumerable().OrderBy(keySelector);
         }
 
-        public static OrderedEnumerableRowCollection<DataRow> OrderByDescending<K>(this DataTable table, Func<DataRow, K> keySelector) {
+        public static OrderedEnumerableRowCollection<DataRow> OrderByDescending<K>(this DataTable table, Func<DataRow, K> keySelector)
+        {
             return table.AsEnumerable().OrderByDescending(keySelector);
         }
 
-        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataTable table, Func<DataRow, K> keySelector) {
+        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataTable table, Func<DataRow, K> keySelector)
+        {
             return table.AsEnumerable().GroupBy(keySelector);
         }
 
-        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataTable table, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector) {
+        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataTable table, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector)
+        {
             return table.AsEnumerable().GroupBy(keySelector, elementSelector);
         }
 
-        public static IEnumerable<DataRow> Where(this DataTable table, Func<DataRow, int, bool> predicate) {
+        public static IEnumerable<DataRow> Where(this DataTable table, Func<DataRow, int, bool> predicate)
+        {
             return table.AsEnumerable().Where(predicate);
         }
 
-        public static DataColumn AddColumn<T>(this DataTable table, string columnName) {
+        public static DataColumn AddColumn<T>(this DataTable table, string columnName)
+        {
             return table.Columns.Add(columnName, typeof(T));
         }
 
-        public static DataColumn AddColumn<T>(this DataTable table, string columnName, T defaultValue) {
+        public static DataColumn AddColumn<T>(this DataTable table, string columnName, T defaultValue)
+        {
             var column = table.Columns.Add(columnName, typeof(T));
             column.DefaultValue = defaultValue;
             return column;

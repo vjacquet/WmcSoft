@@ -45,7 +45,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static TEnum GetEnum<TEnum>(this IDataRecord record, int i) {
+        public static TEnum GetEnum<TEnum>(this IDataRecord record, int i)
+        {
             Debug.Assert(typeof(TEnum).IsEnum);
 
             var value = Enum.Parse(typeof(TEnum), record.GetValue(i).ToString());
@@ -64,7 +65,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static string GetNullableString(this IDataRecord record, int i) {
+        public static string GetNullableString(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetString(i);
@@ -76,7 +78,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static bool? GetNullableBoolean(this IDataRecord record, int i) {
+        public static bool? GetNullableBoolean(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetBoolean(i);
@@ -88,7 +91,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static byte? GetNullableByte(this IDataRecord record, int i) {
+        public static byte? GetNullableByte(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetByte(i);
@@ -100,7 +104,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static char? GetNullableChar(this IDataRecord record, int i) {
+        public static char? GetNullableChar(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetChar(i);
@@ -112,7 +117,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static DateTime? GetNullableDateTime(this IDataRecord record, int i) {
+        public static DateTime? GetNullableDateTime(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetDateTime(i);
@@ -124,7 +130,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static Guid? GetNullableGuid(this IDataRecord record, int i) {
+        public static Guid? GetNullableGuid(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetGuid(i);
@@ -136,7 +143,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static short? GetNullableInt16(this IDataRecord record, int i) {
+        public static short? GetNullableInt16(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetInt16(i);
@@ -148,7 +156,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static int? GetNullableInt32(this IDataRecord record, int i) {
+        public static int? GetNullableInt32(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetInt32(i);
@@ -161,7 +170,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
 
-        public static long? GetNullableInt64(this IDataRecord record, int i) {
+        public static long? GetNullableInt64(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetInt64(i);
@@ -173,7 +183,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static float? GetNullableFloat(this IDataRecord record, int i) {
+        public static float? GetNullableFloat(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetFloat(i);
@@ -185,7 +196,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static double? GetNullableDouble(this IDataRecord record, int i) {
+        public static double? GetNullableDouble(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return record.GetDouble(i);
@@ -197,7 +209,8 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static double? GetNullableDecimal(this IDataRecord record, int i) {
+        public static double? GetNullableDecimal(this IDataRecord record, int i)
+        {
             if (record.IsDBNull(i))
                 return null;
             return (double)record.GetDecimal(i);
@@ -214,7 +227,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static string GetStringOrDefault(this IDataRecord record, int i, string defaultValue = "") {
+        public static string GetStringOrDefault(this IDataRecord record, int i, string defaultValue = "")
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetString(i);
@@ -227,7 +241,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static bool GetBooleanOrDefault(this IDataRecord record, int i, bool defaultValue = false) {
+        public static bool GetBooleanOrDefault(this IDataRecord record, int i, bool defaultValue = false)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetBoolean(i);
@@ -240,7 +255,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static byte GetByteOrDefault(this IDataRecord record, int i, byte defaultValue = default(byte)) {
+        public static byte GetByteOrDefault(this IDataRecord record, int i, byte defaultValue = default(byte))
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetByte(i);
@@ -253,7 +269,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static char GetCharOrDefault(this IDataRecord record, int i, char defaultValue = default(char)) {
+        public static char GetCharOrDefault(this IDataRecord record, int i, char defaultValue = default(char))
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetChar(i);
@@ -266,7 +283,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static DateTime GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = default(DateTime)) {
+        public static DateTime GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = default(DateTime))
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDateTime(i);
@@ -279,7 +297,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static Guid GetGuidOrDefault(this IDataRecord record, int i, Guid defaultValue = default(Guid)) {
+        public static Guid GetGuidOrDefault(this IDataRecord record, int i, Guid defaultValue = default(Guid))
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetGuid(i);
@@ -292,7 +311,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static short GetInt16OrDefault(this IDataRecord record, int i, short defaultValue = 0) {
+        public static short GetInt16OrDefault(this IDataRecord record, int i, short defaultValue = 0)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt16(i);
@@ -305,7 +325,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static int GetInt32OrDefault(this IDataRecord record, int i, int defaultValue = 0) {
+        public static int GetInt32OrDefault(this IDataRecord record, int i, int defaultValue = 0)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt32(i);
@@ -318,7 +339,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static long GetInt64OrDefault(this IDataRecord record, int i, long defaultValue = 0) {
+        public static long GetInt64OrDefault(this IDataRecord record, int i, long defaultValue = 0)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt64(i);
@@ -331,7 +353,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static float GetFloatOrDefault(this IDataRecord record, int i, float defaultValue = 0f) {
+        public static float GetFloatOrDefault(this IDataRecord record, int i, float defaultValue = 0f)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetFloat(i);
@@ -344,7 +367,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static double GetDoubleOrDefault(this IDataRecord record, int i, double defaultValue = 0d) {
+        public static double GetDoubleOrDefault(this IDataRecord record, int i, double defaultValue = 0d)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDouble(i);
@@ -357,7 +381,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static decimal GetDecimalOrDefault(this IDataRecord record, int i, decimal defaultValue = 0m) {
+        public static decimal GetDecimalOrDefault(this IDataRecord record, int i, decimal defaultValue = 0m)
+        {
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDecimal(i);

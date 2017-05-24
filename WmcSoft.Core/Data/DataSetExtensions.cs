@@ -35,13 +35,15 @@ namespace WmcSoft.Data
     {
         #region Cast
 
-        public static IEnumerable<R> Cast<R>(this DataView view) where R : DataRow {
+        public static IEnumerable<R> Cast<R>(this DataView view) where R : DataRow
+        {
             foreach (DataRowView r in view) {
                 yield return (R)r.Row;
             }
         }
 
-        public static IEnumerable<R> Cast<R>(this DataView view, DataRowVersion rowVersion) where R : DataRow {
+        public static IEnumerable<R> Cast<R>(this DataView view, DataRowVersion rowVersion) where R : DataRow
+        {
             foreach (DataRowView r in view) {
                 if (r.RowVersion == rowVersion)
                     yield return (R)r.Row;
@@ -52,12 +54,14 @@ namespace WmcSoft.Data
 
         #region Compute
 
-        public static T Compute<T>(this DataTable dataTable, string expression, string filter) {
+        public static T Compute<T>(this DataTable dataTable, string expression, string filter)
+        {
             var value = dataTable.Compute(expression, filter);
             return DataConvert.ChangeType<T>(value);
         }
 
-        public static T ComputeOrDefault<T>(this DataTable dataTable, string expression, string filter) {
+        public static T ComputeOrDefault<T>(this DataTable dataTable, string expression, string filter)
+        {
             var value = dataTable.Compute(expression, filter);
             return DataConvert.ChangeTypeOrDefault<T>(value);
         }
@@ -66,7 +70,8 @@ namespace WmcSoft.Data
 
         #region CreateUniqueName
 
-        public static string CreateUniquePrefixedName(this IEnumerable<string> names, string prefix) {
+        public static string CreateUniquePrefixedName(this IEnumerable<string> names, string prefix)
+        {
             var set = new HashSet<string>(names.Where(n => n.StartsWith(prefix)));
             var i = 1;
             var name = prefix + i;
@@ -77,7 +82,8 @@ namespace WmcSoft.Data
             return name;
         }
 
-        public static string CreateUniqueName(this IEnumerable<string> names, string format) {
+        public static string CreateUniqueName(this IEnumerable<string> names, string format)
+        {
             if (format.EndsWith("{0}"))
                 return names.CreateUniquePrefixedName(format.Left(-3));
 
@@ -91,11 +97,13 @@ namespace WmcSoft.Data
             return name;
         }
 
-        public static string CreateUniqueName(this DataTableCollection collection, string format) {
+        public static string CreateUniqueName(this DataTableCollection collection, string format)
+        {
             return collection.OfType<DataTable>().Select(t => t.TableName).CreateUniqueName(format);
         }
 
-        public static string CreateUniqueName(this DataColumnCollection collection, string format) {
+        public static string CreateUniqueName(this DataColumnCollection collection, string format)
+        {
             return collection.OfType<DataColumn>().Select(t => t.ColumnName).CreateUniqueName(format);
         }
 
@@ -103,7 +111,8 @@ namespace WmcSoft.Data
 
         #region RemoveAll
 
-        public static void RemoveAll(this DataRowCollection collection, IEnumerable<DataRow> rows) {
+        public static void RemoveAll(this DataRowCollection collection, IEnumerable<DataRow> rows)
+        {
             var bin = rows.ToList(); // copy to prevent modifying the underlying collection
             foreach (var row in bin)
                 collection.Remove(row);
@@ -113,7 +122,8 @@ namespace WmcSoft.Data
 
         #region ToDictionary
 
-        public static IDictionary<string, object> ToDictionary(this DataRow row, IDictionary<string, object> additionalData) {
+        public static IDictionary<string, object> ToDictionary(this DataRow row, IDictionary<string, object> additionalData)
+        {
             if (additionalData == null)
                 return row.ToDictionary();
 
@@ -127,7 +137,8 @@ namespace WmcSoft.Data
             return dictionary;
         }
 
-        public static IDictionary<string, object> ToDictionary(this DataRow row) {
+        public static IDictionary<string, object> ToDictionary(this DataRow row)
+        {
             var columns = row.Table.Columns;
             var dictionary = new Dictionary<string, object>(columns.Count);
             foreach (DataColumn dc in columns) {
@@ -148,10 +159,12 @@ namespace WmcSoft.Data
         class TransientDataColumn : DataColumn
         {
             public TransientDataColumn(string columnName, Type dataType, string expr)
-                : base(columnName, dataType, expr) {
+                : base(columnName, dataType, expr)
+            {
             }
 
-            protected override void Dispose(bool disposing) {
+            protected override void Dispose(bool disposing)
+            {
                 if (Table != null) {
                     Table.Columns.Remove(this);
                 }
@@ -167,7 +180,8 @@ namespace WmcSoft.Data
         /// <param name="type">The data type of the column value.</param>
         /// <param name="expression">The expression for the column.</param>
         /// <returns>The column that was added to the collection.</returns>
-        public static DataColumn Transient(this DataColumnCollection collection, string columnName, Type type, string expression) {
+        public static DataColumn Transient(this DataColumnCollection collection, string columnName, Type type, string expression)
+        {
             var t = new TransientDataColumn(columnName, type, expression);
             collection.Add(t);
             return t;
@@ -182,7 +196,8 @@ namespace WmcSoft.Data
         /// <param name="expression">The expression for the column.</param>
         /// <returns>The column that was added to the collection.</returns>
         /// <remarks>If transient column with the same expression exists in the collection, it is returned.</remarks>
-        public static DataColumn Transient(this DataColumnCollection collection, Type type, string expression) {
+        public static DataColumn Transient(this DataColumnCollection collection, Type type, string expression)
+        {
             var found = collection.OfType<TransientDataColumn>().SingleOrDefault(c => c.Expression == expression);
             if (found != null)
                 return found;

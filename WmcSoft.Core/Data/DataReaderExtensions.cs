@@ -40,7 +40,8 @@ namespace WmcSoft.Data
     {
         #region AsDbDataReader
 
-        public static DbDataReader AsDbDataReader(this IDataReader reader) {
+        public static DbDataReader AsDbDataReader(this IDataReader reader)
+        {
             var db = reader as DbDataReader;
             return db ?? new DbDataReaderAdapter(reader);
         }
@@ -49,7 +50,8 @@ namespace WmcSoft.Data
 
         #region ReadXxx
 
-        public static bool ReadNext<T>(this IDataReader reader, Func<IDataRecord, T> materializer, out T entity) {
+        public static bool ReadNext<T>(this IDataReader reader, Func<IDataRecord, T> materializer, out T entity)
+        {
             if (reader.Read()) {
                 entity = materializer(reader);
                 return true;
@@ -59,7 +61,8 @@ namespace WmcSoft.Data
             return false;
         }
 
-        public static IEnumerable<T> ReadAll<T>(this IDataReader reader, Func<IDataRecord, T> materializer) {
+        public static IEnumerable<T> ReadAll<T>(this IDataReader reader, Func<IDataRecord, T> materializer)
+        {
             T entity;
             while (reader.ReadNext(materializer, out entity))
                 yield return entity;

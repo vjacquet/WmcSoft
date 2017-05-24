@@ -33,42 +33,52 @@ namespace WmcSoft.Data
 {
     public static class DataViewExtensions
     {
-        public static IEnumerable<DataRow> Where(this DataView view, Func<DataRow, bool> predicate) {
+        public static IEnumerable<DataRow> Where(this DataView view, Func<DataRow, bool> predicate)
+        {
             return view.Cast<DataRow>().Where(predicate);
         }
 
-        public static IEnumerable<U> Select<U>(this DataView view, Func<DataRow, U> selector) {
+        public static IEnumerable<U> Select<U>(this DataView view, Func<DataRow, U> selector)
+        {
             return view.Cast<DataRow>().Select(selector);
         }
-        public static IEnumerable<V> SelectMany<U, V>(this DataView view, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector) {
+        public static IEnumerable<V> SelectMany<U, V>(this DataView view, Func<DataRow, IEnumerable<U>> selector, Func<DataRow, U, V> resultSelector)
+        {
             return view.Cast<DataRow>().SelectMany(selector, resultSelector);
         }
 
-        public static IEnumerable<V> Join<U, K, V>(this DataView view, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector) {
+        public static IEnumerable<V> Join<U, K, V>(this DataView view, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, U, V> resultSelector)
+        {
             return view.Cast<DataRow>().Join(inner, outerKeySelector, innerKeySelector, resultSelector);
         }
 
-        public static IEnumerable<V> GroupJoin<U, K, V>(this DataView view, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector) {
+        public static IEnumerable<V> GroupJoin<U, K, V>(this DataView view, IEnumerable<U> inner, Func<DataRow, K> outerKeySelector, Func<U, K> innerKeySelector, Func<DataRow, IEnumerable<U>, V> resultSelector)
+        {
             return view.Cast<DataRow>().GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
         }
 
-        public static IOrderedEnumerable<DataRow> OrderBy<K>(this DataView view, Func<DataRow, K> keySelector) {
+        public static IOrderedEnumerable<DataRow> OrderBy<K>(this DataView view, Func<DataRow, K> keySelector)
+        {
             return view.Cast<DataRow>().OrderBy(keySelector);
         }
 
-        public static IOrderedEnumerable<DataRow> OrderByDescending<K>(this DataView view, Func<DataRow, K> keySelector) {
+        public static IOrderedEnumerable<DataRow> OrderByDescending<K>(this DataView view, Func<DataRow, K> keySelector)
+        {
             return view.Cast<DataRow>().OrderByDescending(keySelector);
         }
 
-        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataView view, Func<DataRow, K> keySelector) {
+        public static IEnumerable<IGrouping<K, DataRow>> GroupBy<K>(this DataView view, Func<DataRow, K> keySelector)
+        {
             return view.Cast<DataRow>().GroupBy(keySelector);
         }
 
-        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataView view, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector) {
+        public static IEnumerable<IGrouping<K, E>> GroupBy<K, E>(this DataView view, Func<DataRow, K> keySelector, Func<DataRow, E> elementSelector)
+        {
             return view.Cast<DataRow>().GroupBy(keySelector, elementSelector);
         }
 
-        public static IEnumerable<DataRow> Where(this DataView view, Func<DataRow, int, bool> predicate) {
+        public static IEnumerable<DataRow> Where(this DataView view, Func<DataRow, int, bool> predicate)
+        {
             return view.Cast<DataRow>().Where(predicate);
         }
     }

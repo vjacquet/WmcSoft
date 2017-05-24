@@ -49,14 +49,17 @@ namespace WmcSoft.Data
         #region Lifecycle
 
         public TypeDescriptorDataReader(IEnumerable<T> data)
-            : this(data, TypeDescriptor.GetProperties(typeof(T))) {
+            : this(data, TypeDescriptor.GetProperties(typeof(T)))
+        {
         }
 
         public TypeDescriptorDataReader(IEnumerable<T> data, params Attribute[] attributes)
-            : this(data, TypeDescriptor.GetProperties(typeof(T), attributes)) {
+            : this(data, TypeDescriptor.GetProperties(typeof(T), attributes))
+        {
         }
 
-        public TypeDescriptorDataReader(IEnumerable<T> data, PropertyDescriptorCollection properties) {
+        public TypeDescriptorDataReader(IEnumerable<T> data, PropertyDescriptorCollection properties)
+        {
             _properties = properties;
             _data = data;
             _enumerator = _data.GetEnumerator();
@@ -66,7 +69,8 @@ namespace WmcSoft.Data
 
         #region Helpers
 
-        private PropertyDescriptor GetProperty(string name) {
+        private PropertyDescriptor GetProperty(string name)
+        {
             var property = _properties.Find(name, true);
             if (property == null)
                 throw new IndexOutOfRangeException();
@@ -77,7 +81,8 @@ namespace WmcSoft.Data
 
         #region Overrides
 
-        protected override object GetValue(string name) {
+        protected override object GetValue(string name)
+        {
             return GetProperty(name).GetValue(_enumerator.Current);
         }
 
@@ -87,7 +92,8 @@ namespace WmcSoft.Data
         /// <param name="dataTable">The data table.</param>
         /// <param name="i">The index of the column.</param>
         /// <returns>A <see cref="DataRow"/> that describes one column.</returns>
-        protected override DataRow GetSchemaRow(DataTable dataTable, int i) {
+        protected override DataRow GetSchemaRow(DataTable dataTable, int i)
+        {
             var property = _properties[i];
             var dr = base.GetSchemaRow(dataTable, i);
             if (property.IsReadOnly)
@@ -99,7 +105,8 @@ namespace WmcSoft.Data
         /// Advances the <see cref="IDataReader"/> to the next record.
         /// </summary>
         /// <returns>true if there are more rows; otherwise, false.</returns>
-        public override bool Read() {
+        public override bool Read()
+        {
             return _enumerator.MoveNext();
         }
 
@@ -107,7 +114,8 @@ namespace WmcSoft.Data
 
         #region IDisposable Membres
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             var disposable = _enumerator as IDisposable;
             if (disposable != null) {
                 disposable.Dispose();
@@ -133,7 +141,8 @@ namespace WmcSoft.Data
         /// <param name="i">The index of the field to find.</param>
         /// <returns>The data type information for the specified field.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public override Type GetFieldType(int i) {
+        public override Type GetFieldType(int i)
+        {
             return _properties[i].PropertyType;
         }
 
@@ -143,7 +152,8 @@ namespace WmcSoft.Data
         /// <param name="i">The index of the field to find.</param>
         /// <returns>The name of the field or the empty string (""), if there is no value to return.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public override string GetName(int i) {
+        public override string GetName(int i)
+        {
             return _properties[i].Name;
         }
 
@@ -152,7 +162,8 @@ namespace WmcSoft.Data
         /// </summary>
         /// <param name="name">The name of the field to find.</param>
         /// <returns>The index of the named field.</returns>
-        public override int GetOrdinal(string name) {
+        public override int GetOrdinal(string name)
+        {
             var property = GetProperty(name);
             return _properties.IndexOf(property);
         }
@@ -163,7 +174,8 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal.</param>
         /// <returns>The value of the column.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
-        public override object GetValue(int i) {
+        public override object GetValue(int i)
+        {
             return _properties[i].GetValue(_enumerator.Current);
         }
 
