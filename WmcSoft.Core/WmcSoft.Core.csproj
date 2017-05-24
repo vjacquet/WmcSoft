@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WmcSoft</RootNamespace>
     <AssemblyName>WmcSoft.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -177,6 +177,7 @@
     <Compile Include="Data\DataColumnCollectionExtensions.cs" />
     <Compile Include="Data\DataViewExtensions.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
+    <Compile Include="Data\DbConnectionExtensions.Parametrized.cs" />
     <Compile Include="DecimalExtensions.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />
