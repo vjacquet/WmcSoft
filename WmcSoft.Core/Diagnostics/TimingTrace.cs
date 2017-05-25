@@ -49,26 +49,31 @@ namespace WmcSoft.Diagnostics
 
         #region LifeCycle
 
-        private TimingTrace() {
+        private TimingTrace()
+        {
             _stopwatch = Stopwatch.StartNew();
         }
 
         public TimingTrace(string message)
-            : this() {
+            : this()
+        {
             _onDispose = () => Trace.WriteLine(Format(message));
         }
         public TimingTrace(string category, string message)
-            : this() {
+            : this()
+        {
             _onDispose = () => Trace.WriteLine(category, Format(message));
         }
 
         public TimingTrace(TraceSource traceSource, string message)
-            : this() {
+            : this()
+        {
             _onDispose = () => traceSource.TraceInformation(Format(message));
         }
 
         public TimingTrace(TraceSource traceSource, Func<string> message)
-            : this() {
+            : this()
+        {
             _onDispose = () => traceSource.TraceInformation(Format(message()));
         }
 
@@ -76,7 +81,8 @@ namespace WmcSoft.Diagnostics
 
         #region Helpers
 
-        string Format(string message) {
+        string Format(string message)
+        {
             return String.Format("{0}ms\t{1}", _stopwatch.ElapsedMilliseconds, message);
         }
 
@@ -84,7 +90,8 @@ namespace WmcSoft.Diagnostics
 
         #region IDisposable Membres
 
-        public void Dispose() {
+        public void Dispose()
+        {
             var action = Interlocked.Exchange(ref _onDispose, null);
             Debug.Assert(action != null, "Dispose must be called once.");
             action();

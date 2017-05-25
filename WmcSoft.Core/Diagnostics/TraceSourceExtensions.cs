@@ -33,50 +33,64 @@ namespace WmcSoft.Diagnostics
     {
         #region Trace### with id
 
-        public static void TraceVerbose(this TraceSource traceSource, int id, string message) {
+        public static void TraceVerbose(this TraceSource traceSource, int id, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Verbose, id, message);
         }
-        public static void TraceVerbose(this TraceSource traceSource, int id, string format, params object[] args) {
+        public static void TraceVerbose(this TraceSource traceSource, int id, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Verbose, id, format, args);
         }
 
-        public static void TraceInformation(this TraceSource traceSource, int id) {
+        public static void TraceInformation(this TraceSource traceSource, int id)
+        {
             traceSource.TraceEvent(TraceEventType.Information, id);
         }
-        public static void TraceInformation(this TraceSource traceSource, int id, string message) {
+        public static void TraceInformation(this TraceSource traceSource, int id, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Information, id, message);
         }
-        public static void TraceInformation(this TraceSource traceSource, int id, string format, params object[] args) {
+        public static void TraceInformation(this TraceSource traceSource, int id, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Information, id, format, args);
         }
 
-        public static void TraceWarning(this TraceSource traceSource, int id) {
+        public static void TraceWarning(this TraceSource traceSource, int id)
+        {
             traceSource.TraceEvent(TraceEventType.Warning, id);
         }
-        public static void TraceWarning(this TraceSource traceSource, int id, string message) {
+        public static void TraceWarning(this TraceSource traceSource, int id, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Warning, id, message);
         }
-        public static void TraceWarning(this TraceSource traceSource, int id, string format, params object[] args) {
+        public static void TraceWarning(this TraceSource traceSource, int id, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Warning, id, format, args);
         }
 
-        public static void TraceError(this TraceSource traceSource, int id) {
+        public static void TraceError(this TraceSource traceSource, int id)
+        {
             traceSource.TraceEvent(TraceEventType.Error, id);
         }
-        public static void TraceError(this TraceSource traceSource, int id, string message) {
+        public static void TraceError(this TraceSource traceSource, int id, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Error, id, message);
         }
-        public static void TraceError(this TraceSource traceSource, int id, string format, params object[] args) {
+        public static void TraceError(this TraceSource traceSource, int id, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Error, id, format, args);
         }
 
-        public static void TraceCritical(this TraceSource traceSource, int id) {
+        public static void TraceCritical(this TraceSource traceSource, int id)
+        {
             traceSource.TraceEvent(TraceEventType.Critical, id);
         }
-        public static void TraceCritical(this TraceSource traceSource, int id, string message) {
+        public static void TraceCritical(this TraceSource traceSource, int id, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Critical, id, message);
         }
-        public static void TraceCritical(this TraceSource traceSource, int id, string format, params object[] args) {
+        public static void TraceCritical(this TraceSource traceSource, int id, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Critical, id, format, args);
         }
 
@@ -84,40 +98,51 @@ namespace WmcSoft.Diagnostics
 
         #region Trace### w/o id
 
-        public static void TraceVerbose(this TraceSource traceSource, string message) {
+        public static void TraceVerbose(this TraceSource traceSource, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Verbose, 0, message);
         }
-        public static void TraceVerbose(this TraceSource traceSource, string format, params object[] args) {
+        public static void TraceVerbose(this TraceSource traceSource, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Verbose, 0, format, args);
         }
 
-        public static void TraceWarning(this TraceSource traceSource) {
+        public static void TraceWarning(this TraceSource traceSource)
+        {
             traceSource.TraceEvent(TraceEventType.Warning, 0);
         }
-        public static void TraceWarning(this TraceSource traceSource, string message) {
+        public static void TraceWarning(this TraceSource traceSource, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Warning, 0, message);
         }
-        public static void TraceWarning(this TraceSource traceSource, string format, params object[] args) {
+        public static void TraceWarning(this TraceSource traceSource, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Warning, 0, format, args);
         }
 
-        public static void TraceError(this TraceSource traceSource) {
+        public static void TraceError(this TraceSource traceSource)
+        {
             traceSource.TraceEvent(TraceEventType.Error, 0);
         }
-        public static void TraceError(this TraceSource traceSource, string message) {
+        public static void TraceError(this TraceSource traceSource, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Error, 0, message);
         }
-        public static void TraceError(this TraceSource traceSource, string format, params object[] args) {
+        public static void TraceError(this TraceSource traceSource, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Error, 0, format, args);
         }
 
-        public static void TraceCritical(this TraceSource traceSource) {
+        public static void TraceCritical(this TraceSource traceSource)
+        {
             traceSource.TraceEvent(TraceEventType.Critical, 0);
         }
-        public static void TraceCritical(this TraceSource traceSource, string message) {
+        public static void TraceCritical(this TraceSource traceSource, string message)
+        {
             traceSource.TraceEvent(TraceEventType.Critical, 0, message);
         }
-        public static void TraceCritical(this TraceSource traceSource, string format, params object[] args) {
+        public static void TraceCritical(this TraceSource traceSource, string format, params object[] args)
+        {
             traceSource.TraceEvent(TraceEventType.Critical, 0, format, args);
         }
 
@@ -125,12 +150,14 @@ namespace WmcSoft.Diagnostics
 
         #region TraceXxxBlock methods
 
-        public static IDisposable TraceBlock(this TraceSource traceSource, TraceEventType eventType, int id, string message, Func<Stopwatch, string> exit) {
+        public static IDisposable TraceBlock(this TraceSource traceSource, TraceEventType eventType, int id, string message, Func<Stopwatch, string> exit)
+        {
             var stopwatch = Stopwatch.StartNew();
             traceSource.TraceEvent(eventType, id, message);
             return new Disposer(() => traceSource.TraceEvent(eventType, id, exit(stopwatch)));
         }
-        public static IDisposable TraceBlock(this TraceSource traceSource, TraceEventType eventType, int id, string message) {
+        public static IDisposable TraceBlock(this TraceSource traceSource, TraceEventType eventType, int id, string message)
+        {
             return traceSource.TraceBlock(eventType, id, message, (sw) => String.Format("{0} - {1}ms", message, sw.ElapsedMilliseconds));
         }
 

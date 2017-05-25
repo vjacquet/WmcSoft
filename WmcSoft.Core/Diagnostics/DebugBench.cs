@@ -38,25 +38,29 @@ namespace WmcSoft.Diagnostics
         private readonly string _scopeName;
         private Stopwatch _stopwatch;
 
-        public DebugBench(string scopeName) {
+        public DebugBench(string scopeName)
+        {
             _scopeName = scopeName;
             _stopwatch = null;
             Start();
         }
 
         [Conditional("DEBUG")]
-        private void Start() {
+        private void Start()
+        {
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
         }
 
         [Conditional("DEBUG")]
-        private void Stop() {
+        private void Stop()
+        {
             _stopwatch.Stop();
             Debug.WriteLine("{0} took {1}ms", _scopeName, _stopwatch.Elapsed.TotalMilliseconds);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Stop();
         }
     }

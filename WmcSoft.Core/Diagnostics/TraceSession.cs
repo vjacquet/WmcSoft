@@ -53,7 +53,8 @@ namespace WmcSoft.Diagnostics
 
         #region LifeCycle
 
-        private void Initialize(string name, Version version, TraceSource traceSource) {
+        private void Initialize(string name, Version version, TraceSource traceSource)
+        {
             Trace.CorrelationManager.ActivityId = Guid.NewGuid();
             Trace.CorrelationManager.StartLogicalOperation();
 
@@ -72,39 +73,46 @@ namespace WmcSoft.Diagnostics
             _stopwatch.Start();
         }
 
-        public TraceSession(TraceSource traceSource, Type type) {
+        public TraceSession(TraceSource traceSource, Type type)
+        {
             var name = type.Assembly.GetName();
             Trace.TraceInformation(Preambule, type.FullName, name.Version.ToString());
             Initialize(type.FullName, name.Version, traceSource);
         }
 
-        public TraceSession(TraceSource traceSource, Assembly assembly) {
+        public TraceSession(TraceSource traceSource, Assembly assembly)
+        {
             var name = assembly.GetName();
             Initialize(name.Name, name.Version, traceSource);
         }
 
         public TraceSession(TraceSource traceSource)
-            : this(traceSource, Assembly.GetExecutingAssembly()) {
+            : this(traceSource, Assembly.GetExecutingAssembly())
+        {
         }
 
         public TraceSession(Assembly assembly)
-            : this(null, assembly) {
+            : this(null, assembly)
+        {
         }
 
         public TraceSession()
-            : this(null, Assembly.GetExecutingAssembly()) {
+            : this(null, Assembly.GetExecutingAssembly())
+        {
         }
 
 
         public TraceSession(Type type)
-            : this(null, type) {
+            : this(null, type)
+        {
         }
 
         #endregion
 
         #region IDisposable Membres
 
-        public void Dispose() {
+        public void Dispose()
+        {
             var action = Interlocked.Exchange(ref _onDispose, null);
             Debug.Assert(action != null, "Dispose must be called once.");
             action();
@@ -114,5 +122,4 @@ namespace WmcSoft.Diagnostics
 
         #endregion
     }
-
 }

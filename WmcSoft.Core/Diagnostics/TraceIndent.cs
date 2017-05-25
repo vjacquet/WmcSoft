@@ -44,7 +44,8 @@ namespace WmcSoft.Diagnostics
 
         #region Lifecycle
 
-        public TraceIndent() {
+        public TraceIndent()
+        {
             Trace.Indent();
         }
 
@@ -54,12 +55,14 @@ namespace WmcSoft.Diagnostics
 
 #if TRACE
         [SuppressMessage("Microsoft.Performance", "CA1821", Justification = "The #if block invalidate this warning.")]
-        ~TraceIndent() {
+        ~TraceIndent()
+        {
             Trace.TraceError("TraceIndent.Dispose should have been called.");
         }
 #endif
 
-        public void Dispose() {
+        public void Dispose()
+        {
             if (Interlocked.Increment(ref _disposed) == 1) {
                 Trace.Unindent();
                 GC.SuppressFinalize(this);

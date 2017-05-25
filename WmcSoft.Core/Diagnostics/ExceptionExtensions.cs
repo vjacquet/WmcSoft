@@ -35,7 +35,8 @@ namespace WmcSoft.Diagnostics
     public static class ExceptionExtensions
     {
         static IEnumerable<DictionaryEntry> DoCrawlData<K>(Exception exception, K converter)
-            where K : IDataKeyConverter {
+            where K : IDataKeyConverter
+        {
             while (exception != null) {
                 foreach (DictionaryEntry entry in exception.Data) {
                     if (converter.IsSupported(entry))
@@ -46,7 +47,8 @@ namespace WmcSoft.Diagnostics
         }
 
         static IEnumerable<DictionaryEntry> DoCrawlUniqueData<K>(Exception exception, K converter)
-           where K : IDataKeyConverter {
+           where K : IDataKeyConverter
+        {
             var set = new HashSet<object>();
             while (exception != null) {
                 foreach (DictionaryEntry entry in exception.Data) {
@@ -58,21 +60,24 @@ namespace WmcSoft.Diagnostics
         }
 
         public static IEnumerable<DictionaryEntry> CrawlData<K>(this Exception exception, K converter, bool keepDuplicates = false)
-           where K : IDataKeyConverter {
+           where K : IDataKeyConverter
+        {
             if (keepDuplicates)
                 return DoCrawlData(exception, converter);
             return DoCrawlUniqueData(exception, converter);
         }
 
         public static IEnumerable<DictionaryEntry> CrawlData<K>(this Exception exception, bool keepDuplicates = false)
-            where K : IDataKeyConverter {
+            where K : IDataKeyConverter
+        {
             if (keepDuplicates)
                 return DoCrawlData(exception, DataKeyConverter.Default);
             return DoCrawlUniqueData(exception, DataKeyConverter.Default);
         }
 
         public static Exception CaptureCaller<K>(this Exception exception, K converter)
-            where K : IDataKeyConverter {
+            where K : IDataKeyConverter
+        {
             var frame = new StackFrame(1);
             var method = frame.GetMethod();
             var key = converter.ConvertTo("caller");
@@ -85,12 +90,14 @@ namespace WmcSoft.Diagnostics
         /// </summary>
         /// <param name="exception">The exception</param>
         /// <returns>The given exception</returns>
-        public static Exception CaptureCaller(this Exception exception) {
+        public static Exception CaptureCaller(this Exception exception)
+        {
             return CaptureCaller(exception, DataKeyConverter.Default);
         }
 
         public static Exception CaptureContext<K>(this Exception exception, K converter, object context)
-            where K : IDataKeyConverter {
+            where K : IDataKeyConverter
+        {
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(context)) {
                 var value = descriptor.GetValue(context);
                 var stringify = value != null && !descriptor.PropertyType.IsSerializable;
@@ -108,24 +115,28 @@ namespace WmcSoft.Diagnostics
         /// <param name="exception">The exception.</param>
         /// <param name="context">The context.</param>
         /// <returns>The given exception.</returns>
-        public static Exception CaptureContext(this Exception exception, object context) {
+        public static Exception CaptureContext(this Exception exception, object context)
+        {
             return CaptureContext(exception, DataKeyConverter.Default, context);
         }
 
         public static Exception RemoveCapturedEntry<K>(this Exception exception, K converter, string name, bool crawlInnerExceptions = false)
-            where K : IDataKeyConverter {
+            where K : IDataKeyConverter
+        {
             var key = converter.ConvertTo(name);
             do {
                 exception.Data.Remove(key);
             } while (crawlInnerExceptions && (exception = exception.InnerException) != null);
             return exception;
         }
-        public static Exception RemoveCapturedEntry(this Exception exception, string name, bool crawlInnerExceptions = false) {
+        public static Exception RemoveCapturedEntry(this Exception exception, string name, bool crawlInnerExceptions = false)
+        {
             return RemoveCapturedEntry(exception, DataKeyConverter.Default, name, crawlInnerExceptions);
         }
 
         public static object GetCapturedEntry<K>(this Exception exception, K converter, string name, bool crawlInnerExceptions = false)
-            where K : IDataKeyConverter {
+            where K : IDataKeyConverter
+        {
             var key = converter.ConvertTo(name);
             do {
                 var value = exception.Data[key];
@@ -134,7 +145,8 @@ namespace WmcSoft.Diagnostics
             } while (crawlInnerExceptions && (exception = exception.InnerException) != null);
             return null;
         }
-        public static object GetCapturedEntry(this Exception exception, string name, bool crawlInnerExceptions = false) {
+        public static object GetCapturedEntry(this Exception exception, string name, bool crawlInnerExceptions = false)
+        {
             return GetCapturedEntry(exception, DataKeyConverter.Default, name, crawlInnerExceptions);
         }
     }

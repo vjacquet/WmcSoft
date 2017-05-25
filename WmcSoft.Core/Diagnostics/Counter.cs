@@ -44,7 +44,8 @@ namespace WmcSoft.Diagnostics
         /// Construct a new counter.
         /// </summary>
         /// <param name="name">The name of the counter.</param>
-        public Counter(string name) {
+        public Counter(string name)
+        {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
             _name = name;
@@ -60,7 +61,8 @@ namespace WmcSoft.Diagnostics
         /// <summary>
         /// Increment the counter.
         /// </summary>
-        public void Increment() {
+        public void Increment()
+        {
             Interlocked.Increment(ref _count);
         }
 
@@ -75,7 +77,8 @@ namespace WmcSoft.Diagnostics
         /// Resets the counter.
         /// </summary>
         /// <returns>Returns the tally before the reset.</returns>
-        public int Reset() {
+        public int Reset()
+        {
             return Interlocked.Exchange(ref _count, 0);
         }
 
@@ -83,7 +86,8 @@ namespace WmcSoft.Diagnostics
         /// Returns a string that represents the current counter.
         /// </summary>
         /// <returns>A string that represents the current counter.</returns>
-        public override string ToString() {
+        public override string ToString()
+        {
             return _count + " (" + _name + ')';
         }
 
@@ -115,7 +119,8 @@ namespace WmcSoft.Diagnostics
         /// </item>
         /// </list>
         /// </returns>
-        public int CompareTo(Counter other) {
+        public int CompareTo(Counter other)
+        {
             if (other == null)
                 return 1;
 
