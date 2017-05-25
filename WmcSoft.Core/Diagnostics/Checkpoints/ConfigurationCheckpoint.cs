@@ -37,12 +37,14 @@ namespace WmcSoft.Diagnostics.Checkpoints
         private readonly string _sectionName;
 
         public ConfigurationCheckpoint(string name, string sectionName)
-            : base(name) {
+            : base(name)
+        {
             _sectionName = sectionName;
         }
 
         public ConfigurationCheckpoint(string sectionName)
-            : this(sectionName, sectionName) {
+            : this(sectionName, sectionName)
+        {
         }
 
         /// <summary>
@@ -53,13 +55,13 @@ namespace WmcSoft.Diagnostics.Checkpoints
             get { return 0; }
         }
 
-        protected override CheckpointResult DoVerify(int level) {
+        protected override CheckpointResult DoVerify(int level)
+        {
             try {
                 var section = ConfigurationManager.GetSection(_sectionName);
                 if (section == null)
                     return Error(Resources.ConfigurationCheckpointCannotLoadSection, _sectionName);
-            }
-            catch (ConfigurationErrorsException exception) {
+            } catch (ConfigurationErrorsException exception) {
                 var result = Success();
                 foreach (var error in exception.Errors) {
                     result.OverrideResultType(CheckpointResultType.Error)

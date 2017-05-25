@@ -37,13 +37,15 @@ namespace WmcSoft.Diagnostics.Checkpoints
         private readonly Func<int, int> _binder;
         private readonly int _minimumLevel;
 
-        static string ExtractName(ICheckpoint checkpoint) {
+        static string ExtractName(ICheckpoint checkpoint)
+        {
             if (checkpoint == null) throw new ArgumentNullException("checkpoint");
             return checkpoint.Name;
         }
 
         public RebindCheckpoint(ICheckpoint checkpoint, int minimumLevel, Func<int, int> binder)
-            : base(ExtractName(checkpoint)) {
+            : base(ExtractName(checkpoint))
+        {
             if (binder == null) throw new ArgumentNullException("binder");
 
             _base = checkpoint;
@@ -55,7 +57,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
             get { return Math.Min(_minimumLevel, _base.MinimumLevel); }
         }
 
-        protected override CheckpointResult DoVerify(int level) {
+        protected override CheckpointResult DoVerify(int level)
+        {
             level = _binder(level);
             return _base.Verify(level);
         }

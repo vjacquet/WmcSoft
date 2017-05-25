@@ -38,7 +38,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
         private readonly int _minimumLevel;
 
         public PredicateCheckpoint(string name, Func<bool> predicate, int minimumLevel = 0)
-            : base(name) {
+            : base(name)
+        {
             if (predicate == null) throw new ArgumentNullException("predicate");
 
             _predicate = predicate;
@@ -49,7 +50,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
             get { return _minimumLevel; }
         }
 
-        protected override CheckpointResult DoVerify(int level) {
+        protected override CheckpointResult DoVerify(int level)
+        {
             if (_predicate())
                 return Success();
             return Failed();

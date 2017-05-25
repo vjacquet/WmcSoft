@@ -36,7 +36,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
     {
         private readonly List<string> _lines;
 
-        public CheckpointResult(CheckpointResultType resultType, string message) {
+        public CheckpointResult(CheckpointResultType resultType, string message)
+        {
             ResultType = resultType;
             _lines = new List<string> { message };
             if (!string.IsNullOrEmpty(message))
@@ -44,7 +45,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
         }
 
         public CheckpointResult(string message)
-            : this(CheckpointResultType.Info, message) {
+            : this(CheckpointResultType.Info, message)
+        {
         }
 
         public CheckpointResultType ResultType { get; private set; }
@@ -55,39 +57,48 @@ namespace WmcSoft.Diagnostics.Checkpoints
         /// </summary>
         /// <param name="resultType">The new result type</param>
         /// <return>The new result type</return>
-        public CheckpointResult OverrideResultType(CheckpointResultType resultType) {
+        public CheckpointResult OverrideResultType(CheckpointResultType resultType)
+        {
             if ((int)resultType > (int)ResultType)
                 ResultType = resultType;
             return this;
         }
 
-        protected virtual void DoWriteLine(object line) {
+        protected virtual void DoWriteLine(object line)
+        {
             if (line != null)
                 _lines.Add(line.ToString());
         }
 
-        public CheckpointResult WriteLine(string line) {
+        public CheckpointResult WriteLine(string line)
+        {
             DoWriteLine(line);
             return this;
         }
 
-        public CheckpointResult WriteLine(object line) {
+        public CheckpointResult WriteLine(object line)
+        {
             return WriteLine(line);
         }
 
-        public CheckpointResult WriteLine(IFormatProvider provider, string format, params object[] args) {
+        public CheckpointResult WriteLine(IFormatProvider provider, string format, params object[] args)
+        {
             return WriteLine(string.Format(provider, format, args));
         }
-        public CheckpointResult WriteLine(string format, object arg0) {
+        public CheckpointResult WriteLine(string format, object arg0)
+        {
             return WriteLine(string.Format(format, arg0));
         }
-        public CheckpointResult WriteLine(string format, object arg0, object arg1) {
+        public CheckpointResult WriteLine(string format, object arg0, object arg1)
+        {
             return WriteLine(string.Format(format, arg0, arg1));
         }
-        public CheckpointResult WriteLine(string format, object arg0, object arg1, object arg2) {
+        public CheckpointResult WriteLine(string format, object arg0, object arg1, object arg2)
+        {
             return WriteLine(string.Format(format, arg0, arg1, arg2));
         }
-        public CheckpointResult WriteLine(string format, params object[] args) {
+        public CheckpointResult WriteLine(string format, params object[] args)
+        {
             return WriteLine(string.Format(format, args));
         }
     }

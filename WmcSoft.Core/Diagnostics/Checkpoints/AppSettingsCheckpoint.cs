@@ -40,17 +40,20 @@ namespace WmcSoft.Diagnostics.Checkpoints
         private readonly string[] _keys;
         private readonly Func<string, bool> _predicate = k => !string.IsNullOrWhiteSpace(k);
 
-        public AppSettingsCheckpoint(string key) : base(key) {
+        public AppSettingsCheckpoint(string key) : base(key)
+        {
             _keys = new[] { key };
         }
 
         public AppSettingsCheckpoint(string name, params string[] keys)
-            : base(name) {
+            : base(name)
+        {
             if (keys == null || keys.Length == 0) throw new ArgumentException("keys");
             _keys = keys;
         }
 
-        protected override CheckpointResult DoVerify(int level) {
+        protected override CheckpointResult DoVerify(int level)
+        {
             var appSettings = ConfigurationManager.AppSettings;
             var missing = new HashSet<string>(_keys);
             missing.ExceptWith(appSettings.AllKeys.Where(k => _predicate(appSettings.Get(k))));

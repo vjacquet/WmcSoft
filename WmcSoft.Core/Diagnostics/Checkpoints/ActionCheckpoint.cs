@@ -38,7 +38,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
         private readonly int _minimumLevel;
 
         public ActionCheckpoint(string name, Action action, int minimumLevel = 0)
-            : base(name) {
+            : base(name)
+        {
             if (action == null) throw new ArgumentNullException("action");
 
             _action = action;
@@ -49,7 +50,8 @@ namespace WmcSoft.Diagnostics.Checkpoints
             get { return _minimumLevel; }
         }
 
-        protected override CheckpointResult DoVerify(int level) {
+        protected override CheckpointResult DoVerify(int level)
+        {
             _action();
             return Success();
         }
