@@ -37,19 +37,23 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             private readonly TraceSentry _owner;
 
-            public Tracer(TraceSentry owner) {
+            public Tracer(TraceSentry owner)
+            {
                 _owner = owner;
             }
 
-            public void OnNext(SentryStatus value) {
+            public void OnNext(SentryStatus value)
+            {
                 _owner.TraceNext(value);
             }
 
-            public void OnCompleted() {
+            public void OnCompleted()
+            {
                 _owner.TraceCompleted();
             }
 
-            public void OnError(Exception error) {
+            public void OnError(Exception error)
+            {
                 _owner.TraceError(error);
             }
         }
@@ -62,7 +66,8 @@ namespace WmcSoft.Diagnostics.Sentries
         private int _refCount;
         private IDisposable _unsubscriber;
 
-        public TraceSentry(TraceSource traceSource, ISentry decorated) {
+        public TraceSentry(TraceSource traceSource, ISentry decorated)
+        {
             _syncRoot = new object();
             _traceSource = traceSource;
             _decorated = decorated;
@@ -77,7 +82,8 @@ namespace WmcSoft.Diagnostics.Sentries
             get { return _decorated.Status; }
         }
 
-        public IDisposable Subscribe(IObserver<SentryStatus> observer) {
+        public IDisposable Subscribe(IObserver<SentryStatus> observer)
+        {
             lock (_syncRoot) {
                 if (++_refCount == 1) {
                     _unsubscriber = _decorated.Subscribe(new Tracer(this));
@@ -101,15 +107,18 @@ namespace WmcSoft.Diagnostics.Sentries
             });
         }
 
-        private void TraceNext(SentryStatus value) {
+        private void TraceNext(SentryStatus value)
+        {
             _traceSource.TraceInformation($"Sentry {Name} observed {value}.");
         }
 
-        private void TraceCompleted() {
+        private void TraceCompleted()
+        {
             _traceSource.TraceInformation($"Sentry {Name} completed.");
         }
 
-        private void TraceError(Exception error) {
+        private void TraceError(Exception error)
+        {
             _traceSource.TraceError(0, $"Sentry {Name} failed: {error}.");
         }
     }

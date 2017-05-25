@@ -43,12 +43,14 @@ namespace WmcSoft.Diagnostics.Sentries
             private readonly SentryBase _sentry;
             private readonly IObserver<SentryStatus> _observer;
 
-            public Unsubscriber(SentryBase sentry, IObserver<SentryStatus> observer) {
+            public Unsubscriber(SentryBase sentry, IObserver<SentryStatus> observer)
+            {
                 _sentry = sentry;
                 _observer = observer;
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 var observers = _sentry._observers;
                 bool removed = false;
                 lock (observers) {
@@ -70,7 +72,8 @@ namespace WmcSoft.Diagnostics.Sentries
         private readonly string _name;
         private volatile SentryStatus _status;
 
-        protected SentryBase(string name) {
+        protected SentryBase(string name)
+        {
             _name = name;
             _observers = new List<IObserver<SentryStatus>>();
         }
@@ -84,7 +87,8 @@ namespace WmcSoft.Diagnostics.Sentries
         /// <param name="observer">The observer</param>
         /// <returns>An <see cref="IDisposable"/> that unregisters the observer upon dispose.</returns>
         /// <remarks>Subscription and unscribscription are idempotent operations.</remarks>
-        public IDisposable Subscribe(IObserver<SentryStatus> observer) {
+        public IDisposable Subscribe(IObserver<SentryStatus> observer)
+        {
             lock (_observers) {
                 if (Subscribing(observer)) {
                     OnSubscribe(observer);
@@ -96,7 +100,8 @@ namespace WmcSoft.Diagnostics.Sentries
             return new Unsubscriber(this, observer);
         }
 
-        private bool Subscribing(IObserver<SentryStatus> observer) {
+        private bool Subscribing(IObserver<SentryStatus> observer)
+        {
             if (_observers.Count == 0) {
                 OnObserving();
                 return true;
@@ -106,7 +111,8 @@ namespace WmcSoft.Diagnostics.Sentries
 
         #region Overridables methods
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Name + ": " + _status + " (" + _observers.Count + ")";
         }
 
@@ -114,46 +120,53 @@ namespace WmcSoft.Diagnostics.Sentries
         /// Called before the <paramref name="observer"/> is added to the list of observers.
         /// </summary>
         /// <param name="observer">The observer.</param>
-        protected virtual void OnSubscribe(IObserver<SentryStatus> observer) {
+        protected virtual void OnSubscribe(IObserver<SentryStatus> observer)
+        {
         }
 
         /// <summary>
         /// Called after the <paramref name="observer"/> is removed from the list of observers.
         /// </summary>
         /// <param name="observer">The observer.</param>
-        protected virtual void OnUnsubscribe(IObserver<SentryStatus> observer) {
+        protected virtual void OnUnsubscribe(IObserver<SentryStatus> observer)
+        {
         }
 
         /// <summary>
         /// Called before the subscription of the first observer.
         /// </summary>
-        protected virtual void OnObserving() {
+        protected virtual void OnObserving()
+        {
         }
 
         /// <summary>
         /// Called after the unsubscription of the last observer.
         /// </summary>
-        protected virtual void OnObserved() {
+        protected virtual void OnObserved()
+        {
         }
 
         #endregion
 
         #region Observer support
 
-        protected void OnNext(SentryStatus status) {
+        protected void OnNext(SentryStatus status)
+        {
             lock (_observers) {
                 _status = status;
                 _observers.ForEach(o => o.OnNext(status));
             }
         }
 
-        protected void OnError(Exception error) {
+        protected void OnError(Exception error)
+        {
             lock (_observers) {
                 _observers.ForEach(o => o.OnError(error));
             }
         }
 
-        protected void OnCompleted() {
+        protected void OnCompleted()
+        {
             lock (_observers) {
                 _observers.ForEach(o => o.OnCompleted());
             }

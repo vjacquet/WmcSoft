@@ -41,11 +41,13 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             private int _aggregated;
 
-            public SentryStatusAggregator Add(ISentry sentry) {
+            public SentryStatusAggregator Add(ISentry sentry)
+            {
                 return Add(sentry.Status);
             }
 
-            public SentryStatusAggregator Add(SentryStatus value) {
+            public SentryStatusAggregator Add(SentryStatus value)
+            {
                 switch (value) {
                 case SentryStatus.Success:
                     _aggregated |= 1;
@@ -60,7 +62,8 @@ namespace WmcSoft.Diagnostics.Sentries
                 return this;
             }
 
-            public SentryStatus GetResult() {
+            public SentryStatus GetResult()
+            {
                 switch (_aggregated) {
                 case 1:
                     return SentryStatus.Success;
@@ -80,49 +83,59 @@ namespace WmcSoft.Diagnostics.Sentries
         private readonly ISentry[] _sentries;
         private readonly IDisposable[] _unsubscribers;
 
-        public AggregateSentry(string name, params ISentry[] sentries) 
-            : base(name) {
+        public AggregateSentry(string name, params ISentry[] sentries)
+            : base(name)
+        {
             _sentries = sentries;
             _unsubscribers = new IDisposable[_sentries.Length];
         }
 
-        protected override void OnObserving() {
+        protected override void OnObserving()
+        {
             var length = _sentries.Length;
             for (int i = 0; i < length; i++) {
                 _unsubscribers[i] = _sentries[i].Subscribe(this);
             }
         }
 
-        protected override void OnObserved() {
+        protected override void OnObserved()
+        {
             UnsubscribeAll();
         }
 
-        void IObserver<SentryStatus>.OnNext(SentryStatus value) {
+        void IObserver<SentryStatus>.OnNext(SentryStatus value)
+        {
             var aggregator = new SentryStatusAggregator();
             var aggregate = _sentries.Aggregate(aggregator, (a, s) => a.Add(s)).GetResult();
             OnNext(aggregate);
         }
 
-        void IObserver<SentryStatus>.OnError(Exception error) {
+        void IObserver<SentryStatus>.OnError(Exception error)
+        {
         }
 
-        void IObserver<SentryStatus>.OnCompleted() {
+        void IObserver<SentryStatus>.OnCompleted()
+        {
         }
 
-        ~AggregateSentry() {
+        ~AggregateSentry()
+        {
             Dispose(false);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
             UnsubscribeAll();
         }
 
-        private void UnsubscribeAll() {
+        private void UnsubscribeAll()
+        {
             var length = _sentries.Length;
             for (int i = 0; i < length; i++) {
                 var disposer = Interlocked.Exchange(ref _unsubscribers[i], null);
