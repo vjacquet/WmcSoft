@@ -28,6 +28,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WmcSoft.Data
 {
@@ -40,7 +41,8 @@ namespace WmcSoft.Data
         /// </summary>
         /// <param name="connectionStringSettings">Connection string from the connection strings configuration section.</param>
         /// <returns>An open instance of the connection.</returns>
-        public static DbConnection OpenConnection(this ConnectionStringSettings connectionStringSettings) {
+        public static DbConnection OpenConnection(this ConnectionStringSettings connectionStringSettings)
+        {
             var factory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
             var connection = factory.CreateConnection();
             connection.ConnectionString = connectionStringSettings.ConnectionString;
@@ -58,13 +60,20 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="parameters">The parameters of the SQL statement or stored procedure.</param>
         /// <returns>The command.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
-        public static IDbCommand CreateCommand(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
-            var command = connection.CreateCommand();
+        [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
+        public static IDbCommand CreateCommand(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+        {
+            var command = connection.CreateCommand(timeout, transaction);
             command.CommandType = commandType;
             command.CommandText = commandText;
-            command.Transaction = transaction;
             command.WithParameters(parameters);
+            return command;
+        }
+
+        public static IDbCommand CreateCommand(this IDbConnection connection, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        {
+            var command = connection.CreateCommand();
+            command.Transaction = transaction;
             if (timeout != null)
                 command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
             return command;
@@ -74,26 +83,30 @@ namespace WmcSoft.Data
 
         #region ExecuteXXX
 
-        public static int ExecuteNonQuery(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+        public static int ExecuteNonQuery(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+        {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
                 return command.ExecuteNonQuery();
             }
         }
 
-        public static T ExecuteScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null) {
+        public static T ExecuteScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+        {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
                 return command.ExecuteScalar<T>();
             }
         }
 
-        public static T ExecuteScalarOrDefault<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null, T defaultValue = default(T)) {
+        public static T ExecuteScalarOrDefault<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null, T defaultValue = default(T))
+        {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
                 return command.ExecuteScalarOrDefault(defaultValue);
             }
         }
 
         public static T? ExecuteNullableScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
-            where T : struct {
+            where T : struct
+        {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
                 return command.ExecuteNullableScalar<T>();
             }
@@ -103,16 +116,19 @@ namespace WmcSoft.Data
 
         #region PrepareXXX
 
-        static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator) {
+        static IDbCommand Prepare(int parameterCount, out IDbDataParameter[] parameters, IDbConnection connection, string commandText, CommandType commandType, TimeSpan? timeout, IDbTransaction transaction, Func<int, string> nameGenerator)
+        {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
             parameters = command.PrepareParameters(parameterCount, nameGenerator);
             return command;
         }
 
-        static void SetValue(IDbDataParameter parameter, object value) {
+        static void SetValue(IDbDataParameter parameter, object value)
+        {
             parameter.Value = value ?? DBNull.Value;
         }
-        static void SetValues(IDbDataParameter[] parameters, params object[] values) {
+        static void SetValues(IDbDataParameter[] parameters, params object[] values)
+        {
             for (int i = 0; i < parameters.Length; i++) {
                 parameters[i].Value = values[i] ?? DBNull.Value;
             }
@@ -129,7 +145,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T, int> PrepareExecuteNonQuery<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
             var p = command.PrepareParameter(nameGenerator);
             return p0 => {
@@ -150,7 +167,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, int> PrepareExecuteNonQuery<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, int> PrepareExecuteNonQuery<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(2, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -173,7 +191,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, int> PrepareExecuteNonQuery<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, int> PrepareExecuteNonQuery<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(3, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -197,7 +216,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, T4, int> PrepareExecuteNonQuery<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, int> PrepareExecuteNonQuery<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(4, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -222,7 +242,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, T4, T5, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(5, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -248,7 +269,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, T4, T5, T6, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(6, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -275,7 +297,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, T4, T5, T6, T7, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, T7, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(7, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -303,7 +326,8 @@ namespace WmcSoft.Data
         /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
-        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, int> PrepareExecuteNonQuery<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(8, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -325,7 +349,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T, object> PrepareExecuteScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T, object> PrepareExecuteScalar<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
             var p = command.PrepareParameter(nameGenerator);
             return p0 => {
@@ -347,7 +372,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, object> PrepareExecuteScalar<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, object> PrepareExecuteScalar<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(2, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -371,7 +397,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, object> PrepareExecuteScalar<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, object> PrepareExecuteScalar<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(3, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -396,7 +423,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, object> PrepareExecuteScalar<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, object> PrepareExecuteScalar<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(4, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -422,7 +450,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, object> PrepareExecuteScalar<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, object> PrepareExecuteScalar<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(5, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -449,7 +478,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, T6, object> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, object> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(6, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -477,7 +507,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, T6, T7, object> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, T7, object> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(7, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -506,7 +537,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, object> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, object> PrepareExecuteScalar<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(8, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -529,7 +561,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T, IDataReader> PrepareExecuteReader<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T, IDataReader> PrepareExecuteReader<T>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             var command = connection.CreateCommand(commandText, commandType, timeout, transaction);
             var p = command.PrepareParameter(nameGenerator);
             return p0 => {
@@ -552,7 +585,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, IDataReader> PrepareExecuteReader<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, IDataReader> PrepareExecuteReader<T1, T2>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(2, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -577,7 +611,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, IDataReader> PrepareExecuteReader<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, IDataReader> PrepareExecuteReader<T1, T2, T3>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(3, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -603,7 +638,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, IDataReader> PrepareExecuteReader<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, IDataReader> PrepareExecuteReader<T1, T2, T3, T4>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(4, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -630,7 +666,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(5, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -658,7 +695,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, T6, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5, T6>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(6, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -687,7 +725,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, T6, T7, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, T7, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5, T6, T7>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(7, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 
@@ -717,7 +756,8 @@ namespace WmcSoft.Data
         /// <param name="nameGenerator">The name generator used to create the parameter's name.</param>
         /// <returns>The function.</returns>
         /// <remarks>Use the Compose extension to convert the result.</remarks>
-        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null) {
+        public static Func<T1, T2, T3, T4, T5, T6, T7, T8, IDataReader> PrepareExecuteReader<T1, T2, T3, T4, T5, T6, T7, T8>(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, CommandBehavior commandBehavior = CommandBehavior.Default, Func<int, string> nameGenerator = null)
+        {
             IDbDataParameter[] p;
             var command = Prepare(8, out p, connection, commandText, commandType, timeout, transaction, nameGenerator);
 

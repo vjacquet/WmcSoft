@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -37,63 +37,47 @@ namespace WmcSoft.Data
 
         class FormatCapturingParameter : IFormattable
         {
-            private readonly IDbDataParameter _parameter;
-            private readonly string _placeholder;
+            // inspired from <https://github.com/jskeet/DemoCode/blob/master/Abusing%20CSharp/Code/StringInterpolation/ParameterizedSql.cs>
+            private readonly Func<string, string> _capture;
 
-            internal FormatCapturingParameter(IDbDataParameter parameter, string placeholder = "?")
+            internal FormatCapturingParameter(Func<string, string> capture)
             {
-                _parameter = parameter;
-                _placeholder = placeholder;
+                _capture = capture;
             }
 
             public string ToString(string format, IFormatProvider formatProvider)
             {
-                if (!string.IsNullOrEmpty(format)) {
-                    _parameter.DbType = (DbType)Enum.Parse(typeof(DbType), format, true);
-                }
-                return _placeholder;
-            }
-        }
-
-        static Func<IDbDataParameter, FormatCapturingParameter> GetCaptureFactory(IDbConnection connection)
-        {
-            switch (connection.GetType().FullName) {
-            case "System.Data.SqlClient.SqlConnection":
-                return _ => new FormatCapturingParameter(_, "@" + _.ParameterName);
-            case "System.Data.OracleClient.OracleConnection":
-                return _ => new FormatCapturingParameter(_, ":" + _.ParameterName);
-            default:
-                return _ => new FormatCapturingParameter(_);
+                return _capture(format);
             }
         }
 
         #endregion
 
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
-        public static IDbCommand CreateParametrizedCommand(this IDbConnection connection, FormattableString commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        public static TCommand CaptureParameters<TCommand, TParameter>(this TCommand command, Func<TParameter, string, string> capture, FormattableString commandText)
+            where TCommand : IDbCommand
+            where TParameter : IDbDataParameter
         {
-            if (connection == null) throw new ArgumentNullException(nameof(connection));
-
-            // inspired from <https://github.com/jskeet/DemoCode/blob/master/Abusing%20CSharp/Code/StringInterpolation/ParameterizedSql.cs>
-            // How to handle different connection? Should we implement a specialized version and have the base version handle a dynamic dispatch and 
-            var capture = GetCaptureFactory(connection);
-
-            var command = connection.CreateCommand();
-            command.CommandType = commandType;
+            command.CommandType = CommandType.Text;
             var length = commandText.ArgumentCount;
             var args = new object[length];
             for (int i = 0; i < length; i++) {
-                var p = command.CreateParameter();
+                var p = (TParameter)command.CreateParameter();
                 p.ParameterName = "p" + i.ToString(CultureInfo.CurrentCulture);
                 p.Value = commandText.GetArgument(i);
                 command.Parameters.Add(p);
-                args[i] = capture(p);
+                args[i] = new FormatCapturingParameter(_ => capture(p, _));
             }
             command.CommandText = string.Format(commandText.Format, args);
-            command.Transaction = transaction;
-            if (timeout != null)
-                command.CommandTimeout = (int)Math.Max(timeout.GetValueOrDefault().TotalSeconds, 1d);
             return command;
+        }
+
+        [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
+        public static IDbCommand CreateParametrizedCommand(this IDbConnection connection, Func<IDbDataParameter, string, string> capture, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        {
+            if (connection == null) throw new ArgumentNullException(nameof(connection));
+
+            return CaptureParameters(connection.CreateCommand(timeout, transaction), capture, commandText);
         }
     }
 }
