@@ -178,6 +178,9 @@
     <Compile Include="Data\DataViewExtensions.cs" />
     <Compile Include="Data\DataRowCollectionExtensions.cs" />
     <Compile Include="Data\DbConnectionExtensions.Parametrized.cs" />
+    <Compile Include="Data\Odbc\OdbcConnectionExtensions.Parametrized.cs" />
+    <Compile Include="Data\OleDb\OleDbConnectionExtensions.Parametrized.cs" />
+    <Compile Include="Data\SqlClient\SqlConnectionExtensions.Parametrized.cs" />
     <Compile Include="DecimalExtensions.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />

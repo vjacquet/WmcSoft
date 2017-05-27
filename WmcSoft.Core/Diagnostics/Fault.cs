@@ -31,7 +31,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Utility class useful for testing exceptions and combining them, possibly using short circuit.
     /// </summary>
-    /// <remarks>This class is interresting for demonstrating short circuit but la real use cases.</remarks>
+    /// <remarks>This class is interresting for demonstrating short circuit with real use cases.</remarks>
     public struct Fault : IEquatable<Fault>
     {
         #region Fields
@@ -44,8 +44,19 @@ namespace WmcSoft.Diagnostics
 
         #region Lifecycle
 
-        public Fault(Exception exception) {
+        public Fault(Exception exception)
+        {
             _exception = exception;
+        }
+
+        public Fault(Exception exception1, Exception exception2)
+        {
+            _exception = new AggregateException(exception1, exception2);
+        }
+
+        public Fault(params Exception[] exceptions)
+        {
+            _exception = new AggregateException(exceptions);
         }
 
         #endregion
@@ -58,40 +69,48 @@ namespace WmcSoft.Diagnostics
 
         #region Operators
 
-        public static bool operator ==(Fault x, Fault y) {
+        public static bool operator ==(Fault x, Fault y)
+        {
             return Equals(x, y);
         }
 
-        public static bool operator !=(Fault x, Fault y) {
+        public static bool operator !=(Fault x, Fault y)
+        {
             return Equals(x, y);
         }
 
-        public static implicit operator Fault(Exception x) {
+        public static implicit operator Fault(Exception x)
+        {
             return new Fault(x);
         }
 
-        public static bool operator !(Fault x) {
+        public static bool operator !(Fault x)
+        {
             return x._exception == null;
         }
 
-        public static bool operator true(Fault x) {
+        public static bool operator true(Fault x)
+        {
             return x._exception != null;
         }
 
-        public static bool operator false(Fault x) {
+        public static bool operator false(Fault x)
+        {
             return x._exception == null;
         }
 
-        public static Fault operator &(Fault x, Fault y) {
+        public static Fault operator &(Fault x, Fault y)
+        {
             if (x._exception != null && y._exception != null)
-                return new Fault(new AggregateException(x._exception, y._exception));
+                return new Fault(x._exception, y._exception);
             return default(Fault);
         }
 
-        public static Fault operator |(Fault x, Fault y) {
+        public static Fault operator |(Fault x, Fault y)
+        {
             if (x._exception != null) {
                 if (y._exception != null)
-                    return new Fault(new AggregateException(x._exception, y._exception));
+                    return new Fault(x._exception, y._exception);
                 return x;
             }
             if (y._exception != null)
@@ -103,12 +122,12 @@ namespace WmcSoft.Diagnostics
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return false;
 
-            var exception = obj as Exception;
-            if (exception != null)
+            if (obj is Exception exception)
                 return exception.Equals(_exception);
 
             if (obj.GetType() != typeof(Fault))
@@ -116,7 +135,8 @@ namespace WmcSoft.Diagnostics
             return Equals((Fault)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_exception != null)
                 return _exception.GetHashCode();
             return 0;
@@ -126,8 +146,9 @@ namespace WmcSoft.Diagnostics
 
         #region IEquatable<T> Members
 
-        public bool Equals(Fault other) {
-            return Object.Equals(_exception, other._exception);
+        public bool Equals(Fault other)
+        {
+            return Equals(_exception, other._exception);
         }
 
         #endregion

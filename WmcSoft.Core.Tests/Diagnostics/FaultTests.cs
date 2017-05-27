@@ -27,5 +27,19 @@ namespace WmcSoft.Diagnostics
                 Assert.Fail();
             }
         }
+
+        [TestMethod]
+        public void CanCreateSimpleExpression()
+        {
+            var fault = new Fault(new ArgumentNullException());
+            Assert.IsInstanceOfType(fault.Exception, typeof(ArgumentNullException));
+        }
+
+        [TestMethod]
+        public void CanCreateAggregateExpression()
+        {
+            var fault = new Fault(new ArgumentNullException(), new InvalidOperationException());
+            Assert.IsInstanceOfType(fault.Exception, typeof(AggregateException));
+        }
     }
 }
