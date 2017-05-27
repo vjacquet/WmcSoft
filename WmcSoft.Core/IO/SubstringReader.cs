@@ -47,7 +47,8 @@ namespace WmcSoft.IO
         /// <param name="s">The string to which the <see cref="SubstringReader"/> should be initialized. </param>
         /// <param name="startIndex">The zero-based starting character position of a substring in this instance. </param>
         /// <param name="length">The number of characters in the substring. </param>
-        public SubstringReader(string s, int startIndex, int length) {
+        public SubstringReader(string s, int startIndex, int length)
+        {
             if (s == null) throw new ArgumentNullException("s");
             if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException("startIndex");
             if (length < 0 || startIndex > (s.Length - length)) throw new ArgumentOutOfRangeException("length");
@@ -57,32 +58,37 @@ namespace WmcSoft.IO
             _end = startIndex + length;
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             Dispose(true);
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             _s = null;
             _pos = 0;
             _end = 0;
             base.Dispose(disposing);
         }
 
-        public override int Peek() {
+        public override int Peek()
+        {
             if (_s == null) throw new ObjectDisposedException(null);
             if (_pos == _end)
                 return -1;
             return _s[_pos];
         }
 
-        public override int Read() {
+        public override int Read()
+        {
             if (_s == null) throw new ObjectDisposedException(null);
             if (_pos == _end)
                 return -1;
             return _s[_pos++];
         }
 
-        public override int Read(char[] buffer, int index, int count) {
+        public override int Read(char[] buffer, int index, int count)
+        {
             if (buffer == null) throw new ArgumentNullException("buffer");
             if (index < 0) throw new ArgumentOutOfRangeException("index");
             if (count < 0) throw new ArgumentOutOfRangeException("count");
@@ -96,7 +102,8 @@ namespace WmcSoft.IO
             return n;
         }
 
-        public override string ReadToEnd() {
+        public override string ReadToEnd()
+        {
             if (_s == null) throw new ObjectDisposedException(null);
 
             var s = (_pos == 0 && _end == _s.Length)
@@ -106,7 +113,8 @@ namespace WmcSoft.IO
             return s;
         }
 
-        public override string ReadLine() {
+        public override string ReadLine()
+        {
             if (_s == null) throw new ObjectDisposedException(null);
 
             var i = _pos;

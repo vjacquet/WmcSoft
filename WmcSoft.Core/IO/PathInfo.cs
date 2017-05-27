@@ -47,49 +47,59 @@ namespace WmcSoft.IO
 
         #region Lifecycle
 
-        private PathInfo(UninitializedTag tag, string value) {
+        private PathInfo(UninitializedTag tag, string value)
+        {
             _path = value;
         }
 
-        public PathInfo(string path) {
+        public PathInfo(string path)
+        {
             CheckInvalidPathChars(path);
             _path = path;
         }
 
         public PathInfo(string path1, string path2)
-            : this(Uninitialized, Path.Combine(path1, path2)) {
+            : this(Uninitialized, Path.Combine(path1, path2))
+        {
         }
 
         public PathInfo(string path1, string path2, string path3)
-            : this(Uninitialized, Path.Combine(path1, path2, path3)) {
+            : this(Uninitialized, Path.Combine(path1, path2, path3))
+        {
         }
 
         public PathInfo(string path1, string path2, string path3, string path4)
-            : this(Uninitialized, Path.Combine(path1, path2, path3, path4)) {
+            : this(Uninitialized, Path.Combine(path1, path2, path3, path4))
+        {
         }
 
         public PathInfo(params string[] paths)
-            : this(Uninitialized, Path.Combine(paths)) {
+            : this(Uninitialized, Path.Combine(paths))
+        {
         }
 
         #endregion
 
         #region Operators
 
-        public static implicit operator PathInfo(string value) {
+        public static implicit operator PathInfo(string value)
+        {
             return new PathInfo(value);
         }
 
-        public static explicit operator string(PathInfo value) {
+        public static explicit operator string(PathInfo value)
+        {
             if (value._path == null) throw new InvalidCastException();
             return value._path;
         }
 
-        public static PathInfo operator /(PathInfo path1, string path2) {
+        public static PathInfo operator /(PathInfo path1, string path2)
+        {
             return new PathInfo(Uninitialized, Path.Combine(path1._path, path2));
         }
 
-        public static PathInfo operator /(PathInfo path1, PathInfo path2) {
+        public static PathInfo operator /(PathInfo path1, PathInfo path2)
+        {
             return new PathInfo(Uninitialized, Path.Combine(path1._path, path2._path));
         }
 
@@ -127,20 +137,24 @@ namespace WmcSoft.IO
 
         #region Methods
 
-        public PathInfo GetFullPath() {
+        public PathInfo GetFullPath()
+        {
             var path = Path.GetFullPath(_path);
             return new PathInfo(Uninitialized, path);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return _path;
         }
 
-        public string ToString(string format) {
+        public string ToString(string format)
+        {
             return ToString(format, null);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider) {
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
             switch (format) {
             case "f":
             case "F":
@@ -166,7 +180,8 @@ namespace WmcSoft.IO
 
         #region Helpers
 
-        static void CheckInvalidPathChars(string path, string name = null) {
+        static void CheckInvalidPathChars(string path, string name = null)
+        {
             if (path == null) throw new ArgumentNullException(name ?? nameof(path));
             if (path.IndexOfAny(InvalidPathChars) >= 0)
                 throw new ArgumentException(name ?? nameof(path));

@@ -32,7 +32,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Registers files to be included in a batch but differs the actual processing to the commit phase.
     /// </summary>
-    public abstract class Batch<TScope> : IDisposable 
+    public abstract class Batch<TScope> : IDisposable
         where TScope : IDisposable
     {
         private IList<KeyValuePair<string, IStreamSource>> _entries;
@@ -42,7 +42,8 @@ namespace WmcSoft.IO
         /// </summary>
         /// <param name="soure">The data source.</param>
         /// <param name="name">Name of the entry.</param>
-        public void Add(string name, IStreamSource source) {
+        public void Add(string name, IStreamSource source)
+        {
             if (_entries == null) {
                 _entries = new List<KeyValuePair<string, IStreamSource>>();
             }
@@ -52,7 +53,8 @@ namespace WmcSoft.IO
         /// <summary>
         /// Commits this instance.
         /// </summary>
-        public void Commit() {
+        public void Commit()
+        {
             if (_entries != null && _entries.Count > 0) {
                 using (var scope = CreateCommitScope()) {
                     foreach (var entry in _entries) {
@@ -81,13 +83,15 @@ namespace WmcSoft.IO
         /// Releases the unmanaged resources, and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. </param>
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         /// <summary>
         /// Releases both unmanaged and managed resources.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -95,7 +99,8 @@ namespace WmcSoft.IO
         /// <summary>
         /// Releases the resources held by the current instance.
         /// </summary>
-        ~Batch() {
+        ~Batch()
+        {
             Dispose(false);
         }
     }

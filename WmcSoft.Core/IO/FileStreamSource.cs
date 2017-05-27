@@ -38,7 +38,8 @@ namespace WmcSoft.IO
 
         #region Lifecycle
 
-        public FileStreamSource(string path) {
+        public FileStreamSource(string path)
+        {
             var info = new FileInfo(path);
             _path = info.FullName;
         }
@@ -55,7 +56,8 @@ namespace WmcSoft.IO
 
         #region IStreamSource Membres
 
-        public Stream GetStream() {
+        public Stream GetStream()
+        {
             return File.OpenRead(_path);
         }
 

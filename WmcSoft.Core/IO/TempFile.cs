@@ -42,7 +42,8 @@ namespace WmcSoft.IO
 
         #region lifecycle
 
-        public TempFile() {
+        public TempFile()
+        {
             _fullPath = Path.GetTempFileName();
         }
 
@@ -58,20 +59,22 @@ namespace WmcSoft.IO
 
         #region IDisposable Members
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing) {
+        private void Dispose(bool disposing)
+        {
             File.Delete(_fullPath);
         }
 
-        ~TempFile() {
+        ~TempFile()
+        {
             try {
                 Dispose(false);
-            }
-            catch (Exception) {
+            } catch (Exception) {
             }
         }
 

@@ -38,7 +38,8 @@ namespace WmcSoft.IO
         private readonly string _header;
         private bool _wroteHeader;
 
-        public HeaderedTextWriter(TextWriter writer, string header) {
+        public HeaderedTextWriter(TextWriter writer, string header)
+        {
             _wrapped = writer;
             _header = header;
         }
@@ -47,21 +48,25 @@ namespace WmcSoft.IO
             get { return _wrapped.Encoding; }
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             _wrapped.Close();
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             if (disposing) {
                 _wrapped.Dispose();
             }
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
             _wrapped.Flush();
         }
 
-        public override void Write(char value) {
+        public override void Write(char value)
+        {
             if (!_wroteHeader) {
                 _wrapped.WriteLine(_header);
                 _wroteHeader = true;

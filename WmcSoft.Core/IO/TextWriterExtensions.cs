@@ -31,7 +31,8 @@ namespace WmcSoft.IO
 {
     public static class TextWriterExtensions
     {
-        public static TextWriter WriteLines(this TextWriter writer, IEnumerable<string> lines) {
+        public static TextWriter WriteLines(this TextWriter writer, IEnumerable<string> lines)
+        {
             foreach (var line in lines) {
                 writer.WriteLine(line);
             }

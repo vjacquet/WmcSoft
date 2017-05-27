@@ -11,14 +11,17 @@ namespace WmcSoft.IO
     {
         long _length;
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             return 0;
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             _length += count;
         }
 
@@ -43,11 +46,13 @@ namespace WmcSoft.IO
             set { throw new NotImplementedException(); }
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             throw new NotImplementedException();
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             throw new NotImplementedException();
         }
     }

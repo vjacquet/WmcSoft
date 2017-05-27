@@ -36,10 +36,12 @@ namespace WmcSoft.IO
     public sealed class CloseBarrierStream : StreamDecorator
     {
         public CloseBarrierStream(Stream stream)
-            : base(stream) {
+            : base(stream)
+        {
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             GC.SuppressFinalize(this);
         }
     }

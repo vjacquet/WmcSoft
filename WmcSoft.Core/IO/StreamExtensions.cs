@@ -49,7 +49,8 @@ namespace WmcSoft.IO
         /// <param name="destination">The target stream</param>
         /// <param name="buffer">The buffer</param>
         /// <returns>The number of bytes copied</returns>
-        public static void CopyTo(this Stream source, Stream destination, byte[] buffer) {
+        public static void CopyTo(this Stream source, Stream destination, byte[] buffer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (destination == null) throw new ArgumentNullException(nameof(destination));
             if (buffer == null) throw new ArgumentNullException(nameof(buffer));
@@ -65,7 +66,8 @@ namespace WmcSoft.IO
         }
 
         [HostProtection(ExternalThreading = true)]
-        public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress, CancellationToken cancellationToken) {
+        public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress, CancellationToken cancellationToken)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (destination == null) throw new ArgumentNullException(nameof(destination));
             if (bufferSize <= 0) throw new ArgumentOutOfRangeException(nameof(bufferSize));
@@ -82,17 +84,20 @@ namespace WmcSoft.IO
         }
 
         [HostProtection(ExternalThreading = true)]
-        public static Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress) {
+        public static Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress)
+        {
             return CopyToAsync(source, destination, bufferSize, progress, CancellationToken.None);
         }
 
         [HostProtection(ExternalThreading = true)]
-        public static Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress) {
+        public static Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress)
+        {
             return CopyToAsync(source, destination, DefaultBufferSize, progress, CancellationToken.None);
         }
 
         [HostProtection(ExternalThreading = true)]
-        public static Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress, CancellationToken cancellationToken) {
+        public static Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress, CancellationToken cancellationToken)
+        {
             return CopyToAsync(source, destination, DefaultBufferSize, progress, cancellationToken);
         }
 
@@ -100,7 +105,8 @@ namespace WmcSoft.IO
 
         #region Consume
 
-        public static long ConsumeAll(this Stream stream) {
+        public static long ConsumeAll(this Stream stream)
+        {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             byte[] buffer = new byte[DefaultBufferSize];
@@ -111,7 +117,8 @@ namespace WmcSoft.IO
             return length;
         }
 
-        public static async Task<long> ConsumeAllAsync(this Stream stream, CancellationToken cancellationToken) {
+        public static async Task<long> ConsumeAllAsync(this Stream stream, CancellationToken cancellationToken)
+        {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             byte[] buffer = new byte[DefaultBufferSize];
@@ -122,7 +129,8 @@ namespace WmcSoft.IO
             return length;
         }
 
-        public static Task<long> ConsumeAllAsync(this Stream stream) {
+        public static Task<long> ConsumeAllAsync(this Stream stream)
+        {
             return ConsumeAllAsync(stream, CancellationToken.None);
         }
 
@@ -135,7 +143,8 @@ namespace WmcSoft.IO
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume the data until the end of stream.</remarks>
-        public static void End(this Stream stream) {
+        public static void End(this Stream stream)
+        {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             if (stream.CanSeek) {
@@ -156,7 +165,8 @@ namespace WmcSoft.IO
         /// Rewind the stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public static void Rewind(this Stream stream) {
+        public static void Rewind(this Stream stream)
+        {
             stream.Seek(0L, SeekOrigin.Begin);
         }
 
@@ -170,7 +180,8 @@ namespace WmcSoft.IO
         /// <param name="stream">The stream.</param>
         /// <param name="count">The number of bytes to skip.</param>
         /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume up to <paramref name="count"/> bytes of data.</remarks>
-        public static void Skip(this Stream stream, long count) {
+        public static void Skip(this Stream stream, long count)
+        {
             if (stream.CanSeek) {
                 stream.Seek(count, SeekOrigin.Current);
             } else {

@@ -38,7 +38,8 @@ namespace WmcSoft.IO
         #region Lifecycle
 
         protected ConstrainedStreamDecorator(Stream stream)
-            : base(stream) {
+            : base(stream)
+        {
         }
 
         #endregion
@@ -66,37 +67,43 @@ namespace WmcSoft.IO
             }
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             if (!CanSeek)
                 throw new NotSupportedException();
             return base.Seek(offset, origin);
         }
 
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        {
             if (!CanRead)
                 throw new NotSupportedException();
             return base.BeginRead(buffer, offset, count, callback, state);
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             if (!CanRead)
                 throw new NotSupportedException();
             return base.Read(buffer, offset, count);
         }
 
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        {
             if (!CanWrite)
                 throw new NotSupportedException();
             return base.BeginWrite(buffer, offset, count, callback, state);
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             if (!CanWrite)
                 throw new NotSupportedException();
             base.Write(buffer, offset, count);
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             if (!CanWrite || !CanSeek)
                 throw new NotSupportedException();
             base.SetLength(value);

@@ -41,10 +41,12 @@ namespace WmcSoft.IO
         internal sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
         {
             private SafeTokenHandle()
-                : base(true) {
+                : base(true)
+            {
             }
 
-            protected override bool ReleaseHandle() {
+            protected override bool ReleaseHandle()
+            {
                 return NativeMethods.CloseHandle(handle);
             }
         }
@@ -66,7 +68,8 @@ namespace WmcSoft.IO
         /// <param name="domainName">Name of the domain.</param>
         /// <param name="userName">Name of the user.</param>
         /// <param name="password">The password.</param>
-        public Impersonate(string domainName, string userName, string password) {
+        public Impersonate(string domainName, string userName, string password)
+        {
             const int LOGON32_PROVIDER_DEFAULT = 0;
             //const int LOGON32_LOGON_INTERACTIVE = 2;
             //const int LOGON32_LOGON_NETWORK = 3;
@@ -85,7 +88,8 @@ namespace WmcSoft.IO
 
         #region IDisposable Members
 
-        public void Dispose() {
+        public void Dispose()
+        {
             if (_impersonatedUser != null) {
                 _impersonatedUser.Dispose();
                 _impersonatedUser = null;

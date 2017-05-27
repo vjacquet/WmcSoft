@@ -32,32 +32,36 @@ namespace WmcSoft.IO
 {
     public static class FileSystemInfoExtensions
     {
-        public static bool DeleteAll(this IEnumerable<FileInfo> files) {
+        public static bool DeleteAll(this IEnumerable<FileInfo> files)
+        {
             bool failed = false;
             foreach (var file in files) {
                 try {
                     file.Delete();
-                }
-                catch {
+                } catch {
                     failed = true;
                 }
             }
             return !failed;
         }
 
-        public static bool DeleteAllFiles(this DirectoryInfo directory) {
+        public static bool DeleteAllFiles(this DirectoryInfo directory)
+        {
             return DeleteAll(directory.EnumerateFiles());
         }
 
-        public static bool DeleteAllFiles(this DirectoryInfo directory, string searchPattern) {
+        public static bool DeleteAllFiles(this DirectoryInfo directory, string searchPattern)
+        {
             return DeleteAll(directory.EnumerateFiles(searchPattern));
         }
 
-        public static bool DeleteAllFiles(this DirectoryInfo directory, string searchPattern, SearchOption searchOption) {
+        public static bool DeleteAllFiles(this DirectoryInfo directory, string searchPattern, SearchOption searchOption)
+        {
             return DeleteAll(directory.EnumerateFiles(searchPattern, searchOption));
         }
 
-        public static string GetContentType(this FileInfo file) {
+        public static string GetContentType(this FileInfo file)
+        {
             object value;
             var key = Registry.ClassesRoot.OpenSubKey(file.Extension);
             if (key != null && (value = key.GetValue("Content Type")) != null) {

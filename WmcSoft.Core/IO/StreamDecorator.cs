@@ -43,17 +43,20 @@ namespace WmcSoft.IO
 
         #region Lifecycle
 
-        private StreamDecorator() {
+        private StreamDecorator()
+        {
         }
 
-        protected StreamDecorator(Stream stream) {
+        protected StreamDecorator(Stream stream)
+        {
             if (stream == null) {
                 throw new ArgumentNullException("decoratedStream");
             }
             _underlying = stream;
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             _underlying.Close();
         }
 
@@ -90,19 +93,23 @@ namespace WmcSoft.IO
 
         #region Read Methods & Properties
 
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        {
             return _underlying.BeginRead(buffer, offset, count, callback, state);
         }
 
-        public override int EndRead(IAsyncResult asyncResult) {
+        public override int EndRead(IAsyncResult asyncResult)
+        {
             return _underlying.EndRead(asyncResult);
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             return _underlying.Read(buffer, offset, count);
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             return _underlying.Seek(offset, origin);
         }
 
@@ -114,23 +121,28 @@ namespace WmcSoft.IO
 
         #region Write Methods & Properties
 
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        {
             return _underlying.BeginWrite(buffer, offset, count, callback, state);
         }
 
-        public override void EndWrite(IAsyncResult asyncResult) {
+        public override void EndWrite(IAsyncResult asyncResult)
+        {
             _underlying.EndWrite(asyncResult);
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             _underlying.Write(buffer, offset, count);
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
             _underlying.Flush();
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             _underlying.SetLength(value);
         }
 

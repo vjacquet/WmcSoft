@@ -43,7 +43,8 @@ namespace WmcSoft.IO
             public int dwStreamNameSize;
         }
 
-        public static IEnumerable<FileStreamInfo> EnumerateFileStreamsInfo(this FileInfo file) {
+        public static IEnumerable<FileStreamInfo> EnumerateFileStreamsInfo(this FileInfo file)
+        {
             const int bufferSize = 4096;
             using (FileStream fs = file.OpenRead()) {
                 IntPtr context = IntPtr.Zero;
@@ -78,8 +79,7 @@ namespace WmcSoft.IO
                         } else
                             break;
                     }
-                }
-                finally {
+                } finally {
                     Marshal.FreeHGlobal(buffer);
                     uint numRead;
                     if (!NativeMethods.BackupRead(fs.SafeFileHandle, IntPtr.Zero, 0, out numRead,
@@ -105,7 +105,8 @@ namespace WmcSoft.IO
 
     public class FileStreamInfo
     {
-        public FileStreamInfo(string name, FileStreamType streamType, long size) {
+        public FileStreamInfo(string name, FileStreamType streamType, long size)
+        {
             Name = name;
             StreamType = streamType;
             Size = size;

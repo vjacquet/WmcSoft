@@ -42,7 +42,8 @@ namespace WmcSoft.IO
         /// Initializes a new instance of the <see cref="FileCopyBatch"/> class.
         /// </summary>
         /// <param name="path">The path.</param>
-        public FileCopyBatch(string path) {
+        public FileCopyBatch(string path)
+        {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
             _path = path;
@@ -54,7 +55,8 @@ namespace WmcSoft.IO
         /// <param name="domainName">Name of the domain.</param>
         /// <param name="userName">Name of the user.</param>
         /// <param name="password">The password.</param>
-        public void Impersonate(string domainName, string userName, string password) {
+        public void Impersonate(string domainName, string userName, string password)
+        {
             _impersonator = () => new Impersonate(domainName, userName, password);
         }
 
@@ -64,7 +66,8 @@ namespace WmcSoft.IO
         /// <returns>
         /// An <see cref="IDisposable"/> instance to release resources once the commit is complete.
         /// </returns>
-        protected override IDisposable CreateCommitScope() {
+        protected override IDisposable CreateCommitScope()
+        {
             if (_impersonator != null) {
                 return _impersonator();
             }
@@ -76,7 +79,8 @@ namespace WmcSoft.IO
         /// </summary>
         /// <param name="name">Name of the entry.</param>
         /// <param name="source">The data source.</param>
-        protected override void Process(IDisposable scope, string name, IStreamSource source) {
+        protected override void Process(IDisposable scope, string name, IStreamSource source)
+        {
             var fileName = Path.Combine(_path, name);
             var directoryName = Path.GetDirectoryName(fileName);
 

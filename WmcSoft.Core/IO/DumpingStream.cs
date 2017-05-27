@@ -38,51 +38,49 @@ namespace WmcSoft.IO
         readonly Stream _stream;
         readonly Stream _dump;
 
-        public DumpingStream(Stream stream, Stream dump) {
+        public DumpingStream(Stream stream, Stream dump)
+        {
             _stream = stream;
             _dump = dump;
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             _dump.Close();
             _stream.Close();
             base.Close();
         }
 
-        public override bool CanRead
-        {
+        public override bool CanRead {
             get {
                 return _stream.CanRead;
             }
         }
 
-        public override bool CanSeek
-        {
+        public override bool CanSeek {
             get {
                 return false;
             }
         }
 
-        public override bool CanWrite
-        {
+        public override bool CanWrite {
             get {
                 return false;
             }
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
             _dump.Flush();
         }
 
-        public override long Length
-        {
+        public override long Length {
             get {
                 throw new NotSupportedException();
             }
         }
 
-        public override long Position
-        {
+        public override long Position {
             get {
                 throw new NotSupportedException();
             }
@@ -91,21 +89,25 @@ namespace WmcSoft.IO
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             int readCount = _stream.Read(buffer, offset, count);
             _dump.Write(buffer, offset, readCount);
             return readCount;
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             throw new NotSupportedException();
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             throw new NotSupportedException();
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             throw new NotSupportedException();
         }
     }

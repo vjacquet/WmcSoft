@@ -43,12 +43,14 @@ namespace WmcSoft.IO
 
         #region Lifecycle
 
-        public MirroringStream(Stream master, Stream mirror) {
+        public MirroringStream(Stream master, Stream mirror)
+        {
             this.master = master;
             this.mirror = mirror;
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             this.master.Close();
             this.mirror.Close();
             base.Close();
@@ -101,13 +103,15 @@ namespace WmcSoft.IO
 
         #region Read Methods & Properties
 
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        {
             if (!mirror.CanSeek && !mirror.CanRead)
                 throw new NotSupportedException();
             return master.BeginRead(buffer, offset, count, callback, state);
         }
 
-        public override int EndRead(IAsyncResult asyncResult) {
+        public override int EndRead(IAsyncResult asyncResult)
+        {
             int read = master.EndRead(asyncResult);
 
             if (mirror.CanSeek)
@@ -120,7 +124,8 @@ namespace WmcSoft.IO
             return read;
         }
 
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             int read = master.Read(buffer, offset, count);
 
             if (mirror.CanSeek)
@@ -134,7 +139,8 @@ namespace WmcSoft.IO
         }
 
 
-        public override long Seek(long offset, SeekOrigin origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
             long retVal = master.Seek(offset, origin);
 
             mirror.Seek(offset, origin);
@@ -154,7 +160,8 @@ namespace WmcSoft.IO
 
         #region Write Methods & Properties
 
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state) {
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        {
             IAsyncResult retVal = master.BeginWrite(buffer, offset, count, callback, state);
 
             mirror.Write(buffer, offset, count);
@@ -163,22 +170,26 @@ namespace WmcSoft.IO
             return retVal;
         }
 
-        public override void EndWrite(IAsyncResult asyncResult) {
+        public override void EndWrite(IAsyncResult asyncResult)
+        {
             master.EndWrite(asyncResult);
         }
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             master.Write(buffer, offset, count);
 
             mirror.Write(buffer, offset, count);
             mirror.Flush();
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
             master.Flush();
         }
 
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             master.SetLength(value);
             mirror.SetLength(value);
         }

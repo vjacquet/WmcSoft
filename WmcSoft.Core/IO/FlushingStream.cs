@@ -34,27 +34,31 @@ namespace WmcSoft.IO
     /// </summary>
     public class FlushingStream : StreamDecorator
     {
-       #region Lifecycle
+        #region Lifecycle
 
         public FlushingStream(Stream stream)
-            : base(stream) {
+            : base(stream)
+        {
         }
 
         #endregion
 
         #region Overrides
 
-        public override void Write(byte[] buffer, int offset, int count) {
+        public override void Write(byte[] buffer, int offset, int count)
+        {
             base.Write(buffer, offset, count);
             base.Flush();
         }
 
-        public override void WriteByte(byte value) {
+        public override void WriteByte(byte value)
+        {
             base.WriteByte(value);
             base.Flush();
         }
 
-        public override void EndWrite(IAsyncResult asyncResult) {
+        public override void EndWrite(IAsyncResult asyncResult)
+        {
             base.EndWrite(asyncResult);
             base.Flush();
         }

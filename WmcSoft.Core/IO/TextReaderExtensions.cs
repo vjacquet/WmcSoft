@@ -31,7 +31,8 @@ namespace WmcSoft.IO
 {
     public static class TextReaderExtensions
     {
-        public static IEnumerable<string> ReadLines(this TextReader self) {
+        public static IEnumerable<string> ReadLines(this TextReader self)
+        {
             string line;
             while ((line = self.ReadLine()) != null) {
                 yield return line;

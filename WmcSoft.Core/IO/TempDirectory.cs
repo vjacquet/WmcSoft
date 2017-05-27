@@ -42,13 +42,15 @@ namespace WmcSoft.IO
 
         #region lifecycle
 
-        public TempDirectory() {
+        public TempDirectory()
+        {
             _fullPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(_fullPath);
         }
 
         public TempDirectory(params string[] fileNames)
-            : this() {
+            : this()
+        {
             foreach (string fileName in fileNames) {
                 File.Copy(fileName, Path.Combine(_fullPath, Path.GetFileName(fileName)));
             }
@@ -66,20 +68,22 @@ namespace WmcSoft.IO
 
         #region IDisposable Membres
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing) {
+        private void Dispose(bool disposing)
+        {
             Directory.Delete(_fullPath, true);
         }
 
-        ~TempDirectory() {
+        ~TempDirectory()
+        {
             try {
                 Dispose(false);
-            }
-            catch (Exception) {
+            } catch (Exception) {
             }
         }
 
