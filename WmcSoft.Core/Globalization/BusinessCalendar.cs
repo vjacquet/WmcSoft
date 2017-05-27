@@ -36,7 +36,8 @@ namespace WmcSoft.Globalization
         readonly DateTime _epoch;
         readonly BitArray _holidays;
 
-        private BusinessCalendar(DateTime epoch, BitArray holidays) {
+        private BusinessCalendar(DateTime epoch, BitArray holidays)
+        {
             _epoch = epoch;
             _holidays = holidays;
 
@@ -50,7 +51,8 @@ namespace WmcSoft.Globalization
             // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
-        public BusinessCalendar(DateTime since, TimeSpan duration, params Predicate<DateTime>[] holidays) {
+        public BusinessCalendar(DateTime since, TimeSpan duration, params Predicate<DateTime>[] holidays)
+        {
             _epoch = since;
             var length = (int)duration.TotalDays;
             _holidays = new BitArray(length, false);
@@ -61,40 +63,48 @@ namespace WmcSoft.Globalization
             }
         }
 
-        public bool IsBusinessDay(DateTime date) {
+        public bool IsBusinessDay(DateTime date)
+        {
             var duration = date - _epoch;
             return !_holidays[(int)duration.TotalDays];
         }
 
-        public static bool Saturdays(DateTime date) {
+        public static bool Saturdays(DateTime date)
+        {
             return date.DayOfWeek == DayOfWeek.Saturday;
         }
 
-        public static bool Sundays(DateTime date) {
+        public static bool Sundays(DateTime date)
+        {
             return date.DayOfWeek == DayOfWeek.Sunday;
         }
 
-        public static bool WeekEnds(DateTime date) {
+        public static bool WeekEnds(DateTime date)
+        {
             var dow = date.DayOfWeek;
             return dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday;
         }
 
-        public static bool Christmas(DateTime date) {
+        public static bool Christmas(DateTime date)
+        {
             return date.Month == 12 && date.Day == 25;
         }
 
-        public static bool NewYear(DateTime date) {
+        public static bool NewYear(DateTime date)
+        {
             return date.Month == 1 && date.Day == 1;
         }
 
-        public static BusinessCalendar operator &(BusinessCalendar x, BusinessCalendar y) {
+        public static BusinessCalendar operator &(BusinessCalendar x, BusinessCalendar y)
+        {
             Debug.Assert(x._epoch == y._epoch && x._holidays.Length == y._holidays.Length);
             var array = new BitArray(x._holidays);
             array.Or(y._holidays);
             return new BusinessCalendar(x._epoch, array);
         }
 
-        public static BusinessCalendar And(BusinessCalendar x, BusinessCalendar y) {
+        public static BusinessCalendar And(BusinessCalendar x, BusinessCalendar y)
+        {
             return x & y;
         }
     }

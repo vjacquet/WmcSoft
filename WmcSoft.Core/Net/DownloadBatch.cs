@@ -41,7 +41,8 @@ namespace WmcSoft.Net
         /// <param name="webClient">The web client.</param>
         /// <param name="method">The method to use to upload.</param>
         public DownloadBatch(WebClient webClient, string method)
-            : base(webClient, method) {
+            : base(webClient, method)
+        {
         }
 
         /// <summary>
@@ -49,10 +50,12 @@ namespace WmcSoft.Net
         /// </summary>
         /// <param name="webClient">The web client.</param>
         public DownloadBatch(WebClient webClient)
-            : base(webClient) {
+            : base(webClient)
+        {
         }
 
-        protected override string GetMethod(Uri uri) {
+        protected override string GetMethod(Uri uri)
+        {
             return null; // not used.
         }
 
@@ -61,14 +64,14 @@ namespace WmcSoft.Net
         /// </summary>
         /// <param name="name">Name of the entry.</param>
         /// <param name="streamSource">The data source.</param>
-        protected override void Process(Scope scope, string name, IStreamSource source) {
+        protected override void Process(Scope scope, string name, IStreamSource source)
+        {
             try {
                 using (var local = source.GetStream())
                 using (var remote = WebClient.OpenRead(new Uri(scope.BaseUri, name.Replace('\\', '/')))) {
                     remote.CopyTo(local);
                 }
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 if (exception.InnerException != null)
                     throw exception.InnerException;
                 throw;

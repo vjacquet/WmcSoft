@@ -31,7 +31,8 @@ namespace WmcSoft.Net
 {
     static class WebClientHelper
     {
-        public static string MapMethod(Uri absoluteUri) {
+        public static string MapMethod(Uri absoluteUri)
+        {
             var scheme = absoluteUri.Scheme.ToLowerInvariant();
             if (scheme == "ftp")
                 return WebRequestMethods.Ftp.UploadFile;

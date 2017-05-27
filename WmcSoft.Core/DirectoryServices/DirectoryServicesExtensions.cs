@@ -33,15 +33,18 @@ namespace WmcSoft.DirectoryServices
     {
         #region Flags manipulation
 
-        public static void ResetFlagValue(this PropertyValueCollection self, int flags) {
+        public static void ResetFlagValue(this PropertyValueCollection self, int flags)
+        {
             var value = (int)self.Value;
             self.Value = value & ~flags;
         }
-        public static void SetFlagValue(this PropertyValueCollection self, int flags) {
+        public static void SetFlagValue(this PropertyValueCollection self, int flags)
+        {
             var value = (int)self.Value;
             self.Value = value | flags;
         }
-        public static bool HasFlagValue(this PropertyValueCollection self, int flags) {
+        public static bool HasFlagValue(this PropertyValueCollection self, int flags)
+        {
             var value = (int)self.Value;
             return (value & flags) == flags;
         }
@@ -55,7 +58,8 @@ namespace WmcSoft.DirectoryServices
         /// </summary>
         /// <param name="member">The directory entry.</param>
         /// <returns>The account value.</returns>
-        public static string GetNTAccount(this DirectoryEntry member) {
+        public static string GetNTAccount(this DirectoryEntry member)
+        {
             var collection = member.Properties;
             var objectSid = collection["objectSid"];
             var value = (byte[])objectSid.Value;

@@ -34,42 +34,51 @@ namespace WmcSoft.Linq.Expressions
     {
         #region Call
 
-        public static MethodCallExpression Call(this Expression expression, string methodName, Type[] typeArguments, params Expression[] arguments) {
+        public static MethodCallExpression Call(this Expression expression, string methodName, Type[] typeArguments, params Expression[] arguments)
+        {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Call(expression, methodName, typeArguments, arguments);
         }
 
-        public static MethodCallExpression Call(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, null, arguments);
         }
 
-        public static MethodCallExpression Call<T>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T) }, arguments);
         }
 
-        public static MethodCallExpression Call<T1, T2>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T1, T2>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2) }, arguments);
         }
 
-        public static MethodCallExpression Call<T1, T2, T3>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T1, T2, T3>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3) }, arguments);
         }
 
-        public static MethodCallExpression Call<T1, T2, T3, T4>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T1, T2, T3, T4>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, arguments);
         }
 
-        public static MethodCallExpression Call<T1, T2, T3, T4, T5>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T1, T2, T3, T4, T5>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5) }, arguments);
         }
 
-        public static MethodCallExpression Call<T1, T2, T3, T4, T5, T6>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T1, T2, T3, T4, T5, T6>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6) }, arguments);
         }
 
-        public static MethodCallExpression Call<T1, T2, T3, T4, T5, T6, T7>(this Expression expression, string methodName, params Expression[] arguments) {
+        public static MethodCallExpression Call<T1, T2, T3, T4, T5, T6, T7>(this Expression expression, string methodName, params Expression[] arguments)
+        {
             return Call(expression, methodName, new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7) }, arguments);
         }
 
@@ -77,35 +86,40 @@ namespace WmcSoft.Linq.Expressions
 
         #region Field / Property
 
-        public static MemberExpression Field(this Expression expression, string fieldName) {
+        public static MemberExpression Field(this Expression expression, string fieldName)
+        {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Field(expression, fieldName);
         }
 
-        public static MemberExpression Property(this Expression expression, string propertyName) {
+        public static MemberExpression Property(this Expression expression, string propertyName)
+        {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Property(expression, propertyName);
         }
 
-        public static IndexExpression Property(this Expression expression, string propertyName, params Expression[] arguments) {
+        public static IndexExpression Property(this Expression expression, string propertyName, params Expression[] arguments)
+        {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.Property(expression, propertyName, arguments);
         }
 
-        public static MemberExpression PropertyOrField(this Expression expression, string propertyOrFieldName) {
+        public static MemberExpression PropertyOrField(this Expression expression, string propertyOrFieldName)
+        {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             return Expression.PropertyOrField(expression, propertyOrFieldName);
         }
 
-        public static MemberExpression FollowPropertyOrField(this Expression expression, string propertyOrFieldPath) {
+        public static MemberExpression FollowPropertyOrField(this Expression expression, string propertyOrFieldPath)
+        {
             // guard against null, this extensions should not be used for static members
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
@@ -124,7 +138,8 @@ namespace WmcSoft.Linq.Expressions
 
         #region Combiners
 
-        static Expression<TDelegate> UnguardedCompose<TDelegate>(Func<Expression, Expression, Expression> merge, Expression<TDelegate> x, Expression<TDelegate> y) {
+        static Expression<TDelegate> UnguardedCompose<TDelegate>(Func<Expression, Expression, Expression> merge, Expression<TDelegate> x, Expression<TDelegate> y)
+        {
             // build parameter map (from parameters of second to parameters of first)
             var length = x.Parameters.Count;
             var map = new Dictionary<ParameterExpression, ParameterExpression>(x.Parameters.Count);
@@ -146,7 +161,8 @@ namespace WmcSoft.Linq.Expressions
         /// <returns>A composed expression.</returns>
         /// <remarks>Based on the original post by Colin Meek:
         /// http://blogs.msdn.com/b/meek/archive/2008/05/02/linq-to-entities-combining-predicates.aspx </remarks>
-        public static Expression<TDelegate> Compose<TDelegate>(this Func<Expression, Expression, Expression> merge, Expression<TDelegate> x, Expression<TDelegate> y) {
+        public static Expression<TDelegate> Compose<TDelegate>(this Func<Expression, Expression, Expression> merge, Expression<TDelegate> x, Expression<TDelegate> y)
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
             if (merge == null) throw new ArgumentNullException(nameof(merge));
@@ -155,7 +171,8 @@ namespace WmcSoft.Linq.Expressions
             return UnguardedCompose(merge, x, y);
         }
 
-        static Expression Replace(Expression expression, Expression oldValue, Expression newValue) {
+        static Expression Replace(Expression expression, Expression oldValue, Expression newValue)
+        {
             var visitor = new ReplaceExpressionVisitor(oldValue, newValue);
             return visitor.Visit(expression);
         }
@@ -168,7 +185,8 @@ namespace WmcSoft.Linq.Expressions
         /// <param name="y">The right side of the binary expression. </param>
         /// <returns>A new predicate expression</returns>
         /// <remarks>Code found at http://stackoverflow.com/questions/457316/combining-two-expressions-expressionfunct-bool, written by Marc Gravell.</remarks>
-        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> x, Expression<Func<T, bool>> y) {
+        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> x, Expression<Func<T, bool>> y)
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
 
@@ -187,7 +205,8 @@ namespace WmcSoft.Linq.Expressions
         /// <param name="x">The left side of the binary expression.</param>
         /// <param name="y">The right side of the binary expression. </param>
         /// <returns>A new predicate expression</returns>
-        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> x, Expression<Func<T, bool>> y) {
+        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> x, Expression<Func<T, bool>> y)
+        {
             if (x == null) throw new ArgumentNullException(nameof(x));
             if (y == null) throw new ArgumentNullException(nameof(y));
 
@@ -199,7 +218,8 @@ namespace WmcSoft.Linq.Expressions
             return Expression.Lambda<Func<T, bool>>(body, p);
         }
 
-        public static Expression<Func<T, bool>> Negation<T>(this Expression<Func<T, bool>> predicate) {
+        public static Expression<Func<T, bool>> Negation<T>(this Expression<Func<T, bool>> predicate)
+        {
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             var p = predicate.Parameters[0];
@@ -207,7 +227,8 @@ namespace WmcSoft.Linq.Expressions
             return Expression.Lambda<Func<T, bool>>(body, p);
         }
 
-        public static Expression<Func<T, bool>> Conjunction<T>(this IList<Expression<Func<T, bool>>> predicates) {
+        public static Expression<Func<T, bool>> Conjunction<T>(this IList<Expression<Func<T, bool>>> predicates)
+        {
             if (predicates == null) throw new ArgumentNullException(nameof(predicates));
 
             switch (predicates.Count) {
@@ -225,7 +246,8 @@ namespace WmcSoft.Linq.Expressions
             }
         }
 
-        public static Expression<Func<T, bool>> Disjunction<T>(this IList<Expression<Func<T, bool>>> predicates) {
+        public static Expression<Func<T, bool>> Disjunction<T>(this IList<Expression<Func<T, bool>>> predicates)
+        {
             if (predicates == null) throw new ArgumentNullException(nameof(predicates));
 
             switch (predicates.Count) {
@@ -247,7 +269,8 @@ namespace WmcSoft.Linq.Expressions
 
         #region Rebinder
 
-        public static Expression RebindParameters(this Expression exp, IDictionary<ParameterExpression, ParameterExpression> map) {
+        public static Expression RebindParameters(this Expression exp, IDictionary<ParameterExpression, ParameterExpression> map)
+        {
             var rebinder = new ParameterRebindExpressionVisitor(map);
             return rebinder.Visit(exp);
         }

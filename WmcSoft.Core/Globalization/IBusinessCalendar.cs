@@ -36,7 +36,8 @@ namespace WmcSoft.Globalization
     public static class BusinessCalendarExtensions
     {
         public static DateTime AddBusinessDays<TCalendar>(this TCalendar calendar, DateTime date, int days)
-            where TCalendar : IBusinessCalendar {
+            where TCalendar : IBusinessCalendar
+        {
             while (days > 0) {
                 date = date.AddDays(1);
                 if (calendar.IsBusinessDay(date))

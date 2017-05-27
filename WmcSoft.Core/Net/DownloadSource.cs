@@ -42,7 +42,8 @@ namespace WmcSoft.Net
 
         #region Lifecycle
 
-        public DownloadSource(WebClient webClient, Uri uri) {
+        public DownloadSource(WebClient webClient, Uri uri)
+        {
             _webClient = webClient;
             _uri = uri;
         }
@@ -58,11 +59,13 @@ namespace WmcSoft.Net
 
         #region IStreamSource Membres
 
-        public Stream GetStream() {
+        public Stream GetStream()
+        {
             return GetStream(_uri);
         }
 
-        protected virtual Stream GetStream(Uri uri) {
+        protected virtual Stream GetStream(Uri uri)
+        {
             return _webClient.OpenRead(uri);
         }
 

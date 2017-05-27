@@ -33,11 +33,13 @@ namespace WmcSoft.Globalization
     {
         readonly IBusinessCalendar[] _calendars;
 
-        public CombinedCalendar(params IBusinessCalendar[] calendars) {
+        public CombinedCalendar(params IBusinessCalendar[] calendars)
+        {
             _calendars = calendars;
         }
 
-        public bool IsBusinessDay(DateTime date) {
+        public bool IsBusinessDay(DateTime date)
+        {
             return _calendars.All(c => c.IsBusinessDay(date));
         }
     }

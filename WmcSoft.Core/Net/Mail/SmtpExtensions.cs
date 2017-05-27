@@ -39,18 +39,21 @@ namespace WmcSoft.Net.Mail
         {
             public static readonly MailAddressEqualityComparer Default = new MailAddressEqualityComparer();
 
-            public bool Equals(MailAddress x, MailAddress y) {
+            public bool Equals(MailAddress x, MailAddress y)
+            {
                 return String.Equals(x.Address, y.Address, StringComparison.InvariantCultureIgnoreCase);
             }
 
-            public int GetHashCode(MailAddress obj) {
+            public int GetHashCode(MailAddress obj)
+            {
                 return obj.Address.ToLowerInvariant().GetHashCode();
             }
         }
 
         #endregion
 
-        public static void AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses, IEqualityComparer<MailAddress> comparer = null) {
+        public static void AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses, IEqualityComparer<MailAddress> comparer = null)
+        {
             comparer = comparer ?? MailAddressEqualityComparer.Default;
             foreach (var address in addresses) {
                 if (!self.Contains(address, comparer))

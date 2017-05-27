@@ -34,12 +34,14 @@ namespace WmcSoft.Linq.Expressions
     {
         private readonly IDictionary<ParameterExpression, ParameterExpression> _map;
 
-        public ParameterRebindExpressionVisitor(IDictionary<ParameterExpression, ParameterExpression> map) {
+        public ParameterRebindExpressionVisitor(IDictionary<ParameterExpression, ParameterExpression> map)
+        {
             Debug.Assert(map != null);
             _map = map;
         }
 
-        protected override Expression VisitParameter(ParameterExpression p) {
+        protected override Expression VisitParameter(ParameterExpression p)
+        {
             ParameterExpression replacement;
             if (_map.TryGetValue(p, out replacement)) {
                 p = replacement;

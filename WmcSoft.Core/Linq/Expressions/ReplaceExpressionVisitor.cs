@@ -33,12 +33,14 @@ namespace WmcSoft.Linq.Expressions
         private readonly Expression _oldValue;
         private readonly Expression _newValue;
 
-        public ReplaceExpressionVisitor(Expression oldValue, Expression newValue) {
+        public ReplaceExpressionVisitor(Expression oldValue, Expression newValue)
+        {
             _oldValue = oldValue;
             _newValue = newValue;
         }
 
-        public override Expression Visit(Expression node) {
+        public override Expression Visit(Expression node)
+        {
             if (node == _oldValue)
                 return base.Visit(_newValue);
             return base.Visit(node);

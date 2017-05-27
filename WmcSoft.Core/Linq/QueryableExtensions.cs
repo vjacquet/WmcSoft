@@ -35,7 +35,8 @@ namespace WmcSoft.Linq
     {
         #region Conversions
 
-        public static IList<TResult> ToList<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert) {
+        public static IList<TResult> ToList<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert)
+        {
             var list = new List<TResult>();
             foreach (var record in query) {
                 list.Add(convert(record));
@@ -43,7 +44,8 @@ namespace WmcSoft.Linq
             return list;
         }
 
-        public static TResult[] ToArray<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert) {
+        public static TResult[] ToArray<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert)
+        {
             return query.ToList(convert).ToArray();
         }
 
@@ -57,7 +59,8 @@ namespace WmcSoft.Linq
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">The <see cref="IQueryable{TSource}"/> to check for emptiness.</param>
         /// <returns>true if the source sequence is empty; otherwise, false.</returns>
-        public static bool None<TSource>(this IQueryable<TSource> source) {
+        public static bool None<TSource>(this IQueryable<TSource> source)
+        {
             return !Queryable.Any(source);
         }
 
@@ -68,7 +71,8 @@ namespace WmcSoft.Linq
         /// <param name="source">An <see cref="IQueryable{TSource}"/> whose elements to apply the predicate to.</param>
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns>true if no element in the source sequence pass the test in the specified predicate, or if the sequence is empty; otherwise, false.</returns>
-        public static bool None<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) {
+        public static bool None<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
+        {
             return !Queryable.Any(source, predicate);
         }
 

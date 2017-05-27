@@ -41,7 +41,8 @@ namespace WmcSoft.Net
             private readonly Uri _baseUri;
             private readonly string _method;
 
-            public Scope(Uri baseUri, string method) {
+            public Scope(Uri baseUri, string method)
+            {
                 _baseUri = baseUri;
                 _method = method;
             }
@@ -49,7 +50,8 @@ namespace WmcSoft.Net
             public Uri BaseUri { get { return _baseUri; } }
             public string Method { get { return _method; } }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
         }
 
@@ -61,7 +63,8 @@ namespace WmcSoft.Net
         /// </summary>
         /// <param name="webClient">The web client.</param>
         /// <param name="method">The method to use to upload.</param>
-        protected WebClientBatch(WebClient webClient, string method) {
+        protected WebClientBatch(WebClient webClient, string method)
+        {
             _webClient = webClient;
             _method = method;
         }
@@ -70,7 +73,8 @@ namespace WmcSoft.Net
         /// Initializes a new instance of the <see cref="WebClientBatch"/> class.
         /// </summary>
         /// <param name="webClient">The web client.</param>
-        protected WebClientBatch(WebClient webClient) : this(webClient, null) {
+        protected WebClientBatch(WebClient webClient) : this(webClient, null)
+        {
         }
 
         #region Properties
@@ -85,7 +89,8 @@ namespace WmcSoft.Net
         /// <param name="domainName">Name of the domain.</param>
         /// <param name="userName">Name of the user.</param>
         /// <param name="password">The password.</param>
-        public void Impersonate(string domainName, string userName, string password) {
+        public void Impersonate(string domainName, string userName, string password)
+        {
             _webClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
         }
 
@@ -95,7 +100,8 @@ namespace WmcSoft.Net
         /// <param name="domainName">Name of the domain.</param>
         /// <param name="userName">Name of the user.</param>
         /// <param name="password">The password.</param>
-        public void Impersonate(string domainName, string userName, SecureString password) {
+        public void Impersonate(string domainName, string userName, SecureString password)
+        {
             _webClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
         }
 
@@ -107,7 +113,8 @@ namespace WmcSoft.Net
         /// <returns>
         /// An <see cref="IDisposable"/> instance to release resources once the commit is complete.
         /// </returns>
-        protected override Scope CreateCommitScope() {
+        protected override Scope CreateCommitScope()
+        {
             var uri = new Uri(_webClient.BaseAddress);
             return new Scope(uri, _method ?? GetMethod(uri));
         }

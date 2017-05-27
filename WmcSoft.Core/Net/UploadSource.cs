@@ -43,7 +43,8 @@ namespace WmcSoft.Net
 
         #region Lifecycle
 
-        public UploadSource(WebClient webClient, Uri uri, string method = null) {
+        public UploadSource(WebClient webClient, Uri uri, string method = null)
+        {
             _webClient = webClient;
             _uri = uri;
             _method = method;
@@ -58,17 +59,20 @@ namespace WmcSoft.Net
 
         #endregion
 
-        protected virtual string GetMethod(Uri uri) {
+        protected virtual string GetMethod(Uri uri)
+        {
             return WebClientHelper.MapMethod(uri);
         }
 
         #region IStreamSource Membres
 
-        public Stream GetStream() {
+        public Stream GetStream()
+        {
             return GetStream(_uri, _method ?? GetMethod(_uri));
         }
 
-        protected virtual Stream GetStream(Uri uri, string method) {
+        protected virtual Stream GetStream(Uri uri, string method)
+        {
             return _webClient.OpenWrite(uri, method);
 
         }
