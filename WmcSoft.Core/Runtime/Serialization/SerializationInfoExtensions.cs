@@ -43,7 +43,8 @@ namespace WmcSoft.Runtime.Serialization
         /// <exception cref="SerializationException">An element with the specified name is not found in the given store.</exception>
         /// <exception cref="NullReferenceException">The store is <c>null</c>.</exception>
         /// <remarks>Because serialization needs performance, a <see cref="NullReferenceException"/> is throw instead of <see cref="ArgumentNullException"/> when the first parameter is null.</remarks>
-        public static T GetValue<T>(this SerializationInfo info, string name) {
+        public static T GetValue<T>(this SerializationInfo info, string name)
+        {
             return (T)info.GetValue(name, typeof(T));
         }
     }

@@ -39,11 +39,13 @@ namespace WmcSoft.Runtime.Serialization
 
         #region Lifecycle
 
-        public BinarySerializer(ISurrogateSelector selector, StreamingContext context) {
+        public BinarySerializer(ISurrogateSelector selector, StreamingContext context)
+        {
             _serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(selector, context);
         }
 
-        public BinarySerializer() {
+        public BinarySerializer()
+        {
             _serializer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
         }
 
@@ -51,7 +53,8 @@ namespace WmcSoft.Runtime.Serialization
 
         #region Methods
 
-        protected virtual T DoDeserialize(Stream stream) {
+        protected virtual T DoDeserialize(Stream stream)
+        {
             return (T)_serializer.Deserialize(stream);
         }
 
@@ -60,11 +63,13 @@ namespace WmcSoft.Runtime.Serialization
         /// </summary>
         /// <param name="stream">The stream from which to deserialize the instance.</param>
         /// <returns>The instance.</returns>
-        public T Deserialize(Stream stream) {
+        public T Deserialize(Stream stream)
+        {
             return DoDeserialize(stream);
         }
 
-        protected virtual void DoSerialize(Stream stream, T value) {
+        protected virtual void DoSerialize(Stream stream, T value)
+        {
             _serializer.Serialize(stream, value);
         }
 
@@ -73,7 +78,8 @@ namespace WmcSoft.Runtime.Serialization
         /// </summary>
         /// <param name="stream">The stream to which the <paramref name="instance"/> is to be serialized.</param>
         /// <param name="instance">The value to serialize.</param>
-        public void Serialize(Stream stream, T instance) {
+        public void Serialize(Stream stream, T instance)
+        {
             DoSerialize(stream, instance);
         }
 

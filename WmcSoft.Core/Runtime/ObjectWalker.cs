@@ -44,7 +44,8 @@ namespace WmcSoft.Runtime
         {
             readonly Array _array;
 
-            public ArrayFacade(Array array) {
+            public ArrayFacade(Array array)
+            {
                 _array = array;
             }
 
@@ -52,33 +53,40 @@ namespace WmcSoft.Runtime
 
             bool ICollection<object>.IsReadOnly { get { return true; } }
 
-            void ICollection<object>.Add(object item) {
+            void ICollection<object>.Add(object item)
+            {
                 throw new NotSupportedException();
             }
 
-            void ICollection<object>.Clear() {
+            void ICollection<object>.Clear()
+            {
                 throw new NotSupportedException();
             }
 
-            public bool Contains(object item) {
+            public bool Contains(object item)
+            {
                 return Array.IndexOf(_array, item) >= 0;
             }
 
-            public void CopyTo(object[] array, int arrayIndex) {
+            public void CopyTo(object[] array, int arrayIndex)
+            {
                 foreach (var item in _array) {
                     array[arrayIndex++] = item;
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return _array.GetEnumerator();
             }
 
-            public IEnumerator<object> GetEnumerator() {
+            public IEnumerator<object> GetEnumerator()
+            {
                 return new EnumeratorAdapter<object>(_array.GetEnumerator());
             }
 
-            bool ICollection<object>.Remove(object item) {
+            bool ICollection<object>.Remove(object item)
+            {
                 throw new NotSupportedException();
             }
         }
@@ -97,7 +105,8 @@ namespace WmcSoft.Runtime
 
             #region Lifecycle
 
-            internal Enumerator(ObjectWalker walker) {
+            internal Enumerator(ObjectWalker walker)
+            {
                 _walker = walker;
                 Reset();
             }
@@ -106,12 +115,12 @@ namespace WmcSoft.Runtime
 
             #region IEnumerator Membres
 
-            public object Current
-            {
+            public object Current {
                 get { return _current; }
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_toWalk.Count == 0)
                     return false;
 
@@ -127,7 +136,8 @@ namespace WmcSoft.Runtime
                 return true;
             }
 
-            public void Reset() {
+            public void Reset()
+            {
                 _toWalk = new Stack();
                 _objectIDGenerator = new ObjectIDGenerator();
                 _current = null;
@@ -138,7 +148,8 @@ namespace WmcSoft.Runtime
 
             #region Methods
 
-            bool IsFirstOccurrence(object data) {
+            bool IsFirstOccurrence(object data)
+            {
                 bool firstOccurrence;
                 _objectIDGenerator.GetId(data, out firstOccurrence);
                 return firstOccurrence;
@@ -148,7 +159,8 @@ namespace WmcSoft.Runtime
             /// Walk the reference of the passed-in object.
             /// </summary>
             /// <param name="data">the object</param>
-            void Walk(object data) {
+            void Walk(object data)
+            {
                 if (data == null || !IsFirstOccurrence(data))
                     return;
 
@@ -162,7 +174,8 @@ namespace WmcSoft.Runtime
                 }
             }
 
-            bool IsTerminalObject(object data) {
+            bool IsTerminalObject(object data)
+            {
                 var t = data.GetType();
                 return t.IsPrimitive || t.IsEnum || t.IsPointer || data is string;
             }
@@ -171,7 +184,8 @@ namespace WmcSoft.Runtime
 
             #region IDisposable Members
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
             #endregion
@@ -191,7 +205,8 @@ namespace WmcSoft.Runtime
         /// Construct an ObjectWalker passing the root of the object graph.
         /// </summary>
         /// <param name="root">root of the object graph</param>
-        public ObjectWalker(object root) {
+        public ObjectWalker(object root)
+        {
             _root = root;
         }
 
@@ -199,7 +214,8 @@ namespace WmcSoft.Runtime
 
         #region IEnumerable<object> Members
 
-        public IEnumerator<object> GetEnumerator() {
+        public IEnumerator<object> GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
@@ -211,7 +227,8 @@ namespace WmcSoft.Runtime
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An <see cref="System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
