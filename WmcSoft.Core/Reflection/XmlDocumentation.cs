@@ -49,7 +49,8 @@ namespace WmcSoft.Reflection
 
         /// <summary>Initializes the XML comments for the specified member.</summary>
         /// <param name="comments">The XML comments.</param>
-        internal XmlDocumentation(XmlNode comments) {
+        internal XmlDocumentation(XmlNode comments)
+        {
             // Get the comments.  If we got any, parse out the important stuff.
             AllComments = comments;
             if (AllComments != null) {
@@ -77,7 +78,8 @@ namespace WmcSoft.Reflection
 
         #endregion
 
-        XmlNode Normalize(XmlNode node) {
+        XmlNode Normalize(XmlNode node)
+        {
             var element = node as XmlElement;
             if (element != null) {
                 element.InnerXml = element.InnerXml.Trim();
@@ -85,7 +87,8 @@ namespace WmcSoft.Reflection
             return node;
         }
 
-        XmlNodeList Normalize(XmlNodeList nodeList) {
+        XmlNodeList Normalize(XmlNodeList nodeList)
+        {
             if (nodeList == null)
                 return null;
 

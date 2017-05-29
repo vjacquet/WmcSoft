@@ -44,7 +44,8 @@ namespace WmcSoft.Reflection
         /// <param name="inherit">When true, lookup the hierarchy chain for the inherited custom attribute</param>
         /// <returns>The array of the custom attributes, or an empty array if not found.</returns>
         public static TAttribute[] GetCustomAttributes<TAttribute>(this ICustomAttributeProvider self, bool inherit)
-            where TAttribute : Attribute {
+            where TAttribute : Attribute
+        {
             return (TAttribute[])self.GetCustomAttributes(typeof(TAttribute), inherit);
         }
 
@@ -56,7 +57,8 @@ namespace WmcSoft.Reflection
         /// <param name="inherit">When true, lookup the hierarchy chain for the inherited custom attribute</param>
         /// <returns></returns>
         public static TAttribute GetCustomAttribute<TAttribute>(this ICustomAttributeProvider self, bool inherit)
-            where TAttribute : Attribute {
+            where TAttribute : Attribute
+        {
             return GetCustomAttributes<TAttribute>(self, inherit).FirstOrDefault();
         }
 
@@ -67,7 +69,8 @@ namespace WmcSoft.Reflection
         /// <param name="inherit">When true, lookup the hierarchy chain for the inherited custom attribute</param>
         /// <returns>true if the custom attribute is defined</returns>
         public static bool IsDefined<TAttribute>(this ICustomAttributeProvider self, bool inherit)
-            where TAttribute : Attribute {
+            where TAttribute : Attribute
+        {
             return self.IsDefined(typeof(TAttribute), inherit);
         }
     }

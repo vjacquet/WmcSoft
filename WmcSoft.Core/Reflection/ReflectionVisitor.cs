@@ -33,21 +33,24 @@ namespace WmcSoft.Reflection
     {
         #region Accept
 
-        public void Accept(Assembly assembly) {
+        public void Accept(Assembly assembly)
+        {
             Visit(assembly);
             foreach (Module module in assembly.GetModules()) {
                 Accept(module);
             }
         }
 
-        public void Accept(Module module) {
+        public void Accept(Module module)
+        {
             Visit(module);
             foreach (Type type in module.GetTypes()) {
                 Accept(type);
             }
         }
 
-        public void Accept(Type type) {
+        public void Accept(Type type)
+        {
             Visit(type);
             if (type != typeof(object))
                 Accept(type.BaseType);
@@ -78,14 +81,16 @@ namespace WmcSoft.Reflection
             }
         }
 
-        public void Accept(ConstructorInfo constructorInfo) {
+        public void Accept(ConstructorInfo constructorInfo)
+        {
             Visit(constructorInfo);
             foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters()) {
                 Accept(parameterInfo);
             }
         }
 
-        public void Accept(MethodInfo methodInfo) {
+        public void Accept(MethodInfo methodInfo)
+        {
             Visit(methodInfo);
             if ((methodInfo.Attributes & MethodAttributes.SpecialName) == 0) {
                 foreach (ParameterInfo parameterInfo in methodInfo.GetParameters()) {
@@ -97,19 +102,23 @@ namespace WmcSoft.Reflection
             }
         }
 
-        public void Accept(ParameterInfo parameterInfo) {
+        public void Accept(ParameterInfo parameterInfo)
+        {
             Visit(parameterInfo);
         }
 
-        public void Accept(FieldInfo fieldInfo) {
+        public void Accept(FieldInfo fieldInfo)
+        {
             Visit(fieldInfo);
         }
 
-        public void Accept(PropertyInfo propertyInfo) {
+        public void Accept(PropertyInfo propertyInfo)
+        {
             Visit(propertyInfo);
         }
 
-        public void Accept(EventInfo eventInfo) {
+        public void Accept(EventInfo eventInfo)
+        {
             Visit(eventInfo);
         }
 
@@ -117,34 +126,42 @@ namespace WmcSoft.Reflection
 
         #region Visit methods
 
-        protected virtual void Visit(Assembly assembly) {
+        protected virtual void Visit(Assembly assembly)
+        {
         }
 
-        protected virtual void Visit(Module module) {
+        protected virtual void Visit(Module module)
+        {
         }
 
-        protected virtual void Visit(Type type) {
+        protected virtual void Visit(Type type)
+        {
         }
 
-        protected virtual void Visit(ConstructorInfo constructorInfo) {
+        protected virtual void Visit(ConstructorInfo constructorInfo)
+        {
         }
 
-        protected virtual void Visit(MethodInfo methodInfo) {
+        protected virtual void Visit(MethodInfo methodInfo)
+        {
         }
 
-        protected virtual void Visit(ParameterInfo parameterInfo) {
+        protected virtual void Visit(ParameterInfo parameterInfo)
+        {
         }
 
-        protected virtual void Visit(FieldInfo fieldInfo) {
+        protected virtual void Visit(FieldInfo fieldInfo)
+        {
         }
 
-        protected virtual void Visit(PropertyInfo propertyInfo) {
+        protected virtual void Visit(PropertyInfo propertyInfo)
+        {
         }
 
-        protected virtual void Visit(EventInfo eventInfo) {
+        protected virtual void Visit(EventInfo eventInfo)
+        {
         }
 
         #endregion
     }
-
 }

@@ -31,9 +31,9 @@ namespace WmcSoft.Reflection
 {
     public static class AssemblyExtensions
     {
-        public static string GetAssemblyConfiguration(this Assembly targetAssembly) {
-            if (targetAssembly == null)
-                throw new ArgumentNullException("targetAssembly");
+        public static string GetAssemblyConfiguration(this Assembly targetAssembly)
+        {
+            if (targetAssembly == null) throw new ArgumentNullException(nameof(targetAssembly));
 
             var attribute = targetAssembly.GetCustomAttribute<AssemblyConfigurationAttribute>();
             if (attribute != null)
@@ -41,9 +41,9 @@ namespace WmcSoft.Reflection
             return String.Empty;
         }
 
-        public static string GetAssemblyFileVersion(this Assembly targetAssembly) {
-            if (targetAssembly == null)
-                throw new ArgumentNullException("targetAssembly");
+        public static string GetAssemblyFileVersion(this Assembly targetAssembly)
+        {
+            if (targetAssembly == null) throw new ArgumentNullException(nameof(targetAssembly));
 
             var attribute = targetAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
             if (attribute != null)
@@ -51,9 +51,9 @@ namespace WmcSoft.Reflection
             return String.Empty;
         }
 
-        public static string GetAssemblyFolder(this Assembly targetAssembly) {
-            if (targetAssembly == null)
-                throw new ArgumentNullException("targetAssembly");
+        public static string GetAssemblyFolder(this Assembly targetAssembly)
+        {
+            if (targetAssembly == null) throw new ArgumentNullException(nameof(targetAssembly));
 
             string assemblyPath = GetAssemblyPath(targetAssembly);
             if (assemblyPath.IndexOf('\\') != -1) {
@@ -62,19 +62,18 @@ namespace WmcSoft.Reflection
             return assemblyPath;
         }
 
-        public static string GetAssemblyPath(this Assembly targetAssembly) {
-            if (targetAssembly == null)
-                throw new ArgumentNullException("targetAssembly");
-            if (targetAssembly.CodeBase == null || targetAssembly.CodeBase.Length == 0)
-                throw new ArgumentNullException("targetAssembly.CodeBase");
+        public static string GetAssemblyPath(this Assembly targetAssembly)
+        {
+            if (targetAssembly == null) throw new ArgumentNullException(nameof(targetAssembly));
+            if (targetAssembly.CodeBase == null || targetAssembly.CodeBase.Length == 0) throw new ArgumentNullException("targetAssembly.CodeBase");
 
             var uri = new Uri(targetAssembly.CodeBase);
             return uri.LocalPath.Replace(@"\\", @"\");
         }
 
-        public static string GetAssemblyProduct(this Assembly targetAssembly) {
-            if (targetAssembly == null)
-                throw new ArgumentNullException("targetAssembly");
+        public static string GetAssemblyProduct(this Assembly targetAssembly)
+        {
+            if (targetAssembly == null) throw new ArgumentNullException(nameof(targetAssembly));
 
             var attribute = targetAssembly.GetCustomAttribute<AssemblyProductAttribute>();
             if (attribute != null)
@@ -82,9 +81,9 @@ namespace WmcSoft.Reflection
             return String.Empty;
         }
 
-        public static string GetAssemblyTitle(this Assembly targetAssembly) {
-            if (targetAssembly == null)
-                throw new ArgumentNullException("targetAssembly");
+        public static string GetAssemblyTitle(this Assembly targetAssembly)
+        {
+            if (targetAssembly == null) throw new ArgumentNullException(nameof(targetAssembly));
 
             var attribute = targetAssembly.GetCustomAttribute<AssemblyTitleAttribute>();
             if (attribute != null)

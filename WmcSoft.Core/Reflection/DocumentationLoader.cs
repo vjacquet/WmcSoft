@@ -6,7 +6,7 @@
 // for specific types or members of types.
 // ==========================================================================
 // <mailto:vjacquet@club-internet.fr>
-// * Added more paths in to look for the assembly(s documentation.
+// * Added more paths in to look for the assembly's documentation.
 using System;
 using System.IO;
 using System.Reflection;
@@ -42,11 +42,13 @@ namespace WmcSoft.Reflection
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns>Return true if the assembly has documentation.</returns>
-        public bool HasDocumentation(Assembly assembly) {
+        public bool HasDocumentation(Assembly assembly)
+        {
             return GetDocumentation(assembly) != null;
         }
 
-        public XmlDocument GetDocumentation(Assembly assembly) {
+        public XmlDocument GetDocumentation(Assembly assembly)
+        {
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
 
@@ -75,7 +77,8 @@ namespace WmcSoft.Reflection
             }
         }
 
-        public XmlDocumentation GetTypeDocumentation(Type type) {
+        public XmlDocumentation GetTypeDocumentation(Type type)
+        {
             XmlDocument document = GetDocumentation(type.Assembly);
             if (document == null)
                 return new XmlDocumentation(null);
@@ -85,7 +88,8 @@ namespace WmcSoft.Reflection
             return new XmlDocumentation(node);
         }
 
-        public XmlDocumentation GetMemberDocumentation(MemberInfo memberInfo) {
+        public XmlDocumentation GetMemberDocumentation(MemberInfo memberInfo)
+        {
             // If this is an accessor, get the owner property/event of the accessor.
             if (memberInfo is MethodInfo) {
                 MemberInfo owner = IsAccessor((MethodInfo)memberInfo);
@@ -95,7 +99,8 @@ namespace WmcSoft.Reflection
             return new XmlDocumentation(GetComments(memberInfo));
         }
 
-        public Type GetEnumType(PropertyInfo property) {
+        public Type GetEnumType(PropertyInfo property)
+        {
             XmlNode el = this.GetMemberDocumentation(property).AllComments;
             if (el == null)
                 return null;
@@ -135,7 +140,8 @@ namespace WmcSoft.Reflection
         /// <summary>Gets the path to a valid xml comments file for the assembly.</summary>
         /// <param name="asm">The assembly whose documentation is to be found.</param>
         /// <returns>The path to documentation for an assembly; null if none found.</returns>
-        private static string DetermineXmlPath(Assembly asm) {
+        private static string DetermineXmlPath(Assembly asm)
+        {
             // Get a list of locations to examine for the xml
             // 1. The location of the assembly.
             // 2. The runtime directory of the framework.
@@ -162,7 +168,8 @@ namespace WmcSoft.Reflection
         /// <summary>Retrieve the XML comments for a type or a member of a type.</summary>
         /// <param name="mi">The type or member for which comments should be retrieved.</param>
         /// <returns>A string of xml containing the xml comments of the selected type or member.</returns>
-        private XmlNode GetComments(MemberInfo mi) {
+        private XmlNode GetComments(MemberInfo mi)
+        {
             Type declType = (mi is Type) ? ((Type)mi) : mi.DeclaringType;
             XmlDocument doc = GetDocumentation(declType.Assembly);
             if (doc == null) return null;
@@ -220,7 +227,8 @@ namespace WmcSoft.Reflection
         /// <summary>Determines if a MethodInfo represents an accessor.</summary>
         /// <param name="mi">The MethodInfo to check.</param>
         /// <returns>The MemberInfo that represents the property or event if this is an accessor; null, otherwise.</returns>
-        private MemberInfo IsAccessor(MethodInfo mi) {
+        private MemberInfo IsAccessor(MethodInfo mi)
+        {
             // Must be a special name in order to be an accessor
             if (!mi.IsSpecialName) return null;
 
@@ -242,7 +250,8 @@ namespace WmcSoft.Reflection
         /// <summary>Retrieve all property and event accessors on a given type.</summary>
         /// <param name="t">The type from which the accessors should be retrieved.</param>
         /// <returns>A dictionary of all accessors.</returns>
-        private static Hashtable RetrieveAccessors(Type t) {
+        private static Hashtable RetrieveAccessors(Type t)
+        {
             // Build up list of accessors to exclude from method list
             Hashtable ht = new Hashtable();
 
@@ -269,7 +278,8 @@ namespace WmcSoft.Reflection
         /// <summary>Generates a parameter string used when searching xml comment files.</summary>
         /// <param name="parameters">List of parameters to a member.</param>
         /// <returns>A parameter string used when searching xml comment files.</returns>
-        private static string CreateParamsDescription(ParameterInfo[] parameters) {
+        private static string CreateParamsDescription(ParameterInfo[] parameters)
+        {
             StringBuilder paramDesc = new StringBuilder();
 
             // If there are parameters then we need to construct a list
