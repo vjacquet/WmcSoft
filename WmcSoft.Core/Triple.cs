@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Properties;
 
@@ -68,6 +69,7 @@ namespace WmcSoft
     /// <typeparam name="T">The type of the instances.</typeparam>
     /// <remarks>This class mimics <see cref="Tuple{T1, T2, T3}"/> where T1 = T2 = T3.</remarks>
     [Serializable]
+    [DebuggerDisplay("{ToString(),nq}")]
     public sealed class Triple<T> : IStructuralEquatable, IStructuralComparable, IComparable, IEquatable<Triple<T>>, IComparable<Triple<T>>
     {
         public T Item1 { get; }
