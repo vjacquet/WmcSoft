@@ -429,9 +429,19 @@ namespace WmcSoft.Collections.Generic
         [TestMethod]
         public void CheckUnlessWithIndex()
         {
-            var source = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G','H' };
-            var actual = source.Unless((x,i) => i % 3 == 0).ToArray();
+            var source = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+            var actual = source.Unless((x, i) => i % 3 == 0).ToArray();
             var expected = new[] { 'B', 'C', 'E', 'F', 'H' };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckNGrams()
+        {
+            var source = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+            var ngrams = source.NGrams(3);
+            var actual = ngrams.Select(g => string.Join("", g)).ToList();
+            var expected = new[] { "ABC", "BCD", "CDE", "DEF", "EFG", "FGH" };
             CollectionAssert.AreEqual(expected, actual);
         }
     }

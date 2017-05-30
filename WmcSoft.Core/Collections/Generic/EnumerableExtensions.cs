@@ -32,6 +32,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using WmcSoft.Collections.Generic.Internals;
+using WmcSoft.Collections.Specialized;
 using WmcSoft.Diagnostics;
 using static WmcSoft.Algorithms;
 
@@ -587,6 +588,32 @@ namespace WmcSoft.Collections.Generic
             if (source == null)
                 return Enumerable.Empty<TSource>();
             return source;
+        }
+
+        #endregion
+
+        #region NGrams
+
+        public static IEnumerable<NGram<T>> NGrams<T>(this IEnumerable<T> source, int n)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (n < 2) throw new ArgumentOutOfRangeException(nameof(n));
+
+            var ring = new Ring<T>(n);
+            using (var enumerator = source.GetEnumerator()) {
+                var remaning = n;
+                while (remaning-- > 0) {
+                    if (!enumerator.MoveNext())
+                        yield break;
+                    ring.Enqueue(enumerator.Current);
+                }
+
+                yield return new NGram<T>(ring.ToArray());
+                while (enumerator.MoveNext()) {
+                    ring.Enqueue(enumerator.Current);
+                    yield return new NGram<T>(ring.ToArray());
+                }
+            }
         }
 
         #endregion
