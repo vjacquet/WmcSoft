@@ -27,9 +27,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     public class Ring<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         #region Enumerator 

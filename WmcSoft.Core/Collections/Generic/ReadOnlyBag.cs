@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -34,6 +35,8 @@ namespace WmcSoft.Collections.Generic
     /// Represents a read only bag of items.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the bag.</typeparam>
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     public class ReadOnlyBag<T> : ICollection, ICollection<T>, IReadOnlyCollection<T>
     {
         private readonly Bag<T> _bag;
