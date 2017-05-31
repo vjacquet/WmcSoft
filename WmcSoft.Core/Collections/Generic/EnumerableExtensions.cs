@@ -592,6 +592,23 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region LexicographicalCompare
+
+        public static int LexicographicalCompare<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IComparer<TSource> comparer)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+
+            var lexicographical = new LexicographicalComparer<TSource>(comparer);
+            return lexicographical.Compare(first, second);
+        }
+
+        public static int LexicographicalCompare<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+        {
+            return LexicographicalCompare(first, second, null);
+        }
+
+        #endregion
+
         #region NGrams
 
         public static IEnumerable<NGram<T>> NGrams<T>(this IEnumerable<T> source, int n)

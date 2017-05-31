@@ -45,17 +45,20 @@ namespace WmcSoft.Collections.Specialized
             private int _index;
             private T _current;
 
-            internal Enumerator(Ring<T> ring) {
+            internal Enumerator(Ring<T> ring)
+            {
                 _ring = ring;
                 _version = ring._version;
                 _index = -1;
                 _current = default(T);
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_version != _ring._version)
                     throw new InvalidOperationException();
                 if (_index == _ring._count) {
@@ -80,7 +83,8 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            void IEnumerator.Reset() {
+            void IEnumerator.Reset()
+            {
                 if (_version != _ring._version)
                     throw new InvalidOperationException();
                 _index = -1;
@@ -96,7 +100,8 @@ namespace WmcSoft.Collections.Specialized
         private int _count;
         private int _version;
 
-        public Ring(int capacity) {
+        public Ring(int capacity)
+        {
             if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
             _array = new T[capacity];
@@ -127,24 +132,34 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public T Enqueue(T item) {
+        public bool TryEnqueue(T item)
+        {
             if (_count < Capacity) {
                 _array[_tail] = item;
                 _tail = (_tail + 1) % _array.Length;
                 _count++;
                 _version++;
-                return default(T);
+                return true;
             } else {
-                var overwritten = _array[_tail];
-                _array[_tail] = item;
-                _tail = (_tail + 1) % _array.Length;
-                _head = (_head + 1) % _array.Length;
-                _version++;
-                return overwritten;
+                return false;
             }
         }
 
-        public T Dequeue() {
+        public T Enqueue(T item)
+        {
+            if (TryEnqueue(item))
+                return default(T);
+
+            var overwritten = _array[_tail];
+            _array[_tail] = item;
+            _tail = (_tail + 1) % _array.Length;
+            _head = (_head + 1) % _array.Length;
+            _version++;
+            return overwritten;
+        }
+
+        public T Dequeue()
+        {
             if (_count == 0) throw new InvalidOperationException();
 
             var result = _array[_head];
@@ -155,7 +170,8 @@ namespace WmcSoft.Collections.Specialized
             return result;
         }
 
-        public T Peek() {
+        public T Peek()
+        {
             if (_count == 0) throw new InvalidOperationException();
 
             return _array[_head];
@@ -169,11 +185,13 @@ namespace WmcSoft.Collections.Specialized
             get { return false; }
         }
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             Enqueue(item);
         }
 
-        bool RemoveForwards(T item, int startIndex, int count) {
+        bool RemoveForwards(T item, int startIndex, int count)
+        {
             var found = Array.IndexOf(_array, item, startIndex, count);
             if (found >= 0) {
                 while (found != startIndex) {
@@ -188,10 +206,11 @@ namespace WmcSoft.Collections.Specialized
             return false;
         }
 
-        bool RemoveBackwards(T item, int startIndex, int count) {
+        bool RemoveBackwards(T item, int startIndex, int count)
+        {
             var found = Array.IndexOf(_array, item, startIndex, count);
             if (found >= 0) {
-                var endIndex = startIndex + count-1;
+                var endIndex = startIndex + count - 1;
                 while (found != endIndex) {
                     _array[found] = _array[found + 1];
                     found++;
@@ -204,7 +223,8 @@ namespace WmcSoft.Collections.Specialized
             return false;
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             if (_head < _tail) {
                 return RemoveBackwards(item, _head, _count);
             } else {
@@ -213,7 +233,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             if (_count == 0) {
             } else if (_head < _tail) {
                 Array.Clear(_array, _head, _count);
@@ -227,7 +248,8 @@ namespace WmcSoft.Collections.Specialized
             _version++;
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             if (_count == 0) {
                 return false;
             } else if (_head < _tail) {
@@ -238,7 +260,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             if (_count == 0) {
             } else if (_head < _tail) {
                 Array.Copy(_array, _head, array, arrayIndex, _count);
@@ -249,15 +272,18 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

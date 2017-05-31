@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
@@ -26,8 +24,11 @@ using System.Collections;
 
 #endregion
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using WmcSoft.Collections.Generic;
 
@@ -35,7 +36,7 @@ namespace WmcSoft.Collections.Specialized
 {
     [DebuggerDisplay("{ToString(),nq}")]
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    public struct NGram<T> : IReadOnlyList<T>, ICollection<T>
+    public struct NGram<T> : IReadOnlyList<T>, ICollection<T>, IComparable<NGram<T>>, IEquatable<NGram<T>>
     {
         readonly IList<T> _storage;
         readonly int _startIndex;
@@ -52,17 +53,29 @@ namespace WmcSoft.Collections.Specialized
         {
         }
 
+        public NGram(params T[] values)
+        {
+            _storage = new List<T>(values);
+            _startIndex = 0;
+            _count = values.Length;
+        }
+
         public int Count { get { return _count; } }
 
         public bool IsReadOnly { get { return true; } }
 
         public T this[int index] { get { return _storage[_startIndex + index]; } }
 
+        private IEnumerable<T> Enumerate()
+        {
+            if (_storage == null)
+                return Enumerable.Empty<T>();
+            return _storage.Skip(_startIndex).Take(_count);
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < _count; i++) {
-                yield return _storage[_startIndex + i];
-            }
+            return Enumerate().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -106,6 +119,34 @@ namespace WmcSoft.Collections.Specialized
             }
             sb.Append(')');
             return sb.ToString();
+        }
+
+        public int CompareTo(NGram<T> other)
+        {
+            var comparer = Comparer<T>.Default;
+            return Enumerate().LexicographicalCompare(other, comparer);
+        }
+
+        public bool Equals(NGram<T> other)
+        {
+            if (Count != other.Count)
+                return false;
+            var comparer = EqualityComparer<T>.Default;
+            return Enumerate().SequenceEqual(other, comparer);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(NGram<T>))
+                return false;
+            return base.Equals((NGram<T>)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            if (_storage == null || _count == 0)
+                return 0;
+            return EqualityComparer<T>.Default.CombineHashCodes(Enumerate());
         }
     }
 }
