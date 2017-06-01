@@ -66,6 +66,24 @@ namespace WmcSoft.Collections.Specialized
 
         public T this[int index] { get { return _storage[_startIndex + index]; } }
 
+        public IEnumerable<NGram<T>> Decompose()
+        {
+            var n = _count - 1;
+            if (n < 2) throw new InvalidOperationException();
+            yield return new NGram<T>(_storage, _startIndex, n);
+            yield return new NGram<T>(_storage, _startIndex + 1, n);
+        }
+
+        public IEnumerable<NGram<T>> Decompose(int n)
+        {
+            if (n < 2 || n >= _count) throw new ArgumentOutOfRangeException(nameof(n));
+
+            var length = _count - n + 1;
+            for (int i = 0; i < length; i++) {
+                yield return new NGram<T>(_storage, _startIndex + i, n);
+            }
+        }
+
         private IEnumerable<T> Enumerate()
         {
             if (_storage == null)

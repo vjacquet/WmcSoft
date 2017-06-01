@@ -35,5 +35,14 @@ namespace WmcSoft.Collections.Specialized
             Assert.AreEqual(0, x.CompareTo(y));
             Assert.AreEqual(1, x.CompareTo(z));
         }
+
+        [TestMethod]
+        public void CanDecomposeNGram()
+        {
+            var ngrams = new NGram<char>('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+            var actual = ngrams.Decompose(3).Select(g => string.Join("", g)).ToList();
+            var expected = new[] { "ABC", "BCD", "CDE", "DEF", "EFG", "FGH" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
