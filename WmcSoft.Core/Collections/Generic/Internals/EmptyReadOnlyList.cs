@@ -33,6 +33,8 @@ namespace WmcSoft.Collections.Generic.Internals
 {
     sealed class EmptyReadOnlyList<T> : IReadOnlyList<T>, IList<T>
     {
+        public static EmptyReadOnlyList<T> Instance = new EmptyReadOnlyList<T>();
+
         public T this[int index] {
             get { throw new ArgumentOutOfRangeException(); }
             set { throw new NotSupportedException(); }

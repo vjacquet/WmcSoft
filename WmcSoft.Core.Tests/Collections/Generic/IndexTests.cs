@@ -11,7 +11,8 @@ namespace WmcSoft.Collections.Generic
     public class IndexTests
     {
         [TestMethod]
-        public void CanAddAndRemoveToIndex() {
+        public void CanAddAndRemoveToIndex()
+        {
             var index = new Index<int, string>();
             index.Add(1, "one");
             index.Add(1, "un");
@@ -20,14 +21,34 @@ namespace WmcSoft.Collections.Generic
             index.Add(2, "two");
 
             Assert.AreEqual(3, index.Count);
-            Assert.AreEqual("one un", index.GetValues(1).JoinWith(' '));
+            Assert.AreEqual("one un", index[1].JoinWith(' '));
 
             index.Remove(1, "one");
             Assert.AreEqual(2, index.Count);
-            Assert.AreEqual("un", index.GetValues(1).JoinWith(' '));
+            Assert.AreEqual("un", index[1].JoinWith(' '));
 
             index.Remove(1, "un");
-            Assert.AreEqual("", index.GetValues(1).JoinWith(' '));
+            Assert.AreEqual("", index[1].JoinWith(' '));
+        }
+
+        [TestMethod]
+        public void CanManipulateAsLookup()
+        {
+            var index = new Index<int, string> {
+                { 1, "one" },
+                { 1, "un" },
+                { 2, "two" }
+            };
+
+            var lookup = index.AsLookup();
+            Assert.AreEqual(3, lookup.Count);
+            Assert.IsTrue(lookup.Contains(2));
+            CollectionAssert.AreEqual(new[] { "one", "un" }, lookup[1].ToArray());
+            CollectionAssert.AreEqual(new[] { "two" }, lookup[2].ToArray());
+            CollectionAssert.AreEqual(new string[0], lookup[0].ToArray());
+            var groups = lookup.ToList();
+
+            Assert.AreEqual(1, groups[0].Key);
         }
     }
 }

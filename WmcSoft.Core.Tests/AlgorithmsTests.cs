@@ -8,7 +8,8 @@ namespace WmcSoft
     public class AlgorithmsTests
     {
         [TestMethod]
-        public void CheckCoprimes() {
+        public void CheckCoprimes()
+        {
             var collection = new[] { 3, 6, 8, 5, 8 };
             var expected = new[] { 3, 5, 8 };
             var actual = Algorithms.Coprimes(collection).ToArray();
@@ -16,7 +17,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMidpoint() {
+        public void CheckMidpoint()
+        {
             var x = 20;
             var y = 40;
             Assert.AreEqual(30, Algorithms.Midpoint(x, y));
@@ -24,7 +26,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMin() {
+        public void CheckMin()
+        {
             var x = new DateTime(1973, 5, 2);
             var y = new DateTime(1973, 5, 1);
 
@@ -34,7 +37,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMinStablility() {
+        public void CheckMinStablility()
+        {
             var x = new DateTime(1973, 5, 2);
             var y = new DateTime(1973, 5, 1);
 
@@ -45,7 +49,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMinStablilityN() {
+        public void CheckMinStablilityN()
+        {
             var x = new DateTime(1973, 5, 2);
             var y = new DateTime(1973, 5, 1);
             var z = new DateTime(1973, 6, 2);
@@ -57,7 +62,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMax() {
+        public void CheckMax()
+        {
             var x = new DateTime(1973, 5, 2);
             var y = new DateTime(1973, 5, 1);
 
@@ -67,7 +73,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMaxStablility() {
+        public void CheckMaxStablility()
+        {
             var x = new DateTime(1973, 5, 2);
             var y = new DateTime(1973, 5, 1);
 
@@ -78,7 +85,8 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckMaxStablilityN() {
+        public void CheckMaxStablilityN()
+        {
             var x = new DateTime(1973, 5, 2);
             var y = new DateTime(1973, 5, 1);
             var z = new DateTime(1973, 4, 1);
@@ -89,12 +97,14 @@ namespace WmcSoft
             Assert.AreEqual(expected, actual);
         }
 
-        static bool IsLower(int a, int b) {
+        static bool IsLower(int a, int b)
+        {
             return a < b;
         }
 
         [TestMethod]
-        public void CheckMinMaxRelation() {
+        public void CheckMinMaxRelation()
+        {
             Relation<int> relation = IsLower;
             var mm = Algorithms.MinMax(relation, 2, 5, 6, 3, 1, 9);
             Assert.AreEqual(1, mm.Item1);
@@ -102,18 +112,21 @@ namespace WmcSoft
         }
 
         [TestMethod]
-        public void CheckHammingDistanceForStrings() {
+        public void CheckHammingDistanceForStrings()
+        {
             Assert.AreEqual(3, Algorithms.Hamming("karolin", "kathrin"));
             Assert.AreEqual(3, Algorithms.Hamming("karolin", "kerstin"));
         }
 
         [TestMethod]
-        public void CheckLevenshteinDistance() {
+        public void CheckLevenshteinDistance()
+        {
             Assert.AreEqual(3, Algorithms.Levenshtein("kitten", "sitting"));
         }
 
         [TestMethod]
-        public void CheckDamereauLevenshteinDistance() {
+        public void CheckDamereauLevenshteinDistance()
+        {
             Assert.AreEqual(3, Algorithms.DamerauLevenshtein("kitten", "sitting"));
             Assert.AreEqual(1, Algorithms.DamerauLevenshtein("kitten", "iktten"));
         }

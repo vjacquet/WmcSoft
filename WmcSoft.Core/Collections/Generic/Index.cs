@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -36,25 +37,32 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the mutable index.</typeparam>
     /// <typeparam name="TValue">The type of values in the mutable index.</typeparam>
-    public class Index<TKey, TValue> : IIndex<TKey, TValue>
+    public partial class Index<TKey, TValue> : IIndex<TKey, TValue>
     {
         private readonly Dictionary<TKey, List<TValue>> _storage;
         private int _count;
 
-        public Index() {
+        public Index()
+        {
             _storage = new Dictionary<TKey, List<TValue>>();
         }
 
-        public Index(IEqualityComparer<TKey> comparer) {
+        public Index(IEqualityComparer<TKey> comparer)
+        {
             _storage = new Dictionary<TKey, List<TValue>>(comparer);
         }
 
-        public Index(int capacity, IEqualityComparer<TKey> comparer) {
+        public Index(int capacity, IEqualityComparer<TKey> comparer)
+        {
             _storage = new Dictionary<TKey, List<TValue>>(capacity, comparer);
         }
 
         public IReadOnlyList<TValue> this[TKey key] {
-            get { return _storage[key]; }
+            get {
+                if (_storage.TryGetValue(key, out List<TValue> list))
+                    return list.AsReadOnly();
+                return EmptyReadOnlyList<TValue>.Instance;
+            }
         }
 
         public int Count {
@@ -69,17 +77,13 @@ namespace WmcSoft.Collections.Generic
             get { return _storage.Keys; }
         }
 
-        public IEnumerable<TValue> GetValues(TKey key) {
-            List<TValue> list;
-            if (_storage.TryGetValue(key, out list)) {
-                return list.AsReadOnly();
-            }
-            return Enumerable.Empty<TValue>();
+        public IEnumerable<TValue> Values {
+            get { return _storage.Values.SelectMany(x => x); }
         }
 
-        public bool Add(TKey key, TValue value) {
-            List<TValue> list;
-            if (!_storage.TryGetValue(key, out list)) {
+        public bool Add(TKey key, TValue value)
+        {
+            if (!_storage.TryGetValue(key, out List<TValue> list)) {
                 list = new List<TValue>();
                 _storage.Add(key, list);
             }
@@ -88,37 +92,42 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
-        public bool Add(KeyValuePair<TKey, TValue> item) {
+        public bool Add(KeyValuePair<TKey, TValue> item)
+        {
             return Add(item.Key, item.Value);
         }
-        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item) {
+        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
+        {
             Add(item.Key, item.Value);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _storage.Clear();
             _count = 0;
         }
 
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             return _storage.ContainsKey(key);
         }
 
-        public bool Contains(TKey key, TValue value) {
-            List<TValue> list;
-            if (_storage.TryGetValue(key, out list)) {
+        public bool Contains(TKey key, TValue value)
+        {
+            if (_storage.TryGetValue(key, out List<TValue> list)) {
                 return list.Contains(value);
             }
             return false;
         }
 
-        public bool Contains(KeyValuePair<TKey, TValue> item) {
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
             return Contains(item.Key, item.Value);
         }
 
-        public int Remove(TKey key) {
-            List<TValue> list;
-            if (_storage.TryGetValue(key, out list)) {
+        public int Remove(TKey key)
+        {
+            if (_storage.TryGetValue(key, out List<TValue> list)) {
                 _storage.Remove(key);
 
                 var removed = list.Count;
@@ -129,9 +138,9 @@ namespace WmcSoft.Collections.Generic
             return 0;
         }
 
-        public bool Remove(TKey key, TValue value) {
-            List<TValue> list;
-            if (_storage.TryGetValue(key, out list) && list.Remove(value)) {
+        public bool Remove(TKey key, TValue value)
+        {
+            if (_storage.TryGetValue(key, out List<TValue> list) && list.Remove(value)) {
                 if (list.Count == 0) {
                     _storage.Remove(key);
                 }
@@ -141,17 +150,20 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
-        public bool Remove(KeyValuePair<TKey, TValue> item) {
+        public bool Remove(KeyValuePair<TKey, TValue> item)
+        {
             return Remove(item.Key, item.Value);
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
             foreach (var kv in _storage)
                 foreach (var value in kv.Value)
                     yield return new KeyValuePair<TKey, TValue>(kv.Key, value);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -161,7 +173,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Index{TKey, TValue}"/>. 
         /// The <see cref="Array"/> must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
             if (array == null) throw new ArgumentNullException(nameof(array));
             if (array.Rank != 1) throw new ArgumentException(nameof(array));
             if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));

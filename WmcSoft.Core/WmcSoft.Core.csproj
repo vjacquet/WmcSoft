@@ -90,6 +90,8 @@
     <Compile Include="Collections\Generic\EnumerableExtensions.MinMax.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Traits.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Expected.cs" />
+    <Compile Include="Collections\Generic\IndexExtensions.cs" />
+    <Compile Include="Collections\Generic\Internals\Grouping.cs" />
     <Compile Include="Collections\Generic\Internals\BackwardsReadOnlyList.cs" />
     <Compile Include="Collections\Generic\Internals\ReadOnlyDictionaryFacade.cs" />
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyList.cs" />

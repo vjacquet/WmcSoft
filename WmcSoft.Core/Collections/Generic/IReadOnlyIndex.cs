@@ -25,6 +25,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -35,7 +36,7 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="TValue">The type of values in the read-only index.</typeparam>
     public interface IReadOnlyIndex<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
     {
-        // <summary>Gets the element that has the specified key in the read-only index.</summary>
+        /// <summary>Gets the element that has the specified key in the read-only index.</summary>
         /// <param name="key">The key to locate.</param>
         /// <returns>The element that has the specified key in the read-only index.</returns>
         /// <exception cref="ArgumentNullException">key is null.</exception>
@@ -46,6 +47,12 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <returns>An enumerable collection that contains the keys in the read-only index.</returns>
         IEnumerable<TKey> Keys { get; }
+
+        /// <summary>
+        ///  Gets an enumerable collection that contains the values in the read-only index.
+        /// </summary>
+        /// <returns>An enumerable collection that contains the values in the read-only index.</returns>
+        IEnumerable<TValue> Values { get; }
 
         /// <summary>
         /// Determines whether the read-only index contains an element that has the specified key.
@@ -63,12 +70,5 @@ namespace WmcSoft.Collections.Generic
         /// <returns><c>true</c> if the read-only index contains an element that has the specified <paramref name="key"/> and <paramref name="value"/>; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">key is null.</exception>
         bool Contains(TKey key, TValue value);
-
-        /// <summary>
-        /// Gets the values that is associated with the specified key.
-        /// </summary>
-        /// <param name="key">The key to locate.</param>
-        /// <exception cref="ArgumentNullException">key is null.</exception>
-        IEnumerable<TValue> GetValues(TKey key);
     }
 }
