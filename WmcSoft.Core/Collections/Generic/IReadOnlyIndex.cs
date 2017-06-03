@@ -70,5 +70,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns><c>true</c> if the read-only index contains an element that has the specified <paramref name="key"/> and <paramref name="value"/>; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException">key is null.</exception>
         bool Contains(TKey key, TValue value);
+
+        ILookup<TKey, TValue> Lookup { get; }
     }
 }

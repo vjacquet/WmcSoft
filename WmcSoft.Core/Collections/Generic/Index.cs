@@ -186,5 +186,39 @@ namespace WmcSoft.Collections.Generic
                 }
             }
         }
+
+        public ILookup<TKey, TValue> Lookup {
+            get {
+                return new LookupAdapter(_storage);
+            }
+        }
+
+        class LookupAdapter : ILookup<TKey, TValue>
+        {
+            private readonly IDictionary<TKey, List<TValue>> _index;
+
+            public LookupAdapter(IDictionary<TKey, List<TValue>> index)
+            {
+                _index = index;
+            }
+
+            public IEnumerable<TValue> this[TKey key] => _index[key];
+
+            public int Count => _index.Count;
+
+            public bool Contains(TKey key) => _index.ContainsKey(key);
+
+            public IEnumerator<IGrouping<TKey, TValue>> GetEnumerator()
+            {
+                foreach (var kv in _index)
+                    yield return new Grouping<TKey, TValue>(kv.Key, kv.Value);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
     }
 }
