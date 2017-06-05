@@ -20,7 +20,8 @@ namespace WmcSoft.Threading
         private const int YieldOneFrequency = 3 * YieldFrequency;
         private int _count;
 
-        public int Spin() {
+        public int Spin()
+        {
             int oldCount = _count;
 
             // On a single-CPU machine, we ensure our counter is always
@@ -38,7 +39,8 @@ namespace WmcSoft.Threading
             return oldCount;
         }
 
-        private void Yield() {
+        private void Yield()
+        {
             Thread.Sleep(_count < YieldOneFrequency ? 0 : 1);
         }
     }

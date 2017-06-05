@@ -44,12 +44,14 @@ namespace WmcSoft.Threading
         private int _changed;
         private readonly IEqualityComparer<T> _comparer;
 
-        public Register(T value = default(T), IEqualityComparer<T> comparer = null) {
+        public Register(T value = default(T), IEqualityComparer<T> comparer = null)
+        {
             _value = value;
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
-        public Register(IEqualityComparer<T> comparer) : this(default(T), comparer) {
+        public Register(IEqualityComparer<T> comparer) : this(default(T), comparer)
+        {
         }
 
         /// <summary>
@@ -59,7 +61,8 @@ namespace WmcSoft.Threading
         /// <returns>Returns true if the value has changed.</returns>
         /// <remarks>We always keep the most recent value, wether it changed or not.
         /// It maintenains the lifetime of references short.</remarks>
-        public bool Update(T value) {
+        public bool Update(T value)
+        {
             T current = _value;
             _value = value;
             if (_changed == 0 && !_comparer.Equals(current, value))
@@ -72,7 +75,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="value">The value</param>
         /// <returns>The dirty flag</returns>
-        public bool TryGetChanged(out T value) {
+        public bool TryGetChanged(out T value)
+        {
             value = _value;
             var changed = Interlocked.CompareExchange(ref _changed, 0, 1);
             return changed == 1;
@@ -81,7 +85,8 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Forces the dirty flag to true.
         /// </summary>
-        public void MarkAsDirty() {
+        public void MarkAsDirty()
+        {
             _changed = 1;
         }
 
@@ -97,7 +102,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="self">The instance</param>
         /// <returns>Its stored value.</returns>
-        public static implicit operator T(Register<T> self) {
+        public static implicit operator T(Register<T> self)
+        {
             return self.Value;
         }
     }

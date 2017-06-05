@@ -49,7 +49,8 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadStaticServiceContainer"/> class.
         /// </summary>
-        public ThreadStaticServiceContainer() {
+        public ThreadStaticServiceContainer()
+        {
             _serviceContainer = new ServiceContainer();
             _local = new ThreadLocal<ServiceContainer>(CreateLocalServiceContainer, true);
         }
@@ -58,7 +59,8 @@ namespace WmcSoft.Threading
         /// Initializes a new instance of the <see cref="ThreadStaticServiceContainer"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        public ThreadStaticServiceContainer(IServiceProvider serviceProvider) {
+        public ThreadStaticServiceContainer(IServiceProvider serviceProvider)
+        {
             _serviceContainer = new ServiceContainer(serviceProvider);
             _local = new ThreadLocal<ServiceContainer>(CreateLocalServiceContainer, true);
         }
@@ -67,7 +69,8 @@ namespace WmcSoft.Threading
 
         #region Properties
 
-        ServiceContainer CreateLocalServiceContainer() {
+        ServiceContainer CreateLocalServiceContainer()
+        {
             var serviceContainer = new ServiceContainer(_serviceContainer);
             if (_callbacks != null) {
                 foreach (var callback in _callbacks) {
@@ -94,7 +97,8 @@ namespace WmcSoft.Threading
         /// <param name="serviceType">The type of service to add.</param>
         /// <param name="callback">A callback object that is used to create the service. This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
         /// <param name="promote"><c>true</c> to promote this request to any parent service containers; otherwise, <c>false</c>.</param>
-        public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote) {
+        public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote)
+        {
             if (!promote) {
                 lock (_serviceContainer) {
                     if (_callbacks == null) {
@@ -111,7 +115,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceType">The type of service to add.</param>
         /// <param name="callback">A callback object that is used to create the service. This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
-        public void AddService(Type serviceType, ServiceCreatorCallback callback) {
+        public void AddService(Type serviceType, ServiceCreatorCallback callback)
+        {
             AddService(serviceType, callback, false);
         }
         /// <summary>
@@ -120,7 +125,8 @@ namespace WmcSoft.Threading
         /// <param name="serviceType">The type of service to add.</param>
         /// <param name="serviceInstance">An instance of the service type to add. This object must implement or inherit from the type indicated by the <paramref name="serviceType"/> parameter.</param>
         /// <param name="promote"><c>true</c> to promote this request to any parent service containers; otherwise, <c>false</c>.</param>
-        public void AddService(Type serviceType, object serviceInstance, bool promote) {
+        public void AddService(Type serviceType, object serviceInstance, bool promote)
+        {
             _serviceContainer.AddService(serviceType, serviceInstance, promote);
         }
         /// <summary>
@@ -128,7 +134,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceType">The type of service to add.</param>
         /// <param name="serviceInstance">An instance of the service type to add. This object must implement or inherit from the type indicated by the <paramref name="serviceType"/> parameter.</param>
-        public void AddService(Type serviceType, object serviceInstance) {
+        public void AddService(Type serviceType, object serviceInstance)
+        {
             AddService(serviceType, serviceInstance, false);
         }
 
@@ -137,7 +144,8 @@ namespace WmcSoft.Threading
         /// </summary>
         /// <param name="serviceType">The type of service to remove.</param>
         /// <param name="promote"><c>true</c> to promote this request to any parent service containers; otherwise, <c>false</c>.</param>
-        public void RemoveService(Type serviceType, bool promote) {
+        public void RemoveService(Type serviceType, bool promote)
+        {
             if (!promote && _callbacks == null) {
                 lock (_serviceContainer) {
                     _callbacks.Remove(serviceType);
@@ -149,7 +157,8 @@ namespace WmcSoft.Threading
         /// Removes the specified service type from the service container.
         /// </summary>
         /// <param name="serviceType">The type of service to remove.</param>
-        public void RemoveService(Type serviceType) {
+        public void RemoveService(Type serviceType)
+        {
             RemoveService(serviceType, false);
         }
 
@@ -166,13 +175,15 @@ namespace WmcSoft.Threading
         /// -or- 
         /// <c>null</c> if there is no service object of type <paramref name="serviceType"/>.
         /// </returns>
-        public object GetService(Type serviceType) {
+        public object GetService(Type serviceType)
+        {
             return ThreadLocalStaticContainer.GetService(serviceType);
         }
 
         #endregion
 
-        public void Dispose() {
+        public void Dispose()
+        {
             foreach (var container in _local.Values)
                 container.Dispose();
             _local.Dispose();

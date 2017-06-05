@@ -26,7 +26,8 @@ namespace WmcSoft.Threading
         private readonly EventWaitHandle _evenEvent;
         private volatile bool _sense = false; // false==even, true==odd.
 
-        public Barrier(int count) {
+        public Barrier(int count)
+        {
             _originalCount = count;
             _count = count;
             _oddEvent = new ManualResetEvent(false);
@@ -35,7 +36,8 @@ namespace WmcSoft.Threading
 
 #pragma warning disable 0420
 
-        public void Await() {
+        public void Await()
+        {
             bool sense = _sense;
 
             // The last thread to signal also sets the event.
@@ -66,16 +68,19 @@ namespace WmcSoft.Threading
 
         #region IDisposable Membres
 
-        ~Barrier() {
+        ~Barrier()
+        {
             Dispose(false);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        void Dispose(bool disposing) {
+        void Dispose(bool disposing)
+        {
             _oddEvent.Close();
             _evenEvent.Close();
         }

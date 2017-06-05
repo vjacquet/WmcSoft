@@ -27,7 +27,8 @@ namespace WmcSoft.Threading
 
         private Queue<Cell> _queue = new Queue<Cell>();
 
-        public void Enqueue(T item) {
+        public void Enqueue(T item)
+        {
             Cell c = new Cell(item);
 
             lock (_queue) {
@@ -37,7 +38,8 @@ namespace WmcSoft.Threading
             }
         }
 
-        public T Dequeue() {
+        public T Dequeue()
+        {
             Cell c;
             lock (_queue) {
                 while (_queue.Count == 0)

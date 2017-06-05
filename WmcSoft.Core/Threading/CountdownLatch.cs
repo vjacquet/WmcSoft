@@ -21,33 +21,39 @@ namespace WmcSoft.Threading
         private readonly EventWaitHandle _event;
         private int _remain;
 
-        public CountdownLatch(int count) {
+        public CountdownLatch(int count)
+        {
             _remain = count;
             _event = new ManualResetEvent(false);
         }
 
-        public void Signal() {
+        public void Signal()
+        {
             // The last thread to signal also sets the event.
             if (Interlocked.Decrement(ref _remain) == 0)
                 _event.Set();
         }
 
-        public void Wait() {
+        public void Wait()
+        {
             _event.WaitOne();
         }
 
         #region IDisposable Membres
 
-        ~CountdownLatch() {
+        ~CountdownLatch()
+        {
             Dispose(false);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        void Dispose(bool disposing) {
+        void Dispose(bool disposing)
+        {
             _event.Close();
         }
 

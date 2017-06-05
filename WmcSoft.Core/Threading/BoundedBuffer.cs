@@ -24,16 +24,18 @@ namespace WmcSoft.Threading
         private int _consumersWaiting;
         private int _producersWaiting;
 
-        public BoundedBuffer()
-            : this(128) {
+        public BoundedBuffer() : this(128)
+        {
         }
 
-        public BoundedBuffer(int maxBufferSize) {
+        public BoundedBuffer(int maxBufferSize)
+        {
             _maxBufferSize = maxBufferSize;
             _queue = new Queue<T>(maxBufferSize);
         }
 
-        public void Enqueue(T item) {
+        public void Enqueue(T item)
+        {
             lock (_queue) {
                 while (_queue.Count == (_maxBufferSize - 1)) {
                     _producersWaiting++;
@@ -46,7 +48,8 @@ namespace WmcSoft.Threading
             }
         }
 
-        public T Dequeue() {
+        public T Dequeue()
+        {
             T item;
             lock (_queue) {
                 while (_queue.Count == 0) {

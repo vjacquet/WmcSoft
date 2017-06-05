@@ -20,20 +20,23 @@ namespace WmcSoft.Threading
         private EventWaitHandle _event;
         private bool _state; // false means unset, true means set.
 
-        public void Set() {
+        public void Set()
+        {
             _state = true;
             Thread.MemoryBarrier(); // required.
             if (_event != null)
                 _event.Set();
         }
 
-        public void Reset() {
+        public void Reset()
+        {
             _state = false;
             if (_event != null)
                 _event.Reset();
         }
 
-        public void Wait() {
+        public void Wait()
+        {
             SpinWait s = new SpinWait();
             while (!_state) {
                 if (s.Spin() >= SpinCount) {

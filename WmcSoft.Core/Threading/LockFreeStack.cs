@@ -30,7 +30,8 @@ namespace WmcSoft.Threading
         private volatile StackNode _head;
 
 #pragma warning disable 0420
-        public void Push(T item) {
+        public void Push(T item)
+        {
             StackNode node = new StackNode(item);
             StackNode head;
             do {
@@ -39,7 +40,8 @@ namespace WmcSoft.Threading
             } while (_head != head || Interlocked.CompareExchange(ref _head, node, head) != head);
         }
 
-        public T Pop() {
+        public T Pop()
+        {
             StackNode head;
             SpinWait s = new SpinWait();
 
@@ -53,7 +55,7 @@ namespace WmcSoft.Threading
                 } while (_head != head || Interlocked.CompareExchange(ref _head, next, head) != head);
                 break;
 
-            emptySpin:
+                emptySpin:
                 s.Spin();
             }
 
