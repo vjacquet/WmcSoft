@@ -42,7 +42,8 @@ namespace WmcSoft.Xml
 
         #region Lifecycle
 
-        protected XmlReaderDecorator(XmlReader reader) {
+        protected XmlReaderDecorator(XmlReader reader)
+        {
             _reader = reader;
         }
 
@@ -56,7 +57,8 @@ namespace WmcSoft.Xml
             get { return _reader.BaseURI; }
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             _reader.Close();
         }
 
@@ -68,15 +70,18 @@ namespace WmcSoft.Xml
             get { return _reader.EOF; }
         }
 
-        public override string GetAttribute(int i) {
+        public override string GetAttribute(int i)
+        {
             return _reader.GetAttribute(i);
         }
 
-        public override string GetAttribute(string name, string namespaceURI) {
+        public override string GetAttribute(string name, string namespaceURI)
+        {
             return _reader.GetAttribute(name, namespaceURI);
         }
 
-        public override string GetAttribute(string name) {
+        public override string GetAttribute(string name)
+        {
             return _reader.GetAttribute(name);
         }
 
@@ -92,27 +97,33 @@ namespace WmcSoft.Xml
             get { return _reader.LocalName; }
         }
 
-        public override string LookupNamespace(string prefix) {
+        public override string LookupNamespace(string prefix)
+        {
             return _reader.LookupNamespace(prefix);
         }
 
-        public override bool MoveToAttribute(string name, string ns) {
+        public override bool MoveToAttribute(string name, string ns)
+        {
             return _reader.MoveToAttribute(name, ns);
         }
 
-        public override bool MoveToAttribute(string name) {
+        public override bool MoveToAttribute(string name)
+        {
             return _reader.MoveToAttribute(name);
         }
 
-        public override bool MoveToElement() {
+        public override bool MoveToElement()
+        {
             return _reader.MoveToElement();
         }
 
-        public override bool MoveToFirstAttribute() {
+        public override bool MoveToFirstAttribute()
+        {
             return _reader.MoveToFirstAttribute();
         }
 
-        public override bool MoveToNextAttribute() {
+        public override bool MoveToNextAttribute()
+        {
             return _reader.MoveToNextAttribute();
         }
 
@@ -132,11 +143,13 @@ namespace WmcSoft.Xml
             get { return _reader.Prefix; }
         }
 
-        public override bool Read() {
+        public override bool Read()
+        {
             return _reader.Read();
         }
 
-        public override bool ReadAttributeValue() {
+        public override bool ReadAttributeValue()
+        {
             return _reader.ReadAttributeValue();
         }
 
@@ -144,7 +157,8 @@ namespace WmcSoft.Xml
             get { return _reader.ReadState; ; }
         }
 
-        public override void ResolveEntity() {
+        public override void ResolveEntity()
+        {
             _reader.ResolveEntity();
         }
 

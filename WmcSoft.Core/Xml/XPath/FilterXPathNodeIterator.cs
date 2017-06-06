@@ -35,7 +35,8 @@ namespace WmcSoft.Xml.XPath
         protected int _position;
         protected Predicate<XPathNavigator> _predicate;
 
-        public FilterXPathNodeIterator(XPathNodeIterator iterator, Predicate<XPathNavigator> predicate) {
+        public FilterXPathNodeIterator(XPathNodeIterator iterator, Predicate<XPathNavigator> predicate)
+        {
             _iterator = iterator.Clone();
             _position = 0;
             _predicate = predicate;
@@ -49,13 +50,15 @@ namespace WmcSoft.Xml.XPath
             get { return _position; }
         }
 
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new FilterXPathNodeIterator(_iterator, (Predicate<XPathNavigator>)_predicate.Clone()) {
                 _position = _position
             };
         }
 
-        public override bool MoveNext() {
+        public override bool MoveNext()
+        {
             while (_iterator.MoveNext()) {
                 if (_predicate(_iterator.Current)) {
                     _position++;

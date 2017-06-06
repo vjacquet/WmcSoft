@@ -1,6 +1,30 @@
+#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Xml.XPath;
 using System.Xml;
 using System.Collections;
@@ -28,17 +52,20 @@ namespace WmcSoft.Xml.XPath
             private readonly XmlNameTable _nt;
 
             public ObjectXPathProxy(object binding, XmlNameTable nt)
-                : this(binding, GetName(binding), null, nt) {
+                : this(binding, GetName(binding), null, nt)
+            {
             }
 
-            private ObjectXPathProxy(object binding, string name, ObjectXPathProxy parent, XmlNameTable nt) {
+            private ObjectXPathProxy(object binding, string name, ObjectXPathProxy parent, XmlNameTable nt)
+            {
                 _binding = binding;
                 _parent = parent;
                 _nt = nt;
                 _name = GetAtomicString(name);
             }
 
-            static string GetName(object binding) {
+            static string GetName(object binding)
+            {
                 if (binding == null)
                     throw new ArgumentNullException("binding");
                 return binding.GetType().Name;
@@ -95,7 +122,8 @@ namespace WmcSoft.Xml.XPath
                 }
             }
 
-            public string GetAttributeValue(string name) {
+            public string GetAttributeValue(string name)
+            {
                 string v = null;
 
                 Activate();
@@ -127,7 +155,8 @@ namespace WmcSoft.Xml.XPath
                 }
             }
 
-            public void AddSpecialName(string key, string val) {
+            public void AddSpecialName(string key, string val)
+            {
                 Activate();
 
                 if (_attributes == null) {
@@ -140,7 +169,8 @@ namespace WmcSoft.Xml.XPath
                 _attributes.Keys.CopyTo(_attributeKeys, 0);
             }
 
-            private void Activate() {
+            private void Activate()
+            {
                 if (_activated)
                     return;
 
@@ -162,7 +192,8 @@ namespace WmcSoft.Xml.XPath
                 }
             }
 
-            private void ActivateCollection() {
+            private void ActivateCollection()
+            {
                 var elements = new ArrayList();
 
                 foreach (object val in (ICollection)_binding) {
@@ -174,7 +205,8 @@ namespace WmcSoft.Xml.XPath
                 _elements = (elements.Count != 0) ? elements : null;
             }
 
-            private void ActivateDictionary() {
+            private void ActivateDictionary()
+            {
                 ArrayList elements = new ArrayList();
 
                 _elemDict = new Hashtable();
@@ -196,7 +228,8 @@ namespace WmcSoft.Xml.XPath
                 _elements = (elements.Count != 0) ? elements : null;
             }
 
-            private void ActivateSimple() {
+            private void ActivateSimple()
+            {
                 Hashtable attributes = new Hashtable();
                 ArrayList elements = new ArrayList();
 
@@ -244,11 +277,13 @@ namespace WmcSoft.Xml.XPath
                 }
             }
 
-            private string GetAtomicString(string v) {
+            private string GetAtomicString(string v)
+            {
                 return _nt.Add(v);
             }
 
-            private string CultureSafeToString(object obj) {
+            private string CultureSafeToString(object obj)
+            {
                 if (obj is string) {
                     return (string)obj;
                 }
@@ -294,14 +329,16 @@ namespace WmcSoft.Xml.XPath
         #endregion
 
         #region Constructor
-        public ObjectXPathNavigator(object obj) {
+        public ObjectXPathNavigator(object obj)
+        {
             m_docElem = new ObjectXPathProxy(obj, m_nt);
 
             //	m_docElem.AddSpecialName( "timestamp", DateTime.Now.ToString( "yyyy-MM-dd HH:mm:ss" ) );
             m_docElem.AddSpecialName("type", obj.GetType().FullName);
         }
 
-        private ObjectXPathNavigator() {
+        private ObjectXPathNavigator()
+        {
         }
         #endregion
 
@@ -431,7 +468,8 @@ namespace WmcSoft.Xml.XPath
             get { return string.Empty; }
         }
 
-        public override XPathNavigator Clone() {
+        public override XPathNavigator Clone()
+        {
             ObjectXPathNavigator newNav = new ObjectXPathNavigator();
 
             newNav.m_docElem = m_docElem;
@@ -444,7 +482,8 @@ namespace WmcSoft.Xml.XPath
             return newNav;
         }
 
-        public override string GetAttribute(string localName, string namespaceURI) {
+        public override string GetAttribute(string localName, string namespaceURI)
+        {
             if (m_nodeType == XPathNodeType.Element) {
                 if (namespaceURI.Length == 0) {
                     return m_currentElem.GetAttributeValue(localName);
@@ -453,11 +492,13 @@ namespace WmcSoft.Xml.XPath
             return string.Empty;
         }
 
-        public override string GetNamespace(string localName) {
+        public override string GetNamespace(string localName)
+        {
             return string.Empty;
         }
 
-        public override bool IsDescendant(XPathNavigator nav) {
+        public override bool IsDescendant(XPathNavigator nav)
+        {
             var otherNav = nav as ObjectXPathNavigator;
             if (otherNav != null) {
                 // if they're in different graphs, they're not the same
@@ -492,7 +533,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool IsSamePosition(XPathNavigator other) {
+        public override bool IsSamePosition(XPathNavigator other)
+        {
             if (other is ObjectXPathNavigator) {
                 ObjectXPathNavigator otherNav = (ObjectXPathNavigator)other;
 
@@ -521,7 +563,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveTo(XPathNavigator other) {
+        public override bool MoveTo(XPathNavigator other)
+        {
             if (other is ObjectXPathNavigator) {
                 ObjectXPathNavigator otherNav = (ObjectXPathNavigator)other;
 
@@ -538,7 +581,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToAttribute(string localName, string namespaceURI) {
+        public override bool MoveToAttribute(string localName, string namespaceURI)
+        {
             int pos = 0;
 
             if (m_nodeType != XPathNodeType.Element) {
@@ -559,7 +603,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToFirst() {
+        public override bool MoveToFirst()
+        {
             switch (m_nodeType) {
             case XPathNodeType.Element: {
                     m_valueIndex = 0;
@@ -579,7 +624,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToFirstAttribute() {
+        public override bool MoveToFirstAttribute()
+        {
             if (m_nodeType != XPathNodeType.Element) {
                 return false;
             }
@@ -591,7 +637,8 @@ namespace WmcSoft.Xml.XPath
             return true;
         }
 
-        public override bool MoveToFirstChild() {
+        public override bool MoveToFirstChild()
+        {
             if (m_nodeType == XPathNodeType.Root) {
                 // move to the document element
                 this.MoveNavigator(m_docElem);
@@ -623,19 +670,23 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToFirstNamespace(XPathNamespaceScope scope) {
+        public override bool MoveToFirstNamespace(XPathNamespaceScope scope)
+        {
             return false;
         }
 
-        public override bool MoveToId(string id) {
+        public override bool MoveToId(string id)
+        {
             return false;
         }
 
-        public override bool MoveToNamespace(string name) {
+        public override bool MoveToNamespace(string name)
+        {
             return false;
         }
 
-        public override bool MoveToNext() {
+        public override bool MoveToNext()
+        {
             if (m_nodeType != XPathNodeType.Element) {
                 return false;
             }
@@ -663,7 +714,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToNextAttribute() {
+        public override bool MoveToNextAttribute()
+        {
             if (m_nodeType != XPathNodeType.Attribute) {
                 return false;
             }
@@ -677,11 +729,13 @@ namespace WmcSoft.Xml.XPath
             return true;
         }
 
-        public override bool MoveToNextNamespace(XPathNamespaceScope scope) {
+        public override bool MoveToNextNamespace(XPathNamespaceScope scope)
+        {
             return false;
         }
 
-        public override bool MoveToParent() {
+        public override bool MoveToParent()
+        {
             if (m_nodeType == XPathNodeType.Root) {
                 return false;
             }
@@ -702,7 +756,8 @@ namespace WmcSoft.Xml.XPath
             return true;
         }
 
-        public override bool MoveToPrevious() {
+        public override bool MoveToPrevious()
+        {
             if (m_nodeType != XPathNodeType.Element) {
                 return false;
             }
@@ -732,7 +787,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override void MoveToRoot() {
+        public override void MoveToRoot()
+        {
             m_nodeType = XPathNodeType.Root;
             m_currentElem = null;
             m_values = null;
@@ -745,7 +801,8 @@ namespace WmcSoft.Xml.XPath
         // private methods
         // ---------------------------------------------------------------------
 
-        private void MoveNavigator(ObjectXPathProxy nav) {
+        private void MoveNavigator(ObjectXPathProxy nav)
+        {
             m_nodeType = XPathNodeType.Element;
             m_currentElem = nav;
             m_values = nav.Elements;

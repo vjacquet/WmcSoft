@@ -42,7 +42,8 @@ namespace WmcSoft.Xml.Linq
         /// </summary>
         /// <param name="name">The <see cref="XName"/> to match against descendant <see cref="XElement"/>s.</param>
         /// <returns>The first <see cref="XElement"/> descendant that matches the <see cref="XName"/> passed in, or null.</returns>
-        public static XElement Descendant(this XContainer container, XName name) {
+        public static XElement Descendant(this XContainer container, XName name)
+        {
             return container.Descendants(name).FirstOrDefault();
         }
 
@@ -64,7 +65,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue(this XAttribute attribute, IFormattable value, string format, IFormatProvider formatProvider = null) {
+        public static void SetValue(this XAttribute attribute, IFormattable value, string format, IFormatProvider formatProvider = null)
+        {
             attribute.SetValue(value != null ? value.ToString(format, formatProvider) : "");
         }
 
@@ -79,7 +81,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue(this XAttribute attribute, IFormattable value, IFormatProvider formatProvider) {
+        public static void SetValue(this XAttribute attribute, IFormattable value, IFormatProvider formatProvider)
+        {
             SetValue(attribute, value, null, formatProvider);
         }
 
@@ -97,7 +100,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue(this XElement element, IFormattable value, string format, IFormatProvider formatProvider = null) {
+        public static void SetValue(this XElement element, IFormattable value, string format, IFormatProvider formatProvider = null)
+        {
             element.SetValue(value != null ? value.ToString(format, formatProvider) : "");
         }
 
@@ -111,7 +115,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetValue(this XElement element, IFormattable value, IFormatProvider formatProvider) {
+        public static void SetValue(this XElement element, IFormattable value, IFormatProvider formatProvider)
+        {
             SetValue(element, value, null, formatProvider);
         }
 
@@ -130,7 +135,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null) {
+        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null)
+        {
             element.SetAttributeValue(name, value != null ? value.ToString(format, formatProvider) : null);
         }
 
@@ -145,7 +151,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider) {
+        public static void SetAttributeValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider)
+        {
             SetAttributeValue(element, name, value, null, formatProvider);
         }
 
@@ -164,7 +171,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetElementValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null) {
+        public static void SetElementValue(this XElement element, XName name, IFormattable value, string format, IFormatProvider formatProvider = null)
+        {
             element.SetElementValue(name, value != null ? value.ToString(format, formatProvider) : null);
         }
 
@@ -179,7 +187,8 @@ namespace WmcSoft.Xml.Linq
         /// Basic) to obtain the numeric format information from the current locale setting
         /// of the operating system.
         /// </param>
-        public static void SetElementValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider) {
+        public static void SetElementValue(this XElement element, XName name, IFormattable value, IFormatProvider formatProvider)
+        {
             SetElementValue(element, name, value, null, formatProvider);
         }
 

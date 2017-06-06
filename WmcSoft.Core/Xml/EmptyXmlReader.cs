@@ -33,75 +33,93 @@ namespace WmcSoft.Xml
     {
         #region Lifecycle
 
-        public EmptyXmlReader() {
+        public EmptyXmlReader()
+        {
         }
 
         #endregion
 
         #region Methods
 
-        public override void Close() {
+        public override void Close()
+        {
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
         }
 
-        public override string GetAttribute(int i) {
+        public override string GetAttribute(int i)
+        {
             return string.Empty;
         }
 
-        public override string GetAttribute(string name) {
+        public override string GetAttribute(string name)
+        {
             return string.Empty;
         }
 
-        public override string GetAttribute(string localName, string namespaceURI) {
+        public override string GetAttribute(string localName, string namespaceURI)
+        {
             return string.Empty;
         }
 
-        public bool HasLineInfo() {
+        public bool HasLineInfo()
+        {
             return false;
         }
 
-        public override string LookupNamespace(string prefix) {
+        public override string LookupNamespace(string prefix)
+        {
             return string.Empty;
         }
 
-        public override void MoveToAttribute(int i) {
+        public override void MoveToAttribute(int i)
+        {
         }
 
-        public override bool MoveToAttribute(string name) {
+        public override bool MoveToAttribute(string name)
+        {
             return false;
         }
 
-        public override bool MoveToAttribute(string localName, string namespaceURI) {
+        public override bool MoveToAttribute(string localName, string namespaceURI)
+        {
             return false;
         }
 
-        public override bool MoveToElement() {
+        public override bool MoveToElement()
+        {
             return false;
         }
 
-        public override bool MoveToFirstAttribute() {
+        public override bool MoveToFirstAttribute()
+        {
             return false;
         }
 
-        public override bool MoveToNextAttribute() {
+        public override bool MoveToNextAttribute()
+        {
             return false;
         }
 
-        public override bool Read() {
+        public override bool Read()
+        {
             return false;
         }
 
-        public override bool ReadAttributeValue() {
+        public override bool ReadAttributeValue()
+        {
             return false;
         }
 
-        public override int ReadValueChunk(char[] buffer, int index, int count) {
+        public override int ReadValueChunk(char[] buffer, int index, int count)
+        {
             return 0;
         }
 
-        public override void ResolveEntity() {
+        public override void ResolveEntity()
+        {
         }
 
         #endregion

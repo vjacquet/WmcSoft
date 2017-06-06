@@ -38,7 +38,8 @@ namespace WmcSoft.Xml.Xsl
         private readonly int _minargs;
         private readonly Func<XsltContext, object[], XPathNavigator, object> _invoke;
 
-        public XsltContextFunction(Func<XsltContext, object[], XPathNavigator, object> invoke, XPathResultType[] argTypes, int minargs, int maxargs, XPathResultType returnType) {
+        public XsltContextFunction(Func<XsltContext, object[], XPathNavigator, object> invoke, XPathResultType[] argTypes, int minargs, int maxargs, XPathResultType returnType)
+        {
             _invoke = invoke;
             _argTypes = argTypes;
             _minargs = minargs;
@@ -47,11 +48,13 @@ namespace WmcSoft.Xml.Xsl
         }
 
         public XsltContextFunction(Func<XsltContext, object[], XPathNavigator, object> invoke, XPathResultType[] argTypes, XPathResultType returnType)
-            : this(invoke, argTypes, argTypes.Length, argTypes.Length, returnType) {
+            : this(invoke, argTypes, argTypes.Length, argTypes.Length, returnType)
+        {
         }
 
         public XsltContextFunction(Func<object[], object> invoke, XPathResultType[] argTypes, XPathResultType returnType)
-            : this((c, args, n) => invoke(args), argTypes, argTypes.Length, argTypes.Length, returnType) {
+            : this((c, args, n) => invoke(args), argTypes, argTypes.Length, argTypes.Length, returnType)
+        {
         }
 
         #region IXsltContextFunction Members
@@ -60,7 +63,8 @@ namespace WmcSoft.Xml.Xsl
             get { return _argTypes; }
         }
 
-        public object Invoke(XsltContext xsltContext, object[] args, XPathNavigator docContext) {
+        public object Invoke(XsltContext xsltContext, object[] args, XPathNavigator docContext)
+        {
             return _invoke(xsltContext, args, docContext);
         }
 

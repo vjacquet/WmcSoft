@@ -1,7 +1,32 @@
-﻿using System;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.XPath;
 
 namespace WmcSoft.Xml.XPath
@@ -11,15 +36,18 @@ namespace WmcSoft.Xml.XPath
         static readonly char[] Delimiters = new char[] { ' ' };
 
         RulesXPathNodeIterator(XPathNodeIterator iterator, Predicate<XPathNavigator> predicate)
-            : base(iterator, predicate) {
+            : base(iterator, predicate)
+        {
         }
 
         public RulesXPathNodeIterator(XPathNodeIterator iterator, XPathNavigator context, IDictionary<string, XPathExpression> rules)
-            : base(iterator, RulesXPathNodeIterator.BuildPredicate(context, rules)) {
+            : base(iterator, BuildPredicate(context, rules))
+        {
         }
 
-        private static Predicate<XPathNavigator> BuildPredicate(XPathNavigator context, IDictionary<string, XPathExpression> rules) {
-            return delegate(XPathNavigator navigator) {
+        private static Predicate<XPathNavigator> BuildPredicate(XPathNavigator context, IDictionary<string, XPathExpression> rules)
+        {
+            return delegate (XPathNavigator navigator) {
                 XPathNavigator clone = navigator.Clone();
                 if (!clone.MoveToFirstAttribute())
                     return false;
@@ -27,8 +55,7 @@ namespace WmcSoft.Xml.XPath
                 bool triedSomeRules = false;
                 while (true) {
                     string name = clone.LocalName;
-                    XPathExpression expression;
-                    if (rules.TryGetValue(name, out expression)) {
+                    if (rules.TryGetValue(name, out XPathExpression expression)) {
                         string value = clone.Value;
                         if (!String.IsNullOrEmpty(value)) {
                             var tokens = value.Split(Delimiters);
@@ -42,7 +69,7 @@ namespace WmcSoft.Xml.XPath
                                 found = tokens.Any(t => t == value);
                                 break;
                             case XPathResultType.NodeSet: {
-                                    XPathNodeIterator iterator = (XPathNodeIterator)context.Evaluate(expression);
+                                    var iterator = (XPathNodeIterator)context.Evaluate(expression);
                                     while (iterator.MoveNext() && !found) {
                                         value = iterator.Current.Value;
                                         found = tokens.Any((string t) => t == value);
@@ -61,9 +88,10 @@ namespace WmcSoft.Xml.XPath
             };
         }
 
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new RulesXPathNodeIterator(_iterator, _predicate) {
-                _position = this._position
+                _position = _position
             };
         }
     }

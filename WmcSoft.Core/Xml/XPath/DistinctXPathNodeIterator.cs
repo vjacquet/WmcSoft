@@ -37,17 +37,20 @@ namespace WmcSoft.Xml.XPath
         private int _position;
         private XPathExpression _expression;
 
-        public DistinctXPathNodeIterator(XPathNodeIterator iterator, XPathExpression expression) {
+        public DistinctXPathNodeIterator(XPathNodeIterator iterator, XPathExpression expression)
+        {
             _iterator = iterator.Clone();
             _occurences = new Dictionary<object, int>();
             _position = 0;
             _expression = expression;
         }
         public DistinctXPathNodeIterator(XPathNodeIterator iterator, string xpath)
-            : this(iterator, XPathExpression.Compile(String.Format("string({0})", xpath))) {
+            : this(iterator, XPathExpression.Compile($"string({xpath})"))
+        {
         }
         public DistinctXPathNodeIterator(XPathNodeIterator iterator)
-            : this(iterator, ".") {
+            : this(iterator, ".")
+        {
         }
 
         public override XPathNavigator Current {
@@ -58,7 +61,8 @@ namespace WmcSoft.Xml.XPath
             get { return _position; }
         }
 
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new DistinctXPathNodeIterator(_iterator) {
                 _occurences = new Dictionary<object, int>(_occurences),
                 _position = _position,
@@ -66,7 +70,8 @@ namespace WmcSoft.Xml.XPath
             };
         }
 
-        public override bool MoveNext() {
+        public override bool MoveNext()
+        {
             while (_iterator.MoveNext()) {
                 object value = _iterator.Current.Evaluate(_expression, _iterator);
                 int occurence;

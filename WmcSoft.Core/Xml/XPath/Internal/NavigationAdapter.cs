@@ -1,10 +1,33 @@
+#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace WmcSoft.Xml.XPath.Internal
 {
@@ -20,7 +43,8 @@ namespace WmcSoft.Xml.XPath.Internal
 
         #region Lifecycle
 
-        protected NavigationAdapter(NavigationAdapter parent, int indexInParent) {
+        protected NavigationAdapter(NavigationAdapter parent, int indexInParent)
+        {
             this.parent = parent;
             this.indexInParent = indexInParent;
             this.attributeIndex = -1;
@@ -41,23 +65,27 @@ namespace WmcSoft.Xml.XPath.Internal
 
         public abstract int GetAttributeCount();
 
-        public virtual bool IsEmptyElement() {
+        public virtual bool IsEmptyElement()
+        {
             return GetChildCount() == 0;
         }
 
         public abstract int GetChildCount();
 
-        public string GetLocalName(XmlNameTable nameTable) {
+        public string GetLocalName(XmlNameTable nameTable)
+        {
             if (attributeIndex < 0)
                 return GetElementName(nameTable);
             return GetAttributeName(nameTable);
         }
 
-        public virtual string GetAttributeName(XmlNameTable nameTable) {
+        public virtual string GetAttributeName(XmlNameTable nameTable)
+        {
             return String.Empty;
         }
 
-        public virtual string GetElementName(XmlNameTable nameTable) {
+        public virtual string GetElementName(XmlNameTable nameTable)
+        {
             return String.Empty;
         }
 
@@ -67,7 +95,8 @@ namespace WmcSoft.Xml.XPath.Internal
 
         #region Move methods
 
-        public bool MoveToElement() {
+        public bool MoveToElement()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType == XPathNodeType.Attribute) {
                 nodeType = XPathNodeType.Element;
@@ -77,7 +106,8 @@ namespace WmcSoft.Xml.XPath.Internal
             return false;
         }
 
-        public bool MoveToFirstAttribute() {
+        public bool MoveToFirstAttribute()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType != XPathNodeType.Element)
                 return false;
@@ -91,7 +121,8 @@ namespace WmcSoft.Xml.XPath.Internal
             return false;
         }
 
-        public bool MoveToNextAttribute() {
+        public bool MoveToNextAttribute()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType != XPathNodeType.Attribute
                 && nodeType != XPathNodeType.Element)
@@ -108,23 +139,27 @@ namespace WmcSoft.Xml.XPath.Internal
         }
 
         [DebuggerStepThrough]
-        public NavigationAdapter GetParent() {
+        public NavigationAdapter GetParent()
+        {
             if (parent != null)
                 return parent.Clone() as NavigationAdapter;
             return null;
         }
 
-        public virtual NavigationAdapter GetChild(int index) {
+        public virtual NavigationAdapter GetChild(int index)
+        {
             return null;
         }
 
-        public NavigationAdapter GetNextSibbling() {
+        public NavigationAdapter GetNextSibbling()
+        {
             if (parent == null)
                 return null;
             return parent.GetChild(indexInParent + 1);
         }
 
-        public NavigationAdapter GetPreviousSibbling() {
+        public NavigationAdapter GetPreviousSibbling()
+        {
             if (parent == null)
                 return null;
             return parent.GetChild(indexInParent - 1);
@@ -134,7 +169,8 @@ namespace WmcSoft.Xml.XPath.Internal
 
         #region ICloneable Members
 
-        public object Clone() {
+        public object Clone()
+        {
             return MemberwiseClone();
         }
 
@@ -142,15 +178,18 @@ namespace WmcSoft.Xml.XPath.Internal
 
         #region IEquatable<NavigationAdapter> Members
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return base.Equals((NavigationAdapter)obj);
         }
-        public virtual bool Equals(NavigationAdapter other) {
+        public virtual bool Equals(NavigationAdapter other)
+        {
             return (attributeIndex == other.attributeIndex)
                 && (indexInParent == other.indexInParent);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return base.GetHashCode();
         }
 

@@ -31,7 +31,8 @@ namespace WmcSoft.Xml
 {
     public static class XmlReaderExtensions
     {
-        public static string ReadAttributeValue(this XmlReader reader, string name) {
+        public static string ReadAttributeValue(this XmlReader reader, string name)
+        {
             reader.MoveToAttribute(name);
             reader.ReadAttributeValue();
             var value = reader.Value;
@@ -40,7 +41,8 @@ namespace WmcSoft.Xml
         }
 
         public static T ReadAttributeValue<T>(this XmlReader reader, string name)
-            where T : IConvertible {
+            where T : IConvertible
+        {
             var value = reader.ReadAttributeValue(name);
             return (T)Convert.ChangeType(value, typeof(T));
         }

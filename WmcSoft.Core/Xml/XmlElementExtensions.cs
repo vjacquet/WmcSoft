@@ -43,7 +43,8 @@ namespace WmcSoft.Xml
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The converted value of the specified attribute. <see cref="defaultValue"/> is returned if a matching attribute is not found or if the attribute does not have a specified or default value.</returns>
         public static T GetAttribute<T>(this XmlElement element, string name, T defaultValue = default(T))
-            where T : IConvertible {
+            where T : IConvertible
+        {
             var value = element.GetAttribute(name);
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
@@ -60,7 +61,8 @@ namespace WmcSoft.Xml
         /// <param name="defaultValue">The default value.</param>
         /// <returns>The converted value of the specified attribute. <see cref="defaultValue"/> is returned if a matching attribute is not found or if the attribute does not have a specified or default value.</returns>
         public static T GetAttribute<T>(this XmlElement element, string localName, string namespaceURI, T defaultValue = default(T))
-            where T : IConvertible {
+            where T : IConvertible
+        {
             var value = element.GetAttribute(localName, namespaceURI);
             if (string.IsNullOrEmpty(value))
                 return defaultValue;

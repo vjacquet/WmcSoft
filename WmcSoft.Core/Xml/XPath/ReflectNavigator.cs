@@ -1,3 +1,29 @@
+#region Licence
+
+/****************************************************************************
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -11,19 +37,23 @@ namespace WmcSoft.Xml.XPath
     {
         #region Factory methods
 
-        static internal NavigationAdapter CreateAdapter(Assembly assembly) {
+        static internal NavigationAdapter CreateAdapter(Assembly assembly)
+        {
             return CreateAdapter(assembly, null, 0);
         }
 
-        static internal NavigationAdapter CreateAdapter(Assembly assembly, NavigationAdapter parent, int indexInParent) {
+        static internal NavigationAdapter CreateAdapter(Assembly assembly, NavigationAdapter parent, int indexInParent)
+        {
             return null;
         }
 
-        static internal NavigationAdapter CreateAdapter(Type type) {
+        static internal NavigationAdapter CreateAdapter(Type type)
+        {
             return CreateAdapter(type, null, 0);
         }
 
-        static internal NavigationAdapter CreateAdapter(Type type, NavigationAdapter parent, int indexInParent) {
+        static internal NavigationAdapter CreateAdapter(Type type, NavigationAdapter parent, int indexInParent)
+        {
             if (type.IsEnum)
                 return new EnumAdapter(type, parent, indexInParent);
             else if (type.IsInterface)
@@ -33,7 +63,8 @@ namespace WmcSoft.Xml.XPath
             return new ClassAdapter(type, parent, indexInParent);
         }
 
-        static internal NavigationAdapter CreateAdapter(MemberInfo memberInfo, NavigationAdapter parent, int indexInParent) {
+        static internal NavigationAdapter CreateAdapter(MemberInfo memberInfo, NavigationAdapter parent, int indexInParent)
+        {
             if (memberInfo is FieldInfo) {
                 return new FieldAdapter((FieldInfo)memberInfo, parent, indexInParent);
             } else if (memberInfo is ConstructorInfo) {
@@ -63,15 +94,18 @@ namespace WmcSoft.Xml.XPath
 
         #region Lifecycle
 
-        private ReflectNavigator(XmlNameTable nameTable) {
+        private ReflectNavigator(XmlNameTable nameTable)
+        {
             this.nameTable = nameTable;
         }
 
         public ReflectNavigator(Type type)
-            : this(type, new NameTable()) {
+            : this(type, new NameTable())
+        {
         }
 
-        public ReflectNavigator(Type type, XmlNameTable nameTable) {
+        public ReflectNavigator(Type type, XmlNameTable nameTable)
+        {
             // initialize nametable
             nameTable.Add(String.Empty);
             nameTable.Add("access");
@@ -118,7 +152,8 @@ namespace WmcSoft.Xml.XPath
             this.adapter = new RootNavigationAdapter(CreateAdapter(type));
         }
 
-        public override XPathNavigator Clone() {
+        public override XPathNavigator Clone()
+        {
             ReflectNavigator clone = new ReflectNavigator(nameTable);
             clone.adapter = (NavigationAdapter)this.adapter.Clone();
             return clone;
@@ -215,7 +250,8 @@ namespace WmcSoft.Xml.XPath
             }
         }
 
-        public override bool IsSamePosition(XPathNavigator other) {
+        public override bool IsSamePosition(XPathNavigator other)
+        {
             if (this.GetType() != other.GetType())
                 return false;
 
@@ -227,19 +263,23 @@ namespace WmcSoft.Xml.XPath
 
         #region Move methods
 
-        public override bool MoveToFirstNamespace(XPathNamespaceScope namespaceScope) {
+        public override bool MoveToFirstNamespace(XPathNamespaceScope namespaceScope)
+        {
             return false;
         }
 
-        public override bool MoveToNextNamespace(XPathNamespaceScope namespaceScope) {
+        public override bool MoveToNextNamespace(XPathNamespaceScope namespaceScope)
+        {
             return false;
         }
 
-        public override bool MoveToId(string id) {
+        public override bool MoveToId(string id)
+        {
             return false;
         }
 
-        public override bool MoveTo(XPathNavigator other) {
+        public override bool MoveTo(XPathNavigator other)
+        {
             ReflectNavigator that = other as ReflectNavigator;
             if (that == null)
                 return false;
@@ -247,7 +287,8 @@ namespace WmcSoft.Xml.XPath
             return true;
         }
 
-        public override bool MoveToNext() {
+        public override bool MoveToNext()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType == XPathNodeType.Root
                 || nodeType == XPathNodeType.Attribute)
@@ -264,7 +305,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToPrevious() {
+        public override bool MoveToPrevious()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType == XPathNodeType.Root
                 || nodeType == XPathNodeType.Attribute)
@@ -281,7 +323,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToFirstChild() {
+        public override bool MoveToFirstChild()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType != XPathNodeType.Root && nodeType != XPathNodeType.Element)
                 return false;
@@ -295,7 +338,8 @@ namespace WmcSoft.Xml.XPath
             return false;
         }
 
-        public override bool MoveToFirstAttribute() {
+        public override bool MoveToFirstAttribute()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType != XPathNodeType.Element)
                 return false;
@@ -303,7 +347,8 @@ namespace WmcSoft.Xml.XPath
             return adapter.MoveToFirstAttribute();
         }
 
-        public override bool MoveToNextAttribute() {
+        public override bool MoveToNextAttribute()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType != XPathNodeType.Attribute
                 && nodeType != XPathNodeType.Element)
@@ -312,7 +357,8 @@ namespace WmcSoft.Xml.XPath
             return adapter.MoveToNextAttribute();
         }
 
-        public override bool MoveToParent() {
+        public override bool MoveToParent()
+        {
             XPathNodeType nodeType = this.NodeType;
             if (nodeType == XPathNodeType.Root) {
                 return false;
@@ -329,6 +375,5 @@ namespace WmcSoft.Xml.XPath
         }
 
         #endregion
-
     }
 }

@@ -24,11 +24,9 @@
 
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {

@@ -32,9 +32,10 @@ namespace WmcSoft.Xml.XPath
 {
     static class XPathLocator
     {
-        public static string GetXPathTo(XmlNode node) {
+        public static string GetXPathTo(XmlNode node)
+        {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             switch (node.NodeType) {
             case XmlNodeType.None:
@@ -58,7 +59,8 @@ namespace WmcSoft.Xml.XPath
             return sb.ToString();
         }
 
-        public static string GetXPathTo(XmlAttribute node) {
+        public static string GetXPathTo(XmlAttribute node)
+        {
             var sb = new StringBuilder();
             NodeToXPath(node.SelectSingleNode(".."), sb);
 
@@ -71,7 +73,8 @@ namespace WmcSoft.Xml.XPath
             return sb.ToString();
         }
 
-        private static void NodeToXPath(XmlNode node, StringBuilder sb) {
+        private static void NodeToXPath(XmlNode node, StringBuilder sb)
+        {
             if (node != null) {
                 var parentNode = node.ParentNode;
                 if (parentNode == null) {
@@ -83,7 +86,8 @@ namespace WmcSoft.Xml.XPath
             }
         }
 
-        private static int PositionOfElement(XmlNode node) {
+        private static int PositionOfElement(XmlNode node)
+        {
             var position = 1;
             foreach (XmlNode child in node.ParentNode.ChildNodes) {
                 if (child == node)
@@ -94,7 +98,8 @@ namespace WmcSoft.Xml.XPath
             throw new InvalidOperationException();
         }
 
-        private static int PositionOfTextNode(XmlNode node) {
+        private static int PositionOfTextNode(XmlNode node)
+        {
             var position = 1;
             // consecutive text nodes should be merged.
             var flag = false;
@@ -112,7 +117,8 @@ namespace WmcSoft.Xml.XPath
             throw new InvalidOperationException();
         }
 
-        private static void AppendPathFromParent(XmlNode node, StringBuilder sb) {
+        private static void AppendPathFromParent(XmlNode node, StringBuilder sb)
+        {
             switch (node.NodeType) {
             case XmlNodeType.Element:
                 sb.Append('/').Append(node.Name);
@@ -143,7 +149,8 @@ namespace WmcSoft.Xml.XPath
                 sb.Append("[").Append(position).Append("]");
         }
 
-        private static bool IsTextNode(XmlNodeType nt) {
+        private static bool IsTextNode(XmlNodeType nt)
+        {
             if (nt != XmlNodeType.SignificantWhitespace
                 && nt != XmlNodeType.Whitespace
                 && nt != XmlNodeType.Text

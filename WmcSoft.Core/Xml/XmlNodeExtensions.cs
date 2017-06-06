@@ -33,79 +33,93 @@ namespace WmcSoft.Xml
 {
     public static class XmlNodeExtensions
     {
-        public static XmlAttribute RemoveAttributeNode(this XmlNode node, string name) {
+        public static XmlAttribute RemoveAttributeNode(this XmlNode node, string name)
+        {
             return (XmlAttribute)node.Attributes.RemoveNamedItem(name);
         }
 
-        public static string GetValueOrNull(this XmlNode node) {
+        public static string GetValueOrNull(this XmlNode node)
+        {
             if (node != null)
                 return node.Value;
             return null;
         }
 
-        public static XmlWriter ReplaceSelf(this XmlNode node) {
+        public static XmlWriter ReplaceSelf(this XmlNode node)
+        {
             var navigator = node.CreateNavigator();
             return navigator.ReplaceRange(navigator);
         }
 
-        public static XmlWriter ReplaceContent(this XmlNode node) {
+        public static XmlWriter ReplaceContent(this XmlNode node)
+        {
             var first = node.FirstChild.CreateNavigator();
             var last = node.LastChild.CreateNavigator();
             return first.ReplaceRange(last);
         }
 
-        public static bool HasValue(this XmlNode self, string xpath) {
+        public static bool HasValue(this XmlNode self, string xpath)
+        {
             var node = self.SelectSingleNode(xpath);
             if (node == null)
                 return false;
             return !String.IsNullOrEmpty(node.InnerText);
         }
-        public static bool HasValue(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
+        public static bool HasValue(this XmlNode self, string xpath, XmlNamespaceManager nsmgr)
+        {
             var node = self.SelectSingleNode(xpath, nsmgr);
             if (node == null)
                 return false;
             return !String.IsNullOrEmpty(node.InnerText);
         }
 
-        public static string GetValue(this XmlNode self, string xpath) {
+        public static string GetValue(this XmlNode self, string xpath)
+        {
             var node = self.SelectSingleNode(xpath);
             return (node == null) ? "" : (node.Value ?? node.InnerText);
         }
-        public static string GetValue(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
+        public static string GetValue(this XmlNode self, string xpath, XmlNamespaceManager nsmgr)
+        {
             var node = self.SelectSingleNode(xpath, nsmgr);
             return (node == null) ? "" : (node.Value ?? node.InnerText);
         }
 
-        public static IEnumerable<string> GetValues(this XmlNode self, string xpath) {
+        public static IEnumerable<string> GetValues(this XmlNode self, string xpath)
+        {
             foreach (XmlNode node in self.SelectNodes(xpath))
                 yield return node.Value ?? node.InnerText;
         }
-        public static IEnumerable<string> GetValues(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
+        public static IEnumerable<string> GetValues(this XmlNode self, string xpath, XmlNamespaceManager nsmgr)
+        {
             foreach (XmlNode node in self.SelectNodes(xpath, nsmgr))
                 yield return node.Value ?? node.InnerText;
         }
 
-        public static T GetValue<T>(this XmlNode self, string xpath) where T : IConvertible {
+        public static T GetValue<T>(this XmlNode self, string xpath) where T : IConvertible
+        {
             var value = GetValue(self, xpath);
             if (String.IsNullOrEmpty(value))
                 return default(T);
             return (T)Convert.ChangeType(value, typeof(T));
         }
-        public static T GetValue<T>(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) where T : IConvertible {
+        public static T GetValue<T>(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) where T : IConvertible
+        {
             var value = GetValue(self, xpath, nsmgr);
             if (String.IsNullOrEmpty(value))
                 return default(T);
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
-        public static IEnumerable<T> GetValues<T>(this XmlNode self, string xpath) {
+        public static IEnumerable<T> GetValues<T>(this XmlNode self, string xpath)
+        {
             foreach (string value in GetValues(self, xpath)) {
                 if (String.IsNullOrEmpty(value))
                     yield return default(T);
                 yield return (T)Convert.ChangeType(value, typeof(T));
             }
         }
-        public static IEnumerable<T> GetValues<T>(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
+        public static IEnumerable<T> GetValues<T>(this XmlNode self, string xpath, XmlNamespaceManager nsmgr)
+        {
             foreach (string value in GetValues(self, xpath, nsmgr)) {
                 if (String.IsNullOrEmpty(value))
                     yield return default(T);
@@ -113,49 +127,60 @@ namespace WmcSoft.Xml
             }
         }
 
-        public static string GetInnerXml(this XmlNode self, string xpath) {
+        public static string GetInnerXml(this XmlNode self, string xpath)
+        {
             var node = self.SelectSingleNode(xpath);
             return (node == null) ? "" : node.InnerXml;
         }
-        public static string GetInnerXml(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
+        public static string GetInnerXml(this XmlNode self, string xpath, XmlNamespaceManager nsmgr)
+        {
             var node = self.SelectSingleNode(xpath, nsmgr);
             return (node == null) ? "" : node.InnerXml;
         }
 
-        public static string GetInnerText(this XmlNode self, string xpath) {
+        public static string GetInnerText(this XmlNode self, string xpath)
+        {
             var node = self.SelectSingleNode(xpath);
             return (node == null) ? "" : node.InnerText;
         }
-        public static string GetInnerText(this XmlNode self, string xpath, XmlNamespaceManager nsmgr) {
+        public static string GetInnerText(this XmlNode self, string xpath, XmlNamespaceManager nsmgr)
+        {
             var node = self.SelectSingleNode(xpath, nsmgr);
             return (node == null) ? "" : node.InnerText;
         }
 
-        public static string GetXPath(this XmlNode self) {
+        public static string GetXPath(this XmlNode self)
+        {
             return XPathLocator.GetXPathTo(self);
         }
 
-        public static string GetXPath(this XmlAttribute self) {
+        public static string GetXPath(this XmlAttribute self)
+        {
             return XPathLocator.GetXPathTo(self);
         }
 
-        public static XmlNode InsertBefore(this XmlNode self, XmlNode node) {
+        public static XmlNode InsertBefore(this XmlNode self, XmlNode node)
+        {
             return self.ParentNode.InsertBefore(node, self);
         }
 
-        public static XmlNode InsertAfter(this XmlNode self, XmlNode node) {
+        public static XmlNode InsertAfter(this XmlNode self, XmlNode node)
+        {
             return self.ParentNode.InsertAfter(node, self);
         }
 
-        public static int IndexOf(this XmlNode self) {
+        public static int IndexOf(this XmlNode self)
+        {
             return IndexOf(self.ParentNode.ChildNodes, self);
         }
 
-        public static int IndexOf(this XmlNode self, XmlNode child) {
+        public static int IndexOf(this XmlNode self, XmlNode child)
+        {
             return IndexOf(self.ChildNodes, child);
         }
 
-        public static int IndexOf(this XmlNodeList self, XmlNode child) {
+        public static int IndexOf(this XmlNodeList self, XmlNode child)
+        {
             int index = 0;
             foreach (XmlNode node in self) {
                 if (child == node)
@@ -172,7 +197,8 @@ namespace WmcSoft.Xml
         /// <param name="xpath">The XPath expression.</param>
         /// <returns>An <see cref="XmlNodeList"/> containing a collection of nodes matching the XPath query, once removed from the document.</returns>
         /// <exception cref="XPathException">The XPath expression contains a prefix.</exception>
-        public static XmlNodeList RemoveNodes(this XmlNode node, string xpath) {
+        public static XmlNodeList RemoveNodes(this XmlNode node, string xpath)
+        {
             var list = node.SelectNodes(xpath);
             DetachAll(list);
             return list;
@@ -187,13 +213,15 @@ namespace WmcSoft.Xml
         /// <param name="nsmgr">An <see cref="XmlNamespaceManager"/> to use for resolving namespaces for prefixes in the XPath expression.</param>
         /// <returns>An <see cref="XmlNodeList"/> containing a collection of nodes matching the XPath query, once removed from the document.</returns>
         /// <exception cref="XPathException">The XPath expression contains a prefix which is not defined in the XmlNamespaceManager.</exception>
-        public static XmlNodeList RemoveNodes(this XmlNode node, string xpath, XmlNamespaceManager nsmgr) {
+        public static XmlNodeList RemoveNodes(this XmlNode node, string xpath, XmlNamespaceManager nsmgr)
+        {
             var list = node.SelectNodes(xpath, nsmgr);
             DetachAll(list);
             return list;
         }
 
-        public static bool Detach(this XmlAttribute attr) {
+        public static bool Detach(this XmlAttribute attr)
+        {
             var owner = attr.OwnerElement;
             if (owner != null) {
                 owner.Attributes.Remove(attr);
@@ -202,7 +230,8 @@ namespace WmcSoft.Xml
             return false;
         }
 
-        public static bool Detach(this XmlNode node) {
+        public static bool Detach(this XmlNode node)
+        {
             if (node.ParentNode != null) {
                 node.ParentNode.RemoveChild(node);
                 return true;
@@ -252,12 +281,14 @@ namespace WmcSoft.Xml
             return false;
         }
 
-        public static void DetachAt(this XmlNodeList list, int index) {
+        public static void DetachAt(this XmlNodeList list, int index)
+        {
             var node = list[index];
             Detach(node);
         }
 
-        public static void DetachAll(this XmlNodeList list) {
+        public static void DetachAll(this XmlNodeList list)
+        {
             var length = list.Count;
             for (int i = 0; i < length; i++) {
                 var node = list[i];
