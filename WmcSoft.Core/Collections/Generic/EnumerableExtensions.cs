@@ -609,6 +609,48 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Match/Mismatch
+
+        /// <summary>
+        /// Returns items from the primary enumerator only when the relation with the secondary enumerator returns <c>true</c>.
+        /// </summary>
+        /// <typeparam name="T">The primary type.</typeparam>
+        /// <typeparam name="U">The secondary type</typeparam>
+        /// <param name="first">The primary enumerable.</param>
+        /// <param name="second">The secondary enumerable.</param>
+        /// <param name="relation">The relation</param>
+        /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns <c>true</c>.</returns>
+        /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
+        public static IEnumerable<T> Match<T, U>(this IEnumerable<T> first, IEnumerable<U> second, Func<T, U, bool> relation)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (relation == null) throw new ArgumentNullException(nameof(relation));
+
+            return UnguardedMatch(first, second, relation);
+        }
+
+        /// <summary>
+        /// Returns items from the primary enumerator only when the relation with the secondary enumerator returns <c>false</c>.
+        /// </summary>
+        /// <typeparam name="T">The primary type.</typeparam>
+        /// <typeparam name="U">The secondary type</typeparam>
+        /// <param name="first">The primary enumerable.</param>
+        /// <param name="second">The secondary enumerable.</param>
+        /// <param name="relation">The relation</param>
+        /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns <c>false</c>.</returns>
+        /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
+        public static IEnumerable<T> Mismatch<T, U>(this IEnumerable<T> first, IEnumerable<U> second, Func<T, U, bool> relation)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (relation == null) throw new ArgumentNullException(nameof(relation));
+
+            return UnguardedMismatch(first, second, relation);
+        }
+
+        #endregion
+
         #region NGrams
 
         public static IEnumerable<NGram<T>> NGrams<T>(this IEnumerable<T> source, int n)

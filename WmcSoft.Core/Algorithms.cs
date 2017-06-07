@@ -418,7 +418,7 @@ namespace WmcSoft
         {
             var max = values[0];
             for (int i = 1; i != values.Length; ++i) {
-                max = System.Math.Max(max, values[i]);
+                max = Math.Max(max, values[i]);
             }
             return max;
         }
@@ -816,19 +816,40 @@ namespace WmcSoft
 
         #endregion
 
-        #region Mismatch
+        #region Match/Mismatch
 
         /// <summary>
-        /// Returns items from the primary enumerator only when the relation with the secondary enumerator returns false.
+        /// Returns items from the primary enumerator only when the relation with the secondary enumerator returns <c>true</c>.
         /// </summary>
         /// <typeparam name="T">The primary type.</typeparam>
         /// <typeparam name="U">The secondary type</typeparam>
         /// <param name="primary">The primary enumerable.</param>
         /// <param name="secondary">The secondary enumerable.</param>
         /// <param name="relation">The relation</param>
-        /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns false.</returns>
+        /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns <c>true</c>.</returns>
         /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
-        public static IEnumerable<T> Mismatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation)
+        public static IEnumerable<T> UnguardedMatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation)
+        {
+            using (var p = primary.GetEnumerator())
+            using (var s = secondary.GetEnumerator()) {
+                while (p.MoveNext() & s.MoveNext()) {
+                    if (relation(p.Current, s.Current))
+                        yield return p.Current;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns items from the primary enumerator only when the relation with the secondary enumerator returns <c>false</c>.
+        /// </summary>
+        /// <typeparam name="T">The primary type.</typeparam>
+        /// <typeparam name="U">The secondary type</typeparam>
+        /// <param name="primary">The primary enumerable.</param>
+        /// <param name="secondary">The secondary enumerable.</param>
+        /// <param name="relation">The relation</param>
+        /// <returns>Items from the primary enumerator for which the relation with the secondary enumerator returns <c>false</c>.</returns>
+        /// <remarks>The enumeration stops when any enumerator cannot move to the next item.</remarks>
+        public static IEnumerable<T> UnguardedMismatch<T, U>(IEnumerable<T> primary, IEnumerable<U> secondary, Func<T, U, bool> relation)
         {
             using (var p = primary.GetEnumerator())
             using (var s = secondary.GetEnumerator()) {

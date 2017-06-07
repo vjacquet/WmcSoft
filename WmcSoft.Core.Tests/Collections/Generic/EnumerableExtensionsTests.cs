@@ -444,5 +444,25 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { "ABC", "BCD", "CDE", "DEF", "EFG", "FGH" };
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CheckMatch()
+        {
+            var data = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+            var selected = new[] { true, false, false, true, true, false, false, true };
+            var expected = new[] { 'A', 'D', 'E', 'H' };
+            var actual = data.Match(selected, (x, s) => s).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckMismatch()
+        {
+            var data = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+            var selected = new[] { true, false, false, true, true, false, false, true };
+            var expected = new[] { 'B', 'C', 'F', 'G' };
+            var actual = data.Mismatch(selected, (x, s) => s).ToArray();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
