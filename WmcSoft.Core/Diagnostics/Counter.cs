@@ -69,9 +69,7 @@ namespace WmcSoft.Diagnostics
         /// <summary>
         /// Number of increments since creation.
         /// </summary>
-        public int Tally {
-            get { return _count; }
-        }
+        public int Tally => _count;
 
         /// <summary>
         /// Resets the counter.
