@@ -40,5 +40,19 @@ namespace WmcSoft.Collections.Specialized
 
             Assert.AreEqual(30, tree.Tally());
         }
+
+        [TestMethod]
+        public void CanSumFenwickTree()
+        {
+            var tree = new FenwickTree(2, 4, 8, 16);
+            Assert.AreEqual(6, tree.Sum(2));
+        }
+
+        [TestMethod]
+        public void CanRangeFenwickTree()
+        {
+            var tree = new FenwickTree(2, 4, 8, 16);
+            Assert.AreEqual(12, tree.Range(1, 3));
+        }
     }
 }

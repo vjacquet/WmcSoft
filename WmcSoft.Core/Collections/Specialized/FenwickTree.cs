@@ -51,7 +51,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        int Sum(int i)
+        public int Sum(int i)
         {
             var sum = 0;
             while (i != 0) {
@@ -70,7 +70,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        int Range(int i, int j)
+        public int Range(int i, int j)
         {
             var sum = 0;
             while (j > i) {
