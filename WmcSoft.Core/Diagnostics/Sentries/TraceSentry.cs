@@ -94,7 +94,7 @@ namespace WmcSoft.Diagnostics.Sentries
                 unsubscriber.Dispose();
 
                 var dispose = false;
-                IDisposable disposer = _unsubscriber;
+                var disposer = _unsubscriber;
                 lock (_syncRoot) {
                     if (--_refCount == 0) {
                         dispose = true;
