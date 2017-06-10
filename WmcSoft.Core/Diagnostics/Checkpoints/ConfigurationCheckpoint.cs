@@ -51,9 +51,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
         /// Minimum level required to perform the check.
         /// </summary>
         /// <returns>Returns 0 because configuration is vital to the application.</returns>
-        public override int MinimumLevel {
-            get { return 0; }
-        }
+        public override int MinimumLevel => 0;
 
         protected override CheckpointResult DoVerify(int level)
         {

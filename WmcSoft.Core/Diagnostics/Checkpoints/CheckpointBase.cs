@@ -36,11 +36,13 @@ namespace WmcSoft.Diagnostics.Checkpoints
     {
         protected CheckpointBase(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+
             Name = name;
         }
 
         public string Name { get; }
-        public virtual int MinimumLevel { get { return 0; } }
+        public virtual int MinimumLevel => 0;
 
         public CheckpointResult Verify(int level)
         {

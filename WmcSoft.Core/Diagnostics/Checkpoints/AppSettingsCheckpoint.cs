@@ -48,7 +48,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
         public AppSettingsCheckpoint(string name, params string[] keys)
             : base(name)
         {
-            if (keys == null || keys.Length == 0) throw new ArgumentException("keys");
+            if (keys == null || keys.Length == 0) throw new ArgumentException(nameof(keys));
             _keys = keys;
         }
 

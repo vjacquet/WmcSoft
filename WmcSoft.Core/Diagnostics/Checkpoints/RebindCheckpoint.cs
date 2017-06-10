@@ -39,23 +39,21 @@ namespace WmcSoft.Diagnostics.Checkpoints
 
         static string ExtractName(ICheckpoint checkpoint)
         {
-            if (checkpoint == null) throw new ArgumentNullException("checkpoint");
+            if (checkpoint == null) throw new ArgumentNullException(nameof(checkpoint));
             return checkpoint.Name;
         }
 
         public RebindCheckpoint(ICheckpoint checkpoint, int minimumLevel, Func<int, int> binder)
             : base(ExtractName(checkpoint))
         {
-            if (binder == null) throw new ArgumentNullException("binder");
+            if (binder == null) throw new ArgumentNullException(nameof(binder));
 
             _base = checkpoint;
             _minimumLevel = minimumLevel;
             _binder = binder;
         }
 
-        public override int MinimumLevel {
-            get { return Math.Min(_minimumLevel, _base.MinimumLevel); }
-        }
+        public override int MinimumLevel => Math.Min(_minimumLevel, _base.MinimumLevel);
 
         protected override CheckpointResult DoVerify(int level)
         {

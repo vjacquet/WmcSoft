@@ -74,6 +74,8 @@ namespace WmcSoft.Diagnostics.Sentries
 
         protected SentryBase(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+
             _name = name;
             _observers = new List<IObserver<SentryStatus>>();
         }
