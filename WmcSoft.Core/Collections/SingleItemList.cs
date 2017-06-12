@@ -42,7 +42,8 @@ namespace WmcSoft.Collections
 
         #region Lifecycle
 
-        public SingleItemList(object value) {
+        public SingleItemList(object value)
+        {
             _item = value;
         }
 
@@ -50,25 +51,30 @@ namespace WmcSoft.Collections
 
         #region IList Membres
 
-        public int Add(object value) {
+        public int Add(object value)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(object value) {
+        public bool Contains(object value)
+        {
             return _item == null
                 ? value == null
                 : _item.Equals(value);
         }
 
-        public int IndexOf(object value) {
+        public int IndexOf(object value)
+        {
             return Contains(value) ? 0 : -1;
         }
 
-        public void Insert(int index, object value) {
+        public void Insert(int index, object value)
+        {
             throw new NotSupportedException();
         }
 
@@ -80,23 +86,23 @@ namespace WmcSoft.Collections
             get { return false; }
         }
 
-        public void Remove(object value) {
+        public void Remove(object value)
+        {
             throw new NotSupportedException();
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             throw new NotSupportedException();
         }
 
         public object this[int index] {
             get {
-                if (index != 0)
-                    throw new ArgumentOutOfRangeException("index");
+                if (index != 0)                    throw new ArgumentOutOfRangeException(nameof(index));
                 return _item;
             }
             set {
-                if (index != 0)
-                    throw new ArgumentOutOfRangeException("index");
+                if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
                 _item = value;
             }
         }
@@ -105,7 +111,8 @@ namespace WmcSoft.Collections
 
         #region ICollection Membres
 
-        public void CopyTo(Array array, int index) {
+        public void CopyTo(Array array, int index)
+        {
             array.SetValue(_item, index);
         }
 
@@ -125,7 +132,8 @@ namespace WmcSoft.Collections
 
         #region IEnumerable Membres
 
-        public IEnumerator GetEnumerator() {
+        public IEnumerator GetEnumerator()
+        {
             yield return _item;
         }
 

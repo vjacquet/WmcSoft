@@ -43,9 +43,9 @@ namespace WmcSoft.Collections
 
         #region Lifecycle
 
-        public ReverseComparer(IComparer comparer) {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+        public ReverseComparer(IComparer comparer)
+        {
+            if (comparer == null)                throw new ArgumentNullException(nameof(comparer));
 
             _comparer = comparer;
         }
@@ -54,7 +54,8 @@ namespace WmcSoft.Collections
 
         #region IComparer Members
 
-        public int Compare(object x, object y) {
+        public int Compare(object x, object y)
+        {
             return _comparer.Compare(y, x);
         }
 

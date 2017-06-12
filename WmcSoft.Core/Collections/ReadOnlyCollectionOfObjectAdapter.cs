@@ -43,7 +43,8 @@ namespace WmcSoft.Collections
 
         #region Lifecycle
 
-        public ReadOnlyCollectionOfObjectAdapter(ICollection collection) {
+        public ReadOnlyCollectionOfObjectAdapter(ICollection collection)
+        {
             _collection = collection;
         }
 
@@ -51,15 +52,18 @@ namespace WmcSoft.Collections
 
         #region ICollection<object> Members
 
-        public void Add(object item) {
+        public void Add(object item)
+        {
             throw new NotSupportedException();
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public bool Contains(object item) {
+        public bool Contains(object item)
+        {
             if (item == null) {
                 foreach (var e in _collection)
                     if (e == null)
@@ -72,7 +76,8 @@ namespace WmcSoft.Collections
             return false;
         }
 
-        public void CopyTo(object[] array, int arrayIndex) {
+        public void CopyTo(object[] array, int arrayIndex)
+        {
             foreach (var item in _collection)
                 array[arrayIndex++] = item;
         }
@@ -81,7 +86,8 @@ namespace WmcSoft.Collections
             get { return true; }
         }
 
-        public bool Remove(object item) {
+        public bool Remove(object item)
+        {
             throw new NotSupportedException();
         }
 
@@ -97,7 +103,8 @@ namespace WmcSoft.Collections
 
         #region IEnumerable<object> Members
 
-        public IEnumerator<object> GetEnumerator() {
+        public IEnumerator<object> GetEnumerator()
+        {
             foreach (var item in _collection)
                 yield return item;
         }
@@ -106,7 +113,8 @@ namespace WmcSoft.Collections
 
         #region IEnumerable Members
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return _collection.GetEnumerator();
         }
 
