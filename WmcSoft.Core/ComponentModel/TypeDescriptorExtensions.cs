@@ -11,7 +11,8 @@ namespace WmcSoft.ComponentModel
     /// </summary>
     public static class TypeDescriptorExtensions
     {
-        static object ResolveValue(Type target, object value) {
+        static object ResolveValue(Type target, object value)
+        {
             var type = value as Type;
             if (type != null && target.IsAssignableFrom(type)) {
                 return Activator.CreateInstance(type);
@@ -26,8 +27,9 @@ namespace WmcSoft.ComponentModel
         /// <param name="component">The component whose properties to be set.</param>
         /// <param name="values">The values to set.</param>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
-        public static void SetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values) {
-            if (values == null) throw new ArgumentNullException("values");
+        public static void SetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values)
+        {
+            if (values == null) throw new ArgumentNullException(nameof(values));
 
             foreach (var entry in values) {
                 var property = properties[entry.Key];
@@ -47,8 +49,9 @@ namespace WmcSoft.ComponentModel
         /// <param name="component">The component whose properties to get.</param>
         /// <param name="values">The values to get.</param>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <c>null</c>.</exception>
-        public static void GetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values) {
-            if (values == null) throw new ArgumentNullException("values");
+        public static void GetValues(this PropertyDescriptorCollection properties, object component, IDictionary<string, object> values)
+        {
+            if (values == null) throw new ArgumentNullException(nameof(values));
 
             foreach (var key in values.Keys.ToArray()) {
                 var property = properties[key];
@@ -65,7 +68,8 @@ namespace WmcSoft.ComponentModel
         /// <param name="component">The component.</param>
         /// <param name="value">When this method returns, contains the value of the property, if the property descriptor or the component are not null; otherwhise, null.</param>
         /// <returns>Returns false when the property or the component are null.</returns>
-        public static bool TryGetValue(this PropertyDescriptor property, object component, out object value) {
+        public static bool TryGetValue(this PropertyDescriptor property, object component, out object value)
+        {
             if (property == null) {
                 value = null;
                 return false;
@@ -81,7 +85,8 @@ namespace WmcSoft.ComponentModel
         /// <param name="descriptor">The descriptor of the member.</param>
         /// <returns>The attribute.</returns>
         public static TAttribute GetMetadataAttribute<TAttribute>(this MemberDescriptor descriptor)
-            where TAttribute : Attribute {
+            where TAttribute : Attribute
+        {
             return (TAttribute)descriptor.Attributes[typeof(TAttribute)];
         }
     }
