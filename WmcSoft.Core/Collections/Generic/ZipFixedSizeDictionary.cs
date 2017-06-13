@@ -32,13 +32,13 @@ using System.Collections.ObjectModel;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Implements a <see cref="IReadOnlyDictionary{TKey, TValue}"/> for which the keys and values are stored in 
+    /// Implements a <see cref="IDictionary{TKey, TValue}"/> for which the keys and values are stored in 
     /// two separate arrays.
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     /// <remarks>The dictionary assumes it has the sole ownership of the arrays.</remarks>
-    public class ZipReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+    public class ZipFixedSizeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         [Serializable]
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
@@ -89,7 +89,7 @@ namespace WmcSoft.Collections.Generic
         private readonly TKey[] _keys;
         private readonly TValue[] _values;
 
-        public ZipReadOnlyDictionary(TKey[] keys, TValue[] values)
+        public ZipFixedSizeDictionary(TKey[] keys, TValue[] values)
         {
             if (keys == null) throw new ArgumentNullException(nameof(keys));
             if (values == null) throw new ArgumentNullException(nameof(values));
@@ -99,7 +99,7 @@ namespace WmcSoft.Collections.Generic
             _values = values;
         }
 
-        #region IReadOnlyDictionary<TKey, TValue> Members
+        #region IDictionary<TKey, TValue> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -171,6 +171,45 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
+        public void Add(TKey key, TValue value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool Remove(TKey key)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
+            var found = Array.IndexOf(_keys, item.Key);
+            return (found >= 0) && EqualityComparer<TValue>.Default.Equals(_values[found], item.Value);
+        }
+
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
+            var length = _keys.Length;
+            for (int i = 0; i < length; i++) {
+                array[arrayIndex + i] = new KeyValuePair<TKey, TValue>(_keys[i], _values[i]);
+            }
+        }
+
+        public bool Remove(KeyValuePair<TKey, TValue> item)
+        {
+            throw new NotSupportedException();
+        }
+
         /// <summary>
         /// Gets the element that has the specified key in the read-only dictionary.
         /// </summary>
@@ -187,6 +226,12 @@ namespace WmcSoft.Collections.Generic
                     return _values[found];
                 throw new KeyNotFoundException();
             }
+            set {
+                var found = Array.IndexOf(_keys, key);
+                if (found >= 0)
+                    _values[found] = value;
+                throw new KeyNotFoundException();
+            }
         }
 
         /// <summary>
@@ -195,7 +240,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerable collection that contains the keys in the read-only dictionary.
         /// </returns>
-        public ReadOnlyCollection<TKey> Keys {
+        public ICollection<TKey> Keys {
             get { return Array.AsReadOnly(_keys); }
         }
 
@@ -205,13 +250,11 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerable collection that contains the values in the read-only dictionary.
         /// </returns>
-        public ReadOnlyCollection<TValue> Values {
+        public ICollection<TValue> Values {
             get { return Array.AsReadOnly(_values); }
         }
 
-        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys { get { return Keys; } }
-
-        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values { get { return Values; } }
+        public bool IsReadOnly { get { return false; } }
 
         #endregion
     }

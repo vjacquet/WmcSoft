@@ -79,6 +79,7 @@
     <Compile Include="Collections\Generic\CopyOnWriteListTests.cs" />
     <Compile Include="Collections\Generic\CopyOnWriteCollectionTests.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensionsTests.cs" />
+    <Compile Include="Collections\Generic\ZipFixedSizeDictionaryTests.cs" />
     <Compile Include="Collections\Generic\ZipReadOnlyDictionaryTests.cs" />
     <Compile Include="Collections\Generic\DisposeMonitorEnumerable.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensionsTests.cs" />
