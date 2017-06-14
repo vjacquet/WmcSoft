@@ -33,7 +33,8 @@ namespace WmcSoft.AI
     {
         #region ITrendEvaluator Members
 
-        public void Eval(double[] input, out double slope, out double intercept) {
+        public void Eval(double[] input, out double slope, out double intercept)
+        {
             var n = input.Length - 1;
             intercept = input[0];
             slope = (input[n] - intercept) / n;

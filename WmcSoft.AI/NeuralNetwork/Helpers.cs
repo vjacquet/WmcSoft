@@ -31,9 +31,10 @@ namespace WmcSoft.AI.NeuralNetwork
 {
     public static class Helpers
     {
-        public static void Equilat(double[] matrix) {
-            if (matrix == null) throw new ArgumentNullException("matrix");
-            if (matrix.Length < 2) throw new ArgumentOutOfRangeException("matrix");
+        public static void Equilat(double[] matrix)
+        {
+            if (matrix == null) throw new ArgumentNullException(nameof(matrix));
+            if (matrix.Length < 2) throw new ArgumentOutOfRangeException(nameof(matrix));
 
             double r;
             var n = matrix.Length;
@@ -65,7 +66,8 @@ namespace WmcSoft.AI.NeuralNetwork
             }
         }
 
-        public static void RescaleEquilat(double[] matrix) {
+        public static void RescaleEquilat(double[] matrix)
+        {
             var length = matrix.Length;
             for (int i = 0; i < length; i++) {
                 matrix[i] = 0.4d * matrix[i] + 0.5d;
@@ -79,7 +81,8 @@ namespace WmcSoft.AI.NeuralNetwork
         /// <param name="threshold">The threshold</param>
         /// <returns>Number of values ggreater than or equal to the threshold.</returns>
         /// <remarks>Assumes the array is sorted.</remarks>
-        public static int Count(double[] values, double threshold) {
+        public static int Count(double[] values, double threshold)
+        {
             var i = Array.BinarySearch(values, threshold);
             if (i < 0)
                 i = ~i;

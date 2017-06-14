@@ -35,16 +35,17 @@ namespace WmcSoft.AI
         private readonly double[] _work;
         private readonly Action<double[], int, double[]> _evaluate;
 
-        public AutoassociativeFilter(Action<double[], int, double[]> evaluate, int length) {
-            if (evaluate == null)
-                throw new ArgumentNullException("evaluate");
+        public AutoassociativeFilter(Action<double[], int, double[]> evaluate, int length)
+        {
+            if (evaluate == null) throw new ArgumentNullException(nameof(evaluate));
             _evaluate = evaluate;
             _work = new double[length];
         }
 
-        public void Execute(double[] input, double[] output) {
-            if (input == null) throw new ArgumentNullException("input");
-            if (output == null) throw new ArgumentNullException("output");
+        public void Execute(double[] input, double[] output)
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            if (output == null) throw new ArgumentNullException(nameof(output));
             if (output.Length != input.Length) throw new InvalidOperationException();
             if (output.Length < _work.Length) throw new InvalidOperationException();
 

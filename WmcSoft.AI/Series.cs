@@ -28,7 +28,8 @@ namespace WmcSoft.AI
 {
     public static class Series
     {
-        public static double[] Detrend(double[] input, double slope, double intercept) {
+        public static double[] Detrend(double[] input, double slope, double intercept)
+        {
             var output = new double[input.Length];
             var y = intercept;
             for (int i = 0; i < input.Length; i++) {
@@ -38,18 +39,21 @@ namespace WmcSoft.AI
             return output;
         }
 
-        public static double[] Detrend<TAlgorithm>(double[] input) where TAlgorithm : ITrendEvaluator, new() {
+        public static double[] Detrend<TAlgorithm>(double[] input) 
+            where TAlgorithm : ITrendEvaluator, new()
+        {
             return Detrend(input, new TAlgorithm());
         }
 
-        public static double[] Detrend<TAlgorithm>(double[] input, TAlgorithm algorithm) where TAlgorithm : ITrendEvaluator {
-            double slope;
-            double intercept;
-            algorithm.Eval(input, out slope, out intercept);
+        public static double[] Detrend<TAlgorithm>(double[] input, TAlgorithm algorithm)
+            where TAlgorithm : ITrendEvaluator
+        {
+            algorithm.Eval(input, out double slope, out double intercept);
             return Detrend(input, slope, intercept);
         }
 
-        public static double[] Retrend(double[] input, double slope, double intercept) {
+        public static double[] Retrend(double[] input, double slope, double intercept)
+        {
             var output = new double[input.Length];
             var y = intercept;
             for (int i = 0; i < input.Length; i++) {

@@ -30,10 +30,11 @@ namespace WmcSoft.AI.FuzzyLogic
 {
     public struct TrapezoidMembershipFunction : IMembershipFunction<double>
     {
-        public TrapezoidMembershipFunction(double lo, double left, double right, double hi) {
-            if (lo > left) throw new ArgumentOutOfRangeException("lo");
-            if (right > hi) throw new ArgumentOutOfRangeException("hi");
-            if (right < left) throw new ArgumentOutOfRangeException("right");
+        public TrapezoidMembershipFunction(double lo, double left, double right, double hi)
+        {
+            if (lo > left) throw new ArgumentOutOfRangeException(nameof(lo));
+            if (right > hi) throw new ArgumentOutOfRangeException(nameof(hi));
+            if (right < left) throw new ArgumentOutOfRangeException(nameof(right));
 
             Low = lo;
             Left = left;
@@ -46,7 +47,8 @@ namespace WmcSoft.AI.FuzzyLogic
         public double Right { get; }
         public double High { get; }
 
-        public FuzzyVar Evaluate(double x) {
+        public FuzzyVar Evaluate(double x)
+        {
             if (x <= Right) {
                 if (Double.IsNegativeInfinity(Low) || x >= Left)
                     return 1d;

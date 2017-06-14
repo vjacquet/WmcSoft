@@ -35,11 +35,11 @@ namespace WmcSoft.AI
         private readonly double _mean;
         private readonly double _squaredMean;
 
-        public Measuring(IEnumerable<double> targetValues) {
+        public Measuring(IEnumerable<double> targetValues)
+        {
             _targets = new List<double>(targetValues);
             var n = _targets.Count;
-            if (n == 0)
-                throw new ArgumentException("targetValues");
+            if (n == 0) throw new ArgumentException(nameof(targetValues));
 
             for (int i = 0; i < n; i++) {
                 var t = _targets[i];
@@ -50,7 +50,8 @@ namespace WmcSoft.AI
             _squaredMean /= n;
         }
 
-        public Measures Measure(IEnumerable<double> outputs) {
+        public Measures Measure(IEnumerable<double> outputs)
+        {
             return new Measures(_targets, _mean, _squaredMean, outputs);
         }
     }

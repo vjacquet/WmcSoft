@@ -43,18 +43,20 @@ namespace WmcSoft.AI.FuzzyLogic
 
         internal double _value;
 
-        public FuzzyVar(double value) {
-            if (value < 0.0 || value > 1.0) {
-                throw new ArgumentOutOfRangeException("value");
-            }
+        public FuzzyVar(double value)
+        {
+            if (value < 0.0 || value > 1.0) throw new ArgumentOutOfRangeException(nameof(value));
+
             _value = value;
         }
 
-        public static bool IsNaN(FuzzyVar x) {
+        public static bool IsNaN(FuzzyVar x)
+        {
             return Double.IsNaN(x._value);
         }
 
-        public int CompareTo(object obj) {
+        public int CompareTo(object obj)
+        {
             if (obj == null) {
                 return 1;
             }
@@ -65,9 +67,9 @@ namespace WmcSoft.AI.FuzzyLogic
             throw new InvalidCastException();
         }
 
-        public override bool Equals(object obj) {
-            if (obj is FuzzyVar) {
-                var fuzzyVar = (FuzzyVar)obj;
+        public override bool Equals(object obj)
+        {
+            if (obj is FuzzyVar fuzzyVar) {
                 if (fuzzyVar._value == _value) {
                     return true;
                 }
@@ -78,165 +80,197 @@ namespace WmcSoft.AI.FuzzyLogic
             return false;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _value.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return ToString(null, null);
         }
 
-        public string ToString(string format) {
+        public string ToString(string format)
+        {
             return ToString(format, null);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider) {
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
             return _value.ToString(format, NumberFormatInfo.GetInstance(formatProvider));
         }
 
-        public static FuzzyVar Parse(string text) {
+        public static FuzzyVar Parse(string text)
+        {
             var value = Double.Parse(text, NumberStyles.Float | NumberStyles.AllowThousands, null);
-            if (value < 0.0f && value > 1.0f) {
-                throw new ArgumentOutOfRangeException("text");
-            }
+            if (value < 0.0f && value > 1.0f) throw new ArgumentOutOfRangeException(nameof(text));
+
             return new FuzzyVar(value);
         }
 
-        public static FuzzyVar Parse(string text, NumberStyles style) {
+        public static FuzzyVar Parse(string text, NumberStyles style)
+        {
             var value = Double.Parse(text, style, null);
-            if (value < 0.0f && value > 1.0f) {
-                throw new ArgumentOutOfRangeException("text");
-            }
+            if (value < 0.0f && value > 1.0f) throw new ArgumentOutOfRangeException(nameof(text));
+
             return new FuzzyVar(value);
         }
 
-        public static FuzzyVar Parse(string text, IFormatProvider provider) {
+        public static FuzzyVar Parse(string text, IFormatProvider provider)
+        {
             var value = Double.Parse(text, NumberStyles.Float | NumberStyles.AllowThousands, provider);
-            if (value < 0.0f && value > 1.0f) {
-                throw new ArgumentOutOfRangeException("text");
-            }
+            if (value < 0.0f && value > 1.0f) throw new ArgumentOutOfRangeException(nameof(text));
+
             return new FuzzyVar(value);
         }
 
-        public static FuzzyVar Parse(string text, NumberStyles style, IFormatProvider provider) {
+        public static FuzzyVar Parse(string text, NumberStyles style, IFormatProvider provider)
+        {
             var value = Double.Parse(text, style, provider);
-            if (value < 0.0f && value > 1.0f) {
-                throw new ArgumentOutOfRangeException("text");
-            }
+            if (value < 0.0f && value > 1.0f) throw new ArgumentOutOfRangeException(nameof(text));
+
             return new FuzzyVar(value);
         }
 
-        public string ToString(IFormatProvider provider) {
+        public string ToString(IFormatProvider provider)
+        {
             return ToString(null, provider);
         }
 
-        public TypeCode GetTypeCode() {
+        public TypeCode GetTypeCode()
+        {
             return TypeCode.Double;
         }
 
-        bool IConvertible.ToBoolean(IFormatProvider provider) {
+        bool IConvertible.ToBoolean(IFormatProvider provider)
+        {
             return Convert.ToBoolean(_value);
         }
 
-        char IConvertible.ToChar(IFormatProvider provider) {
+        char IConvertible.ToChar(IFormatProvider provider)
+        {
             throw new InvalidCastException();
         }
 
-        sbyte IConvertible.ToSByte(IFormatProvider provider) {
+        sbyte IConvertible.ToSByte(IFormatProvider provider)
+        {
             return Convert.ToSByte(_value);
         }
-        byte IConvertible.ToByte(IFormatProvider provider) {
+        byte IConvertible.ToByte(IFormatProvider provider)
+        {
             return Convert.ToByte(_value);
         }
 
-        short IConvertible.ToInt16(IFormatProvider provider) {
+        short IConvertible.ToInt16(IFormatProvider provider)
+        {
             return Convert.ToInt16(_value);
         }
 
         //[CLSCompliant(false)]
-        ushort IConvertible.ToUInt16(IFormatProvider provider) {
+        ushort IConvertible.ToUInt16(IFormatProvider provider)
+        {
             return Convert.ToUInt16(_value);
         }
 
-        int IConvertible.ToInt32(IFormatProvider provider) {
+        int IConvertible.ToInt32(IFormatProvider provider)
+        {
             return Convert.ToInt32(_value);
         }
 
-        uint IConvertible.ToUInt32(IFormatProvider provider) {
+        uint IConvertible.ToUInt32(IFormatProvider provider)
+        {
             return Convert.ToUInt32(_value);
         }
 
-        long IConvertible.ToInt64(IFormatProvider provider) {
+        long IConvertible.ToInt64(IFormatProvider provider)
+        {
             return Convert.ToInt64(_value);
         }
 
-        ulong IConvertible.ToUInt64(IFormatProvider provider) {
+        ulong IConvertible.ToUInt64(IFormatProvider provider)
+        {
             return Convert.ToUInt64(_value);
         }
 
-        float IConvertible.ToSingle(IFormatProvider provider) {
+        float IConvertible.ToSingle(IFormatProvider provider)
+        {
             return Convert.ToSingle(_value);
         }
 
-        double IConvertible.ToDouble(IFormatProvider provider) {
+        double IConvertible.ToDouble(IFormatProvider provider)
+        {
             return _value;
         }
 
-        decimal IConvertible.ToDecimal(IFormatProvider provider) {
+        decimal IConvertible.ToDecimal(IFormatProvider provider)
+        {
             return Convert.ToDecimal(_value);
         }
 
-        DateTime IConvertible.ToDateTime(IFormatProvider provider) {
+        DateTime IConvertible.ToDateTime(IFormatProvider provider)
+        {
             throw new InvalidCastException();
         }
 
-        object IConvertible.ToType(Type conversionType, IFormatProvider provider) {
+        object IConvertible.ToType(Type conversionType, IFormatProvider provider)
+        {
             return ((IConvertible)_value).ToType(conversionType, provider);
         }
 
-        public static FuzzyVar operator &(FuzzyVar x, FuzzyVar y) {
+        public static FuzzyVar operator &(FuzzyVar x, FuzzyVar y)
+        {
             return new FuzzyVar(Math.Min(x._value, y._value));
         }
 
-        public FuzzyVar BitwiseAnd(FuzzyVar value) {
+        public FuzzyVar BitwiseAnd(FuzzyVar value)
+        {
             return this & value;
         }
 
-        public static FuzzyVar operator |(FuzzyVar x, FuzzyVar y) {
+        public static FuzzyVar operator |(FuzzyVar x, FuzzyVar y)
+        {
             return new FuzzyVar(Math.Max(x._value, y._value));
         }
 
-        public FuzzyVar BitwiseOr(FuzzyVar value) {
+        public FuzzyVar BitwiseOr(FuzzyVar value)
+        {
             return this | value;
         }
 
-        public static implicit operator FuzzyVar(double value) {
+        public static implicit operator FuzzyVar(double value)
+        {
             return new FuzzyVar(value);
         }
 
-        public static explicit operator double (FuzzyVar value) {
+        public static explicit operator double(FuzzyVar value)
+        {
             return value._value;
         }
 
-        public static bool operator ==(FuzzyVar x, FuzzyVar y) {
+        public static bool operator ==(FuzzyVar x, FuzzyVar y)
+        {
             return x._value.CompareTo(y._value) == 0;
         }
 
-        public static bool operator !=(FuzzyVar x, FuzzyVar y) {
+        public static bool operator !=(FuzzyVar x, FuzzyVar y)
+        {
             return x._value.CompareTo(y._value) != 0;
         }
 
-        public static bool operator <(FuzzyVar x, FuzzyVar y) {
+        public static bool operator <(FuzzyVar x, FuzzyVar y)
+        {
             return x._value.CompareTo(y._value) < 0;
         }
 
-        public static bool operator >(FuzzyVar x, FuzzyVar y) {
+        public static bool operator >(FuzzyVar x, FuzzyVar y)
+        {
             return x._value.CompareTo(y._value) > 0;
         }
 
         #region IComparable<FuzzyVar> Members
 
-        public int CompareTo(FuzzyVar other) {
+        public int CompareTo(FuzzyVar other)
+        {
             if (_value < other._value) {
                 return -1;
             }
@@ -258,7 +292,8 @@ namespace WmcSoft.AI.FuzzyLogic
 
         #region IEquatable<FuzzyVar> Members
 
-        public bool Equals(FuzzyVar other) {
+        public bool Equals(FuzzyVar other)
+        {
             return (CompareTo(other) == 0);
         }
 

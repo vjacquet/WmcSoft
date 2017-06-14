@@ -39,7 +39,8 @@ namespace WmcSoft.AI.FuzzyLogic
         /// </summary>
         /// <param name="K">Controls the width of the fuzzy set.</param>
         /// <param name="a">Controls the position of the fuzzy set.</param>
-        public GaussianMembershipFunction(double K, double a) {
+        public GaussianMembershipFunction(double K, double a)
+        {
             this.K = K;
             this.a = a;
         }
@@ -47,7 +48,8 @@ namespace WmcSoft.AI.FuzzyLogic
         public double K { get; }
         public double a { get; }
 
-        public FuzzyVar Evaluate(double x) {
+        public FuzzyVar Evaluate(double x)
+        {
             x -= a;
             return Exp(-K * x * x);
         }

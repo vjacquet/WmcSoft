@@ -32,10 +32,11 @@ namespace WmcSoft.AI.FuzzyLogic
 {
     public partial class Fuzzifier : Component
     {
-        private readonly Random _random;
         private readonly List<IFuzzyCategory> _list;
+        private readonly Random _random;
 
-        public Fuzzifier(Random random) {
+        public Fuzzifier(Random random)
+        {
             _list = new List<IFuzzyCategory>();
             _random = random;
 
@@ -43,12 +44,14 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         public Fuzzifier()
-            : this(new Random()) {
+            : this(new Random())
+        {
         }
 
 
         public Fuzzifier(IContainer container)
-            : this() {
+            : this()
+        {
             container.Add(this);
         }
 
@@ -56,7 +59,8 @@ namespace WmcSoft.AI.FuzzyLogic
             get { return _list; }
         }
 
-        public IFuzzyCategory Interpret(double value) {
+        public IFuzzyCategory Interpret(double value)
+        {
             // compute the cumulated probability
             var cumulated = new double[_list.Count];
             var total = 0d;

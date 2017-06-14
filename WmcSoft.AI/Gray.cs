@@ -36,11 +36,13 @@ namespace WmcSoft.AI
     {
         byte _value;
 
-        public Gray8(byte n) {
+        public Gray8(byte n)
+        {
             _value = ToGray(n);
         }
 
-        public static implicit operator Gray8(int n) {
+        public static implicit operator Gray8(int n)
+        {
             return new Gray8(checked((byte)n));
         }
 
@@ -49,35 +51,42 @@ namespace WmcSoft.AI
         //    return (n - 127.5d) * 0.0392d;
         //}
 
-        public Gray8 Increment() {
+        public Gray8 Increment()
+        {
             var x = FromGray(_value);
             return new Gray8(ToGray(++x));
         }
 
-        public Gray8 Decrement() {
+        public Gray8 Decrement()
+        {
             var x = FromGray(_value);
             return new Gray8(ToGray(--x));
         }
 
-        public static Gray8 operator ++(Gray8 x) {
+        public static Gray8 operator ++(Gray8 x)
+        {
             return x.Increment();
         }
 
-        public static Gray8 operator --(Gray8 x) {
+        public static Gray8 operator --(Gray8 x)
+        {
             return x.Decrement();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Convert.ToString(_value, 2).PadLeft(8, '0');
         }
 
-        static byte ToGray(byte x) {
+        static byte ToGray(byte x)
+        {
             uint i = x;
             i ^= i >> 1;
             return checked((byte)i);
         }
 
-        static byte FromGray(byte x) {
+        static byte FromGray(byte x)
+        {
             uint i = x;
             i ^= i >> 4;
             i ^= i >> 2;
@@ -93,43 +102,52 @@ namespace WmcSoft.AI
     {
         ushort _value;
 
-        public Gray16(ushort n) {
+        public Gray16(ushort n)
+        {
             _value = ToGray(n);
         }
 
-        public static implicit operator Gray16(int n) {
+        public static implicit operator Gray16(int n)
+        {
             return new Gray16(checked((ushort)n));
         }
 
-        public Gray16 Increment() {
+        public Gray16 Increment()
+        {
             var x = FromGray(_value);
             return new Gray16(ToGray(++x));
         }
 
-        public Gray16 Decrement() {
+        public Gray16 Decrement()
+        {
             var x = FromGray(_value);
             return new Gray16(ToGray(--x));
         }
 
-        public static Gray16 operator ++(Gray16 x) {
+        public static Gray16 operator ++(Gray16 x)
+        {
             return x.Increment();
         }
 
-        public static Gray16 operator --(Gray16 x) {
+        public static Gray16 operator --(Gray16 x)
+        {
             return x.Decrement();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Convert.ToString(_value, 2).PadLeft(16, '0');
         }
 
-        static ushort ToGray(ushort x) {
+        static ushort ToGray(ushort x)
+        {
             uint i = x;
             i ^= i >> 1;
             return checked((ushort)i);
         }
 
-        static ushort FromGray(ushort x) {
+        static ushort FromGray(ushort x)
+        {
             uint i = x;
             i ^= i >> 8;
             i ^= i >> 4;
@@ -146,33 +164,40 @@ namespace WmcSoft.AI
     {
         uint _value;
 
-        public Gray32(uint n) {
+        public Gray32(uint n)
+        {
             _value = ToGray(n);
         }
 
-        public static implicit operator Gray32(uint n) {
+        public static implicit operator Gray32(uint n)
+        {
             return new Gray32(n);
         }
 
-        public Gray32 Increment() {
+        public Gray32 Increment()
+        {
             var x = FromGray(_value);
             return new Gray32(ToGray(++x));
         }
 
-        public Gray32 Decrement() {
+        public Gray32 Decrement()
+        {
             var x = FromGray(_value);
             return new Gray32(ToGray(--x));
         }
 
-        public static Gray32 operator ++(Gray32 x) {
+        public static Gray32 operator ++(Gray32 x)
+        {
             return x.Increment();
         }
 
-        public static Gray32 operator --(Gray32 x) {
+        public static Gray32 operator --(Gray32 x)
+        {
             return x.Decrement();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return Convert.ToString(_value, 2).PadLeft(32, '0');
         }
     }

@@ -31,7 +31,8 @@ namespace WmcSoft.AI
 {
     public sealed class Measures
     {
-        internal Measures(IList<double> targets, double mean, double squaredMean, IEnumerable<double> outputs) {
+        internal Measures(IList<double> targets, double mean, double squaredMean, IEnumerable<double> outputs)
+        {
             var n = targets.Count;
             var i = 0;
             var mse = 0d;
@@ -43,8 +44,7 @@ namespace WmcSoft.AI
                 mre += Math.Abs(delta / t);
                 i++;
             }
-            if (i != n)
-                throw new ArgumentException("outputs");
+            if (i != n) throw new ArgumentException(nameof(outputs));
 
             MeanSquareError = mse / n;
             RootMeanSquareError = Math.Sqrt(MeanSquareError);

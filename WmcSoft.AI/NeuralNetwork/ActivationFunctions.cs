@@ -31,24 +31,29 @@ namespace WmcSoft.AI.NeuralNetwork
 {
     public static class ActivationFunctions
     {
-        public static Func<double, double> Logistic() {
+        public static Func<double, double> Logistic()
+        {
             return x => 1d / (1 + Exp(-x));
         }
 
-        public static Func<double, double> Threshold(double threshold = 0d) {
+        public static Func<double, double> Threshold(double threshold = 0d)
+        {
             return x => x < threshold ? 0d : 1d;
         }
 
-        public static Func<double, double> HyperbolicTangent() {
+        public static Func<double, double> HyperbolicTangent()
+        {
             return x => Tanh(x);
         }
 
-        static double Interpolate(double[] values, double[] derivated, double xd) {
+        static double Interpolate(double[] values, double[] derivated, double xd)
+        {
             var i = (int)xd;
             var count = values.Length - 1;
             return (i >= count) ? values[count] : (values[i] + derivated[i] * (xd - i));
         }
-        public static Func<double, double> InterpolateSymmetric(Func<double, double> func, double maxValue, int count) {
+        public static Func<double, double> InterpolateSymmetric(Func<double, double> func, double maxValue, int count)
+        {
             var factor = (count - 1) / maxValue;
             var values = new double[count];
             var derivated = new double[count];

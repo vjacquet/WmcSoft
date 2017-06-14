@@ -31,10 +31,11 @@ namespace WmcSoft.AI.FuzzyLogic
 {
     public class FuzzyCategory : IFuzzyCategory
     {
-        public FuzzyCategory(string displayName, double lowValue, double midValue, double highValue) {
-            if (highValue < 0.0 || highValue > 1.0) throw new ArgumentOutOfRangeException("highValue");
-            if (midValue < 0.0 || midValue > 1.0) throw new ArgumentOutOfRangeException("midValue");
-            if (lowValue < 0.0 || lowValue > 1.0) throw new ArgumentOutOfRangeException("lowValue");
+        public FuzzyCategory(string displayName, double lowValue, double midValue, double highValue)
+        {
+            if (highValue < 0.0 || highValue > 1.0) throw new ArgumentOutOfRangeException(nameof(highValue));
+            if (midValue < 0.0 || midValue > 1.0) throw new ArgumentOutOfRangeException(nameof(midValue));
+            if (lowValue < 0.0 || lowValue > 1.0) throw new ArgumentOutOfRangeException(nameof(lowValue));
 
             HighValue = highValue;
             MidValue = midValue;
@@ -45,7 +46,8 @@ namespace WmcSoft.AI.FuzzyLogic
 
         #region Membres de IFuzzySet
 
-        public virtual double EvaluateMembership(double value) {
+        public virtual double EvaluateMembership(double value)
+        {
             if ((value <= LowValue) || (value >= HighValue))
                 return 0;
             else if (value > MidValue)
@@ -65,7 +67,8 @@ namespace WmcSoft.AI.FuzzyLogic
         [DefaultValue("")]
         public string DisplayName { get; set; }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return DisplayName;
         }
     }

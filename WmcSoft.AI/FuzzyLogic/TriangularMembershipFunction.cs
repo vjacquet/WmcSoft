@@ -30,9 +30,10 @@ namespace WmcSoft.AI.FuzzyLogic
 {
     public struct TriangularMembershipFunction : IMembershipFunction<double>
     {
-        public TriangularMembershipFunction(double lo, double mid, double hi) {
-            if (lo > mid) throw new ArgumentOutOfRangeException("lo");
-            if (mid > hi) throw new ArgumentOutOfRangeException("hi");
+        public TriangularMembershipFunction(double lo, double mid, double hi)
+        {
+            if (lo > mid) throw new ArgumentOutOfRangeException(nameof(lo));
+            if (mid > hi) throw new ArgumentOutOfRangeException(nameof(hi));
 
             Low = lo;
             Mid = mid;
@@ -43,7 +44,8 @@ namespace WmcSoft.AI.FuzzyLogic
         public double Mid { get; }
         public double High { get; }
 
-        public FuzzyVar Evaluate(double x) {
+        public FuzzyVar Evaluate(double x)
+        {
             if ((x <= Low) || (x >= High))
                 return 0d;
             else if (x > Mid)
