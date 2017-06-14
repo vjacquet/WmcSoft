@@ -54,15 +54,18 @@ namespace WmcSoft.Business.RuleModel
         [XmlIgnore]
         public abstract string TypeName { get; }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return string.IsNullOrWhiteSpace(Name) ? 0 : Name.GetHashCode();
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return Equals(obj as RuleElement);
         }
 
-        public bool Equals(RuleElement other) {
+        public bool Equals(RuleElement other)
+        {
             if (other == null)
                 return false;
             return Name == other.Name && TypeName == other.TypeName;

@@ -35,10 +35,12 @@ namespace WmcSoft.Business.RuleModel
     /// </summary>
     public class Proposition : RuleElement, IEquatable<Proposition>
     {
-        public Proposition() {
+        public Proposition()
+        {
         }
 
-        public Proposition(bool value) {
+        public Proposition(bool value)
+        {
             Value = value;
         }
 
@@ -55,17 +57,20 @@ namespace WmcSoft.Business.RuleModel
 
         #region IEquatable<Proposition> Membres
 
-        public bool Equals(Proposition other) {
+        public bool Equals(Proposition other)
+        {
             if (other == null)
                 return false;
             return base.Equals(other) && Value == other.Value;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return Equals(obj as Proposition);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return base.GetHashCode();
         }
 

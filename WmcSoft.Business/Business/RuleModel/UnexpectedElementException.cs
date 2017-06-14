@@ -32,18 +32,22 @@ namespace WmcSoft.Business.RuleModel
     public class UnexpectedElementException : RuleModelException
     {
         public UnexpectedElementException()
-            : base(Properties.Resources.UnexpectedRuleElementException) {
+            : base(Properties.Resources.UnexpectedRuleElementException)
+        {
         }
         public UnexpectedElementException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         protected UnexpectedElementException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
 
         public UnexpectedElementException(string message, Exception innerException)
-            : base(message, innerException) {
+            : base(message, innerException)
+        {
         }
     }
 }

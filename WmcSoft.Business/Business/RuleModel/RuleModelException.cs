@@ -32,15 +32,18 @@ namespace WmcSoft.Business.RuleModel
     public abstract class RuleModelException : Exception
     {
         protected RuleModelException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         protected RuleModelException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
 
         protected RuleModelException(string message, Exception innerException)
-            : base(message, innerException) {
+            : base(message, innerException)
+        {
         }
     }
 }

@@ -32,18 +32,22 @@ namespace WmcSoft.Business.RuleModel
     public class MissingOperationException : RuleModelException
     {
         public MissingOperationException()
-            : base(Properties.Resources.MissingOperationException) {
+            : base(Properties.Resources.MissingOperationException)
+        {
         }
         public MissingOperationException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         protected MissingOperationException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(info, context)
+        {
         }
 
         public MissingOperationException(string message, Exception innerException)
-            : base(message, innerException) {
+            : base(message, innerException)
+        {
         }
     }
 }

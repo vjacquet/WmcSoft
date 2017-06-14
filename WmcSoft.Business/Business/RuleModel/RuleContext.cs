@@ -69,16 +69,19 @@ namespace WmcSoft.Business.RuleModel
 
         #region Members
 
-        public void Add(string name, RuleElement value) {
+        public void Add(string name, RuleElement value)
+        {
             _dictionary.Add(name, value);
             _items = null;
         }
 
-        public bool Contains(string name) {
+        public bool Contains(string name)
+        {
             return _dictionary.ContainsKey(name);
         }
 
-        public bool Remove(string name) {
+        public bool Remove(string name)
+        {
             if (_dictionary.Remove(name)) {
                 _items = null;
                 return true;
@@ -98,7 +101,8 @@ namespace WmcSoft.Business.RuleModel
             }
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _dictionary.Clear();
             _items = null;
         }

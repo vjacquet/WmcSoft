@@ -66,70 +66,80 @@ namespace WmcSoft.Business.RuleModel
 
     public sealed class And : Operator
     {
-        public And() {
+        public And()
+        {
             Name = "AND";
         }
     }
 
     public sealed class Or : Operator
     {
-        public Or() {
+        public Or()
+        {
             Name = "OR";
         }
     }
 
     public sealed class XOr : Operator
     {
-        public XOr() {
+        public XOr()
+        {
             Name = "XOR";
         }
     }
 
     public sealed class Not : Operator
     {
-        public Not() {
+        public Not()
+        {
             Name = "NOT";
         }
     }
 
     public sealed class GreaterThanOrEqualTo : Operator
     {
-        public GreaterThanOrEqualTo() {
+        public GreaterThanOrEqualTo()
+        {
             Name = "GREATERTHANOREQUALTO";
         }
     }
 
     public sealed class LesserThanOrEqualTo : Operator
     {
-        public LesserThanOrEqualTo() {
+        public LesserThanOrEqualTo()
+        {
             Name = "LESSERTHANOREQUALTO";
         }
     }
 
     public sealed class LesserThan : Operator
     {
-        public LesserThan() {
+        public LesserThan()
+        {
             Name = "LESSERTHAN";
         }
     }
 
     public sealed class EqualTo : Operator
     {
-        public EqualTo() {
+        public EqualTo()
+        {
             Name = "EQUALTO";
         }
     }
 
     public sealed class NotEqualTo : Operator
     {
-        public NotEqualTo() {
+        public NotEqualTo()
+        {
             Name = "NOTEQUALTO";
         }
     }
 
     public sealed class GreaterThan : Operator
     {
-        public GreaterThan() {
+        public GreaterThan()
+        {
             Name = "GREATERTHAN";
         }
     }

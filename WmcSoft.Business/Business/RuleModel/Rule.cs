@@ -66,23 +66,27 @@ namespace WmcSoft.Business.RuleModel
             readonly Stack<RuleElement> _stack;
             readonly RuleContext _context;
 
-            public Evaluator(RuleContext context) {
+            public Evaluator(RuleContext context)
+            {
                 _context = context ?? new RuleContext();
                 _stack = new Stack<RuleElement>();
             }
 
 
-            private Proposition PopProposition() {
+            private Proposition PopProposition()
+            {
                 var element = _stack.Pop();
                 return (Proposition)element;
             }
 
-            private Variable PopVariable() {
+            private Variable PopVariable()
+            {
                 var element = _stack.Pop();
                 return (Variable)element;
             }
 
-            public bool Evaluate(IEnumerable<RuleElement> ruleElements) {
+            public bool Evaluate(IEnumerable<RuleElement> ruleElements)
+            {
                 _stack.Clear();
                 //System.Diagnostics.Debugger.Break();
 
@@ -145,7 +149,8 @@ namespace WmcSoft.Business.RuleModel
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public bool Evaluate(RuleContext context) {
+        public bool Evaluate(RuleContext context)
+        {
             var evaluator = new Evaluator(context);
             return evaluator.Evaluate(Items);
         }

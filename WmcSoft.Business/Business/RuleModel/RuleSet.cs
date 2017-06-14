@@ -59,7 +59,8 @@ namespace WmcSoft.Business.RuleModel
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public bool Evaluate(RuleContext context) {
+        public bool Evaluate(RuleContext context)
+        {
             foreach (Rule rule in Rules) {
                 var ruleElement = context[rule.Name];
                 var ruleOverride = ruleElement as RuleOverride;

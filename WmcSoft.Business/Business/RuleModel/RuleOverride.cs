@@ -54,7 +54,8 @@ namespace WmcSoft.Business.RuleModel
 
         #region IEquatable<Proposition> Membres
 
-        public bool Equals(RuleOverride other) {
+        public bool Equals(RuleOverride other)
+        {
             if (other == null)
                 return false;
             return base.Equals(other)
@@ -64,11 +65,13 @@ namespace WmcSoft.Business.RuleModel
                 && When == other.When;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return Equals(obj as RuleOverride);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return base.GetHashCode();
         }
 

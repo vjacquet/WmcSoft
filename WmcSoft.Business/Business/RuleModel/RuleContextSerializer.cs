@@ -39,12 +39,14 @@ namespace WmcSoft.Business.RuleModel
 {
     public class RuleContextSerializer : XmlSerializer<RuleContext>
     {
-        protected override RuleContext DoDeserialize(XmlReader reader) {
+        protected override RuleContext DoDeserialize(XmlReader reader)
+        {
             var s = new RuleContextDeserializer(reader);
             return s.Deserialize();
         }
 
-        protected override void DoSerialize(XmlWriter writer, RuleContext value) {
+        protected override void DoSerialize(XmlWriter writer, RuleContext value)
+        {
             const string xmlns = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd";
             writer.WriteStartElement("ruleContext", xmlns);
             writer.WriteAttributeString("version", value.Version);
@@ -92,7 +94,8 @@ namespace WmcSoft.Business.RuleModel
             public readonly string why;
             public readonly string when;
 
-            public Names(XmlNameTable nt) {
+            public Names(XmlNameTable nt)
+            {
                 xmlns = nt.Add(@"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd");
                 ruleContext = nt.Add("ruleContext");
                 version = nt.Add("version");
@@ -107,12 +110,14 @@ namespace WmcSoft.Business.RuleModel
         readonly XmlReader _reader;
         readonly Names N;
 
-        public RuleContextDeserializer(XmlReader reader) {
+        public RuleContextDeserializer(XmlReader reader)
+        {
             N = new Names(reader.NameTable);
             _reader = reader;
         }
 
-        public RuleContext Deserialize() {
+        public RuleContext Deserialize()
+        {
             if (_reader.MoveToContent() == XmlNodeType.Element && _reader.LocalName == N.ruleContext && _reader.NamespaceURI == N.xmlns) {
                 string version = null;
                 var mandatory = new BitArray(1);
@@ -179,7 +184,8 @@ namespace WmcSoft.Business.RuleModel
             throw new InvalidOperationException();
         }
 
-        Variable Deserialize(XmlReader reader, Variable prototype) {
+        Variable Deserialize(XmlReader reader, Variable prototype)
+        {
             string name = null;
             string value = null;
             var mandatory = new BitArray(1);
@@ -197,7 +203,8 @@ namespace WmcSoft.Business.RuleModel
             return new Variable { Name = name, Value = value };
         }
 
-        Proposition Deserialize(XmlReader reader, Proposition prototype) {
+        Proposition Deserialize(XmlReader reader, Proposition prototype)
+        {
             string name = null;
             bool value = false;
             var mandatory = new BitArray(1);
@@ -215,7 +222,8 @@ namespace WmcSoft.Business.RuleModel
             return new Proposition { Name = name, Value = value };
         }
 
-        RuleOverride Deserialize(XmlReader reader, RuleOverride prototype) {
+        RuleOverride Deserialize(XmlReader reader, RuleOverride prototype)
+        {
             string name = null;
             bool value = false;
             string @ref = null;
