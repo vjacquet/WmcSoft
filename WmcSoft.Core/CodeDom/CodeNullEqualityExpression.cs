@@ -39,7 +39,8 @@ namespace WmcSoft.CodeDom
     public class CodeNullEqualityExpression : CodeBinaryOperatorExpression
     {
         public CodeNullEqualityExpression(CodeExpression expression)
-            : base(expression, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)) {
+            : base(expression, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null))
+        {
         }
     }
 }

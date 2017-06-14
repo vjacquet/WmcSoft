@@ -47,10 +47,12 @@ namespace WmcSoft.CodeDom
         #region Lifecycle
 
         public CodeGuardArgumentNotNulllStatement(CodeParameterDeclarationExpression parameter)
-            : this(parameter == null ? null : parameter.Name) {
+            : this(parameter == null ? null : parameter.Name)
+        {
         }
 
-        public CodeGuardArgumentNotNulllStatement(string argumentName) {
+        public CodeGuardArgumentNotNulllStatement(string argumentName)
+        {
             _variable = new CodeVariableReferenceExpression(argumentName);
             _primitive = new CodePrimitiveExpression(argumentName);
             Condition = new CodeNullEqualityExpression(_variable);

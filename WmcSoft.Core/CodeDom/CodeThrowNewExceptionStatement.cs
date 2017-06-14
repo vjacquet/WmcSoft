@@ -39,7 +39,8 @@ namespace WmcSoft.CodeDom
         where T : Exception
     {
         public CodeThrowNewExceptionStatement(params CodeExpression[] parameters)
-            : base(new CodeObjectCreateExpression(typeof(T), parameters)) {
+            : base(new CodeObjectCreateExpression(typeof(T), parameters))
+        {
         }
     }
 }

@@ -33,7 +33,8 @@ namespace WmcSoft.CodeDom
     {
         #region Lifecyle
 
-        public CodeDomTypeBuilder(CodeTypeDeclaration typeDeclaration) {
+        public CodeDomTypeBuilder(CodeTypeDeclaration typeDeclaration)
+        {
             TypeDeclaration = typeDeclaration;
         }
 
@@ -47,18 +48,21 @@ namespace WmcSoft.CodeDom
 
         #region Methods
 
-        public CodeDomTypeBuilder DeclareMember(CodeTypeMember member) {
+        public CodeDomTypeBuilder DeclareMember(CodeTypeMember member)
+        {
             if (!TypeDeclaration.Members.Contains(member)) {
                 TypeDeclaration.Members.Add(member);
             }
             return this;
         }
 
-        public CodeDomTypeBuilder EncapsulateField(CodeMemberField field) {
+        public CodeDomTypeBuilder EncapsulateField(CodeMemberField field)
+        {
             return EncapsulateField(field, false);
         }
 
-        public CodeDomTypeBuilder EncapsulateField(CodeMemberField field, bool notifyChanges) {
+        public CodeDomTypeBuilder EncapsulateField(CodeMemberField field, bool notifyChanges)
+        {
             if (!TypeDeclaration.Members.Contains(field)) {
                 TypeDeclaration.Members.Add(field);
             }
@@ -96,7 +100,8 @@ namespace WmcSoft.CodeDom
             return this;
         }
 
-        public CodeMemberMethod FindMethod(string name) {
+        public CodeMemberMethod FindMethod(string name)
+        {
             foreach (CodeTypeMember member in TypeDeclaration.Members) {
                 var method = member as CodeMemberMethod;
                 if (method != null && method.Name == name) {
