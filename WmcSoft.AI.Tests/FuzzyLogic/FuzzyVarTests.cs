@@ -7,12 +7,14 @@ namespace WmcSoft.AI.FuzzyLogic
     public class FuzzyVarTests
     {
         [TestMethod]
-        public void CheckConstruct() {
+        public void CheckConstruct()
+        {
             FuzzyVar var = (FuzzyVar)0.5;
         }
 
         [TestMethod]
-        public void CheckCompareTo() {
+        public void CheckCompareTo()
+        {
             FuzzyVar lhs = (FuzzyVar)0.5;
             FuzzyVar rhs = (FuzzyVar)0.7;
             Assert.IsTrue(lhs.CompareTo(rhs) == -1);
@@ -24,7 +26,8 @@ namespace WmcSoft.AI.FuzzyLogic
 
 
         [TestMethod]
-        public void CheckAnd() {
+        public void CheckAnd()
+        {
             FuzzyVar lhs = (FuzzyVar)0.5d;
             FuzzyVar rhs = (FuzzyVar)0.7d;
             FuzzyVar result = lhs & rhs;
@@ -32,7 +35,8 @@ namespace WmcSoft.AI.FuzzyLogic
         }
 
         [TestMethod]
-        public void CheckOr() {
+        public void CheckOr()
+        {
             FuzzyVar lhs = (FuzzyVar)0.5d;
             FuzzyVar rhs = (FuzzyVar)0.7d;
             FuzzyVar result = lhs | rhs;
@@ -41,7 +45,8 @@ namespace WmcSoft.AI.FuzzyLogic
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void CheckOutOfRange() {
+        public void CheckOutOfRange()
+        {
             FuzzyVar var = (FuzzyVar)1.5d;
         }
     }

@@ -8,7 +8,8 @@ namespace WmcSoft.AI
     public class MeasuringTests
     {
         [TestMethod]
-        public void CanMeasureRootMeanSquareOverSquaredMeanError() {
+        public void CanMeasureRootMeanSquareOverSquaredMeanError()
+        {
             var random = new Random(1664);
             var t = new[] { 2d, 2.5d, 3d, 2.5d, 3.2d };
             var mean = t.Sum() / t.Length;
@@ -34,7 +35,8 @@ namespace WmcSoft.AI
         }
 
         [TestMethod]
-        public void CanMeasureRelativeRootMeanSquareOverVariance() {
+        public void CanMeasureRelativeRootMeanSquareOverVariance()
+        {
             var random = new Random(1664);
             var t = new[] { 2d, 2.5d, 3d, 2.5d, 3.2d };
             var mean = t.Sum() / t.Length;

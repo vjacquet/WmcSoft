@@ -12,7 +12,8 @@ namespace WmcSoft.AI.NeuralNetwork
     public class HelpersTests
     {
         [TestMethod]
-        public void CheckCount() {
+        public void CheckCount()
+        {
             var values = new[] { 1d, 2d, 3d, 4d, 5d, 6d, 7d, 8d, 9d };
             Assert.AreEqual(4, Count(values, 5.5d));
             Assert.AreEqual(3, Count(values, 7d));

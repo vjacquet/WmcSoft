@@ -7,7 +7,8 @@ namespace WmcSoft.AI
     public class GrayTests
     {
         [TestMethod]
-        public void CheckGray8() {
+        public void CheckGray8()
+        {
             var actual = new[] {
                 new Gray8(0), new Gray8(1), new Gray8(2), new Gray8(3),
                 new Gray8(4), new Gray8(5), new Gray8(6), new Gray8(7),

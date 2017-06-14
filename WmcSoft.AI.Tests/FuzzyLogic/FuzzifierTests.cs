@@ -7,7 +7,8 @@ namespace WmcSoft.AI.FuzzyLogic
     public class FuzzifierTests
     {
         [TestMethod]
-        public void CheckInterpret() {
+        public void CheckInterpret()
+        {
             var random = new DeterministicRandom(new double[] { 0.8, 0.5, 0.3, 0.3, 0.9 });
             var fuzzifier = new Fuzzifier(random);
 
