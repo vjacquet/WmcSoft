@@ -179,7 +179,7 @@
     <Compile Include="Business\ProductModel\ServiceDeliveryStatus.cs" />
     <Compile Include="Business\RegistrationPolicy.cs" />
     <Compile Include="Business\UniqueIdentifierEqualityComparer.cs" />
-    <Compile Include="Business\RuleModel\IRuleEvaluator.cs" />
+    <Compile Include="Business\IRuleEvaluator.cs" />
     <Compile Include="Business\RuleModel\MissingOperationException.cs" />
     <Compile Include="Business\RuleModel\Operator.cs" />
     <Compile Include="Business\RuleModel\Proposition.cs" />

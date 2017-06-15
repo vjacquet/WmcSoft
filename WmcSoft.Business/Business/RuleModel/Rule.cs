@@ -35,7 +35,7 @@ namespace WmcSoft.Business.RuleModel
     /// Its semantics are defined by a sequence of <see cref="RuleElement"/>.
     /// </summary>
     [XmlRoot("rule", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
-    public class Rule : IRuleEvaluator
+    public class Rule : IRuleEvaluator<RuleContext>
     {
         /// <remarks/>
         [XmlElement("xor", typeof(XOr))]
@@ -59,7 +59,7 @@ namespace WmcSoft.Business.RuleModel
         [XmlAttribute("name", DataType = "ID")]
         public string Name { get; set; }
 
-        #region Membres de IRuleEvaluator
+        #region Membres de IRuleEvaluator<RuleContext>
 
         class Evaluator
         {
@@ -73,16 +73,16 @@ namespace WmcSoft.Business.RuleModel
             }
 
 
-            private Proposition PopProposition()
+            private bool PopProposition()
             {
-                var element = _stack.Pop();
-                return (Proposition)element;
+                var element = (Proposition)_stack.Pop();
+                return element.Value;
             }
 
-            private Variable PopVariable()
+            private string PopVariable()
             {
-                var element = _stack.Pop();
-                return (Variable)element;
+                var element = (Variable)_stack.Pop();
+                return element.Value;
             }
 
             public bool Evaluate(IEnumerable<RuleElement> ruleElements)
@@ -92,47 +92,50 @@ namespace WmcSoft.Business.RuleModel
 
                 using (var enumerator = ruleElements.GetEnumerator()) {
                     while (enumerator.MoveNext()) {
-                        var element = enumerator.Current;
-                        if (element is Operator) {
-                            switch (element.Name) {
+                        switch (enumerator.Current) {
+                        case Operator op:
+                            switch (op.Name) {
                             case "NOT":
-                                _stack.Push(new Proposition(!PopProposition().Value));
+                                _stack.Push(new Proposition(!PopProposition()));
                                 break;
                             case "AND":
-                                _stack.Push(new Proposition(PopProposition().Value & PopProposition().Value));
+                                _stack.Push(new Proposition(PopProposition() & PopProposition()));
                                 break;
                             case "OR":
-                                _stack.Push(new Proposition(PopProposition().Value | PopProposition().Value));
+                                _stack.Push(new Proposition(PopProposition() | PopProposition()));
                                 break;
                             case "XOR":
-                                _stack.Push(new Proposition(PopProposition().Value ^ PopProposition().Value));
+                                _stack.Push(new Proposition(PopProposition() ^ PopProposition()));
                                 break;
                             case "EQUALTO":
-                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) == 0));
+                                _stack.Push(new Proposition(PopVariable().CompareTo(PopVariable()) == 0));
                                 break;
                             case "NOTEQUALTO":
-                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) != 0));
+                                _stack.Push(new Proposition(PopVariable().CompareTo(PopVariable()) != 0));
                                 break;
                             case "GREATERTHAN":
-                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) > 0));
+                                _stack.Push(new Proposition(PopVariable().CompareTo(PopVariable()) > 0));
                                 break;
                             case "LESSERTHAN":
-                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) < 0));
+                                _stack.Push(new Proposition(PopVariable().CompareTo(PopVariable()) < 0));
                                 break;
                             case "GREATERTHANOREQUALTO":
-                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) >= 0));
+                                _stack.Push(new Proposition(PopVariable().CompareTo(PopVariable()) >= 0));
                                 break;
                             case "LESSERTHANOREQUALTO":
-                                _stack.Push(new Proposition(PopVariable().Value.CompareTo(PopVariable().Value) <= 0));
+                                _stack.Push(new Proposition(PopVariable().CompareTo(PopVariable()) <= 0));
                                 break;
                             default:
                                 throw new UnexpectedElementException();
                             }
-                        } else if (element is Proposition) {
-                            _stack.Push(_context[element.Name] ?? element);
-                        } else if (element is Variable) {
-                            _stack.Push(_context[element.Name] ?? element);
-                        } else {
+                            break;
+                        case Proposition proposition:
+                            _stack.Push(_context[proposition.Name] ?? proposition);
+                            break;
+                        case Variable variable:
+                            _stack.Push(_context[variable.Name] ?? variable);
+                            break;
+                        default:
                             throw new UnexpectedElementException();
                         }
                     }
@@ -140,7 +143,7 @@ namespace WmcSoft.Business.RuleModel
                 if (_stack.Count != 1)
                     throw new InvalidOperationException();
                 var result = PopProposition();
-                return result.Value;
+                return result;
             }
         }
 

@@ -14,14 +14,16 @@ namespace WmcSoft.Business.RuleModel
 
         private const string basepath = @".\RuleModel";
 
-        RuleSet DeserializeRuleModel(string fileName) {
+        RuleSet DeserializeRuleModel(string fileName)
+        {
             using (var ifs = new FileStream(Path.Combine(basepath, fileName), FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 var serializer = new XmlSerializer<RuleSet>();
                 return serializer.Deserialize(ifs);
             }
         }
 
-        RuleContext DeserializeRuleContext(string fileName) {
+        RuleContext DeserializeRuleContext(string fileName)
+        {
             using (var ifs = new FileStream(Path.Combine(basepath, fileName), FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 var serializer = new RuleContextSerializer();// new XmlSerializer<RuleContext>();
                 return serializer.Deserialize(ifs);
@@ -31,7 +33,8 @@ namespace WmcSoft.Business.RuleModel
         #endregion
 
         [TestMethod]
-        public void CanDeserializeRuleModel() {
+        public void CanDeserializeRuleModel()
+        {
             var ruleSet = DeserializeRuleModel("TestRuleModel.rule");
 
             Assert.IsTrue(ruleSet.Version == "1.0");
@@ -40,13 +43,15 @@ namespace WmcSoft.Business.RuleModel
         }
 
         [TestMethod]
-        public void CanDeserializeRuleContext() {
+        public void CanDeserializeRuleContext()
+        {
             RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
             Assert.IsTrue(ruleContext.Version == "1.0");
         }
 
         [TestMethod]
-        public void CanSerializeRuleContext() {
+        public void CanSerializeRuleContext()
+        {
             var expected = new RuleContext { Version = "1.0" };
             expected.Items = new RuleElement[] {
                 new Variable { Name="var1", Value="value1" },
@@ -67,7 +72,8 @@ namespace WmcSoft.Business.RuleModel
         }
 
         [TestMethod]
-        public void CheckRuleContextItems() {
+        public void CheckRuleContextItems()
+        {
             var ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 
             Assert.IsTrue(((Variable)ruleContext["variable1"]).Value == "5");
@@ -76,7 +82,8 @@ namespace WmcSoft.Business.RuleModel
         }
 
         [TestMethod]
-        public void CanEvaluate() {
+        public void CanEvaluate()
+        {
             var ruleSet = DeserializeRuleModel("TestRuleModel.rule");
             var ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 

@@ -33,7 +33,7 @@ namespace WmcSoft.Business.RuleModel
     /// Represents a set of rules, with no duplicates allowed.
     /// </summary>
     [XmlRoot("ruleSet", Namespace = @"http://www.wmcsoft.fr/schemas/2015/business/RuleModel.xsd", IsNullable = false)]
-    public class RuleSet : IRuleEvaluator
+    public class RuleSet : IRuleEvaluator<RuleContext>
     {
         public static readonly RuleSet Empty = new RuleSet {
             Version = "1.0",
@@ -52,7 +52,7 @@ namespace WmcSoft.Business.RuleModel
         [XmlAttribute("name", DataType = "ID")]
         public string Name { get; set; }
 
-        #region Membres de IRuleEvaluator
+        #region Membres de IRuleEvaluator<RuleContext>
 
         /// <summary>
         /// 
@@ -61,10 +61,8 @@ namespace WmcSoft.Business.RuleModel
         /// <returns></returns>
         public bool Evaluate(RuleContext context)
         {
-            foreach (Rule rule in Rules) {
-                var ruleElement = context[rule.Name];
-                var ruleOverride = ruleElement as RuleOverride;
-                if (ruleOverride != null) {
+            foreach (var rule in Rules) {
+                if (context[rule.Name] is RuleOverride ruleOverride) {
                     if (!ruleOverride.Value)
                         return false;
                 } else if (!rule.Evaluate(context))
