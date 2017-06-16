@@ -26,8 +26,10 @@
 
 namespace WmcSoft.Business
 {
-    public interface IRuleEvaluator<in TContext>
+    public interface IFilter<in TContext>
     {
-        bool Evaluate(TContext context);
+        void OnExecuting(TContext context);
+        void OnExecuted(TContext context);
     }
 }
+

@@ -75,9 +75,11 @@
     <Compile Include="Business\CustomerRelationshipModel\CustomerServiceCaseIdentifier.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Outcome.cs" />
     <Compile Include="Business\DomainObject.cs" />
+    <Compile Include="Business\FilterPipeline.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\IdentityMap.cs" />
+    <Compile Include="Business\IFilter.cs" />
     <Compile Include="Business\IIdentityMap.cs" />
     <Compile Include="Business\InventoryModel\CapacityManager.cs" />
     <Compile Include="Business\InventoryModel\Inventory.cs" />

@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -24,10 +24,15 @@
 
 #endregion
 
-namespace WmcSoft.Business
+using System;
+
+namespace WmcSoft.Drawing.Abstractions
 {
-    public interface IRuleEvaluator<in TContext>
+    public interface IRectangle<T> : IEquatable<T>
     {
-        bool Evaluate(TContext context);
+        T Y { get; set; }
+        T X { get; set; }
+        T Width { get; set; }
+        T Height { get; set; }
     }
 }
