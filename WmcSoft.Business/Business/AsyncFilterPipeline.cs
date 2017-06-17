@@ -24,25 +24,31 @@
 
 #endregion
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace WmcSoft.Business
 {
-    public class FilterPipeline<TContext>
+    public class AsyncFilterPipeline<TContext>
     {
-        readonly IFilter<TContext>[] _filters;
+        readonly IAsycnFilter<TContext>[] _filters;
 
-        public FilterPipeline(params IFilter<TContext>[] filters)
+        public AsyncFilterPipeline(params IAsycnFilter<TContext>[] rules)
         {
-            _filters = filters;
+            _filters = rules;
         }
 
-        public void Run(TContext context)
+        static Task RunFilter(IEnumerator<IAsycnFilter<TContext>> enumerator, TContext context)
         {
-            for (int i = 0; i < _filters.Length; i++) {
-                _filters[i].OnExecuting(context);
-            }
-            for (int i = _filters.Length - 1; i >= 0; i--) {
-                _filters[i].OnExecuted(context);
-            }
+            if (enumerator.MoveNext())
+                return enumerator.Current.OnExecutionAsync(context, () => RunFilter(enumerator, context));
+            return Task.CompletedTask;
+        }
+
+        public Task RunAsync(TContext context)
+        {
+            var filters = _filters.AsEnumerable<IAsycnFilter<TContext>>().GetEnumerator();
+            return RunFilter(filters, context);
         }
     }
 }

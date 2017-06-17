@@ -194,4 +194,4 @@ FakesAssemblies/
 /WmcSoft.Core/Threading/SingleThreadSynchronizationContext.cs
 /WmcSoft.Jobs/ProactorJobDispatcher.cs
 /.vs/WmcSoft/v15
-/.vs/WmcSoft/v15
+/Sandbox/WmcSoft.Drawing.Abstractions

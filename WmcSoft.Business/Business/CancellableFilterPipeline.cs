@@ -24,23 +24,30 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft.Business
 {
-    public class FilterPipeline<TContext>
+    public class CancellableFilterPipeline<TContext>
     {
+        readonly Predicate<TContext> _cancels;
         readonly IFilter<TContext>[] _filters;
 
-        public FilterPipeline(params IFilter<TContext>[] filters)
+        public CancellableFilterPipeline(Predicate<TContext> cancels, params IFilter<TContext>[] filters)
         {
+            _cancels = cancels;
             _filters = filters;
         }
 
         public void Run(TContext context)
         {
-            for (int i = 0; i < _filters.Length; i++) {
+            var i = 0;
+            for (i = 0; i < _filters.Length; i++) {
+                if (_cancels(context))
+                    break;
                 _filters[i].OnExecuting(context);
             }
-            for (int i = _filters.Length - 1; i >= 0; i--) {
+            for (i = i - 1; i >= 0; i--) {
                 _filters[i].OnExecuted(context);
             }
         }

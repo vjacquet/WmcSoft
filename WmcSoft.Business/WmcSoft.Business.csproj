@@ -63,6 +63,7 @@
     <Compile Include="Business\Accounting\PaymentMethod.cs" />
     <Compile Include="Business\Accounting\RM.cs" />
     <Compile Include="Business\ActionsUnitOfWork.cs" />
+    <Compile Include="Business\CancellableFilterPipeline.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Action.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Communication.cs" />
     <Compile Include="Business\CustomerRelationshipModel\CommunicationRouting.cs" />
@@ -75,7 +76,9 @@
     <Compile Include="Business\CustomerRelationshipModel\CustomerServiceCaseIdentifier.cs" />
     <Compile Include="Business\CustomerRelationshipModel\Outcome.cs" />
     <Compile Include="Business\DomainObject.cs" />
+    <Compile Include="Business\AsyncFilterPipeline.cs" />
     <Compile Include="Business\FilterPipeline.cs" />
+    <Compile Include="Business\IAsycnFilter.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\IdentityMap.cs" />

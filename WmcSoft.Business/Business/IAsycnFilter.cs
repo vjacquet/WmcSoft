@@ -24,25 +24,15 @@
 
 #endregion
 
+using System.Threading.Tasks;
+
 namespace WmcSoft.Business
 {
-    public class FilterPipeline<TContext>
+    public interface IAsycnFilter<in TContext>
     {
-        readonly IFilter<TContext>[] _filters;
-
-        public FilterPipeline(params IFilter<TContext>[] filters)
-        {
-            _filters = filters;
-        }
-
-        public void Run(TContext context)
-        {
-            for (int i = 0; i < _filters.Length; i++) {
-                _filters[i].OnExecuting(context);
-            }
-            for (int i = _filters.Length - 1; i >= 0; i--) {
-                _filters[i].OnExecuted(context);
-            }
-        }
+        Task OnExecutionAsync(TContext context, ActionExecutionDelegate next);
     }
+
+    public delegate Task ActionExecutionDelegate();
 }
+

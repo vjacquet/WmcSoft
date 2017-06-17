@@ -62,6 +62,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Accounting\MoneyTests.cs" />
+    <Compile Include="CancellableFilterPipelineTests.cs" />
+    <Compile Include="AsyncFilterPipelineTests.cs" />
     <Compile Include="AutorizableTests.cs" />
     <Compile Include="GatewayResultTests.cs" />
     <Compile Include="IntervalTests.cs" />
