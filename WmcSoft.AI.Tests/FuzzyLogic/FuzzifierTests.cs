@@ -1,12 +1,11 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.AI.FuzzyLogic
 {
-    [TestClass]
     public class FuzzifierTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckInterpret()
         {
             var random = new DeterministicRandom(new double[] { 0.8, 0.5, 0.3, 0.3, 0.9 });
@@ -24,11 +23,11 @@ namespace WmcSoft.AI.FuzzyLogic
             var vTight = new FuzzyCategory("v.tight", 10.0 / 14.0, 12.0 / 14.0, 1.0);
             fuzzifier.Categories.Add(vTight);
 
-            Assert.AreEqual(fuzzifier.Interpret(4.0 / 14.0), accommodative);
-            Assert.AreEqual(fuzzifier.Interpret(4.0 / 14.0), vAccommodative);
-            Assert.AreEqual(fuzzifier.Interpret(7.5 / 14.0), accommodative);
-            Assert.AreEqual(fuzzifier.Interpret(11.0 / 14.0), tight);
-            Assert.AreEqual(fuzzifier.Interpret(12.5 / 14.0), vTight);
+            Assert.Equal(fuzzifier.Interpret(4.0 / 14.0), accommodative);
+            Assert.Equal(fuzzifier.Interpret(4.0 / 14.0), vAccommodative);
+            Assert.Equal(fuzzifier.Interpret(7.5 / 14.0), accommodative);
+            Assert.Equal(fuzzifier.Interpret(11.0 / 14.0), tight);
+            Assert.Equal(fuzzifier.Interpret(12.5 / 14.0), vTight);
         }
     }
 }

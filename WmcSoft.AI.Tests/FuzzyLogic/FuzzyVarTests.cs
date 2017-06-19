@@ -1,53 +1,53 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.AI.FuzzyLogic
 {
-    [TestClass]
     public class FuzzyVarTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckConstruct()
         {
-            FuzzyVar var = (FuzzyVar)0.5;
+            FuzzyVar var = 0.5;
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckCompareTo()
         {
-            FuzzyVar lhs = (FuzzyVar)0.5;
-            FuzzyVar rhs = (FuzzyVar)0.7;
-            Assert.IsTrue(lhs.CompareTo(rhs) == -1);
-            Assert.IsTrue(rhs.CompareTo(lhs) == +1);
+            FuzzyVar lhs = 0.5;
+            FuzzyVar rhs = 0.7;
+            Assert.True(lhs.CompareTo(rhs) == -1);
+            Assert.True(rhs.CompareTo(lhs) == +1);
             rhs = lhs;
-            Assert.IsTrue(lhs.CompareTo(rhs) == 0);
-            Assert.IsTrue(rhs.CompareTo(lhs) == 0);
+            Assert.True(lhs.CompareTo(rhs) == 0);
+            Assert.True(rhs.CompareTo(lhs) == 0);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void CheckAnd()
         {
-            FuzzyVar lhs = (FuzzyVar)0.5d;
-            FuzzyVar rhs = (FuzzyVar)0.7d;
+            FuzzyVar lhs = 0.5d;
+            FuzzyVar rhs = 0.7d;
             FuzzyVar result = lhs & rhs;
-            Assert.AreEqual((double)result, 0.5d);
+            Assert.Equal((double)result, 0.5d);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckOr()
         {
-            FuzzyVar lhs = (FuzzyVar)0.5d;
-            FuzzyVar rhs = (FuzzyVar)0.7d;
+            FuzzyVar lhs = 0.5d;
+            FuzzyVar rhs = 0.7d;
             FuzzyVar result = lhs | rhs;
-            Assert.AreEqual((double)result, 0.7d);
+            Assert.Equal((double)result, 0.7d);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void CheckOutOfRange()
         {
-            FuzzyVar var = (FuzzyVar)1.5d;
+            Assert.Throws<ArgumentOutOfRangeException>(() => {
+                FuzzyVar var = 1.5d;
+            });
         }
     }
 }

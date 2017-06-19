@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.AI
 {
-    [TestClass]
     public class MeasuringTests
     {
-        [TestMethod]
+        [Fact]
         public void CanMeasureRootMeanSquareOverSquaredMeanError()
         {
             var random = new Random(1664);
@@ -31,10 +30,10 @@ namespace WmcSoft.AI
             var m = measuring.Measure(o);
             var actual = m.RootMeanSquareOverSquaredMeanError;
 
-            Assert.AreEqual(expected, actual, 0.000000000001d);
+            Assert.Equal(expected, actual, 12);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanMeasureRelativeRootMeanSquareOverVariance()
         {
             var random = new Random(1664);
@@ -58,7 +57,7 @@ namespace WmcSoft.AI
             var m = measuring.Measure(o);
             var actual = m.RootMeanSquareOverVarianceMeanError;
 
-            Assert.AreEqual(expected, actual, 0.000000000001d);
+            Assert.Equal(expected, actual, 12);
         }
     }
 }
