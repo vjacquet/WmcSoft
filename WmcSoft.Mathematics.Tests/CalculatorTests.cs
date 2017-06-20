@@ -143,39 +143,35 @@ namespace WmcSoft.Tests
         {
             protected override Expression VisitBinary(BinaryExpression node)
             {
+                var left = base.Visit(node.Left);
+                var right = base.Visit(node.Right);
+
                 switch (node.NodeType) {
                 case ExpressionType.Add:
-                    if (node.Right.NodeType == ExpressionType.Constant) {
-                        if (IsZero((ConstantExpression)node.Right))
-                            return node.Left;
-                    } else if (node.Left.NodeType == ExpressionType.Constant) {
-                        if (IsZero((ConstantExpression)node.Left))
-                            return node.Right;
-                    }
-                    break;
+                    if (right.NodeType == ExpressionType.Constant && IsZero((ConstantExpression)right))
+                        return left;
+                    if (left.NodeType == ExpressionType.Constant && IsZero((ConstantExpression)left))
+                        return right;
+                    return Expression.Add(left, right);
                 case ExpressionType.Subtract:
-                    if (node.Right.NodeType == ExpressionType.Constant) {
-                        if (IsZero((ConstantExpression)node.Right))
-                            return node.Left;
-                    } else if (node.Left.NodeType == ExpressionType.Constant) {
-                        if (IsZero((ConstantExpression)node.Left))
-                            return Expression.Negate(node.Right);
-                    }
-                    break;
+                    if (right.NodeType == ExpressionType.Constant && IsZero((ConstantExpression)right))
+                        return left;
+                    if (left.NodeType == ExpressionType.Constant && IsZero((ConstantExpression)left))
+                        return Expression.Negate(right);
+                    return Expression.Subtract(left, right);
                 case ExpressionType.Multiply:
+                    if (left.NodeType == ExpressionType.Constant && IsOne((ConstantExpression)left))
+                        return right;
+                    if (right.NodeType == ExpressionType.Constant && IsOne((ConstantExpression)right))
+                        return left;
+                    return Expression.Multiply(left, right);
                 case ExpressionType.Divide:
-                    if (node.Left.NodeType == ExpressionType.Constant) {
-                        if (IsOne((ConstantExpression)node.Left))
-                            return Visit(node.Right);
-                        return Expression.MakeBinary(node.NodeType, node.Left, Visit(node.Right));
-                    } else if (node.Right.NodeType == ExpressionType.Constant) {
-                        if (IsOne((ConstantExpression)node.Right))
-                            return Visit(node.Left);
-                        return Expression.MakeBinary(node.NodeType, node.Right, Visit(node.Left));
-                    }
-                    break;
+                    if (right.NodeType == ExpressionType.Constant && IsOne((ConstantExpression)right))
+                        return left;
+                    return Expression.Divide(left, right);
                 }
-                return base.VisitBinary(node);
+
+                return Expression.MakeBinary(node.NodeType, left, right);
             }
 
             static bool IsZero(ConstantExpression x)
@@ -238,16 +234,17 @@ namespace WmcSoft.Tests
         }
 
         [TestMethod]
-        [Ignore] // not ready, the resulting expression should be simplified.
         public void CanDeriveExpression()
         {
             Expression<Func<double, double>> eq = x => 2 * x + 5;
             var deriver = new DerivativeVisitor();
+            var simplifier = new SimplifierVisitor();
 
             var derivative = deriver.Accept(eq);
+            var simplified = simplifier.Visit(derivative.Body);
 
             var stringifier = new StringifierVisitor();
-            var actual = stringifier.Accept(derivative.Body);
+            var actual = stringifier.Accept(simplified);
             Assert.AreEqual("2", actual);
         }
     }
