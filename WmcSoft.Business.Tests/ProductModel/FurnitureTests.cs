@@ -1,19 +1,18 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Business.ProductModel
 {
-    [TestClass]
     public class FurnitureTests
     {
-        [TestMethod]
-        public void CanCreateProductType() {
+        [Fact]
+        public void CanCreateProductType()
+        {
             var karlanda = new Karlanda();
 
-            Assert.IsNotNull(karlanda.Name);
-            Assert.IsNotNull(karlanda.Description);
-            Assert.AreEqual(2, karlanda.MandatoryFeatures.Count);
-            Assert.AreEqual(0, karlanda.OptionalFeatures.Count);
+            Assert.NotNull(karlanda.Name);
+            Assert.NotNull(karlanda.Description);
+            Assert.Equal(2, karlanda.MandatoryFeatures.Count);
+            Assert.Equal(0, karlanda.OptionalFeatures.Count);
         }
     }
 }

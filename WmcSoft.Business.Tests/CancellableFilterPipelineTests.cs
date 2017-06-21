@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Xunit;
 
 namespace WmcSoft.Business
 {
-    [TestClass]
     public class CancellableFilterPipelineTests
     {
         class AddItemFilter<T> : IFilter<List<T>>
@@ -27,7 +24,7 @@ namespace WmcSoft.Business
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRunCancellableFilterPipeline()
         {
             var pipeline = new CancellableFilterPipeline<List<int>>(
@@ -41,7 +38,7 @@ namespace WmcSoft.Business
             pipeline.Run(context);
 
             var expected = new[] { 1, 2, 3 };
-            CollectionAssert.AreEqual(expected, context);
+            Assert.Equal(expected, context);
         }
     }
 }

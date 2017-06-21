@@ -1,37 +1,36 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft
 {
-    /// <summary>
-    /// Description résumée pour IntervalLimitTests
-    /// </summary>
-    [TestClass]
     public class IntervalLimitTests
     {
-        [TestMethod]
-        public void CanCompareIntervalLimits() {
+        [Fact]
+        public void CanCompareIntervalLimits()
+        {
             var one = IntervalLimit.Lower(1, false);
             var two = IntervalLimit.Upper(2, false);
 
-            Assert.IsTrue(one < two);
-            Assert.IsTrue(two > one);
+            Assert.True(one < two);
+            Assert.True(two > one);
         }
 
-        [TestMethod]
-        public void CheckLowerAndUpperOfSameValueAreEqual() {
+        [Fact]
+        public void CheckLowerAndUpperOfSameValueAreEqual()
+        {
             var lower = IntervalLimit.Lower(1, false);
             var upper = IntervalLimit.Upper(1, false);
-            Assert.IsTrue(lower == upper);
+            Assert.True(lower == upper);
         }
 
-        [TestMethod]
-        public void CanCompareIntervalLimitsWithUndefined() {
+        [Fact]
+        public void CanCompareIntervalLimitsWithUndefined()
+        {
             var undefined = IntervalLimit<int>.Undefined;
             var lower = IntervalLimit.Lower(1, false);
             var upper = IntervalLimit.Upper(1, false);
 
-            Assert.IsTrue(undefined < lower);
-            Assert.IsTrue(upper < undefined);
+            Assert.True(undefined < lower);
+            Assert.True(upper < undefined);
         }
     }
 }

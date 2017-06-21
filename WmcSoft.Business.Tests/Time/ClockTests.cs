@@ -1,34 +1,31 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Time
 {
-    [TestClass]
     public class ClockTests
     {
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Uses network requests.")]
         public void CanQueryNistTime()
         {
             using (var client = new NistClient()) {
                 var today = DateTime.UtcNow.Date;
                 var dateTime = client.Query();
 
-                Assert.AreEqual(DateTimeKind.Utc, dateTime.Kind);
-                Assert.AreEqual(today, dateTime.Date);
+                Assert.Equal(DateTimeKind.Utc, dateTime.Kind);
+                Assert.Equal(today, dateTime.Date);
             }
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Uses network requests.")]
         public void CanQuerySntpTime()
         {
             using (var client = new SntpClient()) {
                 var today = DateTime.UtcNow.Date;
                 var dateTime = client.Query();
 
-                Assert.AreEqual(DateTimeKind.Utc, dateTime.Kind);
-                Assert.AreEqual(today, dateTime.Date);
+                Assert.Equal(DateTimeKind.Utc, dateTime.Kind);
+                Assert.Equal(today, dateTime.Date);
             }
         }
     }

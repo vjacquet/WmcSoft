@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,11 +15,13 @@ namespace WmcSoft.Business.PartyModel.InMemory
         readonly ConcurrentDictionary<TKey, TParty> _context = new ConcurrentDictionary<TKey, TParty>();
         readonly Func<PartyIdentifier> _uniqueIdGenerator;
 
-        public PartyStore(Func<PartyIdentifier> uniqueIdGenerator) {
+        public PartyStore(Func<PartyIdentifier> uniqueIdGenerator)
+        {
             _uniqueIdGenerator = uniqueIdGenerator;
         }
 
-        public Task<PartyIdentifier> AddPartyAsync(TParty party, CancellationToken cancellationToken) {
+        public Task<PartyIdentifier> AddPartyAsync(TParty party, CancellationToken cancellationToken)
+        {
             var id = _uniqueIdGenerator();
             var key = ConvertPartyIdentifierToKey(id);
             _context.TryAdd(key, party);
@@ -28,28 +29,31 @@ namespace WmcSoft.Business.PartyModel.InMemory
             return Task.FromResult(id);
         }
 
-        private TKey ConvertPartyIdentifierToKey(PartyIdentifier id) {
+        private TKey ConvertPartyIdentifierToKey(PartyIdentifier id)
+        {
             return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id.ToString());
         }
 
-        public Task<bool> DeletePartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken) {
-            TParty party;
+        public Task<bool> DeletePartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken)
+        {
             var key = ConvertPartyIdentifierToKey(partyId);
-            var result = _context.TryRemove(key, out party);
+            var result = _context.TryRemove(key, out TParty party);
             return Task.FromResult(result);
         }
 
-        public Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken) {
+        public Task<IEnumerable<TParty>> FindPartiesByName(string name, CancellationToken cancellationToken)
+        {
             var result = new List<Party>();
             foreach (var kv in _context) {
                 var p = kv.Value;
-                if (String.Equals(name, p.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(name, p.Name, StringComparison.CurrentCultureIgnoreCase))
                     result.Add(p);
             }
             return Task.FromResult((IEnumerable<TParty>)result);
         }
 
-        public Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken) {
+        public Task<IEnumerable<TParty>> FindPartiesByRegisteredIdentifier(RegisteredIdentifier registeredId, CancellationToken cancellationToken)
+        {
             var result = new List<Party>();
             foreach (var kv in _context) {
                 var p = kv.Value;
@@ -59,10 +63,10 @@ namespace WmcSoft.Business.PartyModel.InMemory
             return Task.FromResult((IEnumerable<TParty>)result);
         }
 
-        public Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken) {
-            TParty party;
+        public Task<TParty> GetPartyAsync(PartyIdentifier partyId, CancellationToken cancellationToken)
+        {
             var key = ConvertPartyIdentifierToKey(partyId);
-            if (!_context.TryGetValue(key, out party))
+            if (!_context.TryGetValue(key, out TParty party))
                 return Task.FromException<TParty>(new ArgumentOutOfRangeException("partyId"));
             return Task.FromResult(party);
         }
@@ -71,7 +75,8 @@ namespace WmcSoft.Business.PartyModel.InMemory
 
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
             if (!disposedValue) {
                 if (disposing) {
                     // TODO: dispose managed state (managed objects).
@@ -91,7 +96,8 @@ namespace WmcSoft.Business.PartyModel.InMemory
         // }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose() {
+        public void Dispose()
+        {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.

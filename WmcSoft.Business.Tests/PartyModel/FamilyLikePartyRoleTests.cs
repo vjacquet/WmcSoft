@@ -24,14 +24,14 @@
 
 #endregion
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Business.PartyModel
 {
-    [TestClass]
     public class FamilyLikePartyRoleTests
     {
-        Person CreatePerson(string name) {
+        Person CreatePerson(string name)
+        {
             return new Person {
                 PersonName = new PersonName {
                     PreferredName = name
@@ -39,16 +39,17 @@ namespace WmcSoft.Business.PartyModel
             };
         }
 
-        [TestMethod]
-        public void CanMarryMaleAndFemale() {
+        [Fact]
+        public void CanMarryMaleAndFemale()
+        {
             var naomi = CreatePerson("naomi");
             naomi.Gender = Gender.Female;
             var richard = CreatePerson("richard");
             richard.Gender = Gender.Male;
 
             var marriage = new TraditionalMarriage(richard.AddRole<Husband>(), naomi.AddRole<Wife>());
-            Assert.AreEqual(richard, marriage.Client.Party);
-            Assert.AreEqual(naomi, marriage.Supplier.Party);
+            Assert.Equal(richard, marriage.Client.Party);
+            Assert.Equal(naomi, marriage.Supplier.Party);
         }
     }
 }

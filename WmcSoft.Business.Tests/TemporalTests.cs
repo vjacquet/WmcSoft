@@ -1,9 +1,8 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Business
 {
-    [TestClass]
     public class TemporalTests
     {
         class Sample : ITemporal
@@ -12,60 +11,64 @@ namespace WmcSoft.Business
             public DateTime? ValidUntil { get; set; }
         }
 
-        [TestMethod]
-        public void CheckValidOnFullyDefinedRange() {
+        [Fact]
+        public void CheckValidOnFullyDefinedRange()
+        {
             var sample = new Sample {
                 ValidSince = new DateTime(1973, 5, 2),
                 ValidUntil = new DateTime(2016, 4, 2),
             };
 
-            Assert.IsFalse(sample.IsValidOn(new DateTime(1789, 7, 14)));
-            Assert.IsFalse(sample.IsValidOn(new DateTime(2016, 4, 2)));
-            Assert.IsFalse(sample.IsValidOn(new DateTime(2016, 4, 3)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(1973, 5, 2)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2003, 5, 2)));
+            Assert.False(sample.IsValidOn(new DateTime(1789, 7, 14)));
+            Assert.False(sample.IsValidOn(new DateTime(2016, 4, 2)));
+            Assert.False(sample.IsValidOn(new DateTime(2016, 4, 3)));
+            Assert.True(sample.IsValidOn(new DateTime(1973, 5, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(2003, 5, 2)));
         }
 
-        [TestMethod]
-        public void CheckValidOnUndefinedRange() {
+        [Fact]
+        public void CheckValidOnUndefinedRange()
+        {
             var sample = new Sample {
                 ValidSince = null,
                 ValidUntil = null,
             };
 
-            Assert.IsTrue(sample.IsValidOn(new DateTime(1789, 7, 14)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2016, 4, 2)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2016, 4, 3)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(1973, 5, 2)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2003, 5, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(1789, 7, 14)));
+            Assert.True(sample.IsValidOn(new DateTime(2016, 4, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(2016, 4, 3)));
+            Assert.True(sample.IsValidOn(new DateTime(1973, 5, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(2003, 5, 2)));
         }
 
-        [TestMethod]
-        public void CheckValidSince() {
+        [Fact]
+        public void CheckValidSince()
+        {
             var sample = new Sample {
                 ValidSince = new DateTime(1973, 5, 2),
                 ValidUntil = null,
             };
 
-            Assert.IsFalse(sample.IsValidOn(new DateTime(1789, 7, 14)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2016, 4, 2)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2016, 4, 3)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(1973, 5, 2)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2003, 5, 2)));
+            Assert.False(sample.IsValidOn(new DateTime(1789, 7, 14)));
+            Assert.True(sample.IsValidOn(new DateTime(2016, 4, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(2016, 4, 3)));
+            Assert.True(sample.IsValidOn(new DateTime(1973, 5, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(2003, 5, 2)));
         }
 
-        [TestMethod]
-        public void CheckValidUntil() {
+        [Fact]
+        public void CheckValidUntil()
+        {
             var sample = new Sample {
                 ValidSince = null,
                 ValidUntil = new DateTime(2016, 4, 2),
             };
 
-            Assert.IsTrue(sample.IsValidOn(new DateTime(1789, 7, 14)));
-            Assert.IsFalse(sample.IsValidOn(new DateTime(2016, 4, 2)));
-            Assert.IsFalse(sample.IsValidOn(new DateTime(2016, 4, 3)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(1973, 5, 2)));
-            Assert.IsTrue(sample.IsValidOn(new DateTime(2003, 5, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(1789, 7, 14)));
+            Assert.False(sample.IsValidOn(new DateTime(2016, 4, 2)));
+            Assert.False(sample.IsValidOn(new DateTime(2016, 4, 3)));
+            Assert.True(sample.IsValidOn(new DateTime(1973, 5, 2)));
+            Assert.True(sample.IsValidOn(new DateTime(2003, 5, 2)));
         }
     }
 }

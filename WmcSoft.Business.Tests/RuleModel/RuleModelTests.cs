@@ -1,13 +1,11 @@
 using System;
 using System.IO;
-using System.Xml.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Runtime.Serialization;
 using System.Text;
+using Xunit;
+using WmcSoft.Runtime.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
-    [TestClass]
     public class RuleModelTests
     {
         #region Helpers
@@ -32,24 +30,24 @@ namespace WmcSoft.Business.RuleModel
 
         #endregion
 
-        [TestMethod]
+        [Fact]
         public void CanDeserializeRuleModel()
         {
             var ruleSet = DeserializeRuleModel("TestRuleModel.rule");
 
-            Assert.IsTrue(ruleSet.Version == "1.0");
-            Assert.IsTrue(ruleSet.Name == "ruleSet1");
-            Assert.AreEqual(2, ruleSet.Rules.Length);
+            Assert.True(ruleSet.Version == "1.0");
+            Assert.True(ruleSet.Name == "ruleSet1");
+            Assert.Equal(2, ruleSet.Rules.Length);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDeserializeRuleContext()
         {
             RuleContext ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
-            Assert.IsTrue(ruleContext.Version == "1.0");
+            Assert.True(ruleContext.Version == "1.0");
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSerializeRuleContext()
         {
             var expected = new RuleContext { Version = "1.0" };
@@ -66,28 +64,28 @@ namespace WmcSoft.Business.RuleModel
             serializer.Serialize(w, expected);
             var actual = serializer.Deserialize(new StringReader(sb.ToString()));
 
-            Assert.IsNotNull(actual);
-            Assert.AreEqual(expected.Version, actual.Version);
-            CollectionAssert.AreEquivalent(expected.Items, actual.Items);
+            Assert.NotNull(actual);
+            Assert.Equal(expected.Version, actual.Version);
+            Assert.Equal(expected.Items, actual.Items);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckRuleContextItems()
         {
             var ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 
-            Assert.IsTrue(((Variable)ruleContext["variable1"]).Value == "5");
-            Assert.IsTrue(((Variable)ruleContext["variable2"]).Value == "5");
-            Assert.IsTrue(((Proposition)ruleContext["proposition1"]).Value == true);
+            Assert.True(((Variable)ruleContext["variable1"]).Value == "5");
+            Assert.True(((Variable)ruleContext["variable2"]).Value == "5");
+            Assert.True(((Proposition)ruleContext["proposition1"]).Value == true);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanEvaluate()
         {
             var ruleSet = DeserializeRuleModel("TestRuleModel.rule");
             var ruleContext = DeserializeRuleContext("TestRuleContext.rulecontext");
 
-            Assert.IsTrue(ruleSet.Evaluate(ruleContext));
+            Assert.True(ruleSet.Evaluate(ruleContext));
         }
     }
 }

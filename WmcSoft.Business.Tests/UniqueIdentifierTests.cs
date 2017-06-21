@@ -1,27 +1,29 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Business
 {
-    [TestClass]
     public class UniqueIdentifierTests
     {
-        [TestMethod]
-        public void CanCreateGuidUniqueIdentifier() {
+        [Fact]
+        public void CanCreateGuidUniqueIdentifier()
+        {
             IUniqueIdentifier<Guid> id = null;
-            Assert.IsNull(id);
+            Assert.Null(id);
         }
 
-        [TestMethod]
-        public void CanCreateInt32UniqueIdentifier() {
+        [Fact]
+        public void CanCreateInt32UniqueIdentifier()
+        {
             IUniqueIdentifier<int> id = null;
-            Assert.IsNull(id);
+            Assert.Null(id);
         }
 
-        [TestMethod]
-        public void CanCreateStringUniqueIdentifier() {
+        [Fact]
+        public void CanCreateStringUniqueIdentifier()
+        {
             IUniqueIdentifier<string> id = null;
-            Assert.IsNull(id);
+            Assert.Null(id);
         }
     }
 }

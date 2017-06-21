@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Business
 {
-    [TestClass]
     public class AsyncFilterPipelineTests
     {
         class AddItemFilter<T> : IAsycnFilter<List<T>>
@@ -23,8 +22,8 @@ namespace WmcSoft.Business
             }
         }
 
-        [TestMethod]
-        public void CanRunAsyncFilterPipeline()
+        [Fact]
+        public async Task CanRunAsyncFilterPipeline()
         {
             var pipeline = new AsyncFilterPipeline<List<int>>(
                 new AddItemFilter<int>(1),
@@ -32,10 +31,10 @@ namespace WmcSoft.Business
                 new AddItemFilter<int>(3)
             );
             var context = new List<int>();
-            pipeline.RunAsync(context).Wait();
+            await pipeline.RunAsync(context);
 
             var expected = new[] { 1, 2, 3 };
-            CollectionAssert.AreEqual(expected, context);
+            Assert.Equal(expected, context);
         }
     }
 }

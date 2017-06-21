@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Time
 {
-    [TestClass]
     public class TimeUnitTests
     {
-        [TestMethod]
+        [Fact]
         public void AreTimeUnitsSorted()
         {
             var units = new[] {
@@ -27,25 +22,25 @@ namespace WmcSoft.Time
                 TimeUnit.Year,
             };
 
-            Assert.IsTrue(units.IsSorted());
+            Assert.True(units.IsSorted());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindNextFinerUnit()
         {
-            Assert.AreEqual(TimeUnit.Day, TimeUnit.Week.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Hour, TimeUnit.Day.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Minute, TimeUnit.Hour.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Second, TimeUnit.Minute.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Millisecond, TimeUnit.Second.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Millisecond, TimeUnit.Millisecond.NextFinerUnit());
+            Assert.Equal(TimeUnit.Day, TimeUnit.Week.NextFinerUnit());
+            Assert.Equal(TimeUnit.Hour, TimeUnit.Day.NextFinerUnit());
+            Assert.Equal(TimeUnit.Minute, TimeUnit.Hour.NextFinerUnit());
+            Assert.Equal(TimeUnit.Second, TimeUnit.Minute.NextFinerUnit());
+            Assert.Equal(TimeUnit.Millisecond, TimeUnit.Second.NextFinerUnit());
+            Assert.Equal(TimeUnit.Millisecond, TimeUnit.Millisecond.NextFinerUnit());
 
-            Assert.AreEqual(TimeUnit.Quarter, TimeUnit.Year.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Month, TimeUnit.Quarter.NextFinerUnit());
-            Assert.AreEqual(TimeUnit.Month, TimeUnit.Month.NextFinerUnit());
+            Assert.Equal(TimeUnit.Quarter, TimeUnit.Year.NextFinerUnit());
+            Assert.Equal(TimeUnit.Month, TimeUnit.Quarter.NextFinerUnit());
+            Assert.Equal(TimeUnit.Month, TimeUnit.Month.NextFinerUnit());
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckBaseUnits()
         {
             var units = new[] {
@@ -74,7 +69,7 @@ namespace WmcSoft.Time
             };
 
             var actual = Array.ConvertAll(units, _ => _.BaseUnit);
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

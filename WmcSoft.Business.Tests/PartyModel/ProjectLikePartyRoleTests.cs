@@ -24,14 +24,14 @@
 
 #endregion
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Business.PartyModel
 {
-    [TestClass]
     public class ProjectLikePartyRoleTests
     {
-        Person CreatePerson(string name) {
+        Person CreatePerson(string name)
+        {
             return new Person {
                 PersonName = new PersonName {
                     PreferredName = name
@@ -39,14 +39,16 @@ namespace WmcSoft.Business.PartyModel
             };
         }
 
-        Company CreateCompany(string name) {
+        Company CreateCompany(string name)
+        {
             return new Company {
                 OrganizationName = new OrganizationName(name)
             };
         }
 
-        [TestMethod]
-        public void CanCreateComplexRelationship() {
+        [Fact]
+        public void CanCreateComplexRelationship()
+        {
             var jim = CreatePerson("jim");
             var ila = CreatePerson("ila");
             var richard = CreatePerson("richard");
@@ -68,9 +70,9 @@ namespace WmcSoft.Business.PartyModel
             var clearViewTraining = CreateCompany("clearViewTraining");
             var interactiveObjects = CreateCompany("interactiveObjects");
 
-            Assert.IsTrue(clearViewTraining.CanCollaborateOn(jointProject));
-            Assert.IsFalse(jim.CanCollaborateOn(jointProject));
-            Assert.IsTrue(interactiveObjects.CanCollaborateOn(jointProject));
+            Assert.True(clearViewTraining.CanCollaborateOn(jointProject));
+            Assert.False(jim.CanCollaborateOn(jointProject));
+            Assert.True(interactiveObjects.CanCollaborateOn(jointProject));
 
             clearViewTraining.CollaborateOn(jointProject);
             interactiveObjects.CollaborateOn(jointProject);
@@ -80,12 +82,12 @@ namespace WmcSoft.Business.PartyModel
             interactiveObjects.Employs(richard, new Director(richard));
             interactiveObjects.Employs(ronald, new Employee(ronald));
 
-            Assert.IsTrue(jim.HasRole<ProjectManager>());
-            Assert.IsTrue(jim.HasRole<Employee>());
-            Assert.IsTrue(jim.HasRole<Director>());
-            Assert.IsFalse(ronald.HasRole<Director>());
+            Assert.True(jim.HasRole<ProjectManager>());
+            Assert.True(jim.HasRole<Employee>());
+            Assert.True(jim.HasRole<Director>());
+            Assert.False(ronald.HasRole<Director>());
 
-            Assert.IsTrue(jim.HasRole<ProjectManager>(project));
+            Assert.True(jim.HasRole<ProjectManager>(project));
         }
     }
 }

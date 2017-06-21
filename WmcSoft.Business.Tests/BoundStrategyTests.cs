@@ -1,85 +1,111 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Business
 {
-    [TestClass]
     public class BoundStrategyTests
     {
-        [TestMethod]
-        public void CheckInclusiveStrategy() {
+        [Theory]
+        [InlineData(-1, 1, 2, 5)]
+        [InlineData(0, 2, 2, 5)]
+        [InlineData(0, 4, 2, 5)]
+        [InlineData(0, 5, 2, 5)]
+        [InlineData(1, 6, 2, 5)]
+        public void CheckCompareOnInclusiveStrategy(int expected, int value, int lo, int hi)
+        {
             var strategy = BoundStrategy<int>.Inclusive;
-            var lo = 2;
-            var hi = 5;
 
-            Assert.AreEqual(-1, strategy.Compare(1, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(lo, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(4, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(hi, lo, hi));
-            Assert.AreEqual(1, strategy.Compare(6, lo, hi));
-
-            Assert.IsFalse(strategy.IsWithinRange(1, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(lo, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(4, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(hi, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(6, lo, hi));
+            Assert.Equal(expected, strategy.Compare(value, lo, hi));
         }
 
-        [TestMethod]
-        public void CheckExclusiveStrategy() {
+        [Theory]
+        [InlineData(false, 1, 2, 5)]
+        [InlineData(true, 2, 2, 5)]
+        [InlineData(true, 4, 2, 5)]
+        [InlineData(true, 5, 2, 5)]
+        [InlineData(false, 6, 2, 5)]
+        public void CheckIsWithinRangeOnInclusiveStrategy(bool expected, int value, int lo, int hi)
+        {
+            var strategy = BoundStrategy<int>.Inclusive;
+
+            Assert.Equal(expected, strategy.IsWithinRange(value, lo, hi));
+        }
+
+        [Theory]
+        [InlineData(-1, 1, 2, 5)]
+        [InlineData(-1, 2, 2, 5)]
+        [InlineData(0, 4, 2, 5)]
+        [InlineData(1, 5, 2, 5)]
+        [InlineData(1, 6, 2, 5)]
+        public void CheckCompareOnExclusiveStrategy(int expected, int value, int lo, int hi)
+        {
             var strategy = BoundStrategy<int>.Exclusive;
-            var lo = 2;
-            var hi = 5;
 
-            Assert.AreEqual(-1, strategy.Compare(1, lo, hi));
-            Assert.AreEqual(-1, strategy.Compare(lo, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(4, lo, hi));
-            Assert.AreEqual(1, strategy.Compare(hi, lo, hi));
-            Assert.AreEqual(1, strategy.Compare(6, lo, hi));
-
-            Assert.IsFalse(strategy.IsWithinRange(1, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(lo, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(4, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(hi, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(6, lo, hi));
+            Assert.Equal(expected, strategy.Compare(value, lo, hi));
         }
 
-        [TestMethod]
-        public void CheckLowerExclusiveStrategy() {
+        [Theory]
+        [InlineData(false, 1, 2, 5)]
+        [InlineData(false, 2, 2, 5)]
+        [InlineData(true, 4, 2, 5)]
+        [InlineData(false, 5, 2, 5)]
+        [InlineData(false, 6, 2, 5)]
+        public void CheckIsWithinRangeOnExclusiveStrategy(bool expected, int value, int lo, int hi)
+        {
+            var strategy = BoundStrategy<int>.Exclusive;
+
+            Assert.Equal(expected, strategy.IsWithinRange(value, lo, hi));
+        }
+
+        [Theory]
+        [InlineData(-1, 1, 2, 5)]
+        [InlineData(-1, 2, 2, 5)]
+        [InlineData(0, 4, 2, 5)]
+        [InlineData(0, 5, 2, 5)]
+        [InlineData(1, 6, 2, 5)]
+        public void CheckCompareOnLowerExclusiveStrategy(int expected, int value, int lo, int hi)
+        {
             var strategy = BoundStrategy<int>.LowerExclusive;
-            var lo = 2;
-            var hi = 5;
 
-            Assert.AreEqual(-1, strategy.Compare(1, lo, hi));
-            Assert.AreEqual(-1, strategy.Compare(lo, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(4, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(hi, lo, hi));
-            Assert.AreEqual(1, strategy.Compare(6, lo, hi));
-
-            Assert.IsFalse(strategy.IsWithinRange(1, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(lo, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(4, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(hi, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(6, lo, hi));
+            Assert.Equal(expected, strategy.Compare(value, lo, hi));
         }
 
-        [TestMethod]
-        public void CheckUpperExclusiveStrategy() {
+        [Theory]
+        [InlineData(false, 1, 2, 5)]
+        [InlineData(false, 2, 2, 5)]
+        [InlineData(true, 4, 2, 5)]
+        [InlineData(true, 5, 2, 5)]
+        [InlineData(false, 6, 2, 5)]
+        public void CheckIsWithinRangeOnLowerExclusiveStrategy(bool expected, int value, int lo, int hi)
+        {
+            var strategy = BoundStrategy<int>.LowerExclusive;
+
+            Assert.Equal(expected, strategy.IsWithinRange(value, lo, hi));
+        }
+
+        [Theory]
+        [InlineData(-1, 1, 2, 5)]
+        [InlineData(0, 2, 2, 5)]
+        [InlineData(0, 4, 2, 5)]
+        [InlineData(1, 5, 2, 5)]
+        [InlineData(1, 6, 2, 5)]
+        public void CheckCompareOnLowerUpperExclusiveStrateg(int expected, int value, int lo, int hi)
+        {
             var strategy = BoundStrategy<int>.UpperExclusive;
-            var lo = 2;
-            var hi = 5;
 
-            Assert.AreEqual(-1, strategy.Compare(1, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(lo, lo, hi));
-            Assert.AreEqual(0, strategy.Compare(4, lo, hi));
-            Assert.AreEqual(1, strategy.Compare(hi, lo, hi));
-            Assert.AreEqual(1, strategy.Compare(6, lo, hi));
+            Assert.Equal(expected, strategy.Compare(value, lo, hi));
+        }
 
-            Assert.IsFalse(strategy.IsWithinRange(1, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(lo, lo, hi));
-            Assert.IsTrue(strategy.IsWithinRange(4, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(hi, lo, hi));
-            Assert.IsFalse(strategy.IsWithinRange(6, lo, hi));
+        [Theory]
+        [InlineData(false, 1, 2, 5)]
+        [InlineData(true, 2, 2, 5)]
+        [InlineData(true, 4, 2, 5)]
+        [InlineData(false, 5, 2, 5)]
+        [InlineData(false, 6, 2, 5)]
+        public void CheckIsWithinRangeOnUpperExclusiveStrateg(bool expected, int value, int lo, int hi)
+        {
+            var strategy = BoundStrategy<int>.UpperExclusive;
+
+            Assert.Equal(expected, strategy.IsWithinRange(value, lo, hi));
         }
     }
 }

@@ -24,22 +24,22 @@
 
 #endregion
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Business.PartyModel;
 
 namespace FlowGroup.Business.Tests.PartyModel
 {
-    [TestClass]
     public class PartyTests
     {
-        [TestMethod]
-        public void CanCreateCompany() {
+        [Fact]
+        public void CanCreateCompany()
+        {
             var company = new Company("MyLittleCompany");
 
-            Assert.IsInstanceOfType(company, typeof(Party));
-            Assert.IsNotNull(company.OrganizationName);
-            Assert.AreEqual(OrganizationalNameUse.LegalName, company.OrganizationName.Use);
-            Assert.AreEqual("MyLittleCompany", company.OrganizationName.ToString());
+            Assert.True(company is Party);
+            Assert.NotNull(company.OrganizationName);
+            Assert.Equal(OrganizationalNameUse.LegalName, company.OrganizationName.Use);
+            Assert.Equal("MyLittleCompany", company.OrganizationName.ToString());
         }
     }
 }

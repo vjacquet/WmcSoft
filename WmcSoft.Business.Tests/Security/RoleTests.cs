@@ -24,15 +24,15 @@
 
 #endregion
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Security
 {
-    [TestClass]
     public class RoleTests
     {
-        [TestMethod]
-        public void CanAssignPermissions() {
+        [Fact]
+        public void CanAssignPermissions()
+        {
             var read = Permissions.Read;
             var write = Permissions.Write;
 
@@ -42,9 +42,9 @@ namespace WmcSoft.Security
             var fileOpen = new FileOpenCommand();
             fileOpen.Grant(storage, everyone);
 
-            Assert.IsTrue(fileOpen.AccessControl[everyone, CommandPermissions.FileOpen]);
-            Assert.IsTrue(fileOpen.AccessControl[everyone, CommandPermissions.FileSave]);
-            Assert.IsFalse(fileOpen.AccessControl[everyone, read]);
+            Assert.True(fileOpen.AccessControl[everyone, CommandPermissions.FileOpen]);
+            Assert.True(fileOpen.AccessControl[everyone, CommandPermissions.FileSave]);
+            Assert.False(fileOpen.AccessControl[everyone, read]);
         }
     }
 
