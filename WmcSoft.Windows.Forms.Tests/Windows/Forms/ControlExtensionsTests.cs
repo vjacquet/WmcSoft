@@ -1,21 +1,21 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Windows.Forms
 {
-    [TestClass]
     public class ControlExtensionsTests
     {
-        Panel Build(string name, params Panel[] children) {
+        Panel Build(string name, params Panel[] children)
+        {
             var panel = new Panel { Name = name };
             panel.Controls.AddRange(children);
             return panel;
         }
 
-        [TestMethod]
-        public void CheckDescendantsAndSelf() {
+        [Fact]
+        public void CheckDescendantsAndSelf()
+        {
             var root = Build("A",
                 Build("B",
                     Build("C"),
@@ -30,12 +30,13 @@ namespace WmcSoft.Windows.Forms
             );
 
             var expected = "ABCDEFGHIJK";
-            var actual = String.Join("", root.DescendantsAndSelf().Select(x => x.Name));
-            Assert.AreEqual(expected, actual);
+            var actual = string.Join("", root.DescendantsAndSelf().Select(x => x.Name));
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckAncestorsAndSelf() {
+        [Fact]
+        public void CheckAncestorsAndSelf()
+        {
             Panel h;
             var root = Build("A",
                 Build("B",
@@ -50,12 +51,13 @@ namespace WmcSoft.Windows.Forms
                 Build("K")
             );
             var expected = "HGFA";
-            var actual = String.Join("", h.AncestorsAndSelf().Select(x => x.Name));
-            Assert.AreEqual(expected, actual);
+            var actual = string.Join("", h.AncestorsAndSelf().Select(x => x.Name));
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckDescendants() {
+        [Fact]
+        public void CheckDescendants()
+        {
             var root = Build("A",
                 Build("B",
                     Build("C"),
@@ -70,12 +72,13 @@ namespace WmcSoft.Windows.Forms
             );
 
             var expected = "BCDEFGHIJK";
-            var actual = String.Join("", root.Descendants().Select(x => x.Name));
-            Assert.AreEqual(expected, actual);
+            var actual = string.Join("", root.Descendants().Select(x => x.Name));
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckAncestors() {
+        [Fact]
+        public void CheckAncestors()
+        {
             Panel h;
             var root = Build("A",
                 Build("B",
@@ -90,8 +93,8 @@ namespace WmcSoft.Windows.Forms
                 Build("K")
             );
             var expected = "GFA";
-            var actual = String.Join("", h.Ancestors().Select(x => x.Name));
-            Assert.AreEqual(expected, actual);
+            var actual = string.Join("", h.Ancestors().Select(x => x.Name));
+            Assert.Equal(expected, actual);
         }
     }
 }
