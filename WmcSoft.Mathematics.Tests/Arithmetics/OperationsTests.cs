@@ -1,43 +1,46 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Algebra;
 using static WmcSoft.Arithmetics.Operations;
 
 namespace WmcSoft.Arithmetics
 {
-    [TestClass]
     public class OperationsTests
     {
-        [TestMethod]
-        public void CheckDotProduct() {
+        [Fact]
+        public void CheckDotProduct()
+        {
             double[] x = { 1d, 3d, 5d };
             double[] y = { 2d, 4d, 6d };
-            Assert.AreEqual(44d, DotProduct(x, y));
+            Assert.Equal(44d, DotProduct(x, y));
         }
 
-        [TestMethod]
-        public void CheckDotProductWithDifferentLengthVectors() {
+        [Fact]
+        public void CheckDotProductWithDifferentLengthVectors()
+        {
             double[] x = { 1d };
             double[] y = { 2d, 4d };
-            Assert.AreEqual(2d, DotProduct(x, y));
+            Assert.Equal(2d, DotProduct(x, y));
         }
 
-        [TestMethod]
-        public void CheckDotProductWithIntArithmetics() {
+        [Fact]
+        public void CheckDotProductWithIntArithmetics()
+        {
             int[] x = { 1, 3, 5 };
             int[] y = { 2, 4, 6 };
             var a = new Int32Arithmetics();
             var actual = a.DotProduct(x, y);
-            Assert.IsInstanceOfType(actual, typeof(Int32));
-            Assert.AreEqual(44, actual);
+            Assert.IsType<int>(actual);
+            Assert.Equal(44, actual);
         }
 
-        [TestMethod]
-        public void CheckPower() {
+        [Fact]
+        public void CheckPower()
+        {
             var g = new Multiplies();
             var actual = Operations.Power(g, 10d, 5);
             var expected = 100000d;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 
@@ -50,11 +53,13 @@ namespace WmcSoft.Arithmetics
             get { return 1d; }
         }
 
-        public double Eval(double x, double y) {
+        public double Eval(double x, double y)
+        {
             return x * y;
         }
 
-        public double Inverse(double x) {
+        public double Inverse(double x)
+        {
             return 1d / x;
         }
 

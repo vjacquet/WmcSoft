@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Xunit;
 using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Numerics.Tests
 {
-    [TestClass]
     public class Matrix3Tests
     {
-        [TestMethod]
-        public void CanConvert() {
+        [Fact]
+        public void CanConvert()
+        {
             var expected = new double[,] {
                 {1, 2, 3},
                 {4, 5, 6},
@@ -17,22 +16,24 @@ namespace WmcSoft.Numerics.Tests
             };
             var m = new Matrix3(expected);
             var actual = (double[,])m;
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckIdentity() {
+        [Fact]
+        public void CheckIdentity()
+        {
             var actual = Matrix3.Identity;
             var expected = new Matrix3(new double[,] {
                 {1, 0, 0},
                 {0, 1, 0},
                 {0, 0, 1},
             });
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanTranspose() {
+        [Fact]
+        public void CanTranspose()
+        {
             var m = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {4, 5, 6},
@@ -45,11 +46,12 @@ namespace WmcSoft.Numerics.Tests
                 {3, 6, 9},
             });
             var actual = m.Transpose();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanGetColumn() {
+        [Fact]
+        public void CanGetColumn()
+        {
             var m = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {4, 5, 6},
@@ -58,11 +60,12 @@ namespace WmcSoft.Numerics.Tests
 
             var expected = new double[] { 2, 5, 8 };
             var actual = m.Column(1).ToArray(3);
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanGetRow() {
+        [Fact]
+        public void CanGetRow()
+        {
             var m = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {4, 5, 6},
@@ -71,11 +74,12 @@ namespace WmcSoft.Numerics.Tests
 
             var expected = new double[] { 4, 5, 6 };
             var actual = m.Row(1).ToArray(3);
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanAddSquareMatrices() {
+        [Fact]
+        public void CanAddSquareMatrices()
+        {
             var m = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {4, 5, 6},
@@ -88,11 +92,12 @@ namespace WmcSoft.Numerics.Tests
                 {14, 16, 18},
             });
             var actual = m + m;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanSubtractSquareMatrices() {
+        [Fact]
+        public void CanSubtractSquareMatrices()
+        {
             var m = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {4, 5, 6},
@@ -101,11 +106,12 @@ namespace WmcSoft.Numerics.Tests
 
             var expected = Matrix3.Zero;
             var actual = m - m;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanMultiplySquareMatrices() {
+        [Fact]
+        public void CanMultiplySquareMatrices()
+        {
             var x = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {0, 1, 2},
@@ -123,11 +129,12 @@ namespace WmcSoft.Numerics.Tests
                 { 3, 2, 1},
             });
             var actual = x * y;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanMultiplyMatrices() {
+        [Fact]
+        public void CanMultiplyMatrices()
+        {
             var x = new Matrix3(new double[,] {
                 {1, 0, 0},
                 {2, 1, 0},
@@ -145,11 +152,12 @@ namespace WmcSoft.Numerics.Tests
                 {3, 8, 14},
             });
             var actual = x * y;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanComputeDet() {
+        [Fact]
+        public void CanComputeDet()
+        {
             var x = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {0, 1, 4},
@@ -157,11 +165,12 @@ namespace WmcSoft.Numerics.Tests
             });
             var expected = 1d;
             var actual = x.Det();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanInverse() {
+        [Fact]
+        public void CanInverse()
+        {
             var x = new Matrix3(new double[,] {
                 {1, 2, 3},
                 {0, 1, 4},
@@ -173,7 +182,7 @@ namespace WmcSoft.Numerics.Tests
                 {-5, 4, 1},
             });
             var actual = x.Inverse();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

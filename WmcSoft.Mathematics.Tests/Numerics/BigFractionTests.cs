@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Numerics.Tests
 {
-    [TestClass]
     public class BigFractionTests
     {
-        [TestMethod]
+        [Fact]
         public void CanAddWithRelativePrimeDenominators()
         {
             var x = new BigFraction(1, 2);
             var y = new BigFraction(1, 3);
 
-            Assert.AreEqual(new BigFraction(5, 6), x + y);
+            Assert.Equal(new BigFraction(5, 6), x + y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCompareBigFractions()
         {
             var data = new[] {
@@ -27,70 +26,70 @@ namespace WmcSoft.Numerics.Tests
                 new BigFraction(3,2),
             };
 
-            Assert.IsTrue(data.IsSorted());
-            Assert.IsTrue(data.Backwards().IsSorted(Comparer<BigFraction>.Default.Reverse()));
+            Assert.True(data.IsSorted());
+            Assert.True(data.Backwards().IsSorted(Comparer<BigFraction>.Default.Reverse()));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSubtractRelativePrimeDenominators()
         {
             var x = new BigFraction(1, 2);
             var y = new BigFraction(1, 3);
 
-            Assert.AreEqual(new BigFraction(1, 6), x - y);
+            Assert.Equal(new BigFraction(1, 6), x - y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanAddFractions()
         {
             var x = new BigFraction(1, 4);
             var y = new BigFraction(1, 6);
 
-            Assert.AreEqual(new BigFraction(5, 12), x + y);
+            Assert.Equal(new BigFraction(5, 12), x + y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSubtractFractions()
         {
             var x = new BigFraction(1, 4);
             var y = new BigFraction(1, 6);
 
-            Assert.AreEqual(new BigFraction(1, 12), x - y);
+            Assert.Equal(new BigFraction(1, 12), x - y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanMultiplyFractions()
         {
             var x = new BigFraction(1, 2);
             var y = new BigFraction(1, 3);
 
-            Assert.AreEqual(new BigFraction(1, 6), x * y);
+            Assert.Equal(new BigFraction(1, 6), x * y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDivideFractions()
         {
             var x = new BigFraction(1, 2);
             var y = new BigFraction(1, 3);
 
-            Assert.AreEqual(new BigFraction(3, 2), x / y);
+            Assert.Equal(new BigFraction(3, 2), x / y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSimplifyFraction()
         {
             var x = new BigFraction(2, 6);
-            Assert.AreEqual(new BigFraction(1, 3), x);
+            Assert.Equal(new BigFraction(1, 3), x);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDeconstructBigFraction()
         {
             var q = new BigFraction(4, 3);
             var (n, d) = q;
 
-            Assert.AreEqual(4, n);
-            Assert.AreEqual(3, d);
+            Assert.Equal(4, n);
+            Assert.Equal(3, d);
         }
     }
 }

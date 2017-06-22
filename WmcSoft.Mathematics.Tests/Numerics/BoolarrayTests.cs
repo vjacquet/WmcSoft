@@ -1,38 +1,29 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Numerics.Tests
 {
-    [TestClass]
     public class BoolarrayTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckBoolarray()
         {
             var x = new Boolarray(true, true, true, true);
             var y = new Boolarray(true, true, false, true);
             var z = new Boolarray(true, true, true, true);
 
-            if (x) { }
-            else { Assert.Fail(); }
+            if (x) { } else { Assert.True(false, "x"); }
 
-            if (!x) { Assert.Fail(); }
-            else { }
+            if (!x) { Assert.True(false, "!x"); } else { }
 
-            if (y) { Assert.Fail(); }
-            else { }
+            if (y) { Assert.True(false, "y"); } else { }
 
-            if (x && z) { }
-            else { Assert.Fail(); }
+            if (x && z) { } else { Assert.True(false, "x && z"); }
 
-            if (x || z) { }
-            else { Assert.Fail(); }
+            if (x || z) { } else { Assert.True(false, "x || z"); }
 
-            if (x || y) { }
-            else { Assert.Fail(); }
+            if (x || y) { } else { Assert.True(false, "x || y"); }
 
-            if (x && !y) { }
-            else { Assert.Fail(); }
+            if (x && !y) { } else { Assert.True(false, "x && !y"); }
         }
     }
 }

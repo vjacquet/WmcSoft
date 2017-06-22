@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Arithmetics;
 
 using static System.Math;
 
 namespace WmcSoft.Tests
 {
-    [TestClass]
     public class CalculatorTests
     {
         public class StringifierVisitor : ExpressionVisitor
@@ -184,17 +183,17 @@ namespace WmcSoft.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CanAddWithArithmetics()
         {
             var calc = new Int32Arithmetics();
 
-            Assert.AreEqual(2, calc.Add(1, 1));
-            Assert.AreEqual(0, calc.Add(1, -1));
-            Assert.AreEqual(1, calc.Add(1, 0));
+            Assert.Equal(2, calc.Add(1, 1));
+            Assert.Equal(0, calc.Add(1, -1));
+            Assert.Equal(1, calc.Add(1, 0));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanStringifyExpression()
         {
             Expression<Func<double, double>> eq = x => 2 * x + 5;
@@ -202,11 +201,11 @@ namespace WmcSoft.Tests
             var stringifier = new StringifierVisitor();
             var actual = stringifier.Accept(eq.Body);
 
-            Assert.IsNotNull(eq);
-            Assert.AreEqual("((2 * x) + 5)", actual);
+            Assert.NotNull(eq);
+            Assert.Equal("((2 * x) + 5)", actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanStringifyExpressionWithSin()
         {
             Expression<Func<double, double>> eq = x => Sin(x);
@@ -214,11 +213,11 @@ namespace WmcSoft.Tests
             var stringifier = new StringifierVisitor();
             var actual = stringifier.Accept(eq.Body);
 
-            Assert.IsNotNull(eq);
-            Assert.AreEqual("sin(x)", actual);
+            Assert.NotNull(eq);
+            Assert.Equal("sin(x)", actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSimplifyAddition()
         {
             Expression<Func<double, double>> eq = x => x + 0d;
@@ -229,11 +228,11 @@ namespace WmcSoft.Tests
             var stringifier = new StringifierVisitor();
             var actual = stringifier.Accept(simplified);
 
-            Assert.IsNotNull(eq);
-            Assert.AreEqual("x", actual);
+            Assert.NotNull(eq);
+            Assert.Equal("x", actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDeriveExpression()
         {
             Expression<Func<double, double>> eq = x => 2 * x + 5;
@@ -245,7 +244,7 @@ namespace WmcSoft.Tests
 
             var stringifier = new StringifierVisitor();
             var actual = stringifier.Accept(simplified);
-            Assert.AreEqual("2", actual);
+            Assert.Equal("2", actual);
         }
     }
 }

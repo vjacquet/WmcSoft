@@ -1,49 +1,52 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Statistics
 {
-    [TestClass]
     public class AccumulatorTests
     {
-        [TestMethod]
-        public void CanGetPropertiesWhenEmpty() {
+        [Fact]
+        public void CanGetPropertiesWhenEmpty()
+        {
             var a = new SamplesAccumulator();
-            Assert.AreEqual(0d, a.Mean);
-            Assert.AreEqual(0d, a.Variance);
-            Assert.AreEqual(0d, a.Sigma);
+            Assert.Equal(0d, a.Mean);
+            Assert.Equal(0d, a.Variance);
+            Assert.Equal(0d, a.Sigma);
         }
 
-        [TestMethod]
-        public void CanGetPropertiesWhenAddedOne() {
+        [Fact]
+        public void CanGetPropertiesWhenAddedOne()
+        {
             var a = new SamplesAccumulator(1d);
-            Assert.AreEqual(1d, a.Mean);
-            Assert.AreEqual(0d, a.Variance);
-            Assert.AreEqual(0d, a.Sigma);
+            Assert.Equal(1d, a.Mean);
+            Assert.Equal(0d, a.Variance);
+            Assert.Equal(0d, a.Sigma);
         }
 
-        [TestMethod]
-        public void CheckStraightforwardAccumulator() {
+        [Fact]
+        public void CheckStraightforwardAccumulator()
+        {
             var a = new StraightforwardAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-            Assert.AreEqual(5.5d, a.Mean);
-            Assert.AreEqual(8.25d, a.Variance);
-            Assert.AreEqual(2.872281323d, a.Sigma, 0.00000001d);
+            Assert.Equal(5.5d, a.Mean);
+            Assert.Equal(8.25d, a.Variance);
+            Assert.Equal(2.872281323d, a.Sigma, 8);
         }
 
-        [TestMethod]
-        public void CheckPopulationAccumulator() {
+        [Fact]
+        public void CheckPopulationAccumulator()
+        {
             var a = new PopulationAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-            Assert.AreEqual(5.5d, a.Mean);
-            Assert.AreEqual(8.25d, a.Variance);
-            Assert.AreEqual(2.872281323d, a.Sigma, 0.00000001d);
+            Assert.Equal(5.5d, a.Mean);
+            Assert.Equal(8.25d, a.Variance);
+            Assert.Equal(2.872281323d, a.Sigma, 8);
         }
 
-        [TestMethod]
-        public void CheckSamplesAccumulator() {
+        [Fact]
+        public void CheckSamplesAccumulator()
+        {
             var a = new SamplesAccumulator(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-            Assert.AreEqual(5.5d, a.Mean);
-            Assert.AreEqual(9.166666667d, a.Variance, 0.00000001d);
-            Assert.AreEqual(3.027650354d, a.Sigma, 0.00000001d);
+            Assert.Equal(5.5d, a.Mean);
+            Assert.Equal(9.166666667d, a.Variance, 8);
+            Assert.Equal(3.027650354d, a.Sigma, 8);
         }
     }
 }

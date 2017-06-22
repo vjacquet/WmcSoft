@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Numerics
 {
-    [TestClass]
     public class AlgorithmsTests
     {
-        [TestMethod]
-        public void CanFindGreatestCommonDivisor() {
+        [Fact]
+        public void CanFindGreatestCommonDivisor()
+        {
             var gcd = Algorithms.GreatestCommonDivisor(14, 42, 21);
-            Assert.AreEqual(7, gcd);
+            Assert.Equal(7, gcd);
         }
     }
 }
