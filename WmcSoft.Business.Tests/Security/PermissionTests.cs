@@ -153,6 +153,7 @@ namespace WmcSoft.Security
 
             Assert.False(required.Equals(authorized));
             Assert.False(authorized.Equals(required));
+            Assert.NotEqual<Permission>(authorized, required);
         }
     }
 }
