@@ -1,44 +1,42 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Units
 {
-    [TestClass]
     public class EqualsTests
     {
-        [TestMethod]
+        [Fact]
         public void EqualsUnit()
         {
             var expected = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
             var actual = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void op_equalityUnit()
         {
             var expected = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
             var actual = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
-            Assert.IsTrue(expected == actual);
+            Assert.True(expected == actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void op_greaterthanQuantity()
         {
             Quantity q1 = new Quantity(5, SI.Meter);
             Quantity q2 = new Quantity(10, SI.Meter);
-            Assert.IsTrue(q1 < q2);
+            Assert.True(q1 < q2);
         }
 
-        [TestMethod]
+        [Fact]
         public void op_equalityQuantity()
         {
             Quantity q1 = new Quantity(5, SI.Meter);
             Quantity q2 = new Quantity(5, SI.Meter);
-            Assert.IsTrue(q1 == q2);
-            Assert.IsFalse(null == q2);
-            Assert.IsFalse(q1 == null);
+            Assert.True(q1 == q2);
+            Assert.False(null == q2);
+            Assert.False(q1 == null);
         }
     }
 }
