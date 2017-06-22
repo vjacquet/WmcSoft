@@ -41,7 +41,7 @@ namespace WmcSoft.Data.OleDb
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
-        public static OleDbCommand CreateParametrizedCommand(this OleDbConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        public static OleDbCommand CreateParameterizedCommand(this OleDbConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
 

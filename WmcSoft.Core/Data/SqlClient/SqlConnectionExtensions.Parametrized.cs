@@ -41,7 +41,7 @@ namespace WmcSoft.Data.SqlClient
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
-        public static SqlCommand CreateParametrizedCommand(this SqlConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        public static SqlCommand CreateParameterizedCommand(this SqlConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
 

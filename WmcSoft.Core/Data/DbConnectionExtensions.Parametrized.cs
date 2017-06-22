@@ -73,7 +73,7 @@ namespace WmcSoft.Data
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
-        public static IDbCommand CreateParametrizedCommand(this IDbConnection connection, Func<IDbDataParameter, string, string> capture, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        public static IDbCommand CreateParameterizedCommand(this IDbConnection connection, Func<IDbDataParameter, string, string> capture, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
 

@@ -41,7 +41,7 @@ namespace WmcSoft.Data.Odbc
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
-        public static OdbcCommand CreateParametrizedCommand(this OdbcConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        public static OdbcCommand CreateParameterizedCommand(this OdbcConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
 
