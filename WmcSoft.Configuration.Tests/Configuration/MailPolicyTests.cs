@@ -1,23 +1,21 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Net.Mail;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Configuration
 {
-    [TestClass]
     public class MailPolicyTests
     {
-        [TestMethod]
+        [Fact]
         public void CanLoadMailPolicies()
         {
             var section = (TestSection)ConfigurationManager.GetSection("wmc");
             var policy = section.MailPolicies["SendNewsletter"];
-            Assert.IsNotNull(policy);
-            Assert.AreEqual("Newsletter", policy.Subject);
-            CollectionAssert.Contains(policy.ReplyTo, new MailAddress("noreply@wmcsoft.com"));
-            CollectionAssert.Contains(policy.To, new MailAddress("subscribers@rules.wmcsoft.com"));
-            CollectionAssert.Contains(policy.Bcc, new MailAddress("webmaster@wmcsoft.com"));
+            Assert.NotNull(policy);
+            Assert.Equal("Newsletter", policy.Subject);
+            Assert.Contains(new MailAddress("noreply@wmcsoft.com"), policy.ReplyTo);
+            Assert.Contains(new MailAddress("subscribers@rules.wmcsoft.com"), policy.To);
+            Assert.Contains(new MailAddress("webmaster@wmcsoft.com"), policy.Bcc);
         }
     }
 }

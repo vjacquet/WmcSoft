@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Diagnostics.Checkpoints;
 
 namespace WmcSoft.Configuration
 {
-    [TestClass]
     public class FactoryElementTests
     {
         static System.Configuration.Configuration OpenConfiguration(string name)
@@ -18,27 +17,7 @@ namespace WmcSoft.Configuration
             return ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
         }
 
-        static bool Thrown<TException>(Action action) where TException : Exception
-        {
-            try {
-                action();
-                return false;
-            } catch (TException) {
-                return true;
-            }
-        }
-
-        static bool Thrown<TException>(Func<object> func) where TException : Exception
-        {
-            try {
-                var r = func();
-                return false;
-            } catch (TException) {
-                return true;
-            }
-        }
-
-        [TestMethod]
+        [Fact]
         public void CanLoadFactorySection()
         {
             var configuration = OpenConfiguration("factory-valid");
@@ -46,17 +25,17 @@ namespace WmcSoft.Configuration
             var checkpoints = section.Checkpoints;
 
             var checkpoint1 = checkpoints["checkpoint1"];
-            Assert.AreEqual(typeof(CheckpointA), checkpoint1.Type);
-            Assert.AreEqual(5, checkpoint1.Level);
-            Assert.AreEqual("Value 1", checkpoint1.Parameters["undefined"]);
+            Assert.Equal(typeof(CheckpointA), checkpoint1.Type);
+            Assert.Equal(5, checkpoint1.Level);
+            Assert.Equal("Value 1", checkpoint1.Parameters["undefined"]);
 
             var checkpoint2 = checkpoints["checkpoint2"];
-            Assert.AreEqual(typeof(CheckpointA), checkpoint2.Type);
-            Assert.AreEqual(2, checkpoint2.Level);
-            Assert.AreEqual("Value 2", checkpoint2.Parameters["undefined"]);
+            Assert.Equal(typeof(CheckpointA), checkpoint2.Type);
+            Assert.Equal(2, checkpoint2.Level);
+            Assert.Equal("Value 2", checkpoint2.Parameters["undefined"]);
         }
 
-        [TestMethod]
+        [Fact]
         public void CannotAccessInvalidProperty()
         {
             var configuration = OpenConfiguration("factory-errors");
@@ -64,19 +43,19 @@ namespace WmcSoft.Configuration
             var checkpoints = section.Checkpoints;
 
             var checkpoint1 = checkpoints["checkpoint1"];
-            Assert.AreEqual(1, checkpoint1.ElementInformation.Errors.Count);
-            Assert.AreEqual(typeof(CheckpointA), checkpoint1.Type);
-            Assert.IsTrue(Thrown<ConfigurationErrorsException>(() => checkpoint1.Level));
+            Assert.Equal(1, checkpoint1.ElementInformation.Errors.Count);
+            Assert.Equal(typeof(CheckpointA), checkpoint1.Type);
+            Assert.Throws<ConfigurationErrorsException>(() => checkpoint1.Level);
 
             var checkpoint2 = checkpoints["checkpoint2"];
-            Assert.AreEqual(1, checkpoint2.ElementInformation.Errors.Count);
-            Assert.AreEqual(2, checkpoint2.Level);
-            Assert.IsTrue(Thrown<ConfigurationErrorsException>(() => checkpoint2.Type));
+            Assert.Equal(1, checkpoint2.ElementInformation.Errors.Count);
+            Assert.Equal(2, checkpoint2.Level);
+            Assert.Throws<ConfigurationErrorsException>(() => checkpoint2.Type);
 
             var checkpoint3 = checkpoints["checkpoint3"];
-            Assert.AreEqual(2, checkpoint3.ElementInformation.Errors.Count);
-            Assert.IsTrue(Thrown<ConfigurationErrorsException>(() => checkpoint3.Level));
-            Assert.IsTrue(Thrown<ConfigurationErrorsException>(() => checkpoint3.Type));
+            Assert.Equal(2, checkpoint3.ElementInformation.Errors.Count);
+            Assert.Throws<ConfigurationErrorsException>(() => checkpoint3.Level);
+            Assert.Throws<ConfigurationErrorsException>(() => checkpoint3.Type);
         }
     }
 
