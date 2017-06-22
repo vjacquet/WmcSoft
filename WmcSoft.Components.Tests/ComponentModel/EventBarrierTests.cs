@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.ComponentModel
 {
-    [TestClass]
     public class EventBarrierTests
     {
-        [TestMethod]
-        public void CanPreventEvent() {
+        [Fact]
+        public void CanPreventEvent()
+        {
             var bench = new EventBarrierBench();
             var a = new Listener();
             var b = new Listener();
@@ -17,24 +17,25 @@ namespace WmcSoft.ComponentModel
             bench.Notified += b.Listen;
 
             bench.Notify();
-            Assert.AreEqual(1, a.Called);
-            Assert.AreEqual(1, b.Called);
-        
+            Assert.Equal(1, a.Called);
+            Assert.Equal(1, b.Called);
+
             using (bench.RaiseBarrier(b)) {
                 bench.Notify();
             }
-            Assert.AreEqual(2, a.Called);
-            Assert.AreEqual(1, b.Called);
+            Assert.Equal(2, a.Called);
+            Assert.Equal(1, b.Called);
 
             bench.Notify();
-            Assert.AreEqual(3, a.Called);
-            Assert.AreEqual(2, b.Called);
+            Assert.Equal(3, a.Called);
+            Assert.Equal(2, b.Called);
         }
     }
 
     class Listener
     {
-        public void Listen(object sender, EventArgs e) {
+        public void Listen(object sender, EventArgs e)
+        {
             _called++;
         }
 
@@ -52,18 +53,21 @@ namespace WmcSoft.ComponentModel
         }
         private readonly object NotifiedEvent = new object();
 
-        protected virtual void OnNotified(EventArgs e) {
+        protected virtual void OnNotified(EventArgs e)
+        {
             EventHandler handler = (EventHandler)Events[NotifiedEvent];
             if (handler != null) {
                 handler(this, e);
             }
         }
 
-        public void Notify() {
+        public void Notify()
+        {
             OnNotified(EventArgs.Empty);
         }
 
-        public IDisposable RaiseBarrier(object target) {
+        public IDisposable RaiseBarrier(object target)
+        {
             return new EventBarrier(Events, target, NotifiedEvent);
         }
     }

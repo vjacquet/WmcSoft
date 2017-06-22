@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Drawing
 {
-    [TestClass]
     public class ImageExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void AssertBitmapDefaults() {
             using (var b = new Bitmap(100, 100)) {
-                Assert.AreEqual(96F, b.HorizontalResolution);
-                Assert.AreEqual(96F, b.VerticalResolution);
-                Assert.AreEqual(PixelFormat.Format32bppArgb, b.PixelFormat);
+                Assert.Equal(96F, b.HorizontalResolution);
+                Assert.Equal(96F, b.VerticalResolution);
+                Assert.Equal(PixelFormat.Format32bppArgb, b.PixelFormat);
             }
-        }
-
-        [TestMethod]
-        public void CanConvertImageToBitmap() {
         }
     }
 }

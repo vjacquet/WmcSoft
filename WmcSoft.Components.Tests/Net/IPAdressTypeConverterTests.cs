@@ -1,70 +1,70 @@
 ﻿using System;
-using System.Collections;
 using System.ComponentModel.Design.Serialization;
 using System.Net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.ComponentModel;
 
 namespace WmcSoft.Net
 {
-    [TestClass]
     public class IPAdressTypeConverterTests
     {
-        [TestMethod]
-        public void CanConvertFromString() {
+        [Fact]
+        public void CanConvertFromString()
+        {
             var converter = new IPAddressTypeConverter();
             var value = "127.0.0.1";
             var expected = IPAddress.Parse(value);
             var actual = converter.ConvertFrom(value);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        public void CannotConvertFromBadString() {
+        [Fact]
+        public void CannotConvertFromBadString()
+        {
             var converter = new IPAddressTypeConverter();
-            var expected = "127.0.0.Z";
-            var address = IPAddress.Parse(expected);
-            var actual = converter.ConvertTo(address, typeof(string));
-            Assert.AreEqual(expected, actual);
+            Assert.Throws<FormatException>(() => IPAddress.Parse("127.0.0.Z"));
         }
 
-        [TestMethod]
-        public void CanConvertFromBytes() {
+        [Fact]
+        public void CanConvertFromBytes()
+        {
             var converter = new IPAddressTypeConverter();
-            var value = new byte[] { 127, 0, 0, 1};
+            var value = new byte[] { 127, 0, 0, 1 };
             var expected = new IPAddress(value);
             var actual = converter.ConvertFrom(value);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanConvertToString() {
+        [Fact]
+        public void CanConvertToString()
+        {
             var converter = new IPAddressTypeConverter();
             var expected = "127.0.0.1";
             var address = IPAddress.Parse(expected);
             var actual = converter.ConvertTo(address, typeof(string));
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanConvertToBytes() {
+        [Fact]
+        public void CanConvertToBytes()
+        {
             var converter = new IPAddressTypeConverter();
             var expected = new byte[] { 127, 0, 0, 1 };
             var address = new IPAddress(expected);
             var actual = converter.ConvertTo<byte[]>(address);
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanConvertToInstanceDescriptor() {
+        [Fact]
+        public void CanConvertToInstanceDescriptor()
+        {
             var converter = new IPAddressTypeConverter();
             var expected = new byte[] { 127, 0, 0, 1 };
             var address = new IPAddress(expected);
             var descriptor = converter.ConvertTo<InstanceDescriptor>(address);
-            Assert.IsNotNull(descriptor);
+            Assert.NotNull(descriptor);
             var actual = (IPAddress)descriptor.Invoke();
-            Assert.AreEqual(address, actual);
+            Assert.Equal(address, actual);
         }
     }
 }
