@@ -513,9 +513,18 @@ namespace WmcSoft.Collections.Generic
 
         #region Equivalent
 
-        public static bool CollectionEquivalent<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+        public static bool Equivalent<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
         {
+            var t1 = new EnumerableTraits<TSource>(first);
+            var t2 = new EnumerableTraits<TSource>(second);
+
+            if (t1.HasCount && t2.HasCount && t1.Count != t2.Count)
+                return false;
+
             var bag = new Bag<TSource>(first);
+            if (t2.HasCount && bag.Count != t2.Count)
+                return false;
+
             foreach (var item in second) {
                 if (!bag.Remove(item))
                     return false;
@@ -763,6 +772,50 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Occurences
+
+        public static Dictionary<TSource, int> Occurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer = null)
+            where TSource : struct
+        {
+            if (source == null) throw new ArgumentNullException();
+
+            var dictionary = new Dictionary<TSource, int>(comparer);
+            foreach (var item in source) {
+                if (dictionary.TryGetValue(item, out int count)) {
+                    dictionary[item] = count + 1;
+                } else {
+                    dictionary.Add(item, 1);
+                }
+            }
+            return dictionary;
+        }
+
+        public static Dictionary<TSource, int> Occurences<TSource>(this IEnumerable<TSource> source, out int nullCount)
+            where TSource : class
+        {
+            return Occurences(source, null, out nullCount);
+        }
+
+        public static Dictionary<TSource, int> Occurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer, out int nullCount)
+            where TSource : class
+        {
+            if (source == null) throw new ArgumentNullException();
+
+            var dictionary = new Dictionary<TSource, int>(comparer);
+            nullCount = 0;
+            foreach (var item in source) {
+                if (item == null) {
+                    nullCount++;
+                } else if (dictionary.TryGetValue(item, out int count)) {
+                    dictionary[item] = count + 1;
+                } else {
+                    dictionary.Add(item, 1);
+                }
+            }
+            return dictionary;
+        }
+
+        #endregion
         #region Read
 
         [DebuggerStepThrough]

@@ -124,7 +124,7 @@ namespace WmcSoft.Collections.Generic
             };
             var actual = x.KeySymmetricDifferences(y);
             var expected = new[] { 0, 1, 3, 4 };
-            Assert.True(expected.CollectionEquivalent(actual));
+            Assert.True(expected.Equivalent(actual));
         }
 
         [Fact]

@@ -108,7 +108,7 @@ namespace WmcSoft.Text
                 { "shore", 7 },
             };
             var actual = trie.Select(p => new KeyValuePair<string, int>(new string(p.Key.ToArray()), p.Value));
-            Assert.True(expected.CollectionEquivalent(actual));
+            Assert.True(expected.Equivalent(actual));
         }
     }
 

@@ -71,8 +71,8 @@ namespace WmcSoft.TestTools.UnitTesting
             collection.CopyTo(buffer, 2);
             Assert.Equal(-1, buffer[0]);
             Assert.Equal(-2, buffer[1]);
-            Assert.True(buffer.CollectionEquivalent(new[] { -1, -2, 2, 1 }));
-            Assert.True(adapter.CollectionEquivalent(new[] { 1, 2 }));
+            Assert.True(buffer.Equivalent(new[] { -1, -2, 2, 1 }));
+            Assert.True(adapter.Equivalent(new[] { 1, 2 }));
 
             Assert.True(collection.Remove(2));
             Assert.Equal(1, collection.Count);
@@ -101,10 +101,10 @@ namespace WmcSoft.TestTools.UnitTesting
             Assert.Equal(5, set.Count);
 
             set.ExceptWith(new[] { 2, 4 });
-            Assert.True(adapter.CollectionEquivalent(new[] { 1, 3, 5 }));
+            Assert.True(adapter.Equivalent(new[] { 1, 3, 5 }));
 
             set.UnionWith(new[] { 2, 3, 4 });
-            Assert.True(adapter.CollectionEquivalent(new[] { 1, 2, 3, 4, 5 }));
+            Assert.True(adapter.Equivalent(new[] { 1, 2, 3, 4, 5 }));
 
             set.IntersectWith(new[] { 2, 4, 6 });
             Assert.Equal(new int[] { 2, 4 }, adapter);
@@ -116,9 +116,9 @@ namespace WmcSoft.TestTools.UnitTesting
             set.Add(1);
             set.Add(2);
             set.Add(3);
-            Assert.True(adapter.CollectionEquivalent(new[] { 1, 2, 3 }));
+            Assert.True(adapter.Equivalent(new[] { 1, 2, 3 }));
             set.SymmetricExceptWith(new[] { 2, 4 });
-            Assert.True(adapter.CollectionEquivalent(new[] { 1, 3, 4 }));
+            Assert.True(adapter.Equivalent(new[] { 1, 3, 4 }));
 
             CheckSubsetAndProperSubsetOnDifferentSets(set);
             CheckSubsetAndProperSubsetOnEquivalentSets(set);
