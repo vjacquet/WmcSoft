@@ -1,61 +1,64 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class UpperAlphaCounterTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(OverflowException))]
-        public void CanUpperLatinCounterDetectOverflowOnNegativeValues() {
-            var value = new UpperAlphaCounter(-1);
+        [Fact]
+        public void CanUpperLatinCounterDetectOverflowOnNegativeValues()
+        {
+            Assert.Throws<OverflowException>(() => new UpperAlphaCounter(-1));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(OverflowException))]
-        public void CanUpperLatinCounterDetectOverflow() {
+        [Fact]
+        public void CanUpperLatinCounterDetectOverflow()
+        {
             var value = UpperAlphaCounter.MaxValue;
-            value++;
+            Assert.Throws<OverflowException>(() => value++);
         }
 
-        [TestMethod]
-        public void CanPreIncrementUpperLatinCounter() {
+        [Fact]
+        public void CanPreIncrementUpperLatinCounter()
+        {
             var m = new UpperAlphaCounter("C");
             var n = new UpperAlphaCounter("D");
             var x = m;
 
-            Assert.AreEqual(n, ++x);
+            Assert.Equal(n, ++x);
         }
 
-        [TestMethod]
-        public void CanPostIncrementUpperLatinCounter() {
+        [Fact]
+        public void CanPostIncrementUpperLatinCounter()
+        {
             var m = new UpperAlphaCounter("C");
             var n = new UpperAlphaCounter("D");
             var x = m;
 
-            Assert.AreEqual(m, x++);
-            Assert.AreEqual(n, x);
+            Assert.Equal(m, x++);
+            Assert.Equal(n, x);
         }
 
-        [TestMethod]
-        public void CanUpperLatinCounterIncrementOverOneLetter() {
+        [Fact]
+        public void CanUpperLatinCounterIncrementOverOneLetter()
+        {
             var actual = new UpperAlphaCounter("Z");
             var expected = new UpperAlphaCounter("AA");
             actual++;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanCompareUpperLatinCounter() {
+        [Fact]
+        public void CanCompareUpperLatinCounter()
+        {
             var m = new UpperAlphaCounter("C");
             var n = new UpperAlphaCounter("E");
             var q = new UpperAlphaCounter("E");
 
-            Assert.IsTrue(m < n);
-            Assert.IsTrue(n > m);
-            Assert.IsTrue(n == q);
-            Assert.IsTrue(m != q);
+            Assert.True(m < n);
+            Assert.True(n > m);
+            Assert.True(n == q);
+            Assert.True(m != q);
         }
     }
 }

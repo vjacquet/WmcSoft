@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.Collections.Generic;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class DictionaryExtensionsTests
     {
         // <http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html>
@@ -23,22 +21,22 @@ namespace WmcSoft.Collections.Generic
             return (char)((short)'a' + n - 1);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckExceptWith()
         {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.ExceptWith(vowels);
-            Assert.AreEqual(4, dictionary.Count);
-            Assert.IsFalse(dictionary.ContainsKey('a'));
-            Assert.IsTrue(dictionary.ContainsKey('b'));
-            Assert.IsTrue(dictionary.ContainsKey('c'));
-            Assert.IsTrue(dictionary.ContainsKey('d'));
-            Assert.IsFalse(dictionary.ContainsKey('e'));
-            Assert.IsTrue(dictionary.ContainsKey('f'));
+            Assert.Equal(4, dictionary.Count);
+            Assert.False(dictionary.ContainsKey('a'));
+            Assert.True(dictionary.ContainsKey('b'));
+            Assert.True(dictionary.ContainsKey('c'));
+            Assert.True(dictionary.ContainsKey('d'));
+            Assert.False(dictionary.ContainsKey('e'));
+            Assert.True(dictionary.ContainsKey('f'));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckExceptWithWithPredicate()
         {
             var other = new Dictionary<char, int> {
@@ -47,68 +45,68 @@ namespace WmcSoft.Collections.Generic
             };
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.ExceptWith(other, EqualityComparer<int>.Default);
-            Assert.AreEqual(5, dictionary.Count);
-            Assert.IsTrue(dictionary.ContainsKey('a'));
-            Assert.IsTrue(dictionary.ContainsKey('b'));
-            Assert.IsTrue(dictionary.ContainsKey('c'));
-            Assert.IsTrue(dictionary.ContainsKey('d'));
-            Assert.IsFalse(dictionary.ContainsKey('e'));
-            Assert.IsTrue(dictionary.ContainsKey('f'));
+            Assert.Equal(5, dictionary.Count);
+            Assert.True(dictionary.ContainsKey('a'));
+            Assert.True(dictionary.ContainsKey('b'));
+            Assert.True(dictionary.ContainsKey('c'));
+            Assert.True(dictionary.ContainsKey('d'));
+            Assert.False(dictionary.ContainsKey('e'));
+            Assert.True(dictionary.ContainsKey('f'));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIntersectWith()
         {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.IntersectWith(vowels);
-            Assert.AreEqual(2, dictionary.Count);
-            Assert.AreEqual(1, dictionary['a']);
-            Assert.AreEqual(5, dictionary['e']);
+            Assert.Equal(2, dictionary.Count);
+            Assert.Equal(1, dictionary['a']);
+            Assert.Equal(5, dictionary['e']);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIntersectWithWithMerger()
         {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.IntersectWith(vowels, (x, y) => y);
-            Assert.AreEqual(2, dictionary.Count);
-            Assert.AreEqual(812, dictionary['a']);
-            Assert.AreEqual(1202, dictionary['e']);
+            Assert.Equal(2, dictionary.Count);
+            Assert.Equal(812, dictionary['a']);
+            Assert.Equal(1202, dictionary['e']);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckUnionWith()
         {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.UnionWith(vowels);
-            Assert.AreEqual(9, dictionary.Count);
-            Assert.AreEqual(2, dictionary['b']);
-            Assert.AreEqual(812, dictionary['a']);
-            Assert.AreEqual(1202, dictionary['e']);
-            Assert.AreEqual(731, dictionary['i']);
-            Assert.AreEqual(768, dictionary['o']);
-            Assert.AreEqual(288, dictionary['u']);
+            Assert.Equal(9, dictionary.Count);
+            Assert.Equal(2, dictionary['b']);
+            Assert.Equal(812, dictionary['a']);
+            Assert.Equal(1202, dictionary['e']);
+            Assert.Equal(731, dictionary['i']);
+            Assert.Equal(768, dictionary['o']);
+            Assert.Equal(288, dictionary['u']);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckUnionWithWithMerger()
         {
             var vowels = VowelFrequencies;
             var dictionary = Enumerable.Range(1, 6).ToDictionary(NthLowerASCIILetter);
             dictionary.UnionWith(vowels, (x, y) => x);
-            Assert.AreEqual(9, dictionary.Count);
-            Assert.AreEqual(2, dictionary['b']);
-            Assert.AreEqual(1, dictionary['a']);
-            Assert.AreEqual(5, dictionary['e']);
-            Assert.AreEqual(731, dictionary['i']);
-            Assert.AreEqual(768, dictionary['o']);
-            Assert.AreEqual(288, dictionary['u']);
+            Assert.Equal(9, dictionary.Count);
+            Assert.Equal(2, dictionary['b']);
+            Assert.Equal(1, dictionary['a']);
+            Assert.Equal(5, dictionary['e']);
+            Assert.Equal(731, dictionary['i']);
+            Assert.Equal(768, dictionary['o']);
+            Assert.Equal(288, dictionary['u']);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckKeySymmetricDifferences()
         {
             var x = new Dictionary<int, string> {
@@ -126,10 +124,10 @@ namespace WmcSoft.Collections.Generic
             };
             var actual = x.KeySymmetricDifferences(y);
             var expected = new[] { 0, 1, 3, 4 };
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.True(expected.CollectionEquivalent(actual));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRenameExistingKey()
         {
             var dictionary = new Dictionary<int, string> {
@@ -140,13 +138,13 @@ namespace WmcSoft.Collections.Generic
             };
 
             var result = dictionary.RenameKey(1, 0);
-            Assert.IsTrue(result);
-            Assert.IsTrue(dictionary.ContainsKey(0));
-            Assert.IsFalse(dictionary.ContainsKey(1));
-            Assert.AreEqual("zero", dictionary[0]);
+            Assert.True(result);
+            Assert.True(dictionary.ContainsKey(0));
+            Assert.False(dictionary.ContainsKey(1));
+            Assert.Equal("zero", dictionary[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckRenamingNonExistingKeyReturnsFalse()
         {
             var dictionary = new Dictionary<int, string> {
@@ -156,13 +154,12 @@ namespace WmcSoft.Collections.Generic
                 { 5, "five" },
             };
             var result = dictionary.RenameKey(1, 0);
-            Assert.IsFalse(result);
-            Assert.IsTrue(dictionary.ContainsKey(0));
-            Assert.IsFalse(dictionary.ContainsKey(1));
+            Assert.False(result);
+            Assert.True(dictionary.ContainsKey(0));
+            Assert.False(dictionary.ContainsKey(1));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = false)]
+        [Fact]
         public void CheckConflictingKeyRenamesThrows()
         {
             var dictionary = new Dictionary<int, string> {
@@ -171,8 +168,7 @@ namespace WmcSoft.Collections.Generic
                 { 3, "three" },
                 { 5, "five" },
             };
-            var result = dictionary.RenameKey(0, 2);
-            Assert.Inconclusive();
+            Assert.Throws<ArgumentException>(() => dictionary.RenameKey(0, 2));
         }
     }
 }

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class RopeTests
     {
-        [TestMethod]
+        [Fact]
         public void CanCreateRope()
         {
             var rope = new Rope("Hello");
@@ -19,11 +13,11 @@ namespace WmcSoft.Text
             rope.Append("!");
 
             var expected = "Hello World!";
-            Assert.AreEqual(expected.Length, rope.Length);
-            Assert.AreEqual(expected, rope.ToString());
+            Assert.Equal(expected.Length, rope.Length);
+            Assert.Equal(expected, rope.ToString());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSubstringRope()
         {
             var rope = new Rope("Hello");
@@ -31,7 +25,7 @@ namespace WmcSoft.Text
             rope.Insert(5, " ");
             rope.Append("!");
 
-            Assert.AreEqual("lo W", rope.Substring(3, 4));
+            Assert.Equal("lo W", rope.Substring(3, 4));
         }
     }
 }

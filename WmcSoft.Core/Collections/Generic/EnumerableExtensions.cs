@@ -511,6 +511,20 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Equivalent
+
+        public static bool CollectionEquivalent<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+        {
+            var bag = new Bag<TSource>(first);
+            foreach (var item in second) {
+                if (!bag.Remove(item))
+                    return false;
+            }
+            return bag.Count == 0;
+        }
+
+        #endregion
+
         #region Extract
 
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value)

@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Xml.XPath
 {
-    [TestClass]
     public class ObjectXPathNavigatorTests
     {
-        [TestMethod]
-        public void CanConvertObjectToXml() {
+        [Fact]
+        public void CanConvertObjectToXml()
+        {
             var data = new Sample {
                 Name = "name",
                 Date = new DateTime(1973, 5, 2),
@@ -29,7 +26,7 @@ namespace WmcSoft.Xml.XPath
                 writer.WriteNode(nav, true);
             }
             var actual = sb.ToString();
-            Assert.IsNotNull(actual);
+            Assert.NotNull(actual);
         }
     }
 

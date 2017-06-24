@@ -1,73 +1,72 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using static WmcSoft.BitArithmetics;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class BitArithmeticsTests
     {
-        [TestMethod]
+        [Fact]
         public void CanTurnOffRightMostOne() {
             uint x = 0x58; // 0101 1000;
             uint y = 0x50; // 0101 0000;
-            Assert.AreEqual(y, TurnOffRightMostOne(x));
+            Assert.Equal(y, TurnOffRightMostOne(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanTurnOnRightMostZero() {
             uint x = 0xC7; // 1010 0111;
             uint y = 0xCF; // 1010 1111;
-            Assert.AreEqual(y, TurnOnRightMostZero(x));
+            Assert.Equal(y, TurnOnRightMostZero(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanTurnOffTrailingOnes() {
             uint x = 0xC7; // 1010 0111;
             uint y = 0xC0; // 1010 0000;
-            Assert.AreEqual(y, TurnOffTrailingOnes(x));
+            Assert.Equal(y, TurnOffTrailingOnes(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanTurnOnTrailingZeroes() {
             uint x = 0xC8; // 1010 1000;
             uint y = 0xCF; // 1010 1111;
-            Assert.AreEqual(y, TurnOnTrailingZeroes(x));
+            Assert.Equal(y, TurnOnTrailingZeroes(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanMarkRightMostZero() {
             uint x = 0xC7; // 1010 0111;
             uint y = 0x08; // 0000 1000;
-            Assert.AreEqual(y, MarkRightMostZero(x));
+            Assert.Equal(y, MarkRightMostZero(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanMarkRightMostOne() {
             uint x = 0xC8; // 1010 1000;
             uint y = 0x08; // 0000 1000;
-            Assert.AreEqual(y, MarkRightMostOne(x));
+            Assert.Equal(y, MarkRightMostOne(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCountBits() {
             uint x = 0xC8; // 1010 1000;
-            Assert.AreEqual(3, CountBits(x));
+            Assert.Equal(3, CountBits(x));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckBitwiseHammingDistance() {
-            //Assert.AreEqual(2, Algorithms.Hamming(0b01011101, 0b01001001));
-            Assert.AreEqual(2, Hamming(0x5d, 0x49));
+            //Assert.Equal(2, Algorithms.Hamming(0b01011101, 0b01001001));
+            Assert.Equal(2, Hamming(0x5d, 0x49));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckGrayConversions() {
             var a = ToGray(31);
             var b = ToGray(32);
 
-            Assert.AreEqual(31u, FromGray(a));
-            Assert.AreEqual(32u, FromGray(b));
-            Assert.AreEqual(1, Hamming(a, b));
+            Assert.Equal(31u, FromGray(a));
+            Assert.Equal(32u, FromGray(b));
+            Assert.Equal(1, Hamming(a, b));
         }
     }
 }

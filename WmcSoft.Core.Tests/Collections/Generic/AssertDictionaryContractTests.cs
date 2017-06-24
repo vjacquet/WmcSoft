@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -11,68 +11,73 @@ namespace WmcSoft.Collections.Generic
         protected abstract IDictionary<TKey, TValue> CreateDictionary();
         protected abstract IEnumerable<KeyValuePair<TKey, TValue>> GetSamples();
 
-        [TestMethod]
-        public void CanConstructListDictionary() {
+        [Fact]
+        public void CanConstructListDictionary()
+        {
             var dictionary = CreateDictionary();
-            Assert.IsNotNull(dictionary);
+            Assert.NotNull(dictionary);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void KeyCannotBeNullOnAdd() {
+        [Fact]
+        public void KeyCannotBeNullOnAdd()
+        {
             var dictionary = CreateDictionary();
-            dictionary.Add(null, default(TValue));
+            Assert.Throws<ArgumentNullException>(() => dictionary.Add(null, default(TValue)));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void KeyCannotBeNullOnRemove() {
+        [Fact]
+        public void KeyCannotBeNullOnRemove()
+        {
             var dictionary = CreateDictionary();
             var sample = GetSamples().ToArray();
             dictionary.Add(sample[0].Key, sample[0].Value);
-            dictionary.Remove(null);
+            Assert.Throws<ArgumentNullException>(() => dictionary.Remove(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CannotAddDuplicateKeys() {
+        [Fact]
+        public void CannotAddDuplicateKeys()
+        {
             var dictionary = CreateDictionary();
             var samples = GetSamples().ToArray();
-            dictionary.Add(samples[0].Key, samples[0].Value);
-            dictionary.Add(samples[0].Key, samples[1].Value);
+            Assert.Throws<ArgumentException>(() => {
+                dictionary.Add(samples[0].Key, samples[0].Value);
+                dictionary.Add(samples[0].Key, samples[1].Value);
+            });
         }
 
-        [TestMethod]
-        public void CanRemoveKey() {
+        [Fact]
+        public void CanRemoveKey()
+        {
             var dictionary = CreateDictionary();
             var samples = GetSamples().ToArray();
             foreach (var sample in samples)
                 dictionary.Add(sample);
-            Assert.IsTrue(dictionary.Remove(samples[1].Key));
-            Assert.AreEqual(samples.Length - 1, dictionary.Count);
+            Assert.True(dictionary.Remove(samples[1].Key));
+            Assert.Equal(samples.Length - 1, dictionary.Count);
         }
 
-        [TestMethod]
-        public void CanRemoveItem() {
+        [Fact]
+        public void CanRemoveItem()
+        {
             var dictionary = CreateDictionary();
             var samples = GetSamples().ToArray();
             foreach (var sample in samples)
                 dictionary.Add(sample);
             var item = samples[1];
-            Assert.IsTrue(dictionary.Remove(item));
-            Assert.AreEqual(samples.Length - 1, dictionary.Count);
+            Assert.True(dictionary.Remove(item));
+            Assert.Equal(samples.Length - 1, dictionary.Count);
         }
 
-        [TestMethod]
-        public void CannotRemoveItemWithDifferentValue() {
+        [Fact]
+        public void CannotRemoveItemWithDifferentValue()
+        {
             var dictionary = CreateDictionary();
             var samples = GetSamples().ToArray();
             foreach (var sample in samples)
                 dictionary.Add(sample);
             var item = new KeyValuePair<TKey, TValue>(samples[1].Key, samples[0].Value);
-            Assert.IsFalse(dictionary.Remove(item));
-            Assert.AreEqual(samples.Length, dictionary.Count);
+            Assert.False(dictionary.Remove(item));
+            Assert.Equal(samples.Length, dictionary.Count);
         }
-
     }
 }

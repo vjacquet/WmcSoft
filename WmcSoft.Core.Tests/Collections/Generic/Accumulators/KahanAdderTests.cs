@@ -1,12 +1,11 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic.Accumulators
 {
-    [TestClass]
     public class KahanAdderTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckKahanAdder()
         {
             var values = new[] { 10000.0d, 3.14159d, 2.71828d };
@@ -17,10 +16,10 @@ namespace WmcSoft.Collections.Generic.Accumulators
             }
 
             var expected = 10005.85987d;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
 
             var naive = values.Sum();
-            Assert.AreNotEqual(naive, actual);
+            Assert.NotEqual(naive, actual);
         }
     }
 }

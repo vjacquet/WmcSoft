@@ -1,13 +1,13 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class SuffixArrayTests
     {
-        [TestMethod]
-        public void CanCreateSuffixArray() {
+        [Fact]
+        public void CanCreateSuffixArray()
+        {
             var suffixes = new SuffixArray("aacaagtttacaagc");
             var actual = suffixes.ToArray();
             var expected = new[] {
@@ -27,7 +27,7 @@ namespace WmcSoft.Text
                 "ttacaagc",
                 "tttacaagc",
             };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

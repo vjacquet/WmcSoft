@@ -1,39 +1,40 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Threading
 {
-    [TestClass]
     public class ThreadStaticServiceContainerTests
     {
         class Snitch : IDisposable
         {
             ConcurrentQueue<string> _calls;
 
-            public Snitch() {
+            public Snitch()
+            {
                 _calls = new ConcurrentQueue<string>();
             }
 
-            public Snitch Call(string value) {
+            public Snitch Call(string value)
+            {
                 _calls.Enqueue(value);
                 return this;
             }
-            public string[] CalledBy() {
+            public string[] CalledBy()
+            {
                 return _calls.ToArray();
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 Call("Disposed");
             }
         }
 
-        [TestMethod]
-        public void CheckDisposeOnServices() {
+        [Fact]
+        public void CheckDisposeOnServices()
+        {
             var snitch = new Snitch();
             var manual = new ManualResetEvent(false);
             using (var serviceContainer = new ThreadStaticServiceContainer()) {
@@ -44,21 +45,23 @@ namespace WmcSoft.Threading
             }
             var expected = new[] { "Created", "Disposed" };
             var actual = snitch.CalledBy();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckDisposeOnServicesNotRun() {
+        [Fact]
+        public void CheckDisposeOnServicesNotRun()
+        {
             var snitch = new Snitch();
             using (var serviceContainer = new ThreadStaticServiceContainer()) {
                 serviceContainer.AddService(typeof(Snitch), (container, serviceType) => snitch.Call("Created"));
             }
             var expected = new string[0];
             var actual = snitch.CalledBy();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        static void Run(IServiceProvider provider) {
+        static void Run(IServiceProvider provider)
+        {
             var manual = provider.GetService<ManualResetEvent>();
             var snitch = provider.GetService<Snitch>();
             manual.Set();

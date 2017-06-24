@@ -1,13 +1,12 @@
 ﻿using System.Data;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Data
 {
-    [TestClass]
     public class DataRowCollectionExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void CanQueryDataRowCollection()
         {
             var dt = new DataTable();
@@ -19,7 +18,7 @@ namespace WmcSoft.Data
             var query = from r in dt
                         where "tintin" == r.Field<string>("Name")
                         select r;
-            Assert.IsTrue(query.Count() == 1);
+            Assert.True(query.Count() == 1);
         }
     }
 }

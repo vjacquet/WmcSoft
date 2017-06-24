@@ -350,6 +350,26 @@ namespace WmcSoft
 
         #endregion
 
+        #region Unfold 
+
+        /// <summary>
+        ///  Generates a sequence of values by recursively calling the accumulator on the result of the previous call.
+        /// </summary>
+        /// <typeparam name="T">The type of parameters</typeparam>
+        /// <param name="accumulator">The accumulator function.</param>
+        /// <param name="seed">The seed.</param>
+        /// <returns>The sequence of values.</returns>
+        public static IEnumerable<T> Unfold<T>(this Func<T, T> accumulator, T seed = default(T))
+        {
+            var next = seed;
+            while (true) {
+                yield return next;
+                next = accumulator(next);
+            }
+        }
+
+        #endregion
+
         #region Logical operators
 
         public static Func<T, bool> Negation<T>(this Func<T, bool> predicate)

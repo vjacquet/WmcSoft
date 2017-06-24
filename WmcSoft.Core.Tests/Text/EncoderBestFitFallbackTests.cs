@@ -1,43 +1,46 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class EncoderBestFitFallbackTests
     {
-        [TestMethod]
-        public void CanFallbackAccents() {
+        [Fact]
+        public void CanFallbackAccents()
+        {
             var value = "àçéèêëïîôùû";
             var expected = "aceeeeiiouu";
             var actual = Encoding.ASCII.BestFitTranscode(value);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanFallbackUppercaseAccents() {
+        [Fact]
+        public void CanFallbackUppercaseAccents()
+        {
             var value = "ÀÇÉÈÊËÏÎÔÙÛ";
             var expected = "ACEEEEIIOUU";
             var actual = Encoding.ASCII.BestFitTranscode(value);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CannotFallbackOelig() {
+        [Fact]
+        public void CannotFallbackOelig()
+        {
             var value = "œ";
             var expected = "?";
             var actual = Encoding.ASCII.BestFitTranscode(value);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanSetUnknownChar() {
+        [Fact]
+        public void CanSetUnknownChar()
+        {
             var value = "œ";
             var expected = "#";
             var actual = Encoding.ASCII.BestFitTranscode(value, "#");
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

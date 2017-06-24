@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Reflection
 {
-    [TestClass]
     public class ReflectionExtensionsTests
     {
         public class Bench
@@ -15,33 +11,35 @@ namespace WmcSoft.Reflection
             public int AInt32 { get; set; }
         }
 
-        [TestMethod]
-        public void CanGetNullValue() {
+        [Fact]
+        public void CanGetNullValue()
+        {
             var bench = new Bench { AString = null };
             var actual = typeof(Bench).GetProperty("AString").GetValue<string>(bench);
-            Assert.IsNull(actual);
+            Assert.Null(actual);
         }
 
-        [TestMethod]
-        public void CanGetValueConvertedToString() {
+        [Fact]
+        public void CanGetValueConvertedToString()
+        {
             var bench = new Bench { AInt32 = 51 };
             var actual = typeof(Bench).GetProperty("AInt32").GetValue<string>(bench);
-            Assert.AreEqual("51", actual);
+            Assert.Equal("51", actual);
         }
 
-        [TestMethod]
-        public void CanGetValueConvertedToInt32() {
+        [Fact]
+        public void CanGetValueConvertedToInt32()
+        {
             var bench = new Bench { AString = "51" };
             var actual = typeof(Bench).GetProperty("AString").GetValue<int>(bench);
-            Assert.AreEqual(51, actual);
+            Assert.Equal(51, actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        public void CannotGetValueThatCannotGetConvertedToInt32() {
+        [Fact]
+        public void CannotGetValueThatCannotGetConvertedToInt32()
+        {
             var bench = new Bench { AString = "abc" };
-            var actual = typeof(Bench).GetProperty("AString").GetValue<int>(bench);
-            Assert.AreEqual(51, actual);
+            Assert.Throws<FormatException>(() => typeof(Bench).GetProperty("AString").GetValue<int>(bench));
         }
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.ComponentModel;
 
 namespace WmcSoft.Reflection
 {
-    [TestClass]
     public class TypeExtensionsTests
     {
         #region Test classes
@@ -31,47 +29,53 @@ namespace WmcSoft.Reflection
 
         #endregion
 
-        [TestMethod]
-        public void AssertIsOverriden() {
+        [Fact]
+        public void AssertIsOverriden()
+        {
             var m = typeof(Uri).GetMethod("GetHashCode", BindingFlags.Public | BindingFlags.Instance);
             var actual = m.DeclaringType != typeof(Object);
-            Assert.IsTrue(actual);
+            Assert.True(actual);
         }
 
-        [TestMethod]
-        public void CheckEnumerateDefinitions() {
+        [Fact]
+        public void CheckEnumerateDefinitions()
+        {
             var m = typeof(Uri).GetMethod("GetHashCode", BindingFlags.Public | BindingFlags.Instance);
             var expected = new Type[] { typeof(Uri), typeof(object) };
             var actual = m.EnumerateDefinitions().Select(d => d.DeclaringType).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckGetInheritedDescription() {
+        [Fact]
+        public void CheckGetInheritedDescription()
+        {
             var expected = "The B class";
             var actual = typeof(C).GetDescription(true);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckGetDescription() {
+        [Fact]
+        public void CheckGetDescription()
+        {
             var expected = "";
             var actual = typeof(C).GetDescription(false);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckGetInheritedDisplayName() {
+        [Fact]
+        public void CheckGetInheritedDisplayName()
+        {
             var expected = "b";
             var actual = typeof(C).GetDisplayName(true);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckGetDisplayName() {
+        [Fact]
+        public void CheckGetDisplayName()
+        {
             var expected = "C";
             var actual = typeof(C).GetDisplayName(false);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

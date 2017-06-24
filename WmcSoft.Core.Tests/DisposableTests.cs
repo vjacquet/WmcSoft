@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class DisposableTests
     {
-        [TestMethod]
-        public void CheckDisposableStackDisposeInReverseOrder() {
+        [Fact]
+        public void CheckDisposableStackDisposeInReverseOrder()
+        {
             int a = 0;
             int b = 0;
             int c = 0;
@@ -24,9 +19,9 @@ namespace WmcSoft
             };
             bin.Dispose();
 
-            Assert.AreEqual(1, c);
-            Assert.AreEqual(2, b);
-            Assert.AreEqual(3, a);
+            Assert.Equal(1, c);
+            Assert.Equal(2, b);
+            Assert.Equal(3, a);
         }
     }
 }

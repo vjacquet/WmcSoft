@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WmcSoft.Collections.Generic;
+using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class TrieTests
     {
-        [TestMethod]
-        public void CanCreateTrie() {
+        [Fact]
+        public void CanCreateTrie()
+        {
             var trie = new Trie<char, int> {
                 { "she", 0 },
                 { "sells", 1 },
@@ -20,13 +21,14 @@ namespace WmcSoft.Text
                 { "shore", 7 },
             };
 
-            Assert.AreEqual(3, trie["shells".AsReadOnlyList()]);
-            Assert.AreEqual(0, trie["she".AsReadOnlyList()]);
-            Assert.AreEqual(7, trie["shore".AsReadOnlyList()]);
+            Assert.Equal(3, trie["shells".AsReadOnlyList()]);
+            Assert.Equal(0, trie["she".AsReadOnlyList()]);
+            Assert.Equal(7, trie["shore".AsReadOnlyList()]);
         }
 
-        [TestMethod]
-        public void CanRemoveFromTrie() {
+        [Fact]
+        public void CanRemoveFromTrie()
+        {
             var trie = new Trie<char, int> {
                 { "she", 0 },
                 { "sells", 1 },
@@ -37,19 +39,20 @@ namespace WmcSoft.Text
                 { "shore", 7 },
             };
 
-            Assert.AreEqual(7, trie.Count);
-            Assert.IsTrue(trie.ContainsKey("sells"));
-            Assert.IsTrue(trie.ContainsKey("shells"));
+            Assert.Equal(7, trie.Count);
+            Assert.True(trie.ContainsKey("sells"));
+            Assert.True(trie.ContainsKey("shells"));
 
             var removed = trie.Remove("sells");
-            Assert.IsTrue(removed);
-            Assert.AreEqual(6, trie.Count);
-            Assert.IsFalse(trie.ContainsKey("sells"));
-            Assert.IsTrue(trie.ContainsKey("shells"));
+            Assert.True(removed);
+            Assert.Equal(6, trie.Count);
+            Assert.False(trie.ContainsKey("sells"));
+            Assert.True(trie.ContainsKey("shells"));
         }
 
-        [TestMethod]
-        public void CanGetKeysWithPrefix() {
+        [Fact]
+        public void CanGetKeysWithPrefix()
+        {
             var trie = new Trie<char, int> {
                 { "she", 0 },
                 { "sells", 1 },
@@ -62,11 +65,12 @@ namespace WmcSoft.Text
 
             var actual = trie.GetKeysWithPrefix("sh").ToArray();
             var expected = new[] { "she", "shells", "shore" };
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanMatch() {
+        [Fact]
+        public void CanMatch()
+        {
             var trie = new Trie<char, int> {
                 { "she", 0 },
                 { "sells", 1 },
@@ -79,11 +83,12 @@ namespace WmcSoft.Text
 
             var actual = trie.Match(".he").ToArray();
             var expected = new[] { "she", "the" };
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanEnumerateTrie() {
+        [Fact]
+        public void CanEnumerateTrie()
+        {
             var expected = new Dictionary<string, int>{
                 { "she", 0 },
                 { "sells", 1 },
@@ -102,34 +107,40 @@ namespace WmcSoft.Text
                 { "the", 5 },
                 { "shore", 7 },
             };
-            var actual = trie.Select(p => new KeyValuePair<string, int>(new string(p.Key.ToArray()), p.Value)).ToList();
-            CollectionAssert.AreEquivalent(expected, actual);
+            var actual = trie.Select(p => new KeyValuePair<string, int>(new string(p.Key.ToArray()), p.Value));
+            Assert.True(expected.CollectionEquivalent(actual));
         }
     }
 
     public static class TrieExtensions
     {
-        public static void Add<T>(this IDictionary<char[], T> trie, string key, T value) {
+        public static void Add<T>(this IDictionary<char[], T> trie, string key, T value)
+        {
             trie.Add(key.ToCharArray(), value);
         }
-        public static void Add<T>(this Trie<char, T> trie, string key, T value) {
+        public static void Add<T>(this Trie<char, T> trie, string key, T value)
+        {
             trie.Add(key.AsReadOnlyList(), value);
         }
 
-        public static bool ContainsKey<T>(this Trie<char, T> trie, string key) {
+        public static bool ContainsKey<T>(this Trie<char, T> trie, string key)
+        {
             return trie.ContainsKey(key.AsReadOnlyList());
         }
 
-        public static bool Remove<T>(this Trie<char, T> trie, string key) {
+        public static bool Remove<T>(this Trie<char, T> trie, string key)
+        {
             return trie.Remove(key.AsReadOnlyList());
         }
 
-        public static IEnumerable<string> GetKeysWithPrefix<T>(this Trie<char, T> trie, string key) {
+        public static IEnumerable<string> GetKeysWithPrefix<T>(this Trie<char, T> trie, string key)
+        {
             return trie.GetKeysWithPrefix(key.AsReadOnlyList())
                 .Select(s => new string(s.ToArray()));
         }
 
-        public static IEnumerable<string> Match<T>(this Trie<char, T> trie, string key) {
+        public static IEnumerable<string> Match<T>(this Trie<char, T> trie, string key)
+        {
             return trie.Match(key.Select(c => c == '.' ? (char?)null : (char?)c).ToList())
                 .Select(s => new string(s.ToArray()));
         }

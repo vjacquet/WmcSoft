@@ -1,36 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class ZipReadOnlyDictionaryTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckContainsKey()
         {
             var keys = new[] { 1, 2, 3, 4, 5 };
             var values = new[] { "one", "two", "three", "four", "five" };
             var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
-            Assert.IsTrue(dictionary.ContainsKey(1));
-            Assert.IsFalse(dictionary.ContainsKey(0));
+            Assert.True(dictionary.ContainsKey(1));
+            Assert.False(dictionary.ContainsKey(0));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckCountKeysAndValues()
         {
             var keys = new[] { 1, 2, 3, 4, 5 };
             var values = new[] { "one", "two", "three", "four", "five" };
             var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
-            Assert.AreEqual(5, dictionary.Count);
-            CollectionAssert.AreEqual(keys, dictionary.Keys);
-            CollectionAssert.AreEqual(values, dictionary.Values);
+            Assert.Equal(5, dictionary.Count);
+            Assert.Equal(keys, dictionary.Keys);
+            Assert.Equal(values, dictionary.Values);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTryGetValue()
         {
             var keys = new[] { 1, 2, 3, 4, 5 };
@@ -38,14 +37,14 @@ namespace WmcSoft.Collections.Generic
             var dictionary = new ZipReadOnlyDictionary<int, string>(keys, values);
 
             string one;
-            Assert.IsTrue(dictionary.TryGetValue(1, out one));
-            Assert.AreEqual("one", one);
+            Assert.True(dictionary.TryGetValue(1, out one));
+            Assert.Equal("one", one);
 
             string zero;
-            Assert.IsFalse(dictionary.TryGetValue(0, out zero));
+            Assert.False(dictionary.TryGetValue(0, out zero));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckEnumerator()
         {
             var keys = new[] { 1, 2, 3, 4, 5 };
@@ -54,7 +53,7 @@ namespace WmcSoft.Collections.Generic
 
             var expected = keys.Zip(values, (k, v) => new KeyValuePair<int, string>(k, v)).ToList();
             var actual = dictionary.ToList();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

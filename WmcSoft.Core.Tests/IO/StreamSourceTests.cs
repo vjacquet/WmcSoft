@@ -1,25 +1,25 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.IO
 {
-    [TestClass]
     public class StreamSourceTests
     {
-        [TestMethod]
-        public void CheckFileStreamSourceDoesNotThrowOnMissingFile() {
+        [Fact]
+        public void CheckFileStreamSourceDoesNotThrowOnMissingFile()
+        {
             var expected = "lorem.ipsum";
             var actual = new FileStreamSource(expected);
-            Assert.IsTrue(Path.IsPathRooted(actual.Path));
-            Assert.IsFalse(File.Exists(actual.Path));
-            Assert.AreEqual(expected, Path.GetFileName(actual.Path));
+            Assert.True(Path.IsPathRooted(actual.Path));
+            Assert.False(File.Exists(actual.Path));
+            Assert.Equal(expected, Path.GetFileName(actual.Path));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
-        public void CheckFileStreamSourceThrowsOnInvalidfileName() {
-            var actual = new FileStreamSource("bad:filename.txt");
+        [Fact]
+        public void CheckFileStreamSourceThrowsOnInvalidfileName()
+        {
+            Assert.Throws<NotSupportedException>(() => new FileStreamSource("bad:filename.txt"));
         }
     }
 }

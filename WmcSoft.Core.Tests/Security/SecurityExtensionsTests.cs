@@ -1,28 +1,29 @@
 ﻿using System.Security.Permissions;
 using System.Security.Principal;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Security
 {
-    [TestClass]
     public class SecurityExtensionsTests
     {
-        [TestMethod]
-        public void CheckIsGranted() {
+        [Fact]
+        public void CheckIsGranted()
+        {
             var method = typeof(SecuredObject).GetMethod("ForAdministratorOnly");
 
-            Assert.IsFalse(method.IsGranted());
+            Assert.False(method.IsGranted());
 
             var admin = new GenericPrincipal(new GenericIdentity("admin"), new string[] { "Administrator" });
-            Assert.IsTrue(admin.IsGranted(method));
+            Assert.True(admin.IsGranted(method));
         }
 
-        [TestMethod]
-        public void CheckImpersonate() {
+        [Fact]
+        public void CheckImpersonate()
+        {
             var method = typeof(SecuredObject).GetMethod("ForAdministratorOnly");
             var admin = new GenericPrincipal(new GenericIdentity("admin"), new string[] { "Administrator" });
             using (admin.Impersonate()) {
-                Assert.IsTrue(method.IsGranted());
+                Assert.True(method.IsGranted());
 
                 var attr = new PrincipalPermissionAttribute(SecurityAction.Assert) {
                     Authenticated = true,
@@ -36,7 +37,8 @@ namespace WmcSoft.Security
     class SecuredObject
     {
         [PrincipalPermission(SecurityAction.Assert, Authenticated = true, Role = "Administrator")]
-        public void ForAdministratorOnly() {
+        public void ForAdministratorOnly()
+        {
 
         }
     }

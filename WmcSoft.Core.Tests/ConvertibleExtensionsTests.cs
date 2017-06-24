@@ -1,32 +1,33 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class ConvertibleExtensionsTests
     {
-        [TestMethod]
-        public void CanConvertTo() {
+        [Fact]
+        public void CanConvertTo()
+        {
             var expected = 5m;
             var n = 5;
             var actual = n.ConvertTo<decimal>();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanConvertNullableTo() {
+        [Fact]
+        public void CanConvertNullableTo()
+        {
             decimal? expected = 5m;
             int? n = 5;
             var actual = n.ConvertTo<decimal?>();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
-        public void CannotConvertNullToNonNullable() {
+        [Fact]
+        public void CannotConvertNullToNonNullable()
+        {
             int? n = null;
-            var actual = n.ConvertTo<decimal>();
+            Assert.Throws<InvalidCastException>(() => n.ConvertTo<decimal>());
         }
     }
 }

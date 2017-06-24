@@ -1,66 +1,61 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class PairTests
     {
-        [TestMethod]
+        [Fact]
         public void CanComparePair()
         {
             var p1 = Pair.Create(1, 2);
             var p2 = Pair.Create(1, 5);
             var p3 = Pair.Create(2, 2);
 
-            Assert.IsTrue(p1 < p2);
-            Assert.IsTrue(p2 <= p3);
-            Assert.IsTrue(p3 > p1);
-            Assert.IsTrue(p3 >= p2);
+            Assert.True(p1 < p2);
+            Assert.True(p2 <= p3);
+            Assert.True(p3 > p1);
+            Assert.True(p3 >= p2);
 
-            Assert.IsFalse(p1 == p2);
-            Assert.IsTrue(p2 != p3);
+            Assert.False(p1 == p2);
+            Assert.True(p2 != p3);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertPairToTuple()
         {
             var p = Pair.Create(1, 2);
             Tuple<int, int> t = p;
 
-            Assert.AreEqual(p.Item1, t.Item1);
-            Assert.AreEqual(p.Item2, t.Item2);
+            Assert.Equal(p.Item1, t.Item1);
+            Assert.Equal(p.Item2, t.Item2);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertPairToFromTuple()
         {
             var t = Tuple.Create(1, 2);
             Pair<int> p = t;
 
-            Assert.AreEqual(t.Item1, p.Item1);
-            Assert.AreEqual(t.Item2, p.Item2);
+            Assert.Equal(t.Item1, p.Item1);
+            Assert.Equal(t.Item2, p.Item2);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDeconstructPair()
         {
             var p = Pair.Create(16, 64);
             var (first, last) = p;
 
-            Assert.AreEqual(16, first);
-            Assert.AreEqual(64, last);
+            Assert.Equal(16, first);
+            Assert.Equal(64, last);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckPairToString()
         {
             var p = Pair.Create(16, 64);
-            Assert.AreEqual("(16, 64)", p.ToString());
+            Assert.Equal("(16, 64)", p.ToString());
         }
     }
 }

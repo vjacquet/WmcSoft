@@ -1,26 +1,27 @@
-﻿using System;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Text;
+using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class StringBuilderExtensionsTests
     {
-        [TestMethod]
-        public void CanPrependNullString() {
+        [Fact]
+        public void CanPrependNullString()
+        {
             string prefix = null;
             var sb = new StringBuilder("abc");
             sb.Prepend(prefix);
-            Assert.AreEqual("abc", sb.ToString());
+            Assert.Equal("abc", sb.ToString());
         }
 
-        [TestMethod]
-        public void CheckSurroundWith() {
-            Assert.AreEqual("abc", new StringBuilder("b").SurroundWith("a", "c").ToString());
-            Assert.AreEqual("bc", new StringBuilder("b").SurroundWith(null, "c").ToString());
-            Assert.AreEqual("ab", new StringBuilder("b").SurroundWith("a", null).ToString());
-            Assert.AreEqual("b", new StringBuilder("b").SurroundWith(null, null).ToString());
+        [Theory]
+        [InlineData("abc", "a", "c")]
+        [InlineData("bc", null, "c")]
+        [InlineData("ab", "a", null)]
+        [InlineData("b", null, null)]
+        public void CheckSurroundWith(string expected, string prefix, string suffix)
+        {
+            Assert.Equal(expected, new StringBuilder("b").SurroundWith(prefix, suffix).ToString());
         }
     }
 }

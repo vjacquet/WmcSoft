@@ -1,12 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class BytesFormatterTests
     {
-        [TestMethod]
+        [Fact]
         public void CanFormatByteWithX2() {
             var formatter = new BytesFormatter();
 
@@ -14,10 +13,10 @@ namespace WmcSoft
             byte b = 0xA0;
             var actual = String.Format(formatter, "{0:X2}", b);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFormatBytesWithX0() {
             var formatter = new BytesFormatter();
 
@@ -25,10 +24,10 @@ namespace WmcSoft
             var b = new byte[] { 0x0A, 0x0B, 0x0C, 0x0D, };
             var actual = String.Format(formatter, "{0:X0}", b);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFormatBytesWithX2() {
             var formatter = new BytesFormatter();
 
@@ -36,10 +35,10 @@ namespace WmcSoft
             var b = new byte[] { 0x0A, 0x0B, 0x0C, 0x0D, };
             var actual = String.Format(formatter, "{0:X2}", b);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFormatBytesWithB1() {
             var formatter = new BytesFormatter();
 
@@ -47,10 +46,10 @@ namespace WmcSoft
             var b = new byte[] { 0x0A, 0x0B, 0x0C, 0x0D, };
             var actual = String.Format(formatter, "{0:B1}", b);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFormatBytesWithB2() {
             var formatter = new BytesFormatter();
 
@@ -58,10 +57,10 @@ namespace WmcSoft
             var b = new byte[] { 0x0A, 0x0B, 0x0C, 0x0D, };
             var actual = String.Format(formatter, "{0:B2}", b);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFormatBytesWithO2() {
             var formatter = new BytesFormatter();
 
@@ -69,7 +68,7 @@ namespace WmcSoft
             var b = new byte[] { 0x0A, 0x0B, 0x0C, 0x0D, };
             var actual = String.Format(formatter, "{0:O2}", b);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

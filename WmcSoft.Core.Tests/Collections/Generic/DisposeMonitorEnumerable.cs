@@ -10,16 +10,19 @@ namespace WmcSoft.Collections.Generic
         int _disposed;
         IEnumerator<T> _enumerator;
 
-        public DisposeMonitorEnumerable(IEnumerable<T> enumerable) {
+        public DisposeMonitorEnumerable(IEnumerable<T> enumerable)
+        {
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
             _enumerable = enumerable;
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             _enumerator = _enumerable.GetEnumerator();
             return this;
         }
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -27,15 +30,18 @@ namespace WmcSoft.Collections.Generic
         public T Current { get { return _enumerator.Current; } }
         object IEnumerator.Current { get { return Current; } }
 
-        public bool MoveNext() {
+        public bool MoveNext()
+        {
             return _enumerator.MoveNext();
         }
 
-        public void Reset() {
+        public void Reset()
+        {
             _enumerator.Reset();
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _disposed++;
         }
 

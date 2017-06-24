@@ -1,80 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Diagnostics;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class EnumerableExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckToString()
         {
             var list = new List<int> { 1, 2, 3, };
 
             var actual = list.ToString("g");
             var expected = "1;2;3";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckQuorum()
         {
             var list = new[] { 1, 2, 3, 4, 5, 6, 7 };
-            Assert.IsTrue(list.Quorum(3, i => (i & 1) == 1));
+            Assert.True(list.Quorum(3, i => (i & 1) == 1));
         }
 
-        [TestMethod]
-        public void CheckElectedOrDefaultWithPredicate()
+        [Theory]
+        [InlineData("A", new[] { "A", "B", null, "", "A", "C", "B", "A" })]
+        [InlineData("B", new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" })]
+        [InlineData("A", new[] { "A", "B", null, "", "A", "C", "B", "A", "B" })]
+        public void CheckElectedOrDefaultWithPredicate(string expected, string[] array)
         {
-            string[] array;
-
-            array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
-            Assert.AreEqual("A", array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
-
-            array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" };
-            Assert.AreEqual("B", array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
-
-            array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
-            Assert.AreEqual("A", array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
+            Assert.Equal(expected, array.ElectedOrDefault(s => !string.IsNullOrEmpty(s)));
         }
 
-        [TestMethod]
-        public void CheckElectedOrDefaultWithoutPredicate()
+        [Theory]
+        [InlineData("A", new[] { "A", "B", null, "", "A", "C", "B", "A" })]
+        [InlineData("B", new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" })]
+        [InlineData("A", new[] { "A", "B", null, "", "A", "C", "B", "A", "B" })]
+        public void CheckElectedOrDefaultWithoutPredicate(string expected, string[] array)
         {
-            string[] array;
-
-            array = new[] { "A", "B", null, "", "A", "C", "B", "A" };
-            Assert.AreEqual("A", array.ElectedOrDefault());
-
-            array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" };
-            Assert.AreEqual("B", array.ElectedOrDefault());
-
-            array = new[] { "A", "B", null, "", "A", "C", "B", "A", "B" };
-            Assert.AreEqual("A", array.ElectedOrDefault());
+            Assert.Equal(expected, array.ElectedOrDefault());
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckCollateRepeat()
         {
             var array = new[] { "a", "b", "c" };
             var actual = string.Concat(array.Repeat(3));
             var expected = "abcabcabc";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckEnumerableCollateRepeat()
         {
             var array = new[] { "a", "b", "c" };
             var actual = string.Concat(array.Repeat(3, collate: true));
             var expected = "abcabcabc";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckEnumerableCollateRepeatToListOptimization()
         {
             const int Repeat = 3;
@@ -84,20 +71,20 @@ namespace WmcSoft.Collections.Generic
             for (int i = 0; i < Repeat; i++) {
                 expected.AddRange(array);
             }
-            Assert.AreNotEqual(expected.Capacity, actual.Capacity);
-            Assert.AreEqual(expected.Count, actual.Capacity);
+            Assert.NotEqual(expected.Capacity, actual.Capacity);
+            Assert.Equal(expected.Count, actual.Capacity);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckGroupedRepeat()
         {
             var array = new[] { "a", "b", "c" };
             var actual = string.Concat(array.Repeat(3, collate: false));
             var expected = "aaabbbccc";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckCollateRepeatToListOptimization()
         {
             const int Repeat = 3;
@@ -107,11 +94,11 @@ namespace WmcSoft.Collections.Generic
             for (int i = 0; i < Repeat; i++) {
                 expected.AddRange(array);
             }
-            Assert.AreNotEqual(expected.Capacity, actual.Capacity);
-            Assert.AreEqual(expected.Count, actual.Capacity);
+            Assert.NotEqual(expected.Capacity, actual.Capacity);
+            Assert.Equal(expected.Count, actual.Capacity);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckInterleavesWithIdenticalCount()
         {
             char[] s1 = { 'a', 'b', 'c' };
@@ -120,10 +107,10 @@ namespace WmcSoft.Collections.Generic
             char[][] s = { s1, s2, s3 };
             // extensions methods in the same namespace takes precedence over the others, so force Enumerable.Sum
             var actual = new string(s.Interleave().ToArray(Enumerable.Sum(s, i => i.Length)));
-            Assert.AreEqual("aM1bN2cP3", actual);
+            Assert.Equal("aM1bN2cP3", actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckInterleaves()
         {
             char[] s1 = { 'a', 'b', 'c', 'd', 'e' };
@@ -132,130 +119,130 @@ namespace WmcSoft.Collections.Generic
             char[][] s = { s1, s2, s3 };
             // extensions methods in the same namespace takes precedence over the others, so force Enumerable.Sum
             var actual = new string(s.Interleave().ToArray(Enumerable.Sum(s, i => i.Length)));
-            Assert.AreEqual("aM1bN2cP3d4e", actual);
+            Assert.Equal("aM1bN2cP3d4e", actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTailOnCollection()
         {
             var collection = new[] { 1, 2, 3, 4, 5 };
             var expected = new[] { 3, 4, 5 };
             var actual = collection.Tail(3).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTailWhenCollectionHasLessElements()
         {
             var expected = new[] { 1, 2, 3, 4, 5 };
             var actual = expected.Tail(6).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTailWhenCollectionHasSameElementCount()
         {
             var expected = new[] { 1, 2, 3, 4, 5 };
             var actual = expected.Tail(5).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTailOnEnumerable()
         {
             var enumerable = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
             var expected = new[] { 3, 4, 5 };
             var actual = enumerable.Tail(3).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTailWhenEnumerableHasLessElements()
         {
             var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
             var actual = expected.Tail(6).ToArray();
-            CollectionAssert.AreEqual(expected.ToArray(), actual);
+            Assert.Equal(expected.ToArray(), actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTailWhenEnumerableHasSameElementCount()
         {
             var expected = new[] { 1, 2, 3, 4, 5 }.ToEnumerable();
             var actual = expected.Tail(5).ToArray();
-            CollectionAssert.AreEqual(expected.ToArray(), actual);
+            Assert.Equal(expected.ToArray(), actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckStride()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 1, 4, 7 };
             var actual = collection.Stride(3).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckNthElements()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 6, 9 };
             var actual = collection.NthElements(3).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckNthElements2()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 5, 6, 9 };
             var actual = collection.NthElements(3, 5).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckNthElementsN()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var expected = new[] { 3, 5, 6, 8, 9, 10 };
             var actual = collection.NthElements(3, 5, 8).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckNthElementsNWithMultiples()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var expected = new[] { 3, 5, 6, 8, 9, 10 };
             var actual = collection.NthElements(3, 6, 5, 8).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckDiscretize()
         {
             var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
             var actual = data.Discretize(51, 91, 151, 231, 331, 451).ToArray();
             var expected = new[] { 0, 0, 0, 1, 5, 6, 4, 6 };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAtLeast()
         {
             var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
-            Assert.IsFalse(data.AtLeast(2, i => i < 10));
-            Assert.IsTrue(data.AtLeast(2, i => i > 100));
+            Assert.False(data.AtLeast(2, i => i < 10));
+            Assert.True(data.AtLeast(2, i => i > 100));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAtMost()
         {
             var data = new[] { 4, 40, 50, 60, 450, 451, 240, 600 };
-            Assert.IsTrue(data.AtMost(2, i => i < 10));
-            Assert.IsFalse(data.AtMost(2, i => i > 100));
+            Assert.True(data.AtMost(2, i => i < 10));
+            Assert.False(data.AtMost(2, i => i > 100));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckChoose()
         {
             var data = new DisposeMonitorEnumerable<char>("a1bcd2ef3");
@@ -266,41 +253,41 @@ namespace WmcSoft.Collections.Generic
             Func<char, bool> letter = c => Char.IsLetter(c);
             Func<char, bool> white = c => Char.IsWhiteSpace(c);
 
-            Assert.AreEqual("ae", string.Join("", data.Choose(vowel, uppercase, digits)));
-            Assert.AreEqual("abcdef", string.Join("", data.Choose(letter, vowel, digits)));
-            Assert.AreEqual("123", string.Join("", data.Choose(digits, letter, vowel)));
-            Assert.AreEqual("123", string.Join("", data.Choose(digits, white)));
-            Assert.AreEqual("123", string.Join("", data.Choose(uppercase, white, digits)));
-            Assert.AreEqual("123", string.Join("", data.Choose(uppercase, digits, white)));
-            Assert.AreEqual("", string.Join("", data.Choose(uppercase, white)));
+            Assert.Equal("ae", string.Join("", data.Choose(vowel, uppercase, digits)));
+            Assert.Equal("abcdef", string.Join("", data.Choose(letter, vowel, digits)));
+            Assert.Equal("123", string.Join("", data.Choose(digits, letter, vowel)));
+            Assert.Equal("123", string.Join("", data.Choose(digits, white)));
+            Assert.Equal("123", string.Join("", data.Choose(uppercase, white, digits)));
+            Assert.Equal("123", string.Join("", data.Choose(uppercase, digits, white)));
+            Assert.Equal("", string.Join("", data.Choose(uppercase, white)));
 
-            Assert.AreEqual(7, data.Tally);
+            Assert.Equal(7, data.Tally);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMinMax()
         {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = Tuple.Create(1, 9);
             var actual = data.MinMax();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMinMaxOnNullable()
         {
             var empty = new List<int?>();
-            Assert.AreEqual(new Tuple<int?, int?>(null, null), empty.MinMax());
+            Assert.Equal(new Tuple<int?, int?>(null, null), empty.MinMax());
 
             empty.Add(null);
             empty.Add(null);
-            Assert.AreEqual(new Tuple<int?, int?>(null, null), empty.MinMax());
+            Assert.Equal(new Tuple<int?, int?>(null, null), empty.MinMax());
 
             var data = new List<int?> { null, 1, 2, 3, 4, null, 5, 6, 7, 8, 9 };
             var expected = Tuple.Create<int?, int?>(1, 9);
             var actual = data.MinMax();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         static IEnumerable<Tuple<T, int>> ZipIndices<T>(IEnumerable<T> source)
@@ -310,43 +297,43 @@ namespace WmcSoft.Collections.Generic
                 yield return Tuple.Create(item, i++);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMinOnExpectedDouble()
         {
             var data = new[] { -1d, 5d, double.NaN, -10d, 5d, -10d };
             var expected = data.Min();
             var actual = data.Min(x => Expected.Success(x));
-            Assert.AreEqual(expected, actual.GetValueOrDefault());
+            Assert.Equal(expected, actual.GetValueOrDefault());
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMaxOnExpectedDouble()
         {
             var data = new[] { -1d, 5d, double.NaN, -10d };
             var expected = data.Max();
             var actual = data.Max(x => Expected.Success(x));
-            Assert.AreEqual(expected, actual.GetValueOrDefault());
+            Assert.Equal(expected, actual.GetValueOrDefault());
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMinMaxOnExpectedDouble()
         {
             var data = new[] { -1d, 5d, double.NaN, -10d };
             var expected = Tuple.Create(data.Min(), data.Max());
             var actual = data.MinMax(x => Expected.Success(x));
-            Assert.AreEqual(expected, Tuple.Create(actual.Item1.GetValueOrDefault(), actual.Item2.GetValueOrDefault()));
+            Assert.Equal(expected, Tuple.Create(actual.Item1.GetValueOrDefault(), actual.Item2.GetValueOrDefault()));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckSumOnDouble()
         {
             var data = new[] { 1d, 2d, 3d, 4d, 5d };
             var expected = data.Max();
             var actual = data.Max(x => Expected.Success(x));
-            Assert.AreEqual(expected, actual.GetValueOrDefault());
+            Assert.Equal(expected, actual.GetValueOrDefault());
         }
 
-        [TestMethod]
+        [Fact]
         public void EnsureDrawLotsDistributionIsUniform()
         {
             var counts = new int[6];
@@ -367,102 +354,102 @@ namespace WmcSoft.Collections.Generic
             }
             chi2 /= Nr;
             // critical value of 11.070 at 95% significance level
-            Assert.IsTrue(chi2 < 11.070d);
+            Assert.True(chi2 < 11.070d);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckZipAll()
         {
             var x = new[] { "A", "B", "C", "D" };
             var y = new[] { "A", "B", "C", "D", "E", "F" };
 
-            Assert.AreEqual("AABBCCDDXEXF", string.Concat(x.ZipAll(y, (a, b) => a + b, "X", "Y")));
-            Assert.AreEqual("AABBCCDDEYFY", string.Concat(y.ZipAll(x, (a, b) => a + b, "X", "Y")));
-            Assert.AreEqual("AABBCCDD", string.Concat(x.ZipAll(x, (a, b) => a + b, "X", "Y")));
+            Assert.Equal("AABBCCDDXEXF", string.Concat(x.ZipAll(y, (a, b) => a + b, "X", "Y")));
+            Assert.Equal("AABBCCDDEYFY", string.Concat(y.ZipAll(x, (a, b) => a + b, "X", "Y")));
+            Assert.Equal("AABBCCDD", string.Concat(x.ZipAll(x, (a, b) => a + b, "X", "Y")));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckToDictionaryThrowExceptionPolicy()
         {
             var source = new[] { 0, 1, 2, 3, 2, 4, 5 };
             try {
                 var dictionary = source.ToDictionary(DuplicatePolicy.ThrowException, x => 'A' + x);
-                Assert.Inconclusive();
+                Assert.True(false, "Inconclusive");
             } catch (Exception e) {
-                Assert.AreEqual(67, e.GetCapturedEntry("key"));
+                Assert.Equal(67, e.GetCapturedEntry("key"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckToDictionaryKeepFirstPolicy()
         {
             var source = new[] { 0, 1, 2, 3, 4, 5 };
             var dictionary = source.ToDictionary(DuplicatePolicy.KeepFirst, x => x % 3);
-            Assert.AreEqual(3, dictionary.Count);
-            Assert.AreEqual(0, dictionary[0]);
-            Assert.AreEqual(1, dictionary[1]);
-            Assert.AreEqual(2, dictionary[2]);
-            Assert.IsFalse(dictionary.ContainsKey(3));
+            Assert.Equal(3, dictionary.Count);
+            Assert.Equal(0, dictionary[0]);
+            Assert.Equal(1, dictionary[1]);
+            Assert.Equal(2, dictionary[2]);
+            Assert.False(dictionary.ContainsKey(3));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckToDictionaryKeepLastPolicy()
         {
             var source = new[] { 0, 1, 2, 3, 4, 5 };
             var dictionary = source.ToDictionary(DuplicatePolicy.KeepLast, x => x % 3);
-            Assert.AreEqual(3, dictionary.Count);
-            Assert.AreEqual(3, dictionary[0]);
-            Assert.AreEqual(4, dictionary[1]);
-            Assert.AreEqual(5, dictionary[2]);
-            Assert.IsFalse(dictionary.ContainsKey(3));
+            Assert.Equal(3, dictionary.Count);
+            Assert.Equal(3, dictionary[0]);
+            Assert.Equal(4, dictionary[1]);
+            Assert.Equal(5, dictionary[2]);
+            Assert.False(dictionary.ContainsKey(3));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckUnless()
         {
             var source = new[] { 1, 2, 3, 4, 5, 6, 7 };
             var actual = source.Unless(x => x % 3 == 0).ToArray();
             var expected = new[] { 1, 2, 4, 5, 7 };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckUnlessWithIndex()
         {
             var source = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
             var actual = source.Unless((x, i) => i % 3 == 0).ToArray();
             var expected = new[] { 'B', 'C', 'E', 'F', 'H' };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckNGrams()
         {
             var source = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
             var ngrams = source.NGrams(3);
             var actual = ngrams.Select(g => string.Join("", g)).ToList();
             var expected = new[] { "ABC", "BCD", "CDE", "DEF", "EFG", "FGH" };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMatch()
         {
             var data = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
             var selected = new[] { true, false, false, true, true, false, false, true };
             var expected = new[] { 'A', 'D', 'E', 'H' };
             var actual = data.Match(selected, (x, s) => s).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckMismatch()
         {
             var data = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
             var selected = new[] { true, false, false, true, true, false, false, true };
             var expected = new[] { 'B', 'C', 'F', 'G' };
             var actual = data.Mismatch(selected, (x, s) => s).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

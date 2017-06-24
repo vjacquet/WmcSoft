@@ -1,51 +1,54 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class CopyOnWriteDictionaryTests
     {
-        [TestMethod]
-        public void CanAddToCopyOnWriteDictionary() {
+        [Fact]
+        public void CanAddToCopyOnWriteDictionary()
+        {
             var dictionary = new Dictionary<int, string>() { { 1, "one" }, { 2, "two" }, { 3, "three" }, { 4, "four" }, { 5, "five" } };
             var cow = new CopyOnWriteDictionary<int, string>(dictionary);
             cow.Add(6, "six");
 
-            Assert.AreEqual(5, dictionary.Count);
-            Assert.AreEqual(6, cow.Count);
+            Assert.Equal(5, dictionary.Count);
+            Assert.Equal(6, cow.Count);
         }
 
-        [TestMethod]
-        public void CanRemoveToCopyOnWriteDictionary() {
+        [Fact]
+        public void CanRemoveToCopyOnWriteDictionary()
+        {
             var dictionary = new Dictionary<int, string>() { { 1, "one" }, { 2, "two" }, { 3, "three" }, { 4, "four" }, { 5, "five" } };
             var cow = new CopyOnWriteDictionary<int, string>(dictionary);
             cow.Remove(2);
 
-            Assert.AreEqual(5, dictionary.Count);
-            Assert.IsTrue(dictionary.ContainsKey(2));
-            Assert.AreEqual(4, cow.Count);
-            Assert.IsFalse(cow.ContainsKey(2));
+            Assert.Equal(5, dictionary.Count);
+            Assert.True(dictionary.ContainsKey(2));
+            Assert.Equal(4, cow.Count);
+            Assert.False(cow.ContainsKey(2));
         }
 
-        [TestMethod]
-        public void CanClearCopyOnWriteDictionary() {
+        [Fact]
+        public void CanClearCopyOnWriteDictionary()
+        {
             var dictionary = new Dictionary<int, string>() { { 1, "one" }, { 2, "two" }, { 3, "three" }, { 4, "four" }, { 5, "five" } };
             var cow = new CopyOnWriteDictionary<int, string>(dictionary);
             cow.Clear();
 
-            Assert.AreEqual(5, dictionary.Count);
-            Assert.AreEqual(0, cow.Count);
+            Assert.Equal(5, dictionary.Count);
+            Assert.Equal(0, cow.Count);
         }
 
-        [TestMethod]
-        public void CanSetOrGetFromCopyOnWriteDictionary() {
+        [Fact]
+        public void CanSetOrGetFromCopyOnWriteDictionary()
+        {
             var dictionary = new Dictionary<int, string>() { { 1, "one" }, { 2, "two" }, { 3, "three" }, { 4, "four" }, { 5, "five" } };
             var cow = new CopyOnWriteDictionary<int, string>(dictionary);
             cow[2] = "deux";
 
-            Assert.AreEqual("deux", cow[2]);
-            Assert.AreEqual("two", dictionary[2]);
+            Assert.Equal("deux", cow[2]);
+            Assert.Equal("two", dictionary[2]);
         }
     }
 }

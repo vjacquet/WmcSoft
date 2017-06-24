@@ -1,69 +1,73 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Text
 {
-    [TestClass]
     public class DecimalLeadingZeroCounterTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(OverflowException))]
-        public void CanDecimalLeadingZeroCounterDetectOverflowOnNegativeValues() {
-            var value = new DecimalLeadingZeroCounter(-1);
+        [Fact]
+        public void CanDecimalLeadingZeroCounterDetectOverflowOnNegativeValues()
+        {
+            Assert.Throws<OverflowException>(() => new DecimalLeadingZeroCounter(-1));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(OverflowException))]
-        public void CanDecimalLeadingZeroCounterDetectOverflow() {
+        [Fact]
+        public void CanDecimalLeadingZeroCounterDetectOverflow()
+        {
             var value = DecimalLeadingZeroCounter.MaxValue;
-            value++;
+            Assert.Throws<OverflowException>(() => value++);
         }
 
-        [TestMethod]
-        public void CanPreIncrementDecimalLeadingZeroCounter() {
+        [Fact]
+        public void CanPreIncrementDecimalLeadingZeroCounter()
+        {
             var m = new DecimalLeadingZeroCounter("03");
             var n = new DecimalLeadingZeroCounter("04");
             var x = m;
 
-            Assert.AreEqual(n, ++x);
+            Assert.Equal(n, ++x);
         }
 
-        [TestMethod]
-        public void CanPostIncrementDecimalLeadingZeroCounter() {
+        [Fact]
+        public void CanPostIncrementDecimalLeadingZeroCounter()
+        {
             var m = new DecimalLeadingZeroCounter("03");
             var n = new DecimalLeadingZeroCounter("04");
             var x = m;
 
-            Assert.AreEqual(m, x++);
-            Assert.AreEqual(n, x);
+            Assert.Equal(m, x++);
+            Assert.Equal(n, x);
         }
 
-        [TestMethod]
-        public void CanDecimalLeadingZeroCounterIncrementOverOneLetter() {
+        [Fact]
+        public void CanDecimalLeadingZeroCounterIncrementOverOneLetter()
+        {
             var actual = new DecimalLeadingZeroCounter("09");
             var expected = new DecimalLeadingZeroCounter("10");
             actual++;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanDecimalLeadingZeroCounterIncrementOverAHundred() {
+        [Fact]
+        public void CanDecimalLeadingZeroCounterIncrementOverAHundred()
+        {
             var actual = new DecimalLeadingZeroCounter("99");
             var expected = new DecimalLeadingZeroCounter("100");
             actual++;
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanCompareDecimalLeadingZeroCounter() {
+        [Fact]
+        public void CanCompareDecimalLeadingZeroCounter()
+        {
             var m = new DecimalLeadingZeroCounter("03");
             var n = new DecimalLeadingZeroCounter("04");
             var q = new DecimalLeadingZeroCounter("04");
 
-            Assert.IsTrue(m < n);
-            Assert.IsTrue(n > m);
-            Assert.IsTrue(n == q);
-            Assert.IsTrue(m != q);
+            Assert.True(m < n);
+            Assert.True(n > m);
+            Assert.True(n == q);
+            Assert.True(m != q);
         }
     }
 }

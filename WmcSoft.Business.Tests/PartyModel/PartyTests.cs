@@ -27,7 +27,7 @@
 using Xunit;
 using WmcSoft.Business.PartyModel;
 
-namespace FlowGroup.Business.Tests.PartyModel
+namespace WmcSoft.Business.Tests.PartyModel
 {
     public class PartyTests
     {

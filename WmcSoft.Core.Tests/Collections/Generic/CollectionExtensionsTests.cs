@@ -2,15 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class CollectionExtensionsTests
     {
-        [TestMethod]
-        public void CheckToArray() {
+        [Fact]
+        public void CheckToArray()
+        {
             var list = new List<Tuple<int, string>> {
                 Tuple.Create(1, "a"),
                 Tuple.Create(2, "b"),
@@ -18,11 +18,12 @@ namespace WmcSoft.Collections.Generic
             };
             var expected = new[] { 1, 2, 3 };
             var actual = list.ToArray(i => i.Item1);
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckBinarySearch() {
+        [Fact]
+        public void CheckBinarySearch()
+        {
             var list = new List<Tuple<int, string>> {
                 Tuple.Create(2, "a"),
                 Tuple.Create(4, "b"),
@@ -30,22 +31,24 @@ namespace WmcSoft.Collections.Generic
                 Tuple.Create(8, "d"),
             };
 
-            Assert.AreEqual(1, list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 4)));
-            Assert.AreEqual(2, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 5)));
-            Assert.AreEqual(4, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 9)));
-            Assert.AreEqual(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
+            Assert.Equal(1, list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 4)));
+            Assert.Equal(2, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 5)));
+            Assert.Equal(4, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 9)));
+            Assert.Equal(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
         }
 
-        [TestMethod]
-        public void CheckBinarySearchOnEmptyCollection() {
+        [Fact]
+        public void CheckBinarySearchOnEmptyCollection()
+        {
             var list = new List<Tuple<int, string>> {
             };
 
-            Assert.AreEqual(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
+            Assert.Equal(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
         }
 
-        [TestMethod]
-        public void CheckToTwoDimensionalArray() {
+        [Fact]
+        public void CheckToTwoDimensionalArray()
+        {
             var list = new List<Tuple<int, int, int>>(2);
             list.Add(Tuple.Create(1, 2, 3));
             list.Add(Tuple.Create(4, 5, 6));
@@ -58,11 +61,12 @@ namespace WmcSoft.Collections.Generic
             var comparer = new ArrayEqualityComparer<int>();
             var actual = list.ToTwoDimensionalArray(i => i.Item1, i => i.Item2, i => i.Item3);
 
-            Assert.IsTrue(comparer.Equals(expected, actual));
+            Assert.True(comparer.Equals(expected, actual));
         }
 
-        [TestMethod]
-        public void CheckNotEqualsOnCell() {
+        [Fact]
+        public void CheckNotEqualsOnCell()
+        {
             var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
@@ -77,11 +81,12 @@ namespace WmcSoft.Collections.Generic
             };
 
             var comparer = new ArrayEqualityComparer<int>();
-            Assert.IsFalse(comparer.Equals(x, y));
+            Assert.False(comparer.Equals(x, y));
         }
 
-        [TestMethod]
-        public void CheckNotEqualsOnRank() {
+        [Fact]
+        public void CheckNotEqualsOnRank()
+        {
             var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
@@ -96,11 +101,12 @@ namespace WmcSoft.Collections.Generic
             };
 
             var comparer = new ArrayEqualityComparer<int>();
-            Assert.IsFalse(comparer.Equals(x, y));
+            Assert.False(comparer.Equals(x, y));
         }
 
-        [TestMethod]
-        public void CheckNotEqualsOnDimensions() {
+        [Fact]
+        public void CheckNotEqualsOnDimensions()
+        {
             var x = new[, ,] {
                { {11, 12, 13}, {14, 15, 16} },
                { {21, 22, 23}, {24, 25, 26} },
@@ -114,304 +120,338 @@ namespace WmcSoft.Collections.Generic
             };
 
             var comparer = new ArrayEqualityComparer<int>();
-            Assert.IsFalse(comparer.Equals(x, y));
+            Assert.False(comparer.Equals(x, y));
         }
 
-        [TestMethod]
-        public void CheckSortOnIndexedCollection() {
+        [Fact]
+        public void CheckSortOnIndexedCollection()
+        {
             var array = new[] { "a", "c", "e", "d", "f", "b" };
             var comparer = new SourceComparer<string>(array, StringComparer.InvariantCulture);
             var actual = new[] { 0, 1, 2, 3, 4, 5 };
             Array.Sort(actual, comparer);
             var expected = new[] { 0, 5, 1, 3, 2, 4 };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckSortedCombine() {
+        [Fact]
+        public void CheckSortedCombine()
+        {
             var array = "aabbbc";
             var expected = "abc";
             var actual = new String(array.SortedCombine((char c, char g) => c).ToArray());
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckBackwards() {
+        [Fact]
+        public void CheckBackwards()
+        {
             var sequence = new[] { 1, 2, 3, 4 };
             var actual = sequence.Backwards().ToArray();
             var expected = new[] { 4, 3, 2, 1 };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckConvertAll() {
+        [Fact]
+        public void CheckConvertAll()
+        {
             var sequence = new[] { 1, 2, 3, 4 };
             IList<int> list = new List<int>(sequence);
             var actual = list.ConvertAll(x => x * x);
-            Assert.IsInstanceOfType(actual, typeof(IList<int>));
+            Assert.IsAssignableFrom<IList<int>>(actual);
         }
 
-        [TestMethod]
-        public void CheckRemoveIfOnList() {
+        [Fact]
+        public void CheckRemoveIfOnList()
+        {
             var sequence = new List<int> { 1, 2, 3, 4, 5 };
             var count = sequence.RemoveIf(i => i % 2 == 1);
-            Assert.AreEqual(3, count);
+            Assert.Equal(3, count);
             var expected = new[] { 2, 4 };
-            CollectionAssert.AreEqual(expected, sequence);
+            Assert.Equal(expected, sequence);
         }
 
-        [TestMethod]
-        public void CheckRemoveIfOnCollection() {
+        [Fact]
+        public void CheckRemoveIfOnCollection()
+        {
             var sequence = new SortedSet<int> { 1, 2, 3, 4, 5 };
             var count = sequence.RemoveIf(i => i % 2 == 1);
-            Assert.AreEqual(3, count);
+            Assert.Equal(3, count);
             var expected = new[] { 2, 4 };
-            CollectionAssert.AreEqual(expected, sequence);
+            Assert.Equal(expected, sequence);
         }
 
-        [TestMethod]
-        public void CheckRemoveIfOnLatestOnList() {
+        [Fact]
+        public void CheckRemoveIfOnLatestOnList()
+        {
             var sequence = new List<int> { 1, 2, 3, 4, 5 };
             var count = sequence.RemoveIf(i => i == 5);
-            Assert.AreEqual(1, count);
+            Assert.Equal(1, count);
             var expected = new[] { 1, 2, 3, 4 };
-            CollectionAssert.AreEqual(expected, sequence);
+            Assert.Equal(expected, sequence);
         }
 
-        [TestMethod]
-        public void CheckRemoveIfOnLatestOnCollection() {
+        [Fact]
+        public void CheckRemoveIfOnLatestOnCollection()
+        {
             var sequence = new SortedSet<int> { 1, 2, 3, 4, 5 };
             var count = sequence.RemoveIf(i => i == 5);
-            Assert.AreEqual(1, count);
+            Assert.Equal(1, count);
             var expected = new[] { 1, 2, 3, 4 };
-            CollectionAssert.AreEqual(expected, sequence);
+            Assert.Equal(expected, sequence);
         }
 
-        [TestMethod]
-        public void CheckIndexedRemoveIfOnLatest() {
+        [Fact]
+        public void CheckIndexedRemoveIfOnLatest()
+        {
             var sequence = new List<int> { 1, 2, 3, 4, 5 };
             var count = sequence.RemoveIf((x, i) => i == 4);
-            Assert.AreEqual(1, count);
+            Assert.Equal(1, count);
             var expected = new[] { 1, 2, 3, 4 };
-            CollectionAssert.AreEqual(expected, sequence);
+            Assert.Equal(expected, sequence);
         }
 
-        static Func<T, int> Find<T>(T value) where T : IComparable<T> {
+        static Func<T, int> Find<T>(T value) where T : IComparable<T>
+        {
             return x => -value.CompareTo(x);
         }
 
-        [TestMethod]
-        public void CheckBinaryFind() {
+        [Fact]
+        public void CheckBinaryFind()
+        {
             var sequence = new[] { 1, 3, 5, 7 };
             var expected = 5;
-            Assert.AreEqual(expected, sequence.BinaryFind(Find(5)));
+            Assert.Equal(expected, sequence.BinaryFind(Find(5)));
         }
 
-        [TestMethod]
-        public void CheckLowerBound() {
+        [Fact]
+        public void CheckLowerBound()
+        {
             var sequence = new[] { 1, 3, 5, 7 };
-            Assert.AreEqual(3, sequence.LowerBound(Find(4)));
-            Assert.AreEqual(5, sequence.LowerBound(Find(5)));
-            Assert.AreEqual(7, sequence.LowerBound(Find(9)));
-            Assert.AreEqual(0, sequence.LowerBound(Find(-1)));
+            Assert.Equal(3, sequence.LowerBound(Find(4)));
+            Assert.Equal(5, sequence.LowerBound(Find(5)));
+            Assert.Equal(7, sequence.LowerBound(Find(9)));
+            Assert.Equal(0, sequence.LowerBound(Find(-1)));
         }
 
-        [TestMethod]
-        public void CheckUpperBound() {
+        [Fact]
+        public void CheckUpperBound()
+        {
             var sequence = new[] { 1, 3, 5, 7 };
-            Assert.AreEqual(5, sequence.UpperBound(Find(4)));
-            Assert.AreEqual(5, sequence.UpperBound(Find(5)));
-            Assert.AreEqual(0, sequence.UpperBound(Find(9)));
-            Assert.AreEqual(1, sequence.UpperBound(Find(-1)));
+            Assert.Equal(5, sequence.UpperBound(Find(4)));
+            Assert.Equal(5, sequence.UpperBound(Find(5)));
+            Assert.Equal(0, sequence.UpperBound(Find(9)));
+            Assert.Equal(1, sequence.UpperBound(Find(-1)));
         }
 
-        [TestMethod]
-        public void CheckBound() {
+        [Fact]
+        public void CheckBound()
+        {
             var sequence = new[] { 1, 3, 5, 7 };
-            Assert.AreEqual(Tuple.Create(3, 5), sequence.Bounds(Find(4)));
-            Assert.AreEqual(Tuple.Create(5, 5), sequence.Bounds(Find(5)));
-            Assert.AreEqual(Tuple.Create(7, 0), sequence.Bounds(Find(9)));
-            Assert.AreEqual(Tuple.Create(0, 1), sequence.Bounds(Find(-1)));
+            Assert.Equal(Tuple.Create(3, 5), sequence.Bounds(Find(4)));
+            Assert.Equal(Tuple.Create(5, 5), sequence.Bounds(Find(5)));
+            Assert.Equal(Tuple.Create(7, 0), sequence.Bounds(Find(9)));
+            Assert.Equal(Tuple.Create(0, 1), sequence.Bounds(Find(-1)));
         }
 
-        [TestMethod]
-        public void CheckInterpolatedSearch() {
+        [Fact]
+        public void CheckInterpolatedSearch()
+        {
             var sequence = new[] { 1, 2, 3, 5, 7, 9, 11, 12, 23, 42, 51 };
-            Assert.AreEqual(4, sequence.InterpolatedSearch(7, new Int32Ordinal()));
+            Assert.Equal(4, sequence.InterpolatedSearch(7, new Int32Ordinal()));
         }
 
-        [TestMethod]
-        public void CheckMinElement() {
+        [Fact]
+        public void CheckMinElement()
+        {
             var sequence = new[] { "dog", "cat", "bird", "lion" };
-            Assert.AreEqual(2, sequence.MinElement());
+            Assert.Equal(2, sequence.MinElement());
         }
 
-        [TestMethod]
-        public void CheckMaxElement() {
+        [Fact]
+        public void CheckMaxElement()
+        {
             var sequence = new[] { "dog", "cat", "bird", "lion" };
-            Assert.AreEqual(3, sequence.MaxElement());
+            Assert.Equal(3, sequence.MaxElement());
         }
 
-        [TestMethod]
-        public void CheckMinMaxElement() {
+        [Fact]
+        public void CheckMinMaxElement()
+        {
             var sequence = new[] { "dog", "cat", "bird", "lion" };
             var actual = sequence.MinMaxElement();
-            Assert.AreEqual(2, actual.Item1);
-            Assert.AreEqual(3, actual.Item2);
+            Assert.Equal(2, actual.Item1);
+            Assert.Equal(3, actual.Item2);
         }
 
-        [TestMethod]
-        public void CanPop() {
+        [Fact]
+        public void CanPop()
+        {
             var actual = new List<string> { "one", "two", "three" };
             var expected = new[] { "one", "two" };
-            Assert.AreEqual("three", actual.Pop());
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal("three", actual.Pop());
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanPopAtIndex() {
+        [Fact]
+        public void CanPopAtIndex()
+        {
             var actual = new List<string> { "one", "two", "three" };
             var expected = new[] { "one", "three" };
-            Assert.AreEqual("two", actual.Pop(1));
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal("two", actual.Pop(1));
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException), AllowDerivedTypes = true)]
-        public void CannotPopWhenIndexIsOutOfBound() {
+        [Fact]
+        public void CannotPopWhenIndexIsOutOfBound()
+        {
             var actual = new List<string> { "one", "two", "three" };
-            actual.Pop(4);
+            Assert.Throws<ArgumentOutOfRangeException>(() => actual.Pop(4));
         }
 
-        [TestMethod]
-        public void CanToggle() {
+        [Fact]
+        public void CanToggle()
+        {
             var actual = new List<string> { "one", "two", "three" };
-            Assert.IsTrue(actual.Toggle("four"));
-            Assert.IsFalse(actual.Toggle("one"));
+            Assert.True(actual.Toggle("four"));
+            Assert.False(actual.Toggle("one"));
             var expected = new[] { "two", "three", "four" };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckElementsAt() {
+        [Fact]
+        public void CheckElementsAt()
+        {
             var data = new List<string> { "zero", "one", "two", "three", "four" };
             var expected = new[] { "three", "one", "two" };
             var actual = data.ElementsAt(3, 1, 2).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckElementsAtOnEnumerable() {
+        [Fact]
+        public void CheckElementsAtOnEnumerable()
+        {
             var data = new List<string> { "zero", "one", "two", "three", "four" };
             var expected = new[] { "three", "one", "two" };
             var actual = data.Select(x => x).ElementsAt(3, 1, 2).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckElementsAtOrDefaultOnEnumerable() {
+        [Fact]
+        public void CheckElementsAtOrDefaultOnEnumerable()
+        {
             var data = new List<string> { "zero", "one", "two", "three" };
             var expected = new[] { "three", "one", null, "two" };
             var actual = data.Select(x => x).ElementsAtOrDefault(3, 1, 4, 2).ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckIsSorted() {
+        [Fact]
+        public void CheckIsSorted()
+        {
             var data = new[] { 5, 1, 2, 3, 0 };
-            Assert.IsTrue(data.IsSorted(1, 3));
-            Assert.IsFalse(data.IsSorted(1, 4));
+            Assert.True(data.IsSorted(1, 3));
+            Assert.False(data.IsSorted(1, 4));
         }
 
-        [TestMethod]
-        public void CanPartition() {
+        [Fact]
+        public void CanPartition()
+        {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
             Predicate<int> odd = e => e % 2 == 1;
             var p = data.Partition(odd);
-            Assert.AreEqual(4, p);
+            Assert.Equal(4, p);
             int i;
             for (i = 0; i < p; i++)
-                Assert.IsFalse(odd(data[i]));
+                Assert.False(odd(data[i]));
             for (; i < data.Length; ++i)
-                Assert.IsTrue(odd(data[i]));
+                Assert.True(odd(data[i]));
         }
 
-        [TestMethod]
-        public void CannotFindPartitionPointWhenNotPartitioned() {
+        [Fact]
+        public void CannotFindPartitionPointWhenNotPartitioned()
+        {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
             Predicate<int> odd = e => e % 2 == 1;
             var actual = data.FindPartitionPoint(odd);
 
-            Assert.AreEqual(-1, actual);
+            Assert.Equal(-1, actual);
         }
 
-        [TestMethod]
-        public void CanFindPartitionPointWhenPartitioned() {
+        [Fact]
+        public void CanFindPartitionPointWhenPartitioned()
+        {
             var data = new[] { 2, 4, 6, 7, 8, 1, 3, 9 };
             Predicate<int> odd = e => e % 2 == 1;
             var expected = data.Partition(odd);
             var actual = data.FindPartitionPoint(odd);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanStablePartition() {
+        [Fact]
+        public void CanStablePartition()
+        {
             var data = new[] { 2, 1, 3, 4, 6, 7, 8, 9, 11 };
             Predicate<int> odd = e => e % 2 == 1;
             var p = data.StablePartition(odd);
-            Assert.AreEqual(4, p);
+            Assert.Equal(4, p);
             int i;
             for (i = 0; i < p; i++)
-                Assert.IsFalse(odd(data[i]));
+                Assert.False(odd(data[i]));
             data.IsSorted(0, p);
             for (; i < data.Length; ++i)
-                Assert.IsTrue(odd(data[i]));
+                Assert.True(odd(data[i]));
             data.IsSorted(p, data.Length - p);
         }
 
-        [TestMethod]
-        public void CheckBinaryRank() {
+        [Fact]
+        public void CheckBinaryRank()
+        {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
-            Assert.AreEqual(3, data.BinaryRank(4));
-            Assert.AreEqual(4, data.BinaryRank(x => Comparer<int>.Default.Compare(x, 5)));
+            Assert.Equal(3, data.BinaryRank(4));
+            Assert.Equal(4, data.BinaryRank(x => Comparer<int>.Default.Compare(x, 5)));
         }
 
-        [TestMethod]
-        public void CheckPerfectInShuffle() {
+        [Fact]
+        public void CheckPerfectInShuffle()
+        {
             var data = "AGINORSTABEELMPX".ToCharArray();
             data.PerfectInShuffle();
             var actual = new string(data);
             var expected = "AABGEIENLOMRPSXT";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckPerfectInUnshuffle() {
+        [Fact]
+        public void CheckPerfectInUnshuffle()
+        {
             var data = "AABGEIENLOMRPSXT".ToCharArray();
             data.PerfectInUnshuffle();
             var actual = new string(data);
             var expected = "AGINORSTABEELMPX";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
 
-        [TestMethod]
-        public void CheckPerfectOutShuffle() {
+        [Fact]
+        public void CheckPerfectOutShuffle()
+        {
             var data = "AGINORSTABEELMPX".ToCharArray();
             data.PerfectOutShuffle();
             var actual = new string(data);
             var expected = "AAGBIENEOLRMSPTX";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckPerfectOutUnshuffle() {
+        [Fact]
+        public void CheckPerfectOutUnshuffle()
+        {
             var data = "AAGBIENEOLRMSPTX".ToCharArray();
             data.PerfectOutUnshuffle();
             var actual = new string(data);
             var expected = "AGINORSTABEELMPX";
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

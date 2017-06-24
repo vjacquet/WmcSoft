@@ -1,18 +1,18 @@
 ﻿using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Diagnostics
 {
-    [TestClass]
     public class TraceIndentTests
     {
-        [TestMethod]
-        public void CanIndentTrace() {
+        [Fact]
+        public void CanIndentTrace()
+        {
             var indent = Trace.IndentLevel;
             using (new TraceIndent()) {
-                Assert.IsTrue(indent < Trace.IndentLevel);
+                Assert.True(indent < Trace.IndentLevel);
             }
-            Assert.AreEqual(indent, Trace.IndentLevel);
+            Assert.Equal(indent, Trace.IndentLevel);
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Globalization
 {
-    [TestClass]
     public class BusinessCalendarTests
     {
-        [TestMethod]
-        public void CanCreateBusinessCalendarWithoutWeekEnds() {
+        [Fact]
+        public void CanCreateBusinessCalendarWithoutWeekEnds()
+        {
             var calendar = new BusinessCalendar(new DateTime(2015, 1, 1), TimeSpan.FromDays(100), BusinessCalendar.Saturdays, BusinessCalendar.Sundays);
-            Assert.IsTrue(calendar.IsBusinessDay(new DateTime(2015, 1, 2)));
-            Assert.IsFalse(calendar.IsBusinessDay(new DateTime(2015, 1, 3)));
-            Assert.IsFalse(calendar.IsBusinessDay(new DateTime(2015, 1, 4)));
-            Assert.IsTrue(calendar.IsBusinessDay(new DateTime(2015, 1, 5)));
+            Assert.True(calendar.IsBusinessDay(new DateTime(2015, 1, 2)));
+            Assert.False(calendar.IsBusinessDay(new DateTime(2015, 1, 3)));
+            Assert.False(calendar.IsBusinessDay(new DateTime(2015, 1, 4)));
+            Assert.True(calendar.IsBusinessDay(new DateTime(2015, 1, 5)));
         }
     }
 }

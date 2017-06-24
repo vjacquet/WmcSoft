@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WmcSoft.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.Collections.Specialized
 {
-    [TestClass]
     public class FenwickTreeTests
     {
-        [TestMethod]
+        [Fact]
         public void CanAddToFenwickTree()
         {
             var tree = new FenwickTree(4);
@@ -20,39 +13,39 @@ namespace WmcSoft.Collections.Specialized
             tree.Add(2, 8);
             tree.Add(3, 16);
 
-            Assert.AreEqual(tree[0], 2);
-            Assert.AreEqual(tree[1], 4);
-            Assert.AreEqual(tree[2], 8);
-            Assert.AreEqual(tree[3], 16);
+            Assert.Equal(tree[0], 2);
+            Assert.Equal(tree[1], 4);
+            Assert.Equal(tree[2], 8);
+            Assert.Equal(tree[3], 16);
 
-            Assert.AreEqual(30, tree.Tally());
+            Assert.Equal(30, tree.Tally());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanInitializeFenwickTree()
         {
             var tree = new FenwickTree(2, 4, 8, 16);
 
-            Assert.AreEqual(tree[0], 2);
-            Assert.AreEqual(tree[1], 4);
-            Assert.AreEqual(tree[2], 8);
-            Assert.AreEqual(tree[3], 16);
+            Assert.Equal(tree[0], 2);
+            Assert.Equal(tree[1], 4);
+            Assert.Equal(tree[2], 8);
+            Assert.Equal(tree[3], 16);
 
-            Assert.AreEqual(30, tree.Tally());
+            Assert.Equal(30, tree.Tally());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSumFenwickTree()
         {
             var tree = new FenwickTree(2, 4, 8, 16);
-            Assert.AreEqual(6, tree.Sum(2));
+            Assert.Equal(6, tree.Sum(2));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRangeFenwickTree()
         {
             var tree = new FenwickTree(2, 4, 8, 16);
-            Assert.AreEqual(12, tree.Range(1, 3));
+            Assert.Equal(12, tree.Range(1, 3));
         }
     }
 }

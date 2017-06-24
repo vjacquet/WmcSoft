@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.ComponentModel
 {
-    [TestClass]
     public class TypeDescriptorExtensionsTests
     {
         public class Model
@@ -15,8 +13,9 @@ namespace WmcSoft.ComponentModel
             public string Property3 { get; set; }
         }
 
-        [TestMethod]
-        public void CanGetValues() {
+        [Fact]
+        public void CanGetValues()
+        {
             var model = new Model {
                 Property1 = "value1",
                 Property2 = "value2",
@@ -27,10 +26,10 @@ namespace WmcSoft.ComponentModel
             bag.Add("Property2", null);
             bag.Add("PropertyA", null);
             TypeDescriptor.GetProperties(typeof(Model)).GetValues(model, bag);
-            Assert.AreEqual("value1",bag["Property1"]);
-            Assert.AreEqual("value2",bag["Property2"]);
-            Assert.IsNull(bag["PropertyA"]);
-            Assert.IsFalse(bag.ContainsKey("Property3"));
+            Assert.Equal("value1", bag["Property1"]);
+            Assert.Equal("value2", bag["Property2"]);
+            Assert.Null(bag["PropertyA"]);
+            Assert.False(bag.ContainsKey("Property3"));
         }
     }
 }

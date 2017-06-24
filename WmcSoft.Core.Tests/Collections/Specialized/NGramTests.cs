@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Specialized
 {
-    [TestClass]
     public class NGramTests
     {
-        [TestMethod]
+        [Fact]
         public void CanEqualNGrams()
         {
             var x = new NGram<int>(1, 2, 3);
@@ -18,12 +14,12 @@ namespace WmcSoft.Collections.Specialized
             var z = new NGram<int>(new List<int> { 0, 1, 2, 3, 4 }, 1, 2);
             var e = default(NGram<int>);
 
-            Assert.IsTrue(x.Equals(y));
-            Assert.IsFalse(x.Equals(z));
-            Assert.IsFalse(x.Equals(e));
+            Assert.True(x.Equals(y));
+            Assert.False(x.Equals(z));
+            Assert.False(x.Equals(e));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCompareNGrams()
         {
             var x = new NGram<int>(1, 2, 3);
@@ -31,18 +27,18 @@ namespace WmcSoft.Collections.Specialized
             var z = new NGram<int>(new List<int> { 0, 1, 2, 3, 4 }, 0, 2);
             var e = default(NGram<int>);
 
-            Assert.AreEqual(-1, e.CompareTo(x));
-            Assert.AreEqual(0, x.CompareTo(y));
-            Assert.AreEqual(1, x.CompareTo(z));
+            Assert.Equal(-1, e.CompareTo(x));
+            Assert.Equal(0, x.CompareTo(y));
+            Assert.Equal(1, x.CompareTo(z));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDecomposeNGram()
         {
             var ngrams = new NGram<char>('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
             var actual = ngrams.Decompose(3).Select(g => string.Join("", g)).ToList();
             var expected = new[] { "ABC", "BCD", "CDE", "DEF", "EFG", "FGH" };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

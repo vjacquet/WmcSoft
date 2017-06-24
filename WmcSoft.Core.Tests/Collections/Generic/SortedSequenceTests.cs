@@ -1,44 +1,47 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class SortedSequenceTests
     {
-        [TestMethod]
-        public void CheckSortedSequenceCollectionInvariants() {
+        [Fact]
+        public void CheckSortedSequenceCollectionInvariants()
+        {
             ContractAssert.Collection(new SortedSequence<int>());
         }
 
-        [TestMethod]
-        public void CanAddToSortedSequence() {
+        [Fact]
+        public void CanAddToSortedSequence()
+        {
             var collection = new SortedSequence<char>();
-            collection.AddRange(new []{'b', 'a', 'c'});
+            collection.AddRange(new[] { 'b', 'a', 'c' });
             var expected = "abc";
             var actual = String.Concat(collection);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanAddToSortedSequenceWithCollision() {
+        [Fact]
+        public void CanAddToSortedSequenceWithCollision()
+        {
             var collection = new SortedSequence<string>(StringComparer.InvariantCultureIgnoreCase);
             collection.AddRange(new[] { "b", "a", "c", "B" });
             var expected = "abBc";
             var actual = String.Concat(collection);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanRemoveFromSortedSequence() {
+        [Fact]
+        public void CanRemoveFromSortedSequence()
+        {
             var collection = new SortedSequence<char>();
             collection.AddRange(new[] { 'b', 'a', 'c' });
-            Assert.IsTrue(collection.Remove('a'));
+            Assert.True(collection.Remove('a'));
             var expected = "bc";
             var actual = String.Concat(collection);
-            Assert.AreEqual(expected, actual);
-            Assert.IsFalse(collection.Remove('a'));
+            Assert.Equal(expected, actual);
+            Assert.False(collection.Remove('a'));
         }
 
     }

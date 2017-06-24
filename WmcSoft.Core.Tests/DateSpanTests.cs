@@ -1,34 +1,35 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class DateSpanTests
     {
-        [TestMethod]
-        public void CheckLessThan() {
+        [Fact]
+        public void CheckLessThan()
+        {
             var x = new DateSpan(months: 1);
             var y = new DateSpan(days: 31);
-            Assert.IsTrue(x < y);
+            Assert.True(x < y);
         }
 
-        [TestMethod]
-        public void CheckEquals() {
+        [Fact]
+        public void CheckEquals()
+        {
             var x = new DateSpan(weeks: 1);
             var y = new DateSpan(days: 7);
-            Assert.IsTrue(x == y);
+            Assert.True(x == y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDeconstructDateSpan()
         {
             var x = new DateSpan(1, 2, 3, 4);
             var (y, m, w, d) = x;
 
-            Assert.AreEqual(1, y);
-            Assert.AreEqual(2, m);
-            Assert.AreEqual(3, w);
-            Assert.AreEqual(4, d);
+            Assert.Equal(1, y);
+            Assert.Equal(2, m);
+            Assert.Equal(3, w);
+            Assert.Equal(4, d);
         }
     }
 }

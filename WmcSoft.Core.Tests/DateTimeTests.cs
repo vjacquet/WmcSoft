@@ -1,108 +1,98 @@
 ﻿using System;
 using System.Globalization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class DateTimeTests
     {
-        [TestMethod]
-        public void CheckWeekOfMonth() {
-            DateTime actual;
-
-            actual = new DateTime(2009, 9, 30);
-            Assert.AreEqual(5, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 1);
-            Assert.AreEqual(1, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 3);
-            Assert.AreEqual(1, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 4);
-            Assert.AreEqual(2, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 5);
-            Assert.AreEqual(2, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 12);
-            Assert.AreEqual(3, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 25);
-            Assert.AreEqual(5, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 10, 31);
-            Assert.AreEqual(5, actual.WeekOfMonth());
-
-            actual = new DateTime(2009, 11, 1);
-            Assert.AreEqual(1, actual.WeekOfMonth());
+        [Theory]
+        [InlineData(5, 2009, 9, 30)]
+        [InlineData(1, 2009, 10, 1)]
+        [InlineData(1, 2009, 10, 3)]
+        [InlineData(2, 2009, 10, 4)]
+        [InlineData(2, 2009, 10, 5)]
+        [InlineData(3, 2009, 10, 12)]
+        [InlineData(5, 2009, 10, 25)]
+        [InlineData(5, 2009, 10, 31)]
+        [InlineData(1, 2009, 11, 1)]
+        public void CheckWeekOfMonth(int expected, int year, int month, int day)
+        {
+            var actual = new DateTime(year, month, day);
+            Assert.Equal(expected, actual.WeekOfMonth());
         }
 
-        [TestMethod]
-        public void CanFindFirstDayOfWeek() {
+        [Fact]
+        public void CanFindFirstDayOfWeek()
+        {
             var date = new DateTime(2016, 08, 10);
             var info = new DateTimeFormatInfo {
                 FirstDayOfWeek = DayOfWeek.Monday,
             };
             var expected = new DateTime(2016, 08, 08);
             var actual = date.FirstDayOfWeek(info);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanFindLastDayOfWeek() {
+        [Fact]
+        public void CanFindLastDayOfWeek()
+        {
             var date = new DateTime(2016, 08, 10);
             var info = new DateTimeFormatInfo {
                 FirstDayOfWeek = DayOfWeek.Monday,
             };
             var expected = new DateTime(2016, 08, 14);
             var actual = date.LastDayOfWeek(info);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanFindFirstDayOfMonth() {
+        [Fact]
+        public void CanFindFirstDayOfMonth()
+        {
             var date = new DateTime(2016, 08, 10);
             var expected = new DateTime(2016, 08, 01);
             var actual = date.FirstDayOfMonth();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanFindLastDayOfMonth() {
+        [Fact]
+        public void CanFindLastDayOfMonth()
+        {
             var date = new DateTime(2016, 02, 10);
             var expected = new DateTime(2016, 02, 29);
             var actual = date.LastDayOfMonth();
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void AssertUnspecifiedKindOnNewDateTime() {
+        [Fact]
+        public void AssertUnspecifiedKindOnNewDateTime()
+        {
             var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
-            Assert.AreEqual(DateTimeKind.Unspecified, unspecified.Kind);
+            Assert.Equal(DateTimeKind.Unspecified, unspecified.Kind);
         }
 
-        [TestMethod]
-        public void CheckAsLocalTime() {
-            var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
-            var local = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Local);
-            var utc = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Utc);
-
-            Assert.AreEqual(local.ToLocalTime(), local.AsLocalTime());
-            Assert.AreEqual(utc.ToLocalTime(), utc.AsLocalTime());
-            Assert.AreNotEqual(unspecified.ToLocalTime(), unspecified.AsLocalTime());
-        }
-
-        [TestMethod]
-        public void CheckAsUniversalTime() {
+        [Fact]
+        public void CheckAsLocalTime()
+        {
             var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
             var local = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Local);
             var utc = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Utc);
 
-            Assert.AreEqual(local.ToUniversalTime(), local.AsUniversalTime());
-            Assert.AreEqual(utc.ToUniversalTime(), utc.AsUniversalTime());
-            Assert.AreNotEqual(unspecified.ToUniversalTime(), unspecified.AsUniversalTime());
+            Assert.Equal(local.ToLocalTime(), local.AsLocalTime());
+            Assert.Equal(utc.ToLocalTime(), utc.AsLocalTime());
+            Assert.NotEqual(unspecified.ToLocalTime(), unspecified.AsLocalTime());
+        }
+
+        [Fact]
+        public void CheckAsUniversalTime()
+        {
+            var unspecified = new DateTime(2016, 01, 01, 12, 0, 0);
+            var local = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Local);
+            var utc = new DateTime(2016, 01, 01, 12, 0, 0, DateTimeKind.Utc);
+
+            Assert.Equal(local.ToUniversalTime(), local.AsUniversalTime());
+            Assert.Equal(utc.ToUniversalTime(), utc.AsUniversalTime());
+            Assert.NotEqual(unspecified.ToUniversalTime(), unspecified.AsUniversalTime());
         }
     }
 }

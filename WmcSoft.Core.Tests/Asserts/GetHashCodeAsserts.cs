@@ -1,35 +1,35 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Asserts
 {
-    [TestClass]
     public class GetHashCodeAsserts
     {
-        [TestMethod]
-        public void CanGetHashCodeOfNullableType() {
-            DateTime? x = default(DateTime?);
+        [Fact]
+        public void CanGetHashCodeOfNullableType()
+        {
+            var x = default(DateTime?);
 
-            Assert.IsTrue(x == null);
-            Assert.AreEqual(0, x.GetHashCode());
+            Assert.True(x == null);
+            Assert.Equal(0, x.GetHashCode());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CannotGetHashCodeOfNullStringFromOrdinalIgnoreCase() {
-            Assert.AreEqual(0, StringComparer.OrdinalIgnoreCase.GetHashCode(null));
+        [Fact]
+        public void CannotGetHashCodeOfNullStringFromOrdinalIgnoreCase()
+        {
+            Assert.Throws<ArgumentNullException>(() => StringComparer.OrdinalIgnoreCase.GetHashCode(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CannotGetHashCodeOfNullStringFromInvariantCulture() {
-            Assert.AreEqual(0, StringComparer.InvariantCulture.GetHashCode(null));
+        [Fact]
+        public void CannotGetHashCodeOfNullStringFromInvariantCulture()
+        {
+            Assert.Throws<ArgumentNullException>(() => StringComparer.InvariantCulture.GetHashCode(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CannotGetHashCodeOfNullStringFromInvariantCultureIgnoreCase() {
-            Assert.AreEqual(0, StringComparer.InvariantCultureIgnoreCase.GetHashCode(null));
+        [Fact]
+        public void CannotGetHashCodeOfNullStringFromInvariantCultureIgnoreCase()
+        {
+            Assert.Throws<ArgumentNullException>(() => StringComparer.InvariantCultureIgnoreCase.GetHashCode(null));
         }
     }
 }

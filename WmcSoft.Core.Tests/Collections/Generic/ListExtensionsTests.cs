@@ -1,263 +1,264 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class ListExtensionsTests
     {
-        [TestMethod]
-        public void CheckIndexOfList()
+        [Theory]
+        [InlineData(0, new[] { 0, 1, 2, 3 })]
+        [InlineData(3, new[] { 3, 4, 5 })]
+        [InlineData(-1, new[] { 3, 5, 4 })]
+        [InlineData(7, new[] { 7, 8, 9 })]
+        [InlineData(-1, new[] { 7, 8, 9, 10 })]
+        public void CheckIndexOfList(int expected, int[] sequence)
         {
             var data = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            Assert.AreEqual(0, data.IndexOf(new[] { 0, 1, 2, 3 }));
-            Assert.AreEqual(3, data.IndexOf(new[] { 3, 4, 5 }));
-            Assert.AreEqual(-1, data.IndexOf(new[] { 3, 5, 4 }));
-            Assert.AreEqual(7, data.IndexOf(new[] { 7, 8, 9 }));
-            Assert.AreEqual(-1, data.IndexOf(new[] { 7, 8, 9, 10 }));
+            Assert.Equal(expected, data.IndexOf(sequence));
         }
 
-        [TestMethod]
-        public void CheckIndexOfPartial()
+        [Theory]
+        [InlineData(-1, 0, 3, 3)]
+        [InlineData(-1, 2, 3, 3)]
+        [InlineData(3, 3, 3, 3)]
+        [InlineData(4, 4, 3, 3)]
+        [InlineData(5, 5, 3, 3)]
+        [InlineData(-1, 6, 3, 3)]
+        [InlineData(-1, 9, 3, 3)]
+        public void CheckIndexOfPartial(int expected, int value, int startIndex, int count)
         {
             var data = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            Assert.AreEqual(-1, data.IndexOf(0, 3, 3));
-            Assert.AreEqual(-1, data.IndexOf(2, 3, 3));
-            Assert.AreEqual(3, data.IndexOf(3, 3, 3));
-            Assert.AreEqual(4, data.IndexOf(4, 3, 3));
-            Assert.AreEqual(5, data.IndexOf(5, 3, 3));
-            Assert.AreEqual(-1, data.IndexOf(6, 3, 3));
-            Assert.AreEqual(-1, data.IndexOf(9, 3, 3));
+            Assert.Equal(expected, data.IndexOf(value, startIndex, count));
         }
 
-        [TestMethod]
-        public void CheckSublistIndexOf()
+        [Theory]
+        [InlineData(-1, 0)]
+        [InlineData(-1, 2)]
+        [InlineData(0, 3)]
+        [InlineData(1, 4)]
+        [InlineData(2, 5)]
+        [InlineData(-1, 6)]
+        [InlineData(-1, 9)]
+        public void CheckSublistIndexOf(int expected, int item)
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
-            Assert.AreEqual(-1, data.IndexOf(0));
-            Assert.AreEqual(-1, data.IndexOf(2));
-            Assert.AreEqual(0, data.IndexOf(3));
-            Assert.AreEqual(1, data.IndexOf(4));
-            Assert.AreEqual(2, data.IndexOf(5));
-            Assert.AreEqual(-1, data.IndexOf(6));
-            Assert.AreEqual(-1, data.IndexOf(9));
+            Assert.Equal(expected, data.IndexOf(item));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckSublistToArray()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             var actual = data.ToArray();
             var expected = new[] { 3, 4, 5 };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanAddInsideTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.Add(10);
-            Assert.AreEqual(4, data.Count);
+            Assert.Equal(4, data.Count);
 
             var expected = new[] { 0, 1, 2, 3, 4, 5, 10, 6, 7, 8, 9 };
             var actual = list.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanInsertInsideTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.Insert(1, 10);
-            Assert.AreEqual(4, data.Count);
+            Assert.Equal(4, data.Count);
 
             var expected = new[] { 0, 1, 2, 3, 10, 4, 5, 6, 7, 8, 9 };
             var actual = list.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveAtInsideTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.RemoveAt(1);
-            Assert.AreEqual(2, data.Count);
+            Assert.Equal(2, data.Count);
 
             var expected = new[] { 0, 1, 2, 3, 5, 6, 7, 8, 9 };
             var actual = list.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveInsideTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
-            Assert.IsTrue(data.Remove(4));
-            Assert.AreEqual(2, data.Count);
+            Assert.True(data.Remove(4));
+            Assert.Equal(2, data.Count);
 
             var expected = new[] { 0, 1, 2, 3, 5, 6, 7, 8, 9 };
             var actual = list.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveAfterTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
-            Assert.IsFalse(data.Remove(8));
-            Assert.IsTrue(list.Remove(8));
-            Assert.AreEqual(3, data.Count);
+            Assert.False(data.Remove(8));
+            Assert.True(list.Remove(8));
+            Assert.Equal(3, data.Count);
 
             var expected = new[] { 3, 4, 5 };
             var actual = data.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveBeforeTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
-            Assert.IsFalse(data.Remove(1));
-            Assert.IsTrue(list.Remove(1));
-            Assert.AreEqual(3, data.Count);
+            Assert.False(data.Remove(1));
+            Assert.True(list.Remove(1));
+            Assert.Equal(3, data.Count);
 
             var expected = new[] { 4, 5, 6 };
             var actual = data.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanClearTheSublist()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var data = list.Sublist(3, 3);
             data.Clear();
-            Assert.AreEqual(0, data.Count);
+            Assert.Equal(0, data.Count);
 
             var expected = new[] { 0, 1, 2, 6, 7, 8, 9 };
             var actual = list.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveMoreThanTheSublistCapacity()
         {
             var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, };
             var data = list.Sublist(3, 3);
             list.RemoveAt(0);
             list.RemoveAt(0);
-            Assert.AreEqual(2, data.Count);
+            Assert.Equal(2, data.Count);
 
             var expected = new[] { 5, 6 };
             var actual = data.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckRepeat()
         {
             var data = new[] { 1, 2, 3 };
             var expected = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
             var actual = data.Repeat(3);
-            Assert.AreEqual(9, actual.Count);
-            Assert.AreEqual(3, actual[5]);
-            CollectionAssert.AreEqual(expected, actual.ToArray());
+            Assert.Equal(9, actual.Count);
+            Assert.Equal(3, actual[5]);
+            Assert.Equal(expected, actual.ToArray());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFindRotationPoint()
         {
             var list = new[] { 1, 2, 3, 4, 5, 6 };
             var target = new[] { 3, 4, 5, 6, 1, 2 };
 
-            Assert.AreEqual(4, list.FindRotationPoint(target));
+            Assert.Equal(4, list.FindRotationPoint(target));
 
             list.Rotate(4);
-            CollectionAssert.AreEqual(target, list);
+            Assert.Equal(target, list);
         }
 
         #region Splice
 
-        [TestMethod]
+        [Fact]
         public void CanRemove0ElementsFromIndex2AndInsert1Element()
         {
             var myFish = new List<string> { "angel", "clown", "mandarin", "sturgeon" };
             var removed = myFish.Splice(2, 0, "drum");
 
-            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "drum", "mandarin", "sturgeon" });
-            CollectionAssert.AreEqual(removed, new string[0]);
+            Assert.Equal(myFish, new[] { "angel", "clown", "drum", "mandarin", "sturgeon" });
+            Assert.Equal(removed, new string[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemove1ElementFromIndex3()
         {
             var myFish = new List<string> { "angel", "clown", "drum", "mandarin", "sturgeon" };
             var removed = myFish.Splice(3, 1);
 
-            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "drum", "sturgeon" });
-            CollectionAssert.AreEqual(removed, new[] { "mandarin" });
+            Assert.Equal(myFish, new[] { "angel", "clown", "drum", "sturgeon" });
+            Assert.Equal(removed, new[] { "mandarin" });
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemove1ElementFromIndex2AndInsert1Element()
         {
             var myFish = new List<string> { "angel", "clown", "drum", "sturgeon" };
             var removed = myFish.Splice(2, 1, "trumpet");
 
-            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "trumpet", "sturgeon" });
-            CollectionAssert.AreEqual(removed, new[] { "drum" });
+            Assert.Equal(myFish, new[] { "angel", "clown", "trumpet", "sturgeon" });
+            Assert.Equal(removed, new[] { "drum" });
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemove2ElementsFromIndex0AndInsert3Elements()
         {
             var myFish = new List<string> { "angel", "clown", "trumpet", "sturgeon" };
             var removed = myFish.Splice(0, 2, "parrot", "anemone", "blue");
 
-            CollectionAssert.AreEqual(myFish, new[] { "parrot", "anemone", "blue", "trumpet", "sturgeon" });
-            CollectionAssert.AreEqual(removed, new[] { "angel", "clown" });
+            Assert.Equal(myFish, new[] { "parrot", "anemone", "blue", "trumpet", "sturgeon" });
+            Assert.Equal(removed, new[] { "angel", "clown" });
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemove2ElementsFromIndex2()
         {
             var myFish = new List<string> { "parrot", "anemone", "blue", "trumpet", "sturgeon" };
             var removed = myFish.Splice(myFish.Count - 3, 2);
 
-            CollectionAssert.AreEqual(myFish, new[] { "parrot", "anemone", "sturgeon" });
-            CollectionAssert.AreEqual(removed, new[] { "blue", "trumpet" });
+            Assert.Equal(myFish, new[] { "parrot", "anemone", "sturgeon" });
+            Assert.Equal(removed, new[] { "blue", "trumpet" });
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemove1ElementFromIndexMinus2()
         {
             var myFish = new List<string> { "angel", "clown", "mandarin", "sturgeon" };
             var removed = myFish.Splice(-2, 1);
 
-            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown", "sturgeon" });
-            CollectionAssert.AreEqual(removed, new[] { "mandarin" });
+            Assert.Equal(myFish, new[] { "angel", "clown", "sturgeon" });
+            Assert.Equal(removed, new[] { "mandarin" });
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveAllElementsAfterIndex2()
         {
             var myFish = new List<string> { "angel", "clown", "mandarin", "sturgeon" };
             var removed = myFish.Splice(2);
 
-            CollectionAssert.AreEqual(myFish, new[] { "angel", "clown" });
-            CollectionAssert.AreEqual(removed, new[] { "mandarin", "sturgeon" });
+            Assert.Equal(myFish, new[] { "angel", "clown" });
+            Assert.Equal(removed, new[] { "mandarin", "sturgeon" });
         }
 
         #endregion

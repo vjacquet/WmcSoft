@@ -1,36 +1,38 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic.Algorithms
 {
-    [TestClass]
     public class FinderTests
     {
-        [TestMethod]
-        public void CanFindUsingNaiveFinder() {
+        [Fact]
+        public void CanFindUsingNaiveFinder()
+        {
             const string p = "10100111";
             const string t = "100111010010100010100111000111";
 
             var a = new NaiveFinder<char>(p.AsReadOnlyList(), EqualityComparer<char>.Default);
             var actual = a.FindFirstOccurence(t.AsReadOnlyList(), 5);
             var expected = t.IndexOf(p);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanFindUsingKnuthMorrisPratt() {
+        [Fact]
+        public void CanFindUsingKnuthMorrisPratt()
+        {
             const string p = "10100111";
             const string t = "100111010010100010100111000111";
 
             var a = new KnuthMorrisPratt<char>(p.AsReadOnlyList(), EqualityComparer<char>.Default);
             var actual = a.FindFirstOccurence(t.AsReadOnlyList(), 5);
             var expected = t.IndexOf(p);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanFindAllUsingKnuthMorrisPratt() {
+        [Fact]
+        public void CanFindAllUsingKnuthMorrisPratt()
+        {
             const string p = "10100111";
             const string t = "1001110100101000101001110001010011111";
 
@@ -40,7 +42,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
                 t.IndexOf(p),
                 t.LastIndexOf(p)
             };
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

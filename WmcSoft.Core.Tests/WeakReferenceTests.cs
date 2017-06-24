@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class WeakReferenceTests
     {
-        [TestMethod]
-        public void CanCreateWeakReference() {
+        [Fact]
+        public void CanCreateWeakReference()
+        {
             var r = new WeakReference<List<int>>(new List<int>());
             r.Target.Add(5);
         }

@@ -1,23 +1,24 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Diagnostics
 {
-    [TestClass]
     public class CounterTests
     {
-        [TestMethod]
-        public void CanIncrementCounter() {
+        [Fact]
+        public void CanIncrementCounter()
+        {
             var counter = new Counter("a");
 
-            Assert.AreEqual(0, counter.Tally);
+            Assert.Equal(0, counter.Tally);
             counter.Increment();
             counter.Increment();
-            Assert.AreEqual(2, counter.Tally);
+            Assert.Equal(2, counter.Tally);
         }
 
-        [TestMethod]
-        public void CanResetCounter() {
+        [Fact]
+        public void CanResetCounter()
+        {
             var counter = new Counter("a");
 
             counter.Increment();
@@ -25,8 +26,8 @@ namespace WmcSoft.Diagnostics
 
             var expected = counter.Tally;
             var actual = counter.Reset();
-            Assert.AreEqual(expected, actual);
-            Assert.AreEqual(0, counter.Tally);
+            Assert.Equal(expected, actual);
+            Assert.Equal(0, counter.Tally);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic.Internals
 {
-    [TestClass]
     public class BulkQueueTests
     {
-        [TestMethod]
-        public void CanEnqueue() {
+        [Fact]
+        public void CanEnqueue()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var queue = new BulkQueue<int>();
             foreach (var item in data)
@@ -17,13 +17,14 @@ namespace WmcSoft.Collections.Generic.Internals
             for (int i = 0; i < length; i++) {
                 var expected = data[i];
                 var actual = queue.Dequeue();
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
-            Assert.IsTrue(queue.IsEmpty());
+            Assert.True(queue.IsEmpty());
         }
 
-        [TestMethod]
-        public void CanBulkEnqueue() {
+        [Fact]
+        public void CanBulkEnqueue()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var queue = new BulkQueue<int>();
             queue.BulkEnqueue(data.Length, (array, index) => Array.Copy(data, 0, array, index, data.Length));
@@ -32,13 +33,14 @@ namespace WmcSoft.Collections.Generic.Internals
             for (int i = 0; i < length; i++) {
                 var expected = data[i];
                 var actual = queue.Dequeue();
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
-            Assert.IsTrue(queue.IsEmpty());
+            Assert.True(queue.IsEmpty());
         }
 
-        [TestMethod]
-        public void CanEnqueueItems() {
+        [Fact]
+        public void CanEnqueueItems()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var queue = new BulkQueue<int>();
             queue.Enqueue(data);
@@ -47,36 +49,37 @@ namespace WmcSoft.Collections.Generic.Internals
             for (int i = 0; i < length; i++) {
                 var expected = data[i];
                 var actual = queue.Dequeue();
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
-            Assert.IsTrue(queue.IsEmpty());
+            Assert.True(queue.IsEmpty());
         }
 
-        [TestMethod]
-        public void CanBulkEnqueueAfterAFewEnqueues() {
+        [Fact]
+        public void CanBulkEnqueueAfterAFewEnqueues()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             var queue = new BulkQueue<int>();
             queue.Enqueue(-20);
             queue.Enqueue(-30);
             queue.Enqueue(-40);
-            Assert.AreEqual(-20, queue.Dequeue());
-            Assert.AreEqual(-30, queue.Dequeue());
+            Assert.Equal(-20, queue.Dequeue());
+            Assert.Equal(-30, queue.Dequeue());
 
             queue.BulkEnqueue(data.Length, (array, index) => Array.Copy(data, 0, array, index, data.Length));
             queue.Enqueue(20);
 
-            Assert.AreEqual(-40, queue.Dequeue());
+            Assert.Equal(-40, queue.Dequeue());
 
             var length = data.Length;
             for (int i = 0; i < length; i++) {
                 var expected = data[i];
                 var actual = queue.Dequeue();
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
 
-            Assert.AreEqual(20, queue.Dequeue());
+            Assert.Equal(20, queue.Dequeue());
 
-            Assert.IsTrue(queue.IsEmpty());
+            Assert.True(queue.IsEmpty());
         }
     }
 }

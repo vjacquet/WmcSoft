@@ -1,20 +1,20 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Xunit;
 using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class SequenceSetTests
     {
-        [TestMethod]
-        public void CheckSequenceIsSet() {
+        [Fact]
+        public void CheckSequenceIsSet()
+        {
             ContractAssert.Set(new SequenceSet<int>());
         }
 
-        [TestMethod]
-        public void CheckIntersectWith() {
+        [Fact]
+        public void CheckIntersectWith()
+        {
             var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
             var other = new SequenceSet<char>();
@@ -22,11 +22,12 @@ namespace WmcSoft.Collections.Generic
             actual.IntersectWith(other);
 
             var expected = new[] { 'b' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
+            Assert.Equal(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public void CheckIntersectWithCollectionWithDuplicates() {
+        [Fact]
+        public void CheckIntersectWithCollectionWithDuplicates()
+        {
             var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
             var other = new SortedSequence<char>();
@@ -34,11 +35,12 @@ namespace WmcSoft.Collections.Generic
             actual.IntersectWith(other);
 
             var expected = new[] { 'b' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
+            Assert.Equal(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public void CheckUnionWith() {
+        [Fact]
+        public void CheckUnionWith()
+        {
             var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
             var other = new SequenceSet<char>();
@@ -46,11 +48,12 @@ namespace WmcSoft.Collections.Generic
             actual.UnionWith(other);
 
             var expected = new[] { 'a', 'b', 'c', 'd' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
+            Assert.Equal(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public void CheckExceptWith() {
+        [Fact]
+        public void CheckExceptWith()
+        {
             var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
             var other = new SequenceSet<char>();
@@ -58,11 +61,12 @@ namespace WmcSoft.Collections.Generic
             actual.ExceptWith(other);
 
             var expected = new[] { 'a', 'c' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
+            Assert.Equal(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public void CheckSymmetricExceptWith() {
+        [Fact]
+        public void CheckSymmetricExceptWith()
+        {
             var actual = new SequenceSet<char>();
             actual.AddRange('a', 'b', 'c');
             var other = new SequenceSet<char>();
@@ -70,39 +74,42 @@ namespace WmcSoft.Collections.Generic
             actual.SymmetricExceptWith(other);
 
             var expected = new[] { 'a', 'c', 'd' };
-            CollectionAssert.AreEqual(expected, actual.ToArray());
+            Assert.Equal(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public void CheckOverlaps() {
+        [Fact]
+        public void CheckOverlaps()
+        {
             var low = new SequenceSet<int>(Enumerable.Range(1, 4));
             var all = new SequenceSet<int>(Enumerable.Range(0, 10));
 
-            Assert.IsTrue(low.Overlaps(all));
+            Assert.True(low.Overlaps(all));
         }
 
-        [TestMethod]
-        public void CheckSubsetAndProperSubsetOnDifferentSets() {
+        [Fact]
+        public void CheckSubsetAndProperSubsetOnDifferentSets()
+        {
             var set1 = new SequenceSet<int>(Enumerable.Range(1, 4));
             var set2 = new SequenceSet<int>(Enumerable.Range(0, 10));
 
-            Assert.IsFalse(set1.SetEquals(set2));
-            Assert.IsTrue(set1.IsSubsetOf(set2));
-            Assert.IsTrue(set1.IsProperSubsetOf(set2));
-            Assert.IsTrue(set2.IsSupersetOf(set1));
-            Assert.IsTrue(set2.IsProperSupersetOf(set1));
+            Assert.False(set1.SetEquals(set2));
+            Assert.True(set1.IsSubsetOf(set2));
+            Assert.True(set1.IsProperSubsetOf(set2));
+            Assert.True(set2.IsSupersetOf(set1));
+            Assert.True(set2.IsProperSupersetOf(set1));
         }
 
-        [TestMethod]
-        public void CheckSubsetAndProperSubsetOnEquivalentSets() {
+        [Fact]
+        public void CheckSubsetAndProperSubsetOnEquivalentSets()
+        {
             var set1 = new SequenceSet<int>(Enumerable.Range(1, 4));
             var set2 = new SequenceSet<int>(Enumerable.Range(1, 4));
 
-            Assert.IsTrue(set1.SetEquals(set2));
-            Assert.IsTrue(set1.IsSubsetOf(set2));
-            Assert.IsFalse(set1.IsProperSubsetOf(set2));
-            Assert.IsTrue(set2.IsSupersetOf(set1));
-            Assert.IsFalse(set2.IsProperSupersetOf(set1));
+            Assert.True(set1.SetEquals(set2));
+            Assert.True(set1.IsSubsetOf(set2));
+            Assert.False(set1.IsProperSubsetOf(set2));
+            Assert.True(set2.IsSupersetOf(set1));
+            Assert.False(set2.IsProperSupersetOf(set1));
         }
     }
 }

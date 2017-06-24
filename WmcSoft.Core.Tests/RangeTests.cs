@@ -1,64 +1,61 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Business
 {
-    [TestClass]
     public class RangeTests
     {
-        [TestMethod]
+        [Fact]
         public void CanCreateRange()
         {
             var actual = new Range<int>(2, 5);
 
-            Assert.AreEqual(2, actual.Lower);
-            Assert.AreEqual(5, actual.Upper);
+            Assert.Equal(2, actual.Lower);
+            Assert.Equal(5, actual.Upper);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanDeconstructRange()
         {
             var actual = new Range<int>(2, 5);
             var (lo, hi) = actual;
-            Assert.AreEqual(2, lo);
-            Assert.AreEqual(5, hi);
+            Assert.Equal(2, lo);
+            Assert.Equal(5, hi);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CheckInvalidRange()
         {
-            var actual = new Range<int>(5, 2);
-            Assert.Fail();
+            Assert.Throws<ArgumentException>(() => new Range<int>(5, 2));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCreateEmptyRange()
         {
             var actual = new Range<int>();
 
-            Assert.AreEqual(true, actual.IsEmpty);
+            Assert.Equal(true, actual.IsEmpty);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanEqualRange()
         {
             var x = new Range<int>(2, 5);
             var y = new Range<int>(2, 5);
 
-            Assert.IsTrue(x == y);
+            Assert.True(x == y);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIsEmpty()
         {
             var actual = new Range<int>(2, 2);
 
-            Assert.AreEqual(true, actual.IsEmpty);
+            Assert.Equal(true, actual.IsEmpty);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIncludes()
         {
             var actual = new Range<int>(2, 5);
@@ -66,14 +63,14 @@ namespace WmcSoft.Business
             var overlapped = new Range<int>(3, 7);
             var distinct = new Range<int>(8, 10);
 
-            Assert.IsTrue(actual.Includes(included));
-            Assert.IsFalse(actual.Includes(overlapped));
-            Assert.IsFalse(overlapped.Includes(actual));
-            Assert.IsFalse(actual.Includes(distinct));
-            Assert.IsFalse(distinct.Includes(actual));
+            Assert.True(actual.Includes(included));
+            Assert.False(actual.Includes(overlapped));
+            Assert.False(overlapped.Includes(actual));
+            Assert.False(actual.Includes(distinct));
+            Assert.False(distinct.Includes(actual));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckOverlaps()
         {
             var actual = new Range<int>(2, 5);
@@ -81,14 +78,14 @@ namespace WmcSoft.Business
             var overlapped = new Range<int>(3, 7);
             var distinct = new Range<int>(8, 10);
 
-            Assert.IsFalse(actual.Overlaps(included));
-            Assert.IsTrue(actual.Overlaps(overlapped));
-            Assert.IsTrue(overlapped.Overlaps(actual));
-            Assert.IsFalse(actual.Overlaps(distinct));
-            Assert.IsFalse(distinct.Overlaps(actual));
+            Assert.False(actual.Overlaps(included));
+            Assert.True(actual.Overlaps(overlapped));
+            Assert.True(overlapped.Overlaps(actual));
+            Assert.False(actual.Overlaps(distinct));
+            Assert.False(distinct.Overlaps(actual));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIsDistinct()
         {
             var actual = new Range<int>(2, 5);
@@ -96,14 +93,14 @@ namespace WmcSoft.Business
             var overlapped = new Range<int>(3, 7);
             var distinct = new Range<int>(8, 10);
 
-            Assert.IsFalse(actual.IsDistinct(included));
-            Assert.IsFalse(actual.IsDistinct(overlapped));
-            Assert.IsFalse(overlapped.IsDistinct(actual));
-            Assert.IsTrue(actual.IsDistinct(distinct));
-            Assert.IsTrue(distinct.IsDistinct(actual));
+            Assert.False(actual.IsDistinct(included));
+            Assert.False(actual.IsDistinct(overlapped));
+            Assert.False(overlapped.IsDistinct(actual));
+            Assert.True(actual.IsDistinct(distinct));
+            Assert.True(distinct.IsDistinct(actual));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIntersect()
         {
             //  0    5   10   15   20
@@ -111,13 +108,13 @@ namespace WmcSoft.Business
             //    a  b  c d    e
             int a = 2, b = 5, c = 8, d = 10, e = 15;
 
-            Assert.AreEqual(Range<int>.Empty, Range<int>.Intersect(new Range<int>(a, b), new Range<int>(c, d)));
-            Assert.AreEqual(new Range<int>(c, d), Range<int>.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
-            Assert.AreEqual(new Range<int>(b, b), Range<int>.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
-            Assert.AreEqual(new Range<int>(b, d), Range<int>.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
+            Assert.Equal(Range<int>.Empty, Range<int>.Intersect(new Range<int>(a, b), new Range<int>(c, d)));
+            Assert.Equal(new Range<int>(c, d), Range<int>.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
+            Assert.Equal(new Range<int>(b, b), Range<int>.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
+            Assert.Equal(new Range<int>(b, d), Range<int>.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckPartialMerge()
         {
             var data = new[] {
@@ -131,10 +128,10 @@ namespace WmcSoft.Business
                 Range.Create(4, 9),
             };
             var actual = data.PartialMerge().ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckPartialMergeOnOverlappingRanges()
         {
             var data = new[] {
@@ -150,7 +147,7 @@ namespace WmcSoft.Business
                 Range.Create(4, 16),
             };
             var actual = data.PartialMerge().ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

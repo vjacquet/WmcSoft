@@ -1,45 +1,48 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class CopyOnWriteCollectionTests
     {
-        [TestMethod]
-        public void CanAddToCopyOnWriteCollection() {
+        [Fact]
+        public void CanAddToCopyOnWriteCollection()
+        {
             var collection = new List<int>() { 1, 2, 3, 4, 5 };
             var cow = new CopyOnWriteCollection<int>(collection);
             cow.Add(6);
 
-            Assert.AreEqual(5, collection.Count);
-            Assert.AreEqual(6, cow.Count);
+            Assert.Equal(5, collection.Count);
+            Assert.Equal(6, cow.Count);
         }
 
-        [TestMethod]
-        public void CanRemoveToCopyOnWriteCollection() {
+        [Fact]
+        public void CanRemoveToCopyOnWriteCollection()
+        {
             var collection = new List<int>() { 1, 2, 3, 4, 5 };
             var cow = new CopyOnWriteCollection<int>(collection);
             cow.Remove(2);
 
-            Assert.AreEqual(5, collection.Count);
-            Assert.IsTrue(collection.Contains(2));
-            Assert.AreEqual(4, cow.Count);
-            Assert.IsFalse(cow.Contains(2));
+            Assert.Equal(5, collection.Count);
+            Assert.True(collection.Contains(2));
+            Assert.Equal(4, cow.Count);
+            Assert.False(cow.Contains(2));
         }
 
-        [TestMethod]
-        public void CanClearCopyOnWriteCollection() {
+        [Fact]
+        public void CanClearCopyOnWriteCollection()
+        {
             var collection = new List<int>() { 1, 2, 3, 4, 5 };
             var cow = new CopyOnWriteCollection<int>(collection);
             cow.Clear();
 
-            Assert.AreEqual(5, collection.Count);
-            Assert.AreEqual(0, cow.Count);
+            Assert.Equal(5, collection.Count);
+            Assert.Equal(0, cow.Count);
         }
 
-        [TestMethod]
-        public void CanCopyFromCopyOnWriteCollection() {
+        [Fact]
+        public void CanCopyFromCopyOnWriteCollection()
+        {
             var collection = new List<int>() { 1, 2, 3, 4, 5 };
             var cow = new CopyOnWriteCollection<int>(collection);
             cow.Remove(2);
@@ -48,10 +51,10 @@ namespace WmcSoft.Collections.Generic
             var buffer = new int[5];
 
             cow.CopyTo(buffer, 0);
-            CollectionAssert.AreEquivalent(buffer, new[] { 1, 3, 4, 5, 6 });
+            Assert.Equal(buffer, new[] { 1, 3, 4, 5, 6 });
 
             collection.CopyTo(buffer);
-            CollectionAssert.AreEquivalent(buffer, new[] { 1, 2, 3, 4, 5 });
+            Assert.Equal(buffer, new[] { 1, 2, 3, 4, 5 });
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Data
 {
-    [TestClass]
     public class DataReaderTests
     {
         Model Make(int i, string s)
@@ -12,17 +11,17 @@ namespace WmcSoft.Data
             return new Model(i, s);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanMaterialize()
         {
             var materializer = DbCommandExtensions.MakeMaterializer((int i, string s) => new Model(i, s));
             var reader = new DataReaderAdapter(1, "two");
             var actual = materializer(reader);
-            Assert.AreEqual(1, actual.First);
-            Assert.AreEqual("two", actual.Second);
+            Assert.Equal(1, actual.First);
+            Assert.Equal("two", actual.Second);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanFillTable()
         {
             var reader = new TypeDescriptorDataReader<Model>(new[] {
@@ -34,17 +33,17 @@ namespace WmcSoft.Data
             var dt = new DataTable();
             dt.Load(reader);
 
-            Assert.AreEqual(2, dt.Columns.Count);
-            Assert.AreEqual("First", dt.Columns[0].ColumnName);
-            Assert.AreEqual(typeof(int), dt.Columns[0].DataType);
-            Assert.AreEqual("Second", dt.Columns[1].ColumnName);
-            Assert.AreEqual(typeof(string), dt.Columns[1].DataType);
+            Assert.Equal(2, dt.Columns.Count);
+            Assert.Equal("First", dt.Columns[0].ColumnName);
+            Assert.Equal(typeof(int), dt.Columns[0].DataType);
+            Assert.Equal("Second", dt.Columns[1].ColumnName);
+            Assert.Equal(typeof(string), dt.Columns[1].DataType);
 
-            Assert.AreEqual(3, dt.Rows.Count);
-            Assert.AreEqual("two", dt.Rows[1][1]);
+            Assert.Equal(3, dt.Rows.Count);
+            Assert.Equal("two", dt.Rows[1][1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckHasRowsForAdapter()
         {
             var underlying = new TypeDescriptorDataReader<Model>(new[] {
@@ -53,14 +52,14 @@ namespace WmcSoft.Data
                 new Model(3, "three"),
             });
             var reader = underlying.AsDbDataReader();
-            Assert.IsTrue(reader.HasRows);
+            Assert.True(reader.HasRows);
             var count = 0;
             while (reader.Read())
                 count++;
-            Assert.AreEqual(3, count);
+            Assert.Equal(3, count);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckReadForAdapter()
         {
             var underlying = new TypeDescriptorDataReader<Model>(new[] {
@@ -72,7 +71,7 @@ namespace WmcSoft.Data
             var count = 0;
             while (reader.Read())
                 count++;
-            Assert.AreEqual(3, count);
+            Assert.Equal(3, count);
         }
     }
 

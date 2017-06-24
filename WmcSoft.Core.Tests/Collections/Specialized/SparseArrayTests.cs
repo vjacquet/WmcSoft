@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Specialized
 {
-    [TestClass]
     public class SparseArrayTests
     {
-        [TestMethod]
+        [Fact]
         public void CheckExtent()
         {
             var array = new SparseArray<string>(100, "?") {
@@ -22,10 +17,10 @@ namespace WmcSoft.Collections.Specialized
             };
             var actual = array.Extent;
             var expected = Pair.Create(16, 64);
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckSpareArray()
         {
             var array = new SparseArray<string>(100, "?") {
@@ -35,13 +30,13 @@ namespace WmcSoft.Collections.Specialized
                 [64] = "64",
                 [48] = "48"
             };
-            Assert.AreEqual(100, array.Count);
-            Assert.AreEqual("33", array[33]);
-            Assert.AreEqual("?", array[27]);
-            Assert.AreEqual("?", array[99]);
+            Assert.Equal(100, array.Count);
+            Assert.Equal("33", array[33]);
+            Assert.Equal("?", array[27]);
+            Assert.Equal("?", array[99]);
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckIndexOf()
         {
             var array = new SparseArray<string>(100, "?") {
@@ -51,19 +46,18 @@ namespace WmcSoft.Collections.Specialized
                 [64] = "64",
                 [48] = "48"
             };
-            Assert.AreEqual(24, array.IndexOf("24"));
-            Assert.AreEqual(16, array.IndexOf("16"));
-            Assert.AreEqual(64, array.IndexOf("64"));
-            Assert.AreEqual(0, array.IndexOf("?"));
+            Assert.Equal(24, array.IndexOf("24"));
+            Assert.Equal(16, array.IndexOf("16"));
+            Assert.Equal(64, array.IndexOf("64"));
+            Assert.Equal(0, array.IndexOf("?"));
             array[0] = "0";
             array[1] = "1";
             array[2] = "2";
-            Assert.AreEqual(3, array.IndexOf("?"));
-            Assert.AreEqual(-1, array.IndexOf("missing"));
+            Assert.Equal(3, array.IndexOf("?"));
+            Assert.Equal(-1, array.IndexOf("missing"));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void CheckIndexOutOfBounds()
         {
             var array = new SparseArray<string>(100, "?") {
@@ -73,10 +67,8 @@ namespace WmcSoft.Collections.Specialized
                 [64] = "64",
                 [48] = "48"
             };
-            Assert.AreEqual("?", array[99]);
-            Assert.AreEqual("?", array[100]);
-
-            Assert.Inconclusive();
+            Assert.Equal("?", array[99]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => array[100]);
         }
     }
 }

@@ -1,68 +1,75 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.TestTools.UnitTesting;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class RandomBagTests
     {
-        [TestMethod]
-        public void CheckRandomBagIsCollection() {
+        [Fact]
+        public void CheckRandomBagIsCollection()
+        {
             ContractAssert.Collection(new RandomBag<int>(new Random(1164)));
         }
 
-        [TestMethod]
-        public void CanAddToRandomBag() {
+        [Fact]
+        public void CanAddToRandomBag()
+        {
             var bag = new RandomBag<int>(new Random(1164)) { 1, 2, 3, 4, 5, 6 };
-            Assert.AreEqual(6, bag.Count);
-            Assert.IsFalse(bag.Contains(0));
-            Assert.IsFalse(bag.Contains(8));
-            Assert.IsTrue(bag.Contains(2));
+            Assert.Equal(6, bag.Count);
+            Assert.False(bag.Contains(0));
+            Assert.False(bag.Contains(8));
+            Assert.True(bag.Contains(2));
         }
 
-        [TestMethod]
-        public void CanRemoveFromRandomBag() {
+        [Fact]
+        public void CanRemoveFromRandomBag()
+        {
             var bag = new RandomBag<int>(new Random(1164)) { 1, 2, 3, 4, 5, 6 };
-            Assert.AreEqual(6, bag.Count);
+            Assert.Equal(6, bag.Count);
 
-            Assert.IsTrue(bag.Remove(4));
-            Assert.IsFalse(bag.Remove(0));
-            Assert.AreEqual(5, bag.Count);
+            Assert.True(bag.Remove(4));
+            Assert.False(bag.Remove(0));
+            Assert.Equal(5, bag.Count);
         }
 
-        [TestMethod]
-        public void CanRemoveAllFromRandomBag() {
+        [Fact]
+        public void CanRemoveAllFromRandomBag()
+        {
             var bag = new RandomBag<int>(new Random(1164)) { 8, 1, 2, 7, 3, 4, 5, 6 };
 
             var expected = new[] { 1, 2, 3 };
             var removed = bag.RemoveAll(i => i >= 4);
             var actual = bag.ToArray();
-            Assert.AreEqual(5, removed);
-            CollectionAssert.AreEquivalent(expected, actual);
+            Array.Sort(actual);
+            Assert.Equal(5, removed);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanEnumerateRandomBag() {
+        [Fact]
+        public void CanEnumerateRandomBag()
+        {
             var bag = new RandomBag<int>(new Random(1164)) { 1, 2, 3, 4, 5, 6 };
 
             var expected = new[] { 1, 2, 3 };
             var actual = bag.Where(i => i < 4).ToArray();
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CanAddNullItemsToRandomBag() {
+        [Fact]
+        public void CanAddNullItemsToRandomBag()
+        {
             var bag = new RandomBag<string>(new Random(1164)) { "a", "b", null, "d", "e" };
 
-            Assert.IsTrue(bag.Contains("a"));
-            Assert.IsFalse(bag.Contains("c"));
-            Assert.IsTrue(bag.Contains(null));
+            Assert.True(bag.Contains("a"));
+            Assert.False(bag.Contains("c"));
+            Assert.True(bag.Contains(null));
         }
 
-        [TestMethod]
-        public void CanPickAllItemsFromRandomBag() {
+        [Fact]
+        public void CanPickAllItemsFromRandomBag()
+        {
             var bag = new RandomBag<int>(new Random(1164)) { 1, 2, 3, 4, 5, 6 };
 
             int count = bag.Count;
@@ -70,7 +77,7 @@ namespace WmcSoft.Collections.Generic
                 bag.Pick();
                 count--;
             }
-            Assert.IsTrue(bag.Count == 0);
+            Assert.True(bag.Count == 0);
         }
     }
 }

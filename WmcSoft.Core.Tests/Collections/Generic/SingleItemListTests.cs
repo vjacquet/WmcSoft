@@ -1,28 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Collections.Generic
 {
-    [TestClass]
     public class SingleItemListTests
     {
-        [TestMethod]
-        public void CheckIndexer() {
+        [Fact]
+        public void CheckIndexer()
+        {
             var list = new SingleItemList<int>(5);
-            Assert.AreEqual(1, list.Count);
-            Assert.AreEqual(5, list[0]);
+            Assert.Equal(1, list.Count);
+            Assert.Equal(5, list[0]);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void CheckInsert() {
+        [Fact]
+        public void CheckInsert()
+        {
             var list = new SingleItemList<int>(5);
-            list.Insert(1, 3);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list.Insert(1, 3));
         }
 
-        [TestMethod]
-        public void CheckInsertOnEmpty() {
+        [Fact]
+        public void CheckInsertOnEmpty()
+        {
             var list = new SingleItemList<int>();
             list.Insert(0, 3);
         }

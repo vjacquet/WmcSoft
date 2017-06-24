@@ -1,54 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace WmcSoft.IO
 {
-    [TestClass]
     public class PathInfoTests
     {
-        [TestMethod]
-        public void CheckUnrootedPathIsNull() {
+        [Fact]
+        public void CheckUnrootedPathIsNull()
+        {
             PathInfo p = "path/to/file";
             var root = p.Root;
-            Assert.IsNull(root);
+            Assert.Null(root);
         }
 
-        [TestMethod]
-        public void CheckRootedPathIsNotNull() {
+        [Fact]
+        public void CheckRootedPathIsNotNull()
+        {
             PathInfo p = @"c:\path\to\file";
             var root = p.Root;
-            Assert.AreEqual(@"c:\", root);
+            Assert.Equal(@"c:\", root);
         }
 
-        [TestMethod]
-        public void CheckFileName() {
+        [Fact]
+        public void CheckFileName()
+        {
             PathInfo p = "path/to/file";
             var fileName = p.FileName;
-            Assert.AreEqual("file", fileName);
+            Assert.Equal("file", fileName);
         }
 
-        [TestMethod]
-        public void CheckExtension() {
+        [Fact]
+        public void CheckExtension()
+        {
             PathInfo p = "path/to/file.ext";
             var extension = p.Extension;
-            Assert.AreEqual(".ext", extension);
+            Assert.Equal(".ext", extension);
         }
 
-        [TestMethod]
-        public void CheckExtensionlessExtensionIsNull() {
+        [Fact]
+        public void CheckExtensionlessExtensionIsNull()
+        {
             PathInfo p = "path/to/file";
             var extension = p.Extension;
-            Assert.IsNull(extension);
+            Assert.Null(extension);
         }
 
-        [TestMethod]
-        public void CheckCombineOperator() {
+        [Fact]
+        public void CheckCombineOperator()
+        {
             PathInfo p = @"c:\path";
-            Assert.AreEqual(@"c:\path\to\file", p / "to" / "file");
+            Assert.Equal(@"c:\path\to\file", p / "to" / "file");
         }
     }
 }

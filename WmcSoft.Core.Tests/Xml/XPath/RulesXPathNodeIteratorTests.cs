@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Xml;
 using System.Xml.XPath;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.Xml.XPath
 {
-    [TestClass]
     public class RulesXPathNodeIteratorTests
     {
         const string Data = @"<data>
@@ -21,18 +19,21 @@ namespace WmcSoft.Xml.XPath
   <ignore name=""ignore d01"" idrefs=""d01""/>
 </rules>";
 
-        public static XPathNodeIterator CreateRuleSet(XPathNavigator current, XPathNodeIterator rules, Dictionary<string, XPathExpression> expressions) {
+        public static XPathNodeIterator CreateRuleSet(XPathNavigator current, XPathNodeIterator rules, Dictionary<string, XPathExpression> expressions)
+        {
             return new RulesXPathNodeIterator(rules, current, expressions);
         }
 
-        public static XPathNavigator CreateNavigator(string xml) {
+        public static XPathNavigator CreateNavigator(string xml)
+        {
             var document = new XmlDocument();
             document.LoadXml(xml);
             return document.DocumentElement.CreateNavigator();
         }
 
-        [TestMethod]
-        public void CheckRules() {
+        [Fact]
+        public void CheckRules()
+        {
             var data = CreateNavigator(Data);
             var expressions = new Dictionary<string, XPathExpression>();
             expressions.Add("idrefs", XPathExpression.Compile("@id", data));
@@ -47,10 +48,10 @@ namespace WmcSoft.Xml.XPath
                 }
             }
 
-            Assert.IsNull(actual["a01"]);
-            Assert.IsNotNull(actual["b01"]);
-            Assert.AreEqual(actual["b01"], "ignore b01");
-            Assert.IsNull(actual["c01"]);
+            Assert.Null(actual["a01"]);
+            Assert.NotNull(actual["b01"]);
+            Assert.Equal(actual["b01"], "ignore b01");
+            Assert.Null(actual["c01"]);
         }
     }
 }

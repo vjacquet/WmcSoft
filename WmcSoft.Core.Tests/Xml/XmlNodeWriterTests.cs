@@ -1,30 +1,30 @@
-﻿using System;
-using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Xml;
+using Xunit;
 
 namespace WmcSoft.Xml
 {
-    [TestClass]
     public class XmlNodeWriterTests
     {
-        [TestMethod]
-        public void CheckReplaceOnCurrentNode() {
+        [Fact]
+        public void CheckReplaceOnCurrentNode()
+        {
             var document = new XmlDocument();
             document.InnerXml = "<root><a/></root>";
             using (var writer = document.DocumentElement.ReplaceSelf()) {
                 writer.WriteStartElement("b");
             }
-            Assert.AreEqual("b", document.DocumentElement.LocalName);
+            Assert.Equal("b", document.DocumentElement.LocalName);
         }
 
-        [TestMethod]
-        public void CheckReplaceContentOnCurrentNode() {
+        [Fact]
+        public void CheckReplaceContentOnCurrentNode()
+        {
             var document = new XmlDocument();
             document.InnerXml = "<root><a/><a/></root>";
             using (var writer = document.DocumentElement.ReplaceContent()) {
                 writer.WriteStartElement("b");
             }
-            Assert.AreEqual("b", document.DocumentElement.FirstChild.LocalName);
+            Assert.Equal("b", document.DocumentElement.FirstChild.LocalName);
         }
     }
 }

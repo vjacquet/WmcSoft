@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Globalization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft
 {
-    [TestClass]
     public class FormatProviderExtensionsTests
     {
-        [TestMethod]
-        public void CanGetRegionInfo() {
+        [Fact]
+        public void CanGetRegionInfo()
+        {
             var fr = new CultureInfo("fr-FR");
             var region = fr.GetFormat<RegionInfo>();
-            Assert.AreEqual("EUR", region.ISOCurrencySymbol);
+            Assert.Equal("EUR", region.ISOCurrencySymbol);
         }
     }
 }

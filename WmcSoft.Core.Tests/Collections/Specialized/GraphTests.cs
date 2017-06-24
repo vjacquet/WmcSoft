@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Xunit;
 
 namespace WmcSoft.Collections.Specialized
 {
-    [TestClass]
     public class GraphTests
     {
         #region Testing samples
 
-        static Graph TinyG() {
+        static Graph TinyG()
+        {
             var g = new Graph(13);
             g.Connect(0, 5);
             g.Connect(4, 3);
@@ -27,7 +26,8 @@ namespace WmcSoft.Collections.Specialized
             return g;
         }
 
-        static Graph TinyCG() {
+        static Graph TinyCG()
+        {
             var g = new Graph(6);
             g.Connect(0, 5);
             g.Connect(2, 4);
@@ -40,7 +40,8 @@ namespace WmcSoft.Collections.Specialized
             return g;
         }
 
-        static Digraph TinyDGex2() {
+        static Digraph TinyDGex2()
+        {
             var g = new Digraph(12);
             g.Connect(8, 4);
             g.Connect(2, 3);
@@ -79,7 +80,8 @@ namespace WmcSoft.Collections.Specialized
         }
 
 
-        static Digraph Jobs() {
+        static Digraph Jobs()
+        {
             var g = new Digraph(13);
             var j = new JobNames();
             g.Connect(j.Algorithms, j.TheoricalCS, j.Databases, j.ScientificComputing);
@@ -96,28 +98,32 @@ namespace WmcSoft.Collections.Specialized
 
         #endregion
 
-        void CheckDepthFirstSearch(Graph graph, int v, bool connected, params int[] expected) {
+        void CheckSearch(Graph graph, int v, bool connected, params int[] expected)
+        {
             var marked = graph.DepthFirstSearch(v);
-            Assert.AreEqual(connected, marked.Count == graph.VerticeCount);
+            Assert.Equal(connected, marked.Count == graph.VerticeCount);
 
             var connections = Enumerable.Range(0, graph.VerticeCount).Where(i => marked[i]).ToList();
-            CollectionAssert.AreEquivalent(connections, expected);
+            Assert.Equal(connections, expected);
         }
 
-        [TestMethod]
-        public void CheckDepthFirstSearch() {
+        [Fact]
+        public void CheckDepthFirstSearch()
+        {
             var graph = TinyG();
 
-            CheckDepthFirstSearch(graph, 0, false, 0, 1, 2, 3, 4, 5, 6);
-            CheckDepthFirstSearch(graph, 9, false, 9, 10, 11, 12);
+            CheckSearch(graph, 0, false, 0, 1, 2, 3, 4, 5, 6);
+            CheckSearch(graph, 9, false, 9, 10, 11, 12);
         }
 
-        public void CheckPaths(DepthFirstPathsAlgorithm paths, int v, params int[] expected) {
-            CollectionAssert.AreEqual(paths.PathTo(v).ToList(), expected);
+        public void CheckPaths(DepthFirstPathsAlgorithm paths, int v, params int[] expected)
+        {
+            Assert.Equal(paths.PathTo(v).ToList(), expected);
         }
 
-        [TestMethod]
-        public void CheckDepthFirstPaths() {
+        [Fact]
+        public void CheckDepthFirstPaths()
+        {
             var graph = TinyCG();
 
             var paths = graph.DepthFirstPaths(0);
@@ -129,12 +135,14 @@ namespace WmcSoft.Collections.Specialized
             CheckPaths(paths, 5, 0, 2, 3, 5);
         }
 
-        public void CheckPaths(BreathFirstPathsAlgorithm paths, int v, params int[] expected) {
-            CollectionAssert.AreEqual(paths.PathTo(v).ToList(), expected);
+        public void CheckPaths(BreathFirstPathsAlgorithm paths, int v, params int[] expected)
+        {
+            Assert.Equal(paths.PathTo(v).ToList(), expected);
         }
 
-        [TestMethod]
-        public void CheckBreathFirstPaths() {
+        [Fact]
+        public void CheckBreathFirstPaths()
+        {
             var graph = TinyCG();
 
             var paths = graph.BreathFirstPaths(0);
@@ -146,12 +154,14 @@ namespace WmcSoft.Collections.Specialized
             CheckPaths(paths, 5, 0, 5);
         }
 
-        public void CheckComponents(IConnectedComponents<int> cc, int id, params int[] expected) {
-            CollectionAssert.AreEqual(cc.Components(id).ToList(), expected);
+        public void CheckComponents(IConnectedComponents<int> cc, int id, params int[] expected)
+        {
+            Assert.Equal(cc.Components(id).ToList(), expected);
         }
 
-        [TestMethod]
-        public void CheckConnectedComponents() {
+        [Fact]
+        public void CheckConnectedComponents()
+        {
             var graph = TinyG();
 
             var cc = graph.ConnectedComponents();
@@ -160,8 +170,9 @@ namespace WmcSoft.Collections.Specialized
             CheckComponents(cc, 2, 9, 10, 11, 12);
         }
 
-        [TestMethod]
-        public void CheckTopological() {
+        [Fact]
+        public void CheckTopological()
+        {
             var graph = Jobs();
             var topological = graph.Topological();
             var j = new JobNames();
@@ -183,11 +194,12 @@ namespace WmcSoft.Collections.Specialized
             };
             var actual = topological.Order.ToArray();
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckGraphProperties() {
+        [Fact]
+        public void CheckGraphProperties()
+        {
             // test case taken from <http://mathworld.wolfram.com/GraphEccentricity.html>
             var graph = new Graph(7);
             graph.Connect(0, 1);
@@ -199,29 +211,30 @@ namespace WmcSoft.Collections.Specialized
 
             var properties = new GraphProperties(graph);
             var expected = new int[] { 3, 2, 3, 3, 4, 3, 4 };
-            CollectionAssert.AreEqual(expected, properties.Eccentricity);
+            Assert.Equal(expected, properties.Eccentricity);
 
-            Assert.AreEqual(2, properties.Radius);
-            Assert.AreEqual(4, properties.Diameter);
-            Assert.AreEqual(1, properties.Center);
+            Assert.Equal(2, properties.Radius);
+            Assert.Equal(4, properties.Diameter);
+            Assert.Equal(1, properties.Center);
         }
 
-        [TestMethod]
-        public void CheckDegrees() {
+        [Fact]
+        public void CheckDegrees()
+        {
             var graph = TinyDGex2();
 
             var degrees = new Degrees(graph);
 
-            Assert.AreEqual(2, degrees.Indegree(2));
-            Assert.AreEqual(2, degrees.Outdegree(2));
-            Assert.AreEqual(2, degrees.Indegree(6));
-            Assert.AreEqual(1, degrees.Outdegree(6));
+            Assert.Equal(2, degrees.Indegree(2));
+            Assert.Equal(2, degrees.Outdegree(2));
+            Assert.Equal(2, degrees.Indegree(6));
+            Assert.Equal(1, degrees.Outdegree(6));
 
             var sinks = new int[] { 1, 9 };
-            CollectionAssert.AreEquivalent(sinks, degrees.Sinks().ToArray());
+            Assert.Equal(sinks, degrees.Sinks().ToArray());
 
             var sources = new int[] { 7, 9 };
-            CollectionAssert.AreEquivalent(sources, degrees.Sources().ToArray());
+            Assert.Equal(sources, degrees.Sources().ToArray());
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace WmcSoft.IO
 {
-    [TestClass]
     public class StreamExtensionsTests
     {
         class Progress : IProgress<long>
@@ -15,7 +14,8 @@ namespace WmcSoft.IO
 
             #region IProgress<long> Members
 
-            public void Report(long value) {
+            public void Report(long value)
+            {
                 lock (_syncRoot) {
                     _notifications.Add(value);
                 }
@@ -28,14 +28,16 @@ namespace WmcSoft.IO
 
         class HideSeekableStream : ConstrainedStreamDecorator
         {
-            public HideSeekableStream(Stream stream) : base(stream) {
+            public HideSeekableStream(Stream stream) : base(stream)
+            {
             }
 
             public override bool CanSeek { get { return false; } }
         }
 
-        [TestMethod]
-        public void CheckCopyToWithProgress() {
+        [Fact]
+        public void CheckCopyToWithProgress()
+        {
             var buffer = new byte[1024];
             var random = new Random(1664);
             random.NextBytes(buffer);
@@ -46,16 +48,17 @@ namespace WmcSoft.IO
             using (var destination = new MemoryStream()) {
                 source.CopyToAsync(destination, 256, progress).Wait();
 
-                CollectionAssert.AreEqual(buffer, destination.GetBuffer());
+                Assert.Equal(buffer, destination.GetBuffer());
             }
 
             var expected = new[] { 256L, 512L, 768L, 1024L };
             var actual = progress.Notifications;
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
-        public void CheckSkipOnSeekableStream() {
+        [Fact]
+        public void CheckSkipOnSeekableStream()
+        {
             var expected = 63;
             var buffer = new byte[0x8000];
             buffer[0x2048] = (byte)expected;
@@ -63,12 +66,13 @@ namespace WmcSoft.IO
                 stream.Skip(0x2048);
                 var actual = stream.ReadByte();
 
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
         }
 
-        [TestMethod]
-        public void CheckSkipOnNonSeekableStream() {
+        [Fact]
+        public void CheckSkipOnNonSeekableStream()
+        {
             var expected = 63;
             var buffer = new byte[0x8000];
             buffer[0x2048] = (byte)expected;
@@ -76,7 +80,7 @@ namespace WmcSoft.IO
                 stream.Skip(0x2048);
                 var actual = stream.ReadByte();
 
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
         }
     }

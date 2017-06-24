@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WmcSoft.Collections;
 using WmcSoft.Collections.Generic;
 
@@ -13,145 +13,153 @@ namespace WmcSoft.TestTools.UnitTesting
         public const int CollectionMinValue = 1;
         public const int CollectionMaxValue = 5;
 
-        class CollectionAdapter<T> : ICollection
+        class CollectionAdapter<T> : ICollection, IEnumerable<T>
         {
             readonly ICollection<T> _storage;
 
-            public CollectionAdapter(ICollection<T> collection) {
+            public CollectionAdapter(ICollection<T> collection)
+            {
                 _storage = collection;
             }
 
-            public int Count { get { return _storage.Count; } }
+            public int Count => _storage.Count;
+            public bool IsSynchronized => false;
+            public object SyncRoot => null;
 
-            public bool IsSynchronized {
-                get { return false; }
-            }
-
-            public object SyncRoot {
-                get { return null; }
-            }
-
-            public void CopyTo(Array array, int index) {
+            public void CopyTo(Array array, int index)
+            {
                 foreach (var item in _storage)
                     array.SetValue(item, index++);
             }
 
-            public IEnumerator GetEnumerator() {
+            public IEnumerator GetEnumerator()
+            {
+                return _storage.GetEnumerator();
+            }
+
+            IEnumerator<T> IEnumerable<T>.GetEnumerator()
+            {
                 return _storage.GetEnumerator();
             }
         }
 
-        public static void Disposable(IDisposable disposable) {
+        public static void Disposable(IDisposable disposable)
+        {
             disposable.Dispose();
             disposable.Dispose();
         }
 
         public static void Collection<TCollection>(TCollection collection)
-            where TCollection : ICollection<int> {
+            where TCollection : ICollection<int>
+        {
             var adapter = new CollectionAdapter<int>(collection);
 
             collection.Clear();
-            Assert.AreEqual(0, collection.Count);
+            Assert.Equal(0, collection.Count);
 
             collection.Add(1);
-            Assert.AreEqual(1, collection.Count);
-            Assert.IsTrue(collection.Contains(1));
-            Assert.IsFalse(collection.Contains(2));
+            Assert.Equal(1, collection.Count);
+            Assert.True(collection.Contains(1));
+            Assert.False(collection.Contains(2));
 
             collection.Add(2);
-            Assert.AreEqual(2, collection.Count);
-            Assert.IsTrue(collection.Contains(1));
-            Assert.IsTrue(collection.Contains(2));
+            Assert.Equal(2, collection.Count);
+            Assert.True(collection.Contains(1));
+            Assert.True(collection.Contains(2));
 
-            var buffer = new int[] { -1, -2, -3, -4 };
+            var buffer = new[] { -1, -2, -3, -4 };
             collection.CopyTo(buffer, 2);
-            Assert.AreEqual(-1, buffer[0]);
-            Assert.AreEqual(-2, buffer[1]);
-            CollectionAssert.AreEquivalent(new int[] { -1, -2, 2, 1 }, buffer);
-            CollectionAssert.AreEquivalent(new int[] { 1, 2 }, adapter);
+            Assert.Equal(-1, buffer[0]);
+            Assert.Equal(-2, buffer[1]);
+            Assert.True(buffer.CollectionEquivalent(new[] { -1, -2, 2, 1 }));
+            Assert.True(adapter.CollectionEquivalent(new[] { 1, 2 }));
 
-            Assert.IsTrue(collection.Remove(2));
-            Assert.AreEqual(1, collection.Count);
+            Assert.True(collection.Remove(2));
+            Assert.Equal(1, collection.Count);
 
-            Assert.IsFalse(collection.Remove(3));
-            Assert.AreEqual(1, collection.Count);
+            Assert.False(collection.Remove(3));
+            Assert.Equal(1, collection.Count);
 
             collection.Clear();
-            Assert.AreEqual(0, collection.Count);
+            Assert.Equal(0, collection.Count);
         }
 
         public static void Set<TSet>(TSet set)
-            where TSet : ISet<int> {
+            where TSet : ISet<int>
+        {
             Collection(set);
             var adapter = new CollectionAdapter<int>(set);
 
-            Assert.IsTrue(set.Add(1));
-            Assert.IsTrue(set.Add(2));
-            Assert.IsFalse(set.Add(1));
-            Assert.AreEqual(2, set.Count);
+            Assert.True(set.Add(1));
+            Assert.True(set.Add(2));
+            Assert.False(set.Add(1));
+            Assert.Equal(2, set.Count);
 
             set.Add(3);
             set.Add(4);
             set.Add(5);
-            Assert.AreEqual(5, set.Count);
+            Assert.Equal(5, set.Count);
 
             set.ExceptWith(new[] { 2, 4 });
-            CollectionAssert.AreEquivalent(new int[] { 1, 3, 5 }, adapter);
+            Assert.True(adapter.CollectionEquivalent(new[] { 1, 3, 5 }));
 
             set.UnionWith(new[] { 2, 3, 4 });
-            CollectionAssert.AreEquivalent(new int[] { 1, 2, 3, 4, 5 }, adapter);
+            Assert.True(adapter.CollectionEquivalent(new[] { 1, 2, 3, 4, 5 }));
 
             set.IntersectWith(new[] { 2, 4, 6 });
-            CollectionAssert.AreEquivalent(new int[] { 2, 4 }, adapter);
+            Assert.Equal(new int[] { 2, 4 }, adapter);
 
-            Assert.IsFalse(set.Overlaps(new int[] { 3, 5 }));
-            Assert.IsTrue(set.Overlaps(new int[] { 3, 4 }));
+            Assert.False(set.Overlaps(new[] { 3, 5 }));
+            Assert.True(set.Overlaps(new[] { 3, 4 }));
 
             set.Clear();
             set.Add(1);
             set.Add(2);
             set.Add(3);
-            CollectionAssert.AreEquivalent(new int[] { 1, 2, 3 }, adapter);
-            set.SymmetricExceptWith(new int[] { 2, 4 });
-            CollectionAssert.AreEquivalent(new int[] { 1, 3, 4 }, adapter);
+            Assert.True(adapter.CollectionEquivalent(new[] { 1, 2, 3 }));
+            set.SymmetricExceptWith(new[] { 2, 4 });
+            Assert.True(adapter.CollectionEquivalent(new[] { 1, 3, 4 }));
 
             CheckSubsetAndProperSubsetOnDifferentSets(set);
             CheckSubsetAndProperSubsetOnEquivalentSets(set);
         }
 
         static void CheckSubsetAndProperSubsetOnDifferentSets<TSet>(TSet set)
-            where TSet : ISet<int> {
+            where TSet : ISet<int>
+        {
             set.Clear();
             set.AddRange(Enumerable.Range(1, 4));
 
             var superset = Enumerable.Range(0, 10).ToArray();
-            Assert.IsFalse(set.SetEquals(superset));
-            Assert.IsTrue(set.IsSubsetOf(superset));
-            Assert.IsTrue(set.IsProperSubsetOf(superset));
+            Assert.False(set.SetEquals(superset));
+            Assert.True(set.IsSubsetOf(superset));
+            Assert.True(set.IsProperSubsetOf(superset));
 
             var subset = Enumerable.Range(1, 2).ToArray();
-            Assert.IsTrue(set.IsSupersetOf(subset));
-            Assert.IsTrue(set.IsProperSupersetOf(subset));
+            Assert.True(set.IsSupersetOf(subset));
+            Assert.True(set.IsProperSupersetOf(subset));
         }
 
         static void CheckSubsetAndProperSubsetOnEquivalentSets<TSet>(TSet set)
-            where TSet : ISet<int> {
+            where TSet : ISet<int>
+        {
             set.Clear();
             set.AddRange(Enumerable.Range(1, 4));
 
             var other = new SortedSequenceSet<int>(Enumerable.Range(1, 4));
-            Assert.IsTrue(set.SetEquals(other));
-            Assert.IsTrue(set.IsSubsetOf(other));
-            Assert.IsFalse(set.IsProperSubsetOf(other));
-            Assert.IsTrue(set.IsSupersetOf(other));
-            Assert.IsFalse(set.IsProperSupersetOf(other));
+            Assert.True(set.SetEquals(other));
+            Assert.True(set.IsSubsetOf(other));
+            Assert.False(set.IsProperSubsetOf(other));
+            Assert.True(set.IsSupersetOf(other));
+            Assert.False(set.IsProperSupersetOf(other));
         }
 
         public static void Ordinal<TOrdinal, T>(TOrdinal ordinal, T startValue, T endValue, int distance)
-            where TOrdinal : IOrdinal<T> {
+            where TOrdinal : IOrdinal<T>
+        {
             var actual = ordinal.Advance(startValue, distance);
-            Assert.AreEqual(endValue, actual);
-            Assert.AreEqual(distance, ordinal.Distance(startValue, endValue));
+            Assert.Equal(endValue, actual);
+            Assert.Equal(distance, ordinal.Distance(startValue, endValue));
         }
     }
 }
