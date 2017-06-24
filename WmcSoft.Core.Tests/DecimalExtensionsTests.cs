@@ -77,41 +77,32 @@ namespace WmcSoft
             Assert.Equal(3, d.Precision());
         }
 
-        [Fact]
-        public void CheckRoundingModes()
+        [Theory]
+        [InlineData("+5.5", +6, +5, +6, +5, +6, +5, +6, null)]
+        [InlineData("+2.5", +3, +2, +3, +2, +3, +2, +2, null)]
+        [InlineData("+1.6", +2, +1, +2, +1, +2, +2, +2, null)]
+        [InlineData("+1.1", +2, +1, +2, +1, +1, +1, +1, null)]
+        [InlineData("+1.0", +1, +1, +1, +1, +1, +1, +1, 1)]
+        [InlineData("-1.0", -1, -1, -1, -1, -1, -1, -1, -1)]
+        [InlineData("-1.1", -2, -1, -1, -2, -1, -1, -1, null)]
+        [InlineData("-1.6", -2, -1, -1, -2, -2, -2, -2, null)]
+        [InlineData("-2.5", -3, -2, -2, -3, -3, -2, -2, null)]
+        [InlineData("-5.5", -6, -5, -5, -6, -6, -5, -6, null)]
+        void CheckRoundingModes(string value, int up, int down, int ceiling, int floor, int halfUp, int halfDown, int halfEven, int? unnecessary)
         {
-            // UP DOWN  CEILING FLOOR HALF_UP HALF_DOWN HALF_EVEN UNNECESSARY
-            CheckRounding(+5.5m, +6, +5, +6, +5, +6, +5, +6, null);
-            CheckRounding(+2.5m, +3, +2, +3, +2, +3, +2, +2, null);
-            CheckRounding(+1.6m, +2, +1, +2, +1, +2, +2, +2, null);
-            CheckRounding(+1.1m, +2, +1, +2, +1, +1, +1, +1, null);
-            CheckRounding(+1.0m, +1, +1, +1, +1, +1, +1, +1, 1);
-            CheckRounding(-1.0m, -1, -1, -1, -1, -1, -1, -1, -1);
-            CheckRounding(-1.1m, -2, -1, -1, -2, -1, -1, -1, null);
-            CheckRounding(-1.6m, -2, -1, -1, -2, -2, -2, -2, null);
-            CheckRounding(-2.5m, -3, -2, -2, -3, -3, -2, -2, null);
-            CheckRounding(-5.5m, -6, -5, -5, -6, -6, -5, -6, null);
-        }
+            var d = decimal.Parse(value, CultureInfo.InvariantCulture);
 
-        static void CheckRounding(decimal value, int up, int down, int ceiling, int floor, int halfUp, int halfDown, int halfEven, int? unnecessary)
-        {
-            Assert.Equal(up, value.Round(RoundingMode.Up));
-            Assert.Equal(down, value.Round(RoundingMode.Down));
-            Assert.Equal(ceiling, value.Round(RoundingMode.Ceiling));
-            Assert.Equal(floor, value.Round(RoundingMode.Floor));
-            Assert.Equal(halfUp, value.Round(RoundingMode.HalfUp));
-            Assert.Equal(halfDown, value.Round(RoundingMode.HalfDown));
-            Assert.Equal(halfEven, value.Round(RoundingMode.HalfEven));
+            Assert.Equal(up, d.Round(RoundingMode.Up));
+            Assert.Equal(down, d.Round(RoundingMode.Down));
+            Assert.Equal(ceiling, d.Round(RoundingMode.Ceiling));
+            Assert.Equal(floor, d.Round(RoundingMode.Floor));
+            Assert.Equal(halfUp, d.Round(RoundingMode.HalfUp));
+            Assert.Equal(halfDown, d.Round(RoundingMode.HalfDown));
+            Assert.Equal(halfEven, d.Round(RoundingMode.HalfEven));
             if (unnecessary.HasValue) {
-                Assert.Equal(unnecessary.GetValueOrDefault(), value.Round(RoundingMode.Unnecessary));
+                Assert.Equal(unnecessary.GetValueOrDefault(), d.Round(RoundingMode.Unnecessary));
             } else {
-                try {
-                    Assert.Equal(unnecessary.GetValueOrDefault(), value.Round(RoundingMode.Unnecessary));
-                    Assert.True(false, "Inconclusive");
-                } catch (OverflowException) {
-                } catch (Exception) {
-                    Assert.True(false, "Inconclusive");
-                }
+                Assert.Throws<OverflowException>(() => d.Round(RoundingMode.Unnecessary));
             }
         }
 
