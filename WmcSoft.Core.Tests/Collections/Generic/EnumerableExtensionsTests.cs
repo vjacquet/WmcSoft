@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using WmcSoft.Diagnostics;
+using WmcSoft.Text;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -450,6 +451,37 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 'B', 'C', 'F', 'G' };
             var actual = data.Mismatch(selected, (x, s) => s).ToArray();
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanCountOccurences()
+        {
+            var data = "Hello World";
+            var occurences = data.CountOccurences();
+            Assert.Equal(8, occurences.Count);
+            Assert.Equal(1, occurences['e']);
+            Assert.Equal(2, occurences['o']);
+            Assert.Equal(3, occurences['l']);
+        }
+
+        [Fact]
+        public void CanCountNullOccurences()
+        {
+            var data = new object[] { null, null, null };
+            var occurences = data.CountOccurences(out int nullOccurences);
+            Assert.Empty(occurences);
+            Assert.Equal(data.Length, nullOccurences);
+        }
+
+        [Fact]
+        public void CanCountOccurencesWithEqualityComparer()
+        {
+            var data = "Aa";
+            var occurences = data.CountOccurences(CaseInsensitiveCharComparer.InvariantCulture);
+            Assert.Equal(2, occurences['A']);
+            Assert.Equal(2, occurences['a']);
+            Assert.Equal(1, occurences.Count);
+            Assert.Equal('A', occurences.Single().Key);
         }
     }
 }

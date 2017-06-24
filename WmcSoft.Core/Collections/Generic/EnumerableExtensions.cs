@@ -772,9 +772,9 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region Occurences
+        #region CountOccurences
 
-        public static Dictionary<TSource, int> Occurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer = null)
+        public static Dictionary<TSource, int> CountOccurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer = null)
             where TSource : struct
         {
             if (source == null) throw new ArgumentNullException();
@@ -790,13 +790,13 @@ namespace WmcSoft.Collections.Generic
             return dictionary;
         }
 
-        public static Dictionary<TSource, int> Occurences<TSource>(this IEnumerable<TSource> source, out int nullCount)
+        public static Dictionary<TSource, int> CountOccurences<TSource>(this IEnumerable<TSource> source, out int nullCount)
             where TSource : class
         {
-            return Occurences(source, null, out nullCount);
+            return CountOccurences(source, null, out nullCount);
         }
 
-        public static Dictionary<TSource, int> Occurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer, out int nullCount)
+        public static Dictionary<TSource, int> CountOccurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer, out int nullCount)
             where TSource : class
         {
             if (source == null) throw new ArgumentNullException();
