@@ -24,11 +24,12 @@
 
 #endregion
 
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft.Diagnostics
 {
-    public sealed class Counters<TName>
+    public sealed class Counters<TName> : IReadOnlyDictionary<TName, int>
     {
         private readonly Dictionary<TName, int> _occurences;
 
@@ -58,5 +59,17 @@ namespace WmcSoft.Diagnostics
         public int this[TName name] {
             get { return Tally(name); }
         }
+
+        #region IReadOnlyDictionary<TName, int> members
+
+        public IEnumerable<TName> Keys => ((IReadOnlyDictionary<TName, int>)_occurences).Keys;
+        public IEnumerable<int> Values => ((IReadOnlyDictionary<TName, int>)_occurences).Values;
+        public int Count => _occurences.Count;
+        public bool ContainsKey(TName key) => _occurences.ContainsKey(key);
+        public bool TryGetValue(TName key, out int value) => _occurences.TryGetValue(key, out value);
+        public IEnumerator<KeyValuePair<TName, int>> GetEnumerator() => ((IReadOnlyDictionary<TName, int>)_occurences).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IReadOnlyDictionary<TName, int>)_occurences).GetEnumerator();
+
+        #endregion
     }
 }
