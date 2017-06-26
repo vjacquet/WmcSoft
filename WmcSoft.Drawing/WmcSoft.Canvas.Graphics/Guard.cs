@@ -30,26 +30,32 @@ namespace WmcSoft.Canvas
 {
     internal static class Guard
     {
-        public static bool IsPositive(float value) {
+        public static bool IsPositive(float value)
+        {
             return value > 0f && !Single.IsPositiveInfinity(value); // NaN and -oo are smaller than 0.
         }
-        public static void Positive(float value, string paramName = "value") {
+        public static void Positive(float value, string paramName = "value")
+        {
             if (!IsPositive(value))
                 throw new ArgumentOutOfRangeException(paramName);
         }
 
-        public static bool IsFinite(float value) {
+        public static bool IsFinite(float value)
+        {
             return !Single.IsNaN(value) && !Single.IsInfinity(value);
         }
-        public static void Finite(float value, string paramName = "value") {
+        public static void Finite(float value, string paramName = "value")
+        {
             if (!IsFinite(value))
                 throw new ArgumentOutOfRangeException(paramName);
         }
 
-        public static bool IsAlphaValue(float value) {
+        public static bool IsAlphaValue(float value)
+        {
             return value >= 0f && value <= 1f;
         }
-        public static void AlphaValue(float value, string paramName = "value") {
+        public static void AlphaValue(float value, string paramName = "value")
+        {
             if (!IsAlphaValue(value))
                 throw new ArgumentOutOfRangeException(paramName);
         }

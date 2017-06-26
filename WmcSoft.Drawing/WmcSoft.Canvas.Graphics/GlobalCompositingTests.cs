@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace WmcSoft.Canvas
@@ -13,7 +7,8 @@ namespace WmcSoft.Canvas
     public class GlobalCompositingTests : CanvasTestsBase
     {
         [Fact]
-        public void SupportGlobalAlpha() {
+        public void SupportGlobalAlpha()
+        {
             using (var ctx = CreateCanvas("globalAlpha.png", 150, 150)) {
                 // draw background
                 ctx.FillStyle = Color.FromArgb(0xFF, 0xDD, 0x00);

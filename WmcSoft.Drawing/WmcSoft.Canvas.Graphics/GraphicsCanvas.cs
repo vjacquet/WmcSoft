@@ -51,11 +51,13 @@ namespace WmcSoft.Canvas
             private Func<Pen> _factory;
             private Pen _tool;
 
-            public PenVisitor(GraphicsCanvas canvas) {
+            public PenVisitor(GraphicsCanvas canvas)
+            {
                 _canvas = canvas;
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 if (_tool != null) {
                     _tool.Dispose();
                     _tool = null;
@@ -70,19 +72,23 @@ namespace WmcSoft.Canvas
                 }
             }
 
-            public static implicit operator Pen(PenVisitor visitor) {
+            public static implicit operator Pen(PenVisitor visitor)
+            {
                 return visitor.Pen;
             }
 
-            public override void Visit(CanvasGradient<Color> instance) {
+            public override void Visit(CanvasGradient<Color> instance)
+            {
                 throw new NotSupportedException();
             }
 
-            public override void Visit(CanvasPattern instance) {
+            public override void Visit(CanvasPattern instance)
+            {
                 throw new NotSupportedException();
             }
 
-            Pen CreateSolidPen(Color color) {
+            Pen CreateSolidPen(Color color)
+            {
                 var alpha = _canvas._globalAlpha < 1f ? Color.FromArgb((int)(255 * _canvas._globalAlpha), color) : color;
                 var pen = new Pen(alpha, _canvas.LineWidth);
                 pen.LineJoin = _canvas._lineJoin;
@@ -96,7 +102,8 @@ namespace WmcSoft.Canvas
                 return pen;
             }
 
-            public override void Visit(Color instance) {
+            public override void Visit(Color instance)
+            {
                 _factory = () => CreateSolidPen(instance);
                 Dispose();
             }
@@ -109,11 +116,13 @@ namespace WmcSoft.Canvas
             private Func<Brush> _factory;
             private Brush _tool;
 
-            public BrushVisitor(GraphicsCanvas canvas) {
+            public BrushVisitor(GraphicsCanvas canvas)
+            {
                 _canvas = canvas;
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
                 if (_tool != null) {
                     _tool.Dispose();
                     _tool = null;
@@ -128,11 +137,13 @@ namespace WmcSoft.Canvas
                 }
             }
 
-            public static implicit operator Brush(BrushVisitor visitor) {
+            public static implicit operator Brush(BrushVisitor visitor)
+            {
                 return visitor.Brush;
             }
 
-            public override void Visit(CanvasGradient<Color> instance) {
+            public override void Visit(CanvasGradient<Color> instance)
+            {
                 var linear = instance as LinearGradient<float, Color>;
                 if (linear != null) {
                     _factory = () => Create(linear);
@@ -150,7 +161,8 @@ namespace WmcSoft.Canvas
                 throw new NotSupportedException();
             }
 
-            private Brush Create(LinearGradient<float, Color> instance) {
+            private Brush Create(LinearGradient<float, Color> instance)
+            {
                 var count = instance.Colors.Count;
                 if (count == 0)
                     return CreateSolidBrush(Color.Transparent);
@@ -194,20 +206,24 @@ namespace WmcSoft.Canvas
                 return brush;
             }
 
-            private Brush Create(RadialGradient<float, Color> instance) {
+            private Brush Create(RadialGradient<float, Color> instance)
+            {
                 throw new NotSupportedException();
             }
 
-            public override void Visit(CanvasPattern instance) {
+            public override void Visit(CanvasPattern instance)
+            {
                 throw new NotSupportedException();
             }
 
-            Brush CreateSolidBrush(Color color) {
+            Brush CreateSolidBrush(Color color)
+            {
                 var alpha = _canvas._globalAlpha < 1f ? Color.FromArgb((int)(255 * _canvas._globalAlpha), color) : color;
                 return new SolidBrush(alpha);
             }
 
-            public override void Visit(Color instance) {
+            public override void Visit(Color instance)
+            {
                 _factory = () => CreateSolidBrush(instance);
                 Dispose();
             }
@@ -262,7 +278,8 @@ namespace WmcSoft.Canvas
         private float _dashOffset;
         private float _globalAlpha;
 
-        public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null) {
+        public GraphicsCanvas(Graphics graphics, Action<Graphics> disposer = null)
+        {
             g = graphics;
             ImageSmoothingQuality = ImageSmoothingQuality.Low;
             g.SmoothingMode = SmoothingMode.HighQuality;
@@ -285,7 +302,8 @@ namespace WmcSoft.Canvas
 
         }
 
-        void IDisposable.Dispose() {
+        void IDisposable.Dispose()
+        {
             if (_disposer != null) {
                 _disposer(g);
                 _disposer = null;
@@ -323,15 +341,18 @@ namespace WmcSoft.Canvas
         }
         Variant<Color, CanvasGradient<Color>, CanvasPattern> _strokeStyle;
 
-        public CanvasGradient<Color> CreateLinearGradient(float x0, float y0, float x1, float y1) {
+        public CanvasGradient<Color> CreateLinearGradient(float x0, float y0, float x1, float y1)
+        {
             return new LinearGradient<float, Color>(x0, y0, x1, y1);
         }
 
-        public CanvasPattern CreatePattern(ICanvasImageSource image, Repetition repetition = Repetition.NoRepeat) {
+        public CanvasPattern CreatePattern(ICanvasImageSource image, Repetition repetition = Repetition.NoRepeat)
+        {
             throw new NotImplementedException();
         }
 
-        public CanvasGradient<Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1) {
+        public CanvasGradient<Color> CreateRadialGradient(float x0, float y0, float r0, float x1, float y1, float r1)
+        {
             return new RadialGradient<float, Color>(x0, y0, r0, x1, y1, r1);
         }
 
@@ -339,7 +360,8 @@ namespace WmcSoft.Canvas
 
         #region ICanvasRect<float>
 
-        public void ClearRect(float x, float y, float w, float h) {
+        public void ClearRect(float x, float y, float w, float h)
+        {
             using (GraphicsPath path = new GraphicsPath()) {
                 path.AddRectangle(new RectangleF(x, y, w, h));
                 g.SetClip(path);
@@ -348,11 +370,13 @@ namespace WmcSoft.Canvas
             }
         }
 
-        public void FillRect(float x, float y, float w, float h) {
+        public void FillRect(float x, float y, float w, float h)
+        {
             g.FillRectangle(_brush, x, y, w, h);
         }
 
-        public void StrokeRect(float x, float y, float w, float h) {
+        public void StrokeRect(float x, float y, float w, float h)
+        {
             g.DrawRectangle(_pen, x, y, w, h);
         }
 
@@ -364,51 +388,60 @@ namespace WmcSoft.Canvas
             get { return _path; }
         }
 
-        public void ClosePath() {
+        public void ClosePath()
+        {
             CurrentPath.CloseFigure();
             _x = _start.X;
             _y = _start.Y;
         }
 
-        public void MoveTo(float x, float y) {
+        public void MoveTo(float x, float y)
+        {
             _path.StartFigure();
             _start = new PointF(x, y);
             _x = x;
             _y = y;
         }
 
-        public void LineTo(float x, float y) {
+        public void LineTo(float x, float y)
+        {
             CurrentPath.AddLine(_x, _y, x, y);
             _x = x;
             _y = y;
         }
 
-        public void QuadraticCurveTo(float cpx, float cpy, float x, float y) {
+        public void QuadraticCurveTo(float cpx, float cpy, float x, float y)
+        {
             BezierCurveTo(_x / 3 + 2 * cpx / 3, _y / 3 + 2 * cpy / 3, x / 3 + 2 * cpx / 3, y / 3 + 2 * cpy / 3, x, y);
         }
 
-        public void BezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y) {
+        public void BezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y)
+        {
             CurrentPath.AddBezier(_x, _y, cp1x, cp1y, cp2x, cp2y, x, y);
             _x = x;
             _y = y;
         }
 
-        public void ArcTo(float x1, float y1, float x2, float y2, float radius) {
+        public void ArcTo(float x1, float y1, float x2, float y2, float radius)
+        {
             throw new NotImplementedException();
         }
 
-        public void ArcTo(float x1, float y1, float x2, float y2, float radiusX, float radiusY, float rotation) {
+        public void ArcTo(float x1, float y1, float x2, float y2, float radiusX, float radiusY, float rotation)
+        {
             throw new NotImplementedException();
         }
 
-        public void Rect(float x, float y, float w, float h) {
+        public void Rect(float x, float y, float w, float h)
+        {
             BeginPath();
             CurrentPath.AddRectangle(new RectangleF(x, y, w, h));
             _x = x;
             _y = y;
         }
 
-        public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise) {
+        public void Arc(float x, float y, float radius, float startAngle, float endAngle, bool anticlockwise)
+        {
             var sweepAngle = endAngle - startAngle;
             if (!anticlockwise)
                 _path.AddArc(x - radius, y - radius, 2 * radius, 2 * radius, Deg(startAngle), Swep(sweepAngle));
@@ -416,7 +449,8 @@ namespace WmcSoft.Canvas
                 _path.AddArc(x - radius, y - radius, 2 * radius, 2 * radius, Deg(endAngle), Swep(TWO_PI - sweepAngle));
         }
 
-        static float Deg(float value) {
+        static float Deg(float value)
+        {
             value = 180f * value / PI;
             while (value < 0f)
                 value += 360f;
@@ -425,7 +459,8 @@ namespace WmcSoft.Canvas
             return value;
         }
 
-        static float Swep(float value) {
+        static float Swep(float value)
+        {
             value = 180f * value / PI;
             while (value <= 0f) // sweep cannot be 0
                 value += 360f;
@@ -434,7 +469,8 @@ namespace WmcSoft.Canvas
             return value;
         }
 
-        public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation, float startAngle, float endAngle, bool anticlockwise) {
+        public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation, float startAngle, float endAngle, bool anticlockwise)
+        {
             var sweepAngle = endAngle - startAngle;
             if (rotation == 0f) {
                 if (!anticlockwise)
@@ -454,14 +490,16 @@ namespace WmcSoft.Canvas
             }
         }
 
-        public void BeginPath() {
+        public void BeginPath()
+        {
             if (_path != null)
                 _path.Dispose();
             _path = new GraphicsPath(FillMode.Alternate);
             _path.StartFigure();
         }
 
-        FillMode Map(CanvasFillRule value) {
+        FillMode Map(CanvasFillRule value)
+        {
             switch (value) {
             case CanvasFillRule.NonZero:
                 return FillMode.Winding;
@@ -472,48 +510,59 @@ namespace WmcSoft.Canvas
             }
         }
 
-        public void Fill(CanvasFillRule fillRule) {
+        public void Fill(CanvasFillRule fillRule)
+        {
             CurrentPath.FillMode = Map(fillRule);
             g.FillPath(_brush, CurrentPath);
         }
 
-        public void Fill(Path2D<float> path, CanvasFillRule fillRule) {
+        public void Fill(Path2D<float> path, CanvasFillRule fillRule)
+        {
             throw new NotImplementedException();
         }
 
-        public void Stroke() {
+        public void Stroke()
+        {
             g.DrawPath(_pen, CurrentPath);
         }
 
-        public void Stroke(Path2D<float> path) {
+        public void Stroke(Path2D<float> path)
+        {
             //g.DrawPath(_pen, CurrentPath);
         }
 
-        public void Clip(CanvasFillRule fillRule) {
+        public void Clip(CanvasFillRule fillRule)
+        {
             throw new NotImplementedException();
         }
 
-        public void Clip(Path2D<float> path, CanvasFillRule fillRule) {
+        public void Clip(Path2D<float> path, CanvasFillRule fillRule)
+        {
             throw new NotImplementedException();
         }
 
-        public void ResetClip() {
+        public void ResetClip()
+        {
             throw new NotImplementedException();
         }
 
-        public bool IsPointInPath(float x, float y, CanvasFillRule fillRule) {
+        public bool IsPointInPath(float x, float y, CanvasFillRule fillRule)
+        {
             throw new NotImplementedException();
         }
 
-        public bool IsPointInPath(Path2D<float> path, float x, float y, CanvasFillRule fillRule) {
+        public bool IsPointInPath(Path2D<float> path, float x, float y, CanvasFillRule fillRule)
+        {
             throw new NotImplementedException();
         }
 
-        public bool IsPointInStroke(float x, float y) {
+        public bool IsPointInStroke(float x, float y)
+        {
             throw new NotImplementedException();
         }
 
-        public bool IsPointInStroke(Path2D<float> path, float x, float y) {
+        public bool IsPointInStroke(Path2D<float> path, float x, float y)
+        {
             throw new NotImplementedException();
         }
 
@@ -683,7 +732,8 @@ namespace WmcSoft.Canvas
 
         #region Helpers
 
-        InterpolationMode Map(ImageSmoothingQuality value) {
+        InterpolationMode Map(ImageSmoothingQuality value)
+        {
             switch (value) {
             case ImageSmoothingQuality.Low:
                 return InterpolationMode.NearestNeighbor;
@@ -696,7 +746,8 @@ namespace WmcSoft.Canvas
             }
         }
 
-        private void SetDashPattern(float[] value) {
+        private void SetDashPattern(float[] value)
+        {
             if (value == null || value.Length == 0) {
                 _dashPattern = null;
             } else if (value.Length % 1 == 1) {
@@ -708,7 +759,8 @@ namespace WmcSoft.Canvas
             }
         }
 
-        private bool DashPatternEquals(float[] value) {
+        private bool DashPatternEquals(float[] value)
+        {
             if (_dashPattern == null) {
                 return (value == null || value.Length == 0);
             }

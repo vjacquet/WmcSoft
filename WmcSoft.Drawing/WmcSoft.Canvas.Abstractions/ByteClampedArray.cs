@@ -41,11 +41,13 @@ namespace WmcSoft.Canvas
         {
             readonly IList<short> _buffer;
 
-            public Int16Adapter(IList<short> buffer) {
+            public Int16Adapter(IList<short> buffer)
+            {
                 _buffer = buffer;
             }
 
-            byte Clamp(short n) {
+            byte Clamp(short n)
+            {
                 if (n < 0) return 0;
                 if (n > 255) return 255;
                 return (byte)n;
@@ -59,13 +61,15 @@ namespace WmcSoft.Canvas
                 get { return _buffer.Count; }
             }
 
-            public IEnumerator<byte> GetEnumerator() {
+            public IEnumerator<byte> GetEnumerator()
+            {
                 foreach (var n in _buffer) {
                     yield return Clamp(n);
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -74,11 +78,13 @@ namespace WmcSoft.Canvas
         {
             readonly IList<ushort> _buffer;
 
-            public UInt16Adapter(IList<ushort> buffer) {
+            public UInt16Adapter(IList<ushort> buffer)
+            {
                 _buffer = buffer;
             }
 
-            byte Clamp(ushort n) {
+            byte Clamp(ushort n)
+            {
                 if (n > 255) return 255;
                 return (byte)n;
             }
@@ -91,13 +97,15 @@ namespace WmcSoft.Canvas
                 get { return _buffer.Count; }
             }
 
-            public IEnumerator<byte> GetEnumerator() {
+            public IEnumerator<byte> GetEnumerator()
+            {
                 foreach (var n in _buffer) {
                     yield return Clamp(n);
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -106,11 +114,13 @@ namespace WmcSoft.Canvas
         {
             readonly IList<int> _buffer;
 
-            public Int32Adapter(IList<int> buffer) {
+            public Int32Adapter(IList<int> buffer)
+            {
                 _buffer = buffer;
             }
 
-            byte Clamp(int n) {
+            byte Clamp(int n)
+            {
                 if (n < 0) return 0;
                 if (n > 255) return 255;
                 return (byte)n;
@@ -124,13 +134,15 @@ namespace WmcSoft.Canvas
                 get { return _buffer.Count; }
             }
 
-            public IEnumerator<byte> GetEnumerator() {
+            public IEnumerator<byte> GetEnumerator()
+            {
                 foreach (var n in _buffer) {
                     yield return Clamp(n);
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -139,11 +151,13 @@ namespace WmcSoft.Canvas
         {
             readonly IList<uint> _buffer;
 
-            public UInt32Adapter(IList<uint> buffer) {
+            public UInt32Adapter(IList<uint> buffer)
+            {
                 _buffer = buffer;
             }
 
-            byte Clamp(uint n) {
+            byte Clamp(uint n)
+            {
                 if (n > 255) return 255;
                 return (byte)n;
             }
@@ -156,13 +170,15 @@ namespace WmcSoft.Canvas
                 get { return _buffer.Count; }
             }
 
-            public IEnumerator<byte> GetEnumerator() {
+            public IEnumerator<byte> GetEnumerator()
+            {
                 foreach (var n in _buffer) {
                     yield return Clamp(n);
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -171,11 +187,13 @@ namespace WmcSoft.Canvas
         {
             readonly IList<long> _buffer;
 
-            public Int64Adapter(IList<long> buffer) {
+            public Int64Adapter(IList<long> buffer)
+            {
                 _buffer = buffer;
             }
 
-            byte Clamp(long n) {
+            byte Clamp(long n)
+            {
                 if (n < 0) return 0;
                 if (n > 255) return 255;
                 return (byte)n;
@@ -189,13 +207,15 @@ namespace WmcSoft.Canvas
                 get { return _buffer.Count; }
             }
 
-            public IEnumerator<byte> GetEnumerator() {
+            public IEnumerator<byte> GetEnumerator()
+            {
                 foreach (var n in _buffer) {
                     yield return Clamp(n);
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -204,11 +224,13 @@ namespace WmcSoft.Canvas
         {
             readonly IList<ulong> _buffer;
 
-            public UInt64Adapter(IList<ulong> buffer) {
+            public UInt64Adapter(IList<ulong> buffer)
+            {
                 _buffer = buffer;
             }
 
-            byte Clamp(ulong n) {
+            byte Clamp(ulong n)
+            {
                 if (n > 255) return 255;
                 return (byte)n;
             }
@@ -221,13 +243,15 @@ namespace WmcSoft.Canvas
                 get { return _buffer.Count; }
             }
 
-            public IEnumerator<byte> GetEnumerator() {
+            public IEnumerator<byte> GetEnumerator()
+            {
                 foreach (var n in _buffer) {
                     yield return Clamp(n);
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -236,31 +260,38 @@ namespace WmcSoft.Canvas
 
         private readonly IReadOnlyList<byte> _buffer;
 
-        public ByteClampedArray(IList<short> buffer) {
+        public ByteClampedArray(IList<short> buffer)
+        {
             _buffer = new Int16Adapter(buffer);
         }
 
-        public ByteClampedArray(IList<ushort> buffer) {
+        public ByteClampedArray(IList<ushort> buffer)
+        {
             _buffer = new UInt16Adapter(buffer);
         }
 
-        public ByteClampedArray(IList<int> buffer) {
+        public ByteClampedArray(IList<int> buffer)
+        {
             _buffer = new Int32Adapter(buffer);
         }
 
-        public ByteClampedArray(IList<uint> buffer) {
+        public ByteClampedArray(IList<uint> buffer)
+        {
             _buffer = new UInt32Adapter(buffer);
         }
 
-        public ByteClampedArray(IList<long> buffer) {
+        public ByteClampedArray(IList<long> buffer)
+        {
             _buffer = new Int64Adapter(buffer);
         }
 
-        public ByteClampedArray(IList<ulong> buffer) {
+        public ByteClampedArray(IList<ulong> buffer)
+        {
             _buffer = new UInt64Adapter(buffer);
         }
 
-        public ByteClampedArray(params byte[] buffer) {
+        public ByteClampedArray(params byte[] buffer)
+        {
             _buffer = buffer;
         }
 
@@ -276,11 +307,13 @@ namespace WmcSoft.Canvas
             get { return Storage.Count; }
         }
 
-        public IEnumerator<byte> GetEnumerator() {
+        public IEnumerator<byte> GetEnumerator()
+        {
             return Storage.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

@@ -6,7 +6,8 @@ namespace WmcSoft.Canvas
 {
     public class CanvasTestsBase
     {
-        protected virtual GraphicsCanvas CreateCanvas(string filename, int width = 400, int height = 200, bool alpha = true) {
+        protected virtual GraphicsCanvas CreateCanvas(string filename, int width = 400, int height = 200, bool alpha = true)
+        {
             // TODO: handle alpha on getContext <https://html.spec.whatwg.org/multipage/scripting.html#2dcontext>
             var image = new Bitmap(width, height);
             var path = Path.GetFullPath(Path.Combine(@"..\Tests", filename));

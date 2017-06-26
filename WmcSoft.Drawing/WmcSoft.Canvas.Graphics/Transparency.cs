@@ -32,24 +32,29 @@ namespace WmcSoft.Canvas
     {
         private readonly byte _storage;
 
-        public Transparency(float value) {
+        public Transparency(float value)
+        {
             if (value < 0f || value > 1f) throw new ArgumentOutOfRangeException(nameof(value));
 
             _storage = (byte)(255f * value);
         }
 
-        public static implicit operator int(Transparency value) {
+        public static implicit operator int(Transparency value)
+        {
             return value._storage;
         }
-        public static implicit operator Transparency(int value) {
+        public static implicit operator Transparency(int value)
+        {
             if (value < 0 || value > 255) throw new ArgumentOutOfRangeException(nameof(value));
             return new Transparency(value / 255f);
         }
 
-        public static implicit operator float(Transparency value) {
+        public static implicit operator float(Transparency value)
+        {
             return value._storage / 255f;
         }
-        public static implicit operator Transparency(float value) {
+        public static implicit operator Transparency(float value)
+        {
             return new Transparency(value);
         }
     }

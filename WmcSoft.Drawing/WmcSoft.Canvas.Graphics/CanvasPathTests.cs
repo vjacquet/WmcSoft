@@ -7,7 +7,8 @@ namespace WmcSoft.Canvas
     public class CanvasPathTests : CanvasTestsBase
     {
         [Fact]
-        public void SupportBeginPath() {
+        public void SupportBeginPath()
+        {
             using (var ctx = CreateCanvas("beginPath.png")) {
                 // First path
                 ctx.BeginPath();
@@ -26,7 +27,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportArc() {
+        public void SupportArc()
+        {
             using (var ctx = CreateCanvas("arc.png")) {
                 ctx.BeginPath();
                 ctx.Arc(75, 75, 50, 0, 2 * Math.PI);
@@ -35,7 +37,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDemonstrateRect() {
+        public void CanDemonstrateRect()
+        {
             using (var ctx = CreateCanvas("rect-demo.png", 150, 150)) {
                 ctx.FillRect(25, 25, 100, 100);
                 ctx.ClearRect(45, 45, 60, 60);
@@ -44,7 +47,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDemonstrateTriangle() {
+        public void CanDemonstrateTriangle()
+        {
             using (var ctx = CreateCanvas("triangle-demo.png", 150, 150)) {
                 ctx.BeginPath();
                 ctx.MoveTo(75, 50);
@@ -55,7 +59,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDemonstrateLines() {
+        public void CanDemonstrateLines()
+        {
             using (var ctx = CreateCanvas("lines-demo.png", 150, 150)) {
                 // Filled triangle
                 ctx.BeginPath();
@@ -75,7 +80,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDemonstrateArc() {
+        public void CanDemonstrateArc()
+        {
             using (var ctx = CreateCanvas("arc-demo.png", 150, 200)) {
                 // Draw shapes
                 for (int i = 0; i < 4; i++) {
@@ -101,7 +107,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDrawSmiley() {
+        public void CanDrawSmiley()
+        {
             using (var ctx = CreateCanvas("smiley.png", 150, 150)) {
                 ctx.BeginPath();
                 ctx.Arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
@@ -116,7 +123,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportEllipse() {
+        public void SupportEllipse()
+        {
             using (var ctx = CreateCanvas("ellipse.png")) {
                 ctx.BeginPath();
                 ctx.Ellipse(100, 100, 50, 75, 45 * Math.PI / 180, 0, 2 * Math.PI);
@@ -125,7 +133,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanFillNonZero() {
+        public void CanFillNonZero()
+        {
             using (var ctx = CreateCanvas("fillNonZero.png")) {
                 ctx.BeginPath();
                 ctx.Arc(50, 50, 30, 0, Math.PI * 2, true);
@@ -135,7 +144,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanFillEvenOdd() {
+        public void CanFillEvenOdd()
+        {
             using (var ctx = CreateCanvas("fillEvenOdd.png")) {
                 ctx.BeginPath();
                 ctx.Arc(50, 50, 30, 0, Math.PI * 2, true);
@@ -145,7 +155,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportQuadraticCurveTo() {
+        public void SupportQuadraticCurveTo()
+        {
             using (var ctx = CreateCanvas("quadraticCurveTo.png")) {
                 ctx.BeginPath();
                 ctx.MoveTo(75, 25);
@@ -160,7 +171,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportBezierCurveTo() {
+        public void SupportBezierCurveTo()
+        {
             using (var ctx = CreateCanvas("bezierCurveTo.png")) {
                 ctx.BeginPath();
                 ctx.MoveTo(75, 40);
@@ -175,7 +187,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportRectangle() {
+        public void SupportRectangle()
+        {
             using (var ctx = CreateCanvas("rect.png")) {
                 //ctx.BeginPath(); // TODO: should not be required.
                 ctx.Rect(10, 10, 100, 100);
@@ -184,7 +197,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportFillRule() {
+        public void SupportFillRule()
+        {
             using (var ctx = CreateCanvas("fillRule.png")) {
                 ctx.BeginPath();
                 ctx.Arc(50, 50, 30, 0, Math.PI * 2, true);

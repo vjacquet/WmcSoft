@@ -44,27 +44,33 @@ namespace WmcSoft.Canvas
 
     public static class CanvasDrawPathExtensions
     {
-        public static void Fill<T>(this ICanvasDrawPath<T> canvas) {
+        public static void Fill<T>(this ICanvasDrawPath<T> canvas)
+        {
             canvas.Fill(CanvasFillRule.NonZero);
         }
 
-        public static void Fill<T>(this ICanvasDrawPath<T> canvas, Path2D<T> path) {
+        public static void Fill<T>(this ICanvasDrawPath<T> canvas, Path2D<T> path)
+        {
             canvas.Fill(CanvasFillRule.NonZero);
         }
 
-        public static void Clip<T>(this ICanvasDrawPath<T> canvas) {
+        public static void Clip<T>(this ICanvasDrawPath<T> canvas)
+        {
             canvas.Clip(CanvasFillRule.NonZero);
         }
 
-        public static void Clip<T>(this ICanvasDrawPath<T> canvas, Path2D<T> path) {
+        public static void Clip<T>(this ICanvasDrawPath<T> canvas, Path2D<T> path)
+        {
             canvas.Clip(path, CanvasFillRule.NonZero);
         }
 
-        public static bool IsPointInPath<T>(this ICanvasDrawPath<T> canvas, T x, T y) {
+        public static bool IsPointInPath<T>(this ICanvasDrawPath<T> canvas, T x, T y)
+        {
             return canvas.IsPointInPath(x, y, CanvasFillRule.NonZero);
         }
 
-        public static bool IsPointInPath<T>(this ICanvasDrawPath<T> canvas, Path2D<T> path, T x, T y) {
+        public static bool IsPointInPath<T>(this ICanvasDrawPath<T> canvas, Path2D<T> path, T x, T y)
+        {
             return canvas.IsPointInPath(path, x, y, CanvasFillRule.NonZero);
         }
     }

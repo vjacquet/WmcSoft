@@ -39,7 +39,8 @@ namespace WmcSoft.Canvas
             , float emHeightDescent
             , float hangingBaseline
             , float alphabeticBaseline
-            , float ideographicBaseline) {
+            , float ideographicBaseline)
+        {
             Width = actualBoundingBoxLeft;
             ActualBoundingBoxLeft = actualBoundingBoxRight;
             ActualBoundingBoxRight = fontBoundingBoxAscent;

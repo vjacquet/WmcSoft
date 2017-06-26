@@ -30,13 +30,15 @@ namespace WmcSoft.Canvas
 {
     public struct ImageData : IImageData<ByteClampedArray, uint>
     {
-        public ImageData(uint sw, uint sh) {
+        public ImageData(uint sw, uint sh)
+        {
             Width = sw;
             Height = sh;
             Data = new ByteClampedArray(new byte[4 * sw * sh]);
         }
 
-        public ImageData(ByteClampedArray data, uint sw) {
+        public ImageData(ByteClampedArray data, uint sw)
+        {
             var length = (uint)data.Count;
             if (length % 4 != 0) throw new ArgumentException(nameof(data));
             length /= 4;
@@ -48,7 +50,8 @@ namespace WmcSoft.Canvas
             Data = data;
         }
 
-        public ImageData(ByteClampedArray data, uint sw, uint sh) {
+        public ImageData(ByteClampedArray data, uint sw, uint sh)
+        {
             var length = (uint)data.Count;
             if (length % 4 != 0) throw new ArgumentException(nameof(data));
             length /= 4;

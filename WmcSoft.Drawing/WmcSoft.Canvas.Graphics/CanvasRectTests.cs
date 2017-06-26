@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using Xunit;
 
 namespace WmcSoft.Canvas
@@ -14,7 +6,8 @@ namespace WmcSoft.Canvas
     public class CanvasRectTests : CanvasTestsBase
     {
         [Fact]
-        public void SupportFillRect() {
+        public void SupportFillRect()
+        {
             using (var ctx = CreateCanvas("fillRect.png")) {
                 ctx.FillStyle = Color.Green;
                 ctx.FillRect(10, 10, 100, 100);
@@ -22,7 +15,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportStrokeRect() {
+        public void SupportStrokeRect()
+        {
             using (var ctx = CreateCanvas("strokeRect.png")) {
                 ctx.StrokeStyle = Color.Green;
                 ctx.StrokeRect(10, 10, 100, 100);
@@ -30,7 +24,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportClearRect() {
+        public void SupportClearRect()
+        {
             using (var ctx = CreateCanvas("clearRect.png")) {
                 ctx.BeginPath();
                 ctx.MoveTo(20, 20);
@@ -44,7 +39,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportOverlappingRgbaRect() {
+        public void SupportOverlappingRgbaRect()
+        {
             using (var ctx = CreateCanvas("overlapping.png")) {
                 ctx.FillStyle = Color.FromArgb(200, 0, 0);
                 ctx.FillRect(10, 10, 50, 50);
@@ -55,7 +51,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportRgba() {
+        public void SupportRgba()
+        {
             using (var ctx = CreateCanvas("rgba.png")) {
                 ctx.FillStyle = Color.FromArgb(255, 221, 0);
                 ctx.FillRect(0, 0, 150, 37.5f);
@@ -77,7 +74,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportLinearGradient() {
+        public void SupportLinearGradient()
+        {
             using (var ctx = CreateCanvas("linearGradient.png")) {
                 var gradient = ctx.CreateLinearGradient(0, 0, 200, 0);
                 gradient.AddColorStop(0, Color.Green);
@@ -88,7 +86,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportComplexLinearGradient() {
+        public void SupportComplexLinearGradient()
+        {
             using (var ctx = CreateCanvas("linearGradient2.png")) {
                 var gradient = ctx.CreateLinearGradient(0, 0, 200, 0);
                 gradient.AddColorStop(0.25f, Color.Green);
@@ -101,7 +100,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact(Skip = "Not implemented yet")]
-        public void SupportRadialGradient() {
+        public void SupportRadialGradient()
+        {
             using (var ctx = CreateCanvas("radialGradient.png")) {
                 var gradient = ctx.CreateRadialGradient(100, 100, 100, 100, 100, 0);
                 gradient.AddColorStop(0, Color.Green);

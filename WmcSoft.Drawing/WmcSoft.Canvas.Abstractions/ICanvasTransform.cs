@@ -48,7 +48,8 @@ namespace WmcSoft.Canvas
     {
         public static void Set2DTransformation<M, T>(this ICanvasTransform<M, T> canvas, T a, T b, T c, T d, T e, T f)
             where M : IMatrix<T>
-            where T : IConvertible {
+            where T : IConvertible
+        {
             canvas.ResetTransformationMatrix();
             canvas.Transform(a, b, c, d, e, f);
         }

@@ -30,6 +30,6 @@ namespace WmcSoft.Canvas
 {
     public abstract class CanvasPattern
     {
-      public  abstract void SetTransform(Matrix4x4 transform);
+        public abstract void SetTransform(Matrix4x4 transform);
     }
 }

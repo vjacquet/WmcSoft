@@ -34,12 +34,14 @@ namespace WmcSoft.Canvas
 {
     public static class Matrix4x4Extensions
     {
-        public static Matrix4x4 Scale(this Matrix4x4 matrix, float x, float y) {
+        public static Matrix4x4 Scale(this Matrix4x4 matrix, float x, float y)
+        {
             var m = new Matrix4x4(x, 0, 0, 0, 0, y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
             return matrix * m;
         }
 
-        public static Matrix4x4 Rotate(this Matrix4x4 matrix, float angle) {
+        public static Matrix4x4 Rotate(this Matrix4x4 matrix, float angle)
+        {
             var half = angle / 2;
             var sin = Sin(half);
             var sc = sin * Cos(half);
@@ -47,12 +49,14 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
-        public static Matrix4x4 Translate(this Matrix4x4 matrix, float x, float y) {
+        public static Matrix4x4 Translate(this Matrix4x4 matrix, float x, float y)
+        {
             var m = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1);
             return matrix * m;
         }
 
-        public static Matrix4x4 Transform(this Matrix4x4 matrix, float a, float b, float c, float d, float e, float f) {
+        public static Matrix4x4 Transform(this Matrix4x4 matrix, float a, float b, float c, float d, float e, float f)
+        {
             var m = new Matrix4x4(a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, e, f, 0, 1);
             return matrix * m;
         }

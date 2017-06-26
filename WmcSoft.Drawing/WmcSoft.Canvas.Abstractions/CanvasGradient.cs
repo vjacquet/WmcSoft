@@ -34,12 +34,14 @@ namespace WmcSoft.Canvas
         protected readonly List<float> _offsets;
         protected readonly List<TColor> _colors;
 
-        protected CanvasGradient() {
+        protected CanvasGradient()
+        {
             _offsets = new List<float>();
             _colors = new List<TColor>();
         }
 
-        public virtual void AddColorStop(float offset, TColor color) {
+        public virtual void AddColorStop(float offset, TColor color)
+        {
             if (offset < 0f || offset > 1f) throw new ArgumentOutOfRangeException(nameof(offset));
 
             var index = _offsets.BinarySearch(offset);
@@ -60,7 +62,8 @@ namespace WmcSoft.Canvas
         private readonly T _x1;
         private readonly T _y1;
 
-        public LinearGradient(T x0, T y0, T x1, T y1) {
+        public LinearGradient(T x0, T y0, T x1, T y1)
+        {
             _x0 = x0;
             _y0 = y0;
             _x1 = x1;
@@ -85,7 +88,8 @@ namespace WmcSoft.Canvas
         private readonly T _y1;
         private readonly T _r1;
 
-        public RadialGradient(T x0, T y0, T r0, T x1, T y1, T r1) {
+        public RadialGradient(T x0, T y0, T r0, T x1, T y1, T r1)
+        {
             _x0 = x0;
             _y0 = y0;
             _r0 = r0;

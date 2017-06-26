@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Xunit;
 
 namespace WmcSoft.Canvas
@@ -8,7 +7,8 @@ namespace WmcSoft.Canvas
     {
         class FakeImageData : IImageSize<int>
         {
-            public FakeImageData(int width, int height) {
+            public FakeImageData(int width, int height)
+            {
                 Width = width;
                 Height = height;
             }
@@ -34,19 +34,23 @@ namespace WmcSoft.Canvas
 
         class MockCanvasImageData : ICanvasImageData<FakeImageData, int>
         {
-            public MockCanvasImageData() {
+            public MockCanvasImageData()
+            {
                 Calls = new Queue<PutImageDataParameters>();
             }
 
-            public FakeImageData CreateImageData(int sw, int sh) {
+            public FakeImageData CreateImageData(int sw, int sh)
+            {
                 return new FakeImageData(sw, sh);
             }
 
-            public FakeImageData GetImageData(int sx, int sy, int sw, int sh) {
+            public FakeImageData GetImageData(int sx, int sy, int sw, int sh)
+            {
                 return new FakeImageData(sw, sh);
             }
 
-            public void PutImageData(FakeImageData imagedata, int dx, int dy, int dirtyX, int dirtyY, int dirtyWidth, int dirtyHeight) {
+            public void PutImageData(FakeImageData imagedata, int dx, int dy, int dirtyX, int dirtyY, int dirtyWidth, int dirtyHeight)
+            {
                 Calls.Enqueue(new PutImageDataParameters { dx = dx, dy = dy, dirtyX = dirtyX, dirtyY = dirtyY, dirtyWidth = dirtyWidth, dirtyHeight = dirtyHeight });
             }
 
@@ -54,7 +58,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanPutImageData() {
+        public void CanPutImageData()
+        {
             var canvas = new MockCanvasImageData();
             var imagedata = new FakeImageData(320, 200);
 

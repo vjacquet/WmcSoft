@@ -7,7 +7,8 @@ namespace WmcSoft.Canvas
     public class CanvasPathDrawingStylesTests : CanvasTestsBase
     {
         [Fact]
-        public void SupportLineCap() {
+        public void SupportLineCap()
+        {
             using (var ctx = CreateCanvas("lineCap.png", 150, 150)) {
                 //var p = new System.Drawing.Drawing2D.GraphicsPath();
                 //p.StartFigure();
@@ -41,7 +42,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportLineWidth() {
+        public void SupportLineWidth()
+        {
             using (var ctx = CreateCanvas("lineWidth.png", 150, 150)) {
                 for (var i = 0; i < 10; i++) {
                     ctx.LineWidth = 1 + i;
@@ -54,7 +56,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportLineJoin() {
+        public void SupportLineJoin()
+        {
             var lineJoin = new[] { CanvasLineJoin.Round, CanvasLineJoin.Bevel, CanvasLineJoin.Miter };
             using (var ctx = CreateCanvas("lineJoin.png")) {
                 ctx.LineWidth = 10;
@@ -72,7 +75,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportMiterLimit() {
+        public void SupportMiterLimit()
+        {
             using (var ctx = CreateCanvas("miterLimit.png", 150, 150)) {
                 // Clear canvas
                 ctx.ClearRect(0, 0, 150, 150);
@@ -100,7 +104,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportLineDash() {
+        public void SupportLineDash()
+        {
             using (var ctx = CreateCanvas("lineDash.png")) {
                 ctx.LineDash = new[] { 5f, 15f };
 
@@ -112,7 +117,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void SupportLineDashOffset() {
+        public void SupportLineDashOffset()
+        {
             using (var ctx = CreateCanvas("lineDashOffset.png")) {
                 ctx.LineDash = new[] { 4f, 16f };
                 ctx.LineDashOffset = 2f;
@@ -125,7 +131,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDemonstrateFillStyle() {
+        public void CanDemonstrateFillStyle()
+        {
             using (var ctx = CreateCanvas("fillStyle.png", 150, 150)) {
                 for (var i = 0; i < 6; i++) {
                     for (var j = 0; j < 6; j++) {
@@ -137,7 +144,8 @@ namespace WmcSoft.Canvas
         }
 
         [Fact]
-        public void CanDemonstrateStrokeStyle() {
+        public void CanDemonstrateStrokeStyle()
+        {
             using (var ctx = CreateCanvas("strokeStyle.png", 150, 150)) {
                 for (var i = 0; i < 6; i++) {
                     for (var j = 0; j < 6; j++) {

@@ -87,7 +87,8 @@ namespace WmcSoft.Canvas
             public static readonly M FlipX;
             public static readonly M FlipY;
 
-            static Prototypes() {
+            static Prototypes()
+            {
                 var zero = Traits<T>.Zero;
                 var one = Traits<T>.One;
                 var minusOne = Traits<T>.MinusOne;
@@ -99,7 +100,8 @@ namespace WmcSoft.Canvas
 
         public static M Translate<M, T>(this M matrix, T tx, T ty, T tz = default(T))
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.TranslateBy(tx, ty, tz);
             return self;
@@ -107,7 +109,8 @@ namespace WmcSoft.Canvas
 
         public static M Scale<M, T>(this M matrix, T scale, T originX = default(T), T originY = default(T))
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.ScaleBy(scale, originX, originY);
             return self;
@@ -115,7 +118,8 @@ namespace WmcSoft.Canvas
 
         public static M Scale3d<M, T>(this M matrix, T scale, T originX = default(T), T originY = default(T), T originZ = default(T))
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.Scale3dBy(scale, originX, originY, originZ);
             return self;
@@ -123,7 +127,8 @@ namespace WmcSoft.Canvas
 
         public static M ScaleNonUniform<M, T>(this M matrix, T scaleX, T scaleY /*= 1*/, T scaleZ /*= 1*/, T originX = default(T), T originY = default(T), T originZ = default(T))
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.ScaleNonUniformBy(scaleX, scaleY, scaleZ, originX, originY, originZ);
             return self;
@@ -131,7 +136,8 @@ namespace WmcSoft.Canvas
 
         public static M Rotate<M, T>(this M matrix, T angle, T originX = default(T), T originY = default(T))
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.RotateBy(angle, originX, originY);
             return self;
@@ -139,7 +145,8 @@ namespace WmcSoft.Canvas
 
         public static M RotateFromVector<M, T>(this M matrix, T x, T y)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.RotateFromVectorBy(x, y);
             return self;
@@ -147,7 +154,8 @@ namespace WmcSoft.Canvas
 
         public static M RotateAxisAngle<M, T>(this M matrix, T x, T y, T z, T angle)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.RotateAxisAngleBy(x, y, z, angle);
             return self;
@@ -155,7 +163,8 @@ namespace WmcSoft.Canvas
 
         public static M SkewX<M, T>(this M matrix, T sx)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.SkewXBy(sx);
             return self;
@@ -163,7 +172,8 @@ namespace WmcSoft.Canvas
 
         public static M SkewY<M, T>(this M matrix, T sy)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.SkewXBy(sy);
             return self;
@@ -171,7 +181,8 @@ namespace WmcSoft.Canvas
 
         public static M Inverse<M, T>(this M matrix)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.Invert();
             return self;
@@ -179,7 +190,8 @@ namespace WmcSoft.Canvas
 
         public static M Multiply<M, T>(this M matrix, IMatrix<T> other)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             var self = (M)matrix.Clone();
             self.MultiplyBy(other);
             return self;
@@ -187,13 +199,15 @@ namespace WmcSoft.Canvas
 
         public static M FlipX<M, T>(this M matrix)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             return Multiply(matrix, Prototypes<M, T>.FlipX);
         }
 
         public static M FlipY<M, T>(this M matrix)
             where T : IConvertible
-            where M : IMatrix<T> {
+            where M : IMatrix<T>
+        {
             return Multiply(matrix, Prototypes<M, T>.FlipY);
         }
     }

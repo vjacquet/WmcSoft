@@ -34,16 +34,20 @@ namespace WmcSoft.Canvas
     public abstract class Path2D<T> : ICanvasPath<T>
     {
 
-        public Path2D(Path2D<T> path) {
+        public Path2D(Path2D<T> path)
+        {
         }
 
-        public Path2D(IEnumerable<Path2D<T>> paths, CanvasFillRule fillRule = CanvasFillRule.NonZero) {
+        public Path2D(IEnumerable<Path2D<T>> paths, CanvasFillRule fillRule = CanvasFillRule.NonZero)
+        {
         }
 
-        public Path2D(string d) {
+        public Path2D(string d)
+        {
         }
 
-        protected Path2D() {
+        protected Path2D()
+        {
         }
 
         public abstract void AddPath(Path2D<T> path);
@@ -53,12 +57,14 @@ namespace WmcSoft.Canvas
         public abstract void LineTo(T x, T y);
         public abstract void QuadraticCurveTo(T cpx, T cpy, T x, T y); // = BezierCurveTo(cx/3+2*cpx/3, cy/3+2*cpy/3, x/3+2*cpx/3, y/3+2*cpy/3, x, y)
         public abstract void BezierCurveTo(T cp1x, T cp1y, T cp2x, T cp2y, T x, T y);
-        public virtual void ArcTo(T x1, T y1, T x2, T y2, T radius) {
+        public virtual void ArcTo(T x1, T y1, T x2, T y2, T radius)
+        {
             ArcTo(x1, y1, x2, y2, radius, radius, default(T));
         }
         public abstract void ArcTo(T x1, T y1, T x2, T y2, T radiusX, T radiusY, T rotation);
         public abstract void Rect(T x, T y, T w, T h);
-        public virtual void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise) {
+        public virtual void Arc(T x, T y, T radius, T startAngle, T endAngle, bool anticlockwise)
+        {
             Ellipse(x, y, radius, radius, default(T), startAngle, endAngle, anticlockwise);
         }
         public abstract void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise);
@@ -68,7 +74,8 @@ namespace WmcSoft.Canvas
     {
         struct Point
         {
-            public Point(T x, T y) {
+            public Point(T x, T y)
+            {
                 this.x = x;
                 this.y = y;
             }
@@ -88,9 +95,11 @@ namespace WmcSoft.Canvas
             public readonly List<Point> points;
             public readonly List<Operation> operations;
 
-            public Subpath(Point p) : this(p.x, p.y) {
+            public Subpath(Point p) : this(p.x, p.y)
+            {
             }
-            public Subpath(T x, T y) {
+            public Subpath(T x, T y)
+            {
                 points = new List<Point>();
                 points.Add(new Point(x, y));
 
@@ -103,7 +112,8 @@ namespace WmcSoft.Canvas
         Point _current;
         List<Subpath> subpaths = new List<Subpath>();
 
-        protected void EnsureSubpath(T x, T y) {
+        protected void EnsureSubpath(T x, T y)
+        {
             if (needNewSubpath) {
                 MoveTo(x, y);
                 needNewSubpath = false;
@@ -112,11 +122,13 @@ namespace WmcSoft.Canvas
 
         protected abstract T MulDiv(T x, int m, int d);
 
-        public override void MoveTo(T x, T y) {
+        public override void MoveTo(T x, T y)
+        {
             subpaths.Add(new Subpath(x, y));
         }
 
-        public override void ClosePath() {
+        public override void ClosePath()
+        {
             if (subpaths.Count > 0) {
                 var last = subpaths.Last();
                 last.closed = true;
@@ -124,7 +136,8 @@ namespace WmcSoft.Canvas
             }
         }
 
-        public override void LineTo(T x, T y) {
+        public override void LineTo(T x, T y)
+        {
             if (subpaths.Count == 0)
                 EnsureSubpath(x, y);
             var last = subpaths.Last();
@@ -132,7 +145,8 @@ namespace WmcSoft.Canvas
             last.operations.Add(Operation.Line);
         }
 
-        public override void QuadraticCurveTo(T cpx, T cpy, T x, T y) {
+        public override void QuadraticCurveTo(T cpx, T cpy, T x, T y)
+        {
             if (subpaths.Count == 0)
                 EnsureSubpath(x, y);
             var last = subpaths.Last();
@@ -141,7 +155,8 @@ namespace WmcSoft.Canvas
             last.operations.Add(Operation.QuadraticCurve);
         }
 
-        public override void BezierCurveTo(T cp1x, T cp1y, T cp2x, T cp2y, T x, T y) {
+        public override void BezierCurveTo(T cp1x, T cp1y, T cp2x, T cp2y, T x, T y)
+        {
             if (subpaths.Count == 0)
                 EnsureSubpath(x, y);
             var last = subpaths.Last();
@@ -151,7 +166,8 @@ namespace WmcSoft.Canvas
             last.operations.Add(Operation.BezierCurve);
         }
 
-        public override void ArcTo(T x1, T y1, T x2, T y2, T radiusX, T radiusY, T rotation) {
+        public override void ArcTo(T x1, T y1, T x2, T y2, T radiusX, T radiusY, T rotation)
+        {
             if (subpaths.Count == 0)
                 EnsureSubpath(x1, y1);
 
@@ -159,7 +175,8 @@ namespace WmcSoft.Canvas
             throw new NotImplementedException();
         }
 
-        public override void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise) {
+        public override void Ellipse(T x, T y, T radiusX, T radiusY, T rotation, T startAngle, T endAngle, bool anticlockwise)
+        {
             if (subpaths.Count > 0) {
                 var last = subpaths.Last();
                 last.points.Add(new Point(x, y));
@@ -171,7 +188,8 @@ namespace WmcSoft.Canvas
 
         protected abstract T Add(T x, T y);
 
-        public override void Rect(T x, T y, T w, T h) {
+        public override void Rect(T x, T y, T w, T h)
+        {
             var path = new Subpath(x, y);
             path.points.Add(new Point(Add(x, w), y));
             path.points.Add(new Point(Add(x, w), Add(y, h)));

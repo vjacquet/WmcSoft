@@ -40,13 +40,15 @@ namespace WmcSoft.Canvas
     public static class CanvasImageDataExtensions
     {
         public static TImageData CreateImageData<TImageData, T>(this ICanvasImageData<TImageData, T> canvas, TImageData imagedata)
-            where TImageData : IImageSize<T> {
+            where TImageData : IImageSize<T>
+        {
             return canvas.CreateImageData(imagedata.Width, imagedata.Height);
         }
 
         public static void PutImageData<TImageData, T>(this ICanvasImageData<TImageData, T> canvas, TImageData imagedata, T dx, T dy, T dirtyX = default(T), T dirtyY = default(T), T? dirtyWidth = null, T? dirtyHeight = null)
             where T : struct
-            where TImageData : IImageSize<T> {
+            where TImageData : IImageSize<T>
+        {
             canvas.PutImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth ?? imagedata.Width, dirtyHeight ?? imagedata.Height);
         }
     }

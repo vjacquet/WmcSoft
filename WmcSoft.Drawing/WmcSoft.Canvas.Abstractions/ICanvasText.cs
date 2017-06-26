@@ -38,11 +38,13 @@ namespace WmcSoft.Canvas
 
     public static class CanvasTextExtensions
     {
-        public static void FillText<T>(this ICanvasText<T> canvas, string text, T x, T y) {
+        public static void FillText<T>(this ICanvasText<T> canvas, string text, T x, T y)
+        {
             canvas.FillText(text, x, y, default(T));
         }
 
-        public static void StrokeText<T>(this ICanvasText<T> canvas, string text, T x, T y) {
+        public static void StrokeText<T>(this ICanvasText<T> canvas, string text, T x, T y)
+        {
             canvas.StrokeText(text, x, y, default(T));
         }
     }
