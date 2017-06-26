@@ -1,8 +1,6 @@
 // http://www.clariusconsulting.net/blogs/kzu/archive/2006/01/06/DteToVSIP.aspx
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using EnvDTE;
 using System.Diagnostics;
 using System.Xml;
@@ -13,14 +11,16 @@ namespace WmcSoft.VisualStudio
 {
     public static class VsHelper
     {
-        public static IVsHierarchy GetCurrentHierarchy(IServiceProvider provider) {
-            DTE vs = (DTE)provider.GetService(typeof(DTE));
+        public static IVsHierarchy GetCurrentHierarchy(IServiceProvider provider)
+        {
+            var vs = (DTE)provider.GetService(typeof(DTE));
             if (vs == null) throw new InvalidOperationException("DTE not found.");
 
             return ToHierarchy(vs.SelectedItems.Item(1).ProjectItem.ContainingProject);
         }
 
-        public static IVsHierarchy ToHierarchy(EnvDTE.Project project) {
+        public static IVsHierarchy ToHierarchy(EnvDTE.Project project)
+        {
             if (project == null) throw new ArgumentNullException("project");
 
             string projectGuid = null;
@@ -48,7 +48,8 @@ namespace WmcSoft.VisualStudio
             return VsShellUtilities.GetHierarchy(serviceProvider, new Guid(projectGuid));
         }
 
-        public static IVsProject3 ToVsProject(EnvDTE.Project project) {
+        public static IVsProject3 ToVsProject(EnvDTE.Project project)
+        {
             if (project == null) throw new ArgumentNullException("project");
 
             IVsProject3 vsProject = ToHierarchy(project) as IVsProject3;
@@ -60,7 +61,8 @@ namespace WmcSoft.VisualStudio
             return vsProject;
         }
 
-        public static EnvDTE.Project ToDteProject(IVsHierarchy hierarchy) {
+        public static EnvDTE.Project ToDteProject(IVsHierarchy hierarchy)
+        {
             if (hierarchy == null) throw new ArgumentNullException("hierarchy");
 
             object prjObject = null;
@@ -71,13 +73,15 @@ namespace WmcSoft.VisualStudio
             }
         }
 
-        public static EnvDTE.Project ToDteProject(IVsProject project) {
+        public static EnvDTE.Project ToDteProject(IVsProject project)
+        {
             if (project == null) throw new ArgumentNullException("project");
 
             return ToDteProject(project as IVsHierarchy);
         }
 
-        public static IServiceProvider GetProjectServiceProvider(IVsHierarchy hierarchy) {
+        public static IServiceProvider GetProjectServiceProvider(IVsHierarchy hierarchy)
+        {
             if (hierarchy == null) throw new ArgumentNullException("hierarchy");
 
             Microsoft.VisualStudio.OLE.Interop.IServiceProvider oleProvider;
@@ -88,13 +92,15 @@ namespace WmcSoft.VisualStudio
             }
         }
 
-        public static IServiceProvider GetProjectServiceProvider(IVsProject project) {
+        public static IServiceProvider GetProjectServiceProvider(IVsProject project)
+        {
             if (project == null) throw new ArgumentNullException("project");
 
             return GetProjectServiceProvider(project as IVsHierarchy);
         }
 
-        public static IServiceProvider GetProjectServiceProvider(EnvDTE.Project project) {
+        public static IServiceProvider GetProjectServiceProvider(EnvDTE.Project project)
+        {
             return GetProjectServiceProvider(ToHierarchy(project));
         }
     }

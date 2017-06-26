@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 using System.ComponentModel;
 
@@ -34,15 +33,16 @@ namespace WmcSoft.CodeBuilders
 {
     public class PropertyBuilder : TerminalCodeBuilder
     {
-        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             string name = attributes["name"];
             string typeName = attributes["type"];
             string access = attributes["access"];
             string readOnly = attributes["readOnly"];
             bool hasDefaultValue = attributes.ContainsKey("default");
 
-            CodeTypeReference codeTypeReference = context.GetTypeReference(typeName);
-            CodeMemberProperty property = new CodeMemberProperty();
+            var codeTypeReference = context.GetTypeReference(typeName);
+            var property = new CodeMemberProperty();
             property.Name = name;
             property.Attributes = MemberAttributes.Abstract;
             property.Attributes |= CodeBuilder.InterpretAccessType(access);
@@ -55,20 +55,19 @@ namespace WmcSoft.CodeBuilders
             if (hasDefaultValue) {
                 string defaultValueString = attributes["default"];
                 object defaultValue = defaultValueString;
-                Type type = Type.GetType(typeName, false);
+                var type = Type.GetType(typeName, false);
                 if (type != null) {
-                    TypeConverter converter = TypeDescriptor.GetConverter(type);
+                    var converter = TypeDescriptor.GetConverter(type);
                     if (converter.CanConvertFrom(typeof(string))) {
                         try {
                             defaultValue = converter.ConvertFromInvariantString(defaultValueString);
                             defaultValueExpression = new CodePrimitiveExpression(defaultValue);
-                            CodeAttributeDeclaration defaultAttribute = new CodeAttributeDeclaration(
+                            var defaultAttribute = new CodeAttributeDeclaration(
                                 new CodeTypeReference(typeof(System.ComponentModel.DefaultValueAttribute)),
                                 new CodeAttributeArgument(defaultValueExpression)
                             );
                             property.CustomAttributes.Add(defaultAttribute);
-                        }
-                        catch (Exception) {
+                        } catch (Exception) {
                             // may be it is a static property
                             string defaultTypeName = defaultValueString.Substring(0, defaultValueString.LastIndexOf('.'));
                             string defaultPropertyName = defaultValueString.Substring(defaultValueString.LastIndexOf('.') + 1);
@@ -94,7 +93,8 @@ namespace WmcSoft.CodeBuilders
             attributes.Remove("name");
         }
 
-        public static CodeConditionStatement CreateIfPropertyChangedStatement(CodeMemberProperty property) {
+        public static CodeConditionStatement CreateIfPropertyChangedStatement(CodeMemberProperty property)
+        {
             return new CodeConditionStatement(
                 new CodeBinaryOperatorExpression(
                     new CodePropertyReferenceExpression(

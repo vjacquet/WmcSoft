@@ -24,15 +24,12 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace WmcSoft.CodeBuilders
 {
     public class FieldsBuilder : PolicyDrivenCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             if (name == "field")
                 return new FieldBuilder();
             return null;

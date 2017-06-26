@@ -24,19 +24,16 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-using System.Diagnostics;
-using System.Configuration;
 
 namespace WmcSoft.CodeBuilders
 {
     public abstract class TerminalCodeBuilder : CodeBuilder
     {
-        public sealed override void Parse(XmlReader reader, CodeBuilderContext context) {
-            IDictionary<string, string> attributes = CodeBuilder.ReadAttributes(reader);
+        public sealed override void Parse(XmlReader reader, CodeBuilderContext context)
+        {
+            var attributes = CodeBuilder.ReadAttributes(reader);
             DoParse(attributes, context);
 
             if (attributes.Count > 0)
@@ -45,5 +42,4 @@ namespace WmcSoft.CodeBuilders
 
         protected abstract void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context);
     }
-
 }

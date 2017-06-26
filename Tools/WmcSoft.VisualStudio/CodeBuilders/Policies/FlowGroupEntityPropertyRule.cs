@@ -24,16 +24,14 @@
 
 #endregion
 
-using System;
 using System.CodeDom;
-using System.ComponentModel;
-using System.Collections.Generic;
 
 namespace WmcSoft.CodeBuilders.Policies
 {
     public class FlowGroupEntityPropertyRule : CodePolicyRule
     {
-        public override void Apply(CodeCompileUnit codeCompileUnit, CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember) {
+        public override void Apply(CodeCompileUnit codeCompileUnit, CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember)
+        {
             var property = codeTypeMember as CodeMemberProperty;
             if (property != null) {
                 property.Attributes &= ~MemberAttributes.Abstract;

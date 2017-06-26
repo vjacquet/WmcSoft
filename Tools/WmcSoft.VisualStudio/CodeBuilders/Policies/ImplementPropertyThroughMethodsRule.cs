@@ -25,154 +25,78 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
-using System.Reflection;
-using WmcSoft.Reflection;
-using System.Xml;
 
 namespace WmcSoft.CodeBuilders.Policies
 {
     public class ImplementPropertyThroughMethodsRule : CodePolicyRule
     {
-        public string FieldName {
-            get {
-                return fieldName;
-            }
-            set {
-                fieldName = value;
-            }
-        }
-        string fieldName;
+        public string FieldName { get; set; }
+        public string PropertyName { get; set; }
+        public string Getter { get; set; }
+        public string Setter { get; set; }
+        public string Reset { get; set; }
+        public string ShouldSerialize { get; set; }
+        public string TypeName { get; set; }
+        public string DefaultValuesTypeName { get; set; }
 
-        public string PropertyName {
-            get {
-                return propertyName;
-            }
-            set {
-                propertyName = value;
-            }
-        }
-        string propertyName;
-
-        public string Getter {
-            get {
-                return getter;
-            }
-            set {
-                getter = value;
-            }
-        }
-        string getter;
-
-        public string Setter {
-            get {
-                return setter;
-            }
-            set {
-                setter = value;
-            }
-        }
-        string setter;
-
-        public string Reset {
-            get {
-                return reset;
-            }
-            set {
-                reset = value;
-            }
-        }
-        string reset;
-
-        public string ShouldSerialize {
-            get {
-                return shouldSerialize;
-            }
-            set {
-                shouldSerialize = value;
-            }
-        }
-        string shouldSerialize;
-
-        public string TypeName {
-            get {
-                return typeName;
-            }
-            set {
-                typeName = value;
-            }
-        }
-        string typeName = null;
-
-        public string DefaultValuesTypeName {
-            get {
-                return defaultValuesTypeName;
-            }
-            set {
-                defaultValuesTypeName = value;
-            }
-        }
-        string defaultValuesTypeName = null;
-
-        public override void Apply(System.CodeDom.CodeCompileUnit codeCompileUnit, System.CodeDom.CodeTypeDeclaration codeTypeDeclaration, System.CodeDom.CodeTypeMember codeTypeMember) {
+        public override void Apply(CodeCompileUnit codeCompileUnit, CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember)
+        {
             CodeExpression targetObject = new CodeThisReferenceExpression();
-            if (!String.IsNullOrEmpty(typeName))
-                targetObject = new CodeTypeReferenceExpression(typeName);
+            if (!String.IsNullOrEmpty(TypeName))
+                targetObject = new CodeTypeReferenceExpression(TypeName);
 
             CodeExpression delegateObject = targetObject;
-            if (!String.IsNullOrEmpty(propertyName))
-                delegateObject = new CodePropertyReferenceExpression(targetObject, propertyName);
-            else if (!String.IsNullOrEmpty(fieldName))
-                delegateObject = new CodeFieldReferenceExpression(targetObject, fieldName);
+            if (!String.IsNullOrEmpty(PropertyName))
+                delegateObject = new CodePropertyReferenceExpression(targetObject, PropertyName);
+            else if (!String.IsNullOrEmpty(FieldName))
+                delegateObject = new CodeFieldReferenceExpression(targetObject, FieldName);
 
             CodeExpression defaultValuesTarget = null;
-            if (defaultValuesTypeName != null) {
-                defaultValuesTarget = new CodeTypeReferenceExpression(defaultValuesTypeName);
+            if (DefaultValuesTypeName != null) {
+                defaultValuesTarget = new CodeTypeReferenceExpression(DefaultValuesTypeName);
             }
 
-            CodeMemberProperty codeMemberProperty = codeTypeMember as CodeMemberProperty;
+            var codeMemberProperty = codeTypeMember as CodeMemberProperty;
             if (codeMemberProperty != null) {
                 codeMemberProperty.Attributes &= ~MemberAttributes.Abstract;
                 codeMemberProperty.Attributes |= MemberAttributes.Override;
 
-                if (codeMemberProperty.HasGet && !String.IsNullOrEmpty(getter)) {
-                    CodeMethodInvokeExpression invoke = new CodeMethodInvokeExpression(delegateObject, getter);
+                if (codeMemberProperty.HasGet && !String.IsNullOrEmpty(Getter)) {
+                    var invoke = new CodeMethodInvokeExpression(delegateObject, Getter);
                     invoke.Parameters.Add(new CodePrimitiveExpression(codeMemberProperty.Name));
                     if (defaultValuesTarget != null) {
-                        CodePropertyReferenceExpression property =
-                            new CodePropertyReferenceExpression(defaultValuesTarget, codeMemberProperty.Name);
+                        var property = new CodePropertyReferenceExpression(defaultValuesTarget, codeMemberProperty.Name);
                         invoke.Parameters.Add(property);
                     }
-                    CodeMethodReturnStatement returnStatement = new CodeMethodReturnStatement(new CodeCastExpression(codeMemberProperty.Type, invoke));
+                    var returnStatement = new CodeMethodReturnStatement(new CodeCastExpression(codeMemberProperty.Type, invoke));
                     codeMemberProperty.GetStatements.Add(returnStatement);
                 }
-                if (codeMemberProperty.HasSet && !String.IsNullOrEmpty(setter)) {
-                    CodeMethodInvokeExpression invoke = new CodeMethodInvokeExpression(delegateObject, setter);
+                if (codeMemberProperty.HasSet && !String.IsNullOrEmpty(Setter)) {
+                    var invoke = new CodeMethodInvokeExpression(delegateObject, Setter);
                     invoke.Parameters.Add(new CodePrimitiveExpression(codeMemberProperty.Name));
                     invoke.Parameters.Add(new CodePropertySetValueReferenceExpression());
                     codeMemberProperty.SetStatements.Add(invoke);
                 }
-                if (codeMemberProperty.HasSet && !String.IsNullOrEmpty(shouldSerialize)) {
-                    CodeMemberMethod shouldSerializeMethod = new CodeMemberMethod();
+                if (codeMemberProperty.HasSet && !String.IsNullOrEmpty(ShouldSerialize)) {
+                    var shouldSerializeMethod = new CodeMemberMethod();
                     shouldSerializeMethod.Name = "ShouldSerialize" + codeMemberProperty.Name;
                     shouldSerializeMethod.Attributes |= MemberAttributes.Public;
                     shouldSerializeMethod.ReturnType = new CodeTypeReference("System.Boolean");
 
-                    CodeMethodInvokeExpression invoke = new CodeMethodInvokeExpression(delegateObject, shouldSerialize);
+                    var invoke = new CodeMethodInvokeExpression(delegateObject, ShouldSerialize);
                     invoke.Parameters.Add(new CodePrimitiveExpression(codeMemberProperty.Name));
                     shouldSerializeMethod.Statements.Add(new CodeMethodReturnStatement(invoke));
 
                     int index = codeTypeDeclaration.Members.IndexOf(codeMemberProperty);
                     codeTypeDeclaration.Members.Insert(index + 1, shouldSerializeMethod);
                 }
-                if (codeMemberProperty.HasSet && !String.IsNullOrEmpty(reset)) {
-                    CodeMemberMethod resetMethod = new CodeMemberMethod();
+                if (codeMemberProperty.HasSet && !String.IsNullOrEmpty(Reset)) {
+                    var resetMethod = new CodeMemberMethod();
                     resetMethod.Name = "Reset" + codeMemberProperty.Name;
                     resetMethod.Attributes |= MemberAttributes.Public;
 
-                    CodeMethodInvokeExpression invoke = new CodeMethodInvokeExpression(delegateObject, reset);
+                    var invoke = new CodeMethodInvokeExpression(delegateObject, Reset);
                     invoke.Parameters.Add(new CodePrimitiveExpression(codeMemberProperty.Name));
                     resetMethod.Statements.Add(invoke);
 

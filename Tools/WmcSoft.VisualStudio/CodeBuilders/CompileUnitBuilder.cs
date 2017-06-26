@@ -24,15 +24,14 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace WmcSoft.CodeBuilders
 {
     public class CompileUnitBuilder : NonTerminalCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             switch (name) {
             case "namespace":
                 return new NamespaceBuilder();
@@ -42,13 +41,15 @@ namespace WmcSoft.CodeBuilders
             return null;
         }
 
-        protected override void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             base.BeforeParsingChildren(attributes, context);
 
             context.BeginCompileUnit();
         }
 
-        protected override void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             context.EndCompileUnit();
 
             base.AfterParsingChildren(attributes, context);

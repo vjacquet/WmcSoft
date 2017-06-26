@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
 
 using Microsoft.Win32;
 
@@ -12,8 +10,6 @@ using System.Reflection;
 using System.ComponentModel;
 
 using WmcSoft.ComponentModel;
-
-using IServiceProvider = System.IServiceProvider;
 using IOleServiceProvider = WmcSoft.Interop.IServiceProvider;
 
 namespace WmcSoft.CustomTools.Design
@@ -55,12 +51,12 @@ namespace WmcSoft.CustomTools.Design
 
         #endregion Constants
 
-        protected override sealed byte[] GenerateCode(string inputFileName, string inputFileContent) {
+        protected override sealed byte[] GenerateCode(string inputFileName, string inputFileContent)
+        {
             try {
                 string code = OnGenerateCode(inputFileContent, inputFileContent);
                 return ConvertStringToBytes(code);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 if (ex is TargetInvocationException) {
                     ex = ex.InnerException;
                 }
@@ -70,13 +66,15 @@ namespace WmcSoft.CustomTools.Design
             }
         }
 
-        private byte[] ConvertStringToBytes(string code) {
+        private byte[] ConvertStringToBytes(string code)
+        {
             return System.Text.Encoding.UTF8.GetBytes(code);
         }
 
         protected abstract string OnGenerateCode(string inputFileName, string inputFileContent);
 
-        public static string GetToolGeneratedCodeWarning(Type customToolType) {
+        public static string GetToolGeneratedCodeWarning(Type customToolType)
+        {
             CustomToolAttribute attribute = (CustomToolAttribute)Attribute.GetCustomAttribute(
                 customToolType, typeof(CustomToolAttribute), true);
 
@@ -93,7 +91,8 @@ namespace WmcSoft.CustomTools.Design
                 Environment.Version);
         }
 
-        private static object CustomToolAttribute(CustomToolAttribute customToolAttribute) {
+        private static object CustomToolAttribute(CustomToolAttribute customToolAttribute)
+        {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
@@ -129,7 +128,8 @@ namespace WmcSoft.CustomTools.Design
         /// </summary>
         /// <param name="serviceType">Service to retrieve.</param>
         /// <returns>The service object or null.</returns>
-        public override object GetService(Type serviceType) {
+        public override object GetService(Type serviceType)
+        {
             object svc = base.GetService(serviceType);
             // Try the root environment.
             if (svc == null && CurrentItem == null)
@@ -150,7 +150,8 @@ namespace WmcSoft.CustomTools.Design
         /// <summary>
         /// Registers the custom tool.
         /// </summary>
-        public static void Register(Type type) {
+        public static void Register(Type type)
+        {
             Guid generator;
             CustomToolAttribute tool;
             SupportedVersionAttribute[] versions;
@@ -169,7 +170,8 @@ namespace WmcSoft.CustomTools.Design
         /// <summary>
         /// Unregisters the custom tool.
         /// </summary>
-        public static void UnRegister(Type type) {
+        public static void UnRegister(Type type)
+        {
             Guid generator;
             CustomToolAttribute tool;
             SupportedVersionAttribute[] versions;
@@ -190,7 +192,8 @@ namespace WmcSoft.CustomTools.Design
         /// Registers the custom tool.
         /// </summary>
         private static void RegisterCustomTool(Guid generator, Guid category, Version vsVersion,
-            string description, string toolName, bool generatesDesignTimeCode) {
+            string description, string toolName, bool generatesDesignTimeCode)
+        {
             /*
               * [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\[vsVersion]\Generators\[category]\[toolName]]
               * @="[description]"
@@ -211,13 +214,15 @@ namespace WmcSoft.CustomTools.Design
         /// <summary>
         /// Unregisters the custom tool.
         /// </summary>
-        private static void UnRegisterCustomTool(Guid category, Version vsVersion, string toolName) {
+        private static void UnRegisterCustomTool(Guid category, Version vsVersion, string toolName)
+        {
             string key = String.Format(RegistryKey, vsVersion.Major, vsVersion.Minor,
                 category.ToString("B"), toolName);
             Registry.LocalMachine.DeleteSubKey(key, false);
         }
 
-        private static Version GetAssembyVersion(Type type) {
+        private static Version GetAssembyVersion(Type type)
+        {
             object[] attrs = type.Assembly.GetCustomAttributes(typeof(AssemblyVersionAttribute), true);
             if (attrs.Length == 0)
                 throw new ArgumentException(String.Format(
@@ -228,7 +233,8 @@ namespace WmcSoft.CustomTools.Design
         }
 
         private static void GetAttributes(Type type, out Guid generator, out CustomToolAttribute tool,
-            out SupportedVersionAttribute[] versions, out SupportedCategoryAttribute[] categories, out string description) {
+            out SupportedVersionAttribute[] versions, out SupportedCategoryAttribute[] categories, out string description)
+        {
             object[] attrs;
 
             // Retrieve the GUID associated with the generator class.

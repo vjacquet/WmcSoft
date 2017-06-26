@@ -32,7 +32,8 @@ namespace WmcSoft.CodeBuilders
 {
     public class CodeGeneratorBuilder : NonTerminalCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             switch (name) {
             case "policies":
                 return new PoliciesBuilder();

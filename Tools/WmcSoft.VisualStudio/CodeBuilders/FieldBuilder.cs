@@ -24,22 +24,21 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 
 namespace WmcSoft.CodeBuilders
 {
     public class FieldBuilder : TerminalCodeBuilder
     {
-        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             string name = attributes["name"];
             string typeName = attributes["type"];
             string access = attributes["access"];
 
-            CodeTypeReference codeTypeReference = context.GetTypeReference(typeName);
-            CodeMemberField field = new CodeMemberField(codeTypeReference, name);
+            var codeTypeReference = context.GetTypeReference(typeName);
+            var field = new CodeMemberField(codeTypeReference, name);
             field.Attributes = CodeBuilder.InterpretAccessType(access);
             context.CurrentTypeDeclaration.Members.Add(field);
 

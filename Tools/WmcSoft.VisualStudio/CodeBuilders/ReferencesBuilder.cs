@@ -24,15 +24,12 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace WmcSoft.CodeBuilders
 {
     public class ReferencesBuilder : NonTerminalCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             if (name == "assembly")
                 return new AssemblyBuilder();
             return null;

@@ -1,5 +1,3 @@
-using System;
-using System.CodeDom;
 #region Licence
 
 /****************************************************************************
@@ -26,6 +24,8 @@ using System.CodeDom;
 
 #endregion
 
+using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
@@ -50,7 +50,8 @@ namespace WmcSoft.CodeBuilders
             IList<MemberInfo> members;
             Type type;
 
-            public MemberInfoListBuilder(Type type, IList<MemberInfo> members) {
+            public MemberInfoListBuilder(Type type, IList<MemberInfo> members)
+            {
                 this.members = members;
                 this.type = type;
                 navigator = new ReflectNavigator(type);
@@ -60,7 +61,8 @@ namespace WmcSoft.CodeBuilders
                 propertyElementName = navigator.NameTable.Get("property");
             }
 
-            public void Add(string match) {
+            public void Add(string match)
+            {
                 int metadataToken;
                 MemberInfo memberInfo;
                 foreach (XPathNavigator member in navigator.Select(match)) {
@@ -76,7 +78,8 @@ namespace WmcSoft.CodeBuilders
                 }
             }
 
-            public void Remove(string match) {
+            public void Remove(string match)
+            {
                 int metadataToken;
                 MemberInfo memberInfo;
                 foreach (XPathNavigator member in navigator.Select(match)) {
@@ -94,14 +97,15 @@ namespace WmcSoft.CodeBuilders
 
         List<MemberInfo> members = new List<MemberInfo>();
 
-        public override void Parse(XmlReader reader, CodeBuilderContext context) {
-            IDictionary<string, string> attributes = CodeBuilder.ReadAttributes(reader);
+        public override void Parse(XmlReader reader, CodeBuilderContext context)
+        {
+            var attributes = CodeBuilder.ReadAttributes(reader);
 
             string typeName = attributes["type"];
-            ITypeResolutionService typeResolutionService = context.GetService(typeof(ITypeResolutionService)) as ITypeResolutionService;
-            Type type = (typeResolutionService != null) ? typeResolutionService.GetType(typeName) : Type.GetType(typeName);
+            var typeResolutionService = context.GetService(typeof(ITypeResolutionService)) as ITypeResolutionService;
+            var type = (typeResolutionService != null) ? typeResolutionService.GetType(typeName) : Type.GetType(typeName);
 
-            MemberInfoListBuilder builder = new MemberInfoListBuilder(type, members);
+            var builder = new MemberInfoListBuilder(type, members);
 
             int depth = (reader.NodeType == XmlNodeType.None) ? -1 : reader.Depth;
             string match;
@@ -144,8 +148,9 @@ namespace WmcSoft.CodeBuilders
                 throw new CodeBuilderException("Unrecognize attribute.");
         }
 
-        private CodeTypeReference CreateTypeReference(Type type) {
-            CodeTypeReference codeTypeReference = new CodeTypeReference(type.FullName ?? type.Name);
+        private CodeTypeReference CreateTypeReference(Type type)
+        {
+            var codeTypeReference = new CodeTypeReference(type.FullName ?? type.Name);
             if (type.IsByRef)
                 codeTypeReference.BaseType = codeTypeReference.BaseType.TrimEnd('&');
 
@@ -157,57 +162,63 @@ namespace WmcSoft.CodeBuilders
             return codeTypeReference;
         }
 
-        private void ProcessMembers(CodeBuilderContext context) {
-            foreach (MemberInfo memberInfo in members) {
-                CodeTypeMember codeTypeMember = null;
-                if (memberInfo is PropertyInfo) {
-                    PropertyInfo propertyInfo = (PropertyInfo)memberInfo;
-                    CodeMemberProperty codeMemberProperty = new CodeMemberProperty();
-                    codeMemberProperty.UserData.Add("memberInfo", memberInfo);
-                    codeMemberProperty.Name = propertyInfo.Name;
-                    foreach (var parameterInfo in propertyInfo.GetIndexParameters()) {
-                        CodeParameterDeclarationExpression codeParameterDeclarationExpression = new CodeParameterDeclarationExpression(
-                          CreateTypeReference(parameterInfo.ParameterType),
-                          parameterInfo.Name);
-                        if (parameterInfo.IsOut) {
-                            if (parameterInfo.IsIn)
-                                codeParameterDeclarationExpression.Direction = FieldDirection.Ref;
-                            else
-                                codeParameterDeclarationExpression.Direction = FieldDirection.Out;
-                        }
-                        codeMemberProperty.Parameters.Add(codeParameterDeclarationExpression);
+        private CodeTypeMember CreateTypeMember(CodeBuilderContext context, MemberInfo memberInfo)
+        {
+            switch (memberInfo) {
+            case PropertyInfo propertyInfo:
+                var codeMemberProperty = new CodeMemberProperty();
+                codeMemberProperty.UserData.Add("memberInfo", memberInfo);
+                codeMemberProperty.Name = propertyInfo.Name;
+                foreach (var parameterInfo in propertyInfo.GetIndexParameters()) {
+                    var codeParameterDeclarationExpression = new CodeParameterDeclarationExpression(
+                      CreateTypeReference(parameterInfo.ParameterType),
+                      parameterInfo.Name);
+                    if (parameterInfo.IsOut) {
+                        if (parameterInfo.IsIn)
+                            codeParameterDeclarationExpression.Direction = FieldDirection.Ref;
+                        else
+                            codeParameterDeclarationExpression.Direction = FieldDirection.Out;
                     }
-                    codeMemberProperty.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
-                    codeMemberProperty.Type = CreateTypeReference(propertyInfo.PropertyType);
-                    codeMemberProperty.HasGet = propertyInfo.CanRead;
-                    codeMemberProperty.HasSet = propertyInfo.CanWrite;
+                    codeMemberProperty.Parameters.Add(codeParameterDeclarationExpression);
+                }
+                codeMemberProperty.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
+                codeMemberProperty.Type = CreateTypeReference(propertyInfo.PropertyType);
+                codeMemberProperty.HasGet = propertyInfo.CanRead;
+                codeMemberProperty.HasSet = propertyInfo.CanWrite;
 
-                    codeTypeMember = codeMemberProperty;
-                } else if (memberInfo is MethodInfo) {
-                    MethodInfo methodInfo = (MethodInfo)memberInfo;
-                    CodeMemberMethod codeMemberMethod = new CodeMemberMethod();
-                    codeMemberMethod.UserData.Add("documentation", context.GetMemberDocumentation(memberInfo));
-                    codeMemberMethod.UserData.Add("memberInfo", memberInfo);
-                    codeMemberMethod.Name = methodInfo.Name;
-                    codeMemberMethod.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
-                    codeMemberMethod.ReturnType = CreateTypeReference(methodInfo.ReturnType);
-                    foreach (ParameterInfo parameterInfo in methodInfo.GetParameters()) {
-                        CodeParameterDeclarationExpression codeParameterDeclarationExpression = new CodeParameterDeclarationExpression(
-                            CreateTypeReference(parameterInfo.ParameterType),
-                            parameterInfo.Name);
-                        if (parameterInfo.IsOut) {
-                            if (parameterInfo.IsIn)
-                                codeParameterDeclarationExpression.Direction = FieldDirection.Ref;
-                            else
-                                codeParameterDeclarationExpression.Direction = FieldDirection.Out;
-                        }
-                        codeMemberMethod.Parameters.Add(codeParameterDeclarationExpression);
+                return codeMemberProperty;
+            case MethodInfo methodInfo:
+                var codeMemberMethod = new CodeMemberMethod();
+                codeMemberMethod.UserData.Add("documentation", context.GetMemberDocumentation(memberInfo));
+                codeMemberMethod.UserData.Add("memberInfo", memberInfo);
+                codeMemberMethod.Name = methodInfo.Name;
+                codeMemberMethod.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
+                codeMemberMethod.ReturnType = CreateTypeReference(methodInfo.ReturnType);
+                foreach (ParameterInfo parameterInfo in methodInfo.GetParameters()) {
+                    var codeParameterDeclarationExpression = new CodeParameterDeclarationExpression(
+                        CreateTypeReference(parameterInfo.ParameterType),
+                        parameterInfo.Name);
+                    if (parameterInfo.IsOut) {
+                        if (parameterInfo.IsIn)
+                            codeParameterDeclarationExpression.Direction = FieldDirection.Ref;
+                        else
+                            codeParameterDeclarationExpression.Direction = FieldDirection.Out;
                     }
-
-                    codeTypeMember = codeMemberMethod;
+                    codeMemberMethod.Parameters.Add(codeParameterDeclarationExpression);
                 }
 
-                XmlDocumentation documentation = context.GetMemberDocumentation(memberInfo);
+                return codeMemberMethod;
+            default:
+                return null;
+            }
+        }
+
+        private void ProcessMembers(CodeBuilderContext context)
+        {
+            foreach (var memberInfo in members) {
+                var codeTypeMember = CreateTypeMember(context, memberInfo);
+
+                var documentation = context.GetMemberDocumentation(memberInfo);
                 if (documentation.Summary != null)
                     codeTypeMember.Comments.Add(new CodeCommentStatement(documentation.Summary.OuterXml, true));
                 foreach (XmlNode node in documentation.Params) {
@@ -229,7 +240,6 @@ namespace WmcSoft.CodeBuilders
                 context.CurrentTypeDeclaration.Members.Add(codeTypeMember);
 
                 context.ApplyCurrentPolicyRules(codeTypeMember);
-
             }
         }
     }

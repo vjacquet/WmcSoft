@@ -1,8 +1,6 @@
 // Inspired from Mvp.Xml
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WmcSoft.CustomTools.Design
 {
@@ -12,8 +10,8 @@ namespace WmcSoft.CustomTools.Design
     [AttributeUsage(AttributeTargets.Class)]
     public class CustomToolAttribute : Attribute
     {
-        string name;
-        bool code;
+        readonly string _name;
+        readonly bool _code;
 
         /// <summary>
         /// Assigns custom tool information to the class.
@@ -24,9 +22,10 @@ namespace WmcSoft.CustomTools.Design
         /// dependent the file associated with this tool, and make it available 
         /// through intellisense to the rest of the project.
         /// </param>
-        public CustomToolAttribute(string name, bool generatesDesignTimeCode) {
-            this.name = name;
-            code = generatesDesignTimeCode;
+        public CustomToolAttribute(string name, bool generatesDesignTimeCode)
+        {
+            ._name = name;
+            _code = generatesDesignTimeCode;
         }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace WmcSoft.CustomTools.Design
         /// </summary>
         public string Name {
             get {
-                return name;
+                return _name;
             }
         }
 
@@ -43,7 +42,7 @@ namespace WmcSoft.CustomTools.Design
         /// </summary>
         public bool GeneratesDesignTimeCode {
             get {
-                return code;
+                return _code;
             }
         }
     }

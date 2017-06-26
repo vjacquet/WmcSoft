@@ -32,7 +32,8 @@ namespace WmcSoft.CodeBuilders
 {
     public class PropertiesBuilder : PolicyDrivenCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             if (name == "property")
                 return new PropertyBuilder();
             return null;

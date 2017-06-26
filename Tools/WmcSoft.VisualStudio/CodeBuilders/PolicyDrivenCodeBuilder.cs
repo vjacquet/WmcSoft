@@ -32,14 +32,16 @@ namespace WmcSoft.CodeBuilders
 {
     public abstract class PolicyDrivenCodeBuilder : NonTerminalCodeBuilder
     {
-        protected override void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             base.BeforeParsingChildren(attributes, context);
             string policy = null;
             attributes.TryGetValue("policy", out policy);
             context.BeginPolicy(policy ?? "(default)");
         }
 
-        protected override void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             context.EndPolicy();
             attributes.Remove("policy");
             base.AfterParsingChildren(attributes, context);

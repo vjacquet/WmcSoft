@@ -27,7 +27,6 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Xml.XPath;
 using WmcSoft.Reflection;
 using System.Reflection;
 
@@ -52,7 +51,8 @@ namespace WmcSoft.CodeBuilders
 
         #region Lifecycle
 
-        public CodeBuilderContext(IServiceProvider serviceProvider) {
+        public CodeBuilderContext(IServiceProvider serviceProvider)
+        {
             documentationLoader = null;
             this.serviceProvider = serviceProvider;
             codeNamespaces = new Stack<CodeNamespace>();
@@ -65,24 +65,28 @@ namespace WmcSoft.CodeBuilders
 
         #region Methods
 
-        public CodeCompileUnit BeginCompileUnit() {
+        public CodeCompileUnit BeginCompileUnit()
+        {
             codeCompileUnit = new CodeCompileUnit();
             return codeCompileUnit;
         }
 
-        public void EndCompileUnit() {
+        public void EndCompileUnit()
+        {
             while (codeNamespaces.Count > 0 && codeCompileUnit.Namespaces.Contains(codeNamespaces.Peek()))
                 EndNamespace();
         }
 
-        public CodeNamespace BeginNamespace(string namespaceName) {
+        public CodeNamespace BeginNamespace(string namespaceName)
+        {
             CodeNamespace codeNamespace = new CodeNamespace(namespaceName);
             codeCompileUnit.Namespaces.Add(codeNamespace);
             this.codeNamespaces.Push(codeNamespace);
             return codeNamespace;
         }
 
-        public void EndNamespace() {
+        public void EndNamespace()
+        {
             if (codeNamespaces.Count == 0)
                 return;
 
@@ -92,7 +96,8 @@ namespace WmcSoft.CodeBuilders
             codeNamespaces.Pop();
         }
 
-        public CodeTypeDeclaration BeginTypeDeclaration(string typeName) {
+        public CodeTypeDeclaration BeginTypeDeclaration(string typeName)
+        {
             CodeNamespace codeNamespace = CurrentNamespace;
             string fullname = codeNamespace.Name + "." + typeName;
 
@@ -103,11 +108,13 @@ namespace WmcSoft.CodeBuilders
             return codeTypeDeclaration;
         }
 
-        public void EndTypeDeclaration() {
+        public void EndTypeDeclaration()
+        {
             codeTypeDeclarations.Pop();
         }
 
-        public CodeTypeReference GetTypeReference(string typeName) {
+        public CodeTypeReference GetTypeReference(string typeName)
+        {
             CodeTypeReference result;
             if (!codeTypeReferences.TryGetValue(typeName, out result)) {
                 result = new CodeTypeReference(typeName);
@@ -116,29 +123,35 @@ namespace WmcSoft.CodeBuilders
             return result;
         }
 
-        public void RegisterPolicy(string name, PolicyBuilder policy) {
+        public void RegisterPolicy(string name, PolicyBuilder policy)
+        {
             policies.Add(name, policy);
         }
 
-        public void BeginPolicy(string policy) {
+        public void BeginPolicy(string policy)
+        {
             currentPolicy = null;
             policies.TryGetValue(policy, out currentPolicy);
         }
 
-        public void EndPolicy() {
+        public void EndPolicy()
+        {
             currentPolicy = null;
         }
 
-        public void ApplyCurrentPolicyRules(CodeTypeMember codeTypeMember) {
+        public void ApplyCurrentPolicyRules(CodeTypeMember codeTypeMember)
+        {
             if (currentPolicy != null)
                 currentPolicy.ApplyRules(codeTypeMember, this);
         }
 
-        public XmlDocumentation GetTypeDocumentation(Type type) {
+        public XmlDocumentation GetTypeDocumentation(Type type)
+        {
             return Loader.GetTypeDocumentation(type);
         }
-        
-        public XmlDocumentation GetMemberDocumentation(MemberInfo memberInfo) {
+
+        public XmlDocumentation GetMemberDocumentation(MemberInfo memberInfo)
+        {
             return Loader.GetMemberDocumentation(memberInfo);
         }
 
@@ -182,7 +195,8 @@ namespace WmcSoft.CodeBuilders
 
         #region IServiceProvider Membres
 
-        public object GetService(Type serviceType) {
+        public object GetService(Type serviceType)
+        {
             if (serviceType == typeof(CodeBuilderContext))
                 return this;
             return serviceProvider.GetService(serviceType);

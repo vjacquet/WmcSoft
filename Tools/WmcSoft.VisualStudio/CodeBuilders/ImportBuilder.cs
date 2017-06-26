@@ -24,16 +24,15 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 
 namespace WmcSoft.CodeBuilders
 {
     public class ImportBuilder : TerminalCodeBuilder
     {
-        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             string name = attributes["name"];
             context.CurrentNamespace.Imports.Add(new CodeNamespaceImport(name));
             attributes.Remove("name");

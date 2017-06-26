@@ -53,7 +53,8 @@ namespace WmcSoft.VisualStudio
             }
         }
 
-        protected IEnumerable<Type> GetAvailableTypes(IServiceProvider provider, bool includeReferences) {
+        protected IEnumerable<Type> GetAvailableTypes(IServiceProvider provider, bool includeReferences)
+        {
             DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
             Debug.Assert(typeService != null, "No dynamic type service registered.");
 
@@ -94,7 +95,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <param name="serviceGuid">GUID of service to retrieve</param>
         /// <returns>an object that implements the requested service</returns>
-        protected object GetService(Guid serviceGuid) {
+        protected object GetService(Guid serviceGuid)
+        {
             return SiteServiceProvider.GetService(serviceGuid);
         }
 
@@ -103,7 +105,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <param name="serviceType">Type of service to retrieve</param>
         /// <returns>an object that implements the requested service</returns>
-        public virtual object GetService(Type serviceType) {
+        public virtual object GetService(Type serviceType)
+        {
             return SiteServiceProvider.GetService(serviceType);
         }
 
@@ -112,7 +115,8 @@ namespace WmcSoft.VisualStudio
         /// what its default extension is.
         /// </summary>
         /// <returns></returns>
-        public override string GetDefaultExtension() {
+        public override string GetDefaultExtension()
+        {
             CodeDomProvider codeDom = CodeProvider;
             Debug.Assert(codeDom != null, "CodeDomProvider is NULL.");
             string extension = codeDom.FileExtension;
@@ -130,7 +134,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <returns></returns>
         [Obsolete("Callers should not use the ICodeGenerator interface and should instead use the methods directly on the CodeDomProvider class. Those inheriting from CodeDomProvider must still implement this interface, and should exclude this warning or also obsolete this method.")]
-        protected virtual ICodeGenerator GetCodeWriter() {
+        protected virtual ICodeGenerator GetCodeWriter()
+        {
             CodeDomProvider codeDom = CodeProvider;
             if (codeDom != null) {
                 return codeDom.CreateGenerator();
@@ -143,7 +148,8 @@ namespace WmcSoft.VisualStudio
         /// SetSite method of IOleObjectWithSite
         /// </summary>
         /// <param name="pUnkSite">site for this object to use</param>
-        public virtual void SetSite(object pUnkSite) {
+        public virtual void SetSite(object pUnkSite)
+        {
             site = pUnkSite;
             codeDomProvider = null;
             serviceProvider = null;
@@ -154,7 +160,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <param name="riid">interface to get</param>
         /// <param name="ppvSite">array in which to stuff return value</param>
-        public virtual void GetSite(ref Guid riid, object[] ppvSite) {
+        public virtual void GetSite(ref Guid riid, object[] ppvSite)
+        {
 
             if (ppvSite == null) {
                 throw new ArgumentNullException("ppvSite");
@@ -183,7 +190,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <param name="DLLToAdd"></param>
         /// <returns></returns>
-        private string GetDLLNames(string[] DLLToAdd) {
+        private string GetDLLNames(string[] DLLToAdd)
+        {
 
             if (DLLToAdd == null || DLLToAdd.Length == 0) {
                 return string.Empty;
@@ -200,7 +208,8 @@ namespace WmcSoft.VisualStudio
         /// adds a reference to the project for each required DLL
         /// </summary>
         /// <param name="referenceDLL"></param>
-        protected void AddReferenceDLLToProject(string[] referenceDLL) {
+        protected void AddReferenceDLLToProject(string[] referenceDLL)
+        {
 
             if (referenceDLL.Length == 0) {
                 return;
@@ -234,8 +243,7 @@ namespace WmcSoft.VisualStudio
                 for (int i = 0; i < referenceDLL.Length; i++) {
                     vsProj.References.Add(referenceDLL[i]);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Debug.Fail("**** ERROR: vsProj.References.Add() throws exception: " + e.ToString());
 
                 string errorMessage = String.Format("Unable to add DLL to project references: {0}.  Please Add them manually.", GetDLLNames(referenceDLL));
@@ -249,7 +257,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <param name="e">exception caught</param>
         /// <returns>message to display to the user</returns>
-        protected virtual string CreateExceptionMessage(Exception e) {
+        protected virtual string CreateExceptionMessage(Exception e)
+        {
 
             string message = (e.Message != null ? e.Message : string.Empty);
 
@@ -269,7 +278,8 @@ namespace WmcSoft.VisualStudio
         /// method to create a version comment
         /// </summary>
         /// <param name="codeNamespace"></param>
-        protected virtual void GenerateVersionComment(System.CodeDom.CodeNamespace codeNamespace) {
+        protected virtual void GenerateVersionComment(System.CodeDom.CodeNamespace codeNamespace)
+        {
             codeNamespace.Comments.Add(new CodeCommentStatement(string.Empty));
             codeNamespace.Comments.Add(new CodeCommentStatement(String.Format("This source code was auto-generated by {0}, Version {1}.",
                                        System.Reflection.Assembly.GetExecutingAssembly().GetName().Name,

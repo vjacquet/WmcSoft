@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -67,7 +66,8 @@ namespace WmcSoft.VisualStudio
         /// <param name="message">text displayed to the user</param>
         /// <param name="line">line number of error/warning</param>
         /// <param name="column">column number of error/warning</param>
-        protected virtual void GeneratorErrorCallback(bool warning, int level, string message, int line, int column) {
+        protected virtual void GeneratorErrorCallback(bool warning, int level, string message, int line, int column)
+        {
             IVsGeneratorProgress progress = CodeGeneratorProgress;
             if (progress != null) {
                 progress.GeneratorError(warning, level, message, line, column);
@@ -88,7 +88,8 @@ namespace WmcSoft.VisualStudio
             string wszDefaultNamespace,
             out IntPtr rgbOutputFileContents,
             out int pcbOutput,
-            IVsGeneratorProgress pGenerateProgress) {
+            IVsGeneratorProgress pGenerateProgress)
+        {
 
             if (bstrInputFileContents == null) {
                 throw new ArgumentNullException(bstrInputFileContents);
@@ -115,7 +116,8 @@ namespace WmcSoft.VisualStudio
         /// </summary>
         /// <param name="stream">stream to convert to a byte-array</param>
         /// <returns>the stream's contents as a byte-array</returns>
-        protected byte[] StreamToBytes(Stream stream) {
+        protected byte[] StreamToBytes(Stream stream)
+        {
 
             if (stream.Length == 0) {
                 return new byte[] { };

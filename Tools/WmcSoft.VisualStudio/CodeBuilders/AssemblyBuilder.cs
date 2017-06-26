@@ -32,7 +32,8 @@ namespace WmcSoft.CodeBuilders
 {
     public class AssemblyBuilder : TerminalCodeBuilder
     {
-        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             string name = attributes["name"];
 
             context.CurrentCompileUnit.ReferencedAssemblies.Add(name);

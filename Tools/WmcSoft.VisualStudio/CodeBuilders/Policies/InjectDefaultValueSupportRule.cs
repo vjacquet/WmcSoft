@@ -24,76 +24,45 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
-using System.Reflection;
-using WmcSoft.Reflection;
-using System.Xml;
 using WmcSoft.CodeDom;
 
 namespace WmcSoft.CodeBuilders.Policies
 {
     public class InjectDefaultValueSupportRule : CodePolicyRule
     {
-        public string FieldName {
-            get {
-                return fieldName;
-            }
-            set {
-                fieldName = value;
-            }
-        }
-        string fieldName;
+        public string FieldName { get; set; }
+        public string PropertyName { get; set; }
+        public string TypeName { get; set; }
 
-        public string PropertyName {
-            get {
-                return propertyName;
-            }
-            set {
-                propertyName = value;
-            }
-        }
-        string propertyName;
-
-        public string TypeName {
-            get {
-                return typeName;
-            }
-            set {
-                typeName = value;
-            }
-        }
-        string typeName = null;
-
-        public override void Apply(System.CodeDom.CodeCompileUnit codeCompileUnit, System.CodeDom.CodeTypeDeclaration codeTypeDeclaration, System.CodeDom.CodeTypeMember codeTypeMember) {
+        public override void Apply(CodeCompileUnit codeCompileUnit, CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember)
+        {
             CodeExpression targetObject = new CodeThisReferenceExpression();
-            if (!String.IsNullOrEmpty(typeName))
-                targetObject = new CodeTypeReferenceExpression(typeName);
+            if (!string.IsNullOrEmpty(TypeName))
+                targetObject = new CodeTypeReferenceExpression(TypeName);
 
             CodeExpression delegateObject = targetObject;
-            if (!String.IsNullOrEmpty(propertyName))
-                delegateObject = new CodePropertyReferenceExpression(targetObject, propertyName);
-            else if (!String.IsNullOrEmpty(fieldName))
-                delegateObject = new CodeFieldReferenceExpression(targetObject, fieldName);
+            if (!string.IsNullOrEmpty(PropertyName))
+                delegateObject = new CodePropertyReferenceExpression(targetObject, PropertyName);
+            else if (!string.IsNullOrEmpty(FieldName))
+                delegateObject = new CodeFieldReferenceExpression(targetObject, FieldName);
 
-            CodeMemberProperty codeMemberProperty = codeTypeMember as CodeMemberProperty;
+            var codeMemberProperty = codeTypeMember as CodeMemberProperty;
             if (codeMemberProperty != null) {
-                CodeExpression property = codeMemberProperty.UserData["defaultValue"] as CodeExpression;
+                var property = codeMemberProperty.UserData["defaultValue"] as CodeExpression;
                 if (property == null)
                     property = new CodePropertyReferenceExpression(delegateObject, codeMemberProperty.Name);
 
                 if (codeMemberProperty.HasGet) {
                     foreach (CodeStatement statement in codeMemberProperty.GetStatements) {
-                        CodeMethodReturnStatement returnStatement = statement as CodeMethodReturnStatement;
+                        var returnStatement = statement as CodeMethodReturnStatement;
                         if (returnStatement != null) {
-                            CodeExpression expression = returnStatement.Expression;
+                            var expression = returnStatement.Expression;
                             if (expression is CodeCastExpression) {
                                 expression = ((CodeCastExpression)returnStatement.Expression).Expression;
                             }
-                            CodeMethodInvokeExpression invoke = expression as CodeMethodInvokeExpression;
 
+                            var invoke = expression as CodeMethodInvokeExpression;
                             invoke.Parameters.Add(property);
                         }
                     }
@@ -101,24 +70,24 @@ namespace WmcSoft.CodeBuilders.Policies
                 if (codeMemberProperty.HasSet) {
                     // add default
                     foreach (CodeStatement statement in codeMemberProperty.SetStatements) {
-                        CodeExpressionStatement expression = statement as CodeExpressionStatement;
+                        var expression = statement as CodeExpressionStatement;
                         if (expression == null)
                             continue;
-                        CodeMethodInvokeExpression invoke = expression.Expression as CodeMethodInvokeExpression;
+                        var invoke = expression.Expression as CodeMethodInvokeExpression;
                         if (invoke != null) {
                             invoke.Parameters.Add(property);
                         }
                     }
 
-                    CodeDomTypeBuilder builder = new CodeDomTypeBuilder(codeTypeDeclaration);
+                    var builder = new CodeDomTypeBuilder(codeTypeDeclaration);
                     string resetMethodName = "Reset" + codeMemberProperty.Name;
-                    CodeMemberMethod resetMethod = builder.FindMethod(resetMethodName);
+                    var resetMethod = builder.FindMethod(resetMethodName);
                     if (resetMethod == null) {
                         resetMethod = new CodeMemberMethod();
                         resetMethod.Name = resetMethodName;
                         resetMethod.Attributes |= MemberAttributes.Public;
 
-                        CodeAssignStatement assignStatement = new CodeAssignStatement();
+                        var assignStatement = new CodeAssignStatement();
                         assignStatement.Left = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), codeMemberProperty.Name);
                         assignStatement.Right = property;
                         resetMethod.Statements.Add(assignStatement);
@@ -138,14 +107,14 @@ namespace WmcSoft.CodeBuilders.Policies
                     }
 
                     string shouldSerializeMethodName = "ShouldSerialize" + codeMemberProperty.Name;
-                    CodeMemberMethod shouldSerializeMethod = builder.FindMethod(shouldSerializeMethodName);
+                    var shouldSerializeMethod = builder.FindMethod(shouldSerializeMethodName);
                     if (shouldSerializeMethod == null) {
                         shouldSerializeMethod = new CodeMemberMethod();
                         shouldSerializeMethod.Name = shouldSerializeMethodName;
                         shouldSerializeMethod.Attributes |= MemberAttributes.Public;
                         shouldSerializeMethod.ReturnType = new CodeTypeReference("System.Boolean");
 
-                        CodeBinaryOperatorExpression operatorExpression = new CodeBinaryOperatorExpression();
+                        var operatorExpression = new CodeBinaryOperatorExpression();
                         operatorExpression.Left = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), codeMemberProperty.Name);
                         operatorExpression.Operator = CodeBinaryOperatorType.IdentityInequality;
                         operatorExpression.Right = property;
@@ -156,10 +125,10 @@ namespace WmcSoft.CodeBuilders.Policies
                         codeTypeDeclaration.Members.Insert(index + 1, shouldSerializeMethod);
                     } else {
                         foreach (CodeStatement statement in shouldSerializeMethod.Statements) {
-                            CodeMethodReturnStatement expression = statement as CodeMethodReturnStatement;
+                            var expression = statement as CodeMethodReturnStatement;
                             if (expression == null)
                                 continue;
-                            CodeMethodInvokeExpression invoke = expression.Expression as CodeMethodInvokeExpression;
+                            var invoke = expression.Expression as CodeMethodInvokeExpression;
                             if (invoke != null && invoke.Method.MethodName.StartsWith("ShouldSerialize")) {
                                 invoke.Parameters.Add(property);
                             }

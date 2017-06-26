@@ -24,15 +24,14 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace WmcSoft.CodeBuilders
 {
     public class ExtendsBuilder : TerminalCodeBuilder
     {
-        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void DoParse(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             string typeName = attributes["type"];
             context.CurrentTypeDeclaration.BaseTypes.Add(context.GetTypeReference(typeName));
             attributes.Remove("type");

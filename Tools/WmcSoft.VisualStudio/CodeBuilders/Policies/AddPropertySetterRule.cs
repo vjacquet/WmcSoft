@@ -24,21 +24,16 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
-using System.Reflection;
-using WmcSoft.Reflection;
-using System.Xml;
 
 namespace WmcSoft.CodeBuilders.Policies
 {
     public class AddPropertySetterRule : CodePolicyRule
     {
 
-        public override void Apply(System.CodeDom.CodeCompileUnit codeCompileUnit, System.CodeDom.CodeTypeDeclaration codeTypeDeclaration, System.CodeDom.CodeTypeMember codeTypeMember) {
-            CodeMemberProperty codeMemberProperty = codeTypeMember as CodeMemberProperty;
+        public override void Apply(CodeCompileUnit codeCompileUnit, CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember)
+        {
+            var codeMemberProperty = codeTypeMember as CodeMemberProperty;
             if (codeTypeMember != null) {
                 codeMemberProperty.HasSet = true;
             }

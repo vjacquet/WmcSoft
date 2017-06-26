@@ -25,27 +25,17 @@
 #endregion
 
 using System;
-using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 
 using WmcSoft.CustomTools.Design;
-using WmcSoft.Xml.XPath;
-using System.Globalization;
-using System.Xml.XPath;
-using System.ComponentModel;
 
 using WmcSoft.CodeBuilders;
 using System.Resources;
-using Microsoft.VisualStudio.Shell;
 
 namespace WmcSoft.CustomTools
 {
@@ -63,10 +53,12 @@ namespace WmcSoft.CustomTools
     {
         #region Lifecycle
 
-        public CodeGenerator() {
+        public CodeGenerator()
+        {
         }
 
-        public CodeGenerator(CodeDomProvider codeProvider) {
+        public CodeGenerator(CodeDomProvider codeProvider)
+        {
             this.CodeProvider = codeProvider;
         }
 
@@ -219,11 +211,13 @@ namespace WmcSoft.CustomTools
 
         #region Custom Tool
 
-        public override string GetDefaultExtension() {
+        public override string GetDefaultExtension()
+        {
             return ".CodeGen" + base.GetDefaultExtension();
         }
 
-        protected override string OnGenerateCode(string inputFileName, string inputFileContent) {
+        protected override string OnGenerateCode(string inputFileName, string inputFileContent)
+        {
             var writer = new StringWriter();
             var options = new CodeGeneratorOptions {
                 BlankLinesBetweenMembers = false,
@@ -256,7 +250,8 @@ namespace WmcSoft.CustomTools
             return writer.ToString();
         }
 
-        public static void SchemaValidationCallback(object sender, ValidationEventArgs args) {
+        public static void SchemaValidationCallback(object sender, ValidationEventArgs args)
+        {
             Console.WriteLine(args.Message);
         }
 

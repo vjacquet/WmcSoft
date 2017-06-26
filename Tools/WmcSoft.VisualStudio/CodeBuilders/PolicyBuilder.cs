@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 using System.ComponentModel;
 using System.Xml;
@@ -37,8 +36,9 @@ namespace WmcSoft.CodeBuilders
     {
         static readonly TypeConverter FallbackConverter = TypeDescriptor.GetConverter(typeof(String));
 
-        public override void Parse(XmlReader reader, CodeBuilderContext context) {
-            IDictionary<string, string> attributes = CodeBuilder.ReadAttributes(reader);
+        public override void Parse(XmlReader reader, CodeBuilderContext context)
+        {
+            var attributes = CodeBuilder.ReadAttributes(reader);
 
             int depth = (reader.NodeType == XmlNodeType.None) ? -1 : reader.Depth;
             while (reader.Read() && (depth < reader.Depth)) {
@@ -71,29 +71,30 @@ namespace WmcSoft.CodeBuilders
                 throw new CodeBuilderException("Unrecognize attribute.");
         }
 
-        CodePolicyRule ParseRule(System.Xml.XmlReader reader, CodeBuilderContext context) {
-            IDictionary<string, string> attributes = CodeBuilder.ReadAttributes(reader);
+        CodePolicyRule ParseRule(System.Xml.XmlReader reader, CodeBuilderContext context)
+        {
+            var attributes = CodeBuilder.ReadAttributes(reader);
             string typeName = attributes["type"];
 
 
-            Type type = Type.GetType(typeName);
-            CodePolicyRule rule = (CodePolicyRule)Activator.CreateInstance(type);
+            var type = Type.GetType(typeName);
+            var rule = (CodePolicyRule)Activator.CreateInstance(type);
             attributes.Remove("type");
 
-            ISupportInitialize supportInitialize = rule as ISupportInitialize;
+            var supportInitialize = rule as ISupportInitialize;
             if (supportInitialize != null) {
                 supportInitialize.BeginInit();
             }
 
-            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(rule);
+            var properties = TypeDescriptor.GetProperties(rule);
             if (properties.Count > 0) {
                 foreach (string name in attributes.Keys) {
-                    PropertyDescriptor propertyDescriptor = properties.Find(name, true);
+                    var propertyDescriptor = properties.Find(name, true);
                     if (propertyDescriptor == null)
                         continue;
 
                     string value = attributes[name];
-                    TypeConverter typeConverter = propertyDescriptor.Converter;
+                    var typeConverter = propertyDescriptor.Converter;
                     if (typeConverter != null && typeConverter.CanConvertFrom(typeof(String))) {
                         object convertedValue = typeConverter.ConvertFromInvariantString(value);
                         propertyDescriptor.SetValue(rule, convertedValue);
@@ -114,11 +115,11 @@ namespace WmcSoft.CodeBuilders
 
         List<CodePolicyRule> rules = new List<CodePolicyRule>();
 
-        public void ApplyRules(CodeTypeMember codeTypeMember, CodeBuilderContext context) {
-            foreach (CodePolicyRule rule in rules) {
+        public void ApplyRules(CodeTypeMember codeTypeMember, CodeBuilderContext context)
+        {
+            foreach (var rule in rules) {
                 rule.Apply(context.CurrentCompileUnit, context.CurrentTypeDeclaration, codeTypeMember);
             }
         }
-
     }
 }

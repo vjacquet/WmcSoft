@@ -3,9 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace WmcSoft.VisualStudio
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [
         ComImport,
         Guid("3634494C-492F-4F91-8009-4541234E4E99"),

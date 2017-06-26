@@ -24,15 +24,12 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace WmcSoft.CodeBuilders
 {
     public class PoliciesBuilder : NonTerminalCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             if (name == "policy")
                 return new PolicyBuilder();
             return null;

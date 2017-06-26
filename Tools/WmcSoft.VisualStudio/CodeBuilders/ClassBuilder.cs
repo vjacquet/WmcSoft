@@ -24,16 +24,15 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
 
 namespace WmcSoft.CodeBuilders
 {
     public class ClassBuilder : NonTerminalCodeBuilder
     {
-        protected override CodeBuilder Create(string name) {
+        protected override CodeBuilder Create(string name)
+        {
             switch (name) {
             case "extends":
                 return new ExtendsBuilder();
@@ -49,7 +48,8 @@ namespace WmcSoft.CodeBuilders
             return null;
         }
 
-        protected override void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             base.BeforeParsingChildren(attributes, context);
 
             string name = attributes["name"];
@@ -71,7 +71,8 @@ namespace WmcSoft.CodeBuilders
             }
         }
 
-        protected override void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected override void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
             context.EndTypeDeclaration();
             attributes.Remove("name");
             attributes.Remove("abstract");

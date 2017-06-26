@@ -26,11 +26,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml.XPath;
 using System.CodeDom;
 using System.Xml;
-using System.Diagnostics;
 
 namespace WmcSoft.CodeBuilders
 {
@@ -38,10 +35,12 @@ namespace WmcSoft.CodeBuilders
     {
         class IgnoreCodeBuilder : CodeBuilder
         {
-            public IgnoreCodeBuilder() {
+            public IgnoreCodeBuilder()
+            {
             }
 
-            public override void Parse(XmlReader reader, CodeBuilderContext context) {
+            public override void Parse(XmlReader reader, CodeBuilderContext context)
+            {
                 reader.Skip();
             }
         }
@@ -49,7 +48,8 @@ namespace WmcSoft.CodeBuilders
 
         public abstract void Parse(XmlReader reader, CodeBuilderContext context);
 
-        internal static IDictionary<string, string> ReadAttributes(XmlReader reader) {
+        internal static IDictionary<string, string> ReadAttributes(XmlReader reader)
+        {
             Dictionary<string, string> attributes = new Dictionary<string, string>();
             if (reader.MoveToFirstAttribute()) {
                 do {
@@ -64,7 +64,8 @@ namespace WmcSoft.CodeBuilders
             return attributes;
         }
 
-        internal static MemberAttributes InterpretAccessType(string access) {
+        internal static MemberAttributes InterpretAccessType(string access)
+        {
             switch (access) {
             case "private":
                 return MemberAttributes.Private;
@@ -81,7 +82,8 @@ namespace WmcSoft.CodeBuilders
             }
         }
 
-        internal static bool InterpretReadOnly(string readOnly) {
+        internal static bool InterpretReadOnly(string readOnly)
+        {
             return (readOnly != "false");
         }
     }

@@ -26,10 +26,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-using System.Diagnostics;
-using System.Configuration;
 
 namespace WmcSoft.CodeBuilders
 {
@@ -37,8 +34,9 @@ namespace WmcSoft.CodeBuilders
     {
         protected abstract CodeBuilder Create(string name);
 
-        public sealed override void Parse(XmlReader reader, CodeBuilderContext context) {
-            IDictionary<string, string> attributes = CodeBuilder.ReadAttributes(reader);
+        public sealed override void Parse(XmlReader reader, CodeBuilderContext context)
+        {
+            var attributes = CodeBuilder.ReadAttributes(reader);
             BeforeParsingChildren(attributes, context);
 
             int depth = (reader.NodeType == XmlNodeType.None) ? -1 : reader.Depth;
@@ -74,10 +72,11 @@ namespace WmcSoft.CodeBuilders
                 throw new CodeBuilderException("Unrecognize attribute.");
         }
 
-        protected virtual void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected virtual void BeforeParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
         }
-        protected virtual void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context) {
+        protected virtual void AfterParsingChildren(IDictionary<string, string> attributes, CodeBuilderContext context)
+        {
         }
     }
-
 }

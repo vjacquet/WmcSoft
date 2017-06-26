@@ -24,20 +24,15 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.CodeDom;
-using System.Reflection;
-using WmcSoft.Reflection;
-using System.Xml;
 
 namespace WmcSoft.CodeBuilders.Policies
 {
     public class RemoveOverrideRule : CodePolicyRule
     {
 
-        public override void Apply(System.CodeDom.CodeCompileUnit codeCompileUnit, System.CodeDom.CodeTypeDeclaration codeTypeDeclaration, System.CodeDom.CodeTypeMember codeTypeMember) {
+        public override void Apply(CodeCompileUnit codeCompileUnit, CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember)
+        {
             codeTypeMember.Attributes &= ~MemberAttributes.Override;
         }
     }
