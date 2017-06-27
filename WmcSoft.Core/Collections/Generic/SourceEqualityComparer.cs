@@ -38,7 +38,8 @@ namespace WmcSoft.Collections.Generic
         readonly IReadOnlyList<T> _list;
         readonly IEqualityComparer<T> _comparer;
 
-        public SourceEqualityComparer(IReadOnlyList<T> list, IEqualityComparer<T> comparer = null) {
+        public SourceEqualityComparer(IReadOnlyList<T> list, IEqualityComparer<T> comparer = null)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
             _list = list;
@@ -47,11 +48,13 @@ namespace WmcSoft.Collections.Generic
 
         #region IEqualityComparer<int> Membres
 
-        public bool Equals(int x, int y) {
+        public bool Equals(int x, int y)
+        {
             return _comparer.Equals(_list[x], _list[y]);
         }
 
-        public int GetHashCode(int obj) {
+        public int GetHashCode(int obj)
+        {
             return _comparer.GetHashCode(_list[obj]);
         }
 

@@ -42,14 +42,16 @@ namespace WmcSoft.Collections.Generic
         private readonly IDictionary<TKey, TValue> _storage;
         private readonly Func<TKey, TValue> _generator;
 
-        public OnDemandDictionary(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> generator) {
+        public OnDemandDictionary(IDictionary<TKey, TValue> dictionary, Func<TKey, TValue> generator)
+        {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
 
             _storage = dictionary ?? new Dictionary<TKey, TValue>();
             _generator = generator;
         }
 
-        public OnDemandDictionary(Func<TKey, TValue> generator) : this(null, generator) {
+        public OnDemandDictionary(Func<TKey, TValue> generator) : this(null, generator)
+        {
         }
 
         /// <summary>
@@ -111,7 +113,8 @@ namespace WmcSoft.Collections.Generic
         /// </returns>
         /// <param name="key">The key to locate.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             return _storage.ContainsKey(key);
         }
 
@@ -124,7 +127,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="key">The key to locate.</param>
         /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool TryGetValue(TKey key, out TValue value) {
+        public bool TryGetValue(TKey key, out TValue value)
+        {
             return _storage.TryGetValue(key, out value);
         }
 
@@ -134,7 +138,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
@@ -144,7 +149,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

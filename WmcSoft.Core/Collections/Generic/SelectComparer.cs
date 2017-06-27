@@ -40,14 +40,16 @@ namespace WmcSoft.Collections.Generic
         private readonly Func<TSource, TReturn> _selector;
         private readonly IComparer<TReturn> _comparer;
 
-        public SelectComparer(SelectorVoucher<TSource, TReturn> vouch, IComparer<TReturn> comparer = null) {
+        public SelectComparer(SelectorVoucher<TSource, TReturn> vouch, IComparer<TReturn> comparer = null)
+        {
             Debug.Assert(vouch.SupportsNullArgument);
 
             _selector = vouch;
             _comparer = comparer ?? Comparer<TReturn>.Default;
         }
 
-        public SelectComparer(Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null) {
+        public SelectComparer(Func<TSource, TReturn> selector, IComparer<TReturn> comparer = null)
+        {
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             _selector = (x) => (x != null) ? selector(x) : default(TReturn);
@@ -79,7 +81,8 @@ namespace WmcSoft.Collections.Generic
         /// </item>
         /// </list>
         /// </returns>
-        public int Compare(TSource x, TSource y) {
+        public int Compare(TSource x, TSource y)
+        {
             return _comparer.Compare(_selector(x), _selector(y));
         }
     }

@@ -34,14 +34,16 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static partial class CollectionExtensions
     {
-        static void Guard<T>(IReadOnlyCollection<T> source, int index, int count) {
+        static void Guard<T>(IReadOnlyCollection<T> source, int index, int count)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if ((source.Count - index) < count) throw new ArgumentException("Invalid length");
         }
 
-        static void Guard<T>(ICollection<T> source, int index, int count) {
+        static void Guard<T>(ICollection<T> source, int index, int count)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));

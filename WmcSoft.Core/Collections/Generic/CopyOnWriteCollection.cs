@@ -38,7 +38,8 @@ namespace WmcSoft.Collections.Generic
         private readonly ICollection<T> _source;
         private ICollection<T> _inner;
 
-        public CopyOnWriteCollection(ICollection<T> collection) {
+        public CopyOnWriteCollection(ICollection<T> collection)
+        {
             _inner = _source = collection;
         }
 
@@ -62,31 +63,38 @@ namespace WmcSoft.Collections.Generic
             get { return false; }
         }
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             Writable.Add(item);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             Writable.Clear();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return Readable.Contains(item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             Readable.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return Readable.GetEnumerator();
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             return Writable.Remove(item);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return Readable.GetEnumerator();
         }
     }

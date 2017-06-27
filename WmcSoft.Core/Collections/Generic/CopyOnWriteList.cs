@@ -38,7 +38,8 @@ namespace WmcSoft.Collections.Generic
         private readonly IList<T> _source;
         private IList<T> _inner;
 
-        public CopyOnWriteList(IList<T> list) {
+        public CopyOnWriteList(IList<T> list)
+        {
             _inner = _source = list;
         }
 
@@ -67,43 +68,53 @@ namespace WmcSoft.Collections.Generic
             set { Writable[index] = value; }
         }
 
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             return Readable.IndexOf(item);
         }
 
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             Writable.Insert(index, item);
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             Writable.RemoveAt(index);
         }
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             Writable.Add(item);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             Writable.Clear();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return Readable.Contains(item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             Readable.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             return Writable.Remove(item);
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return Readable.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return Readable.GetEnumerator();
         }
     }

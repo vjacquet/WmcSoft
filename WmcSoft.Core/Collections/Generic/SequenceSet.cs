@@ -47,22 +47,26 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public SequenceSet(IEqualityComparer<T> comparer) {
+        public SequenceSet(IEqualityComparer<T> comparer)
+        {
             _storage = new List<T>();
             _comparer = comparer;
         }
 
         public SequenceSet()
-            : this(EqualityComparer<T>.Default) {
+            : this(EqualityComparer<T>.Default)
+        {
         }
 
         public SequenceSet(IEnumerable<T> enumerable, IEqualityComparer<T> comparer)
-            : this(comparer) {
+            : this(comparer)
+        {
             _storage.AddRange(enumerable);
         }
 
         public SequenceSet(IEnumerable<T> enumerable)
-            : this(enumerable, EqualityComparer<T>.Default) {
+            : this(enumerable, EqualityComparer<T>.Default)
+        {
         }
 
         #endregion
@@ -82,7 +86,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="match">The delegate that defines the conditions of the elements to remove.</param>
         /// <returns>The number of elements that were removed from the set.</returns>
-        public int RemoveWhere(Predicate<T> match) {
+        public int RemoveWhere(Predicate<T> match)
+        {
             return _storage.RemoveAll(match);
         }
 
@@ -90,7 +95,8 @@ namespace WmcSoft.Collections.Generic
 
         #region ISet<T> Membres
 
-        int FindIndex(T item) {
+        int FindIndex(T item)
+        {
             return _storage.FindIndex(x => _comparer.Equals(x, item));
         }
 
@@ -99,7 +105,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="item">The element to add to the set.</param>
         /// <returns>true if item is added to the set; otherwise, false. </returns>
-        public bool Add(T item) {
+        public bool Add(T item)
+        {
             int index = FindIndex(item);
             if (index >= 0)
                 return false;
@@ -111,7 +118,8 @@ namespace WmcSoft.Collections.Generic
         /// Removes all elements that are in a specified collection from the current Set.
         /// </summary>
         /// <param name="other">The collection of items to remove from the Set.</param>
-        public void ExceptWith(IEnumerable<T> other) {
+        public void ExceptWith(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -124,7 +132,8 @@ namespace WmcSoft.Collections.Generic
         /// Modifies the current Set so that it contains only elements that are also in a specified collection.
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
-        public void IntersectWith(IEnumerable<T> other) {
+        public void IntersectWith(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -146,7 +155,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the Set is a proper subset of other; otherwise, false.</returns>
-        public bool IsProperSubsetOf(IEnumerable<T> other) {
+        public bool IsProperSubsetOf(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -163,7 +173,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="other">The collection to compare to the current Set. </param>
         /// <returns>true if the Set is a proper superset of other; otherwise, false.</returns>
-        public bool IsProperSupersetOf(IEnumerable<T> other) {
+        public bool IsProperSupersetOf(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -176,7 +187,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the current Set is a subset of other; otherwise, false.</returns>
-        public bool IsSubsetOf(IEnumerable<T> other) {
+        public bool IsSubsetOf(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -193,7 +205,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="other">The collection to compare to the current Set. </param>
         /// <returns>true if the Set is a superset of other; otherwise, false.</returns>
-        public bool IsSupersetOf(IEnumerable<T> other) {
+        public bool IsSupersetOf(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -206,7 +219,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the Set and other share at least one common element; otherwise, false.</returns>
-        public bool Overlaps(IEnumerable<T> other) {
+        public bool Overlaps(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -227,7 +241,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the current Set is equal to other; otherwise, false.</returns>
-        public bool SetEquals(IEnumerable<T> other) {
+        public bool SetEquals(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -239,7 +254,8 @@ namespace WmcSoft.Collections.Generic
             return tmp.Count == 0;
         }
 
-        public void SymmetricExceptWith(IEnumerable<T> other) {
+        public void SymmetricExceptWith(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -255,7 +271,8 @@ namespace WmcSoft.Collections.Generic
         /// in either the current object or the specified collection.
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
-        public void UnionWith(IEnumerable<T> other) {
+        public void UnionWith(IEnumerable<T> other)
+        {
             if (other == null)
                 throw new ArgumentNullException("other");
 
@@ -267,14 +284,16 @@ namespace WmcSoft.Collections.Generic
 
         #region ICollection<T> Membres
 
-        void ICollection<T>.Add(T item) {
+        void ICollection<T>.Add(T item)
+        {
             Add(item);
         }
 
         /// <summary>
         /// Removes all elements from the set.
         /// </summary>
-        public virtual void Clear() {
+        public virtual void Clear()
+        {
             _storage.Clear();
         }
 
@@ -283,7 +302,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="item">The element to locate in the set.</param>
         /// <returns>true if the set contains item; otherwise, false.</returns>
-        public virtual bool Contains(T item) {
+        public virtual bool Contains(T item)
+        {
             return FindIndex(item) >= 0;
         }
 
@@ -292,7 +312,8 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <param name="array">A one-dimensional array that is the destination of the elements copied from the set. The array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             _storage.CopyTo(array, arrayIndex);
         }
 
@@ -304,7 +325,8 @@ namespace WmcSoft.Collections.Generic
             get { return false; }
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             int index = FindIndex(item);
             if (index < 0)
                 return false;
@@ -316,11 +338,13 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public List<T>.Enumerator GetEnumerator() {
+        public List<T>.Enumerator GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
@@ -328,7 +352,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

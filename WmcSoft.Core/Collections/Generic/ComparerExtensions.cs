@@ -33,15 +33,18 @@ namespace WmcSoft.Collections.Generic
     {
         #region Bind
 
-        public static Func<T, int> BindFirst<T>(this IComparer<T> comparer, T first) {
+        public static Func<T, int> BindFirst<T>(this IComparer<T> comparer, T first)
+        {
             return x => comparer.Compare(first, x);
         }
 
-        public static Func<T, int> BindSecond<T>(this IComparer<T> comparer, T second) {
+        public static Func<T, int> BindSecond<T>(this IComparer<T> comparer, T second)
+        {
             return x => comparer.Compare(x, second);
         }
 
-        public static Predicate<T> Bind<T>(this IEqualityComparer<T> comparer, T first) {
+        public static Predicate<T> Bind<T>(this IEqualityComparer<T> comparer, T first)
+        {
             return x => comparer.Equals(first, x);
         }
 
@@ -49,11 +52,13 @@ namespace WmcSoft.Collections.Generic
 
         #region EqualsAny
 
-        public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2){
+        public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2)
+        {
             return comparer.Equals(reference, value1) || comparer.Equals(reference, value2);
         }
 
-        public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, params T[] values) {
+        public static bool EqualsAny<T>(this IEqualityComparer<T> comparer, T reference, params T[] values)
+        {
             for (int i = 0; i < values.Length; i++) {
                 if (comparer.Equals(reference, values[i]))
                     return true;
@@ -63,11 +68,13 @@ namespace WmcSoft.Collections.Generic
 
         #region EqualsAll
 
-        public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2) {
+        public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2)
+        {
             return comparer.Equals(reference, value1) && comparer.Equals(reference, value2);
         }
 
-        public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, params T[] values) {
+        public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, params T[] values)
+        {
             for (int i = 0; i < values.Length; i++) {
                 if (!comparer.Equals(reference, values[i]))
                     return false;
@@ -87,7 +94,8 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of elements of the <see cref="IEnumerable{T}"/> to compare.</typeparam>
         /// <param name="comparer">The comparer to decorate.</param>
         /// <returns>The decorated comparer.</returns>
-        public static LexicographicalComparer<T> Lexicographical<T>(this IComparer<T> comparer) {
+        public static LexicographicalComparer<T> Lexicographical<T>(this IComparer<T> comparer)
+        {
             return new LexicographicalComparer<T>(comparer);
         }
 
@@ -101,7 +109,8 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of objects to compare.</typeparam>
         /// <param name="comparer">The comparer to decorate.</param>
         /// <returns>The decorated comparer.</returns>
-        public static ReverseComparer<T> Reverse<T>(this IComparer<T> comparer) {
+        public static ReverseComparer<T> Reverse<T>(this IComparer<T> comparer)
+        {
             return new ReverseComparer<T>(comparer);
         }
 

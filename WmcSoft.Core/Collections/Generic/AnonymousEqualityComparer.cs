@@ -38,23 +38,26 @@ namespace WmcSoft.Collections.Generic
         private readonly Func<T, T, bool> _equals;
         private readonly Func<T, int> _getHashCode;
 
-        public AnonymousEqualityComparer(Func<T, T, bool> equals, Func<T, int> getHashCode = null) {
-            if (equals == null)
-                throw new ArgumentNullException("equals");
+        public AnonymousEqualityComparer(Func<T, T, bool> equals, Func<T, int> getHashCode = null)
+        {
+            if (equals == null) throw new ArgumentNullException(nameof(equals));
 
             _equals = equals;
             _getHashCode = getHashCode ?? GetDefaultHashCode;
         }
 
-        public bool Equals(T x, T y) {
+        public bool Equals(T x, T y)
+        {
             return _equals(x, y);
         }
 
-        public int GetHashCode(T obj) {
+        public int GetHashCode(T obj)
+        {
             return _getHashCode(obj);
         }
 
-        private int GetDefaultHashCode(T x) {
+        private int GetDefaultHashCode(T x)
+        {
             if (Equals(x, default(T)))
                 return 0;
             return 1;

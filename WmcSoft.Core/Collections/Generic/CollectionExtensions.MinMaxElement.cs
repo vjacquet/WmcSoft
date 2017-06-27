@@ -34,7 +34,8 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static partial class CollectionExtensions
     {
-        public static int UnguardedMinElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+        public static int UnguardedMinElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
+        {
             if (source.Count == 0)
                 return -1;
             var min = source[index];
@@ -54,7 +55,8 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="TSource">The type of the element of source</typeparam>
         /// <param name="source">The source element</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
-        public static int MinElement<TSource>(this IList<TSource> source) {
+        public static int MinElement<TSource>(this IList<TSource> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = Comparer<TSource>.Default.Compare;
@@ -68,7 +70,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The source element</param>
         /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or null to use the default comparer Comparer<T>.Default.</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
-        public static int MinElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+        public static int MinElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
@@ -84,20 +87,23 @@ namespace WmcSoft.Collections.Generic
         /// <param name="count">The length of the range to get the min element from.</param>
         /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or null to use the default comparer Comparer<T>.Default.</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
-        public static int MinElement<TSource>(this IList<TSource> source, int index, int count, IComparer<TSource> comparer) {
+        public static int MinElement<TSource>(this IList<TSource> source, int index, int count, IComparer<TSource> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return UnguardedMinElement(source, index, count, comparison);
         }
 
-        public static int MinElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
+        public static int MinElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return UnguardedMinElement(source, 0, source.Count, comparison);
         }
 
-        public static int MinElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+        public static int MinElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentException(nameof(index));
             if (length < 0) throw new ArgumentException(nameof(length));
@@ -106,7 +112,8 @@ namespace WmcSoft.Collections.Generic
             return UnguardedMinElement(source, index, length, comparison);
         }
 
-        public static int UnguardedMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+        public static int UnguardedMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
+        {
             if (source.Count == 0)
                 return -1;
             var max = source[index];
@@ -120,34 +127,39 @@ namespace WmcSoft.Collections.Generic
             return p;
         }
 
-        public static int MaxElement<TSource>(this IList<TSource> source) {
+        public static int MaxElement<TSource>(this IList<TSource> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = Comparer<TSource>.Default.Compare;
             return UnguardedMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static int MaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+        public static int MaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return UnguardedMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
+        public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return UnguardedMaxElement(source, index, length, comparison);
         }
 
-        public static int MaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
+        public static int MaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return UnguardedMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+        public static int MaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentException(nameof(index));
             if (length < 0) throw new ArgumentException(nameof(length));
@@ -156,34 +168,39 @@ namespace WmcSoft.Collections.Generic
             return UnguardedMaxElement(source, index, length, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source) {
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = Comparer<TSource>.Default.Compare;
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer) {
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer) {
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             Comparison<TSource> comparison = (comparer ?? Comparer<TSource>.Default).Compare;
             return MinMaxElement(source, index, length, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison) {
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison) {
+        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
+        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (source.Count == 0)

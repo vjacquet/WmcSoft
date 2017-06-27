@@ -32,7 +32,8 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class Compare
     {
-        public static ComparerBuilder<T> OrderOf<T>() {
+        public static ComparerBuilder<T> OrderOf<T>()
+        {
             //TODO: Is it necessary in a technical library
             // Shouldn't it be used in a Business glossary type class ?
             // Compare.Persons => returns the default comparer

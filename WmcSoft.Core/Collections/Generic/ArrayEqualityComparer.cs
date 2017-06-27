@@ -38,23 +38,27 @@ namespace WmcSoft.Collections.Generic
     {
         readonly IEqualityComparer<T> _comparer;
 
-        public ArrayEqualityComparer(IEqualityComparer<T> comparer) {
+        public ArrayEqualityComparer(IEqualityComparer<T> comparer)
+        {
             _comparer = comparer;
         }
         public ArrayEqualityComparer()
-            : this(EqualityComparer<T>.Default) {
+            : this(EqualityComparer<T>.Default)
+        {
         }
 
         #region IEqualityComparer<Array> Membres
 
-        public bool Equals(Array x, Array y) {
+        public bool Equals(Array x, Array y)
+        {
             if (!ArrayShapeEqualityComparer.Default.Equals(x, y))
                 return false;
 
             return x.AsEnumerable<T>().SequenceEqual(y.AsEnumerable<T>(), _comparer);
         }
 
-        public int GetHashCode(Array obj) {
+        public int GetHashCode(Array obj)
+        {
             return obj.GetHashCode();
         }
 

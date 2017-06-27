@@ -37,7 +37,8 @@ namespace WmcSoft.Collections.Generic
     {
         readonly IEnumerator _enumerator;
 
-        public EnumeratorAdapter(IEnumerator enumerator) {
+        public EnumeratorAdapter(IEnumerator enumerator)
+        {
             _enumerator = enumerator;
         }
 
@@ -49,17 +50,19 @@ namespace WmcSoft.Collections.Generic
             get { return (T)_enumerator.Current; }
         }
 
-        public void Dispose() {
-            var disposable = _enumerator as IDisposable;
-            if (disposable != null)
+        public void Dispose()
+        {
+            if (_enumerator is IDisposable disposable)
                 disposable.Dispose();
         }
 
-        public bool MoveNext() {
+        public bool MoveNext()
+        {
             return _enumerator.MoveNext();
         }
 
-        public void Reset() {
+        public void Reset()
+        {
             _enumerator.Reset();
         }
     }

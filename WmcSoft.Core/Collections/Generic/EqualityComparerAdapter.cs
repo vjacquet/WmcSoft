@@ -45,23 +45,28 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public EqualityComparerAdapter() {
+        public EqualityComparerAdapter()
+        {
             _comparer = Comparer<T>.Default;
             _hasher = Hash;
         }
 
-        public EqualityComparerAdapter(Func<T, int> hasher) : this(Comparer<T>.Default, hasher) {
+        public EqualityComparerAdapter(Func<T, int> hasher) : this(Comparer<T>.Default, hasher)
+        {
         }
 
-        public EqualityComparerAdapter(IComparer<T> comparer, Func<T, int> hasher = null) {
+        public EqualityComparerAdapter(IComparer<T> comparer, Func<T, int> hasher = null)
+        {
             _comparer = comparer ?? Comparer<T>.Default;
             _hasher = hasher ?? Hash;
         }
 
-        public EqualityComparerAdapter(params T[] knownValues) : this(Comparer<T>.Default, knownValues) {
+        public EqualityComparerAdapter(params T[] knownValues) : this(Comparer<T>.Default, knownValues)
+        {
         }
 
-        public EqualityComparerAdapter(IComparer<T> comparer, params T[] knownValues) {
+        public EqualityComparerAdapter(IComparer<T> comparer, params T[] knownValues)
+        {
             _comparer = comparer ?? Comparer<T>.Default;
             var array = (T[])knownValues.Clone();
             Array.Sort(array, _comparer);
@@ -72,11 +77,13 @@ namespace WmcSoft.Collections.Generic
 
         #region IEqualityComparer<T> Members
 
-        public bool Equals(T x, T y) {
+        public bool Equals(T x, T y)
+        {
             return _comparer.Compare(x, y) == 0;
         }
 
-        public int GetHashCode(T obj) {
+        public int GetHashCode(T obj)
+        {
             return _hasher(obj);
         }
 
@@ -84,7 +91,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Helpers
 
-        int Hash(T obj) {
+        int Hash(T obj)
+        {
             // We know nothing about the comparer, therefore we can deal with only two types of instances:
             // those that compares equal to the default, and those that do not.
             if (_comparer.Compare(obj, default(T)) == 0)
@@ -92,7 +100,8 @@ namespace WmcSoft.Collections.Generic
             return -1;
         }
 
-        int Hash(T obj, T[] knownValues) {
+        int Hash(T obj, T[] knownValues)
+        {
             return Array.BinarySearch(knownValues, obj, _comparer);
         }
 

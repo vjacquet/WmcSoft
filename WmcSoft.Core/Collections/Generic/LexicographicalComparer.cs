@@ -44,7 +44,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public LexicographicalComparer(IComparer<T> comparer = null) {
+        public LexicographicalComparer(IComparer<T> comparer = null)
+        {
             _comparer = comparer ?? Comparer<T>.Default;
         }
 
@@ -77,7 +78,8 @@ namespace WmcSoft.Collections.Generic
         /// </item>
         /// </list>
         /// </returns>
-        public int Compare(IEnumerable<T> x, IEnumerable<T> y) {
+        public int Compare(IEnumerable<T> x, IEnumerable<T> y)
+        {
             if (ReferenceEquals(x, y))
                 return 0;
             if (x == null)

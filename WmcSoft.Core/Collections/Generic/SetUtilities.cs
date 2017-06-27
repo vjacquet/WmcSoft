@@ -7,7 +7,8 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     static class SetUtilities
     {
-        internal static IEnumerable<T> Unique<T>(IEnumerable<T> enumerable, IEqualityComparer<T> comparer) {
+        internal static IEnumerable<T> Unique<T>(IEnumerable<T> enumerable, IEqualityComparer<T> comparer)
+        {
             using (IEnumerator<T> enumerator = enumerable.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     T current = enumerator.Current;
@@ -22,11 +23,13 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        internal static IEnumerable<T> Unique<T>(IEnumerable<T> enumerable) {
+        internal static IEnumerable<T> Unique<T>(IEnumerable<T> enumerable)
+        {
             return Unique(enumerable, EqualityComparer<T>.Default);
         }
 
-        internal static IEnumerable<T> Union<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer) {
+        internal static IEnumerable<T> Union<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer)
+        {
             int compare = 0;
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
@@ -64,11 +67,13 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        internal static IEnumerable<T> Union<T>(IEnumerable<T> x, IEnumerable<T> y) {
+        internal static IEnumerable<T> Union<T>(IEnumerable<T> x, IEnumerable<T> y)
+        {
             return Union(x, y, Comparer<T>.Default);
         }
 
-        internal static IEnumerable<T> Intersection<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer) {
+        internal static IEnumerable<T> Intersection<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer)
+        {
             int compare = 0;
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
@@ -94,11 +99,13 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        internal static IEnumerable<T> Intersection<T>(IEnumerable<T> x, IEnumerable<T> y) {
+        internal static IEnumerable<T> Intersection<T>(IEnumerable<T> x, IEnumerable<T> y)
+        {
             return Intersection(x, y, Comparer<T>.Default);
         }
 
-        internal static IEnumerable<T> Difference<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer) {
+        internal static IEnumerable<T> Difference<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer)
+        {
             int compare = 0;
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
@@ -130,11 +137,13 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        internal static IEnumerable<T> Difference<T>(IEnumerable<T> x, IEnumerable<T> y) {
+        internal static IEnumerable<T> Difference<T>(IEnumerable<T> x, IEnumerable<T> y)
+        {
             return Difference(x, y, Comparer<T>.Default);
         }
 
-        internal static IEnumerable<T> SymmetricDifference<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer) {
+        internal static IEnumerable<T> SymmetricDifference<T>(IEnumerable<T> x, IEnumerable<T> y, IComparer<T> comparer)
+        {
             int compare = 0;
             using (var enumerator1 = x.GetEnumerator())
             using (var enumerator2 = y.GetEnumerator()) {
@@ -171,7 +180,8 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        internal static IEnumerable<T> SymmetricDifference<T>(IEnumerable<T> x, IEnumerable<T> y) {
+        internal static IEnumerable<T> SymmetricDifference<T>(IEnumerable<T> x, IEnumerable<T> y)
+        {
             return SymmetricDifference(x, y, Comparer<T>.Default);
         }
     }

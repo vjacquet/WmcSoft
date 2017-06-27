@@ -50,16 +50,20 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public ListDictionary() : this(DefaultCapacity, null) {
+        public ListDictionary() : this(DefaultCapacity, null)
+        {
         }
 
-        public ListDictionary(int capacity) : this(capacity, null) {
+        public ListDictionary(int capacity) : this(capacity, null)
+        {
         }
 
-        public ListDictionary(IEqualityComparer<TKey> comparer) : this(DefaultCapacity, comparer) {
+        public ListDictionary(IEqualityComparer<TKey> comparer) : this(DefaultCapacity, comparer)
+        {
         }
 
-        public ListDictionary(int capacity, IEqualityComparer<TKey> comparer) {
+        public ListDictionary(int capacity, IEqualityComparer<TKey> comparer)
+        {
             if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
             _comparer = comparer ?? EqualityComparer<TKey>.Default;
@@ -108,39 +112,47 @@ namespace WmcSoft.Collections.Generic
             get { return new CollectionAdapter<TValue>(_storage.Count, _storage.Select(p => p.Value)); }
         }
 
-        public void Add(KeyValuePair<TKey, TValue> item) {
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
             if (ContainsKey(item.Key))
                 throw new ArgumentException();
             _storage.Add(item);
         }
 
-        public void Add(TKey key, TValue value) {
+        public void Add(TKey key, TValue value)
+        {
             Add(new KeyValuePair<TKey, TValue>(key, value));
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _storage.Clear();
         }
 
-        public bool Contains(KeyValuePair<TKey, TValue> item) {
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
             var found = IndexOfKey(item.Key);
             return (found >= 0 && EqualityComparer<TValue>.Default.Equals(item.Value, _storage[found].Value));
         }
 
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             var found = IndexOfKey(key);
             return (found >= 0);
         }
 
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
             _storage.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
-        public bool Remove(KeyValuePair<TKey, TValue> item) {
+        public bool Remove(KeyValuePair<TKey, TValue> item)
+        {
             var found = IndexOfKey(item.Key);
             if (found >= 0 && EqualityComparer<TValue>.Default.Equals(item.Value, _storage[found].Value)) {
                 _storage.RemoveAt(found);
@@ -149,7 +161,8 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
-        public bool Remove(TKey key) {
+        public bool Remove(TKey key)
+        {
             var found = IndexOfKey(key);
             if (found < 0)
                 return false;
@@ -157,7 +170,8 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
-        public bool TryGetValue(TKey key, out TValue value) {
+        public bool TryGetValue(TKey key, out TValue value)
+        {
             var found = IndexOfKey(key);
             if (found < 0) {
                 value = default(TValue);
@@ -167,7 +181,8 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
@@ -175,7 +190,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Helpers
 
-        int IndexOfKey(TKey key) {
+        int IndexOfKey(TKey key)
+        {
             if (key == null) throw new ArgumentNullException("key");
             return _storage.FindIndex(p => _comparer.Equals(key, p.Key));
         }

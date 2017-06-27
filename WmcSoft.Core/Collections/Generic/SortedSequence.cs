@@ -47,13 +47,15 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public SortedSequence(IComparer<T> comparer) {
+        public SortedSequence(IComparer<T> comparer)
+        {
             _storage = new List<T>();
             _comparer = comparer ?? Comparer<T>.Default;
         }
 
         public SortedSequence()
-            : this(null) {
+            : this(null)
+        {
         }
 
         #endregion
@@ -68,7 +70,8 @@ namespace WmcSoft.Collections.Generic
 
         #region ICollection<T> Membres
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             int index = _storage.BinarySearch(item, _comparer);
             if (index >= 0) {
                 do {
@@ -80,15 +83,18 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _storage.Clear();
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return _storage.BinarySearch(item, _comparer) >= 0;
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             _storage.CopyTo(array, arrayIndex);
         }
 
@@ -100,7 +106,8 @@ namespace WmcSoft.Collections.Generic
             get { return false; }
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             int index = _storage.BinarySearch(item, _comparer);
             if (index < 0)
                 return false;
@@ -112,11 +119,13 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public List<T>.Enumerator GetEnumerator() {
+        public List<T>.Enumerator GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return _storage.GetEnumerator();
         }
 
@@ -124,7 +133,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable Membres
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

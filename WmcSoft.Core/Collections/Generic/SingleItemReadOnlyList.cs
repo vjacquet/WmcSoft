@@ -39,7 +39,8 @@ namespace WmcSoft.Collections.Generic
 
         #region Lifecycle
 
-        public SingleItemReadOnlyList(T item) {
+        public SingleItemReadOnlyList(T item)
+        {
             _item = item;
         }
 
@@ -67,7 +68,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             yield return _item;
         }
 
@@ -75,7 +77,8 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

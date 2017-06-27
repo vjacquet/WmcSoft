@@ -33,11 +33,13 @@ namespace WmcSoft.Collections.Generic
     {
         private readonly List<Tree<T>> _trees;
 
-        public Forest(IEnumerable<Tree<T>> trees) {
+        public Forest(IEnumerable<Tree<T>> trees)
+        {
             _trees = new List<Tree<T>>(trees);
         }
 
-        public Forest() {
+        public Forest()
+        {
             _trees = new List<Tree<T>>();
         }
 
@@ -49,31 +51,38 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public void Add(Tree<T> item) {
+        public void Add(Tree<T> item)
+        {
             _trees.Add(item);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _trees.Clear();
         }
 
-        public bool Contains(Tree<T> item) {
+        public bool Contains(Tree<T> item)
+        {
             return _trees.Contains(item);
         }
 
-        public void CopyTo(Tree<T>[] array, int arrayIndex) {
+        public void CopyTo(Tree<T>[] array, int arrayIndex)
+        {
             _trees.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<Tree<T>> GetEnumerator() {
+        public IEnumerator<Tree<T>> GetEnumerator()
+        {
             return ((ICollection<Tree<T>>)_trees).GetEnumerator();
         }
 
-        public bool Remove(Tree<T> item) {
+        public bool Remove(Tree<T> item)
+        {
             return _trees.Remove(item);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return ((ICollection<Tree<T>>)_trees).GetEnumerator();
         }
     }

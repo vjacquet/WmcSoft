@@ -40,9 +40,11 @@ namespace WmcSoft.Collections.Generic
         #region Lifecycle
 
         public CountingEnumerator(IEnumerable<T> enumerable)
-            : this(enumerable.GetEnumerator()) {
+            : this(enumerable.GetEnumerator())
+        {
         }
-        public CountingEnumerator(IEnumerator<T> enumerator) {
+        public CountingEnumerator(IEnumerator<T> enumerator)
+        {
             _base = enumerator;
         }
 
@@ -76,7 +78,8 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose() {
+        public void Dispose()
+        {
             _base.Dispose();
         }
 
@@ -94,7 +97,8 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the enumerator was successfully advanced to the next element; 
         /// false if the enumerator has passed the end of the collection.</returns>
         /// <exception cref="System.InvalidOperationException">The collection was modified after the enumerator was created.</exception>
-        public bool MoveNext() {
+        public bool MoveNext()
+        {
             if (_base.MoveNext()) {
                 _count++;
                 return true;
@@ -106,7 +110,8 @@ namespace WmcSoft.Collections.Generic
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="System.InvalidOperationException">The collection was modified after the enumerator was created.</exception>
-        public void Reset() {
+        public void Reset()
+        {
             _base.Reset();
             _count = 0;
         }

@@ -39,7 +39,8 @@ namespace WmcSoft.Collections.Generic
     {
         private readonly Func<T, T, int> _comparer;
 
-        public AnonymousComparer(Func<T, T, int> comparer) {
+        public AnonymousComparer(Func<T, T, int> comparer)
+        {
             if (comparer == null) throw new ArgumentNullException(nameof(comparer));
 
             _comparer = comparer;
@@ -70,7 +71,8 @@ namespace WmcSoft.Collections.Generic
         /// </item>
         /// </list>
         /// </returns>
-        public int Compare(T x, T y) {
+        public int Compare(T x, T y)
+        {
             if (x == null)
                 return y != null ? 1 : 0;
             if (y == null)

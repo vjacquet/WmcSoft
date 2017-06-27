@@ -41,17 +41,20 @@ namespace WmcSoft.Collections.Generic
         private IDictionary<TKey, TValue> _inner;
         private readonly IEqualityComparer<TKey> _comparer;
 
-        public CopyOnWriteDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer) {
+        public CopyOnWriteDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+        {
             _inner = _source = dictionary;
             _comparer = comparer;
         }
 
         public CopyOnWriteDictionary(IDictionary<TKey, TValue> dictionary)
-            : this(dictionary, EqualityComparer<TKey>.Default) {
+            : this(dictionary, EqualityComparer<TKey>.Default)
+        {
         }
 
         public CopyOnWriteDictionary(Dictionary<TKey, TValue> dictionary)
-            : this(dictionary, dictionary.Comparer) {
+            : this(dictionary, dictionary.Comparer)
+        {
         }
 
         protected IDictionary<TKey, TValue> Readable {
@@ -87,47 +90,58 @@ namespace WmcSoft.Collections.Generic
             set { Writable[key] = value; }
         }
 
-        public bool ContainsKey(TKey key) {
+        public bool ContainsKey(TKey key)
+        {
             return Readable.ContainsKey(key);
         }
 
-        public void Add(TKey key, TValue value) {
+        public void Add(TKey key, TValue value)
+        {
             Writable.Add(key, value);
         }
 
-        public bool Remove(TKey key) {
+        public bool Remove(TKey key)
+        {
             return Writable.Remove(key);
         }
 
-        public bool TryGetValue(TKey key, out TValue value) {
+        public bool TryGetValue(TKey key, out TValue value)
+        {
             return Readable.TryGetValue(key, out value);
         }
 
-        public void Add(KeyValuePair<TKey, TValue> item) {
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
             Writable.Add(item);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             Writable.Clear();
         }
 
-        public bool Contains(KeyValuePair<TKey, TValue> item) {
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
             return Readable.Contains(item);
         }
 
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
             Readable.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(KeyValuePair<TKey, TValue> item) {
+        public bool Remove(KeyValuePair<TKey, TValue> item)
+        {
             return Writable.Remove(item);
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
             return Readable.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return Readable.GetEnumerator();
         }
     }

@@ -39,7 +39,8 @@ namespace WmcSoft.Collections.Generic
         private readonly IReadOnlyList<T> _list;
         private readonly IComparer<T> _comparer;
 
-        public SourceComparer(IReadOnlyList<T> list, IComparer<T> comparer = null) {
+        public SourceComparer(IReadOnlyList<T> list, IComparer<T> comparer = null)
+        {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
             _list = list;
@@ -71,7 +72,8 @@ namespace WmcSoft.Collections.Generic
         /// </item>
         /// </list>
         /// </returns>
-        public int Compare(int x, int y) {
+        public int Compare(int x, int y)
+        {
             return _comparer.Compare(_list[x], _list[y]);
         }
     }

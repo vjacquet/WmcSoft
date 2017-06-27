@@ -35,7 +35,8 @@ namespace WmcSoft.Collections.Generic
     {
         internal static readonly ComparerBuilder<T> Default = new ComparerBuilder<T>();
 
-        ComparerBuilder() {
+        ComparerBuilder()
+        {
         }
     }
 }

@@ -37,7 +37,8 @@ namespace WmcSoft.Collections.Generic
     {
         public static readonly ArrayShapeEqualityComparer Default;
 
-        public bool Equals(Array x, Array y) {
+        public bool Equals(Array x, Array y)
+        {
             if (x == y)
                 return true;
             if (x == null)
@@ -53,11 +54,13 @@ namespace WmcSoft.Collections.Generic
             return true;
         }
 
-        static int GetDimensionHashCode(Array obj, int i) {
+        static int GetDimensionHashCode(Array obj, int i)
+        {
             return EqualityComparer.CombineHashCodes(obj.GetLowerBound(i), obj.GetUpperBound(i));
         }
 
-        public int GetHashCode(Array obj) {
+        public int GetHashCode(Array obj)
+        {
             if (obj == null)
                 return 0;
             return EqualityComparer.CombineHashCodes(obj.Rank, obj.Length, GetDimensionHashCode(obj, 0), GetDimensionHashCode(obj, obj.Rank - 1));

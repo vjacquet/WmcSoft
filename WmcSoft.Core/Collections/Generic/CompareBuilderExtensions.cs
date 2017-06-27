@@ -35,27 +35,32 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static class CompareBuilderExtensions
     {
-        public static IComparer<T> By<T, U>(this ComparerBuilder<T> comparer, Func<T, U> selector) {
+        public static IComparer<T> By<T, U>(this ComparerBuilder<T> comparer, Func<T, U> selector)
+        {
             return new SelectComparer<T, U>(selector);
         }
 
-        public static IComparer<T> ThenBy<T, U>(this IComparer<T> comparer, Func<T, U> selector) {
+        public static IComparer<T> ThenBy<T, U>(this IComparer<T> comparer, Func<T, U> selector)
+        {
             var then = new SelectComparer<T, U>(selector);
             return new CascadingComparer<T>(Enumerate(comparer), then);
         }
 
-        public static IComparer<T> ByDescending<T, U>(this ComparerBuilder<T> comparer, Func<T, U> selector) {
+        public static IComparer<T> ByDescending<T, U>(this ComparerBuilder<T> comparer, Func<T, U> selector)
+        {
             return new ReverseComparer<T>(new SelectComparer<T, U>(selector));
         }
 
-        public static IComparer<T> ThenByDescending<T, U>(this IComparer<T> comparer, Func<T, U> selector) {
+        public static IComparer<T> ThenByDescending<T, U>(this IComparer<T> comparer, Func<T, U> selector)
+        {
             var then = new ReverseComparer<T>(new SelectComparer<T, U>(selector));
             return new CascadingComparer<T>(Enumerate(comparer), then);
         }
 
         #region Helpers
 
-        static IEnumerable<IComparer<T>> Enumerate<T>(IComparer<T> comparer) {
+        static IEnumerable<IComparer<T>> Enumerate<T>(IComparer<T> comparer)
+        {
             var enumerable = comparer as IEnumerable<IComparer<T>>;
             return enumerable ?? EnumerableExtensions.AsEnumerable(comparer);
         }
