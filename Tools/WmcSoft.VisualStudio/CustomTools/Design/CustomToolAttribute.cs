@@ -24,7 +24,7 @@ namespace WmcSoft.CustomTools.Design
         /// </param>
         public CustomToolAttribute(string name, bool generatesDesignTimeCode)
         {
-            ._name = name;
+            _name = name;
             _code = generatesDesignTimeCode;
         }
 
