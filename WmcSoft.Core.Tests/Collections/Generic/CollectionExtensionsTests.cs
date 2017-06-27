@@ -21,8 +21,12 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void CheckBinarySearch()
+        [Theory]
+        [InlineData(4, 1)]
+        [InlineData(5, ~2)]
+        [InlineData(9, ~4)]
+        [InlineData(1, ~0)]
+        public void CheckBinarySearch(int value, int result)
         {
             var list = new List<Tuple<int, string>> {
                 Tuple.Create(2, "a"),
@@ -31,10 +35,7 @@ namespace WmcSoft.Collections.Generic
                 Tuple.Create(8, "d"),
             };
 
-            Assert.Equal(1, list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 4)));
-            Assert.Equal(2, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 5)));
-            Assert.Equal(4, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 9)));
-            Assert.Equal(0, ~list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, 1)));
+            Assert.Equal(result, list.BinarySearch(t => Comparer.DefaultInvariant.Compare(t.Item1, value)));
         }
 
         [Fact]
@@ -405,12 +406,48 @@ namespace WmcSoft.Collections.Generic
             data.IsSorted(p, data.Length - p);
         }
 
-        [Fact]
-        public void CheckBinaryRank()
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(4, 3)]
+        [InlineData(5, 4)]
+        [InlineData(10, 8)]
+        public void CheckBinaryRank(int value, int rank)
         {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
-            Assert.Equal(3, data.BinaryRank(4));
-            Assert.Equal(4, data.BinaryRank(x => Comparer<int>.Default.Compare(x, 5)));
+            Assert.Equal(rank, data.BinaryRank(value));
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(4, 3)]
+        [InlineData(5, 4)]
+        [InlineData(10, 8)]
+        public void CheckPartialBinaryRank(int value, int rank)
+        {
+            var data = new[] { -5, -1,  1, 2, 3, 4, 6, 7, 8, 9, 20, 21 };
+            Assert.Equal(rank, data.BinaryRank(2, 8, value));
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(4, 3)]
+        [InlineData(5, 4)]
+        [InlineData(10, 8)]
+        public void CheckBinaryRankWithFinder(int value, int rank)
+        {
+            var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
+            Assert.Equal(rank, data.BinaryRank(x => Comparer<int>.Default.Compare(x, value)));
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(4, 3)]
+        [InlineData(5, 4)]
+        [InlineData(10, 8)]
+        public void CheckPartialBinaryRankWithFinder(int value, int rank)
+        {
+            var data = new[] { -5, -1, 1, 2, 3, 4, 6, 7, 8, 9, 20, 21 };
+            Assert.Equal(rank, data.BinaryRank(2, 8, x => Comparer<int>.Default.Compare(x, value)));
         }
 
         [Fact]
