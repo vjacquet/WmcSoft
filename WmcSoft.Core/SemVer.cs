@@ -62,9 +62,9 @@ namespace WmcSoft
             patch = _version.Build;
         }
 
-        public int Major { get { return _version.Major; } }
-        public int Minor { get { return _version.Minor; } }
-        public int Patch { get { return _version.Build; } }
+        public int Major => _version.Major;
+        public int Minor => _version.Minor;
+        public int Patch => _version.Build;
 
         public SemVer Clone()
         {

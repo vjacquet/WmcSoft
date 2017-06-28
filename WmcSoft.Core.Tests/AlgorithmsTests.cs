@@ -16,6 +16,29 @@ namespace WmcSoft
         }
 
         [Fact]
+        public void CanUseIotaWithNonNegativeCount()
+        {
+            var n = 10;
+            var actual = Algorithms.Iota(n);
+            var expected = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanUseIotaWithZeroount()
+        {
+            var actual = Algorithms.Iota(0);
+            var expected = new int[0];
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CannotUseIotaWithNegativeCount()
+        {
+            Assert.Throws<OverflowException>(() => Algorithms.Iota(-1));
+        }
+
+        [Fact]
         public void CheckMidpoint()
         {
             var x = 20;

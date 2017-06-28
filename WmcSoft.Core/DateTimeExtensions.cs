@@ -79,8 +79,7 @@ namespace WmcSoft
         public static int WeekOfMonth(this DateTime date) {
             int day = date.Day;
             int dayOfWeek = (int)(new DateTime(date.Year, date.Month, 1)).DayOfWeek;
-            int reminder;
-            return Math.DivRem(6 + day + dayOfWeek, 7, out reminder);
+            return Math.DivRem(6 + day + dayOfWeek, 7, out int reminder);
         }
 
         /// <summary>

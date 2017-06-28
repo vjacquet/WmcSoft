@@ -321,6 +321,11 @@ namespace WmcSoft
 
         #region Iota
 
+        /// <summary>
+        /// Returns an array of <paramref name="n"/> integerss increasing from zero.
+        /// </summary>
+        /// <param name="n">The number of integers in the array.</param>
+        /// <returns>The array of n integers.</returns>
         public static int[] Iota(int n)
         {
             var array = new int[n];

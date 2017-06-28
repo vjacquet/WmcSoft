@@ -70,18 +70,18 @@ namespace WmcSoft
             var count = 0;
             var length = jagged.Length;
             for (int i = 0; i < length; i++) {
-                var cell = jagged[i];
-                if (cell != null)
-                    count += cell.Length;
+                var row = jagged[i];
+                if (row != null)
+                    count += row.Length;
             }
 
             var index = 0;
             var result = new T[count];
             for (int i = 0; i < length; i++) {
-                var cell = jagged[i];
-                if (cell != null) {
-                    Array.Copy(cell, 0, result, index, cell.Length);
-                    index += cell.Length;
+                var row = jagged[i];
+                if (row != null) {
+                    Array.Copy(row, 0, result, index, row.Length);
+                    index += row.Length;
                 }
             }
             return result;
@@ -226,6 +226,12 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Creates a new array for which the row and column indices are switched.
+        /// </summary>
+        /// <typeparam name="T">The type of items.</typeparam>
+        /// <param name="array">The array.</param>
+        /// <returns>A new transposed array</returns>
         public static T[,] Transpose<T>(this T[,] array)
         {
             var rows = array.GetLength(1);
@@ -325,6 +331,15 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Replaces all occurences of <paramref name="oldValue"/> within a specified range with <paramref name="newValue"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="startIndex">The zero-based index at which the range starts.</param>
+        /// <param name="length">The number of elements in the range.</param>
+        /// <param name="oldValue">The value to be replaced.</param>
+        /// <param name="newValue">The new value.</param>
         public static void Replace<T>(this T[] array, int startIndex, int length, T oldValue, T newValue, IEqualityComparer<T> comparer = null)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
@@ -335,6 +350,13 @@ namespace WmcSoft
             UnguardedReplace(array, startIndex, length, oldValue, newValue, comparer);
         }
 
+        /// <summary>
+        /// Replaces all occurences of <paramref name="oldValue"/> with <paramref name="newValue"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="oldValue">The value to be replaced.</param>
+        /// <param name="newValue">The new value.</param>
         public static void Replace<T>(this T[] array, T oldValue, T newValue, IEqualityComparer<T> comparer = null)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
@@ -351,6 +373,15 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Replaces elements within the specified range matching the <paramref name="predicate"/> with <paramref name="newValue"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="startIndex">The zero-based index at which the range starts.</param>
+        /// <param name="length">The number of elements in the range.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="newValue">The new value.</param>
         public static void ReplaceIf<T>(this T[] array, int startIndex, int length, Predicate<T> predicate, T newValue)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
@@ -362,6 +393,13 @@ namespace WmcSoft
             UnguardedReplaceIf(array, startIndex, length, predicate, newValue);
         }
 
+        /// <summary>
+        /// Replaces all elements matching the <paramref name="predicate"/> with <paramref name="newValue"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="newValue">The new value.</param>
         public static void ReplaceIf<T>(this T[] array, Predicate<T> predicate, T newValue)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));

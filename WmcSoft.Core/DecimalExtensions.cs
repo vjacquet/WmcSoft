@@ -35,7 +35,6 @@ namespace WmcSoft
 
         static DecimalExtensions()
         {
-
             Powers = new decimal[MaxPower];
             Powers[0] = 1m;
 
@@ -118,25 +117,5 @@ namespace WmcSoft
         {
             return value.Pow10(scale).Round(rounding).Pow10(-scale);
         }
-    }
-
-    public enum RoundingMode
-    {
-        /// <summary>Rounding mode to round towards positive infinity.</summary>
-        Ceiling,
-        /// <summary>Rounding mode to round towards zero.</summary>
-        Down,
-        /// <summary>Rounding mode to round towards negative infinity.</summary>
-        Floor,
-        /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.</summary>
-        HalfDown,
-        /// <summary>Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.</summary>
-        HalfEven,
-        /// <summary>Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.</summary>
-        HalfUp,
-        /// <summary>Rounding mode to assert that the requested operation has an exact result, hence no rounding is necessary.</summary>
-        Unnecessary,
-        /// <summary>Rounding mode to round away from zero.</summary>
-        Up,
     }
 }

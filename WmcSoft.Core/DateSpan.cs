@@ -68,10 +68,10 @@ namespace WmcSoft
 
         #region Properties
 
-        public int Days { get { return _days % DaysInWeek; } }
-        public int Weeks { get { return _days / DaysInWeek; } }
-        public int Months { get { return _months % MonthsInYear; } }
-        public int Years { get { return _months / MonthsInYear; } }
+        public int Days => _days % DaysInWeek;
+        public int Weeks => _days / DaysInWeek;
+        public int Months => _months % MonthsInYear;
+        public int Years => _months / MonthsInYear;
 
         #endregion
 
