@@ -12,8 +12,8 @@ namespace WmcSoft
             var sequence = new[] { 1, 2, 5, 7, 8, 9 };
             Int32Ordinal ordinal;
 
-            var actual = sequence.Collate(ordinal, Tuple.Create).ToArray();
-            var expected = new[] { Tuple.Create(1, 2), Tuple.Create(5, 5), Tuple.Create(7, 9) };
+            var actual = sequence.Collate(ordinal, Pair.Create);
+            var expected = new[] { Pair.Create(1, 2), Pair.Create(5, 5), Pair.Create(7, 9) };
 
             Assert.Equal(expected, actual);
         }
@@ -24,8 +24,8 @@ namespace WmcSoft
             var sequence = new[] { 1, 2, 5, 7, 8, 9, 11 };
             Int32Ordinal ordinal;
 
-            var actual = sequence.Collate(ordinal, Tuple.Create).ToArray();
-            var expected = new[] { Tuple.Create(1, 2), Tuple.Create(5, 5), Tuple.Create(7, 9), Tuple.Create(11, 11) };
+            var actual = sequence.Collate(ordinal, Pair.Create);
+            var expected = new[] { Pair.Create(1, 2), Pair.Create(5, 5), Pair.Create(7, 9), Pair.Create(11, 11) };
 
             Assert.Equal(expected, actual);
         }
@@ -57,10 +57,10 @@ namespace WmcSoft
         [Fact]
         public void CanExpand()
         {
-            var data = new[] { new Pair<int>(1, 3), new Pair<int>(5, 8) };
+            var data = new[] { Pair.Create(1, 3), Pair.Create(5, 8) };
             Int32Ordinal ordinal;
 
-            var actual = ordinal.Expand(data).ToArray();
+            var actual = ordinal.Expand(data);
             var expected = new[] { 1, 2, 3, 5, 6, 7, 8 };
 
             Assert.Equal(expected, actual);

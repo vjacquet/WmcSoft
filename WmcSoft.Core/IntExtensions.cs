@@ -44,32 +44,32 @@ namespace WmcSoft
             return AnyFlagsSet(flags.ToInt64(provider), flagsToTest.ToInt64(provider));
         }
 
-        public static bool AllFlagsSet(this Int16 flags, Int16 flagsToTest) {
+        public static bool AllFlagsSet(this short flags, short flagsToTest) {
             return (flags & flagsToTest) == flagsToTest;
         }
 
-        public static bool AnyFlagsSet(this Int16 flags, Int16 flagsToTest) {
+        public static bool AnyFlagsSet(this short flags, short flagsToTest) {
             return (flags & flagsToTest) != 0;
         }
 
-        public static bool AllFlagsSet(this Int32 flags, Int32 flagsToTest) {
+        public static bool AllFlagsSet(this int flags, int flagsToTest) {
             return (flags & flagsToTest) == flagsToTest;
         }
 
-        public static bool AnyFlagsSet(this Int32 flags, Int32 flagsToTest) {
+        public static bool AnyFlagsSet(this int flags, int flagsToTest) {
             return (flags & flagsToTest) != 0;
         }
 
-        public static bool AllFlagsSet(this Int64 flags, Int64 flagsToTest) {
+        public static bool AllFlagsSet(this long flags, long flagsToTest) {
             return (flags & flagsToTest) == flagsToTest;
         }
 
-        public static bool AnyFlagsSet(this Int64 flags, Int64 flagsToTest) {
+        public static bool AnyFlagsSet(this long flags, long flagsToTest) {
             return (flags & flagsToTest) != 0;
         }
 
         public static string ToHexaString(this byte[] buffer) {
-            StringBuilder sb = new StringBuilder(2 * buffer.Length);
+            var sb = new StringBuilder(2 * buffer.Length);
             foreach (byte b in buffer) {
                 sb.Append(b.ToString("x2"));
             }

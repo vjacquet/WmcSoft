@@ -31,14 +31,23 @@ namespace WmcSoft
 {
     public static class ResourceManagerExtensions
     {
+        /// <summary>
+        /// Returns the specified string resource for the specified culture or current UI culture.
+        /// </summary>
+        /// <param name="rm">The resource manager</param>
+        /// <param name="names">The names of the resource to retrieve. </param>
+        /// <returns>An array of value of the resource localized for the caller's current UI culture, or <c>null</c> if corresponding name cannot be found in a resource set.</returns>
         public static string[] GetStrings(this ResourceManager rm, params string[] names) {
-            var result = new string[names.Length];
-            for (int i = 0; i < names.Length; i++) {
-                result[i] = rm.GetString(names[i]);
-            }
-            return result;
+            return GetStrings(rm, null, names);
         }
 
+        /// <summary>
+        /// Returns the value of the string resource localized for the specified culture.
+        /// </summary>
+        /// <param name="rm">The resource manager</param>
+        /// <param name="culture">An object that represents the culture for which the resource is localized. </param>
+        /// <param name="names">The names of the resource to retrieve. </param>
+        /// <returns>An array of value of the resource localized for the caller's current UI culture, or <c>null</c> if corresponding name cannot be found in a resource set.</returns>
         public static string[] GetStrings(this ResourceManager rm, CultureInfo culture, params string[] names) {
             var result = new string[names.Length];
             for (int i = 0; i < names.Length; i++) {

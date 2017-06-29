@@ -32,19 +32,23 @@ namespace WmcSoft
 {
     public static class OrdinalExtensions
     {
-        public static T Next<T>(this IOrdinal<T> ordinal, T x, int n = 1) {
+        public static T Next<T>(this IOrdinal<T> ordinal, T x, int n = 1)
+        {
             return ordinal.Advance(x, n);
         }
 
-        public static T Previous<T>(this IOrdinal<T> ordinal, T x, int n = 1) {
+        public static T Previous<T>(this IOrdinal<T> ordinal, T x, int n = 1)
+        {
             return ordinal.Advance(x, -n);
         }
 
-        public static int Distance<T>(this IOrdinal<T> ordinal, T x, T y) {
+        public static int Distance<T>(this IOrdinal<T> ordinal, T x, T y)
+        {
             return ordinal.Compare(y, x);
         }
 
-        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last) {
+        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last)
+        {
             var distance = ordinal.Compare(first, last);
             if (distance < 0) {
                 do {
@@ -63,11 +67,13 @@ namespace WmcSoft
             }
         }
 
-        static IEnumerable<T> Sequence<T>(IOrdinal<T> ordinal, Pair<T> p) {
+        static IEnumerable<T> Sequence<T>(IOrdinal<T> ordinal, Pair<T> p)
+        {
             return Sequence(ordinal, p.Item1, p.Item2);
         }
 
-        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last, int stride) {
+        public static IEnumerable<T> Sequence<T>(this IOrdinal<T> ordinal, T first, T last, int stride)
+        {
             if (stride > 0) {
                 while (ordinal.Compare(first, last) <= 0) {
                     yield return first;
@@ -85,19 +91,23 @@ namespace WmcSoft
             }
         }
 
-        public static bool IsNext<T>(this IOrdinal<T> ordinal, T x, T y) {
+        public static bool IsNext<T>(this IOrdinal<T> ordinal, T x, T y)
+        {
             return ordinal.Compare(y, x) == 1;
         }
 
-        public static bool IsPrevious<T>(this IOrdinal<T> ordinal, T x, T y) {
+        public static bool IsPrevious<T>(this IOrdinal<T> ordinal, T x, T y)
+        {
             return ordinal.Compare(y, x) == -1;
         }
 
-        public static IEnumerable<R> Collate<T, R>(this IEnumerable<T> sequence, IOrdinal<T> ordinal, Func<T, T, R> factory) {
+        public static IEnumerable<R> Collate<T, R>(this IEnumerable<T> sequence, IOrdinal<T> ordinal, Func<T, T, R> factory)
+        {
             return Collate(ordinal, factory, sequence);
         }
 
-        public static IEnumerable<R> Collate<T, R>(this IOrdinal<T> ordinal, Func<T, T, R> factory, IEnumerable<T> sequence) {
+        public static IEnumerable<R> Collate<T, R>(this IOrdinal<T> ordinal, Func<T, T, R> factory, IEnumerable<T> sequence)
+        {
             if (sequence == null)
                 yield break;
 
@@ -118,11 +128,13 @@ namespace WmcSoft
             }
         }
 
-        public static IEnumerable<T> Expand<T>(this IOrdinal<T> ordinal, IEnumerable<Pair<T>> sequence) {
+        public static IEnumerable<T> Expand<T>(this IOrdinal<T> ordinal, IEnumerable<Pair<T>> sequence)
+        {
             return sequence.SelectMany(r => Sequence(ordinal, r));
         }
 
-        public static IEnumerable<T> Expand<T, R>(this IOrdinal<T> ordinal, Func<R, Pair<T>> expander, IEnumerable<R> sequence) {
+        public static IEnumerable<T> Expand<T, R>(this IOrdinal<T> ordinal, Func<R, Pair<T>> expander, IEnumerable<R> sequence)
+        {
             return sequence.SelectMany(r => Sequence(ordinal, expander(r)));
         }
     }

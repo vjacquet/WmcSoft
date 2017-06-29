@@ -7,11 +7,14 @@ namespace WmcSoft
         readonly int[] _dimensions;
         readonly int[] _indices;
 
-        public Indices(Array array)
+        public Indices(Array array) : this(array.GetDimensions())
         {
-            _dimensions = array.GetDimensions();
-            var rank = _dimensions.Length;
-            _indices = new int[rank];
+        }
+
+        public Indices(params int[] dimensions)
+        {
+            _dimensions = dimensions;
+            _indices = new int[_dimensions.Length];
         }
 
         /// <summary>

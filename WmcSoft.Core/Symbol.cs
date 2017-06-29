@@ -33,7 +33,7 @@ namespace WmcSoft
     /// <summary>
     /// Represents a family of symbols.
     /// </summary>
-    /// <typeparam name="T">The type of the family.</typeparam>
+    /// <typeparam name="T">The type of the family, used as a marker.</typeparam>
     [Serializable]
     public struct Symbol<T> : IEquatable<Symbol<T>>, ISerializable
     {

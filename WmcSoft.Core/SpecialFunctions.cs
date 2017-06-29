@@ -1,19 +1,20 @@
-﻿using System;
-
-namespace WmcSoft
+﻿namespace WmcSoft
 {
     internal class SpecialFunctions<TElement>
     {
-        public static Func<TElement, TElement> Identity {
-            get { return x => x; }
+        public static TElement Identity(TElement x)
+        {
+            return x;
         }
 
-        public static Predicate<TElement> Always {
-            get { return _ => true; }
+        public static bool Always(TElement x)
+        {
+            return true;
         }
 
-        public static Predicate<TElement> Never {
-            get { return _ => false; }
+        public static bool Never(TElement x)
+        {
+            return false;
         }
     }
 }
