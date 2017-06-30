@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using WmcSoft.Collections.Generic;
 using Xunit;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Text
 {
     public class TrieTests
     {
-        [Fact]
-        public void CanCreateTrie()
+        Trie<char, int> GetTrie()
         {
-            var trie = new Trie<char, int> {
+            return new Trie<char, int> {
                 { "she", 0 },
                 { "sells", 1 },
                 { "sea", 2 },
@@ -20,6 +18,12 @@ namespace WmcSoft.Text
                 { "the", 5 },
                 { "shore", 7 },
             };
+        }
+
+        [Fact]
+        public void CanCreateTrie()
+        {
+            var trie = GetTrie();
 
             Assert.Equal(3, trie["shells".AsReadOnlyList()]);
             Assert.Equal(0, trie["she".AsReadOnlyList()]);
@@ -29,15 +33,7 @@ namespace WmcSoft.Text
         [Fact]
         public void CanRemoveFromTrie()
         {
-            var trie = new Trie<char, int> {
-                { "she", 0 },
-                { "sells", 1 },
-                { "sea", 2 },
-                { "shells", 3 },
-                { "by", 4 },
-                { "the", 5 },
-                { "shore", 7 },
-            };
+            var trie = GetTrie();
 
             Assert.Equal(7, trie.Count);
             Assert.True(trie.ContainsKey("sells"));
@@ -50,55 +46,47 @@ namespace WmcSoft.Text
             Assert.True(trie.ContainsKey("shells"));
         }
 
-        [Fact]
-        public void CanGetKeysWithPrefix()
+        [Theory]
+        [InlineData("sh", new[] { "she", "shells", "shore" })]
+        [InlineData("car", new string[0])]
+        public void CanGetKeysWithPrefix(string prefix, string[] expected)
         {
-            var trie = new Trie<char, int> {
-                { "she", 0 },
-                { "sells", 1 },
-                { "sea", 2 },
-                { "shells", 3 },
-                { "by", 4 },
-                { "the", 5 },
-                { "shore", 7 },
-            };
+            var trie = GetTrie();
 
-            var actual = trie.GetKeysWithPrefix("sh").ToArray();
-            var expected = new[] { "she", "shells", "shore" };
+            var actual = trie.GetKeysWithPrefix(prefix).ToArray();
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void CanMatch()
+        [Theory]
+        [InlineData("car", -1)]
+        [InlineData("s", -1)]
+        [InlineData("she", 3)]
+        [InlineData("theme", 3)]
+        [InlineData("shoe", -1)]
+        public void CanGetLengthLongestPrefixOf(string prefix, int expected)
         {
-            var trie = new Trie<char, int> {
-                { "she", 0 },
-                { "sells", 1 },
-                { "sea", 2 },
-                { "shells", 3 },
-                { "by", 4 },
-                { "the", 5 },
-                { "shore", 7 },
-            };
+            var trie = GetTrie();
 
-            var actual = trie.Match(".he").ToArray();
-            var expected = new[] { "she", "the" };
+            var actual = trie.GetLengthLongestPrefixOf(prefix);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(".he", new[] { "she", "the" })]
+        [InlineData("s....", new[] { "sells", "shore" })]
+        public void CanMatch(string prefix, string[] expected)
+        {
+            var trie = GetTrie();
+
+            var actual = trie.Match(prefix).ToArray();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void CanEnumerateTrie()
         {
+            var trie = GetTrie();
             var expected = new Dictionary<string, int>{
-                { "she", 0 },
-                { "sells", 1 },
-                { "sea", 2 },
-                { "shells", 3 },
-                { "by", 4 },
-                { "the", 5 },
-                { "shore", 7 },
-            };
-            var trie = new Trie<char, int> {
                 { "she", 0 },
                 { "sells", 1 },
                 { "sea", 2 },
@@ -114,31 +102,6 @@ namespace WmcSoft.Text
 
     public static class TrieExtensions
     {
-        public static void Add<T>(this IDictionary<char[], T> trie, string key, T value)
-        {
-            trie.Add(key.ToCharArray(), value);
-        }
-        public static void Add<T>(this Trie<char, T> trie, string key, T value)
-        {
-            trie.Add(key.AsReadOnlyList(), value);
-        }
-
-        public static bool ContainsKey<T>(this Trie<char, T> trie, string key)
-        {
-            return trie.ContainsKey(key.AsReadOnlyList());
-        }
-
-        public static bool Remove<T>(this Trie<char, T> trie, string key)
-        {
-            return trie.Remove(key.AsReadOnlyList());
-        }
-
-        public static IEnumerable<string> GetKeysWithPrefix<T>(this Trie<char, T> trie, string key)
-        {
-            return trie.GetKeysWithPrefix(key.AsReadOnlyList())
-                .Select(s => new string(s.ToArray()));
-        }
-
         public static IEnumerable<string> Match<T>(this Trie<char, T> trie, string key)
         {
             return trie.Match(key.Select(c => c == '.' ? (char?)null : (char?)c).ToList())

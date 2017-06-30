@@ -46,7 +46,8 @@ namespace WmcSoft.Text
             TValue _value;
             readonly IDictionary<TLetter, Node> _nodes;
 
-            public Node() {
+            public Node()
+            {
                 _nodes = new SortedList<TLetter, Node>();
             }
 
@@ -62,7 +63,8 @@ namespace WmcSoft.Text
                 }
             }
 
-            public bool Reset() {
+            public bool Reset()
+            {
                 if (_hasValue) {
                     _hasValue = false;
                     _value = default(TValue);
@@ -71,7 +73,8 @@ namespace WmcSoft.Text
                 return false;
             }
 
-            public bool ResetIf(TValue value) {
+            public bool ResetIf(TValue value)
+            {
                 if (_hasValue && EqualityComparer<TValue>.Default.Equals(_value, value)) {
                     _hasValue = false;
                     _value = default(TValue);
@@ -86,8 +89,7 @@ namespace WmcSoft.Text
 
             public Node this[TLetter index] {
                 get {
-                    Node node;
-                    if (_nodes.TryGetValue(index, out node))
+                    if (_nodes.TryGetValue(index, out Node node))
                         return node;
                     return null;
                 }
@@ -96,11 +98,13 @@ namespace WmcSoft.Text
                 }
             }
 
-            public IEnumerator<TLetter> GetEnumerator() {
+            public IEnumerator<TLetter> GetEnumerator()
+            {
                 return _nodes.Keys.GetEnumerator();
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }
@@ -111,16 +115,18 @@ namespace WmcSoft.Text
         private int _count;
         private int _version;
 
-        Node Locate(Node x, IReadOnlyList<TLetter> key, int d) {
-            if (x == null || d == key.Count) return x;
-            var c = key[d];
-            return Locate(x[c], key, d + 1);
+        Node Locate(Node x, IEnumerator<TLetter> key)
+        {
+            if (x == null || !key.MoveNext()) return x;
+            var c = key.Current;
+            return Locate(x[c], key);
         }
 
-        Node Put(Node x, IReadOnlyList<TLetter> key, int d, TValue value, bool add) {
+        Node Put(Node x, IEnumerator<TLetter> key, TValue value, bool add)
+        {
             if (x == null)
                 x = new Node();
-            if (d == key.Count) {
+            if (!key.MoveNext()) {
                 if (!x.HasValue)
                     _count++;
                 else if (add)
@@ -129,32 +135,41 @@ namespace WmcSoft.Text
                 x.Value = value;
                 return x;
             }
-            var c = key[d];
-            x[c] = Put(x[c], key, d + 1, value, add);
+            var c = key.Current;
+            x[c] = Put(x[c], key, value, add);
             return x;
         }
 
-        void Collect(Node x, List<TLetter> prefix, Queue<KeyValuePair<IReadOnlyList<TLetter>, TValue>> results) {
+        void Collect(Node x, List<TLetter> prefix, Queue<KeyValuePair<IEnumerable<TLetter>, TValue>> results)
+        {
             if (x == null) return;
-            if (x.HasValue) results.Enqueue(new KeyValuePair<IReadOnlyList<TLetter>, TValue>(prefix.ToArray(), x.Value));
+            if (x.HasValue) results.Enqueue(new KeyValuePair<IEnumerable<TLetter>, TValue>(prefix.ToArray(), x.Value));
+
+            var last = prefix.Count;
+            prefix.Add(default(TLetter));
             foreach (var c in x) {
-                prefix.Add(c);
+                prefix[last] = c;
                 Collect(x[c], prefix, results);
-                prefix.RemoveAt(prefix.Count - 1);
             }
+            prefix.RemoveAt(last);
         }
 
-        void Collect(Node x, List<TLetter> prefix, Queue<IReadOnlyList<TLetter>> results) {
+        void Collect(Node x, List<TLetter> prefix, Queue<IEnumerable<TLetter>> results)
+        {
             if (x == null) return;
             if (x.HasValue) results.Enqueue(prefix.ToArray());
+
+            var last = prefix.Count;
+            prefix.Add(default(TLetter));
             foreach (var c in x) {
-                prefix.Add(c);
+                prefix[last] = c;
                 Collect(x[c], prefix, results);
-                prefix.RemoveAt(prefix.Count - 1);
             }
+            prefix.RemoveAt(last);
         }
 
-        void Collect(Node x, List<TLetter> prefix, IReadOnlyList<TLetter?> pattern, Queue<IReadOnlyList<TLetter>> results) {
+        void Collect(Node x, List<TLetter> prefix, List<TLetter?> pattern, Queue<IEnumerable<TLetter>> results)
+        {
             if (x == null) return;
             var d = prefix.Count;
             if (d == pattern.Count) {
@@ -163,29 +178,29 @@ namespace WmcSoft.Text
                 return;
             }
             var p = pattern[d];
+            var last = prefix.Count;
+            prefix.Add(default(TLetter));
             if (!p.HasValue) {
                 foreach (var c in x) {
-                    prefix.Add(c);
+                    prefix[last] = c;
                     Collect(x[c], prefix, pattern, results);
-                    prefix.RemoveAt(prefix.Count - 1);
                 }
             } else {
                 var c = p.GetValueOrDefault();
-                prefix.Add(c);
+                prefix[last] = c;
                 Collect(x[c], prefix, pattern, results);
-                prefix.RemoveAt(prefix.Count - 1);
             }
+            prefix.RemoveAt(last);
         }
 
-        public TValue this[IReadOnlyList<TLetter> key] {
+        public TValue this[IEnumerable<TLetter> key] {
             get {
-                TValue value;
-                if (TryGetValue(key, out value))
+                if (TryGetValue(key, out TValue value))
                     return value;
                 throw new KeyNotFoundException();
             }
             set {
-                _root = Put(_root, key, 0, value, add: false);
+                _root = Put(_root, key.GetEnumerator(), value, add: false);
             }
         }
 
@@ -193,9 +208,9 @@ namespace WmcSoft.Text
 
         public bool IsReadOnly { get { return false; } }
 
-        public ICollection<IReadOnlyList<TLetter>> Keys {
+        public ICollection<IEnumerable<TLetter>> Keys {
             get {
-                return new ReadOnlyCollectionToCollectionAdapter<IReadOnlyList<TLetter>>(_count, this.Select(p => p.Key));
+                return new ReadOnlyCollectionToCollectionAdapter<IEnumerable<TLetter>>(_count, this.Select(p => p.Key));
             }
         }
 
@@ -205,89 +220,107 @@ namespace WmcSoft.Text
             }
         }
 
-        public void Add(KeyValuePair<IReadOnlyList<TLetter>, TValue> item) {
+        public void Add(KeyValuePair<IEnumerable<TLetter>, TValue> item)
+        {
             Add(item.Key, item.Value);
         }
 
-        public void Add(IReadOnlyList<TLetter> key, TValue value) {
-            _root = Put(_root, key, 0, value, add: true);
+        public void Add(IEnumerable<TLetter> key, TValue value)
+        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
+
+            _root = Put(_root, key.GetEnumerator(), value, add: true);
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             _count = 0;
             _root = null;
         }
 
-        public bool Contains(KeyValuePair<IReadOnlyList<TLetter>, TValue> item) {
+        public bool Contains(KeyValuePair<IEnumerable<TLetter>, TValue> item)
+        {
             TValue value;
             return TryGetValue(item.Key, out value) == true && EqualityComparer<TValue>.Default.Equals(value, item.Value);
         }
 
-        public bool ContainsKey(IReadOnlyList<TLetter> key) {
+        public bool ContainsKey(IEnumerable<TLetter> key)
+        {
             TValue value;
             return TryGetValue(key, out value) == true;
         }
 
-        public void CopyTo(KeyValuePair<IReadOnlyList<TLetter>, TValue>[] array, int arrayIndex) {
+        public void CopyTo(KeyValuePair<IEnumerable<TLetter>, TValue>[] array, int arrayIndex)
+        {
             foreach (var item in this)
                 array[arrayIndex++] = item;
         }
 
-        public IEnumerator<KeyValuePair<IReadOnlyList<TLetter>, TValue>> GetEnumerator() {
-            var results = new Queue<KeyValuePair<IReadOnlyList<TLetter>, TValue>>();
+        public IEnumerator<KeyValuePair<IEnumerable<TLetter>, TValue>> GetEnumerator()
+        {
+            var results = new Queue<KeyValuePair<IEnumerable<TLetter>, TValue>>();
             Collect(_root, new List<TLetter>(), results);
             return results.GetEnumerator();
         }
 
-        public IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix) {
-            var results = new Queue<IReadOnlyList<TLetter>>();
-            var node = Locate(_root, prefix, 0);
+        public IEnumerable<IEnumerable<TLetter>> GetKeysWithPrefix(IEnumerable<TLetter> prefix)
+        {
+            var results = new Queue<IEnumerable<TLetter>>();
+            var node = Locate(_root, prefix.GetEnumerator());
             Collect(node, prefix.ToList(), results);
             return results;
         }
 
-        public int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> query) {
-            return GetLengthLongestPrefixOf(_root, query, 0, -1);
+        public int GetLengthLongestPrefixOf(IEnumerable<TLetter> query)
+        {
+            return GetLengthLongestPrefixOf(_root, query.GetEnumerator(), 0, -1);
         }
 
-        int GetLengthLongestPrefixOf(Node x, IReadOnlyList<TLetter> query, int d, int length) {
+        int GetLengthLongestPrefixOf(Node x, IEnumerator<TLetter> query, int d, int length)
+        {
             if (x == null)
                 return length;
             if (x.HasValue)
                 length = d;
-            if (d == query.Count)
+            if (!query.MoveNext())
                 return length;
-            var c = query[d];
+            var c = query.Current;
             return GetLengthLongestPrefixOf(x[c], query, d + 1, length);
         }
 
-        public IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> pattern) {
-            var results = new Queue<IReadOnlyList<TLetter>>();
-            Collect(_root, new List<TLetter>(), pattern, results);
+        public IEnumerable<IEnumerable<TLetter>> Match(IEnumerable<TLetter?> pattern)
+        {
+            var results = new Queue<IEnumerable<TLetter>>();
+            Collect(_root, new List<TLetter>(), pattern.ToList(), results);
             return results;
         }
 
-        public bool Remove(KeyValuePair<IReadOnlyList<TLetter>, TValue> item) {
+        public bool Remove(KeyValuePair<IEnumerable<TLetter>, TValue> item)
+        {
             var comparer = EqualityComparer<TValue>.Default;
             var count = _count;
-            _root = Remove(_root, item.Key, 0, x => x.ResetIf(item.Value));
+            _root = Remove(_root, item.Key.GetEnumerator(), x => x.ResetIf(item.Value));
             return count != _count;
         }
 
-        public bool Remove(IReadOnlyList<TLetter> key) {
+        public bool Remove(IEnumerable<TLetter> key)
+        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
             var count = _count;
-            _root = Remove(_root, key, 0, x => x.Reset());
+            _root = Remove(_root, key.GetEnumerator(), x => x.Reset());
             return count != _count;
         }
 
-        Node Remove(Node x, IReadOnlyList<TLetter> key, int d, Func<Node, bool> disposer) {
+        Node Remove(Node x, IEnumerator<TLetter> key, Func<Node, bool> disposer)
+        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
             if (x == null) return null;
-            if (d == key.Count) {
+            if (!key.MoveNext()) {
                 if (disposer(x))
                     _count--;
             } else {
-                var c = key[d];
-                x[c] = Remove(x[c], key, d + 1, disposer);
+                var c = key.Current;
+                x[c] = Remove(x[c], key, disposer);
             }
 
             // remove subtrie rooted at x if it is completely empty
@@ -296,8 +329,11 @@ namespace WmcSoft.Text
             return null;
         }
 
-        public bool TryGetValue(IReadOnlyList<TLetter> key, out TValue value) {
-            var x = Locate(_root, key, 0);
+        public bool TryGetValue(IEnumerable<TLetter> key, out TValue value)
+        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
+
+            var x = Locate(_root, key.GetEnumerator());
             if (x != null && x.HasValue) {
                 value = x.Value;
                 return true;
@@ -306,7 +342,8 @@ namespace WmcSoft.Text
             return false;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

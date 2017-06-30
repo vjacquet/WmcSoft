@@ -34,7 +34,7 @@ namespace WmcSoft.Text
     /// </summary>
     /// <typeparam name="TLetter">The type of letters that compose the key.</typeparam>
     /// <typeparam name="TValue">The type of the values.</typeparam>
-    public interface ITrie<TLetter, TValue> : IDictionary<IReadOnlyList<TLetter>, TValue>
+    public interface ITrie<TLetter, TValue> : IDictionary<IEnumerable<TLetter>, TValue>
             where TLetter : struct, IEquatable<TLetter>
     {
         /// <summary>
@@ -42,20 +42,20 @@ namespace WmcSoft.Text
         /// </summary>
         /// <param name="query">The query sequence.</param>
         /// <returns>The length of the longest sequence; or -1 if no such sequence exists.</returns>
-        int GetLengthLongestPrefixOf(IReadOnlyList<TLetter> query);
+        int GetLengthLongestPrefixOf(IEnumerable<TLetter> query);
 
         /// <summary>
         /// Returns all of the keys in the set that start with <see cref="prefix"/>.
         /// </summary>
         /// <param name="prefix">The prefix.</param>
         /// <returns>An enumerable of all the keys in the set that start with <see cref="prefix"/>.</returns>
-        IEnumerable<IReadOnlyList<TLetter>> GetKeysWithPrefix(IReadOnlyList<TLetter> prefix);
+        IEnumerable<IEnumerable<TLetter>> GetKeysWithPrefix(IEnumerable<TLetter> prefix);
 
         /// <summary>
         /// Returns all of the keys in the symbol table that match <see cref="pattern"/>, where the null letter is treated as a wildcard letter.
         /// </summary>
         /// <param name="pattern">The pattern</param>
         /// <returns>An enumerable of all the keys in the set that start with <see cref="prefix"/>, where the null letter is treated as a wildcard letter.</returns>
-        IEnumerable<IReadOnlyList<TLetter>> Match(IReadOnlyList<TLetter?> pattern);
+        IEnumerable<IEnumerable<TLetter>> Match(IEnumerable<TLetter?> pattern);
     }
 }
