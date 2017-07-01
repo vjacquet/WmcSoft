@@ -33,6 +33,9 @@ using static WmcSoft.Algorithms;
 
 namespace WmcSoft.Text
 {
+    /// <summary>
+    /// Sorted array of all suffixes of a string.
+    /// </summary>
     public class SuffixArray : IReadOnlyList<string>
     {
         #region Comparer
@@ -53,7 +56,7 @@ namespace WmcSoft.Text
             public int CompareTo(int other)
             {
                 var length = Math.Min(Key.Length, Value.Length - other);
-                var result = String.Compare(Key, 0, Value, other, length, Comparison);
+                var result = string.Compare(Key, 0, Value, other, length, Comparison);
                 if (result == 0)
                     return Comparer<int>.Default.Compare(Key.Length, Value.Length - other);
                 return result;
@@ -75,11 +78,11 @@ namespace WmcSoft.Text
             {
                 int result = 0;
                 if (x < y) {
-                    result = String.Compare(Value, x, Value, y, Value.Length - y, Comparison);
+                    result = string.Compare(Value, x, Value, y, Value.Length - y, Comparison);
                     if (result == 0)
                         return 1;
                 } else if (x > y) {
-                    result = String.Compare(Value, x, Value, y, Value.Length - x, Comparison);
+                    result = string.Compare(Value, x, Value, y, Value.Length - x, Comparison);
                     if (result == 0)
                         return -1;
                 }
@@ -106,15 +109,40 @@ namespace WmcSoft.Text
             Array.Sort(_suffixes, comparer);
         }
 
-        public int Count { get { return _suffixes.Length; } }
+        /// <summary>
+        /// Returns the count of suffixes.
+        /// </summary>
+        public int Count {
+            get { return _suffixes.Length; }
+        }
 
+        /// <summary>
+        /// Returns the suffix at the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public string this[int index] {
             get { return _value.Substring(_suffixes[index]); }
         }
 
+        /// <summary>
+        /// Returns the length of the suffix at the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index of the suffix.</param>
+        /// <returns>The length of the suffix.</returns>
         public int GetLengthOf(int index)
         {
             return _value.Length - _suffixes[index];
+        }
+
+        /// <summary>
+        /// Returns the index of the selected suffix in the unsorted array.
+        /// </summary>
+        /// <param name="index">The index of the suffix.</param>
+        /// <returns>The original index.</returns>
+        public int IndexOf(int index)
+        {
+            return _suffixes[index];
         }
 
         public IEnumerator<string> GetEnumerator()
@@ -142,13 +170,24 @@ namespace WmcSoft.Text
             return length;
         }
 
-        public int Mismatch(int index)
+        /// <summary>
+        /// Returns the length of the longest common prefix between an item and the previous one.
+        /// </summary>
+        /// <param name="index">The index of the suffix.</param>
+        /// <returns>The length of the longest common prefix.</returns>
+        public int GetLongestCommonPrefix(int index)
         {
-            if (index < 1 || index >= _value.Length) throw new ArgumentOutOfRangeException(nameof(index));
-
-            return Mismatch(_suffixes[index], _suffixes[index - 1]);
+            if (index < 0 || index >= _value.Length) throw new ArgumentOutOfRangeException(nameof(index));
+            if (index != 0)
+                return Mismatch(_suffixes[index], _suffixes[index - 1]);
+            return 0;
         }
 
+        /// <summary>
+        /// Returns the number of suffixes less than the <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key to get the rank of.</param>
+        /// <returns>The number of suffixes less than the <paramref name="key"/></returns>
         public int Rank(string key)
         {
             var finder = new SuffixComparable(key, _value, _comparison);
