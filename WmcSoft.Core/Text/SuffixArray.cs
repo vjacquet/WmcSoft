@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using WmcSoft.Collections.Generic;
 
+using static System.Math;
 using static WmcSoft.Algorithms;
 
 namespace WmcSoft.Text
@@ -39,29 +40,6 @@ namespace WmcSoft.Text
     public class SuffixArray : IReadOnlyList<string>
     {
         #region Comparer
-
-        struct SuffixComparable : IComparable<int>
-        {
-            public readonly string Key;
-            public readonly string Value;
-            public readonly StringComparison Comparison;
-
-            public SuffixComparable(string key, string value, StringComparison comparison)
-            {
-                Key = key;
-                Value = value;
-                Comparison = comparison;
-            }
-
-            public int CompareTo(int other)
-            {
-                var length = Math.Min(Key.Length, Value.Length - other);
-                var result = string.Compare(Key, 0, Value, other, length, Comparison);
-                if (result == 0)
-                    return Comparer<int>.Default.Compare(Key.Length, Value.Length - other);
-                return result;
-            }
-        }
 
         struct SuffixComparer : IComparer<int>
         {
@@ -76,24 +54,15 @@ namespace WmcSoft.Text
 
             public int Compare(int x, int y)
             {
-                int result = 0;
-                if (x < y) {
-                    result = string.Compare(Value, x, Value, y, Value.Length - y, Comparison);
-                    if (result == 0)
-                        return 1;
-                } else if (x > y) {
-                    result = string.Compare(Value, x, Value, y, Value.Length - x, Comparison);
-                    if (result == 0)
-                        return -1;
-                }
-                return result;
+                var length = Value.Length - Min(x, y); // length of the longest suffix.
+                return string.Compare(Value, x, Value, y, length, Comparison);
             }
         }
 
         #endregion
 
         readonly string _value;
-        public readonly StringComparison _comparison;
+        readonly StringComparison _comparison;
         readonly int[] _suffixes;
 
         public SuffixArray(string value, StringComparison comparison = StringComparison.CurrentCulture)
@@ -103,6 +72,7 @@ namespace WmcSoft.Text
             _value = value;
             _comparison = comparison;
 
+            // contains the offsets from the begining of the string
             _suffixes = Iota(value.Length);
 
             var comparer = new SuffixComparer(value, comparison);
@@ -160,12 +130,10 @@ namespace WmcSoft.Text
 
         int Mismatch(int x, int y)
         {
-            var length = _value.Length - Math.Max(x, y);
+            var length = _value.Length - Max(x, y); // length of the shortest suffix
             for (int i = 0; i < length; i++) {
-                if (string.Compare(_value, x, _value, y, 1, _comparison) != 0)
+                if (string.Compare(_value, x + i, _value, y + i, 1, _comparison) != 0)
                     return i;
-                x++;
-                y++;
             }
             return length;
         }
@@ -178,20 +146,23 @@ namespace WmcSoft.Text
         public int GetLongestCommonPrefix(int index)
         {
             if (index < 0 || index >= _value.Length) throw new ArgumentOutOfRangeException(nameof(index));
-            if (index != 0)
-                return Mismatch(_suffixes[index], _suffixes[index - 1]);
-            return 0;
+            return (index == 0) ? 0 : Mismatch(_suffixes[index], _suffixes[index - 1]);
         }
 
         /// <summary>
         /// Returns the number of suffixes less than the <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to get the rank of.</param>
-        /// <returns>The number of suffixes less than the <paramref name="key"/></returns>
+        /// <returns>The number of suffixes less than the <paramref name="key"/>.</returns>
         public int Rank(string key)
         {
-            var finder = new SuffixComparable(key, _value, _comparison);
-            return _suffixes.BinaryRank(x => -finder.CompareTo(x));
+            Func<int, int> finder = x => {
+                var suffixLength = _value.Length - x;
+                var length = Max(key.Length, suffixLength);
+                return string.Compare(_value, x, key, 0, length, _comparison);
+            };
+
+            return _suffixes.BinaryRank(finder);
         }
     }
 }
