@@ -273,9 +273,6 @@ namespace WmcSoft
         /// <returns>The length of each dimension.</returns>
         public static IEnumerable<int> EnumerateDimensions(this Array array)
         {
-            if (array == null)
-                yield break;
-
             var rank = array.Rank;
             for (int i = 0; i < rank; i++) {
                 yield return array.GetLength(i);
@@ -385,10 +382,10 @@ namespace WmcSoft
         public static void ReplaceIf<T>(this T[] array, int startIndex, int length, Predicate<T> predicate, T newValue)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             UnguardedReplaceIf(array, startIndex, length, predicate, newValue);
         }

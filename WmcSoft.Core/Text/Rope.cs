@@ -128,7 +128,7 @@ namespace WmcSoft.Text
             if (index < 0 || index > _length) throw new ArgumentOutOfRangeException(nameof(index));
 
             if (_value != null) {
-                _value = _value.Substring(0, index) + value.ToString() + _value.Substring(index);
+                _value = _value.Substring(0, index) + value + _value.Substring(index);
                 _length = _value.Length;
             } else {
                 var leftLength = _left.Length;
