@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonymousTransformation.cs" />
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BytesFormatter.cs" />
     <Compile Include="BitArithmetics.cs" />

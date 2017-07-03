@@ -36,10 +36,9 @@ namespace WmcSoft.Text
 
         static string Format(IFormatProvider provider, Match m, object value)
         {
-            string format = m.Groups["format"].Success
-                ? "{0:" + m.Groups["format"].Value + "}"
-                : "{0}";
-            return String.Format(provider, format, value);
+            var group = m.Groups["format"];
+            string format = group.Success ? ("{0:" + group.Value + "}") : "{0}";
+            return string.Format(provider, format, value);
         }
         static string ReplaceValue(IFormatProvider provider, Match m, IDictionary<string, object> values)
         {
