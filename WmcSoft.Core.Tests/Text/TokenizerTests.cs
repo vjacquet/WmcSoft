@@ -9,7 +9,7 @@ namespace WmcSoft.Text
         public void CanTokenizeString()
         {
             var expected = new[] { "a", "b", "c" };
-            var actual = "a b c".Tokenize().ToArray();
+            var actual = "a b c".Tokenize();
             Assert.Equal(expected, actual);
         }
 
@@ -17,7 +17,7 @@ namespace WmcSoft.Text
         public void CanTokenizeStringWithEmptyTokens()
         {
             var expected = new[] { "a", "b", "c" };
-            var actual = " a  b c ".Tokenize().ToArray();
+            var actual = " a  b c ".Tokenize();
             Assert.Equal(expected, actual);
         }
 
@@ -25,7 +25,7 @@ namespace WmcSoft.Text
         public void CanTokenizeOnChar()
         {
             var expected = new[] { "a", "b", "c" };
-            var actual = " a  b c ".Tokenize(' ').ToArray();
+            var actual = " a  b c ".Tokenize(' ');
             Assert.Equal(expected, actual);
         }
     }

@@ -174,51 +174,10 @@ namespace WmcSoft
 
         #region AsWords
 
-        enum AsWordsState
-        {
-            Start,
-            Lower,
-            Upper,
-            NewWord,
-        }
-
-        static bool IsWordDelimiter(char c)
-        {
-            return char.IsWhiteSpace(c) || c == '_' || c == '-';
-        }
-
         static IEnumerable<string> UnguardedAsWords(string sentence)
         {
-            var state = AsWordsState.Start;
-            var first = 0;
-            for (var i = 0; i < sentence.Length; i++) {
-                var c = sentence[i];
-                if (IsWordDelimiter(c)) {
-                    if (state != AsWordsState.Start) {
-                        yield return sentence.Substring(first, i - first);
-                        do { i++; }
-                        while (i < sentence.Length && IsWordDelimiter(sentence[i]));
-                        state = AsWordsState.NewWord;
-                    }
-                    first = i;
-                } else if (char.IsUpper(c)) {
-                    switch (state) {
-                    case AsWordsState.Lower:
-                    case AsWordsState.NewWord:
-                        yield return sentence.Substring(first, i - first);
-                        first = i;
-                        break;
-                    case AsWordsState.Upper:
-                        break;
-                    }
-
-                    state = AsWordsState.Upper;
-                } else {
-                    state = AsWordsState.Lower;
-                }
-            }
-            if (first < sentence.Length)
-                yield return sentence.Substring(first, sentence.Length - first);
+            var tokenizer = new WordsTokenizer();
+            return tokenizer.Tokenize(sentence);
         }
 
         public static IEnumerable<string> AsWords(this string sentence)

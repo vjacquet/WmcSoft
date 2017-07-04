@@ -201,20 +201,16 @@ namespace WmcSoft
             Assert.False("abaaba".Glob("abaabac"));
         }
 
-        [Fact]
-        public void CheckAsWords()
-        {
-            CheckWords("abc", "abc");
-            CheckWords("abc def", "abc", "def");
-            CheckWords("abc def", "abc", "def");
-            CheckWords("abc-def", "abc", "def");
-            CheckWords("abc_def", "abc", "def");
-            CheckWords("AbcDef", "Abc", "Def");
-            CheckWords("ABcDefGHI", "ABc", "Def", "GHI");
-            CheckWords("abcDefGHI", "abc", "Def", "GHI");
-        }
-
-        static void CheckWords(string sentence, params string[] words)
+        [Theory]
+        [InlineData("abc", new[] { "abc" })]
+        [InlineData("abc def", new[] { "abc", "def" })]
+        [InlineData("abc def", new[] { "abc", "def" })]
+        [InlineData("abc-def", new[] { "abc", "def" })]
+        [InlineData("abc_def", new[] { "abc", "def" })]
+        [InlineData("AbcDef", new[] { "Abc", "Def" })]
+        [InlineData("ABcDefGHI", new[] { "ABc", "Def", "GHI" })]
+        [InlineData("abcDefGHI", new[] { "abc", "Def", "GHI" })]
+        public void CheckAsWords(string sentence, string[] words)
         {
             var actual = sentence.AsWords().ToArray();
             var expected = words;

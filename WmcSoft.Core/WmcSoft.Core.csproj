@@ -240,6 +240,7 @@
     <Compile Include="Text\LowerAlphaCounter.cs" />
     <Compile Include="Text\SuffixArray.cs" />
     <Compile Include="Text\Trie.cs" />
+    <Compile Include="Text\WordsTokenizer.cs" />
     <Compile Include="Triple.cs" />
     <Compile Include="Pair.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
