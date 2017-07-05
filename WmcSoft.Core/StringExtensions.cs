@@ -385,13 +385,12 @@ namespace WmcSoft
             return list.ToArray();
         }
 
-        public static string ToCamelCase(this string self)
+        public static string ToCamelCase(this string source)
         {
-            if (string.IsNullOrEmpty(self) || !char.IsUpper(self[0]))
-                return self;
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var culture = CultureInfo.InvariantCulture;
-            char[] array = self.ToCharArray();
+            char[] array = source.ToCharArray();
             var i = 0;
             while (i < array.Length && (i != 1 || char.IsUpper(array[i]))) {
                 var flag = i + 1 < array.Length;

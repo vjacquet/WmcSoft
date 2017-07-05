@@ -208,7 +208,7 @@ namespace WmcSoft
         [InlineData("abc-def", new[] { "abc", "def" })]
         [InlineData("abc_def", new[] { "abc", "def" })]
         [InlineData("AbcDef", new[] { "Abc", "Def" })]
-        [InlineData("ABcDefGHI", new[] { "ABc", "Def", "GHI" })]
+        [InlineData("ABcDefGHI", new[] { "A", "Bc", "Def", "GHI" })]
         [InlineData("abcDefGHI", new[] { "abc", "Def", "GHI" })]
         public void CheckAsWords(string sentence, string[] words)
         {
@@ -217,23 +217,28 @@ namespace WmcSoft
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void CheckToCamelCase()
+        [Theory]
+        [InlineData("CheckToCamelCase", "checkToCamelCase")]
+        [InlineData("ISOLetter", "isoLetter")]
+        public void CheckToCamelCase(string source, string expected)
         {
-            Assert.Equal("checkToCamelCase", "CheckToCamelCase".ToCamelCase());
+            Assert.Equal(expected, source.ToCamelCase());
         }
 
-        [Fact]
-        public void CheckToSnakeCase()
+        [Theory]
+        [InlineData("CheckToSnakeCase", "check_to_snake_case")]
+        [InlineData("ISOLetter", "iso_letter")]
+        public void CheckToSnakeCase(string source, string expected)
         {
-            Assert.Equal("check_to_snake_case", "CheckToSnakeCase".ToSnakeCase());
+            Assert.Equal(expected, source.ToSnakeCase());
         }
 
-        [Fact]
-        public void CheckToKebabCase()
+        [Theory]
+        [InlineData("CheckToKebabCase", "check-to-kebab-case")]
+        [InlineData("ISOLetter", "iso-letter")]
+        public void CheckToKebabCase(string source, string expected)
         {
-            Assert.Equal("check-to-kebab-case", "CheckToKebabCase".ToKebabCase());
+            Assert.Equal(expected, source.ToKebabCase());
         }
-
     }
 }

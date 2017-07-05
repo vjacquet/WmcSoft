@@ -46,18 +46,30 @@ namespace WmcSoft.Text
                     first = i;
                 } else if (char.IsUpper(c)) {
                     switch (state) {
+                    case AsWordsState.Upper:
+                    case AsWordsState.ConsecutiveUpper:
+                        state = AsWordsState.ConsecutiveUpper;
+                        break;
                     case AsWordsState.Lower:
                     case AsWordsState.NewWord:
                         yield return value.Substring(first, i - first);
                         first = i;
-                        break;
-                    case AsWordsState.Upper:
+                        goto default;
+                    default:
+                        state = AsWordsState.Upper;
                         break;
                     }
 
-                    state = AsWordsState.Upper;
                 } else {
-                    state = AsWordsState.Lower;
+                    switch (state) {
+                    case AsWordsState.ConsecutiveUpper:
+                        yield return value.Substring(first, i - first - 1);
+                        first = i - 1;
+                        goto default;
+                    default:
+                        state = AsWordsState.Lower;
+                        break;
+                    }
                 }
             }
             if (first < value.Length)
@@ -69,6 +81,7 @@ namespace WmcSoft.Text
             Start,
             Lower,
             Upper,
+            ConsecutiveUpper,
             NewWord,
         }
 
