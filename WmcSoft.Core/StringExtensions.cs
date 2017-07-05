@@ -389,16 +389,17 @@ namespace WmcSoft
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
+            if (source == "") return source;
+
             var culture = CultureInfo.InvariantCulture;
             char[] array = source.ToCharArray();
-            var i = 0;
-            while (i < array.Length && (i != 1 || char.IsUpper(array[i]))) {
-                var flag = i + 1 < array.Length;
-                if ((i > 0 & flag) && !char.IsUpper(array[i + 1])) {
-                    break;
+            var length = source.Length;
+            array[0] = char.ToLower(array[0], culture);
+            for (int i = 1; i < length; i++) {
+                if ((i + 1 < length) && !char.IsUpper(array[i + 1])) {
+                    break; // next is lower.
                 }
                 array[i] = char.ToLower(array[i], culture);
-                i++;
             }
             return new string(array);
         }

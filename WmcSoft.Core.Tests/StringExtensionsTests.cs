@@ -203,6 +203,7 @@ namespace WmcSoft
 
         [Theory]
         [InlineData("abc", new[] { "abc" })]
+        [InlineData("ABC", new[] { "ABC" })]
         [InlineData("abc def", new[] { "abc", "def" })]
         [InlineData("abc def", new[] { "abc", "def" })]
         [InlineData("abc-def", new[] { "abc", "def" })]
@@ -220,6 +221,8 @@ namespace WmcSoft
         [Theory]
         [InlineData("CheckToCamelCase", "checkToCamelCase")]
         [InlineData("ISOLetter", "isoLetter")]
+        [InlineData("ISO", "iso")]
+        [InlineData("ALetter", "aLetter")]
         public void CheckToCamelCase(string source, string expected)
         {
             Assert.Equal(expected, source.ToCamelCase());
