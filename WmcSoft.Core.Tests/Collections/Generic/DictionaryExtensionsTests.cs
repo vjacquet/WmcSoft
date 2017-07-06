@@ -170,5 +170,35 @@ namespace WmcSoft.Collections.Generic
             };
             Assert.Throws<ArgumentException>(() => dictionary.RenameKey(0, 2));
         }
+
+        [Fact]
+        public void CanPerformSimpleProjection()
+        {
+            var dictionary = new Dictionary<int, string> {
+                { 0, "zero" },
+                { 2, "two" },
+                { 3, "three" },
+                { 5, "five" },
+            };
+
+            var actual = dictionary.Project(2, 3);
+            var expected = new[] { "two", "three" };
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanPerformMappedProjection()
+        {
+            var dictionary = new Dictionary<int, string> {
+                { 0, "zero" },
+                { 2, "two" },
+                { 3, "three" },
+                { 5, "five" },
+            };
+
+            var actual = dictionary.Project(x => x + 10, 12, 13);
+            var expected = new[] { "two", "three" };
+            Assert.Equal(expected, actual);
+        }
     }
 }

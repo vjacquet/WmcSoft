@@ -105,6 +105,60 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Project
+
+        /// <summary>
+        /// Projects the dictionary values in an array at the specified <paramref name="keys"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source dictionary</param>
+        /// <param name="keys">The keys of the expected values.</param>
+        /// <returns>An array of <typeparamref name="TValue"/>.</returns>
+        public static TValue[] Project<TKey,  TValue>(this IDictionary<TKey, TValue> source, params TKey[] keys)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            var length = keys.Length;
+            var result = new TValue[length];
+            for (int i = 0; i < length; i++) {
+                var key = keys[i];
+                if (source.TryGetValue(key, out TValue value))
+                    result[i] = value;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Projects the dictionary values in an array at the specified <paramref name="coordinates"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TCoord">The type of the coordinates.</typeparam>
+        /// <typeparam name="TValue">The type of the value</typeparam>
+        /// <param name="source">The source dictionary</param>
+        /// <param name="map">The function to transform the dictionary's key to coordinate.</param>
+        /// <param name="coordinates">The coordinates of the expected values.</param>
+        /// <returns>An array of <typeparamref name="TValue"/>.</returns>
+        /// <remarks>When multiple keys map to the same coordinate, the projected value is the value of the last enumerated key.</remarks>
+        public static TValue[] Project<TKey, TCoord, TValue>(this IDictionary<TKey, TValue> source, Func<TKey, TCoord> map, params TCoord[] coordinates)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (map == null) throw new ArgumentNullException(nameof(map));
+
+            var mapper = new Dictionary<TCoord, int>(coordinates.Length);
+            mapper.AddRange(coordinates.Select((x, i) => new KeyValuePair<TCoord, int>(x, i)));
+
+            var result = new TValue[coordinates.Length];
+            foreach (var kv in source) {
+                var key = map(kv.Key);
+                if (mapper.TryGetValue(key, out int index))
+                    result[index] = kv.Value;
+            }
+            return result;
+        }
+
+        #endregion
+
         #region Set methods
 
         /// <summary>
