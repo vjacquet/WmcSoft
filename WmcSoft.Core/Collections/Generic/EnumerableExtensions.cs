@@ -816,6 +816,7 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
         #region Read
 
         [DebuggerStepThrough]
@@ -1429,6 +1430,24 @@ namespace WmcSoft.Collections.Generic
                 }
             }
             return d;
+        }
+
+        #endregion
+
+        #region ToHashSet
+
+        /// <summary>
+        /// Creates a <see cref="HashSet{T}"/> from an <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The <see cref="IEnumerable{T}"/> to create a <see cref="HashSet{T}"/> from.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values in the set, or null to use the default <see cref="EqualityComparer{T}"/> implementation for the set type.</param>
+        /// <returns>A <see cref="HashSet{T}"/> that contains element from the input sequence.</returns>
+        public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer = null)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return new HashSet<TSource>(source, comparer);
         }
 
         #endregion
