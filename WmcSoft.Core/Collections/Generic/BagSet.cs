@@ -31,7 +31,13 @@ using System.Linq;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Represents a set in which the items are not ordered.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the bag.</typeparam>
     [DebuggerDisplay("Count = {Count}")]
+    [Serializable]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     public class BagSet<T> : ISet<T>
     {
         #region Fields
@@ -120,8 +126,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The collection of items to remove from the Set.</param>
         public void ExceptWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             foreach (var item in other) {
                 Remove(item);
@@ -134,8 +139,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The collection to compare to the current Set.</param>
         public void IntersectWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
             if (_storage.Count == 0)
@@ -156,8 +160,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set is a proper subset of other; otherwise, false.</returns>
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new HashSet<T>(other, Comparer);
             foreach (var item in this) {
@@ -174,8 +177,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set is a proper superset of other; otherwise, false.</returns>
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new HashSet<T>(other, Comparer);
             return tmp.IsProperSubsetOf(this);
@@ -188,8 +190,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the current Set is a subset of other; otherwise, false.</returns>
         public bool IsSubsetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new HashSet<T>(other, Comparer);
             foreach (var item in this) {
@@ -206,8 +207,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set is a superset of other; otherwise, false.</returns>
         public bool IsSupersetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new HashSet<T>(other, Comparer);
             return tmp.IsSubsetOf(this);
@@ -220,8 +220,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set and other share at least one common element; otherwise, false.</returns>
         public bool Overlaps(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
             if (_storage.Count == 0)
@@ -245,8 +244,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the current Set is equal to other; otherwise, false.</returns>
         public bool SetEquals(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new HashSet<T>(this, Comparer);
             foreach (var item in other) {
@@ -258,8 +256,7 @@ namespace WmcSoft.Collections.Generic
 
         public void SymmetricExceptWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new HashSet<T>(other, Comparer);
             foreach (var item in tmp) {
@@ -275,8 +272,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The collection to compare to the current Set.</param>
         public void UnionWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             foreach (var item in other)
                 Add(item);

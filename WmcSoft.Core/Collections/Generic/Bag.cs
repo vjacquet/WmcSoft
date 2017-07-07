@@ -244,9 +244,9 @@ namespace WmcSoft.Collections.Generic
             var index = Array.IndexOf(_storage, item, 0, _count);
             if (index < 0)
                 return false;
-            _version++;
             _storage[index] = _storage[--_count];
             _storage[_count] = default(T);
+            _version++;
             return true;
         }
 

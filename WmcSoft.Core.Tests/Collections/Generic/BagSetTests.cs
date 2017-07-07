@@ -40,7 +40,7 @@ namespace WmcSoft.Collections.Generic
 
             var expected = new[] { 1, 2, 3 };
             var actual = bag.Where(i => i < 4).ToArray();
-            Assert.Equal(expected, actual);
+            Assert.True(expected.Equivalent(actual));
         }
 
         [Fact]

@@ -205,7 +205,6 @@ namespace WmcSoft
         [InlineData("abc", new[] { "abc" })]
         [InlineData("ABC", new[] { "ABC" })]
         [InlineData("abc def", new[] { "abc", "def" })]
-        [InlineData("abc def", new[] { "abc", "def" })]
         [InlineData("abc-def", new[] { "abc", "def" })]
         [InlineData("abc_def", new[] { "abc", "def" })]
         [InlineData("AbcDef", new[] { "Abc", "Def" })]
