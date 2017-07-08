@@ -215,6 +215,7 @@
     <Compile Include="IDisposableBin.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
+    <Compile Include="IO\ReportProgressStream.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Linq\Expressions\ParameterRebindExpressionVisitor.cs" />

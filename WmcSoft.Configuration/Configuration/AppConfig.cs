@@ -34,7 +34,8 @@ namespace WmcSoft.Configuration
 {
     public static class AppConfig
     {
-        static IDictionary<Type, string> _knownConfigurationSections;
+        static Dictionary<Type, string> _knownConfigurationSections;
+
         static AppConfig()
         {
             _knownConfigurationSections = new Dictionary<Type, string>();

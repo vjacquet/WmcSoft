@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Linq;
 using WmcSoft.Diagnostics.Checkpoints;
 
 namespace WmcSoft.Configuration

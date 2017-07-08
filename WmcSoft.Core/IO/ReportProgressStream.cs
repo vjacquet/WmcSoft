@@ -24,19 +24,19 @@
 
 #endregion
 
-using System.ComponentModel;
+using System;
 using System.IO;
 
 namespace WmcSoft.IO
 {
     /// <summary>
-    /// A stream decorator to report reading progress on a <see cref="BackgroundWorker"/>.
+    /// A stream decorator to report reading progress on a <see cref="IProgress{int}"/>.
     /// </summary>
     public class ReportProgressStream : StreamDecorator
     {
         #region Fields
 
-        readonly BackgroundWorker _worker;
+        readonly IProgress<int> _progress;
         readonly long _length;
         long _read;
 
@@ -44,15 +44,15 @@ namespace WmcSoft.IO
 
         #region Lifecycle
 
-        public ReportProgressStream(Stream stream, BackgroundWorker worker)
-            : this(stream, stream.Length, worker)
+        public ReportProgressStream(Stream stream, IProgress<int> progress)
+            : this(stream, stream.Length, progress)
         {
         }
 
-        public ReportProgressStream(Stream stream, long length, BackgroundWorker worker)
+        public ReportProgressStream(Stream stream, long length, IProgress<int> progress)
             : base(stream)
         {
-            _worker = worker;
+            _progress = progress;
             _length = length;
         }
 
@@ -65,7 +65,7 @@ namespace WmcSoft.IO
             var read = base.Read(buffer, offset, count);
 
             _read += read;
-            _worker.ReportProgress((int)((100 * _read) / _length));
+            _progress.Report((int)((100 * _read) / _length));
 
             return read;
         }

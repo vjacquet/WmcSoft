@@ -26,15 +26,12 @@
 
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
 using System.Drawing;
-using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Security.Permissions;
 using WmcSoft.ComponentModel.Design;
-using WmcSoft.ComponentModel.Design.Serialization;
 
 namespace WmcSoft.Net
 {
@@ -217,126 +214,6 @@ namespace WmcSoft.Net
     }
 
     #region Design section
-
-    public class PhysicalAddressTypeConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string) || sourceType == typeof(byte[]))
-                return true;
-            return base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value == null)
-                return null;
-
-            var sourceType = value.GetType();
-            if (sourceType == typeof(byte[]))
-                return new PhysicalAddress((byte[])value);
-
-            if (value is string) {
-                var text = value.ToString();
-                if (text == "")
-                    return null;
-
-                return PhysicalAddress.Parse(text);
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            if (destinationType == typeof(InstanceDescriptor) || destinationType == typeof(byte[]))
-                return true;
-            return base.CanConvertTo(context, destinationType);
-        }
-
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (value == null)
-                return null;
-
-            var address = value as PhysicalAddress;
-            if (address != null) {
-                if (destinationType == typeof(string)) {
-                    var bytes = address.GetAddressBytes();
-                    if (bytes == null || bytes.Length == 0)
-                        return null;
-                    return String.Join("-", bytes.ConvertAll(b => b.ToString("x2")));
-                }
-
-                if (destinationType == typeof(InstanceDescriptor))
-                    //return typeof(PhysicalAddress).DescribeMethod("Parse", address.ToString());
-                    return typeof(PhysicalAddress).DescribeConstructor(address.GetAddressBytes());
-
-                if (destinationType == typeof(byte[]))
-                    return address.GetAddressBytes();
-            }
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
-    }
-
-    public class IPAddressTypeConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string) || sourceType == typeof(byte[]))
-                return true;
-            return base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value == null)
-                return null;
-
-            var sourceType = value.GetType();
-            if (sourceType == typeof(byte[]))
-                return new IPAddress((byte[])value);
-
-            if (value is string) {
-                var text = value.ToString();
-                if (text == "")
-                    return null;
-
-                IPAddress address;
-                if (IPAddress.TryParse(text, out address))
-                    return address;
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            if (destinationType == typeof(InstanceDescriptor) || destinationType == typeof(byte[]))
-                return true;
-            return base.CanConvertTo(context, destinationType);
-        }
-
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (value == null)
-                return null;
-
-            var address = value as IPAddress;
-            if (address != null) {
-                if (destinationType == typeof(string))
-                    return address.ToString();
-
-                if (destinationType == typeof(InstanceDescriptor))
-                    //return typeof(IPAddress).DescribeMethod("Parse", address.ToString());
-                    return typeof(IPAddress).DescribeConstructor(address.GetAddressBytes());
-
-                if (destinationType == typeof(byte[]))
-                    return address.GetAddressBytes();
-            }
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
-    }
 
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     public class WakeOnLanDesigner : ComponentDesignerBase
