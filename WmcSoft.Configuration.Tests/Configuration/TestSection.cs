@@ -40,11 +40,5 @@ namespace WmcSoft.Configuration
     [ConfigurationCollection(typeof(CheckpointElement), CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
     public class CheckpointCollection : ConfigurationElementCollection<CheckpointElement>
     {
-        public new CheckpointElement this[string name] {
-            get {
-                return this.Cast<CheckpointElement>()
-                    .SingleOrDefault(t => t.Name == name);
-            }
-        }
     }
 }

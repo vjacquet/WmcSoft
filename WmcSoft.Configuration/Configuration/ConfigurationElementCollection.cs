@@ -62,12 +62,19 @@ namespace WmcSoft.Configuration
 
         protected virtual object GetElementKey(T element)
         {
-            return element.ElementInformation.Properties.Cast<PropertyInformation>()
+            var key = element.ElementInformation.Properties.Cast<PropertyInformation>()
                 .Single(p => p.IsKey);
+            return key.Value;
         }
         protected sealed override object GetElementKey(ConfigurationElement element)
         {
             return GetElementKey((T)element);
+        }
+
+        public T this[object key] {
+            get {
+                return (T)BaseGet(key);
+            }
         }
 
         #region ICollection<T> Membres

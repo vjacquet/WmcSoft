@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace WmcSoft.Diagnostics
 {
@@ -148,6 +149,14 @@ namespace WmcSoft.Diagnostics
         public static object GetCapturedEntry(this Exception exception, string name, bool crawlInnerExceptions = false)
         {
             return GetCapturedEntry(exception, DataKeyConverter.Default, name, crawlInnerExceptions);
+        }
+
+        public static void RethrowWithNoStackTraceLoss(this Exception exception)
+        {
+            // see <http://bradwilson.typepad.com/blog/2008/04/small-decisions.html>
+            var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
+            remoteStackTraceString.SetValue(exception, exception.StackTrace);
+            throw exception;
         }
     }
 }
