@@ -91,6 +91,4 @@ namespace WmcSoft.Net
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
-
-    #endregion
 }
