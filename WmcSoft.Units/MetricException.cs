@@ -30,10 +30,9 @@ using System.Runtime.Serialization;
 namespace WmcSoft.Units
 {
     /// <summary>
-    /// Description résumée de MetricException.
+    /// Serves as the base class for metric exceptions.
     /// </summary>
-    [Serializable]
-    public abstract class MetricException : ApplicationException
+    public abstract class MetricException : Exception
     {
         protected MetricException(string message)
             : base(message)

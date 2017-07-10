@@ -31,8 +31,9 @@ using WmcSoft.Units;
 namespace WmcSoft.Business.Accounting
 {
     /// <summary>
-    /// Description résumée de IncompatibleCurrencyException.
+    /// The exception that is thrown when an operation involving two <see cref="Money"/> uses different currencies.
     /// </summary>
+    [Serializable]
     public class IncompatibleCurrencyException : IncompatibleMetricException
     {
         public IncompatibleCurrencyException()

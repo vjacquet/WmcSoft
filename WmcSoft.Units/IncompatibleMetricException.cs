@@ -31,7 +31,7 @@ using WmcSoft.Units.Properties;
 namespace WmcSoft.Units
 {
     /// <summary>
-    /// Description résumée de IncompatibleMetricException.
+    /// The exception that is thrown when an operation involving two quantities uses incompatible metrics.
     /// </summary>
     [Serializable]
     public class IncompatibleMetricException : MetricException

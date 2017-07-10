@@ -29,6 +29,7 @@ using System.Runtime.Serialization;
 
 namespace WmcSoft.Business.RuleModel
 {
+    [Serializable]
     public class UnexpectedElementException : RuleModelException
     {
         public UnexpectedElementException()
