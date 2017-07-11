@@ -144,6 +144,7 @@
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="OrdinalSetTests.cs" />
     <Compile Include="OrdinalTests.cs" />
+    <Compile Include="Text\NumericalComparerTests.cs" />
     <Compile Include="TripleTests.cs" />
     <Compile Include="PairTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

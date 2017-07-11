@@ -236,6 +236,7 @@
     <Compile Include="Text\ITrie.cs" />
     <Compile Include="Text\LoremIpsumGenerator.cs" />
     <Compile Include="Text\DecimalCounter.cs" />
+    <Compile Include="Text\NumericalComparer.cs" />
     <Compile Include="Text\Rope.cs" />
     <Compile Include="Text\UpperAlphaCounter.cs" />
     <Compile Include="Text\LowerAlphaCounter.cs" />
