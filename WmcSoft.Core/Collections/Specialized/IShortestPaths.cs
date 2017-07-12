@@ -26,7 +26,7 @@
 
 namespace WmcSoft.Collections.Specialized
 {
-    public interface IShortestPaths<TVertex, TEdge, TWeight> 
+    public interface IShortestPaths<in TVertex, out TEdge, TWeight> 
         : IPaths<TVertex, TEdge>
     {
         TWeight DistanceTo(TVertex v);

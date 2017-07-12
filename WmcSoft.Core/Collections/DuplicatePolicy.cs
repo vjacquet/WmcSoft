@@ -26,6 +26,9 @@
 
 namespace WmcSoft.Collections
 {
+    /// <summary>
+    /// Policy applied when trying to insert duplicates.
+    /// </summary>
     public enum DuplicatePolicy
     {
         ThrowException = 0,

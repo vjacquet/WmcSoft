@@ -45,7 +45,7 @@ namespace WmcSoft.Collections
 
         public ReverseComparer(IComparer comparer)
         {
-            if (comparer == null)                throw new ArgumentNullException(nameof(comparer));
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
 
             _comparer = comparer;
         }

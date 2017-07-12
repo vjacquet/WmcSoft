@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public interface ITopological<TVertex>
+    public interface ITopological<out TVertex>
     {
         bool IsDag { get; }
         IReadOnlyCollection<TVertex> Order { get; }

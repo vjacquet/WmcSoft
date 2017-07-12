@@ -24,12 +24,15 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace WmcSoft.Collections.Specialized
 {
-    public interface IGraphBuilder<TVertex>
+    /// <summary>
+    /// Exposes the methods to build a <see cref="IGraph"/>.
+    /// </summary>
+    /// <typeparam name="TVertex">The type of vertices.</typeparam>
+    public interface IGraphBuilder<in TVertex>
     {
         void Connect(TVertex v, TVertex w);
+        void Disconnect(TVertex v, TVertex w);
     }
 }

@@ -30,28 +30,28 @@ namespace WmcSoft.Collections.Specialized
 {
     public class Degrees
     {
-        private readonly int[] _indegress;
-        private readonly int[] _outdegress;
+        private readonly int[] _indegrees;
+        private readonly int[] _outdegrees;
 
-        protected int VerticeCount { get { return _indegress.Length; } }
+        protected int VerticeCount { get { return _indegrees.Length; } }
 
         public Degrees(IDirectedGraph graph) {
             var length = graph.VerticeCount;
-            _indegress = new int[length];
-            _outdegress = new int[length];
+            _indegrees = new int[length];
+            _outdegrees = new int[length];
 
             var contains = new bool[length];
             for (int v = 0; v < length; v++) {
                 var bag = graph.Adjacents(v);
 
-                _outdegress[v] = bag.Count;
+                _outdegrees[v] = bag.Count;
 
                 foreach (var w in bag) {
                     contains[w] = true;
                 }
                 for (int w = 0; w < length; w++) {
                     if (contains[w]) {
-                        _indegress[w]++;
+                        _indegrees[w]++;
                         contains[w] = false;
                     }
                 }
@@ -59,11 +59,11 @@ namespace WmcSoft.Collections.Specialized
         }
 
         public int Indegree(int v) {
-            return _indegress[v];
+            return _indegrees[v];
         }
 
         public int Outdegree(int v) {
-            return _outdegress[v];
+            return _outdegrees[v];
         }
 
         public IEnumerable<int> Sources() {

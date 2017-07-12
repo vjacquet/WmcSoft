@@ -24,14 +24,11 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace WmcSoft.Collections.Generic
 {
     public interface IOrderedDictionary<TKey, TValue> : IReadOnlyOrderedDictionary<TKey, TValue>
     {
         void RemoveMin();
-
         void RemoveMax();
     }
 }

@@ -31,7 +31,7 @@ namespace WmcSoft.Collections.Specialized
     /// <summary>
     /// Represents a weighted graph.
     /// </summary>
-    public interface IWeightedGraph<TEgde> : IGraph
+    public interface IWeightedGraph<out TEgde> : IGraph
     {
         IReadOnlyCollection<TEgde> Edges(int v);
     }
