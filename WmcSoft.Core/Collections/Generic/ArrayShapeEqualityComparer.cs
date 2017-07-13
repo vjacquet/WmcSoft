@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
@@ -48,7 +47,7 @@ namespace WmcSoft.Collections.Generic
                 return false;
             var length = x.Rank;
             for (int i = 0; i < length; i++) {
-                if (x.GetUpperBound(i) != y.GetUpperBound(i) || x.GetUpperBound(i) != y.GetUpperBound(i))
+                if (x.GetLowerBound(i) != y.GetLowerBound(i) || x.GetUpperBound(i) != y.GetUpperBound(i))
                     return false;
             }
             return true;
