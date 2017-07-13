@@ -36,7 +36,7 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    /// <remarks>Only the indexed accessor can generate a value. All other methods work on what is already on the dictionary.</remarks>
+    /// <remarks>Only the indexed accessor can generate a value. All other methods work on what is already in the dictionary.</remarks>
     public class OnDemandDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _storage;

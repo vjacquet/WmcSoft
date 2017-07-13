@@ -26,6 +26,9 @@
 
 namespace WmcSoft.Collections.Generic.Accumulators
 {
+    /// <summary>
+    /// Adds float values.
+    /// </summary>
     public struct SingleAdder : IAccumulator<float, float>
     {
         public float Accumulate(float result, float value)

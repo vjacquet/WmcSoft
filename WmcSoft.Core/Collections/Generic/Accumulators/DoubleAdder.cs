@@ -26,6 +26,9 @@
 
 namespace WmcSoft.Collections.Generic.Accumulators
 {
+    /// <summary>
+    /// Adds double values.
+    /// </summary>
     public struct DoubleAdder : IAccumulator<double, double>
     {
         public double Accumulate(double result, double value)

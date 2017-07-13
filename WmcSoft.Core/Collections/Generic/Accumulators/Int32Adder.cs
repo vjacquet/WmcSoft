@@ -26,6 +26,9 @@
 
 namespace WmcSoft.Collections.Generic.Accumulators
 {
+    /// <summary>
+    /// Adds int values.
+    /// </summary>
     public struct Int32Adder : IAccumulator<int, int>
     {
         public int Accumulate(int result, int value)

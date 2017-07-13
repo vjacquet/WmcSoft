@@ -27,7 +27,7 @@
 namespace WmcSoft.Collections.Generic.Accumulators
 {
     /// <summary>
-    /// 
+    /// Adds double values, minimizing the accumulation of approximation errors.
     /// </summary>
     /// <remarks>See <https://en.wikipedia.org/wiki/Kahan_summation_algorithm>.</remarks>
     public struct KahanAdder : IAccumulator<double, double>

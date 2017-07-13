@@ -26,6 +26,9 @@
 
 namespace WmcSoft.Collections.Generic.Accumulators
 {
+    /// <summary>
+    /// Adds decimal values.
+    /// </summary>
     public struct DecimalAdder : IAccumulator<decimal, decimal>
     {
         public decimal Accumulate(decimal result, decimal value)
