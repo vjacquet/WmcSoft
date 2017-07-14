@@ -13,7 +13,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
             const string t = "100111010010100010100111000111";
 
             var a = new NaiveFinder<char>(p.AsReadOnlyList(), EqualityComparer<char>.Default);
-            var actual = a.FindFirstOccurence(t.AsReadOnlyList(), 5);
+            var actual = a.FindNextOccurence(t.AsReadOnlyList(), 5);
             var expected = t.IndexOf(p);
             Assert.Equal(expected, actual);
         }
@@ -25,7 +25,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
             const string t = "100111010010100010100111000111";
 
             var a = new KnuthMorrisPratt<char>(p.AsReadOnlyList(), EqualityComparer<char>.Default);
-            var actual = a.FindFirstOccurence(t.AsReadOnlyList(), 5);
+            var actual = a.FindNextOccurence(t.AsReadOnlyList(), 5);
             var expected = t.IndexOf(p);
             Assert.Equal(expected, actual);
         }

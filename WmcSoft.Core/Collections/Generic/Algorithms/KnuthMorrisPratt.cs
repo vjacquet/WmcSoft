@@ -51,7 +51,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
             }
         }
 
-        public int FindFirstOccurence(IReadOnlyList<T> t, int startIndex)
+        public int FindNextOccurence(IReadOnlyList<T> t, int startIndex)
         {
             int i = startIndex, j = 0, m = _pattern.Count, n = t.Count;
             for (; j < m && i < n; i++, j++) {

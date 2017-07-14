@@ -30,6 +30,6 @@ namespace WmcSoft.Collections.Generic.Algorithms
 {
     public interface IFinder<T>
     {
-        int FindFirstOccurence(IReadOnlyList<T> t, int startIndex);
+        int FindNextOccurence(IReadOnlyList<T> t, int startIndex);
     }
 }

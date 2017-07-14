@@ -52,7 +52,7 @@ namespace WmcSoft.Collections.Generic.Algorithms
             return true;
         }
 
-        public int FindFirstOccurence(IReadOnlyList<T> t, int startIndex)
+        public int FindNextOccurence(IReadOnlyList<T> t, int startIndex)
         {
             var length = t.Count - _pattern.Count;
             for (int i = startIndex; i < length; i++) {
