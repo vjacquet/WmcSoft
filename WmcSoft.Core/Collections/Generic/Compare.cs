@@ -34,8 +34,8 @@ namespace WmcSoft.Collections.Generic
     {
         public static ComparerBuilder<T> OrderOf<T>()
         {
-            //TODO: Is it necessary in a technical library
-            // Shouldn't it be used in a Business glossary type class ?
+            //TODO: Is it necessary in a technical library?
+            // Shouldn't it be used in a Business glossary type class?
             // Compare.Persons => returns the default comparer
             // Compare.Persons.By(p=>p.Age) => returns the comparer by the Age property...
             return ComparerBuilder<T>.Default;

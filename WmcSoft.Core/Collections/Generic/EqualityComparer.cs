@@ -45,6 +45,7 @@ namespace WmcSoft.Collections.Generic
         {
             return (((h1 << 5) + h1) ^ h2);
         }
+
         /// <summary>
         /// Combines the specified hash codes.
         /// </summary>
@@ -56,6 +57,7 @@ namespace WmcSoft.Collections.Generic
         {
             return CombineHashCodes(CombineHashCodes(h1, h2), h3);
         }
+
         /// <summary>
         /// Combines the specified hash codes.
         /// </summary>
@@ -80,6 +82,7 @@ namespace WmcSoft.Collections.Generic
         {
             return CombineHashCodes(comparer.GetHashCode(obj1), comparer.GetHashCode(obj2));
         }
+
         /// <summary>
         /// Serves as a hash function for the specified objects for hashing algorithms and data structures.
         /// </summary>
@@ -92,6 +95,7 @@ namespace WmcSoft.Collections.Generic
         {
             return CombineHashCodes(comparer.GetHashCode(obj1), comparer.GetHashCode(obj2), comparer.GetHashCode(obj3));
         }
+
         /// <summary>
         /// Serves as a hash function for the specified objects for hashing algorithms and data structures.
         /// </summary>
@@ -118,6 +122,7 @@ namespace WmcSoft.Collections.Generic
         {
             return CombineHashCodes(comparer.GetHashCode(obj1), comparer.GetHashCode(obj2));
         }
+
         /// <summary>
         /// Serves as a hash function for the specified objects for hashing algorithms and data structures.
         /// </summary>
@@ -131,6 +136,7 @@ namespace WmcSoft.Collections.Generic
         {
             return CombineHashCodes(comparer.GetHashCode(obj1), comparer.GetHashCode(obj2), comparer.GetHashCode(obj3));
         }
+
         /// <summary>
         /// Serves as a hash function for the specified objects for hashing algorithms and data structures.
         /// </summary>
