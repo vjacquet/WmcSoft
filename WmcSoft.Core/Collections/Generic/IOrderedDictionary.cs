@@ -24,11 +24,25 @@
 
 #endregion
 
+using System.Collections.Generic;
+
 namespace WmcSoft.Collections.Generic
 {
-    public interface IOrderedDictionary<TKey, TValue> : IReadOnlyOrderedDictionary<TKey, TValue>
+    /// <summary>
+    /// Represents a generic dictionary for wich the keys are sorted.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+    public interface IOrderedDictionary<TKey, TValue> : IReadOnlyOrderedDictionary<TKey, TValue>, IDictionary<TKey, TValue>
     {
+        /// <summary>
+        /// Removes the minimum value.
+        /// </summary>
         void RemoveMin();
+
+        /// <summary>
+        /// Removes the maximum value.
+        /// </summary>
         void RemoveMax();
     }
 }

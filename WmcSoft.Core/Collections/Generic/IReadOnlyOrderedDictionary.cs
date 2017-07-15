@@ -28,10 +28,21 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Represents a generic read only dictionary for wich the keys are sorted.
+    /// </summary>
+    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     public interface IReadOnlyOrderedDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
+        /// <summary>
+        /// The <see cref="KeyValuePair{TKey, TValue}"/> with the smalled key.
+        /// </summary>
         KeyValuePair<TKey, TValue> Min { get; }
 
+        /// <summary>
+        /// The <see cref="KeyValuePair{TKey, TValue}"/> with the largest key.
+        /// </summary>
         KeyValuePair<TKey, TValue> Max { get; }
 
         /// <summary>
@@ -54,8 +65,22 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         KeyValuePair<TKey, TValue> Select(int k);
 
+        /// <summary>
+        /// The number of values between the <paramref name="lo"/> and <paramref name="hi"/> keys.
+        /// </summary>
+        /// <param name="lo">The lowest key.</param>
+        /// <param name="hi">The highest key</param>
+        /// <returns>The number of values.</returns>
+        /// <remarks><paramref name="lo"/> is included and <paramref name="hi"/> is excluded.</remarks>
         int CountBetween(TKey lo, TKey hi);
 
+        /// <summary>
+        /// The values between the <paramref name="lo"/> and <paramref name="hi"/> keys.
+        /// </summary>
+        /// <param name="lo">The lowest key.</param>
+        /// <param name="hi">The highest key</param>
+        /// <returns>The values.</returns>
+        /// <remarks><paramref name="lo"/> is included and <paramref name="hi"/> is excluded.</remarks>
         IReadOnlyCollection<KeyValuePair<TKey, TValue>> EnumerateBetween(TKey lo, TKey hi);
     }
 }
