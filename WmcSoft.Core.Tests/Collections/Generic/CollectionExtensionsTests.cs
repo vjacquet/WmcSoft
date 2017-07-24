@@ -217,42 +217,15 @@ namespace WmcSoft.Collections.Generic
             return x => -value.CompareTo(x);
         }
 
-        [Fact]
-        public void CheckBinaryFind()
+        [Theory]
+        [InlineData(5, 5)]
+        [InlineData(8, 0)]
+        [InlineData(0, 0)]
+        [InlineData(4, 0)]
+        public void CheckBinaryFind(int value, int found)
         {
             var sequence = new[] { 1, 3, 5, 7 };
-            var expected = 5;
-            Assert.Equal(expected, sequence.BinaryFind(Find(5)));
-        }
-
-        [Fact]
-        public void CheckLowerBound()
-        {
-            var sequence = new[] { 1, 3, 5, 7 };
-            Assert.Equal(3, sequence.LowerBound(Find(4)));
-            Assert.Equal(5, sequence.LowerBound(Find(5)));
-            Assert.Equal(7, sequence.LowerBound(Find(9)));
-            Assert.Equal(0, sequence.LowerBound(Find(-1)));
-        }
-
-        [Fact]
-        public void CheckUpperBound()
-        {
-            var sequence = new[] { 1, 3, 5, 7 };
-            Assert.Equal(5, sequence.UpperBound(Find(4)));
-            Assert.Equal(5, sequence.UpperBound(Find(5)));
-            Assert.Equal(0, sequence.UpperBound(Find(9)));
-            Assert.Equal(1, sequence.UpperBound(Find(-1)));
-        }
-
-        [Fact]
-        public void CheckBound()
-        {
-            var sequence = new[] { 1, 3, 5, 7 };
-            Assert.Equal(Tuple.Create(3, 5), sequence.Bounds(Find(4)));
-            Assert.Equal(Tuple.Create(5, 5), sequence.Bounds(Find(5)));
-            Assert.Equal(Tuple.Create(7, 0), sequence.Bounds(Find(9)));
-            Assert.Equal(Tuple.Create(0, 1), sequence.Bounds(Find(-1)));
+            Assert.Equal(found, sequence.BinaryFind(Find(value)));
         }
 
         [Fact]
@@ -424,7 +397,7 @@ namespace WmcSoft.Collections.Generic
         [InlineData(10, 8)]
         public void CheckPartialBinaryRank(int value, int rank)
         {
-            var data = new[] { -5, -1,  1, 2, 3, 4, 6, 7, 8, 9, 20, 21 };
+            var data = new[] { -5, -1, 1, 2, 3, 4, 6, 7, 8, 9, 20, 21 };
             Assert.Equal(rank, data.BinaryRank(2, 8, value));
         }
 
@@ -489,6 +462,50 @@ namespace WmcSoft.Collections.Generic
             var actual = new string(data);
             var expected = "AGINORSTABEELMPX";
             Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(4, 3)]
+        [InlineData(5, 5)]
+        [InlineData(9, 7)]
+        [InlineData(-1, 0)]
+        public void CheckFloor(int value, int result)
+        {
+            var sequence = new[] { 1, 3, 5, 7 };
+            Assert.Equal(result, sequence.Floor(Find(value)));
+        }
+
+        [Theory]
+        [InlineData(4, 5)]
+        [InlineData(5, 5)]
+        [InlineData(9, 0)]
+        [InlineData(-1, 1)]
+        public void CheckCeilling(int value, int result)
+        {
+            var sequence = new[] { 1, 3, 5, 7 };
+            Assert.Equal(result, sequence.Ceilling(Find(value)));
+        }
+
+        [Theory]
+        [InlineData(4, 3, 5)]
+        [InlineData(5, 5, 5)]
+        [InlineData(9, 7, 0)]
+        [InlineData(-1, 0, 1)]
+        public void CheckBound(int value, int floor, int ceilling)
+        {
+            var sequence = new[] { 1, 3, 5, 7 };
+            Assert.Equal(Tuple.Create(floor, ceilling), sequence.Bounds(Find(value)));
+        }
+
+        [Theory]
+        [InlineData(4, 2)]
+        [InlineData(5, 2)]
+        [InlineData(0, -1)]
+        [InlineData(10, 6)]
+        public void CheckFindLowerBound(int value, int bound)
+        {
+            var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
+            Assert.Equal(bound, data.LowerBound(value));
         }
     }
 }
