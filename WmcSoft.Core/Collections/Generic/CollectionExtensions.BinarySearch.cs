@@ -165,6 +165,17 @@ namespace WmcSoft.Collections.Generic
             return BinaryFind(source, 0, source.Count, finder, defaultValue);
         }
 
+        private static int UnguardedLowerBound<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer)
+        {
+            while (lo <= hi) {
+                int mid = GetMidpoint(lo, hi);
+                int cmp = comparer.Compare(list[mid], value);
+                if (cmp < 0) lo = mid + 1;
+                else if (cmp > 0) hi = mid - 1;
+                else return mid;
+            }
+            return -1;
+        }
 
         /// <summary>
         /// Returns the last element for which the finder returns a non-positive value.
@@ -176,7 +187,9 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
         public static int LowerBound<T>(this IReadOnlyList<T> source, T value, IComparer<T> comparer = null)
         {
-            return LowerBound(source, 0, source.Count, value, comparer);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedLowerBound(source, 0, source.Count, value, comparer);
         }
 
         /// <summary>
@@ -187,17 +200,12 @@ namespace WmcSoft.Collections.Generic
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        /// <returns>The index of element or <code>-1</code> when not found.</returns>
         public static int LowerBound<T>(this IReadOnlyList<T> source, int index, int count, T value, IComparer<T> comparer = null)
         {
             Guard(source, index, count);
 
-            var found = UnguardedBinarySearch(source, index, count - 1, value, comparer ?? Comparer<T>.Default);
-            if (found < 0) {
-                return ~found - 1;
-            }
-            return found;
+            return UnguardedLowerBound(source, index, count - 1, value, comparer ?? Comparer<T>.Default);
         }
 
         /// <summary>
@@ -206,11 +214,10 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static int LowerBound<T>(this IReadOnlyList<T> source, Func<T, int> finder, T defaultValue = default(T))
+        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        public static int LowerBound<T>(this IReadOnlyList<T> source, Func<T, int> finder)
         {
-            return LowerBound(source, 0, source.Count, finder, defaultValue);
+            return LowerBound(source, 0, source.Count, finder);
         }
 
         /// <summary>
@@ -221,9 +228,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static int LowerBound<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder, T defaultValue = default(T))
+        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        public static int LowerBound<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder)
         {
             var found = BinarySearch(source, index, count, finder);
             if (found < 0) {
@@ -268,16 +274,48 @@ namespace WmcSoft.Collections.Generic
         }
 
         /// <summary>
-        /// Returns the first element for which the finder returns a positive value.
+        /// Returns the last element for which the finder returns a non-positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static int UpperBound<T>(this IReadOnlyList<T> source, Func<T, int> finder, T defaultValue = default(T))
+        public static int UpperBound<T>(this IReadOnlyList<T> source, T value, IComparer<T> comparer = null)
         {
-            return UpperBound(source, 0, source.Count, finder, defaultValue);
+            return UpperBound(source, 0, source.Count, value, comparer);
+        }
+
+        /// <summary>
+        /// Returns the last element for which the finder returns a non-positive value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="source">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        public static int UpperBound<T>(this IReadOnlyList<T> source, int index, int count, T value, IComparer<T> comparer = null)
+        {
+            Guard(source, index, count);
+
+            var found = UnguardedBinarySearch(source, index, count - 1, value, comparer ?? Comparer<T>.Default);
+            if (found < 0) {
+                return ~found - 1;
+            }
+            return found;
+        }
+
+        /// <summary>
+        /// Returns the first element for which the finder returns a positive value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="source">The sorted list</param>
+        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        public static int UpperBound<T>(this IReadOnlyList<T> source, Func<T, int> finder)
+        {
+            return UpperBound(source, 0, source.Count, finder);
         }
 
         /// <summary>
@@ -288,9 +326,8 @@ namespace WmcSoft.Collections.Generic
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
         /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
-        public static int UpperBound<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder, T defaultValue = default(T))
+        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        public static int UpperBound<T>(this IReadOnlyList<T> source, int index, int count, Func<T, int> finder)
         {
             var found = BinarySearch(source, index, count, finder);
             if (found < 0) {

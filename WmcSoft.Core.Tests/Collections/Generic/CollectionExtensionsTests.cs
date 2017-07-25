@@ -465,6 +465,17 @@ namespace WmcSoft.Collections.Generic
         }
 
         [Theory]
+        [InlineData(4, 1)]
+        [InlineData(5, 2)]
+        [InlineData(9, 4)]
+        [InlineData(-1, -1)]
+        public void CheckLowerBound(int value, int result)
+        {
+            var sequence = new[] { 1, 3, 5, 5, 7 };
+            Assert.Equal(result, sequence.LowerBound(Find(value)));
+        }
+
+        [Theory]
         [InlineData(4, 3)]
         [InlineData(5, 5)]
         [InlineData(9, 7)]
@@ -491,7 +502,7 @@ namespace WmcSoft.Collections.Generic
         [InlineData(5, 5, 5)]
         [InlineData(9, 7, 0)]
         [InlineData(-1, 0, 1)]
-        public void CheckBound(int value, int floor, int ceilling)
+        public void CheckBounds(int value, int floor, int ceilling)
         {
             var sequence = new[] { 1, 3, 5, 7 };
             Assert.Equal(Tuple.Create(floor, ceilling), sequence.Bounds(Find(value)));
