@@ -75,6 +75,7 @@
     <Compile Include="Collections\Generic\Bag.cs" />
     <Compile Include="Collections\Generic\BagSet.cs" />
     <Compile Include="Collections\Generic\CollectionDebugView.cs" />
+    <Compile Include="Collections\Generic\CollectionExtensions.Finder.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.BinarySearch.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.Guards.cs" />
     <Compile Include="Collections\Generic\CollectionExtensions.MinMaxElement.cs" />
