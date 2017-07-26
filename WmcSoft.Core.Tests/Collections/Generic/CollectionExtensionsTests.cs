@@ -464,12 +464,12 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
+        [Theory(Skip = "Not ready and may be removed.")]
         [InlineData(4, 1)]
         [InlineData(5, 2)]
         [InlineData(9, 4)]
         [InlineData(-1, -1)]
-        public void CheckLowerBound(int value, int result)
+        public void CheckFindLowerBound(int value, int result)
         {
             var sequence = new[] { 1, 3, 5, 5, 7 };
             Assert.Equal(result, sequence.LowerBound(Find(value)));
@@ -480,7 +480,7 @@ namespace WmcSoft.Collections.Generic
         [InlineData(5, 5)]
         [InlineData(9, 7)]
         [InlineData(-1, 0)]
-        public void CheckFloor(int value, int result)
+        public void CheckFindFloor(int value, int result)
         {
             var sequence = new[] { 1, 3, 5, 7 };
             Assert.Equal(result, sequence.Floor(Find(value)));
@@ -491,7 +491,7 @@ namespace WmcSoft.Collections.Generic
         [InlineData(5, 5)]
         [InlineData(9, 0)]
         [InlineData(-1, 1)]
-        public void CheckCeilling(int value, int result)
+        public void CheckFindCeilling(int value, int result)
         {
             var sequence = new[] { 1, 3, 5, 7 };
             Assert.Equal(result, sequence.Ceilling(Find(value)));
@@ -502,7 +502,7 @@ namespace WmcSoft.Collections.Generic
         [InlineData(5, 5, 5)]
         [InlineData(9, 7, 0)]
         [InlineData(-1, 0, 1)]
-        public void CheckBounds(int value, int floor, int ceilling)
+        public void CheckFindBounds(int value, int floor, int ceilling)
         {
             var sequence = new[] { 1, 3, 5, 7 };
             Assert.Equal(Tuple.Create(floor, ceilling), sequence.Bounds(Find(value)));
@@ -510,10 +510,10 @@ namespace WmcSoft.Collections.Generic
 
         [Theory]
         [InlineData(4, 2)]
-        [InlineData(5, 2)]
-        [InlineData(0, -1)]
-        [InlineData(10, 6)]
-        public void CheckFindLowerBound(int value, int bound)
+        [InlineData(5, 3)]
+        [InlineData(0, 0)]
+        [InlineData(10, 7)]
+        public void CheckLowerBound(int value, int bound)
         {
             var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
             Assert.Equal(bound, data.LowerBound(value));

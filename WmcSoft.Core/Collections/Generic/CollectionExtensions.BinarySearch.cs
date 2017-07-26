@@ -61,59 +61,87 @@ namespace WmcSoft.Collections.Generic
             return ~lo;
         }
 
-        private static int UnguardedBinaryRank<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer)
+        private static int UnguardedBinaryRank<T>(this IReadOnlyList<T> list, int startIndex, int n, T value, IComparer<T> comparer)
         {
-            while (lo <= hi) {
-                int mid = GetMidpoint(lo, hi);
-                int cmp = comparer.Compare(list[mid], value);
-                if (cmp < 0) lo = mid + 1;
-                else if (cmp > 0) hi = mid - 1;
-                else return mid;
-            }
-            return lo;
+            return UnguardedLowerBound(list, startIndex, n, value, comparer) - startIndex;
         }
 
-        private static int UnguardedLowerBound<T>(this IReadOnlyList<T> list, int lo, int hi, T value, IComparer<T> comparer)
-        {
-            while (lo <= hi) {
-                int mid = GetMidpoint(lo, hi);
-                int cmp = comparer.Compare(list[mid], value);
-                if (cmp < 0) lo = mid + 1;
-                else if (cmp > 0) hi = mid - 1;
-                else return mid;
-            }
-            return -1;
+#if CPP
+template<class ForwardIterator, class T>
+ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last, const T& val)
+{
+    ForwardIterator it;
+    iterator_traits<ForwardIterator>::difference_type count, step;
+    count = distance(first, last);
+    while (count>0)
+    {
+        it = first; step=count/2; advance(it, step);
+        if (* it<val) {                 // or: if (comp(*it,val)), for version (2)
+            first=++it;
+            count-=step+1;
         }
+        else count=step;
+    }
+    return first
+}
+#endif
+
+        private static int UnguardedLowerBound<T>(this IReadOnlyList<T> list, int first, int n, T value, IComparer<T> comparer)
+        {
+            int last = first + n;
+            while (first < last) {
+                int mid = GetMidpoint(first, last);
+                int cmp = comparer.Compare(list[mid], value);
+                if (cmp < 0) first = mid + 1;
+                else last = mid;
+            }
+            return first;
+        }
+
+#if CPP
+template<class ForwardIterator, class T>
+  ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last, const T& val)
+{
+    ForwardIterator it;
+    iterator_traits<ForwardIterator>::difference_type count, step;
+    count = std::distance(first, last);
+    while (count > 0) {
+        it = first; step = count / 2; std::advance(it, step);
+        if (!(val < *it))                 // or: if (!comp(val,*it)), for version (2)
+          { first = ++it; count -= step + 1; } else count = step;
+    }
+    return first;
+}
+#endif
 
         /// <summary>
-        /// Returns the last element for which the finder returns a non-positive value.
+        /// Returns the index of the first element for which the comparer returns a positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
-        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        /// <param name="value">The value the get the rank of</param>
+        /// <param name="comparer">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The index of the element, or the count of element in <paramref name="source"/> if no element matches.</returns>
         public static int LowerBound<T>(this IReadOnlyList<T> source, T value, IComparer<T> comparer = null)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return UnguardedLowerBound(source, 0, source.Count, value, comparer);
+            return UnguardedLowerBound(source, 0, source.Count, value, comparer ?? Comparer<T>.Default);
         }
 
         /// <summary>
-        /// Returns the last element for which the finder returns a non-positive value.
+        /// Returns the index of the first element for which the comparer returns a positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
-        /// <param name="index">The zero-based starting index of the range to search.</param>
-        /// <param name="count">The length of the range to search.</param>
-        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        /// <param name="value">The value the get the rank of</param>
+        /// <param name="comparer">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The index of element or (<paramref name="index"/> + <paramref name="count"/>) if no element matches.</returns>
         public static int LowerBound<T>(this IReadOnlyList<T> source, int index, int count, T value, IComparer<T> comparer = null)
         {
             Guard(source, index, count);
 
-            return UnguardedLowerBound(source, index, count - 1, value, comparer ?? Comparer<T>.Default);
+            return UnguardedLowerBound(source, index, count, value, comparer ?? Comparer<T>.Default);
         }
 
         /// <summary>
@@ -164,7 +192,7 @@ namespace WmcSoft.Collections.Generic
         {
             Guard(source, index, count);
 
-            return UnguardedBinaryRank(source, index, index + count - 1, value, comparer ?? Comparer<T>.Default) - index;
+            return UnguardedBinaryRank(source, index, count, value, comparer ?? Comparer<T>.Default);
         }
 
         /// <summary>
@@ -179,7 +207,7 @@ namespace WmcSoft.Collections.Generic
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return UnguardedBinaryRank(source, 0, source.Count - 1, value, comparer ?? Comparer<T>.Default);
+            return UnguardedBinaryRank(source, 0, source.Count, value, comparer ?? Comparer<T>.Default);
         }
     }
 }
