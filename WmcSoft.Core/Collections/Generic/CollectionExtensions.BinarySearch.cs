@@ -114,8 +114,20 @@ template<class ForwardIterator, class T>
 }
 #endif
 
+        private static int UnguardedUpperBound<T>(this IReadOnlyList<T> list, int first, int n, T value, IComparer<T> comparer)
+        {
+            int last = first + n;
+            while (first < last) {
+                int mid = GetMidpoint(first, last);
+                int cmp = comparer.Compare(value, list[mid]);
+                if (cmp >= 0) first = mid + 1;
+                else last = mid;
+            }
+            return first;
+        }
+
         /// <summary>
-        /// Returns the index of the first element for which the comparer returns a positive value.
+        /// Returns the index of the first element for which the comparer returns a non-negative value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
@@ -130,7 +142,7 @@ template<class ForwardIterator, class T>
         }
 
         /// <summary>
-        /// Returns the index of the first element for which the comparer returns a positive value.
+        /// Returns the index of the first element for which the comparer returns a non-negative value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
@@ -145,36 +157,35 @@ template<class ForwardIterator, class T>
         }
 
         /// <summary>
-        /// Returns the last element for which the finder returns a non-positive value.
+        /// Returns the index of the first element for which the comparer returns a strictly positive value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
-        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <param name="defaultValue">The default value</param>
-        /// <returns>The element or the <paramref name="defaultValue"/> when not found</returns>
+        /// <param name="value">The value the get the rank of</param>
+        /// <param name="comparer">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The index of the element, or the count of element in <paramref name="source"/> if no element matches.</returns>
         public static int UpperBound<T>(this IReadOnlyList<T> source, T value, IComparer<T> comparer = null)
         {
-            return UpperBound(source, 0, source.Count, value, comparer);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedUpperBound(source, 0, source.Count, value, comparer ?? Comparer<T>.Default);
         }
 
         /// <summary>
-        /// Returns the last element for which the finder returns a non-positive value.
+        /// Returns the index of the first element for which the comparer returns a non negative value.
         /// </summary>
         /// <typeparam name="T">The type of items in the list</typeparam>
         /// <param name="source">The sorted list</param>
         /// <param name="index">The zero-based starting index of the range to search.</param>
         /// <param name="count">The length of the range to search.</param>
-        /// <param name="finder">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
-        /// <returns>The index of element or <code>-1</code> when not found.</returns>
+        /// <param name="value">The value the get the rank of</param>
+        /// <param name="comparer">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The index of the element, or the count of element in <paramref name="source"/> if no element matches.</returns>
         public static int UpperBound<T>(this IReadOnlyList<T> source, int index, int count, T value, IComparer<T> comparer = null)
         {
             Guard(source, index, count);
 
-            var found = UnguardedBinarySearch(source, index, count - 1, value, comparer ?? Comparer<T>.Default);
-            if (found < 0) {
-                return ~found - 1;
-            }
-            return found;
+            return UnguardedUpperBound(source, index, count, value, comparer ?? Comparer<T>.Default);
         }
 
 

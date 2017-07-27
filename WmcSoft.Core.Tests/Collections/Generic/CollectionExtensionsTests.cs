@@ -518,5 +518,16 @@ namespace WmcSoft.Collections.Generic
             var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
             Assert.Equal(bound, data.LowerBound(value));
         }
+
+        [Theory]
+        [InlineData(4, 3)]
+        [InlineData(5, 3)]
+        [InlineData(0, 0)]
+        [InlineData(10, 7)]
+        public void CheckUpperBound(int value, int bound)
+        {
+            var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
+            Assert.Equal(bound, data.UpperBound(value));
+        }
     }
 }
