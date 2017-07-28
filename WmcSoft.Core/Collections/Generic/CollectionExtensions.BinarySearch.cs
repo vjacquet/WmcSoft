@@ -126,6 +126,13 @@ template<class ForwardIterator, class T>
             return first;
         }
 
+        private static Tuple<int,int> UnguardedEqualRange<T>(this IReadOnlyList<T> list, int first, int n, T value, IComparer<T> comparer)
+        {
+            var lo = UnguardedLowerBound(list, first, n, value, comparer);
+            var hi = UnguardedUpperBound(list, lo, n - (lo - first), value, comparer);
+            return Tuple.Create(lo, hi);
+        }
+
         /// <summary>
         /// Returns the index of the first element for which the comparer returns a non-negative value.
         /// </summary>
@@ -188,6 +195,37 @@ template<class ForwardIterator, class T>
             return UnguardedUpperBound(source, index, count, value, comparer ?? Comparer<T>.Default);
         }
 
+        /// <summary>
+        /// Returns the bounds of the subrange that includes all elements equivalent to the value value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="source">The sorted list</param>
+        /// <param name="value">The value the get the rank of</param>
+        /// <param name="comparer">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The bounds of the subrange.</returns>
+        public static Tuple<int,int> EqualRange<T>(this IReadOnlyList<T> source, T value, IComparer<T> comparer = null)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return UnguardedEqualRange(source, 0, source.Count, value, comparer ?? Comparer<T>.Default);
+        }
+
+        /// <summary>
+        /// Returns the bounds of the subrange that includes all elements equivalent to the value value.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list</typeparam>
+        /// <param name="source">The sorted list</param>
+        /// <param name="index">The zero-based starting index of the range to search.</param>
+        /// <param name="count">The length of the range to search.</param>
+        /// <param name="value">The value the get the rank of</param>
+        /// <param name="comparer">Function returning 0 wen the element equal to the searched item, < 0 when it is smaller and > 0 when it is greater.</param>
+        /// <returns>The bounds of the subrange.</returns>
+        public static Tuple<int, int> EqualRange<T>(this IReadOnlyList<T> source, int index, int count, T value, IComparer<T> comparer = null)
+        {
+            Guard(source, index, count);
+
+            return UnguardedEqualRange(source, index, count, value, comparer ?? Comparer<T>.Default);
+        }
 
         /// <summary>
         /// Computes the number of elements in the sorted <seealso cref="IReadOnlyList{T}"/> for which the <paramref name="comparer"/> returns a negative value.
