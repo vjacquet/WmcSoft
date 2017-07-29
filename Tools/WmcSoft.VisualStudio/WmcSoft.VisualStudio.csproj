@@ -124,6 +124,7 @@
     <Compile Include="VisualStudio\VsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="CodeBuilders\CodeBuilder.cd" />
     <EmbeddedResource Include="CodeBuilders\CodeGenerator.xsd">
       <SubType>Designer</SubType>
