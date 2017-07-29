@@ -443,7 +443,6 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(expected, actual);
         }
 
-
         [Fact]
         public void CheckPerfectOutShuffle()
         {
@@ -475,7 +474,7 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(result, sequence.LowerBound(Find(value)));
         }
 
-        [Theory]
+        [Theory(Skip = "Not ready and may be removed.")]
         [InlineData(4, 3)]
         [InlineData(5, 5)]
         [InlineData(9, 7)]
@@ -486,7 +485,7 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(result, sequence.Floor(Find(value)));
         }
 
-        [Theory]
+        [Theory(Skip = "Not ready and may be removed.")]
         [InlineData(4, 5)]
         [InlineData(5, 5)]
         [InlineData(9, 0)]
@@ -497,7 +496,7 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(result, sequence.Ceilling(Find(value)));
         }
 
-        [Theory]
+        [Theory(Skip = "Not ready and may be removed.")]
         [InlineData(4, 3, 5)]
         [InlineData(5, 5, 5)]
         [InlineData(9, 7, 0)]
@@ -541,6 +540,41 @@ namespace WmcSoft.Collections.Generic
             var r = data.EqualRange(value);
             Assert.Equal(lo, r.Item1);
             Assert.Equal(hi, r.Item2);
+        }
+
+        [Theory]
+        [InlineData(4, 4)]
+        [InlineData(5, 4)]
+        [InlineData(0, -1)]
+        [InlineData(10, 9)]
+        public void CheckFloor(int value, int floor)
+        {
+            var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
+            Assert.Equal(floor, data.Floor(value, -1));
+        }
+
+        [Theory]
+        [InlineData(4, 4)]
+        [InlineData(5, 6)]
+        [InlineData(0, 1)]
+        [InlineData(10, -1)]
+        public void CheckCeiling(int value, int ceiling)
+        {
+            var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
+            Assert.Equal(ceiling, data.Ceiling(value, -1));
+        }
+
+        [Theory]
+        [InlineData(4, 4, 4)]
+        [InlineData(5, 4, 6)]
+        [InlineData(0, -1, 1)]
+        [InlineData(10, 9, -1)]
+        public void CheckStorey(int value, int floor, int ceiling)
+        {
+            var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
+            var r = data.Storey(value, -1);
+            Assert.Equal(floor, r.Item1);
+            Assert.Equal(ceiling, r.Item2);
         }
     }
 }
