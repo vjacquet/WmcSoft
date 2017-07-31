@@ -420,6 +420,32 @@ namespace WmcSoft
 
         #endregion
 
+        #region ContainsWord
+
+        public static bool ContainsWord(this string value, string word, char delimiter)
+        {
+            if (string.IsNullOrEmpty(word))
+                return false;
+            var compare = value.Length.CompareTo(word.Length);
+            if (word.Length == value.Length) {
+                return word == value;
+            } else if (compare < 0) {
+                return false;
+            }
+            int startIndex = 0;
+            int found = 0;
+            while ((found = value.IndexOf(delimiter, startIndex)) >= 0) {
+                if (string.Compare(value, startIndex, word, 0, found - startIndex, StringComparison.Ordinal) == 0)
+                    return true;
+                startIndex = found + 1;
+            }
+            if (string.Compare(value, startIndex, word, 0, value.Length - startIndex, StringComparison.Ordinal) == 0)
+                return true;
+            return false;
+        }
+
+        #endregion
+
         #region EnsurePrefix/EnsureSuffix/EnsureAffixes
 
         public static string EnsurePrefix(this string self, string prefix)

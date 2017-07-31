@@ -242,5 +242,17 @@ namespace WmcSoft
         {
             Assert.Equal(expected, source.ToKebabCase());
         }
+
+        [Theory]
+        [InlineData("may", "june", false)]
+        [InlineData("june", "june", true)]
+        [InlineData("may|june", "june", true)]
+        [InlineData("may|june|july", "june", true)]
+        [InlineData("june|july", "june", true)]
+        [InlineData("may|july", "june", false)]
+        public void CheckContainsWord(string value, string word, bool expected)
+        {
+            Assert.Equal(expected, value.ContainsWord(word, '|'));
+        }
     }
 }
