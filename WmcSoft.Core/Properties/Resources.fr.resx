@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppSettingsCheckpointKeyIsMissingError" xml:space="preserve">
+    <value>La clé '{0}' est absente de la section the appSettings.</value>
+  </data>
   <data name="ArgumentNullOrEmpty" xml:space="preserve">
     <value>L'argument ne peut pas être une chaine vide ou nulle.</value>
+  </data>
+  <data name="ConfigurationCheckpointCannotLoadSection" xml:space="preserve">
+    <value>Impossible de charger la section de configuration '{0}'.</value>
   </data>
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>Le format '{0}' est incorrect.</value>
