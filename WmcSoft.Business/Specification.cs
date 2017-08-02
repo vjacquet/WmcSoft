@@ -35,18 +35,36 @@ namespace WmcSoft
     {
         private readonly ISpecification<T> _spec;
 
-        public Specification(ISpecification<T> spec) {
+        public Specification(ISpecification<T> spec)
+        {
             _spec = spec ?? Specification.Null<T>();
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _spec.IsSatisfiedBy(candidate);
         }
 
         #region Operators
 
-        public static implicit operator Specification<T>(Func<T, bool> x) {
+        public static implicit operator Specification<T>(Func<T, bool> x)
+        {
             return new Specification<T>(Specification.Create(x));
+        }
+
+        public static Specification<T> operator &(Specification<T> x, Specification<T> y)
+        {
+            return new Specification<T>(new AndSpecification<T>(x._spec, y._spec));
+        }
+
+        public static Specification<T> operator |(Specification<T> x, Specification<T> y)
+        {
+            return new Specification<T>(new OrSpecification<T>(x._spec, y._spec));
+        }
+
+        public static Specification<T> operator ~(Specification<T> x)
+        {
+            return new Specification<T>(new NotSpecification<T>(x._spec));
         }
 
         #endregion
@@ -54,26 +72,32 @@ namespace WmcSoft
 
     public static class Specification
     {
-        public static NullSpecification<T> Null<T>() {
+        public static NullSpecification<T> Null<T>()
+        {
             return NullSpecification<T>.Default;
         }
 
-        public static PredicateSpecification<T> Create<T>(Predicate<T> predicate) {
+        public static PredicateSpecification<T> Create<T>(Predicate<T> predicate)
+        {
             return new PredicateSpecification<T>(predicate);
         }
-        public static PredicateSpecification<T> Create<T>(Func<T, bool> predicate) {
+        public static PredicateSpecification<T> Create<T>(Func<T, bool> predicate)
+        {
             return new PredicateSpecification<T>(predicate);
         }
 
-        public static AllSpecification<T> All<T>(params ISpecification<T>[] spec) {
+        public static AllSpecification<T> All<T>(params ISpecification<T>[] spec)
+        {
             return new AllSpecification<T>(spec);
         }
 
-        public static AnySpecification<T> Any<T>(params ISpecification<T>[] spec) {
+        public static AnySpecification<T> Any<T>(params ISpecification<T>[] spec)
+        {
             return new AnySpecification<T>(spec);
         }
 
-        public static NoneSpecification<T> None<T>(params ISpecification<T>[] spec) {
+        public static NoneSpecification<T> None<T>(params ISpecification<T>[] spec)
+        {
             return new NoneSpecification<T>(spec);
         }
     }
@@ -84,7 +108,8 @@ namespace WmcSoft
     {
         public static readonly NullSpecification<T> Default = default(NullSpecification<T>);
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return true;
         }
     }
@@ -93,19 +118,22 @@ namespace WmcSoft
     {
         private readonly Func<T, bool> _predicate;
 
-        public PredicateSpecification(Predicate<T> predicate) {
+        public PredicateSpecification(Predicate<T> predicate)
+        {
             if (predicate != null)
                 _predicate = x => predicate(x);
             else
                 _predicate = NullSpecification<T>.Default.IsSatisfiedBy;
         }
-        public PredicateSpecification(Func<T, bool> predicate) {
+        public PredicateSpecification(Func<T, bool> predicate)
+        {
             _predicate = (predicate != null)
                 ? predicate
                 : NullSpecification<T>.Default.IsSatisfiedBy;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _predicate(candidate);
         }
     }
@@ -114,13 +142,15 @@ namespace WmcSoft
     {
         private readonly ISpecification<T>[] _spec;
 
-        public AllSpecification(params ISpecification<T>[] spec) {
+        public AllSpecification(params ISpecification<T>[] spec)
+        {
             if (spec == null)
                 _spec = new ISpecification<T>[0];
             _spec = spec;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _spec.All(s => s.IsSatisfiedBy(candidate));
         }
     }
@@ -129,13 +159,15 @@ namespace WmcSoft
     {
         private readonly ISpecification<T>[] _spec;
 
-        public AnySpecification(params ISpecification<T>[] spec) {
+        public AnySpecification(params ISpecification<T>[] spec)
+        {
             if (spec == null)
                 _spec = new ISpecification<T>[0];
             _spec = spec;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _spec.Any(s => s.IsSatisfiedBy(candidate));
         }
     }
@@ -144,13 +176,15 @@ namespace WmcSoft
     {
         private readonly ISpecification<T>[] _spec;
 
-        public NoneSpecification(params ISpecification<T>[] spec) {
+        public NoneSpecification(params ISpecification<T>[] spec)
+        {
             if (spec == null)
                 _spec = new ISpecification<T>[0];
             _spec = spec;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _spec.All(s => !s.IsSatisfiedBy(candidate));
         }
     }
@@ -160,12 +194,14 @@ namespace WmcSoft
         private readonly ISpecification<T> _x;
         private readonly ISpecification<T> _y;
 
-        public AndSpecification(ISpecification<T> x, ISpecification<T> y) {
+        public AndSpecification(ISpecification<T> x, ISpecification<T> y)
+        {
             _x = x;
             _y = y;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _x.IsSatisfiedBy(candidate) && _y.IsSatisfiedBy(candidate);
         }
     }
@@ -175,12 +211,14 @@ namespace WmcSoft
         private readonly ISpecification<T> _x;
         private readonly ISpecification<T> _y;
 
-        public OrSpecification(ISpecification<T> x, ISpecification<T> y) {
+        public OrSpecification(ISpecification<T> x, ISpecification<T> y)
+        {
             _x = x;
             _y = y;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return _x.IsSatisfiedBy(candidate) || _y.IsSatisfiedBy(candidate);
         }
     }
@@ -189,11 +227,13 @@ namespace WmcSoft
     {
         private readonly ISpecification<T> _x;
 
-        public NotSpecification(ISpecification<T> x) {
+        public NotSpecification(ISpecification<T> x)
+        {
             _x = x;
         }
 
-        public bool IsSatisfiedBy(T candidate) {
+        public bool IsSatisfiedBy(T candidate)
+        {
             return !_x.IsSatisfiedBy(candidate);
         }
     }
