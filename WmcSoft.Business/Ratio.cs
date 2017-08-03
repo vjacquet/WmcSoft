@@ -39,7 +39,7 @@ namespace WmcSoft
     /// </summary>
     /// <remarks>
     /// The key to its usefulness is that it defers the calculation of a decimal
-    /// value for the ratio.An object which has responsibility for the two values in
+    /// value for the ratio. An object which has responsibility for the two values in
     /// the ratio and understands their quantities can create the ratio, which can
     /// then be used by any client in a unitless form, so that the client is not
     /// required to understand the units of the quantity.At the same time, this
@@ -48,7 +48,7 @@ namespace WmcSoft
     /// the responsibilities that enable an appropriate choice of these parameters.
     /// </remarks>
     [Serializable]
-    internal struct Ratio : IEquatable<Ratio>
+    public struct Ratio : IEquatable<Ratio>
     {
         #region Constants
 
@@ -65,12 +65,14 @@ namespace WmcSoft
 
         #region Lifecycle
 
-        internal Ratio(decimal numerator) {
+        internal Ratio(decimal numerator)
+        {
             _numerator = numerator;
             _denominator = 1m;
         }
 
-        public Ratio(decimal numerator, decimal denominator) {
+        public Ratio(decimal numerator, decimal denominator)
+        {
             if (denominator == 0m) {
                 throw new DivideByZeroException();
             } else if (denominator > 0) {
@@ -84,28 +86,47 @@ namespace WmcSoft
 
         #endregion
 
-        public decimal GetDecimalValue(int scale, RoundingMode roundingRule) {
+        #region Operators
+
+        public decimal GetDecimalValue(int scale, RoundingMode roundingRule)
+        {
             var value = _numerator / _denominator;
             return value.Round(scale, roundingRule);
         }
 
-        public Ratio MultipliedBy(decimal multiplicand) {
+        public Ratio MultipliedBy(decimal multiplicand)
+        {
             return new Ratio(_numerator * multiplicand, _denominator);
         }
 
+        public static Ratio operator *(Ratio x, decimal a)
+        {
+            return x.MultipliedBy(a);
+        }
+
+        public static Ratio operator *(decimal a, Ratio x)
+        {
+            return x.MultipliedBy(a);
+        }
+
+        #endregion
+
         #region IEquatable<Ratio> Membres
 
-        public bool Equals(Ratio other) {
+        public bool Equals(Ratio other)
+        {
             return _numerator == other._numerator && _denominator == other._denominator;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             return Equals((Ratio)obj);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _numerator.GetHashCode() ^ _denominator.GetHashCode();
         }
 
@@ -113,7 +134,8 @@ namespace WmcSoft
 
         #region Overrides
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (_denominator == 1m || _numerator == 0m)
                 return _numerator.ToString();
             return _numerator.ToString() + '/' + _denominator.ToString();
