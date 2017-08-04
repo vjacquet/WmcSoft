@@ -76,6 +76,7 @@
     <Compile Include="CancellableFilterPipelineTests.cs" />
     <Compile Include="AsyncFilterPipelineTests.cs" />
     <Compile Include="AutorizableTests.cs" />
+    <Compile Include="ExtendedTests.cs" />
     <Compile Include="GatewayResultTests.cs" />
     <Compile Include="IntervalTests.cs" />
     <Compile Include="LongitudeTests.cs" />
