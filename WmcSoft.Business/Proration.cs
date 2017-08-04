@@ -31,29 +31,25 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 
 namespace WmcSoft
 {
     public static class Proration
     {
-        private static decimal SumNonEmpty(decimal[] elements, decimal sum = 0m)
-        {
+        private static decimal SumNonEmpty(decimal[] elements, decimal sum = 0m) {
             for (int i = 0; i < elements.Length; i++) {
                 sum += elements[i];
             }
             return sum;
         }
 
-        public static decimal Sum(params decimal[] elements)
-        {
+        public static decimal Sum(params decimal[] elements) {
             if (elements == null || elements.Length == 0)
                 return 0m;
             return SumNonEmpty(elements);
         }
 
-        public static Ratio[] Ratios(params decimal[] proportions)
-        {
+        static Ratio[] ratios(params decimal[] proportions) {
             if (proportions == null)
                 return null;
             if (proportions.Length == 0)
@@ -66,31 +62,39 @@ namespace WmcSoft
             return ratios;
         }
 
-        static decimal[] DistributeRemainderOver(decimal[] amounts, decimal remainder, decimal minimumIncrement)
-        {
-            Debug.Assert(minimumIncrement < 1m);
-            int increments = (int)(remainder / minimumIncrement);
-            Debug.Assert(increments <= amounts.Length);
+        static decimal[] DistributeRemainderOver(decimal[] amounts, decimal remainder) {
+            throw new NotImplementedException();
+            //int increments = remainder.dividedBy(remainder.minimumIncrement()).decimalValue(0, Rounding.UNNECESSARY).intValue();
+            //Debug.Assert(increments <= amounts.Length);
 
-            var results = (decimal[])amounts.Clone();
-            for (int i = 0; i < increments; i++)
-                results[i] = amounts[i] + minimumIncrement;
-            return results;
+            //var results = new decimal[amounts.Length];
+            //for (int i = 0; i < increments; i++)
+            //    results[i] = amounts[i].incremented();
+            //for (int i = increments; i < amounts.Length; i++)
+            //    results[i] = amounts[i];
+            //return results;
         }
 
-        public static decimal[] DividedEvenlyIntoParts(decimal total, int n, decimal minimumIncrement)
-        {
-            var lowResult = total / n;
+        public static decimal[] DividedEvenlyIntoParts(decimal total, int n) {
+            var lowResult = Decimal.Divide(total, n);
             var lowResults = new decimal[n];
             for (int i = 0; i < n; i++)
                 lowResults[i] = lowResult;
             var remainder = total - SumNonEmpty(lowResults);
-            return DistributeRemainderOver(lowResults, remainder, minimumIncrement);
+            return DistributeRemainderOver(lowResults, remainder);
         }
 
 #if SOURCE
 	private static int defaultScaleForIntermediateCalculations(Money total) {
 		return total.getCurrency().getDefaultFractionDigits() + 1;
+	}
+
+	public Money[] dividedEvenlyIntoParts(Money total, int n) {
+		Money lowResult = total.dividedBy(BigDecimal.valueOf(n), Rounding.DOWN);
+		Money[] lowResults = new Money[n];
+		for (int i = 0; i < n; i++) lowResults[i] = lowResult;
+		Money remainder = total.minus(sum(lowResults));
+		return distributeRemainderOver(lowResults, remainder);
 	}
 
 	public Money[] proratedOver(Money total, long[] longProportions) {
@@ -122,7 +126,18 @@ namespace WmcSoft
 		BigDecimal multiplier = ratio.decimalValue(scale, Rounding.DOWN);
 		return total.times(multiplier, Rounding.DOWN);
 	}
+	
+	Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
+		int increments = remainder.dividedBy(remainder.minimumIncrement()).decimalValue(0, Rounding.UNNECESSARY).intValue();
+		assert increments <= amounts.length; 
 
+		Money[] results = new Money[amounts.length];
+		for (int i = 0; i < increments; i++) 
+			results[i] = amounts[i].incremented();
+		for (int i = increments; i < amounts.length; i++) 
+			results[i] = amounts[i];
+		return results; 
+	}
 #endif
     }
 }
