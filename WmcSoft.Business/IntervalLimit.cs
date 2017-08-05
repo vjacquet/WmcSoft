@@ -45,8 +45,9 @@ namespace WmcSoft
         where T : struct, IComparable<T>
     {
         public static readonly IntervalLimit<T> Undefined;
-        public static readonly IntervalLimit<T> UnboundedLower = new IntervalLimit<T>(State.Lower);
-        public static readonly IntervalLimit<T> UnboundedUpper = new IntervalLimit<T>(State.Upper);
+        public static readonly IntervalLimit<T> Unbounded;
+        public static readonly IntervalLimit<T> UnboundedLower = new IntervalLimit<T>(State.Lower, default(T));
+        public static readonly IntervalLimit<T> UnboundedUpper = new IntervalLimit<T>(State.Upper, default(T));
 
         [Flags]
         internal enum State
@@ -61,7 +62,7 @@ namespace WmcSoft
         private readonly T _value;
         private readonly State _state;
 
-        private IntervalLimit(State state, T value = default(T))
+        private IntervalLimit(State state, T value)
         {
             _value = value;
             _state = state;
@@ -146,10 +147,10 @@ namespace WmcSoft
             if (!HasValue) {
                 if (!other.HasValue)
                     return 0;
-                return other.IsLower ? -1 : 1;
+                return other.IsUpper ? -1 : 1;
             }
             if (!other.HasValue)
-                return IsLower ? 1 : -1;
+                return IsUpper ? 1 : -1;
             // should the limit be equal when only the value are equal?
             return _value.CompareTo(other._value);
 #endif
@@ -215,32 +216,5 @@ namespace WmcSoft
         }
 
         #endregion
-    }
-
-    public static class IntervalLimit
-    {
-        public static IntervalLimit<T> Lower<T>(T value)
-          where T : struct, IComparable<T>
-        {
-            return new IntervalLimit<T>(value, true);
-        }
-
-        public static IntervalLimit<T> Lower<T>(T value, bool closed)
-            where T : struct, IComparable<T>
-        {
-            return new IntervalLimit<T>(value, true, closed);
-        }
-
-        public static IntervalLimit<T> Upper<T>(T value)
-         where T : struct, IComparable<T>
-        {
-            return new IntervalLimit<T>(value, false);
-        }
-
-        public static IntervalLimit<T> Upper<T>(T value, bool closed)
-            where T : struct, IComparable<T>
-        {
-            return new IntervalLimit<T>(value, false, closed);
-        }
     }
 }
