@@ -49,7 +49,7 @@ namespace WmcSoft.Business.ProductModel
 
         public ServiceInstance(ProductType productType, DateTime scheduledStart, DateTime scheduledEnd)
             : base(productType) {
-            ScheduledPeriod = new Interval<DateTime>(scheduledStart, scheduledEnd);
+            ScheduledPeriod = Interval.RightOpen(scheduledStart, scheduledEnd);
         }
 
         #endregion
@@ -75,7 +75,7 @@ namespace WmcSoft.Business.ProductModel
             DoReschedule(ref scheduledStart, ref scheduledEnd);
             Debug.Assert(scheduledStart > scheduledEnd);
 
-            ScheduledPeriod = new Interval<DateTime>(scheduledStart, scheduledEnd);
+            ScheduledPeriod = Interval.RightOpen(scheduledStart, scheduledEnd);
         }
 
         public void Execute() {

@@ -23,7 +23,7 @@ namespace WmcSoft
         [Fact]
         public void CheckMixedIsEmpty()
         {
-            var actual = new Interval<int>(IntervalLimit.Lower(1, true), IntervalLimit.Upper(1, false));
+            var actual = new Interval<int>(Interval.LowerLimit(1, true), Interval.UpperLimit(1, false));
             Assert.False(actual.IsOpen());
             Assert.False(actual.IsEmpty());
         }
@@ -31,7 +31,7 @@ namespace WmcSoft
         [Fact]
         public void CanCreateMixedInterval()
         {
-            var actual = new Interval<int>(IntervalLimit<int>.Unbounded, IntervalLimit.Upper(5, true));
+            var actual = new Interval<int>(IntervalLimit<int>.Unbounded, Interval.UpperLimit(5, true));
             Assert.False(actual.HasLowerLimit);
             Assert.True(actual.HasUpperLimit);
         }
@@ -66,7 +66,7 @@ namespace WmcSoft
         [InlineData(4, 10, "[4, 10]")]
         public void CheckToString(int lower, int upper, string expected)
         {
-            var interval = new Interval<int>(lower, upper);
+            var interval = Interval.Closed(lower, upper);
             var actual = interval.ToString();
             Assert.Equal(expected, actual);
         }

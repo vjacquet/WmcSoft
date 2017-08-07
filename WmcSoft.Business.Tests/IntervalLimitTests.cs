@@ -7,8 +7,8 @@ namespace WmcSoft
         [Fact]
         public void CanCompareIntervalLimits()
         {
-            var one = IntervalLimit.Lower(1, false);
-            var two = IntervalLimit.Upper(2, false);
+            var one = Interval.LowerLimit(1, false);
+            var two = Interval.UpperLimit(2, false);
 
             Assert.True(one < two);
             Assert.True(two > one);
@@ -17,8 +17,8 @@ namespace WmcSoft
         [Fact]
         public void CheckLowerAndUpperOfSameValueAreEqual()
         {
-            var lower = IntervalLimit.Lower(1, false);
-            var upper = IntervalLimit.Upper(1, false);
+            var lower = Interval.LowerLimit(1, false);
+            var upper = Interval.UpperLimit(1, false);
             Assert.True(lower == upper);
         }
 
@@ -26,8 +26,8 @@ namespace WmcSoft
         public void CanCompareIntervalLimitsWithUndefined()
         {
             var undefined = IntervalLimit<int>.Undefined;
-            var lower = IntervalLimit.Lower(1, false);
-            var upper = IntervalLimit.Upper(1, false);
+            var lower = Interval.LowerLimit(1, false);
+            var upper = Interval.UpperLimit(1, false);
 
             Assert.True(undefined < lower);
             Assert.True(upper < undefined);
