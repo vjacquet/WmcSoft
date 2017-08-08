@@ -23,17 +23,21 @@ namespace WmcSoft
         [Fact]
         public void CheckMixedIsEmpty()
         {
-            var actual = new Interval<int>(Interval.LowerLimit(1, true), Interval.UpperLimit(1, false));
+            var actual = new Interval<int>(Interval.LowerLimit(1), Interval.UpperLimit(1, exclusive: true));
             Assert.False(actual.IsOpen());
             Assert.False(actual.IsEmpty());
         }
 
-        [Fact]
-        public void CanCreateMixedInterval()
+        [Theory]
+        [InlineData(4, null)]
+        [InlineData(null, 5)]
+        public void CanCreateMixedInterval(int? lower, int? upper)
         {
-            var actual = new Interval<int>(IntervalLimit<int>.Unbounded, Interval.UpperLimit(5, true));
-            Assert.False(actual.HasLowerLimit);
-            Assert.True(actual.HasUpperLimit);
+            var lo = lower.HasValue ? Interval.LowerLimit(lower.GetValueOrDefault()) : IntervalLimit<int>.UnboundedLower;
+            var up = upper.HasValue ? Interval.UpperLimit(upper.GetValueOrDefault()) : IntervalLimit<int>.UnboundedUpper;
+            var actual = new Interval<int>(lo,up);
+            Assert.Equal(lower.HasValue, actual.HasLowerLimit);
+            Assert.Equal(upper.HasValue, actual.HasUpperLimit);
         }
 
         [Fact]

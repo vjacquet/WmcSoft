@@ -30,7 +30,9 @@ namespace WmcSoft
             var upper = Interval.UpperLimit(1, false);
 
             Assert.True(undefined < lower);
+            Assert.True(lower > undefined);
             Assert.True(upper < undefined);
+            Assert.True(undefined > upper);
         }
     }
 }

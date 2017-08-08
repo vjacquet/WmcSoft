@@ -68,11 +68,6 @@ namespace WmcSoft
             _state = state;
         }
 
-        public IntervalLimit(T value, bool lower)
-            : this(State.Closed | (lower ? State.Lower : State.Upper), value)
-        {
-        }
-
         public IntervalLimit(T value, bool lower, bool closed)
             : this((closed ? State.Closed : State.Open) | (lower ? State.Lower : State.Upper), value)
         {
@@ -83,7 +78,7 @@ namespace WmcSoft
         public bool IsClosed { get { return (_state & State.Closed) != 0; } }
         public bool IsOpen { get { return (_state & State.Open) != 0; } }
 
-        public bool HasValue { get { return _state != State.None; } }
+        public bool HasValue { get { return (_state & (State.Closed| State.Open)) != State.None; } }
         public T Value {
             get {
                 if (!HasValue)
@@ -147,10 +142,15 @@ namespace WmcSoft
             if (!HasValue) {
                 if (!other.HasValue)
                     return 0;
-                return other.IsUpper ? -1 : 1;
+                if (IsLower)
+                    return -1;
+                return other.IsUpper ? 1 : -1;
             }
-            if (!other.HasValue)
-                return IsUpper ? 1 : -1;
+            if (!other.HasValue) {
+                if (other.IsUpper)
+                    return 1;
+                return IsUpper ? -1 : 1;
+            }
             // should the limit be equal when only the value are equal?
             return _value.CompareTo(other._value);
 #endif

@@ -53,19 +53,16 @@ namespace WmcSoft
             if (lower.IsUpper) throw new ArgumentException(nameof(lower));
             if (upper.IsLower) throw new ArgumentException(nameof(upper));
 
-            if (lower.CompareTo(upper) > 0) throw new ArgumentException();
+            if (lower.HasValue && upper.HasValue && lower.CompareTo(upper) > 0) throw new ArgumentException();
 
             _lower = lower;
             _upper = upper;
         }
 
-        /// <remarks>Uses the common default for time intervals, [start, end)</remarks>
-        public Interval(T lower, T upper)
+        public void Deconstruct(out IntervalLimit<T> lower, out IntervalLimit<T> upper)
         {
-            if (lower.CompareTo(upper) > 0) throw new ArgumentException();
-
-            _lower = new IntervalLimit<T>(lower, lower: true, closed: true);
-            _upper = new IntervalLimit<T>(upper, lower: false, closed: true);
+            lower = _lower;
+            upper = _upper;
         }
 
         public T? Lower { get { return (T?)_lower; } }
@@ -344,33 +341,33 @@ namespace WmcSoft
     {
         #region Limits
 
-        public static IntervalLimit<T> LowerLimit<T>(T value, bool inclusive = true)
+        public static IntervalLimit<T> LowerLimit<T>(T value, bool exclusive = false)
             where T : struct, IComparable<T>
         {
-            return new IntervalLimit<T>(value, true, inclusive);
+            return new IntervalLimit<T>(value, true, !exclusive);
         }
 
-        public static IntervalLimit<T> LowerLimit<T>(T? value, bool inclusive = true)
+        public static IntervalLimit<T> LowerLimit<T>(T? value, bool exclusive = false)
             where T : struct, IComparable<T>
         {
             return value.HasValue
                 ? IntervalLimit<T>.UnboundedLower
-                : new IntervalLimit<T>(value.GetValueOrDefault(), true, inclusive);
+                : new IntervalLimit<T>(value.GetValueOrDefault(), true, !exclusive);
         }
 
 
-        public static IntervalLimit<T> UpperLimit<T>(T value, bool inclusive = true)
+        public static IntervalLimit<T> UpperLimit<T>(T value, bool exclusive = false)
             where T : struct, IComparable<T>
         {
-            return new IntervalLimit<T>(value, false);
+            return new IntervalLimit<T>(value, false, !exclusive);
         }
 
-        public static IntervalLimit<T> UpperLimit<T>(T? value, bool inclusive = true)
+        public static IntervalLimit<T> UpperLimit<T>(T? value, bool exclusive = false)
             where T : struct, IComparable<T>
         {
             return value.HasValue
                 ? IntervalLimit<T>.UnboundedUpper
-                : new IntervalLimit<T>(value.GetValueOrDefault(), false);
+                : new IntervalLimit<T>(value.GetValueOrDefault(), false, !exclusive);
         }
 
         #endregion
@@ -384,85 +381,85 @@ namespace WmcSoft
         public static Interval<T> Closed<T>(T lower, T upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, true), UpperLimit(upper, true));
+            return new Interval<T>(LowerLimit(lower), UpperLimit(upper));
         }
 
         public static Interval<T> Closed<T>(T? lower, T? upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, true), UpperLimit(upper, true));
+            return new Interval<T>(LowerLimit(lower), UpperLimit(upper));
         }
 
         public static Interval<T> Open<T>(T lower, T upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, false), UpperLimit(upper, false));
+            return new Interval<T>(LowerLimit(lower, exclusive: true), UpperLimit(upper, exclusive: true));
         }
 
         public static Interval<T> Open<T>(T? lower, T? upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, false), UpperLimit(upper, false));
+            return new Interval<T>(LowerLimit(lower, exclusive: true), UpperLimit(upper, exclusive: true));
         }
 
         public static Interval<T> LeftClosed<T>(T lower, T upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, true), UpperLimit(upper, false));
+            return new Interval<T>(LowerLimit(lower, exclusive: false), UpperLimit(upper, exclusive: true));
         }
 
         public static Interval<T> LeftClosed<T>(T? lower, T? upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, true), UpperLimit(upper, false));
+            return new Interval<T>(LowerLimit(lower, exclusive: false), UpperLimit(upper, exclusive: true));
         }
 
         public static Interval<T> RightOpen<T>(T lower, T upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, true), UpperLimit(upper, false));
+            return new Interval<T>(LowerLimit(lower, exclusive: false), UpperLimit(upper, exclusive: true));
         }
 
         public static Interval<T> RightOpen<T>(T? lower, T? upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, true), UpperLimit(upper, false));
+            return new Interval<T>(LowerLimit(lower, exclusive: false), UpperLimit(upper, exclusive: true));
         }
 
         public static Interval<T> RightClosed<T>(T lower, T upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, false), UpperLimit(upper, true));
+            return new Interval<T>(LowerLimit(lower, exclusive: true), UpperLimit(upper, exclusive: false));
         }
 
         public static Interval<T> RightClosed<T>(T? lower, T? upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, false), UpperLimit(upper, true));
+            return new Interval<T>(LowerLimit(lower, exclusive: true), UpperLimit(upper, exclusive: false));
         }
 
         public static Interval<T> LeftOpen<T>(T lower, T upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, false), UpperLimit(upper, true));
+            return new Interval<T>(LowerLimit(lower, exclusive: true), UpperLimit(upper, exclusive: false));
         }
 
         public static Interval<T> LeftOpen<T>(T? lower, T? upper)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, false), UpperLimit(upper, true));
+            return new Interval<T>(LowerLimit(lower, exclusive: true), UpperLimit(upper, exclusive: false));
         }
 
-        public static Interval<T> Over<T>(T lower, bool lowerIncluded, T upper, bool upperIncluded)
+        public static Interval<T> Over<T>(T lower, bool lowerExcluded, T upper, bool upperExcluded)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, lowerIncluded), UpperLimit(upper, upperIncluded));
+            return new Interval<T>(LowerLimit(lower, lowerExcluded), UpperLimit(upper, upperExcluded));
         }
 
-        public static Interval<T> Over<T>(T? lower, bool lowerIncluded, T? upper, bool upperIncluded)
+        public static Interval<T> Over<T>(T? lower, bool lowerExcluded, T? upper, bool upperExcluded)
             where T : struct, IComparable<T>
         {
-            return new Interval<T>(LowerLimit(lower, lowerIncluded), UpperLimit(upper, upperIncluded));
+            return new Interval<T>(LowerLimit(lower, lowerExcluded), UpperLimit(upper, upperExcluded));
         }
     }
 
