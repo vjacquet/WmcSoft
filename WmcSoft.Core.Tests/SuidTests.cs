@@ -12,14 +12,19 @@ namespace WmcSoft
         }
 
         [Theory]
-        [InlineData("AAAAAAAAAAAAAAAAAAAAA0", true)]
-        [InlineData("AaBb0123456789-_AAAAA0", true)]
-        [InlineData("AAAAAAàAAAAAAAAAAAAAA0", false)]
-        [InlineData("AAA)AAAAAAAAAAAAAAAAA0", false)]
-        [InlineData("AAAAAAAA+AAAAAAAAAAAA0", false)]
-        public void CanParseStraightSuid(string value, bool isValid)
+        [InlineData("AAAAAAAAAAAAAAAAAAAAA0")]
+        [InlineData("AaBb0123456789-_AAAAA0")]
+        public void CanParseValidSuid(string value)
         {
-            Assert.Equal(isValid, IsValid(value));
+            Assert.True(IsValid(value));
+        }
+
+        [InlineData("AAAAAAàAAAAAAAAAAAAAA0")]
+        [InlineData("AAA)AAAAAAAAAAAAAAAAA0")]
+        [InlineData("AAAAAAAA+AAAAAAAAAAAA0")]
+        public void CannotParseInvalidSuid(string value)
+        {
+            Assert.False(IsValid(value));
         }
 
         [Fact]
@@ -54,14 +59,14 @@ namespace WmcSoft
             Assert.True(empty.CompareTo(c) < 0);
         }
 
-        [Fact]
-        public void CanRoundTrip()
+        [Theory]
+        [InlineData("AAAAAAAAAAAAAAAAAAAAA0")]
+        [InlineData("AazZ09-_ko1664OKmNoPq0")]
+        public void CanRoundTripFromAndToString(string value)
         {
-            var data = new string[] { "AAAAAAAAAAAAAAAAAAAAA0", "AazZ09-_ko1664OKmNoPq0" };
-            foreach (var expected in data) {
-                var actual = new Suid(expected).ToString();
-                Assert.Equal(expected, actual);
-            }
+            var id = new Suid(value);
+            var s = id.ToString();
+            Assert.Equal(value, s);
         }
 
         [Fact]
