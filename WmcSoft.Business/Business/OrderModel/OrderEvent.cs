@@ -26,12 +26,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.OrderModel
 {
+    /// <summary>
+    /// Represents a notable occurence in the lifecycle of an <see cref="Order"/>.
+    /// </summary>
     public abstract class OrderEvent
     {
         #region Fields
@@ -45,6 +46,7 @@ namespace WmcSoft.Business.OrderModel
 
         protected OrderEvent(OrderIdentifier identifier) {
             _identifier = identifier;
+            _authorizations = new List<PartySignature>();
         }
 
         #endregion
@@ -64,45 +66,4 @@ namespace WmcSoft.Business.OrderModel
         #endregion
     }
 
-    public abstract class LifecycleEvent : OrderEvent
-    {
-        protected LifecycleEvent(OrderIdentifier identifier)
-            : base(identifier) {
-        }
-    }
-
-    /// <summary>
-    /// Represents an event sent to an <see cref="Order"/> that changes its <see cref="OrderStatus"/> to <see cref="OrderStatus.Open"/>.
-    /// </summary>
-    public class OpenEvent : LifecycleEvent
-    {
-        public OpenEvent(OrderIdentifier identifier)
-            : base(identifier) {
-        }
-    }
-
-    /// <summary>
-    /// Represents an event sent to an <see cref="Order"/> that changes its <see cref="OrderStatus"/> to <see cref="OrderStatus.Closed"/>.
-    /// </summary>
-    public class CloseEvent : LifecycleEvent
-    {
-        public CloseEvent(OrderIdentifier identifier)
-            : base(identifier) {
-        }
-    }
-
-    /// <summary>
-    /// Represents an event sent to an <see cref="Order"/> that changes its <see cref="OrderStatus"/> to <see cref="OrderStatus.Cancelled"/>.
-    /// </summary>
-    public class CancelEvent : LifecycleEvent
-    {
-        readonly string _reason;
-
-        public CancelEvent(OrderIdentifier identifier, string reason)
-            : base(identifier) {
-            _reason = reason;
-        }
-
-        public string Reason { get { return _reason; } }
-    }
 }

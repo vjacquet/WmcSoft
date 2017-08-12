@@ -101,8 +101,10 @@
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
     <Compile Include="Business\ModerationStatus.cs" />
+    <Compile Include="Business\OrderModel\AmendEvent.cs" />
     <Compile Include="Business\OrderModel\DeliveryReceiver.cs" />
     <Compile Include="Business\OrderModel\ChargeLine.cs" />
+    <Compile Include="Business\OrderModel\LifecycleEvent.cs" />
     <Compile Include="Business\OrderModel\OrderLine.cs" />
     <Compile Include="Business\OrderModel\Order.cs" />
     <Compile Include="Business\OrderModel\OrderLineIdentifier.cs" />

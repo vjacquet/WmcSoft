@@ -24,11 +24,7 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WmcSoft.Business.OrderModel
 {
@@ -47,7 +43,8 @@ namespace WmcSoft.Business.OrderModel
 
         #region Lifecycle
 
-        protected Order() {
+        protected Order()
+        {
             _identifier = new OrderIdentifier();
 
             OrderLines = new List<OrderLine>();
@@ -68,6 +65,8 @@ namespace WmcSoft.Business.OrderModel
 
         public ICollection<OrderLine> OrderLines { get; private set; }
         public ICollection<ChargeLine> ChargeLines { get; private set; }
+
+        public string TermsAndConditions { get; private set; }
 
         #endregion
     }

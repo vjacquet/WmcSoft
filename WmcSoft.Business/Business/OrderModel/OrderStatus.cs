@@ -24,14 +24,12 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace WmcSoft.Business.OrderModel
 {
+    /// <summary>
+    /// Represents a particular state of the <see cref="Order"/> that constrains what activities
+    /// can be performed against the <see cref="Order"/>.
+    /// </summary>
     public enum OrderStatus
     {
         Initializing,
