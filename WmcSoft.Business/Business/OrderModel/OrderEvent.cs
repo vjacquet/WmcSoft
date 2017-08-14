@@ -65,5 +65,4 @@ namespace WmcSoft.Business.OrderModel
 
         #endregion
     }
-
 }

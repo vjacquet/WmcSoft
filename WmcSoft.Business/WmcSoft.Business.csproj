@@ -110,6 +110,8 @@
     <Compile Include="Business\OrderModel\OrderLineIdentifier.cs" />
     <Compile Include="Business\OrderModel\OrderIdentifier.cs" />
     <Compile Include="Business\OrderModel\OrderStatus.cs" />
+    <Compile Include="Business\OrderModel\PartySummaryRoleInOrder.cs" />
+    <Compile Include="Business\OrderModel\ReturnedItem.cs" />
     <Compile Include="Business\OrderModel\SalesOrder.cs" />
     <Compile Include="Business\OrderModel\PurchaseOrder.cs" />
     <Compile Include="Business\OrderModel\SalesTaxPolicy.cs" />

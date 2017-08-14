@@ -42,7 +42,8 @@ namespace WmcSoft.Business.OrderModel
 
         #region Lifecycle
 
-        public OrderIdentifier() {
+        public OrderIdentifier()
+        {
             _identifier = Guid.NewGuid();
         }
 
@@ -58,15 +59,18 @@ namespace WmcSoft.Business.OrderModel
 
         #region IEquatable<Guid> Members
 
-        public bool Equals(Guid other) {
+        public bool Equals(Guid other)
+        {
             return _identifier == other;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _identifier.GetHashCode();
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(OrderIdentifier))
                 return false;
             return base.Equals((OrderIdentifier)obj);

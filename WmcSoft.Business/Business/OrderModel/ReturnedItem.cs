@@ -24,27 +24,15 @@
 
 #endregion
 
-using WmcSoft.Business.PartyModel;
-
 namespace WmcSoft.Business.OrderModel
 {
     /// <summary>
-    /// Represents a special type of <see cref="PartySummary"/> that also includes <see cref="DeliveryInstructions"/>.
+    /// Represents an item that has been received by a <see cref="DeliveryReceiver"/> and must be returned to
+    /// the vendor because a <see cref="CancelEvent"/> or <see cref="AmendOrderLineEvent"/> has rended it surplus
+    /// to requirements.
     /// </summary>
-    public class DeliveryReceiver : PartySummary
+    public class ReturnedItem
     {
-        #region Lifecycle
 
-        public DeliveryReceiver(PartyIdentifier partyIdentifier, PartyRoleIdentifier roleIdentifier)
-            : base(partyIdentifier, roleIdentifier) {
-        }
-
-        #endregion
-
-        #region Properties
-
-        public string DeliveryInstructions { get; set; }
-
-        #endregion
     }
 }

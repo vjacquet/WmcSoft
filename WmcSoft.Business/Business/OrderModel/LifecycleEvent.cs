@@ -33,7 +33,8 @@ namespace WmcSoft.Business.OrderModel
     public abstract class LifecycleEvent : OrderEvent
     {
         protected LifecycleEvent(OrderIdentifier identifier)
-            : base(identifier) {
+            : base(identifier)
+        {
         }
     }
 
