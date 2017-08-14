@@ -34,6 +34,10 @@ namespace WmcSoft.Collections.Generic
     /// </summary>
     public static partial class CollectionExtensions
     {
+        // TODO: Finders are useful when you sort using a subset of properties and you wan to find based only on that subset.
+        // The problem is that code using the finder my=ight be far from the code sorting the collection and inconsistencies may
+        // appear.
+        // so, shouldn't it be based on a specialisation of IComparer? int Compare(TSource, TPartial) / int Compare(TPartial, TSource)
         private static int UnguardedBinarySearch<T>(this IReadOnlyList<T> list, int lo, int hi, Func<T, int> finder)
         {
             while (lo <= hi) {

@@ -23,9 +23,9 @@ To improve readability:
             return Tokenize(self, new CharTokenizer(separator));
         }
 
-- Extensions methods yielding `IEnumerable<T>` should check the arguments and the return the result from an unguarded version. 
-  The unguarded version might be called separately and the verification of the arguments will not be defered until the start 
-  of the enumeration.
+- Extensions methods yielding `IEnumerable<T>` should check the arguments and then return the result from an unguarded version. 
+  The unguarded version might be called separately from other places and the verification of the arguments will not be defered 
+  until the start of the enumeration.
 
         static IEnumerable<T> UnguardedBackwards<T>(IReadOnlyList<T> source) {
             for (int i = source.Count - 1; i >= 0; i--) {
