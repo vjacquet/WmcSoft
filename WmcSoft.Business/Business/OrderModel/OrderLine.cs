@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using WmcSoft.Business.Accounting;
+using WmcSoft.Business.PartyModel;
 using WmcSoft.Business.ProductModel;
 
 namespace WmcSoft.Business.OrderModel
@@ -45,7 +46,8 @@ namespace WmcSoft.Business.OrderModel
 
         #region Lifecycle
 
-        protected OrderLine() {
+        protected OrderLine()
+        {
             _identifier = new OrderLineIdentifier();
 
             ChargeLines = new List<ChargeLine>();
@@ -75,6 +77,27 @@ namespace WmcSoft.Business.OrderModel
         public ICollection<ChargeLine> ChargeLines { get; private set; }
 
         public ICollection<TaxOnLine> Taxes { get; private set; }
+
+        #endregion
+
+        #region PartySummary support
+
+        public DeliveryReceiver GetDeliveryReceiver()
+        {
+            return OrderLineReceiver;
+        }
+
+        public void AddDeliveryReceiver(DeliveryReceiver deliveryReceiver)
+        {
+            OrderLineReceiver = deliveryReceiver;
+        }
+
+        public void RemoveDeliveryReceiver()
+        {
+            OrderLineReceiver = null;
+        }
+
+        public DeliveryReceiver OrderLineReceiver { get; private set; }
 
         #endregion
     }

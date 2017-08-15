@@ -25,6 +25,7 @@
 #endregion
 
 using System.Collections.Generic;
+using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.OrderModel
 {
@@ -37,6 +38,7 @@ namespace WmcSoft.Business.OrderModel
         #region Fields
 
         private readonly OrderIdentifier _identifier;
+        private Dictionary<PartySummaryRoleInOrder, PartySummary> _parties;
         private OrderStatus _status;
 
         #endregion
@@ -67,6 +69,37 @@ namespace WmcSoft.Business.OrderModel
         public ICollection<ChargeLine> ChargeLines { get; private set; }
 
         public string TermsAndConditions { get; private set; }
+
+        #endregion
+
+        #region PartySummary support
+
+        public PartySummary GetPartySummary(PartySummaryRoleInOrder role)
+        {
+            if (_parties != null && _parties.TryGetValue(role, out PartySummary partySummary))
+                return partySummary;
+            return null;
+        }
+
+        public void AddPartySummary(PartySummaryRoleInOrder role, PartySummary partySummary)
+        {
+            if (_parties == null)
+                _parties = new Dictionary<PartySummaryRoleInOrder, PartySummary>();
+            _parties[role] = partySummary;
+        }
+
+        public void RemovePartySummary(PartySummaryRoleInOrder role)
+        {
+            if (_parties != null)
+                _parties.Remove(role);
+        }
+
+        public PartySummary Vendor => GetPartySummary(PartySummaryRoleInOrder.Vendor);
+        public PartySummary SalesAgent => GetPartySummary(PartySummaryRoleInOrder.SalesAgent);
+        public PartySummary PaymentReceiver => GetPartySummary(PartySummaryRoleInOrder.PaymentReceiver);
+        public PartySummary OrderInitiator => GetPartySummary(PartySummaryRoleInOrder.OrderInitiator);
+        public PartySummary Purchaser => GetPartySummary(PartySummaryRoleInOrder.Purchaser);
+        public DeliveryReceiver OrderReceiver => (DeliveryReceiver)GetPartySummary(PartySummaryRoleInOrder.OrderReceiver);
 
         #endregion
     }
