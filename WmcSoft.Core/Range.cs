@@ -72,15 +72,17 @@ namespace WmcSoft
         /// <summary>
         /// Creates a new range with given lower and upper bounds.
         /// </summary>
-        /// <param name="x">The lower bound of the range.</param>
-        /// <param name="y">The upper bound of the range.</param>
-        /// <exception cref="ArgumentException"><paramref name="x"/> is not less than or equal to <paramref name="y"/>.</exception>
-        public Range(T x, T y)
+        /// <param name="lower">The lower bound of the range.</param>
+        /// <param name="upper">The upper bound of the range.</param>
+        /// <exception cref="ArgumentException"><paramref name="lower"/> is not less than or equal to <paramref name="upper"/>.</exception>
+        public Range(T lower, T upper)
         {
-            if (x.CompareTo(y) > 0) throw new ArgumentException();
+            if (lower == null) throw new ArgumentNullException(nameof(lower));
+            if (upper == null) throw new ArgumentNullException(nameof(upper));
+            if (lower.CompareTo(upper) > 0) throw new ArgumentException();
 
-            Lower = x;
-            Upper = y;
+            Lower = lower;
+            Upper = upper;
         }
 
         public void Deconstruct(out T lower, out T upper)
@@ -183,7 +185,7 @@ namespace WmcSoft
             list.Sort();
             if (!IsContiguous(list))
                 throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
-            return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
+            return Merge(list);
         }
 
         private static Range<T> Merge(IList<Range<T>> list)
@@ -199,13 +201,6 @@ namespace WmcSoft
             if (!IsContiguous(list))
                 return false;
             return Equals(Merge(list));
-        }
-
-        public static Range<T> Intersect(Range<T> x, Range<T> y)
-        {
-            if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
-                return Empty;
-            return new Range<T>(Max(x.Lower, y.Lower), Min(x.Upper, y.Upper));
         }
 
         #endregion
@@ -316,6 +311,14 @@ namespace WmcSoft
             where O : IOrdinal<T>
         {
             return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
+        }
+
+        public static Range<T> Intersect<T>(Range<T> x, Range<T> y)
+            where T : IComparable<T>
+        {
+            if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
+                return Range<T>.Empty;
+            return new Range<T>(Max(x.Lower, y.Lower), Min(x.Upper, y.Upper));
         }
 
         #region Extensions on enumerable or collections

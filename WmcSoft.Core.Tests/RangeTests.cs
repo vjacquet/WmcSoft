@@ -25,7 +25,7 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CheckInvalidRange()
+        public void OutOfOrderArgumentsThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(() => new Range<int>(5, 2));
         }
@@ -48,7 +48,7 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CheckIsEmpty()
+        public void RangeIsEmptyWhenLowerEqualsUpper()
         {
             var actual = new Range<int>(2, 2);
 
@@ -108,10 +108,10 @@ namespace WmcSoft.Business
             //    a  b  c d    e
             int a = 2, b = 5, c = 8, d = 10, e = 15;
 
-            Assert.Equal(Range<int>.Empty, Range<int>.Intersect(new Range<int>(a, b), new Range<int>(c, d)));
-            Assert.Equal(new Range<int>(c, d), Range<int>.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
-            Assert.Equal(new Range<int>(b, b), Range<int>.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
-            Assert.Equal(new Range<int>(b, d), Range<int>.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
+            Assert.Equal(Range<int>.Empty, Range.Intersect(new Range<int>(a, b), new Range<int>(c, d)));
+            Assert.Equal(new Range<int>(c, d), Range.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
+            Assert.Equal(new Range<int>(b, b), Range.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
+            Assert.Equal(new Range<int>(b, d), Range.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
         }
 
         [Fact]

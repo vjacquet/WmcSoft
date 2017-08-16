@@ -4,6 +4,26 @@ namespace WmcSoft
 {
     public class IntervalLimitTests
     {
+        [Theory]
+        [InlineData(4, null, null)]
+        [InlineData(4, 1, null)]
+        [InlineData(4, null, 9)]
+        [InlineData(4, 1, 9)]
+        public void ValueIsInRange(int value, int? lo, int? hi)
+        {
+            Assert.True(!(value < lo) && !(value >= hi));
+        }
+
+        [Theory]
+        [InlineData(0, 1, null)]
+        [InlineData(10, null, 9)]
+        [InlineData(10, 1, 9)]
+        [InlineData(0, 1, 9)]
+        public void ValueIsNotInRange(int value, int? lo, int? hi)
+        {
+            Assert.False(!(value < lo) && !(value >= hi));
+        }
+
         [Fact]
         public void CanCompareIntervalLimits()
         {
