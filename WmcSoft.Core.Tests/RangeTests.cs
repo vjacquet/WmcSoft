@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -127,7 +128,7 @@ namespace WmcSoft.Business
                 Range.Create(1, 3),
                 Range.Create(4, 9),
             };
-            var actual = data.PartialMerge().ToArray();
+            var actual = data.PartialMerge();
             Assert.Equal(expected, actual);
         }
 
@@ -146,8 +147,36 @@ namespace WmcSoft.Business
                 Range.Create(1, 3),
                 Range.Create(4, 16),
             };
-            var actual = data.PartialMerge().ToArray();
+            var actual = data.PartialMerge();
             Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [MemberData("GetIntersectingRanges")]
+        public void UnionOfIntersectingRangesReturnsTheHullRange(Range<int> x, Range<int> y)
+        {
+            Assert.Equal(Range.Hull(x, y), Range.Union(x, y));
+        }
+
+        [Theory]
+        [MemberData("GetDisjoinedgRanges")]
+        public void UnionOfDisjoinedRangesThrows(Range<int> x, Range<int> y)
+        {
+            Assert.Throws<ArgumentException>(() => Range.Union(x, y));
+        }
+
+        public static IEnumerable<object[]> GetIntersectingRanges()
+        {
+            yield return new object[] { Range.Create(1, 5), Range.Create(4, 7) };
+            yield return new object[] { Range.Create(1, 5), Range.Create(2, 4) };
+            yield return new object[] { Range.Create(3, 5), Range.Create(2, 4) };
+            yield return new object[] { Range.Create(1, 5), Range.Create(5, 7) };
+        }
+
+        public static IEnumerable<object[]> GetDisjoinedgRanges()
+        {
+            yield return new object[] { Range.Create(1, 5), Range.Create(7, 8) };
+            yield return new object[] { Range.Create(7, 8), Range.Create(1, 5) };
         }
     }
 }

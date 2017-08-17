@@ -158,32 +158,13 @@ namespace WmcSoft
             return Merge(ranges);
         }
 
-        public static bool IsContiguous(IEnumerable<Range<T>> enumerable)
-        {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
-
-            var list = new List<Range<T>>(enumerable);
-            list.Sort();
-            return IsContiguous(list);
-        }
-
-        private static bool IsContiguous(IList<Range<T>> list)
-        {
-            // requires list is sorted
-            for (int i = 1; i < list.Count; i++) {
-                if (!list[i - 1].IsAdjacentTo(list[i]))
-                    return false;
-            }
-            return true;
-        }
-
         public static Range<T> Merge(IEnumerable<Range<T>> enumerable)
         {
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
             var list = new List<Range<T>>(enumerable);
             list.Sort();
-            if (!IsContiguous(list))
+            if (!AreContiguous(list))
                 throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
             return Merge(list);
         }
@@ -198,9 +179,19 @@ namespace WmcSoft
         {
             var list = new List<Range<T>>(enumerable);
             list.Sort();
-            if (!IsContiguous(list))
+            if (!AreContiguous(list))
                 return false;
             return Equals(Merge(list));
+        }
+
+        internal static bool AreContiguous(IList<Range<T>> list)
+        {
+            // requires list is sorted
+            for (int i = 1; i < list.Count; i++) {
+                if (!list[i - 1].IsAdjacentTo(list[i]))
+                    return false;
+            }
+            return true;
         }
 
         #endregion
@@ -313,12 +304,59 @@ namespace WmcSoft
             return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
         }
 
+        /// <summary>
+        /// Returns the intersection of both ranges.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="x">The first range.</param>
+        /// <param name="y">The second range.</param>
+        /// <returns>The intersection of both ranges.</returns>
         public static Range<T> Intersect<T>(Range<T> x, Range<T> y)
             where T : IComparable<T>
         {
             if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
                 return Range<T>.Empty;
             return new Range<T>(Max(x.Lower, y.Lower), Min(x.Upper, y.Upper));
+        }
+
+        /// <summary>
+        /// Returns the union of both ranges.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="x">The first range.</param>
+        /// <param name="y">The second range.</param>
+        /// <returns>The union of both ranges.</returns>
+        /// <exception cref="ArgumentException"><paramref name="x"/> and <paramref name="y"/> does not intersect.</exception>
+        public static Range<T> Union<T>(Range<T> x, Range<T> y)
+        where T : IComparable<T>
+        {
+            if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
+                throw new ArgumentException();
+
+            return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper));
+        }
+
+        /// <summary>
+        /// Returns the smallest range that includes both ranges.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="x">The first range.</param>
+        /// <param name="y">The second range.</param>
+        /// <returns>The smallest range that includes both ranges.</returns>
+        public static Range<T> Hull<T>(Range<T> x, Range<T> y)
+            where T : IComparable<T>
+        {
+            return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper));
+        }
+
+        public static bool AreContiguous<T>(IEnumerable<Range<T>> enumerable)
+            where T : IComparable<T>
+        {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
+            var list = new List<Range<T>>(enumerable);
+            list.Sort();
+            return Range<T>.AreContiguous(list);
         }
 
         #region Extensions on enumerable or collections
