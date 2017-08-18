@@ -232,6 +232,7 @@
     <Compile Include="RangeComparer.cs" />
     <Compile Include="RoundingMode.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
+    <Compile Include="Subscription.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />
     <Compile Include="Text\CaseInsensitiveCharComparer.cs" />
@@ -403,7 +404,6 @@
     <Compile Include="Threading\SpinWait.cs" />
     <Compile Include="Threading\ThinEvent.cs" />
     <Compile Include="TypeExtensions.cs" />
-    <Compile Include="Unsubscriber.cs" />
     <Compile Include="UriExtensions.cs" />
     <Compile Include="VersionExtensions.cs" />
     <Compile Include="WeakReference.cs" />

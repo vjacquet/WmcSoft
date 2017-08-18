@@ -28,56 +28,48 @@ using System;
 
 namespace WmcSoft
 {
-    public sealed class Unsubscriber : IDisposable
+    /// <summary>
+    /// Utility to explicit the nature of the disposable received from subscribing to an observable for instance. 
+    /// </summary>
+    public sealed class Subscription : IDisposable
     {
-        #region Private field
-
         Action _unsubscribe;
 
-        #endregion
-
-        #region Lifecycle
-
-        public Unsubscriber(Action unsubscribe) {
-            if (unsubscribe == null) throw new ArgumentNullException("unsubscribe");
+        public Subscription(Action unsubscribe)
+        {
+            if (unsubscribe == null) throw new ArgumentNullException(nameof(unsubscribe));
 
             _unsubscribe = unsubscribe;
         }
 
-        public Unsubscriber(IDisposable unsubscribe) {
-            if (unsubscribe == null) throw new ArgumentNullException("unsubscribe");
+        public Subscription(IDisposable unsubscriber)
+        {
+            if (unsubscriber == null) throw new ArgumentNullException(nameof(unsubscriber));
 
-            _unsubscribe = () => unsubscribe.Dispose();
+            _unsubscribe = () => unsubscriber.Dispose();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// Explicitly unsubscribe the <see cref="IObserver<T>"/> from the <see cref="IObservable<T>"/>.
+        /// Explicitly unsubscribe the <see cref="IObserver{T}"/> from the <see cref="IObservable{T}"/>.
         /// </summary>
-        public void Unsubscribe() {
+        public void Unsubscribe()
+        {
             ((IDisposable)this).Dispose();
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-        ~Unsubscriber() {
+        ~Subscription()
+        {
             // in the finalizer only when not disposed, so _unsubscribe cannot be null
             _unsubscribe();
         }
 
-        public void Dispose() {
+        void IDisposable.Dispose()
+        {
             if (_unsubscribe != null) {
                 _unsubscribe();
                 _unsubscribe = null;
             }
             GC.SuppressFinalize(this);
         }
-
-        #endregion
     }
 }
