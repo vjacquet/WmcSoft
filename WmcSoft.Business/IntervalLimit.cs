@@ -73,12 +73,12 @@ namespace WmcSoft
         {
         }
 
-        public bool IsLower { get { return (_state & State.Lower) != 0; } }
-        public bool IsUpper { get { return (_state & State.Upper) != 0; } }
-        public bool IsClosed { get { return (_state & State.Closed) != 0; } }
-        public bool IsOpen { get { return (_state & State.Open) != 0; } }
+        public bool IsLower => (_state & State.Lower) != 0;
+        public bool IsUpper => (_state & State.Upper) != 0;
+        public bool IsClosed => (_state & State.Closed) != 0;
+        public bool IsOpen => (_state & State.Open) != 0;
 
-        public bool HasValue { get { return (_state & (State.Closed| State.Open)) != State.None; } }
+        public bool HasValue => (_state & (State.Closed | State.Open)) != State.None;
         public T Value {
             get {
                 if (!HasValue)

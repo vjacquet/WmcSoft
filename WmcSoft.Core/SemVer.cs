@@ -71,6 +71,11 @@ namespace WmcSoft
             return new SemVer(_version, PiecewiseConstruct.Tag);
         }
 
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
         public override int GetHashCode()
         {
             return _version.GetHashCode();
@@ -84,11 +89,6 @@ namespace WmcSoft
         public override string ToString()
         {
             return _version.ToString(3);
-        }
-
-        object ICloneable.Clone()
-        {
-            return Clone();
         }
 
         public int CompareTo(SemVer other)

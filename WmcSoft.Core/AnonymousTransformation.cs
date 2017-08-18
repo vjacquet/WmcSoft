@@ -42,7 +42,6 @@ namespace WmcSoft
         /// </summary>
         /// <param name="source">The source instance.</param>
         /// <returns>The target instance.</returns>
-
         public TTarget Apply(TSource source)
         {
             return _converter(source);
