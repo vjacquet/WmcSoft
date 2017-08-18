@@ -83,7 +83,7 @@ namespace WmcSoft.Windows.Forms
                     _observers = new List<IObserver<Keys>>();
 
                 _observers.Add(observer);
-                return new Unsubscriber(() => Unsubscribe(observer));
+                return new Subscription(() => Unsubscribe(observer));
             }
 
             #endregion
