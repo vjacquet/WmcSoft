@@ -35,41 +35,44 @@ namespace WmcSoft
     public sealed class SemVer : ICloneable<SemVer>, IComparable<SemVer>, IEquatable<SemVer>, IComparable
     {
         // https://github.com/npm/node-semver/blob/master/semver.js
-        private readonly Version _version;
-
-        private SemVer(Version version, PiecewiseConstruct tag)
-        {
-            _version = version;
-        }
+        private readonly int _major;
+        private readonly int _minor;
+        private readonly int _patch;
 
         public SemVer(int major, int minor = 0, int patch = 0)
         {
-            _version = new Version(major, minor, patch);
+            if (major < 0) throw new ArgumentOutOfRangeException(nameof(major));
+            if (minor < 0) throw new ArgumentOutOfRangeException(nameof(minor));
+            if (patch < 0) throw new ArgumentOutOfRangeException(nameof(patch));
+
+            _major = major;
+            _minor = minor;
+            _patch = patch;
         }
 
         public SemVer(Version version)
         {
             if (version == null) throw new ArgumentNullException(nameof(version));
 
-            _version = (version.Revision != 0)
-                ? new Version(version.Major, version.Minor, version.Build)
-                : version;
+            _major = version.Major;
+            _minor = version.Minor;
+            _patch = version.Build;
         }
 
         public void Deconstruct(out int major, out int minor, out int patch)
         {
-            major = _version.Major;
-            minor = _version.Minor;
-            patch = _version.Build;
+            major = _major;
+            minor = _minor;
+            patch = _patch;
         }
 
-        public int Major => _version.Major;
-        public int Minor => _version.Minor;
-        public int Patch => _version.Build;
+        public int Major => _major;
+        public int Minor => _minor;
+        public int Patch => _patch;
 
         public SemVer Clone()
         {
-            return new SemVer(_version, PiecewiseConstruct.Tag);
+            return (SemVer)MemberwiseClone();
         }
 
         object ICloneable.Clone()
@@ -79,7 +82,9 @@ namespace WmcSoft
 
         public override int GetHashCode()
         {
-            return _version.GetHashCode();
+            return ((_major & 15) << 28)
+                 | ((_minor & 255) << 20)
+                 | ((_patch & 255) << 12);
         }
 
         public override bool Equals(object obj)
@@ -89,32 +94,39 @@ namespace WmcSoft
 
         public override string ToString()
         {
-            return _version.ToString(3);
+            return string.Join(".", _major, _minor, _patch);
         }
 
         public int CompareTo(SemVer other)
         {
             if (ReferenceEquals(other, null))
                 return 1;
-            return _version.CompareTo(other._version);
+            var result = _major.CompareTo(other._major);
+            if (result != 0)
+                return result;
+
+            result = _minor.CompareTo(other._minor);
+            if (result != 0)
+                return result;
+
+            return _patch.CompareTo(other._patch);
         }
 
         int IComparable.CompareTo(object obj)
         {
-            if (obj == null)
-                return 1;
-
-            var other = obj as SemVer;
-            if (ReferenceEquals(other, null))
-                throw new ArgumentException(nameof(obj));
-            return _version.CompareTo(other._version);
+            if (obj == null) return 1;
+            var version = obj as SemVer;
+            if (version == null) throw new ArgumentException();
+            return CompareTo(version);
         }
 
         public bool Equals(SemVer other)
         {
             if (ReferenceEquals(other, null))
                 return false;
-            return _version.Equals(other._version);
+            return _major == other._major
+                && _minor == other._minor
+                && _patch == other._patch;
         }
 
         public static implicit operator SemVer(Version version)
@@ -124,17 +136,17 @@ namespace WmcSoft
 
         public SemVer NextMajor()
         {
-            return new SemVer(_version.Major + 1, 0, 0);
+            return new SemVer(_major + 1, 0, 0);
         }
 
         public SemVer NextMinor()
         {
-            return new SemVer(_version.Major, _version.Minor + 1, 0);
+            return new SemVer(_major, _minor + 1, 0);
         }
 
         public SemVer Increment()
         {
-            return new SemVer(_version.Major, _version.Minor, _version.Build + 1);
+            return new SemVer(_major, _minor, _patch + 1);
         }
 
         public SemVer Increment(SemVerRelease release)
