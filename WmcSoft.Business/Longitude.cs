@@ -34,18 +34,15 @@ namespace WmcSoft
     {
         const int Amplitude = 180;
 
-        public static readonly Longitude MaxValue = Unguarded(Amplitude);
-        public static readonly Longitude MinValue = Unguarded(-Amplitude);
+        public static readonly Longitude MaxValue = new Longitude(Amplitude);
+        public static readonly Longitude MinValue = new Longitude(-Amplitude);
 
-        static Longitude Unguarded(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
+        private readonly int _storage;
+
+        private Longitude(int degrees)
         {
-            var value = new Longitude() {
-                _storage = Encode(degrees, minutes, seconds, milliseconds)
-            };
-            return value;
+            _storage = Encode(degrees);
         }
-
-        private int _storage;
 
         public Longitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
         {

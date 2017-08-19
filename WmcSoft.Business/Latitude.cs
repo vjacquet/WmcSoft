@@ -34,18 +34,15 @@ namespace WmcSoft
     {
         const int Amplitude = 90;
 
-        public static readonly Latitude MaxValue = Unguarded(Amplitude);
-        public static readonly Latitude MinValue = Unguarded(-Amplitude);
+        public static readonly Latitude MaxValue = new Latitude(Amplitude);
+        public static readonly Latitude MinValue = new Latitude(-Amplitude);
 
-        static Latitude Unguarded(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
+        private readonly int _storage;
+
+        private Latitude(int degrees)
         {
-            var value = new Latitude() {
-                _storage = Encode(degrees, minutes, seconds, milliseconds)
-            };
-            return value;
+            _storage = Encode(degrees);
         }
-
-        private int _storage;
 
         public Latitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
         {

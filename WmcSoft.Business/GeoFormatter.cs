@@ -105,6 +105,11 @@ namespace WmcSoft
             }
         }
 
+        public static int Encode(int degrees)
+        {
+            return degrees * 3600_000;
+        }
+
         public static int Encode(int degrees, int minutes, int seconds, int milliseconds)
         {
             return degrees >= 0
