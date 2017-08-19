@@ -31,9 +31,10 @@ namespace WmcSoft
     /// <summary>
     /// Represent a version when using semantic versioning.
     /// </summary>
-    /// <remarks>See http://developer.telerik.com/featured/mystical-magical-semver-ranges-used-npm-bower/ </remarks>
+    /// <remarks>See http://developer.telerik.com/featured/mystical-magical-semver-ranges-used-npm-bower/ for more details</remarks>
     public sealed class SemVer : ICloneable<SemVer>, IComparable<SemVer>, IEquatable<SemVer>, IComparable
     {
+        // https://github.com/npm/node-semver/blob/master/semver.js
         private readonly Version _version;
 
         private SemVer(Version version, PiecewiseConstruct tag)
@@ -134,6 +135,19 @@ namespace WmcSoft
         public SemVer Increment()
         {
             return new SemVer(_version.Major, _version.Minor, _version.Build + 1);
+        }
+
+        public SemVer Increment(SemVerRelease release)
+        {
+            switch (release) {
+            case SemVerRelease.Major:
+                return NextMajor();
+            case SemVerRelease.Minor:
+                return NextMinor();
+            case SemVerRelease.Patch:
+            default:
+                return Increment();
+            }
         }
 
         public static SemVer operator ++(SemVer value)
