@@ -71,7 +71,7 @@ namespace WmcSoft
             _denominator = 1m;
         }
 
-        public Ratio(decimal numerator, decimal denominator)
+        public Ratio(decimal numerator, decimal denominator = 1m)
         {
             if (denominator == 0m) {
                 throw new DivideByZeroException();
@@ -87,6 +87,11 @@ namespace WmcSoft
         #endregion
 
         #region Operators
+
+        public static implicit operator Ratio(decimal x)
+        {
+            return new Ratio(x);
+        }
 
         public decimal GetDecimalValue(int scale, RoundingMode roundingRule)
         {
@@ -107,6 +112,16 @@ namespace WmcSoft
         public static Ratio operator *(decimal a, Ratio x)
         {
             return x.MultipliedBy(a);
+        }
+
+        public Ratio DividedBy(decimal divisor)
+        {
+            return new Ratio(_numerator, _denominator * divisor);
+        }
+
+        public static Ratio operator /(Ratio x, decimal a)
+        {
+            return x.DividedBy(a);
         }
 
         #endregion
