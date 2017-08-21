@@ -47,6 +47,8 @@ namespace WmcSoft
     public struct Range<T> : IEquatable<Range<T>>
         where T : IComparable<T>
     {
+        // Comparing with https://martinfowler.com/eaaDev/Range.html
+
         #region Special cases
 
         public static readonly Range<T> Empty = new Range<T>();
@@ -113,7 +115,7 @@ namespace WmcSoft
             return value.CompareTo(Lower) < 0;
         }
 
-        public bool IsAdjacentTo(Range<T> other)
+        public bool Abuts(Range<T> other)
         {
             return Upper.CompareTo(other.Lower) == 0 || Lower.CompareTo(other.Upper) == 0;
         }
@@ -164,7 +166,7 @@ namespace WmcSoft
 
             var list = new List<Range<T>>(enumerable);
             list.Sort();
-            if (!AreContiguous(list))
+            if (!IsContiguous(list))
                 throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
             return Merge(list);
         }
@@ -179,16 +181,16 @@ namespace WmcSoft
         {
             var list = new List<Range<T>>(enumerable);
             list.Sort();
-            if (!AreContiguous(list))
+            if (!IsContiguous(list))
                 return false;
             return Equals(Merge(list));
         }
 
-        internal static bool AreContiguous(IList<Range<T>> list)
+        internal static bool IsContiguous(IList<Range<T>> list)
         {
             // requires list is sorted
             for (int i = 1; i < list.Count; i++) {
-                if (!list[i - 1].IsAdjacentTo(list[i]))
+                if (!list[i - 1].Abuts(list[i]))
                     return false;
             }
             return true;
@@ -349,14 +351,14 @@ namespace WmcSoft
             return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper));
         }
 
-        public static bool AreContiguous<T>(IEnumerable<Range<T>> enumerable)
+        public static bool IsContiguous<T>(IEnumerable<Range<T>> enumerable)
             where T : IComparable<T>
         {
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
             var list = new List<Range<T>>(enumerable);
             list.Sort();
-            return Range<T>.AreContiguous(list);
+            return Range<T>.IsContiguous(list);
         }
 
         #region Extensions on enumerable or collections
