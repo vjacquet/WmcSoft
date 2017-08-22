@@ -32,14 +32,15 @@ using WmcSoft.Runtime.Serialization;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents the result of a gateway operation.
+    /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
     public sealed class GatewayResult : ISerializable
     {
         private static GatewayError[] None = new GatewayError[0];
         private static GatewayError[] Undefined = new GatewayError[0];
-
-        public static GatewayResult Success = new GatewayResult(None);
 
         private readonly GatewayError[] _errors;
 
@@ -48,14 +49,30 @@ namespace WmcSoft
             _errors = errors;
         }
 
+        /// <summary>
+        /// Returns a <see cref="GatewayResult"/> indicating a successful operation.
+        /// </summary>
+        public static GatewayResult Success = new GatewayResult(None);
+
+        /// <summary>
+        /// Indicates whether the operation succeeded or not.
+        /// </summary>
         public bool Succeeded {
             get { return ReferenceEquals(_errors, None); }
         }
 
+        /// <summary>
+        /// Errors that occured during the operation.
+        /// </summary>
         public ReadOnlyCollection<GatewayError> Errors {
             get { return new ReadOnlyCollection<GatewayError>(_errors); }
         }
 
+        /// <summary>
+        /// Creates a failed  <see cref="GatewayResult"/> with a list of errors.
+        /// </summary>
+        /// <param name="errors">The list of errors.</param>
+        /// <returns>The result.</returns>
         public static GatewayResult Failed(params GatewayError[] errors)
         {
             if (errors == null || errors.Length == 0)

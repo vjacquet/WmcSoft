@@ -29,11 +29,20 @@ using System.Diagnostics;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Encapsulates an error from a gateway.
+    /// </summary>
     [DebuggerDisplay("Code={Code,nq}")]
     [Serializable]
     public class GatewayError
     {
+        /// <summary>
+        /// The code for this error.
+        /// </summary>
         public string Code { get; set; }
+        /// <summary>
+        /// The description for this error.
+        /// </summary>
         public string Description { get; set; }
     }
 }
