@@ -53,10 +53,19 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CheckFlatten() {
+        public void CanFlattenJaggedArray() {
             var expected = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var array = new int[][] { new[] { 1, 2 }, null, new[] { 3, 4 }, new[] { 5 }, new[] { 6, 7, 8, 9 } };
-            var actual = array.Flatten();
+            var jagged = new int[][] { new[] { 1, 2 }, null, new[] { 3, 4 }, new[] { 5 }, new[] { 6, 7, 8, 9 } };
+            var actual = jagged.Flatten();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void JappedArrayOfNullRowsIsFlattenInAnEmptyArray()
+        {
+            var expected = new int[0];
+            var jagged = new int[][] { null, null, null };
+            var actual = jagged.Flatten();
             Assert.Equal(expected, actual);
         }
 

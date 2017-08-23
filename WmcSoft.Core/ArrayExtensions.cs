@@ -33,7 +33,8 @@ using System.Collections;
 namespace WmcSoft
 {
     /// <summary>
-    /// Defines the extension methods to the array class. This is a static class.
+    /// Defines the extension methods to the array class.
+    /// This is a static class.
     /// </summary>
     public static class ArrayExtensions
     {
@@ -65,6 +66,13 @@ namespace WmcSoft
 
         #region Flatten
 
+        /// <summary>
+        /// Flattens a jagged array by sequentially copy the row values into an array.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="jagged">The jagged array.</param>
+        /// <returns>The flatten array.</returns>
+        /// <remarks><c>null</c> rows are ignored.</remarks>
         public static T[] Flatten<T>(this T[][] jagged)
         {
             var count = 0;
