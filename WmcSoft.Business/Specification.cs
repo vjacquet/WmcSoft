@@ -100,6 +100,11 @@ namespace WmcSoft
         {
             return new NoneSpecification<T>(spec);
         }
+
+        public static NotSpecification<T> Not<T>(ISpecification<T> spec)
+        {
+            return new NotSpecification<T>(spec);
+        } 
     }
 
     #region Specialized specifications

@@ -28,8 +28,17 @@
 
 namespace WmcSoft
 {
-    public interface ISpecification<T>
+    /// <summary>
+    /// Represents a predicate that determines if an object does or does not satisfy some criteria.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface ISpecification<in T>
     {
+        /// <summary>
+        /// Returns <c>true</c> if the <paramref name="candidate"/> satisfy the criteria.
+        /// </summary>
+        /// <param name="candidate">The candidate object</param>
+        /// <returns><c>true</c> if the <paramref name="candidate"/> satisfy the criteria; otherwise, <c>false</c>.</returns>
         bool IsSatisfiedBy(T candidate);
     }
 }

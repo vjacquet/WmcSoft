@@ -106,6 +106,7 @@
     <Compile Include="Security\SecurableBase.cs" />
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
+    <Compile Include="SpecificationTests.cs" />
     <Compile Include="TemporalTests.cs" />
     <Compile Include="IntervalLimitTests.cs" />
     <Compile Include="Time\ClockTests.cs" />

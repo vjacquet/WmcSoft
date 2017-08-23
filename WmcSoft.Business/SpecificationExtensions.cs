@@ -32,8 +32,14 @@ using System.Linq;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods about <see cref="ISpecification{T}"/>.
+    /// This is a static class.
+    /// </summary>
     public static class SpecificationExtensions
     {
+        #region Selection
+
         public static IEnumerable<T> Satisfying<T, TSpecification>(this IEnumerable<T> source, TSpecification specification)
             where TSpecification : ISpecification<T> {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -41,5 +47,7 @@ namespace WmcSoft
 
             return source.Where(specification.IsSatisfiedBy);
         }
+
+        #endregion
     }
 }
