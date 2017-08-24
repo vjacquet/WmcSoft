@@ -76,7 +76,7 @@ namespace WmcSoft.Diagnostics
 
         public static bool operator !=(Fault x, Fault y)
         {
-            return Equals(x, y);
+            return !Equals(x, y);
         }
 
         public static implicit operator Fault(Exception x)
@@ -130,9 +130,7 @@ namespace WmcSoft.Diagnostics
             if (obj is Exception exception)
                 return exception.Equals(_exception);
 
-            if (obj.GetType() != typeof(Fault))
-                return false;
-            return Equals((Fault)obj);
+            return obj is Fault && Equals((Fault)obj);
         }
 
         public override int GetHashCode()
