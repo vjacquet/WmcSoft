@@ -192,6 +192,13 @@ namespace WmcSoft
             return true;
         }
 
+        /// <summary>
+        /// Enumerates the values in the <paramref name="column"/> of the <paramref name="array"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="array">The two-dimensional array.</param>
+        /// <param name="column">The column.</param>
+        /// <returns>The values in the <paramref name="column"/> of the <paramref name="array"/>.</returns>
         public static IEnumerable<T> GetColumn<T>(this T[,] array, int column)
         {
             var rows = array.GetLength(0);
@@ -200,6 +207,13 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Enumerates the values in the <paramref name="row"/> of the <paramref name="array"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="array">The two-dimensional array.</param>
+        /// <param name=""">The ".</param>
+        /// <returns>The values in the <paramref name="""/> of the <paramref name="array"/>.</returns>
         public static IEnumerable<T> GetRow<T>(this T[,] array, int row)
         {
             var columns = array.GetLength(1);
@@ -208,6 +222,12 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Enumerates the columns of the <paramref name="array"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="array">The two-dimensional array.</param>
+        /// <returns>The columns of the <paramref name="array"/>.</returns>
         public static IEnumerable<T[]> GetColumns<T>(this T[,] array)
         {
             var rows = array.GetLength(0);
@@ -221,6 +241,12 @@ namespace WmcSoft
             }
         }
 
+        /// <summary>
+        /// Enumerates the rows of the <paramref name="array"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="array">The two-dimensional array.</param>
+        /// <returns>The rows of the <paramref name="array"/>.</returns>
         public static IEnumerable<T[]> GetRows<T>(this T[,] array)
         {
             var rows = array.GetLength(0);
