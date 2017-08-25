@@ -1103,15 +1103,56 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region Stride
+        #region Scan
 
         /// <summary>
-        /// Returns every Nth element of the source, starting with the first one
+        /// Executes the <paramref name="action"/> on the items before returning them.
         /// </summary>
         /// <typeparam name="T">The type of the element of the source</typeparam>
         /// <param name="source">An <see cref="IEnumerable{T}"/> to return the element from.</param>
-        /// <param name="step">The step</param>
-        /// <returns></returns>
+        /// <param name="action">The action.</param>
+        /// <returns>The items in source.</returns>
+        public static IEnumerable<T> Scan<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
+            foreach (var item in source) {
+                action(item);
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Executes the <paramref name="action"/> on the items before returning them.
+        /// </summary>
+        /// <typeparam name="T">The type of the element of the source</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to return the element from.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The items in source.</returns>
+        public static IEnumerable<T> Scan<T>(this IEnumerable<T> source, Action<T, int> action)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
+            var i = 0;
+            foreach (var item in source) {
+                action(item, ++i);
+                yield return item;
+            }
+        }
+
+        #endregion
+
+        #region Stride
+
+        /// <summary>
+        /// Returns every Nth element of the source, starting with the first one.
+        /// </summary>
+        /// <typeparam name="T">The type of the element of the source</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> to return the element from.</param>
+        /// <param name="step">The step.</param>
+        /// <returns>Every Nth element of the source, starting with the first one.</returns>
         public static IEnumerable<T> Stride<T>(this IEnumerable<T> source, int step)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

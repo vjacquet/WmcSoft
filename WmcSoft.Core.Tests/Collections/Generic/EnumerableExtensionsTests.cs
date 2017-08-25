@@ -183,6 +183,31 @@ namespace WmcSoft.Collections.Generic
         }
 
         [Fact]
+        public void ScanActionIsCalledOnEveryItems()
+        {
+            var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var count = 0;
+            var called = new List<int>();
+            var list = collection.Scan(i => { called.Add(i); count++; }).ToList();
+            Assert.Equal(collection, list);
+            Assert.Equal(list.Count, count);
+            Assert.Equal(list, called);
+        }
+
+        [Fact]
+        public void ScanActionIsCalledOnlyOnTakenItems()
+        {
+            var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var count = 0;
+            var called = new List<int>();
+            var list = collection.Scan(i => { called.Add(i); count++; }).Take(4).ToList();
+            Assert.Equal(4, count);
+            Assert.Equal(list.Count, count);
+            Assert.Equal(list, called);
+            Assert.Equal(collection.Take(4), called);
+        }
+
+        [Fact]
         public void CheckNthElements()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -337,7 +362,7 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void EnsureDrawLotsDistributionIsUniform()
         {
-            var counts = new int[6];
+            var counts = new int[10];
             var values = Enumerable.Range(0, counts.Length).ToList();
             var random = new Random(1664);
             var N = 10_000;
