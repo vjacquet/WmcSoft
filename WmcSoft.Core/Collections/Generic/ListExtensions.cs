@@ -29,6 +29,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using static System.Math;
+
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
@@ -48,6 +50,11 @@ namespace WmcSoft.Collections.Generic
             if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
+        }
+
+        static int NormalizeZeroBasedIndex(int start, int length)
+        {
+            return start < 0 ? Max(length + start, 0) : Min(start, length);
         }
 
         #region Equals
@@ -269,6 +276,31 @@ namespace WmcSoft.Collections.Generic
             if (rotation.Count != count)
                 return false;
             return UnguardedFindRotationPoint(list, rotation, startIndex, startIndex + count) >= 0;
+        }
+
+        #endregion
+
+        #region Slice
+
+        /// <summary>
+        /// Returns a shallow copy of a portion of an array into a new array.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="start">Zero-based index at which to start copying elements.</param>
+        /// <param name="end">Zero-based index at which to end copying elements. The element at <paramref name="end"/> is not copied.</param>
+        /// <returns>The shallow copy of the specified portion of the array.</returns>
+        public static T[] Slice<T>(this IList<T> list, int start, int end)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            var length = list.Count;
+            var k = NormalizeZeroBasedIndex(start, length);
+            var final = NormalizeZeroBasedIndex(end, length);
+            var count = Max(final - k, 0);
+            var result = new T[count];
+            list.CopyTo(k, result, 0, count);
+            return result;
         }
 
         #endregion
@@ -500,7 +532,7 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="T">The type of elements in the list.</typeparam>
         /// <param name="list">The list.</param>
-        /// <param name="start">Zero-Index at which to start changing the list.</param>
+        /// <param name="start">Zero-based index at which to start changing the list.</param>
         /// <returns>An array containing the removed elements. If no elements are removed, returns an empty array.</returns>
         public static T[] Splice<T>(this IList<T> list, int start)
         {

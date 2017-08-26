@@ -189,6 +189,18 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(target, list);
         }
 
+        #region Slice
+
+        [Fact]
+        public void CanSliceArray()
+        {
+            var fruits = new[] { "Banana", "Orange", "Lemon", "Apple", "Mango" };
+            var citrus = fruits.Slice(1, 3);
+            Assert.Equal(fruits.Skip(1).Take(2), citrus);
+        }
+
+        #endregion
+
         #region Splice
 
         [Fact]
