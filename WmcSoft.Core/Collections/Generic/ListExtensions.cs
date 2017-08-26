@@ -495,6 +495,13 @@ namespace WmcSoft.Collections.Generic
 
         #region Splice
 
+        /// <summary>
+        /// Changes the content of the <paramref name="list"/> by removing existing elements and/or adding new elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="start">Zero-Index at which to start changing the list.</param>
+        /// <returns>An array containing the removed elements. If no elements are removed, returns an empty array.</returns>
         public static T[] Splice<T>(this IList<T> list, int start)
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
@@ -511,6 +518,15 @@ namespace WmcSoft.Collections.Generic
             return removed;
         }
 
+        /// <summary>
+        /// Changes the content of the <paramref name="list"/> by removing existing elements and/or adding new elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="start">Zero-Index at which to start changing the list.</param>
+        /// <param name="deleteCount">The number of elements to remove.</param>
+        /// <param name="items">The items to insert at the <paramref name="start"/> position.</param>
+        /// <returns>An array containing the removed elements. If no elements are removed, returns an empty array.</returns>
         public static T[] Splice<T>(this IList<T> list, int start, int deleteCount, params T[] items)
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
