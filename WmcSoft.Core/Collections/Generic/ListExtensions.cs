@@ -538,7 +538,7 @@ namespace WmcSoft.Collections.Generic
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
-            start = Math.Max(start >= 0 ? start : list.Count + start, 0);
+            start = Max(start >= 0 ? start : list.Count + start, 0);
             var count = list.Count - start;
             if (count < 0)
                 return new T[0];
@@ -563,8 +563,8 @@ namespace WmcSoft.Collections.Generic
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
-            start = Math.Max(start >= 0 ? start : list.Count + start, 0);
-            deleteCount = Math.Min(list.Count - start, deleteCount);
+            start = Max(start >= 0 ? start : list.Count + start, 0);
+            deleteCount = Min(list.Count - start, deleteCount);
             var removed = new T[deleteCount];
             list.CopyTo(start, removed, 0, deleteCount);
             if (deleteCount < items.Length) {
