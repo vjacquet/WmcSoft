@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="ArrayExtensionsTests.cs" />
     <Compile Include="Asserts\GetHashCodeAsserts.cs" />
+    <Compile Include="Asserts\NullableAsserts.cs" />
     <Compile Include="BytesFormatterTests.cs" />
     <Compile Include="BitArithmeticsTests.cs" />
     <Compile Include="Collections\Generic\Accumulators\KahanAdderTests.cs" />
