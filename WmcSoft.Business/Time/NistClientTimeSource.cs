@@ -47,9 +47,9 @@ namespace WmcSoft.Time
             _client.Dispose();
         }
 
-        public TimePoint Now()
+        public Timepoint Now()
         {
-            return new TimePoint(_client.Query());
+            return new Timepoint(_client.Query());
         }
     }
 }

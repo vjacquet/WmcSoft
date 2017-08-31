@@ -34,9 +34,9 @@ namespace WmcSoft.Time
 {
     class SystemClockTimeSource : ITimeSource
     {
-        public TimePoint Now()
+        public Timepoint Now()
         {
-            return TimePoint.Now();
+            return Timepoint.Now();
         }
     }
 }

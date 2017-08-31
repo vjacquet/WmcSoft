@@ -34,6 +34,6 @@ namespace WmcSoft.Time
 {
     public interface ITimeSource
     {
-        TimePoint Now();
+        Timepoint Now();
     }
 }

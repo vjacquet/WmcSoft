@@ -113,8 +113,8 @@
     <Compile Include="Time\DateSpecificationTests.cs" />
     <Compile Include="Time\TimeOfDayTests.cs" />
     <Compile Include="Time\DateTests.cs" />
-    <Compile Include="Time\TimePointTests.cs" />
     <Compile Include="Time\DurationTests.cs" />
+    <Compile Include="Time\TimepointTests.cs" />
     <Compile Include="Time\TimeUnitTests.cs" />
     <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>

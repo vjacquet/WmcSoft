@@ -262,7 +262,7 @@
     <Compile Include="Time\SystemClockTimeSource.cs" />
     <Compile Include="Time\TimeInterval.cs" />
     <Compile Include="Time\TimeOfDay.cs" />
-    <Compile Include="Time\TimePoint.cs" />
+    <Compile Include="Time\Timepoint.cs" />
     <Compile Include="Time\TimeRate.cs" />
     <Compile Include="Time\TimeSource.cs" />
     <Compile Include="Time\TimeUnit.cs" />

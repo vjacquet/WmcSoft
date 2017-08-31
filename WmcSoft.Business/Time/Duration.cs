@@ -163,7 +163,7 @@ namespace WmcSoft.Time
             return _quantity * _unit.Factor;
         }
 
-        public static Duration Between(TimePoint x, TimePoint y)
+        public static Duration Between(Timepoint x, Timepoint y)
         {
             return y - x;
         }
