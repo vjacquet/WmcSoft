@@ -71,7 +71,7 @@ namespace WmcSoft.Time
             return new Date(_storage.AddDays(-1));
         }
 
-        public Timepoint AsTimePoint(TimeZoneInfo zone)
+        public Timepoint AsTimepoint(TimeZoneInfo zone)
         {
             var dateTime = TimeZoneInfo.ConvertTimeToUtc(_storage, zone);
             return new Timepoint(dateTime);

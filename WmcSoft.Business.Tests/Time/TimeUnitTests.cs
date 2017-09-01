@@ -1,6 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using Xunit;
 using WmcSoft.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using WmcSoft.IO;
 
 namespace WmcSoft.Time
 {
@@ -23,6 +29,37 @@ namespace WmcSoft.Time
             };
 
             Assert.True(units.IsSorted());
+        }
+
+        [Fact]
+        public void CanConvertToString()
+        {
+            var date = Convert.ChangeType("2017-01-17", typeof(DateTime));
+
+            var unit = TimeUnit.Second;
+            var converter = TypeDescriptor.GetConverter(unit);
+
+            Assert.True(converter.CanConvertTo(typeof(string)));
+
+            var s = converter.ConvertToInvariantString(unit);
+            Assert.Equal("Second", s);
+
+            var descriptor = (InstanceDescriptor)converter.ConvertTo(unit, typeof(InstanceDescriptor));
+            var instance = descriptor.Invoke();
+            Assert.Equal(instance, unit);
+        }
+
+        [Fact]
+        public void CanSerializeAndDeserialize()
+        {
+            var unit = TimeUnit.Second;
+            using (var ms = new MemoryStream()) {
+                var f = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.Clone));
+                f.Serialize(ms, unit);
+                ms.Rewind();
+                var instance = (TimeUnit)f.Deserialize(ms);
+                Assert.Equal(unit, instance);
+            }
         }
 
         [Fact]

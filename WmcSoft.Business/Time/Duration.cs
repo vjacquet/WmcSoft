@@ -47,7 +47,7 @@ namespace WmcSoft.Time
         // TODO: Shouldn't the quantity be always in ms or months? Otherwise equal values won't overflow at the same time.
         // TODO: Implement Parse & ToString using ISO 8601 <https://en.wikipedia.org/wiki/ISO_8601#Durations>
         // TODO: Should Ratio be public?
-        // NOTE: addedTo and substractFrom are implemented as operators in TimePoint.
+        // NOTE: addedTo and substractFrom are implemented as operators in Timepoint.
 
         private readonly long _quantity;
         private readonly TimeUnit _unit;

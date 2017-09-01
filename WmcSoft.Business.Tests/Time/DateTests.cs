@@ -17,11 +17,11 @@ namespace WmcSoft.Time
         }
 
         [Fact]
-        public void CheckAsTimePoint()
+        public void CheckAsTimepoint()
         {
             var manual = new Date(1973, 5, 2);
             var zone = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
-            var tp = manual.AsTimePoint(zone);
+            var tp = manual.AsTimepoint(zone);
             var dateTimeOffset = (DateTimeOffset)tp;
             var actual = TimeZoneInfo.ConvertTimeFromUtc(dateTimeOffset.DateTime, zone);
             Assert.Equal(1973, actual.Year);

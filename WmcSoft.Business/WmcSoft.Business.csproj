@@ -266,6 +266,7 @@
     <Compile Include="Time\TimeRate.cs" />
     <Compile Include="Time\TimeSource.cs" />
     <Compile Include="Time\TimeUnit.cs" />
+    <Compile Include="Time\TimeUnit.TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Business\Accounting\RM.en-us.resx">

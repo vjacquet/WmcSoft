@@ -36,7 +36,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Time
 {
     [Serializable]
-    public struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
+    public partial struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
     {
         public const int MillisecondsPerSecond = 1000;
         public const int MillisecondsPerMinute = 60 * MillisecondsPerSecond;

@@ -25,7 +25,7 @@ namespace WmcSoft.Time
         }
 
         [Fact]
-        public void CanAddMonthsToTimePoint()
+        public void CanAddMonthsToTimepoint()
         {
             var date = new DateTime(1973, 05, 02, 0, 0, 0, DateTimeKind.Local);
             var timepoint = new Timepoint(date);
@@ -36,7 +36,7 @@ namespace WmcSoft.Time
         }
 
         [Fact]
-        public void CanAddMSecondsToTimePoint()
+        public void CanAddMSecondsToTimepoint()
         {
             var date = new DateTime(1973, 05, 02, 0, 0, 0, DateTimeKind.Local);
             var timepoint = new Timepoint(date);
