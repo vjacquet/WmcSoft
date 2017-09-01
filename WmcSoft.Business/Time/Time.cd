@@ -1,28 +1,94 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Struct Name="WmcSoft.Time.Date" Collapsed="true">
-    <Position X="2.75" Y="1.5" Width="1.5" />
+  <Class Name="WmcSoft.Time.TimeSource" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAgACAAgAAAAAAAIAAAABAAAUA5yA=</HashCode>
+      <HashCode>ABEgAAgAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAAAAA=</HashCode>
+      <FileName>Time\TimeSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Time.DateInterval" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAEAAAAAAACAAAAAAAAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>Time\DateInterval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Time.DateSpecification" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABA=</HashCode>
+      <FileName>Time\DateSpecification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Time.TimeInterval" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAIAAAEAIAAABAAAIAAAAAAAggAACAAEA=</HashCode>
+      <FileName>Time\TimeInterval.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="WmcSoft.Time.Date" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAADAAAAAAAAQAgACABgAAAECAAIAAAABIAAEApyA=</HashCode>
       <FileName>Time\Date.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.2" Collapsed="true" />
   </Struct>
-  <Struct Name="WmcSoft.Time.HourOfDay" Collapsed="true">
-    <Position X="4.75" Y="2.75" Width="1.5" />
+  <Struct Name="WmcSoft.Time.HourOfDay" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAgAAAQEgACAAwAAAAAAAIAAAAAgAAQAxyA=</HashCode>
+      <HashCode>AAAAgBAAAAgAAAQEgACAAwAAAEAAAIAAAAAgAAAAhyA=</HashCode>
       <FileName>Time\HourOfDay.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.2" Collapsed="true" />
   </Struct>
-  <Struct Name="WmcSoft.Time.MinuteOfHour" Collapsed="true">
-    <Position X="0.75" Y="4" Width="1.5" />
+  <Struct Name="WmcSoft.Time.MinuteOfHour" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAAAAAQEgACAAgAAAAAgAIAAAAAgAAQAxyA=</HashCode>
+      <HashCode>AAAAgBAAAAAAAAQEgACAAgAAAEAgAIAAAAAgAAAAhyA=</HashCode>
       <FileName>Time\MinuteOfHour.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.2" Collapsed="true" />
   </Struct>
+  <Struct Name="WmcSoft.Time.TimeRate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAFgAIAAAAAAAAAAIAAAAAAAAAAAiI=</HashCode>
+      <FileName>Time\TimeRate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Time.TimeOfDay" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAABAAAAAAAAQEwACAggAAAEAAAIIAAACAAAAAh6A=</HashCode>
+      <FileName>Time\TimeOfDay.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Time.Timepoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAABAAAAMAAAQAwAGCIgAEAGAAAIAAAABAAEAAhyA=</HashCode>
+      <FileName>Time\Timepoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="WmcSoft.Time.IDateSpecification" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Time\IDateSpecification.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Time.ITimeSource" Collapsed="true">
+    <Position X="2.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Time\ITimeSource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
