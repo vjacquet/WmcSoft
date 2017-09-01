@@ -203,8 +203,8 @@ namespace WmcSoft.Windows.Forms
         ///   on the  TypeConverter class ...
         /// </summary>
         /// 
-        [PermissionSetAttribute(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-        [PermissionSetAttribute(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
+        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public class BlendFillTypeConverter : TypeConverter
         {
 

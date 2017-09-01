@@ -80,7 +80,7 @@ namespace WmcSoft.Net
                     var bytes = address.GetAddressBytes();
                     if (bytes == null || bytes.Length == 0)
                         return null;
-                    return String.Join("-", bytes.ConvertAll(b => b.ToString("x2")));
+                    return string.Join("-", bytes.ConvertAll(b => b.ToString("x2")));
                 }
 
                 if (destinationType == typeof(InstanceDescriptor))
