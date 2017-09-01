@@ -180,6 +180,8 @@
     <Compile Include="Collections\Specialized\TopologicalAlgorithm.cs" />
     <Compile Include="Collections\Specialized\WeightedDigraph.cs" />
     <Compile Include="Collections\Specialized\WeightedGraph.cs" />
+    <Compile Include="ComponentModel\Design\Serialization\InstanceDescriptorExtensions.cs" />
+    <Compile Include="ComponentModel\StringArrayConverter.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
     <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />

@@ -29,6 +29,10 @@ using WmcSoft.Diagnostics;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Action"/> delegate.
+    /// This is a static class.
+    /// </summary>
     public static class ActionExtensions
     {
         #region Helpers

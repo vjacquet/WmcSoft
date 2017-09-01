@@ -72,7 +72,6 @@
     <Compile Include="ComponentModel\Design\DictionaryServiceExtensions.cs" />
     <Compile Include="ComponentModel\Design\DictionaryService.cs" />
     <Compile Include="ComponentModel\Design\RevertibleChangeTrackingDictionaryService.cs" />
-    <Compile Include="ComponentModel\Design\Serialization\InstanceDescriptorExtensions.cs" />
     <Compile Include="ComponentModel\Design\NameCreationService.cs" />
     <Compile Include="ComponentModel\Design\SelectionService.cs" />
     <Compile Include="ComponentModel\Design\Serialization\DesignerSerializationManagerExtensions.cs" />
@@ -97,7 +96,6 @@
     </Compile>
     <Compile Include="ComponentModel\ServiceDependencyAttribute.cs" />
     <Compile Include="ComponentModel\ServingNestedContainer.cs" />
-    <Compile Include="ComponentModel\StringArrayConverter.cs" />
     <Compile Include="ComponentModel\TracingComponent.cs">
       <SubType>Component</SubType>
     </Compile>

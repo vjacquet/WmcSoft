@@ -71,7 +71,7 @@ namespace WmcSoft.ComponentModel
                     if (culture == null)
                         culture = CultureInfo.CurrentCulture;
                     var separator = culture.TextInfo.ListSeparator;
-                    value = String.Join(separator, array);
+                    value = string.Join(separator, array);
                 }
             }
 
