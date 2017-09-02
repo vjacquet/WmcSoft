@@ -35,9 +35,8 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
-    [DebuggerDisplay("{_storage,nq}")]
-    [Serializable]
-    public struct Date : IComparable<Date>, IEquatable<Date>
+    [DebuggerDisplay("{ToString()}")]
+    public partial struct Date : IComparable<Date>, IEquatable<Date>
     {
         readonly DateTime _storage;
 
@@ -183,6 +182,11 @@ namespace WmcSoft.Time
         public override int GetHashCode()
         {
             return _storage.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return _storage.ToString("d");
         }
 
         #endregion
