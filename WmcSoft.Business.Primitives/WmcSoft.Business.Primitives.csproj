@@ -58,6 +58,7 @@
     <Compile Include="Specification.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Time\AnnualDateSpecification.cs" />
+    <Compile Include="Time\Date.Serialization.cs" />
     <Compile Include="Time\Date.cs" />
     <Compile Include="Time\DateInterval.cs" />
     <Compile Include="Time\DateSpecification.cs" />
@@ -65,21 +66,25 @@
     <Compile Include="Time\Duration.cs" />
     <Compile Include="Time\FixedDateSpecification.cs" />
     <Compile Include="Time\FloatingDateSpecification.cs" />
+    <Compile Include="Time\Frequency.cs" />
     <Compile Include="Time\HourOfDay.cs" />
     <Compile Include="Time\IDateSpecification.cs" />
     <Compile Include="Time\ITimeSource.cs" />
     <Compile Include="Time\MinuteOfHour.cs" />
     <Compile Include="Time\NistClient.cs" />
     <Compile Include="Time\NistClientTimeSource.cs" />
+    <Compile Include="Time\Period.cs" />
     <Compile Include="Time\SntpClient.cs" />
     <Compile Include="Time\SntpClientTimeSource.cs" />
     <Compile Include="Time\SystemClockTimeSource.cs" />
     <Compile Include="Time\TimeInterval.cs" />
+    <Compile Include="Time\TimeOfDaySerialization.cs" />
     <Compile Include="Time\TimeOfDay.cs" />
     <Compile Include="Time\Timepoint.cs" />
     <Compile Include="Time\TimeRate.cs" />
     <Compile Include="Time\TimeSource.cs" />
     <Compile Include="Time\TimeUnit.cs" />
+    <Compile Include="Time\TimeUnit.Period.cs" />
     <Compile Include="Time\TimeUnit.TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>

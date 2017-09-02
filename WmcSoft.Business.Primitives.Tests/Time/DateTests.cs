@@ -1,10 +1,23 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace WmcSoft.Time
 {
     public class DateTests
     {
+        private readonly ITestOutputHelper _output;
+
+        public DateTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void AssertDateIsOfUnspecifiedKind()
         {
@@ -27,6 +40,37 @@ namespace WmcSoft.Time
             Assert.Equal(1973, actual.Year);
             Assert.Equal(5, actual.Month);
             Assert.Equal(2, actual.Day);
+        }
+
+        [Fact]
+        public void CanSerializeToXml()
+        {
+            var obj = new DateTestObject {
+                Date = new Date(1977, 02, 22)
+            };
+
+            var serializer = new XmlSerializer(typeof(DateTestObject));
+            var sb = new StringBuilder();
+            using (var writer = XmlWriter.Create(sb)) {
+                serializer.Serialize(writer, obj);
+            }
+
+            var xml = sb.ToString();
+            _output.WriteLine(xml);
+            Assert.Contains(">1977-02-22<", xml);
+
+            DateTestObject actual;
+            using (var reader = XmlReader.Create(new StringReader(xml))) {
+                actual = (DateTestObject)serializer.Deserialize(reader);
+            }
+            Assert.Equal(obj.Date, actual.Date);
+        }
+
+        [DataContract(Name = "TestObject")]
+        public class DateTestObject
+        {
+            [DataMember]
+            public Date Date { get; set; }
         }
     }
 }

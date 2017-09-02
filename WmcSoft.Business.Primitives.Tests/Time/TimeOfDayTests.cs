@@ -1,10 +1,23 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace WmcSoft.Time
 {
     public class TimeOfDayTests
     {
+        private readonly ITestOutputHelper _output;
+
+        public TimeOfDayTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void CanCreateTimeOfDay()
         {
@@ -46,6 +59,37 @@ namespace WmcSoft.Time
             Assert.Equal(1, dateTimeOffset.Day);
             Assert.Equal(8, dateTimeOffset.Hour);
             Assert.Equal(30, dateTimeOffset.Minute);
+        }
+
+        [Fact]
+        public void CanSerializeToXml()
+        {
+            var obj = new TimeOfDayTestObject {
+                TimeOfDay = new TimeOfDay(8, 30)
+            };
+
+            var serializer = new XmlSerializer(typeof(TimeOfDayTestObject));
+            var sb = new StringBuilder();
+            using (var writer = XmlWriter.Create(sb)) {
+                serializer.Serialize(writer, obj);
+            }
+
+            var xml = sb.ToString();
+            _output.WriteLine(xml);
+            Assert.Contains(">08:30<", xml);
+
+            TimeOfDayTestObject actual;
+            using (var reader = XmlReader.Create(new StringReader(xml))) {
+                actual = (TimeOfDayTestObject)serializer.Deserialize(reader);
+            }
+            Assert.Equal(obj.TimeOfDay, actual.TimeOfDay);
+        }
+
+        [DataContract(Name = "TestObject")]
+        public class TimeOfDayTestObject
+        {
+            [DataMember]
+            public TimeOfDay TimeOfDay { get; set; }
         }
     }
 }
