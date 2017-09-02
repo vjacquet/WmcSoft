@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WmcSoft.Collections.Specialized.Graph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAQAAEAABAAIAYBAIQCAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\Graph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.Degrees" Collapsed="true">
+    <Position X="11" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAAAAAAAAQAAAAAAAAAIEAAQAAAAAAgAAAAAAAg=</HashCode>
+      <FileName>Collections\Specialized\Degrees.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.Digraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAACAAAAABAAIAYAAIQCAAAAAACAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\Digraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.GraphProperties" Collapsed="true">
+    <Position X="11" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAABAAAIAAA=</HashCode>
+      <FileName>Collections\Specialized\GraphProperties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.WeightedGraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAABAAIAYAAIQAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\WeightedGraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.WeightedDigraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAACAAAAABAAIAYAAIQAAAAAAICAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\WeightedDigraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.TransitiveClosureAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACABAAAAYAAIABAAAAAACAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\TransitiveClosureAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.TopologicalAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\TopologicalAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.DijkstraShortestPathsAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="1.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAZACAAAAAAAAAAQAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\DijkstraShortestPathsAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WmcSoft.Collections.Specialized.AcyclicShortestPathsAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAZACAAAAAAAAAAQAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\AcyclicShortestPathsAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="WmcSoft.Collections.Specialized.KosarajuSharirStrongConnectedComponentsAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAQIAAAgAAACQAAAAAAAAAIACAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\KosarajuSharirStrongConnectedComponentsAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.DirectedDepthFirstSearchAlgorithm" Collapsed="true">
+    <Position X="9.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACgAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\DirectedDepthFirstSearchAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.DirectedCycleAlgorithm" Collapsed="true">
+    <Position X="14.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAACAAAgAABCAgAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\DirectedCycleAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.DepthFirstSearchAlgorithm" Collapsed="true">
+    <Position X="12.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACgAAACQAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\DepthFirstSearchAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.DepthFirstPathsAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAJAAAAgAAACAAAAEACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\DepthFirstPathsAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.DepthFirstOrderAlgorithm" Collapsed="true">
+    <Position X="9.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAQAAkEAQCAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\DepthFirstOrderAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.CycleAlgorithm" Collapsed="true">
+    <Position X="14.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAgAABCAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\CycleAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.ConnectedComponentsAlgorithm&lt;TGraph&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAQIAAAgAAACQAAAAAAAAAIACAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\ConnectedComponentsAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.BreathFirstPathsAlgorithm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAJACAAgAAACAAAAEACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\BreathFirstPathsAlgorithm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="WmcSoft.Collections.Specialized.BipartiteAlgorithm&lt;TGraph&gt;" Collapsed="true">
+    <Position X="9.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAIBAAAAgAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\BipartiteAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="WmcSoft.Collections.Specialized.IGraph" Collapsed="true">
+    <Position X="4.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAYAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IGraph.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IConnectedComponents&lt;TVertex&gt;" Collapsed="true">
+    <Position X="3.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAQIAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IConnectedComponents.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IDirectedGraph" Collapsed="true">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IDirectedGraph.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IGraphBuilder&lt;TVertex&gt;" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IGraphBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IPaths&lt;TVertex, TEdge&gt;" Collapsed="true">
+    <Position X="2" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IPaths.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IShortestPaths&lt;TVertex, TEdge, TWeight&gt;" Collapsed="true">
+    <Position X="2" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IShortestPaths.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.ITopological&lt;TVertex&gt;" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\ITopological.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IUndirectedGraph" Collapsed="true">
+    <Position X="6.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IUndirectedGraph.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WmcSoft.Collections.Specialized.IWeightedGraph&lt;TEgde&gt;" Collapsed="true">
+    <Position X="2.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collections\Specialized\IWeightedGraph.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

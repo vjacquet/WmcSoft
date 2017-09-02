@@ -444,6 +444,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Collections\Generic\Forest.cd" />
+    <None Include="Collections\Specialized\Graph.cd" />
     <None Include="Diagnostics\Checkpoints\CheckpointsDiagram.cd" />
     <None Include="Diagnostics\Sentries\SentriesDiagram.cd" />
     <None Include="IO\Streams.cd" />
