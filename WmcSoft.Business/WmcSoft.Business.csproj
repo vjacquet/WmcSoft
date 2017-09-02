@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoundStrategy.cs" />
     <Compile Include="Business\Accounting\Cash.cs" />
     <Compile Include="Business\Accounting\Check.cs" />
     <Compile Include="Business\Accounting\CreditCard.cs" />
@@ -206,26 +205,17 @@
     <Compile Include="Business\UnitOfWork.cs" />
     <Compile Include="GatewayError.cs" />
     <Compile Include="GatewayResult.cs" />
-    <Compile Include="GeoFormatter.cs" />
-    <Compile Include="GeographicPosition.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />
     <Compile Include="Business\IExtended.cs" />
-    <Compile Include="IInterval.cs" />
     <Compile Include="Proration.cs" />
     <Compile Include="Security\AutorizedLevelPermission.cs" />
     <Compile Include="Security\RequiredLevelPermission.cs" />
-    <Compile Include="Specification.cs" />
-    <Compile Include="ISpecification.cs" />
-    <Compile Include="Longitude.cs" />
-    <Compile Include="Latitude.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Ratio.cs" />
     <Compile Include="RM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AccessControl.cs" />
@@ -241,33 +231,6 @@
     <Compile Include="Security\SecurityContext.cs" />
     <Compile Include="Security\UncheckedTag.cs" />
     <Compile Include="Security\User.cs" />
-    <Compile Include="SpecificationExtensions.cs" />
-    <Compile Include="Time\Date.cs" />
-    <Compile Include="Time\DateInterval.cs" />
-    <Compile Include="Time\DateSpecificationExtensions.cs" />
-    <Compile Include="Time\Duration.cs" />
-    <Compile Include="Time\DateSpecification.cs" />
-    <Compile Include="Time\FixedDateSpecification.cs" />
-    <Compile Include="Time\FloatingDateSpecification.cs" />
-    <Compile Include="Time\IDateSpecification.cs" />
-    <Compile Include="Time\AnnualDateSpecification.cs" />
-    <Compile Include="Interval.cs" />
-    <Compile Include="IntervalLimit.cs" />
-    <Compile Include="Time\ITimeSource.cs" />
-    <Compile Include="Time\MinuteOfHour.cs" />
-    <Compile Include="Time\HourOfDay.cs" />
-    <Compile Include="Time\NistClient.cs" />
-    <Compile Include="Time\SntpClientTimeSource.cs" />
-    <Compile Include="Time\NistClientTimeSource.cs" />
-    <Compile Include="Time\SntpClient.cs" />
-    <Compile Include="Time\SystemClockTimeSource.cs" />
-    <Compile Include="Time\TimeInterval.cs" />
-    <Compile Include="Time\TimeOfDay.cs" />
-    <Compile Include="Time\Timepoint.cs" />
-    <Compile Include="Time\TimeRate.cs" />
-    <Compile Include="Time\TimeSource.cs" />
-    <Compile Include="Time\TimeUnit.cs" />
-    <Compile Include="Time\TimeUnit.TypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Business\Accounting\RM.en-us.resx">
@@ -306,6 +269,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj">
+      <Project>{0f12fb2c-e0a5-4bec-adc1-5edb69dd8bb4}</Project>
+      <Name>WmcSoft.Business.Primitives</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
       <Name>WmcSoft.Core</Name>
@@ -332,7 +299,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Security\SecurityDiagram.cd" />
-    <None Include="Time\Time.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

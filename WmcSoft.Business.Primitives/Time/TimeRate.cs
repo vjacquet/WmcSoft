@@ -32,7 +32,7 @@
 
 using System;
 using System.Diagnostics;
-using static WmcSoft.Helpers;
+using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Time
 {
@@ -101,7 +101,7 @@ namespace WmcSoft.Time
 
         public override int GetHashCode()
         {
-            return Hash(_quantity.GetHashCode(), _unit.GetHashCode());
+            return EqualityComparer.CombineHashCodes(_quantity.GetHashCode(), _unit.GetHashCode());
         }
 
         #endregion

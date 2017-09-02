@@ -78,9 +78,6 @@
     <Compile Include="AutorizableTests.cs" />
     <Compile Include="ExtendedTests.cs" />
     <Compile Include="GatewayResultTests.cs" />
-    <Compile Include="IntervalTests.cs" />
-    <Compile Include="LongitudeTests.cs" />
-    <Compile Include="LatitudeTests.cs" />
     <Compile Include="PartyModel\BusinessExtensions.cs" />
     <Compile Include="PartyModel\FamilyLikeModel.cs" />
     <Compile Include="PartyModel\FamilyLikePartyRoleTests.cs">
@@ -96,7 +93,6 @@
     <Compile Include="ProductModel\FurnitureModel.cs" />
     <Compile Include="ProductModel\FurnitureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BoundStrategyTests.cs" />
     <Compile Include="RuleModel\RuleModelTests.cs" />
     <Compile Include="Security\Command.cs" />
     <Compile Include="Security\Groups.cs" />
@@ -106,16 +102,7 @@
     <Compile Include="Security\SecurableBase.cs" />
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
-    <Compile Include="SpecificationTests.cs" />
     <Compile Include="TemporalTests.cs" />
-    <Compile Include="IntervalLimitTests.cs" />
-    <Compile Include="Time\ClockTests.cs" />
-    <Compile Include="Time\DateSpecificationTests.cs" />
-    <Compile Include="Time\TimeOfDayTests.cs" />
-    <Compile Include="Time\DateTests.cs" />
-    <Compile Include="Time\DurationTests.cs" />
-    <Compile Include="Time\TimepointTests.cs" />
-    <Compile Include="Time\TimeUnitTests.cs" />
     <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>
   <ItemGroup>
