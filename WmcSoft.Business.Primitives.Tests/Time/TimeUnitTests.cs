@@ -25,6 +25,7 @@ namespace WmcSoft.Time
 
                 TimeUnit.Month,
                 TimeUnit.Quarter,
+                TimeUnit.Semester,
                 TimeUnit.Year,
             };
 
@@ -72,7 +73,8 @@ namespace WmcSoft.Time
             Assert.Equal(TimeUnit.Millisecond, TimeUnit.Second.NextFinerUnit());
             Assert.Equal(TimeUnit.Millisecond, TimeUnit.Millisecond.NextFinerUnit());
 
-            Assert.Equal(TimeUnit.Quarter, TimeUnit.Year.NextFinerUnit());
+            Assert.Equal(TimeUnit.Semester, TimeUnit.Year.NextFinerUnit());
+            Assert.Equal(TimeUnit.Quarter, TimeUnit.Semester.NextFinerUnit());
             Assert.Equal(TimeUnit.Month, TimeUnit.Quarter.NextFinerUnit());
             Assert.Equal(TimeUnit.Month, TimeUnit.Month.NextFinerUnit());
         }
@@ -90,6 +92,7 @@ namespace WmcSoft.Time
 
                 TimeUnit.Month,
                 TimeUnit.Quarter,
+                TimeUnit.Semester,
                 TimeUnit.Year,
             };
             var expected = new[] {
@@ -100,6 +103,7 @@ namespace WmcSoft.Time
                 TimeUnit.Millisecond,
                 TimeUnit.Millisecond,
 
+                TimeUnit.Month,
                 TimeUnit.Month,
                 TimeUnit.Month,
                 TimeUnit.Month,

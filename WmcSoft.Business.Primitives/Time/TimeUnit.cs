@@ -32,21 +32,26 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace WmcSoft.Time
 {
+    [StructLayout(LayoutKind.Sequential)]
     [Serializable]
     public partial struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
     {
+        // TODO: isn't TimeUnit and Period/Frequency basically the same thing? TimeUnit is from timeandmoney.com, Period and Frequency from Quantlib.
+
         public const int MillisecondsPerSecond = 1000;
         public const int MillisecondsPerMinute = 60 * MillisecondsPerSecond;
         public const int MillisecondsPerHour = 60 * MillisecondsPerMinute;
         public const int MillisecondsPerDay = 24 * MillisecondsPerHour;
         public const int MillisecondsPerWeek = 7 * MillisecondsPerDay;
         public const int MonthsPerQuarter = 3;
+        public const int MonthsPerSemester = 6;
         public const int MonthsPerYear = 12;
 
-        public enum Type
+        private enum Type
         {
             Millisecond = 0x01,
             Second = 0x03,
@@ -56,7 +61,8 @@ namespace WmcSoft.Time
             Week = 0x0D,
             Month = 0x10,
             Quarter = 0x30,
-            Year = 0x50,
+            Semester = 0x50,
+            Year = 0x90,
         }
 
         public static readonly TimeUnit Millisecond = new TimeUnit(Type.Millisecond, 1);
@@ -67,12 +73,13 @@ namespace WmcSoft.Time
         public static readonly TimeUnit Week = new TimeUnit(Type.Week, MillisecondsPerWeek);
         public static readonly TimeUnit Month = new TimeUnit(Type.Month, 1);
         public static readonly TimeUnit Quarter = new TimeUnit(Type.Quarter, MonthsPerQuarter);
+        public static readonly TimeUnit Semester = new TimeUnit(Type.Semester, MonthsPerSemester);
         public static readonly TimeUnit Year = new TimeUnit(Type.Year, MonthsPerYear);
 
         public static readonly TimeUnit[] DescendingMillisecondBased = { Week, Day, Hour, Minute, Second, Millisecond };
         public static readonly TimeUnit[] DescendingMillisecondBasedForDisplay = { Day, Hour, Minute, Second, Millisecond };
 
-        public static readonly TimeUnit[] DescendingMonthBased = { Year, Quarter, Month };
+        public static readonly TimeUnit[] DescendingMonthBased = { Year, Semester, Quarter, Month };
         public static readonly TimeUnit[] DescendingMonthBasedForDisplay = { Year, Month };
 
         private readonly Type _type;
