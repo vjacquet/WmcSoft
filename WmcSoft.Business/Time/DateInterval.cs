@@ -60,13 +60,13 @@ namespace WmcSoft.Time
         {
             var start = interval.Lower.Value;
             var end = interval.Upper.Value;
-            if (interval.IncludesLowerLimit())
+            if (interval.IsLowerIncluded)
                 yield return start;
             while (start < end) {
                 start = start.NextDay();
                 yield return start;
             }
-            if (interval.IncludesUpperLimit())
+            if (interval.IsUpperIncluded)
                 yield return end;
         }
 
@@ -74,13 +74,13 @@ namespace WmcSoft.Time
         {
             var start = interval.Lower.Value;
             var end = interval.Upper.Value;
-            if (interval.IncludesUpperLimit())
+            if (interval.IsUpperIncluded)
                 yield return end;
             while (start < end) {
                 end = end.PreviousDay();
                 yield return end;
             }
-            if (interval.IncludesLowerLimit())
+            if (interval.IsLowerIncluded)
                 yield return start;
         }
     }

@@ -212,6 +212,7 @@
     <Compile Include="IBoundStrategy.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />
     <Compile Include="Business\IExtended.cs" />
+    <Compile Include="IInterval.cs" />
     <Compile Include="Proration.cs" />
     <Compile Include="Security\AutorizedLevelPermission.cs" />
     <Compile Include="Security\RequiredLevelPermission.cs" />

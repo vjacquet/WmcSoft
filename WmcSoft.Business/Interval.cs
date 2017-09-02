@@ -39,10 +39,10 @@ namespace WmcSoft
     /// <summary>
     /// Stores a range of values within a single object. 
     /// </summary>
-    /// <remarks>This class stores the open/closed state of the bounds when <see cref="Range{T}"/> does not.</remarks>
+    /// <remarks>This class stores the open/closed state of the bounds.</remarks>
     [Serializable]
     [ImmutableObject(true)]
-    public struct Interval<T> : IComparable<Interval<T>>, IEquatable<Interval<T>>
+    public struct Interval<T> : IInterval<T>, IComparable<Interval<T>>, IEquatable<Interval<T>>
         where T : struct, IComparable<T>
     {
         private readonly IntervalLimit<T> _lower;
@@ -71,9 +71,8 @@ namespace WmcSoft
         {
             return _lower.GetValueOrDefault();
         }
-        public bool IncludesLowerLimit()
-        {
-            return _lower.IsClosed;
+        public bool IsLowerIncluded {
+            get { return _lower.IsClosed; }
         }
 
         public T? Upper { get { return (T?)_upper; } }
@@ -82,18 +81,17 @@ namespace WmcSoft
         {
             return _upper.GetValueOrDefault();
         }
-        public bool IncludesUpperLimit()
-        {
-            return _upper.IsClosed;
+        public bool IsUpperIncluded {
+            get { return _lower.IsClosed; }
         }
 
         public bool IsOpen()
         {
-            return !IncludesLowerLimit() && !IncludesUpperLimit();
+            return !IsLowerIncluded && !IsUpperIncluded;
         }
         public bool IsClosed()
         {
-            return IncludesLowerLimit() && IncludesUpperLimit();
+            return IsLowerIncluded && IsUpperIncluded;
         }
 
         public bool IsEmpty()
@@ -110,14 +108,14 @@ namespace WmcSoft
         {
             if (!HasUpperLimit) return false;
             int comparison = GetUpperOrDefault().CompareTo(value);
-            return comparison < 0 || (comparison == 0 && !IncludesUpperLimit());
+            return comparison < 0 || (comparison == 0 && !IsUpperIncluded);
         }
 
         public bool IsAbove(T value)
         {
             if (!HasLowerLimit) return false;
             int comparison = GetLowerOrDefault().CompareTo(value);
-            return comparison < 0 || (comparison == 0 && !IncludesLowerLimit());
+            return comparison < 0 || (comparison == 0 && !IsLowerIncluded);
         }
 
         public int CompareTo(Interval<T> other)
@@ -125,9 +123,9 @@ namespace WmcSoft
             var result = _upper.CompareTo(other._upper);
             if (result != 0)
                 return result;
-            if (IncludesLowerLimit() && !other.IncludesLowerLimit())
+            if (IsLowerIncluded && !other.IsLowerIncluded)
                 return -1;
-            if (!IncludesLowerLimit() && other.IncludesLowerLimit())
+            if (!IsLowerIncluded && other.IsLowerIncluded)
                 return 1;
             return _lower.CompareTo(other._lower);
         }
@@ -175,7 +173,7 @@ namespace WmcSoft
                 return "{" + GetLowerOrDefault() + "}";
             var sb = new StringBuilder();
             if (HasLowerLimit) {
-                sb.Append(IncludesLowerLimit() ? "[" : "(");
+                sb.Append(IsLowerIncluded ? "[" : "(");
                 sb.Append(GetLowerOrDefault());
             } else {
                 sb.Append("(");
@@ -183,7 +181,7 @@ namespace WmcSoft
             sb.Append(", ");
             if (HasLowerLimit) {
                 sb.Append(GetUpperOrDefault());
-                sb.Append(IncludesUpperLimit() ? "]" : ")");
+                sb.Append(IsUpperIncluded ? "]" : ")");
             } else {
                 sb.Append(")");
             }
@@ -196,7 +194,7 @@ namespace WmcSoft
             if (!value.HasValue)
                 return true;
             int comparison = _upper.GetValueOrDefault().CompareTo(value.GetValueOrDefault());
-            return comparison < 0 || (comparison == 0 && !IncludesUpperLimit());
+            return comparison < 0 || (comparison == 0 && !IsUpperIncluded);
         }
 
         public bool IsAbove(T? value)
@@ -205,7 +203,7 @@ namespace WmcSoft
             if (!value.HasValue)
                 return true;
             int comparison = _lower.GetValueOrDefault().CompareTo(value.GetValueOrDefault());
-            return comparison > 0 || (comparison == 0 && !IncludesLowerLimit());
+            return comparison > 0 || (comparison == 0 && !IsLowerIncluded);
         }
 
         public bool Includes(T? value)
