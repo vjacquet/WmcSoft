@@ -30,8 +30,6 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.Time
 {
     sealed class FixedDateSpecification : AnnualDateSpecification
@@ -52,8 +50,7 @@ namespace WmcSoft.Time
 
         public override bool IsSatisfiedBy(Date date)
         {
-            DateTime dateTime = date;
-            return dateTime.Day == _day && dateTime.Month == _month;
+            return date.Day == _day && date.Month == _month;
         }
     }
 }

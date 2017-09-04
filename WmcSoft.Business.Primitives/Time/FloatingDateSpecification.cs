@@ -58,8 +58,7 @@ namespace WmcSoft.Time
 
         public override bool IsSatisfiedBy(Date date)
         {
-            DateTime dateTime = date;
-            return date == OfYear(dateTime.Year);
+            return date == OfYear(date.Year);
         }
     }
 }

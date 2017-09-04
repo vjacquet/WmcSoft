@@ -18,6 +18,25 @@ namespace WmcSoft.Time
             _output = output;
         }
 
+        [Theory]
+        [InlineData("2017-09-01")]
+        [InlineData("2017-09-02")]
+        [InlineData("2017-09-03")]
+        [InlineData("2017-09-04")]
+        [InlineData("2017-09-05")]
+        [InlineData("2017-09-06")]
+        [InlineData("2017-09-07")]
+        [InlineData("2017-09-12")]
+        [InlineData("2016-02-29")]
+        public void CanCreateDateAndGetDayOfWeek(DateTime dateTime)
+        {
+            var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
+            Assert.Equal(date.Year, dateTime.Year);
+            Assert.Equal(date.Month, dateTime.Month);
+            Assert.Equal(date.Day, dateTime.Day);
+            Assert.Equal(date.DayOfWeek, dateTime.DayOfWeek);
+        }
+
         [Fact]
         public void AssertDateIsOfUnspecifiedKind()
         {

@@ -85,6 +85,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Primitives
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Primitives.Tests", "WmcSoft.Business.Primitives.Tests\WmcSoft.Business.Primitives.Tests.csproj", "{173C80E5-D516-445B-B1EB-ECEC9594FF7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Calendars", "WmcSoft.Business.Calendars\WmcSoft.Business.Calendars.csproj", "{15D86A23-5782-497D-82DB-D42FE75FAD92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Calendars.Tests", "WmcSoft.Business.Calendars.Tests\WmcSoft.Business.Calendars.Tests.csproj", "{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +223,14 @@ Global
 		{173C80E5-D516-445B-B1EB-ECEC9594FF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{173C80E5-D516-445B-B1EB-ECEC9594FF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{173C80E5-D516-445B-B1EB-ECEC9594FF7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D86A23-5782-497D-82DB-D42FE75FAD92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D86A23-5782-497D-82DB-D42FE75FAD92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D86A23-5782-497D-82DB-D42FE75FAD92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D86A23-5782-497D-82DB-D42FE75FAD92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
