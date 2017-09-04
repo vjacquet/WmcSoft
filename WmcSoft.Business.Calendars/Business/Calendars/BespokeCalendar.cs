@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
@@ -37,40 +38,40 @@ namespace WmcSoft.Business.Calendars
     {
         private readonly TCalendar _calendar;
         private readonly DayOfWeek[] _weekends;
-        private readonly HashSet<DateTime> _addedHolidays = new HashSet<DateTime>();
-        private readonly HashSet<DateTime> _removedHolidays = new HashSet<DateTime>();
+        private readonly HashSet<Date> _addedHolidays = new HashSet<Date>();
+        private readonly HashSet<Date> _removedHolidays = new HashSet<Date>();
 
-        public BespokeCalendar(TCalendar calendar, DateTime since, TimeSpan duration, params DayOfWeek[] weekends)
+        public BespokeCalendar(TCalendar calendar, Date since, TimeSpan duration, params DayOfWeek[] weekends)
         {
-            MinDate = since.Date;
-            MaxDate = since.Add(duration).Date;
+            MinDate = since;
+            MaxDate = since.Add(duration);
             _calendar = calendar;
             _weekends = weekends ?? new DayOfWeek[0];
         }
 
-        public DateTime MinDate { get; }
-        public DateTime MaxDate { get; }
+        public Date MinDate { get; }
+        public Date MaxDate { get; }
 
-        public void Add(DateTime holiday)
+        public void Add(Date holiday)
         {
             _removedHolidays.Remove(holiday);
             if (_calendar.IsBusinessDay(holiday))
                 _addedHolidays.Add(holiday);
         }
 
-        public void Remove(DateTime holiday)
+        public void Remove(Date holiday)
         {
             _addedHolidays.Remove(holiday);
             if (!_calendar.IsBusinessDay(holiday))
                 _removedHolidays.Add(holiday);
         }
 
-        public bool IsBusinessDay(DateTime date)
+        public bool IsBusinessDay(Date date)
         {
             return !IsHoliday(date) && !IsWeekend(date.DayOfWeek);
         }
 
-        bool IsHoliday(DateTime date)
+        bool IsHoliday(Date date)
         {
             if (_addedHolidays.Contains(date))
                 return true;

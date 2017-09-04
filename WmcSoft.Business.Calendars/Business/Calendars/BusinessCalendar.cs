@@ -27,15 +27,16 @@
 using System;
 using System.Collections;
 using System.Linq;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
     public sealed class BusinessCalendar : IBusinessCalendar
     {
-        readonly DateTime _epoch;
+        readonly Date _epoch;
         readonly BitArray _holidays;
 
-        private BusinessCalendar(DateTime epoch, BitArray holidays)
+        private BusinessCalendar(Date epoch, BitArray holidays)
         {
             _epoch = epoch;
             _holidays = holidays;
@@ -50,7 +51,7 @@ namespace WmcSoft.Business.Calendars
             // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
-        public BusinessCalendar(DateTime since, TimeSpan duration, params Predicate<DateTime>[] holidays)
+        public BusinessCalendar(Date since, TimeSpan duration, params Predicate<DateTime>[] holidays)
         {
             _epoch = since;
 
@@ -64,14 +65,15 @@ namespace WmcSoft.Business.Calendars
             }
         }
 
-        public DateTime MinDate => _epoch;
-        public DateTime MaxDate => _epoch.AddDays(_holidays.Length);
+        public Date MinDate => _epoch;
+        public Date MaxDate => _epoch.AddDays(_holidays.Length);
 
-        public bool IsBusinessDay(DateTime date)
+        public bool IsBusinessDay(Date date)
         {
-            var duration = date - _epoch;
-            return !_holidays[(int)duration.TotalDays];
+            return !_holidays[_epoch.DaysSince(_epoch)];
         }
+
+
 
         public static bool Saturdays(DateTime date)
         {

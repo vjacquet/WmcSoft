@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2017 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -20,6 +20,12 @@
 
     4. This notice may not be removed or altered.
 
+ ****************************************************************************
+ * Adapted from DateSpecification.java
+ * -----------------------------------
+ * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
+ * For more information, see http://timeandmoney.sourceforge.net.
  ****************************************************************************/
 
 #endregion
@@ -27,13 +33,20 @@
 using System;
 using WmcSoft.Time;
 
-namespace WmcSoft.Business.Calendars
+namespace WmcSoft.Business.Calendars.Specifications
 {
-    public struct EmptyCalendar : IBusinessCalendar
+    public sealed class WeekendSpecification : ISpecification<Date>
     {
-        public Date MinDate => Date.MinValue;
-        public Date MaxDate => Date.MaxValue;
+        private readonly DayOfWeek[] _weekend;
 
-        public bool IsBusinessDay(Date  date) => true;
+        public WeekendSpecification(params DayOfWeek[] weekend)
+        {
+            _weekend = weekend;
+        }
+
+        public bool IsSatisfiedBy(Date date)
+        {
+            return false;
+        }
     }
 }

@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
@@ -43,10 +44,10 @@ namespace WmcSoft.Business.Calendars
             _calendars = new List<IBusinessCalendar>(calendars);
         }
 
-        public DateTime MinDate => _calendars.Min(c => c.MinDate);
-        public DateTime MaxDate => _calendars.Max(c => c.MaxDate);
+        public Date MinDate => _calendars.Min(c => c.MinDate);
+        public Date MaxDate => _calendars.Max(c => c.MaxDate);
 
-        public bool IsBusinessDay(DateTime date) => _calendars.Any(c => c.IsBusinessDay(date));
+        public bool IsBusinessDay(Date date) => _calendars.Any(c => c.IsBusinessDay(date));
 
         public void Add(IBusinessCalendar calendar)
         {

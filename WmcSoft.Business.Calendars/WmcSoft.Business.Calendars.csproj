@@ -48,6 +48,7 @@
     <Compile Include="Business\Calendars\IBusinessDayConvention.cs" />
     <Compile Include="Business\Calendars\JoinBusinessDaysCalendar.cs" />
     <Compile Include="Business\Calendars\JoinHolidaysCalendar.cs" />
+    <Compile Include="Business\Calendars\Specifications\WeekendSpecification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

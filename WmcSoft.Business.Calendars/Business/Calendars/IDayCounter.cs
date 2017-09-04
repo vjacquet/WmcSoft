@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
@@ -32,7 +33,7 @@ namespace WmcSoft.Business.Calendars
     {
         string Name { get; }
 
-        int DayCount<TInterval>(TInterval interval) where TInterval : struct, IInterval<DateTime>;
-        decimal YearFraction<TInterval>(TInterval interval, TInterval? refPeriod) where TInterval : struct, IInterval<DateTime>;
+        int DayCount<TInterval>(TInterval interval) where TInterval : struct, IInterval<Date>;
+        decimal YearFraction<TInterval>(TInterval interval, TInterval? refPeriod) where TInterval : struct, IInterval<Date>;
     }
 }

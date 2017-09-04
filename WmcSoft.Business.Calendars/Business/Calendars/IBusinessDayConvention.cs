@@ -25,18 +25,19 @@
 #endregion
 
 using System;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
     public interface IBusinessDayConvention
     {
-        DateTime Adjust<TCalendar>(TCalendar calendar, DateTime date)
+        Date Adjust<TCalendar>(TCalendar calendar, Date date)
             where TCalendar : IBusinessCalendar;
     }
 
     public static class BusinessDayConventionExtensions
     {
-        public static DateTime LastDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, DateTime date, TConvention convention)
+        public static DateTime LastDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, Date date, TConvention convention)
             where TConvention : IBusinessDayConvention
             where TCalendar : IBusinessCalendar
         {
@@ -46,7 +47,7 @@ namespace WmcSoft.Business.Calendars
             return convention.Adjust(calendar, date);
         }
 
-        public static bool IsLastDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, DateTime date, TConvention convention)
+        public static bool IsLastDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, Date date, TConvention convention)
             where TConvention : IBusinessDayConvention
             where TCalendar : IBusinessCalendar
         {

@@ -25,20 +25,21 @@
 #endregion
 
 using System;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
     public interface IBusinessCalendar
     {
-        DateTime MinDate { get; }
-        DateTime MaxDate { get; }
+        Date MinDate { get; }
+        Date MaxDate { get; }
 
-        bool IsBusinessDay(DateTime date);
+        bool IsBusinessDay(Date date);
     }
 
     public static class BusinessCalendarExtensions
     {
-        public static DateTime AddBusinessDays<TCalendar>(this TCalendar calendar, DateTime date, int days)
+        public static DateTime AddBusinessDays<TCalendar>(this TCalendar calendar, Date date, int days)
             where TCalendar : IBusinessCalendar
         {
             while (days > 0) {

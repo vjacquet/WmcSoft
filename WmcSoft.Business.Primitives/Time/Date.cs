@@ -40,6 +40,9 @@ namespace WmcSoft.Time
     {
         readonly DateTime _storage;
 
+        public static readonly Date MinValue = (Date)DateTime.MinValue;
+        public static readonly Date MaxValue = (Date)DateTime.MaxValue;
+
         private Date(DateTime date)
         {
             _storage = DateTime.SpecifyKind(date.Date, DateTimeKind.Unspecified);
@@ -84,6 +87,27 @@ namespace WmcSoft.Time
         public DateTimeOffset At(TimeOfDay time, TimeZoneInfo timeZone)
         {
             return time.On(this, timeZone);
+        }
+
+        public int Year => _storage.Year;
+        public int Month => _storage.Month;
+        public int Day => _storage.Day;
+        public DayOfWeek DayOfWeek => _storage.DayOfWeek;
+
+        public Date AddDays(double value)
+        {
+            return (Date)_storage.AddDays(value);
+        }
+
+        public Date Add(TimeSpan value)
+        {
+            return (Date)_storage.Add(value);
+        }
+
+        public int DaysSince(Date date)
+        {
+            var duration = (DateTime)date - _storage;
+            return (int)duration.TotalDays;
         }
 
         #region Operators

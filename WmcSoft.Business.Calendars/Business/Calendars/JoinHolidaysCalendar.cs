@@ -28,13 +28,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
     /// <summary>
     /// Join calendars so that a date is a holiday if it is a holiday for any of the given calendars.
     /// </summary>
-    public class JoinHolidaysCalendar : IBusinessCalendar
+    public class JoinHolidaysCalendar : IBusinessCalendar, IEnumerable<IBusinessCalendar>
     {
         private readonly List<IBusinessCalendar> _calendars;
 
@@ -43,10 +44,10 @@ namespace WmcSoft.Business.Calendars
             _calendars = new List<IBusinessCalendar>(calendars);
         }
 
-        public DateTime MinDate => _calendars.Min(c => c.MinDate);
-        public DateTime MaxDate => _calendars.Max(c => c.MaxDate);
+        public Date MinDate => _calendars.Min(c => c.MinDate);
+        public Date MaxDate => _calendars.Max(c => c.MaxDate);
 
-        public bool IsBusinessDay(DateTime date) => _calendars.All(c => c.IsBusinessDay(date));
+        public bool IsBusinessDay(Date  date) => _calendars.All(c => c.IsBusinessDay(date));
 
         public void Add(IBusinessCalendar calendar)
         {
