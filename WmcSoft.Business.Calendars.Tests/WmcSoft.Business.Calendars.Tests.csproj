@@ -65,6 +65,19 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WmcSoft.Business.Calendars\WmcSoft.Business.Calendars.csproj">
+      <Project>{15d86a23-5782-497d-82db-d42fe75fad92}</Project>
+      <Name>WmcSoft.Business.Calendars</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj">
+      <Project>{0f12fb2c-e0a5-4bec-adc1-5edb69dd8bb4}</Project>
+      <Name>WmcSoft.Business.Primitives</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -106,7 +106,7 @@ namespace WmcSoft.Time
 
         public int DaysSince(Date date)
         {
-            var duration = (DateTime)date - _storage;
+            var duration = _storage - (DateTime)date;
             return (int)duration.TotalDays;
         }
 

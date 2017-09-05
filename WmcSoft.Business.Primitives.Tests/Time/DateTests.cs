@@ -38,6 +38,13 @@ namespace WmcSoft.Time
         }
 
         [Fact]
+        public void DateMinValueAndMaxValueAreCompatibleWithDateTime()
+        {
+            Assert.Equal(Date.MinValue, DateTime.MinValue.Date);
+            Assert.Equal(Date.MaxValue, DateTime.MaxValue.Date);
+        }
+
+        [Fact]
         public void AssertDateIsOfUnspecifiedKind()
         {
             var manual = new Date(1973, 5, 2);

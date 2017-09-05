@@ -70,7 +70,7 @@ namespace WmcSoft.Business.Calendars
 
         public bool IsBusinessDay(Date date)
         {
-            return !_holidays[_epoch.DaysSince(_epoch)];
+            return !_holidays[date.DaysSince(_epoch)];
         }
 
 
