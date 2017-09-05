@@ -41,28 +41,28 @@ namespace WmcSoft.Time
     /// </summary>
     /// <remarks>Unlike <see cref="DateTime"/>, you cannot access its parts.</remarks>
     [Serializable]
-    [DebuggerDisplay("{_storage,nq}")]
+    [DebuggerDisplay("{new DateTime(_storage,DateTimeKind.Utc), nq}")]
     public struct Timepoint : IComparable<Timepoint>, IEquatable<Timepoint>
     {
         // The name `instant` was considered but put aside
         // as it can also mean a very short period of time.
 
-        private readonly DateTime _storage; // stores the time in UTC.
+        private readonly long _storage; // stores the ticks in UTC.
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Timepoint(DateTime dateTime, PiecewiseConstruct tag)
+        private Timepoint(long ticks)
         {
-            _storage = dateTime;
+            _storage = ticks;
         }
 
         public Timepoint(DateTime dateTime)
         {
-            _storage = dateTime.ToUniversalTime();
+            _storage = dateTime.ToUniversalTime().Ticks;
         }
 
         public Timepoint(DateTimeOffset dateTimeOffset)
         {
-            _storage = dateTimeOffset.UtcDateTime;
+            _storage = dateTimeOffset.UtcDateTime.Ticks;
         }
 
         public bool IsAfter(Timepoint other)
@@ -87,7 +87,7 @@ namespace WmcSoft.Time
 
         internal static Timepoint Now()
         {
-            return new Timepoint(DateTime.UtcNow, PiecewiseConstruct.Tag);
+            return new Timepoint(DateTime.UtcNow.Ticks);
         }
 
         #region Operators
@@ -99,7 +99,7 @@ namespace WmcSoft.Time
 
         public static explicit operator DateTimeOffset(Timepoint x)
         {
-            return x._storage;
+            return new DateTimeOffset((DateTime)x);
         }
 
         public static implicit operator Timepoint(DateTime x)
@@ -109,15 +109,16 @@ namespace WmcSoft.Time
 
         public static explicit operator DateTime(Timepoint x)
         {
-            return x._storage;
+            return new DateTime(x._storage, DateTimeKind.Utc);
         }
 
         public static Timepoint operator +(Timepoint t, Duration d)
         {
+            var dateTime = (DateTime)t;
             if (d.Unit.IsConvertibleToMilliseconds())
-                return new Timepoint(t._storage + (TimeSpan)d);
+                return new Timepoint(dateTime + (TimeSpan)d);
             var months = checked((int)d.InBaseUnits());
-            return new Timepoint(t._storage.AddMonths(months));
+            return new Timepoint(dateTime.AddMonths(months));
         }
         public static Timepoint Add(Timepoint t, Duration d)
         {
@@ -126,10 +127,11 @@ namespace WmcSoft.Time
 
         public static Timepoint operator -(Timepoint t, Duration d)
         {
+            var dateTime = (DateTime)t;
             if (d.Unit.IsConvertibleToMilliseconds())
-                return new Timepoint(t._storage - (TimeSpan)d);
+                return new Timepoint(dateTime - (TimeSpan)d);
             var months = checked(-(int)d.InBaseUnits());
-            return new Timepoint(t._storage.AddMonths(months));
+            return new Timepoint(dateTime.AddMonths(months));
         }
         public static Timepoint Subtract(Timepoint t, Duration d)
         {
@@ -138,7 +140,7 @@ namespace WmcSoft.Time
 
         public static Duration operator -(Timepoint x, Timepoint y)
         {
-            return y._storage - x._storage;
+            return (DateTime)y - (DateTime)x;
         }
 
         public static bool operator ==(Timepoint x, Timepoint y)
