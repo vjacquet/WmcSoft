@@ -75,7 +75,6 @@ namespace WmcSoft.Time
                 socket.ReceiveTimeout = (int)Timeout.TotalMilliseconds;
 
                 length = socket.Receive(buffer);
-                socket.Close();
             }
             var nistTime = Encoding.ASCII.GetString(buffer, 0, length);
             var time = nistTime.Substring(7, 17);

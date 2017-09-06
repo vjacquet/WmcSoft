@@ -77,7 +77,6 @@ namespace WmcSoft.Time
 
                 socket.Send(ntpData);
                 socket.Receive(ntpData);
-                socket.Close();
             }
 
             //Offset to get to the "Transmit Timestamp" field (time at which the reply 
