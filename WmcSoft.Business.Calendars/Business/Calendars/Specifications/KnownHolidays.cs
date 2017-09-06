@@ -30,54 +30,22 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
 {
-    public sealed class WeekendSpecification : IDateSpecification
+    public static class KnownHolidays
     {
-        private readonly DayOfWeek[] _weekend;
+        public static readonly AnnualDateSpecification NewYearsDay = DateSpecification.Fixed(1, 1);
 
-        public WeekendSpecification(params DayOfWeek[] weekend)
-        {
-            _weekend = weekend;
-        }
+        public static readonly AnnualDateSpecification LabourDay = DateSpecification.Fixed(5, 1);
 
-        public bool IsSatisfiedBy(Date date)
-        {
-            var dow = date.DayOfWeek;
-            return Array.IndexOf(_weekend, dow) >= 0;
-        }
+        public static readonly AnnualDateSpecification CristmasEve = DateSpecification.Fixed(12, 24);
 
-        private Date UpperBoundExclusive(Interval<Date> interval)
-        {
-            if (!interval.HasUpperLimit) {
-                return Date.MaxValue;
-            } else if (interval.IsUpperIncluded) {
-                return interval.GetUpperOrDefault();
-            } else {
-                return interval.GetUpperOrDefault().AddDays(-1);
-            }
-        }
+        public static readonly AnnualDateSpecification Cristmas = DateSpecification.Fixed(12, 24);
 
-        private IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval)
-        {
-            var start = interval.Lower.GetValueOrDefault();
-            var end = UpperBoundExclusive(interval);
-            while (start <= end) {
-                if (IsSatisfiedBy(start))
-                    yield return start;
-                start = start.AddDays(1);
-            }
-        }
+        public static readonly AnnualDateSpecification BoxingDay = DateSpecification.Fixed(12, 25);
 
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval)
-        {
-            if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
-
-            return UnguardedEnumerateOver(interval);
-        }
+        public static readonly AnnualDateSpecification NewYearsEve = DateSpecification.Fixed(1, 1);
     }
 }
