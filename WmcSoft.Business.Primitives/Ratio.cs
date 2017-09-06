@@ -124,6 +124,16 @@ namespace WmcSoft
             return x.DividedBy(a);
         }
 
+        public static bool operator ==(Ratio x, Ratio y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Ratio x, Ratio y)
+        {
+            return !x.Equals(y);
+        }
+
         #endregion
 
         #region IEquatable<Ratio> Membres
