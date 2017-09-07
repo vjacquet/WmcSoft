@@ -35,22 +35,28 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
-    [DebuggerDisplay("{ToString()}")]
+    [DebuggerDisplay("{ToString(),nq}")]
     public partial struct Date : IComparable<Date>, IEquatable<Date>
     {
-        readonly DateTime _storage;
+        readonly int _storage;
 
         public static readonly Date MinValue = (Date)DateTime.MinValue;
         public static readonly Date MaxValue = (Date)DateTime.MaxValue;
 
-        private Date(DateTime date)
+        private Date(int dayNumber)
         {
-            _storage = DateTime.SpecifyKind(date.Date, DateTimeKind.Unspecified);
+            if (dayNumber < MinValue._storage || dayNumber > MaxValue._storage) throw new ArgumentOutOfRangeException(nameof(dayNumber));
+
+            _storage = dayNumber;
         }
 
-        public Date(int year, int month, int day)
+        private Date(DateTime date)
         {
-            _storage = new DateTime(year, month, day);
+            _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
+        }
+
+        public Date(int year, int month, int day) : this(new DateTime(year, month, day))
+        {
         }
 
         public bool IsAfter(Date other)
@@ -65,17 +71,17 @@ namespace WmcSoft.Time
 
         public Date NextDay()
         {
-            return new Date(_storage.AddDays(1));
+            return new Date(_storage + 1);
         }
 
         public Date PreviousDay()
         {
-            return new Date(_storage.AddDays(-1));
+            return new Date(_storage - 1);
         }
 
         public Timepoint AsTimepoint(TimeZoneInfo zone)
         {
-            var dateTime = TimeZoneInfo.ConvertTimeToUtc(_storage, zone);
+            var dateTime = TimeZoneInfo.ConvertTimeToUtc(new DateTime(_storage * TimeSpan.TicksPerDay), zone);
             return new Timepoint(dateTime);
         }
 
@@ -89,28 +95,44 @@ namespace WmcSoft.Time
             return time.On(this, timeZone);
         }
 
-        public int Year => _storage.Year;
-        public int Month => _storage.Month;
-        public int Day => _storage.Day;
-        public DayOfWeek DayOfWeek => _storage.DayOfWeek;
+        public int Year => AsDateTime.Year;
+        public int Month => AsDateTime.Month;
+        public int Day => AsDateTime.Day;
+        public DayOfWeek DayOfWeek => (DayOfWeek)((_storage + 1) % 7);
 
-        public Date AddDays(double value)
+        public Date AddDays(int value)
         {
-            return (Date)_storage.AddDays(value);
+            return new Date(_storage + value);
+        }
+
+        public Date AddMonths(int value)
+        {
+            return (Date)AsDateTime.AddMonths(value);
+        }
+
+        public Date AddYears(int value)
+        {
+            return (Date)AsDateTime.AddYears(value);
         }
 
         public Date Add(TimeSpan value)
         {
-            return (Date)_storage.Add(value);
+            return (Date)AsDateTime.Add(value);
         }
 
         public int DaysSince(Date date)
         {
-            var duration = _storage - (DateTime)date;
-            return (int)duration.TotalDays;
+            return _storage - date._storage;
+        }
+
+        public int DaysUntil(Date date)
+        {
+            return date._storage - _storage;
         }
 
         #region Operators
+
+        DateTime AsDateTime => new DateTime(_storage * TimeSpan.TicksPerDay);
 
         public static explicit operator Date(DateTime date)
         {
@@ -124,7 +146,7 @@ namespace WmcSoft.Time
 
         public static implicit operator DateTime(Date date)
         {
-            return date._storage;
+            return date.AsDateTime;
         }
 
         public static bool operator ==(Date x, Date y)
@@ -210,7 +232,7 @@ namespace WmcSoft.Time
 
         public override string ToString()
         {
-            return _storage.ToString("d");
+            return AsDateTime.ToString("d");
         }
 
         #endregion

@@ -28,13 +28,26 @@ namespace WmcSoft.Time
         [InlineData("2017-09-07")]
         [InlineData("2017-09-12")]
         [InlineData("2016-02-29")]
-        public void CanCreateDateAndGetDayOfWeek(DateTime dateTime)
+        public void CanCreateDateAndGetDateParts(DateTime dateTime)
         {
             var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
             Assert.Equal(date.Year, dateTime.Year);
             Assert.Equal(date.Month, dateTime.Month);
             Assert.Equal(date.Day, dateTime.Day);
             Assert.Equal(date.DayOfWeek, dateTime.DayOfWeek);
+        }
+
+        [Theory]
+        [InlineData("2016-02-28")]
+        [InlineData("2016-02-29")]
+        [InlineData("2016-11-30")]
+        public void CanAddParts(DateTime dateTime)
+        {
+            var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            Assert.Equal(dateTime.AddDays(1), date.AddDays(1));
+            Assert.Equal(dateTime.AddMonths(1), date.AddMonths(1));
+            Assert.Equal(dateTime.AddYears(1), date.AddYears(1));
         }
 
         [Fact]

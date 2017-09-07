@@ -66,7 +66,7 @@ namespace WmcSoft.Time
 
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            writer.WriteString(_storage.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+            writer.WriteString(AsDateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
         }
     }
 }
