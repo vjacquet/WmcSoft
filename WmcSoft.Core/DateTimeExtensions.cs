@@ -41,7 +41,8 @@ namespace WmcSoft
         /// <param name="dateTime">The time.</param>
         /// <returns>The time as Utc.</returns>
         /// <remarks>When the kind is unspecified, assumes <see cref="DateTimeKind.Local"/> wheras <see cref="DateTime.ToLocalTime"/> assumes <see cref="DateTimeKind.Utc"/>.</remarks>
-        public static DateTime AsLocalTime(this DateTime dateTime) {
+        public static DateTime AsLocalTime(this DateTime dateTime)
+        {
             switch (dateTime.Kind) {
             case DateTimeKind.Local:
                 return dateTime;
@@ -59,7 +60,8 @@ namespace WmcSoft
         /// <param name="dateTime">The time.</param>
         /// <returns>The time as Utc.</returns>
         /// <remarks>When the kind is unspecified, assumes <see cref="DateTimeKind.Utc"/> wheras <see cref="DateTime.ToUniversalTime"/> assumes <see cref="DateTimeKind.Local"/>.</remarks>
-        public static DateTime AsUniversalTime(this DateTime dateTime) {
+        public static DateTime AsUniversalTime(this DateTime dateTime)
+        {
             switch (dateTime.Kind) {
             case DateTimeKind.Local:
                 return dateTime.ToUniversalTime();
@@ -76,7 +78,8 @@ namespace WmcSoft
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>The week of the month</returns>
-        public static int WeekOfMonth(this DateTime date) {
+        public static int WeekOfMonth(this DateTime date)
+        {
             int day = date.Day;
             int dayOfWeek = (int)(new DateTime(date.Year, date.Month, 1)).DayOfWeek;
             return Math.DivRem(6 + day + dayOfWeek, 7, out int reminder);
@@ -87,8 +90,19 @@ namespace WmcSoft
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>The first day of the month</returns>
-        public static DateTime FirstDayOfMonth(this DateTime date) {
+        public static DateTime FirstDayOfMonth(this DateTime date)
+        {
             return new DateTime(date.Year, date.Month, 1);
+        }
+
+        /// <summary>
+        /// Gets the first day of the next month of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>The first day of the month</returns>
+        public static DateTime FirstDayOfNextMonth(this DateTime date)
+        {
+            return FirstDayOfMonth(date).AddMonths(1);
         }
 
         /// <summary>
@@ -96,13 +110,15 @@ namespace WmcSoft
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>The last day of the month</returns>
-        public static DateTime LastDayOfMonth(this DateTime date) {
+        public static DateTime LastDayOfMonth(this DateTime date)
+        {
             var year = date.Year;
             var month = date.Month;
             return new DateTime(year, month, DateTime.DaysInMonth(year, month));
         }
 
-        static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider) {
+        static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider)
+        {
             var dateTimeFormatInfo = formatProvider.GetFormat<DateTimeFormatInfo>();
             var firstDayOfWeek = dateTimeFormatInfo.FirstDayOfWeek;
             var dayOfWeek = date.DayOfWeek;
@@ -118,7 +134,8 @@ namespace WmcSoft
         /// <param name="date">The date</param>
         /// <param name="formatProvider">The format provider to retrieve <see cref="DateTimeFormatInfo.FirstDayOfWeek"/>.</param>
         /// <returns>The first day of the week</returns>
-        public static DateTime FirstDayOfWeek(this DateTime date, IFormatProvider formatProvider = null) {
+        public static DateTime FirstDayOfWeek(this DateTime date, IFormatProvider formatProvider = null)
+        {
             return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture);
         }
 
@@ -128,7 +145,8 @@ namespace WmcSoft
         /// <param name="date">The date</param>
         /// <param name="formatProvider">The format provider to retrieve <see cref="DateTimeFormatInfo.FirstDayOfWeek"/>.</param>
         /// <returns>The last day of the week</returns>
-        public static DateTime LastDayOfWeek(this DateTime date, IFormatProvider formatProvider = null) {
+        public static DateTime LastDayOfWeek(this DateTime date, IFormatProvider formatProvider = null)
+        {
             return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture)
                 .AddDays(6);
         }
@@ -141,7 +159,8 @@ namespace WmcSoft
         /// <param name="resolution">e.g. to round to nearest second, <see cref="TimeSpan.TicksPerSecond"/>.</param>
         /// <returns>The truncated date.</returns>
         /// <remarks>Found at <http://stackoverflow.com/questions/1004698/how-to-truncate-milliseconds-off-of-a-net-datetime>.</remarks>
-        public static DateTime Truncate(this DateTime date, long resolution) {
+        public static DateTime Truncate(this DateTime date, long resolution)
+        {
             return new DateTime(date.Ticks - (date.Ticks % resolution), date.Kind);
         }
     }
