@@ -123,6 +123,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj">
+      <Project>{0f12fb2c-e0a5-4bec-adc1-5edb69dd8bb4}</Project>
+      <Name>WmcSoft.Business.Primitives</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WmcSoft.Business\WmcSoft.Business.csproj">
       <Project>{c14575be-b757-4e41-9eed-eabd5bd28f1e}</Project>
       <Name>WmcSoft.Business</Name>

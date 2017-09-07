@@ -52,16 +52,17 @@ namespace WmcSoft
             }
         }
 
+        static readonly char[] SupportedSpecifiers = new[] { 'M', 'D', 'G' };
         static void ParseFormat(string format, IFormatProvider formatProvider, out char specifier, out int precision)
         {
             if (string.IsNullOrWhiteSpace(format))
                 throw new FormatException();
 
             specifier = format[0];
-            if (!specifier.Any('M', 'D', 'G'))
-                throw new FormatException();
-
             if (format.Length > 1) {
+                if (Array.IndexOf(SupportedSpecifiers, specifier) < 0)
+                    throw new FormatException();
+
                 format = format.Substring(1);
                 if (!int.TryParse(format, NumberStyles.Integer, formatProvider, out precision))
                     throw new FormatException();
@@ -76,9 +77,11 @@ namespace WmcSoft
                 case 'D':
                     precision = 4;
                     break;
-                default:
+                case 'G':
                     precision = 1;
                     break;
+                default:
+                    throw new FormatException();
                 }
             }
         }

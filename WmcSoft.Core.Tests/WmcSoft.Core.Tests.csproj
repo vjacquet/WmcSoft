@@ -116,13 +116,11 @@
     <Compile Include="Data\DbConnectionExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
-    <Compile Include="DecimalExtensionsTests.cs" />
     <Compile Include="Diagnostics\CounterTests.cs" />
     <Compile Include="Diagnostics\Sentries\AggregatedSentyTests.cs" />
     <Compile Include="Diagnostics\TraceIndentTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />
-    <Compile Include="Globalization\BusinessCalendarTests.cs" />
     <Compile Include="IndexedAlgorithmsTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceSetTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceTests.cs" />
@@ -154,7 +152,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RangeTests.cs" />
     <Compile Include="Reflection\ReflectionExtensionsTests.cs" />
     <Compile Include="Reflection\TypeExtensionsTests.cs" />
     <Compile Include="RegexExtensionsTests.cs" />
@@ -196,7 +193,9 @@
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Globalization\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\TestResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

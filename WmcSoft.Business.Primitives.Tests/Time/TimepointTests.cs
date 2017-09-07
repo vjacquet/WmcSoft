@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using Xunit;
-using WmcSoft.IO;
-using WmcSoft.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WmcSoft.Time
 {
@@ -12,12 +11,12 @@ namespace WmcSoft.Time
         public void AssertDateTimeKindIsPreservedWhileSerializing()
         {
             using (var ms = new MemoryStream()) {
-                var serializer = new BinarySerializer<DateTime>();
+                var serializer = new BinaryFormatter();
 
                 var expected = new DateTime(2016, 01, 01, 0, 0, 0, DateTimeKind.Utc);
                 serializer.Serialize(ms, expected);
 
-                ms.Rewind();
+                ms.Seek(0, SeekOrigin.Begin);
                 var actual = serializer.Deserialize(ms);
 
                 Assert.Equal(expected, actual);

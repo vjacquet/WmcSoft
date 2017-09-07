@@ -194,7 +194,6 @@
     <Compile Include="Data\Odbc\OdbcConnectionExtensions.Parametrized.cs" />
     <Compile Include="Data\OleDb\OleDbConnectionExtensions.Parametrized.cs" />
     <Compile Include="Data\SqlClient\SqlConnectionExtensions.Parametrized.cs" />
-    <Compile Include="DecimalExtensions.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\CheckpointBase.cs" />
@@ -212,10 +211,7 @@
     <Compile Include="Diagnostics\Sentries\SentryBase.cs" />
     <Compile Include="Diagnostics\Sentries\SentryStatus.cs" />
     <Compile Include="Diagnostics\Sentries\TraceSentry.cs" />
-    <Compile Include="Globalization\BusinessCalendar.cs" />
-    <Compile Include="Globalization\CombinedCalendar.cs" />
     <Compile Include="Globalization\CultureInfoExtensions.cs" />
-    <Compile Include="Globalization\IBusinessCalendar.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IConverter.cs" />
     <Compile Include="IDisposableBin.cs" />
@@ -230,9 +226,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="OrdinalSet.cs" />
-    <Compile Include="Range.cs" />
-    <Compile Include="RangeComparer.cs" />
-    <Compile Include="RoundingMode.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="SemVerRelease.cs" />
     <Compile Include="Subscription.cs" />
@@ -452,7 +445,12 @@
     <None Include="packages.config" />
     <None Include="Xml\XPath\ReflectNavigator.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj">
+      <Project>{0f12fb2c-e0a5-4bec-adc1-5edb69dd8bb4}</Project>
+      <Name>WmcSoft.Business.Primitives</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

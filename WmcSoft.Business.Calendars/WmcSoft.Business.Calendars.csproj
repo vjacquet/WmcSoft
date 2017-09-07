@@ -57,10 +57,6 @@
       <Project>{0f12fb2c-e0a5-4bec-adc1-5edb69dd8bb4}</Project>
       <Name>WmcSoft.Business.Primitives</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
-      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
-      <Name>WmcSoft.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

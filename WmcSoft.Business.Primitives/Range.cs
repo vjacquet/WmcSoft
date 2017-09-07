@@ -31,8 +31,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-using static WmcSoft.Algorithms;
-
 namespace WmcSoft
 {
     /// <summary>
@@ -292,18 +290,14 @@ namespace WmcSoft
             return new Range<T>(x, y);
         }
 
-        public static Range<T> Inflate<T, O>(this Range<T> range, int delta, O ordinal)
-            where T : IComparable<T>
-            where O : IOrdinal<T>
+        static T Min<T>(T x, T y) where T : IComparable<T>
         {
-            return new Range<T>(ordinal.Advance(range.Lower, -delta), ordinal.Advance(range.Upper, delta));
+            return y.CompareTo(x) < 0 ? y : x;
         }
 
-        public static Range<T> Shift<T, O>(this Range<T> range, int delta, O ordinal)
-            where T : IComparable<T>
-            where O : IOrdinal<T>
+        static T Max<T>(T x, T y) where T : IComparable<T>
         {
-            return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
+            return y.CompareTo(x) < 0 ? x : y;
         }
 
         /// <summary>

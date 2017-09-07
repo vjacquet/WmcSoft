@@ -137,5 +137,19 @@ namespace WmcSoft
         {
             return sequence.SelectMany(r => Sequence(ordinal, expander(r)));
         }
+
+        public static Range<T> Inflate<T, O>(this Range<T> range, int delta, O ordinal)
+         where T : IComparable<T>
+         where O : IOrdinal<T>
+        {
+            return new Range<T>(ordinal.Advance(range.Lower, -delta), ordinal.Advance(range.Upper, delta));
+        }
+
+        public static Range<T> Shift<T, O>(this Range<T> range, int delta, O ordinal)
+            where T : IComparable<T>
+            where O : IOrdinal<T>
+        {
+            return new Range<T>(ordinal.Advance(range.Lower, delta), ordinal.Advance(range.Upper, delta));
+        }
     }
 }

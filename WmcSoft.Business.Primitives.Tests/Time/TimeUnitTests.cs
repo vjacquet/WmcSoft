@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using Xunit;
-using WmcSoft.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
-using WmcSoft.IO;
 
 namespace WmcSoft.Time
 {
@@ -29,7 +27,10 @@ namespace WmcSoft.Time
                 TimeUnit.Year,
             };
 
-            Assert.True(units.IsSorted());
+            var length = units.Length;
+            for (int i = 1; i < length; i++) {
+                Assert.True(units[i - 1] < units[i]);
+            }
         }
 
         [Fact]
@@ -57,7 +58,7 @@ namespace WmcSoft.Time
             using (var ms = new MemoryStream()) {
                 var f = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.Clone));
                 f.Serialize(ms, unit);
-                ms.Rewind();
+                ms.Seek(0, SeekOrigin.Begin);
                 var instance = (TimeUnit)f.Deserialize(ms);
                 Assert.Equal(unit, instance);
             }

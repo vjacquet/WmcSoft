@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoundStrategy.cs" />
+    <Compile Include="DecimalExtensions.cs" />
     <Compile Include="GeoFormatter.cs" />
     <Compile Include="GeographicPosition.cs" />
     <Compile Include="IBoundStrategy.cs" />
@@ -54,7 +55,10 @@
     <Compile Include="Latitude.cs" />
     <Compile Include="Longitude.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="RangeComparer.cs" />
     <Compile Include="Ratio.cs" />
+    <Compile Include="RoundingMode.cs" />
     <Compile Include="Specification.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Time\AnnualDateSpecification.cs" />
@@ -90,12 +94,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Time\Time.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
-      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
-      <Name>WmcSoft.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
