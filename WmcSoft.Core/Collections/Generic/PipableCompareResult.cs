@@ -24,21 +24,46 @@
 
 #endregion
 
+using System.Diagnostics;
+
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Defines static methods to create comparer builders.
-    /// This is a static class. 
+    /// Utility device aloowing to pipe the trichotomy compare result while maintaining the shortcut evaluation.
     /// </summary>
-    public static class Compare
+    public struct PipableCompareResult
     {
-        public static ComparerBuilder<T> OrderOf<T>()
+        private int _storage;
+
+        public PipableCompareResult(int value)
         {
-            //TODO: Is it necessary in a technical library?
-            // Shouldn't it be used in a Business glossary type class?
-            // Compare.Persons => returns the default comparer
-            // Compare.Persons.By(p=>p.Age) => returns the comparer by the Age property...
-            return ComparerBuilder<T>.Default;
+            _storage = value;
+        }
+
+        public static implicit operator PipableCompareResult(int x)
+        {
+            return new PipableCompareResult(x);
+        }
+
+        public static implicit operator int(PipableCompareResult x)
+        {
+            return x._storage;
+        }
+
+        public static bool operator true(PipableCompareResult x)
+        {
+            return x._storage != 0;
+        }
+
+        public static bool operator false(PipableCompareResult x)
+        {
+            return x._storage == 0;
+        }
+
+        public static PipableCompareResult operator |(PipableCompareResult x, PipableCompareResult y)
+        {
+            Debug.Assert(x._storage == 0);
+            return y._storage;
         }
     }
 }

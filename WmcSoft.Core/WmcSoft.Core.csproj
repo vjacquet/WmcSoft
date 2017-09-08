@@ -104,6 +104,7 @@
     <Compile Include="Collections\Generic\ConformingReverseComparer.cs" />
     <Compile Include="Collections\Generic\KeyValuePairComparer.cs" />
     <Compile Include="Collections\Generic\KeyValuePairEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\PipableCompareResult.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionDebugView.cs" />
     <Compile Include="Collections\Generic\ZipFixedSizeDictionary.cs" />
     <Compile Include="Collections\Generic\ZipReadOnlyDictionary.cs" />
