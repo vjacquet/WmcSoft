@@ -1105,6 +1105,14 @@ namespace WmcSoft.Collections.Generic
 
         #region Scan
 
+        static IEnumerable<T> UnguardedScan<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var item in source) {
+                action(item);
+                yield return item;
+            }
+        }
+
         /// <summary>
         /// Executes the <paramref name="action"/> on the items before returning them.
         /// </summary>
@@ -1117,8 +1125,14 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
 
+            return UnguardedScan(source, action);
+        }
+
+        static IEnumerable<T> UnguardedScan<T>(this IEnumerable<T> source, Action<T, int> action)
+        {
+            var i = 0;
             foreach (var item in source) {
-                action(item);
+                action(item, ++i);
                 yield return item;
             }
         }
@@ -1135,16 +1149,23 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
 
-            var i = 0;
-            foreach (var item in source) {
-                action(item, ++i);
-                yield return item;
-            }
+            return UnguardedScan(source, action);
         }
 
         #endregion
 
         #region Stride
+
+        static IEnumerable<T> UnguardedStride<T>(this IEnumerable<T> source, int step)
+        {
+            var i = step - 1;
+            foreach (var item in source) {
+                if (++i == step) {
+                    i = 0;
+                    yield return item;
+                }
+            }
+        }
 
         /// <summary>
         /// Returns every Nth element of the source, starting with the first one.
@@ -1158,13 +1179,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (step < 1) throw new ArgumentOutOfRangeException(nameof(step));
 
-            var i = step - 1;
-            foreach (var item in source) {
-                if (++i == step) {
-                    i = 0;
-                    yield return item;
-                }
-            }
+            return UnguardedStride(source, step);
         }
 
         #endregion
