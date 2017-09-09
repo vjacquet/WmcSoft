@@ -153,46 +153,16 @@ namespace WmcSoft
                 return new Range<T>(other.Upper, Lower);
         }
 
-        public Range<T> Merge(Range<T> other)
+        public Range<T> MergeWith(Range<T> other)
         {
             var ranges = new[] { this, other };
-            return Merge(ranges);
+            return Range.Merge(ranges);
         }
 
-        public static Range<T> Merge(IEnumerable<Range<T>> enumerable)
-        {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
-
-            var list = new List<Range<T>>(enumerable);
-            list.Sort(RangeComparer<T>.Lexicographical);
-            if (!UnguardedIsContiguous(list))
-                throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
-            return Merge(list);
-        }
-
-        private static Range<T> Merge(IList<Range<T>> list)
-        {
-            // requires list is sorted
-            return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
-        }
 
         public bool PartitionedBy(IEnumerable<Range<T>> enumerable)
         {
-            var list = new List<Range<T>>(enumerable);
-            list.Sort(RangeComparer<T>.Lexicographical);
-            if (!UnguardedIsContiguous(list))
-                return false;
-            return Equals(Merge(list));
-        }
-
-        internal static bool UnguardedIsContiguous(IList<Range<T>> list)
-        {
-            // requires list is sorted
-            for (int i = 1; i < list.Count; i++) {
-                if (!list[i - 1].Abuts(list[i]))
-                    return false;
-            }
-            return true;
+            return Range.TryMerge(enumerable, out Range<T> dummy);
         }
 
         #endregion
@@ -376,7 +346,7 @@ namespace WmcSoft
         /// <returns>The union of both ranges.</returns>
         /// <exception cref="ArgumentException"><paramref name="x"/> and <paramref name="y"/> does not intersect.</exception>
         public static Range<T> Union<T>(Range<T> x, Range<T> y)
-        where T : IComparable<T>
+            where T : IComparable<T>
         {
             if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
                 throw new ArgumentException();
@@ -397,6 +367,19 @@ namespace WmcSoft
             return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper));
         }
 
+        #region Extensions on enumerable or collections
+
+        internal static bool UnguardedIsContiguous<T>(IList<Range<T>> list)
+            where T : IComparable<T>
+        {
+            // requires list is sorted
+            for (int i = 1; i < list.Count; i++) {
+                if (!list[i - 1].Abuts(list[i]))
+                    return false;
+            }
+            return true;
+        }
+
         public static bool IsContiguous<T>(IEnumerable<Range<T>> enumerable)
             where T : IComparable<T>
         {
@@ -404,10 +387,38 @@ namespace WmcSoft
 
             var list = new List<Range<T>>(enumerable);
             list.Sort(RangeComparer<T>.Lexicographical);
-            return Range<T>.UnguardedIsContiguous(list);
+            return UnguardedIsContiguous(list);
         }
 
-        #region Extensions on enumerable or collections
+        private static Range<T> UnguardedMerge<T>(IList<Range<T>> list)
+            where T : IComparable<T>
+        {
+            // requires list is sorted
+            return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
+        }
+
+        public static Range<T> Merge<T>(IEnumerable<Range<T>> enumerable)
+            where T : IComparable<T>
+        {
+            if (!TryMerge(enumerable, out Range<T> result))
+                throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
+            return result;
+        }
+
+        public static bool TryMerge<T>(IEnumerable<Range<T>> enumerable, out Range<T> result)
+            where T : IComparable<T>
+        {
+            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+
+            var list = new List<Range<T>>(enumerable);
+            list.Sort(RangeComparer<T>.Lexicographical);
+            if (!UnguardedIsContiguous(list)) {
+                result = default(Range<T>);
+                return false;
+            }
+            result = UnguardedMerge(list);
+            return true;
+        }
 
         static IEnumerable<Range<T>> UnguardedPartialMerge<T>(IList<Range<T>> list)
             where T : IComparable<T>

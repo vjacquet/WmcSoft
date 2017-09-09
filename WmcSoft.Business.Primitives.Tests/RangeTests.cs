@@ -8,6 +8,33 @@ namespace WmcSoft.Business
 {
     public class RangeTests
     {
+        static readonly Dictionary<string, Range<int>[]> TestCases = new Dictionary<string, Range<int>[]> {
+            ["UnsortedContiguous"] = new[] {
+                Range.Create(7, 9),
+                Range.Create(3, 5),
+                Range.Create(1, 3),
+                Range.Create(5, 7),
+            },
+            ["SortedContiguous"] = new[] {
+                Range.Create(1, 3),
+                Range.Create(3, 5),
+                Range.Create(5, 7),
+                Range.Create(7, 9),
+            },
+            ["Disjoined"] = new[] {
+                Range.Create(1, 3),
+                Range.Create(3, 4),
+                Range.Create(5, 7),
+                Range.Create(7, 9),
+            },
+            ["Overlapping"] = new[] {
+                Range.Create(1, 3),
+                Range.Create(3, 6),
+                Range.Create(5, 7),
+                Range.Create(7, 9),
+            },
+        };
+
         [Fact]
         public void CanCreateRange()
         {
@@ -136,20 +163,42 @@ namespace WmcSoft.Business
             Assert.Equal(new Range<int>(b, d), Range.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
         }
 
-        [Fact]
-        public void IsContiguousReturnsTrueOnContiguousRanges()
+        [Theory]
+        [InlineData("SortedContiguous")]
+        [InlineData("UnsortedContiguous")]
+        public void IsContiguousReturnsTrueOnRanges(string name)
         {
-            var unsorted = new[] {
-                Range.Create(7, 9),
-                Range.Create(3, 5),
-                Range.Create(1, 3),
-                Range.Create(5, 7),
-            };
-            var sorted = (Range<int>[])unsorted.Clone();
-            Array.Sort(unsorted, RangeComparer<int>.Lexicographical);
+            var ranges = TestCases[name];
+            Assert.True(Range.IsContiguous(ranges));
+        }
 
-            Assert.True(Range.IsContiguous(unsorted));
-            Assert.True(Range.IsContiguous(sorted));
+        [Theory]
+        [InlineData("Disjoined")]
+        [InlineData("Overlapping")]
+        public void IsContiguousReturnsFalseOnRanges(string name)
+        {
+            var ranges = TestCases[name];
+            Assert.False(Range.IsContiguous(ranges));
+        }
+
+        [Theory]
+        [InlineData("SortedContiguous")]
+        [InlineData("UnsortedContiguous")]
+        public void CanMergeRanges(string name)
+        {
+            var ranges = TestCases[name];
+            var actual = Range.Merge(ranges);
+            var expected = Range.Create(1, 9);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("Disjoined")]
+        [InlineData("Overlapping")]
+        public void CannotMergeRanges(string name)
+        {
+            var ranges = TestCases[name];
+            Assert.Throws<ArgumentException>(() => Range.Merge(ranges));
         }
 
         [Fact]
