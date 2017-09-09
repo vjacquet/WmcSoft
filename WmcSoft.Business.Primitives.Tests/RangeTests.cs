@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Xunit;
 
@@ -46,6 +47,26 @@ namespace WmcSoft.Business
             var y = new Range<int>(2, 5);
 
             Assert.True(x == y);
+        }
+
+        [Theory]
+        [InlineData(1, 10, "fr-FR", "G", "[1; 10)")]
+        [InlineData(1, 10, "fr-FR", "M", "[1; 10)")]
+        [InlineData(1, 10, "fr-FR", "B", "[1; 10[")]
+        [InlineData(1, 10, "en-US", "G", "[1; 10)")]
+        [InlineData(1, 10, "en-US", "M", "[1; 10)")]
+        [InlineData(1, 10, "en-US", "B", "[1; 10[")]
+        [InlineData(1, 10, null, "G", "[1; 10)")]
+        [InlineData(1, 10, null, "M", "[1; 10)")]
+        [InlineData(1, 10, null, "B", "[1; 10[")]
+        public void CanFormatRange(decimal i, decimal j, string culture, string format, string expected)
+        {
+            var ci = culture == null
+                ? CultureInfo.InvariantCulture
+                : CultureInfo.GetCultureInfoByIetfLanguageTag(culture);
+            var range = Range.Create(i, j);
+            var actual = range.ToString(format, ci);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -113,6 +134,22 @@ namespace WmcSoft.Business
             Assert.Equal(new Range<int>(c, d), Range.Intersect(new Range<int>(b, e), new Range<int>(c, d)));
             Assert.Equal(new Range<int>(b, b), Range.Intersect(new Range<int>(a, b), new Range<int>(b, c)));
             Assert.Equal(new Range<int>(b, d), Range.Intersect(new Range<int>(a, d), new Range<int>(b, e)));
+        }
+
+        [Fact]
+        public void IsContiguousReturnsTrueOnContiguousRanges()
+        {
+            var unsorted = new[] {
+                Range.Create(7, 9),
+                Range.Create(3, 5),
+                Range.Create(1, 3),
+                Range.Create(5, 7),
+            };
+            var sorted = (Range<int>[])unsorted.Clone();
+            Array.Sort(unsorted, RangeComparer<int>.Lexicographical);
+
+            Assert.True(Range.IsContiguous(unsorted));
+            Assert.True(Range.IsContiguous(sorted));
         }
 
         [Fact]

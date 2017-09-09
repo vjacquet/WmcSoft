@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -41,8 +42,8 @@ namespace WmcSoft
     /// <typeparam name="T">The type</typeparam>
     [Serializable]
     [ImmutableObject(true)]
-    [DebuggerDisplay("{ToString(),nq}")]
-    public struct Range<T> : IEquatable<Range<T>>
+    [DebuggerDisplay("{ToString(\"M\"),nq}")]
+    public struct Range<T> : IEquatable<Range<T>>, IFormattable
         where T : IComparable<T>
     {
         // Comparing with https://martinfowler.com/eaaDev/Range.html
@@ -163,8 +164,8 @@ namespace WmcSoft
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
             var list = new List<Range<T>>(enumerable);
-            list.Sort();
-            if (!IsContiguous(list))
+            list.Sort(RangeComparer<T>.Lexicographical);
+            if (!UnguardedIsContiguous(list))
                 throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
             return Merge(list);
         }
@@ -178,13 +179,13 @@ namespace WmcSoft
         public bool PartitionedBy(IEnumerable<Range<T>> enumerable)
         {
             var list = new List<Range<T>>(enumerable);
-            list.Sort();
-            if (!IsContiguous(list))
+            list.Sort(RangeComparer<T>.Lexicographical);
+            if (!UnguardedIsContiguous(list))
                 return false;
             return Equals(Merge(list));
         }
 
-        internal static bool IsContiguous(IList<Range<T>> list)
+        internal static bool UnguardedIsContiguous(IList<Range<T>> list)
         {
             // requires list is sorted
             for (int i = 1; i < list.Count; i++) {
@@ -199,6 +200,63 @@ namespace WmcSoft
         #region Overridables
 
         /// <summary>
+        /// Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <param name="format">
+        ///   The format to use.
+        ///   -or- 
+        ///   A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="IFormattable"/> implementation.
+        /// </param>
+        /// <param name="formatProvider">
+        ///   The provider to use to format the value.
+        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
+        ///   of the operating system.
+        /// </param>
+        /// <returns>The value of the current instance in the specified format.</returns>
+        public string ToString(string format, IFormatProvider formatProvider = null)
+        {
+            format = format ?? "G";
+
+            var builder = new StringBuilder();
+            builder.Append('[');
+            builder.Append(Lower);
+            builder.Append("; ");
+            builder.Append(Upper);
+            builder.Append(GetClosing(format));
+            return builder.ToString();
+        }
+
+        static char GetClosing(string format)
+        {
+            switch (format) {
+            case "G":
+            case "M":
+            case "m":
+                return ')';
+            case "B":
+            case "b":
+                return '[';
+            default:
+                throw new FormatException();
+            }
+        }
+
+        /// <summary>
+        /// Formats the value of the current instance.
+        /// </summary>
+        /// <param name="formatProvider">
+        ///   The provider to use to format the value.
+        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
+        ///   of the operating system.
+        /// </param>
+        /// <returns>The value of the current instance in the specified format.</returns>
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ToString(null, formatProvider);
+        }
+
+
+        /// <summary>
         /// Returns a string representation of the range. The string representation of the range is
         /// of the form:
         /// <enumerable>[{0}, {1}]</enumerable>
@@ -208,13 +266,7 @@ namespace WmcSoft
         /// <returns> The string representation of the range.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append('[');
-            builder.Append(Lower);
-            builder.Append(", ");
-            builder.Append(Upper);
-            builder.Append(')');
-            return builder.ToString();
+            return ToString(null, null);
         }
 
         /// <summary>
@@ -351,8 +403,8 @@ namespace WmcSoft
             if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
 
             var list = new List<Range<T>>(enumerable);
-            list.Sort();
-            return Range<T>.IsContiguous(list);
+            list.Sort(RangeComparer<T>.Lexicographical);
+            return Range<T>.UnguardedIsContiguous(list);
         }
 
         #region Extensions on enumerable or collections
@@ -360,7 +412,7 @@ namespace WmcSoft
         static IEnumerable<Range<T>> UnguardedPartialMerge<T>(IList<Range<T>> list)
             where T : IComparable<T>
         {
-            // requires list is sorted as has more than one item
+            // requires list is sorted and has more than one item
             var lower = list[0].Lower;
             var upper = list[0].Upper;
             var i = 1;
