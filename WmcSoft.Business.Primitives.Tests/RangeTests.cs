@@ -202,6 +202,28 @@ namespace WmcSoft.Business
         }
 
         [Fact]
+        public void CanMergeWithAbutRange()
+        {
+            var x = Range.Create(1, 5);
+            var y = Range.Create(5, 8);
+            var z = Range.Create(1, 8);
+
+            Assert.Equal(z, x.MergeWith(y));
+            Assert.Equal(z, y.MergeWith(x));
+        }
+
+        [Fact]
+        public void CanMergeWithOverlappingRange()
+        {
+            var x = Range.Create(1, 5);
+            var y = Range.Create(4, 8);
+            var z = Range.Create(1, 8);
+
+            Assert.Equal(z, x.MergeWith(y));
+            Assert.Equal(z, y.MergeWith(x));
+        }
+
+        [Fact]
         public void CheckPartialMerge()
         {
             var data = new[] {

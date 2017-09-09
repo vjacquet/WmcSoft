@@ -155,10 +155,17 @@ namespace WmcSoft
 
         public Range<T> MergeWith(Range<T> other)
         {
-            var ranges = new[] { this, other };
-            return Range.Merge(ranges);
+            if (!TryMergeWith(other, out Range<T> result))
+                throw new ArgumentException("Unable to merge ranges", nameof(other));
+            return result;
         }
 
+        public bool TryMergeWith(Range<T> other, out Range<T> result)
+        {
+            if (Lower.CompareTo(other.Lower) < 0)
+                return Range.UnguardedTryMerge(this, other, out result);
+            return Range.UnguardedTryMerge(other, this, out result);
+        }
 
         public bool PartitionedBy(IEnumerable<Range<T>> enumerable)
         {
@@ -403,6 +410,17 @@ namespace WmcSoft
             if (!TryMerge(enumerable, out Range<T> result))
                 throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
             return result;
+        }
+
+        internal static bool UnguardedTryMerge<T>(Range<T> x, Range<T> y, out Range<T> result)
+            where T : IComparable<T>
+        {
+            if (x.Upper.CompareTo(y.Lower) >= 0) {
+                result = Create(x.Lower, Max(x.Upper, y.Upper));
+                return true;
+            }
+            result = default(Range<T>);
+            return false;
         }
 
         public static bool TryMerge<T>(IEnumerable<Range<T>> enumerable, out Range<T> result)
