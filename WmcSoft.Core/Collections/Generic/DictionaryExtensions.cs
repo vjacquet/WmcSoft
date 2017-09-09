@@ -351,7 +351,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="oldKey">The old key.</param>
         /// <param name="newKey">The new key.</param>
-        /// <returns>Returns <c>true</c> if the <paramref name="oldKey"/> existed and was renamed; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the <paramref name="oldKey"/> existed and was renamed; otherwise, <c>false</c>.</returns>
         public static bool RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey oldKey, TKey newKey)
         {
             if (oldKey == null) throw new ArgumentNullException(nameof(oldKey));

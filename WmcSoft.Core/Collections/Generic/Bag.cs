@@ -209,7 +209,7 @@ namespace WmcSoft.Collections.Generic
         /// Determines whether an element is in the <see cref="Bag{T}"/>.
         /// </summary>
         /// <param name="item">The item to locate in the <see cref="Bag{T}"/>. The value can be <c>null</c> for reference types.</param>
-        /// <returns><c>true</c> it <paramref name="item"/> is found in the <see cref="Bag{T}"/>; otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if <paramref name="item"/> is found in the <see cref="Bag{T}"/>; otherwise <c>false</c>.</returns>
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Contains(T item)
         {
@@ -237,7 +237,7 @@ namespace WmcSoft.Collections.Generic
         /// Removes the first occurrence of a specific item from the <see cref="Bag{T}"/>.
         /// </summary>
         /// <param name="item">The item to remove from the <see cref="Bag{T}"/>. The value can be <c>null</c> for reference types.</param>
-        /// <returns><c>true</c> it <paramref name="item"/> is successfully removed; otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if <paramref name="item"/> is successfully removed; otherwise <c>false</c>.</returns>
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Remove(T item)
         {
