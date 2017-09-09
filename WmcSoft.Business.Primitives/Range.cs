@@ -28,8 +28,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace WmcSoft
@@ -39,7 +39,7 @@ namespace WmcSoft
     /// <typeparamref name="T"/> of a list.
     /// </summary>
     /// <remarks><see cref="Lower"/> is included while <see cref="Upper"/> is not.</remarks>
-    /// <typeparam name="T">The type</typeparam>
+    /// <typeparam name="T">The type of items in the range.</typeparam>
     [Serializable]
     [ImmutableObject(true)]
     [DebuggerDisplay("{ToString(\"M\"),nq}")]
@@ -69,6 +69,12 @@ namespace WmcSoft
         #endregion
 
         #region Lifecycle
+
+        internal Range(T lower, T upper, Range.UninitializedTag tag)
+        {
+            Lower = lower;
+            Upper = upper;
+        }
 
         /// <summary>
         /// Creates a new range with given lower and upper bounds.
@@ -313,17 +319,30 @@ namespace WmcSoft
 
     public static class Range
     {
-        public static Range<T> Create<T>(T x, T y)
+        internal struct UninitializedTag { }
+        static readonly UninitializedTag uninitialized;
+
+        /// <summary>
+        /// Creates a new range with given lower and upper bounds.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="lower">The lower bound of the range.</param>
+        /// <param name="upper">The upper bound of the range.</param>
+        /// <exception cref="ArgumentException"><paramref name="lower"/> is not less than or equal to <paramref name="upper"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Range<T> Create<T>(T lower, T upper)
             where T : IComparable<T>
         {
-            return new Range<T>(x, y);
+            return new Range<T>(lower, upper);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static T Min<T>(T x, T y) where T : IComparable<T>
         {
             return y.CompareTo(x) < 0 ? y : x;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static T Max<T>(T x, T y) where T : IComparable<T>
         {
             return y.CompareTo(x) < 0 ? x : y;
@@ -341,7 +360,7 @@ namespace WmcSoft
         {
             if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
                 return Range<T>.Empty;
-            return new Range<T>(Max(x.Lower, y.Lower), Min(x.Upper, y.Upper));
+            return new Range<T>(Max(x.Lower, y.Lower), Min(x.Upper, y.Upper), uninitialized);
         }
 
         /// <summary>
@@ -358,7 +377,7 @@ namespace WmcSoft
             if (x.Upper.CompareTo(y.Lower) < 0 || x.Lower.CompareTo(y.Upper) > 0)
                 throw new ArgumentException();
 
-            return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper));
+            return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper), uninitialized);
         }
 
         /// <summary>
@@ -371,7 +390,7 @@ namespace WmcSoft
         public static Range<T> Hull<T>(Range<T> x, Range<T> y)
             where T : IComparable<T>
         {
-            return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper));
+            return new Range<T>(Min(x.Lower, y.Lower), Max(x.Upper, y.Upper), uninitialized);
         }
 
         #region Extensions on enumerable or collections
@@ -387,12 +406,18 @@ namespace WmcSoft
             return true;
         }
 
-        public static bool IsContiguous<T>(IEnumerable<Range<T>> enumerable)
+        /// <summary>
+        /// Determines wether the ranges are contiguous.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="ranges">The ranges.</param>
+        /// <returns><c>true</c> if <paramref name="ranges"/> are contiguous; otherwise <c>false</c>.</returns>
+        public static bool IsContiguous<T>(IEnumerable<Range<T>> ranges)
             where T : IComparable<T>
         {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+            if (ranges == null) throw new ArgumentNullException(nameof(ranges));
 
-            var list = new List<Range<T>>(enumerable);
+            var list = new List<Range<T>>(ranges);
             list.Sort(RangeComparer<T>.Lexicographical);
             return UnguardedIsContiguous(list);
         }
@@ -401,14 +426,22 @@ namespace WmcSoft
             where T : IComparable<T>
         {
             // requires list is sorted
-            return new Range<T>(list[0].Lower, list[list.Count - 1].Upper);
+            return new Range<T>(list[0].Lower, list[list.Count - 1].Upper, uninitialized);
         }
 
-        public static Range<T> Merge<T>(IEnumerable<Range<T>> enumerable)
+        /// <summary>
+        /// Merges the ranges.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="ranges">The ranges.</param>
+        /// <returns>The merged range.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="ranges"/> is null.</exception>
+        /// <exception cref="ArgumentException">There are gaps between the <paramref name="ranges"/>.</exception>
+        public static Range<T> Merge<T>(this IEnumerable<Range<T>> ranges)
             where T : IComparable<T>
         {
-            if (!TryMerge(enumerable, out Range<T> result))
-                throw new ArgumentException("Unable to merge ranges", nameof(enumerable));
+            if (!TryMerge(ranges, out Range<T> result))
+                throw new ArgumentException("Unable to merge ranges", nameof(ranges));
             return result;
         }
 
@@ -416,19 +449,26 @@ namespace WmcSoft
             where T : IComparable<T>
         {
             if (x.Upper.CompareTo(y.Lower) >= 0) {
-                result = Create(x.Lower, Max(x.Upper, y.Upper));
+                result = new Range<T>(x.Lower, Max(x.Upper, y.Upper), uninitialized);
                 return true;
             }
             result = default(Range<T>);
             return false;
         }
 
-        public static bool TryMerge<T>(IEnumerable<Range<T>> enumerable, out Range<T> result)
+        /// <summary>
+        /// Tries to merge the ranges.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="ranges">The ranges.</param>
+        /// <param name="result">The merged range.</param>
+        /// <returns><c>true</c> if <paramref name="ranges"/> can be merged; otherwise <c>false</c>.</returns>
+        public static bool TryMerge<T>(IEnumerable<Range<T>> ranges, out Range<T> result)
             where T : IComparable<T>
         {
-            if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+            if (ranges == null) throw new ArgumentNullException(nameof(ranges));
 
-            var list = new List<Range<T>>(enumerable);
+            var list = new List<Range<T>>(ranges);
             list.Sort(RangeComparer<T>.Lexicographical);
             if (!UnguardedIsContiguous(list)) {
                 result = default(Range<T>);
@@ -447,22 +487,28 @@ namespace WmcSoft
             var i = 1;
             for (; i < list.Count; i++) {
                 if (list[i].Lower.CompareTo(upper) > 0) {
-                    yield return new Range<T>(lower, upper);
+                    yield return new Range<T>(lower, upper, uninitialized);
                     lower = list[i].Lower;
                     upper = list[i].Upper;
                 } else if (list[i].Upper.CompareTo(upper) >= 0) {
                     upper = list[i].Upper;
                 }
             }
-            yield return new Range<T>(lower, upper);
+            yield return new Range<T>(lower, upper, uninitialized);
         }
 
-        public static IEnumerable<Range<T>> PartialMerge<T>(this IEnumerable<Range<T>> source)
+        /// <summary>
+        /// Merges the ranges that can be merged.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the range.</typeparam>
+        /// <param name="ranges">The ranges.</param>
+        /// <returns>The merged ranges.</returns>
+        public static IEnumerable<Range<T>> PartialMerge<T>(this IEnumerable<Range<T>> ranges)
             where T : IComparable<T>
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (ranges == null) throw new ArgumentNullException(nameof(ranges));
 
-            var list = new List<Range<T>>(source);
+            var list = new List<Range<T>>(ranges);
             switch (list.Count) {
             case 0:
                 return Enumerable.Empty<Range<T>>();
