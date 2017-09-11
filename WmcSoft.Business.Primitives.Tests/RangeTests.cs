@@ -182,8 +182,9 @@ namespace WmcSoft.Business
         }
 
         [Theory]
-        [InlineData("SortedContiguous")]
-        [InlineData("UnsortedContiguous")]
+        //[InlineData("SortedContiguous")]
+        //[InlineData("UnsortedContiguous")]
+        [InlineData("Overlapping")]
         public void CanMergeRanges(string name)
         {
             var ranges = TestCases[name];
@@ -194,7 +195,6 @@ namespace WmcSoft.Business
 
         [Theory]
         [InlineData("Disjoined")]
-        [InlineData("Overlapping")]
         public void CannotMergeRanges(string name)
         {
             var ranges = TestCases[name];
@@ -224,7 +224,7 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CheckPartialMerge()
+        public void CanPartialMerge()
         {
             var data = new[] {
                 Range.Create(1, 3),
@@ -241,7 +241,7 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CheckPartialMergeOnOverlappingRanges()
+        public void CanPartialMergeOnOverlappingRanges()
         {
             var data = new[] {
                 Range.Create(1, 3),

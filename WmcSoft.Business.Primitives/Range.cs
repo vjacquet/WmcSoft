@@ -456,6 +456,25 @@ namespace WmcSoft
             return false;
         }
 
+
+        static bool UnguardedTryMerge<T>(IList<Range<T>> list, out Range<T> result)
+            where T : IComparable<T>
+        {
+            // requires list is sorted and has more than one item
+            var lower = list[0].Lower;
+            var upper = list[0].Upper;
+            var i = 1;
+            for (; i < list.Count; i++) {
+                if (list[i].Lower.CompareTo(upper) > 0) {
+                    result = default(Range<T>);
+                    return false;
+                } else if (list[i].Upper.CompareTo(upper) >= 0) {
+                    upper = list[i].Upper;
+                }
+            }
+            result = new Range<T>(lower, upper, uninitialized);
+            return true;
+        }
         /// <summary>
         /// Tries to merge the ranges.
         /// </summary>
@@ -468,14 +487,11 @@ namespace WmcSoft
         {
             if (ranges == null) throw new ArgumentNullException(nameof(ranges));
 
+            result = default(Range<T>);
             var list = new List<Range<T>>(ranges);
-            list.Sort(RangeComparer<T>.Lexicographical);
-            if (!UnguardedIsContiguous(list)) {
-                result = default(Range<T>);
+            if (list.Count == 0)
                 return false;
-            }
-            result = UnguardedMerge(list);
-            return true;
+            return UnguardedTryMerge(list, out result);
         }
 
         static IEnumerable<Range<T>> UnguardedPartialMerge<T>(IList<Range<T>> list)
