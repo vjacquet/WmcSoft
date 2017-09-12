@@ -32,23 +32,55 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
 {
     public sealed class WeekendSpecification : IDateSpecification
     {
+        const int DaysOfWeek = 7;
         private readonly DayOfWeek[] _weekend;
+        private readonly int[] _nextWeekendDay;
 
         public WeekendSpecification(params DayOfWeek[] weekend)
         {
             _weekend = weekend;
+
+            // optimize EnumerateOver by precomputing the number of days until the next week end day.
+            var twoWeeks = 0;
+            foreach (DayOfWeek day in weekend)
+                twoWeeks |= (0b0000001_0000001 << (int)day);
+
+            _nextWeekendDay = new int[DaysOfWeek];
+            _nextWeekendDay[0] = DaysUntilNextWeekendDay(ref twoWeeks);
+            for (int i = 1; i < DaysOfWeek; i++) {
+                _nextWeekendDay[i] = _nextWeekendDay[i - 1] - 1;
+                if (_nextWeekendDay[i] == 0) {
+                    _nextWeekendDay[i] = DaysUntilNextWeekendDay(ref twoWeeks);
+                }
+            }
+        }
+
+        static int DaysUntilNextWeekendDay(ref int twoWeeks)
+        {
+            var count = 0;
+            do {
+                twoWeeks >>= 1;
+                count++;
+            }
+            while ((twoWeeks & 1) != 1);
+            return count;
+        }
+
+        bool IsWeekend(DayOfWeek dow)
+        {
+            return Array.IndexOf(_weekend, dow) >= 0;
         }
 
         public bool IsSatisfiedBy(Date date)
         {
-            var dow = date.DayOfWeek;
-            return Array.IndexOf(_weekend, dow) >= 0;
+            return IsWeekend(date.DayOfWeek);
         }
 
         private Date UpperBoundExclusive(Interval<Date> interval)
@@ -62,14 +94,14 @@ namespace WmcSoft.Business.Calendars.Specifications
             }
         }
 
-        private IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval)
+        private IEnumerable<Date> UnguardedEnumerateOver(Date start, Date end)
         {
-            var start = interval.Lower.GetValueOrDefault();
-            var end = UpperBoundExclusive(interval);
+            if (IsSatisfiedBy(start))
+                yield return start;
+            start = start.AddDays(_nextWeekendDay[(int)start.DayOfWeek]);
             while (start <= end) {
-                if (IsSatisfiedBy(start))
-                    yield return start;
-                start = start.AddDays(1);
+                yield return start;
+                start = start.AddDays(_nextWeekendDay[(int)start.DayOfWeek]);
             }
         }
 
@@ -77,7 +109,9 @@ namespace WmcSoft.Business.Calendars.Specifications
         {
             if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
 
-            return UnguardedEnumerateOver(interval);
+            var start = interval.Lower.GetValueOrDefault();
+            var end = UpperBoundExclusive(interval);
+            return UnguardedEnumerateOver(start, end);
         }
     }
 }

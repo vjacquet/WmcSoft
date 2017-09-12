@@ -51,17 +51,33 @@ namespace WmcSoft.Business.Calendars
             // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
-        public BusinessCalendar(Date since, TimeSpan duration, params Predicate<DateTime>[] holidays)
+        public BusinessCalendar(Date since, TimeSpan duration)
         {
             _epoch = since;
 
-            var length = (int)duration.TotalDays;
-            _holidays = new BitArray(length, false);
+            _holidays = new BitArray(1 + (int)duration.TotalDays, false);
+        }
 
+        public BusinessCalendar(Date since, TimeSpan duration, params Predicate<Date>[] holidays)
+            : this(since, duration)
+        {
+            var length = _holidays.Length;
             for (int i = 0; i < length; i++) {
                 if (holidays.Any(p => p(since)))
                     _holidays.Set(i, true);
                 since = since.AddDays(1);
+            }
+        }
+
+        public BusinessCalendar(Date since, TimeSpan duration, params IDateSpecification[] specifications)
+            : this(since, duration)
+        {
+            var until = since.Add(duration);
+            var interval = Interval.Closed(since, until);
+            foreach (var specification in specifications) {
+                foreach (var day in specification.EnumerateOver(interval)) {
+                    _holidays.Set(day.DaysSince(since), true);
+                }
             }
         }
 
@@ -75,28 +91,28 @@ namespace WmcSoft.Business.Calendars
 
 
 
-        public static bool Saturdays(DateTime date)
+        public static bool Saturdays(Date date)
         {
             return date.DayOfWeek == DayOfWeek.Saturday;
         }
 
-        public static bool Sundays(DateTime date)
+        public static bool Sundays(Date date)
         {
             return date.DayOfWeek == DayOfWeek.Sunday;
         }
 
-        public static bool WeekEnds(DateTime date)
+        public static bool WeekEnds(Date date)
         {
             var dow = date.DayOfWeek;
             return dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday;
         }
 
-        public static bool Christmas(DateTime date)
+        public static bool Christmas(Date date)
         {
             return date.Month == 12 && date.Day == 25;
         }
 
-        public static bool NewYear(DateTime date)
+        public static bool NewYear(Date date)
         {
             return date.Month == 1 && date.Day == 1;
         }

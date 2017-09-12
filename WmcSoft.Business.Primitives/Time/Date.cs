@@ -134,7 +134,7 @@ namespace WmcSoft.Time
 
         DateTime AsDateTime => new DateTime(_storage * TimeSpan.TicksPerDay);
 
-        public static explicit operator Date(DateTime date)
+        public static implicit operator Date(DateTime date)
         {
             return new Date(date);
         }
