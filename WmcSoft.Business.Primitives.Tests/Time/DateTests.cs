@@ -45,16 +45,16 @@ namespace WmcSoft.Time
         {
             var date = new Date(dateTime.Year, dateTime.Month, dateTime.Day);
 
-            Assert.Equal(dateTime.AddDays(1), date.AddDays(1));
-            Assert.Equal(dateTime.AddMonths(1), date.AddMonths(1));
-            Assert.Equal(dateTime.AddYears(1), date.AddYears(1));
+            Assert.Equal(dateTime.AddDays(1), (DateTime)date.AddDays(1));
+            Assert.Equal(dateTime.AddMonths(1), (DateTime)date.AddMonths(1));
+            Assert.Equal(dateTime.AddYears(1), (DateTime)date.AddYears(1));
         }
 
         [Fact]
         public void DateMinValueAndMaxValueAreCompatibleWithDateTime()
         {
-            Assert.Equal(Date.MinValue, DateTime.MinValue.Date);
-            Assert.Equal(Date.MaxValue, DateTime.MaxValue.Date);
+            Assert.Equal(DateTime.MinValue.Date, (DateTime)Date.MinValue);
+            Assert.Equal(DateTime.MaxValue.Date, (DateTime)Date.MaxValue);
         }
 
         [Fact]

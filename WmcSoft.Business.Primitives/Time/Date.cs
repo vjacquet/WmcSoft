@@ -36,7 +36,7 @@ using System.Diagnostics;
 namespace WmcSoft.Time
 {
     [DebuggerDisplay("{ToString(),nq}")]
-    public partial struct Date : IComparable<Date>, IEquatable<Date>
+    public partial struct Date : IComparable<Date>, IEquatable<Date>, IFormattable
     {
         readonly int _storage;
 
@@ -215,6 +215,25 @@ namespace WmcSoft.Time
         }
 
         #endregion
+
+        #region IFormattable members
+
+        public string ToString(string format)
+        {
+            return ((DateTime)this).ToString(format);
+        }
+
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ((DateTime)this).ToString("d", formatProvider);
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return ((DateTime)this).ToString(format, formatProvider);
+        }
+
+        #endregion 
 
         #region Overrides
 

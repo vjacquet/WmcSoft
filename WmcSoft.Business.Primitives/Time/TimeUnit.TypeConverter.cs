@@ -42,8 +42,10 @@ namespace WmcSoft.Time
     [TypeConverter(typeof(TimeUnitConverter))]
     public partial struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
     {
+#if NET461
         [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+#endif
         class TimeUnitConverter : TypeConverter
         {
             public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
