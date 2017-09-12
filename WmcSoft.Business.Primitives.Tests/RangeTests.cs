@@ -182,8 +182,8 @@ namespace WmcSoft.Business
         }
 
         [Theory]
-        //[InlineData("SortedContiguous")]
-        //[InlineData("UnsortedContiguous")]
+        [InlineData("SortedContiguous")]
+        [InlineData("UnsortedContiguous")]
         [InlineData("Overlapping")]
         public void CanMergeRanges(string name)
         {

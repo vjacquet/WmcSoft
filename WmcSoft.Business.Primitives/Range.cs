@@ -320,7 +320,7 @@ namespace WmcSoft
     public static class Range
     {
         internal struct UninitializedTag { }
-        static readonly UninitializedTag uninitialized;
+        static readonly UninitializedTag uninitialized = default(UninitializedTag);
 
         /// <summary>
         /// Creates a new range with given lower and upper bounds.
