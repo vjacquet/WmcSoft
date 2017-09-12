@@ -456,7 +456,6 @@ namespace WmcSoft
             return false;
         }
 
-
         static bool UnguardedTryMerge<T>(IList<Range<T>> list, out Range<T> result)
             where T : IComparable<T>
         {
@@ -491,6 +490,7 @@ namespace WmcSoft
             var list = new List<Range<T>>(ranges);
             if (list.Count == 0)
                 return false;
+            list.Sort(RangeComparer<T>.Lexicographical);
             return UnguardedTryMerge(list, out result);
         }
 
