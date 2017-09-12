@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Time;
 
@@ -35,6 +36,8 @@ namespace WmcSoft.Business.Calendars
     /// <summary>
     /// Join calendars so that a date is a holiday if it is a holiday for any of the given calendars.
     /// </summary>
+    [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
+    [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public class JoinHolidaysCalendar : IBusinessCalendar, IEnumerable<IBusinessCalendar>
     {
         private readonly List<IBusinessCalendar> _calendars;

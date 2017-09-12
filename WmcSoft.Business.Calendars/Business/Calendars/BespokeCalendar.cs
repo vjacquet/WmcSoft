@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
@@ -33,6 +34,8 @@ namespace WmcSoft.Business.Calendars
     /// <summary>
     /// Business calendar with no predefined set of business days.
     /// </summary>
+    [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
+    [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public class BespokeCalendar<TCalendar> : IBusinessCalendar
         where TCalendar : IBusinessCalendar
     {

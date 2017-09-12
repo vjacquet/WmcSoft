@@ -14,9 +14,12 @@ namespace WmcSoft.Business.Calendars
         [Fact]
         public void CanCreateBusinessCalendarWithoutWeekEnds()
         {
+            var since = new DateTime(2015, 1, 1);
+            var until = since.AddDays(100);
+
             var calendar = new BusinessCalendar(
-                new Date(2015, 1, 1),
-                TimeSpan.FromDays(100),
+                since,
+                until,
                 BusinessCalendar.Saturdays,
                 BusinessCalendar.Sundays);
 
@@ -25,9 +28,7 @@ namespace WmcSoft.Business.Calendars
             Assert.False(calendar.IsBusinessDay(new Date(2015, 1, 4)));
             Assert.True(calendar.IsBusinessDay(new Date(2015, 1, 5)));
 
-            var since = new DateTime(2015, 1, 5);
-            var until = new DateTime(2015, 1, 1).AddDays(100);
-            while(since <= until) {
+            while (since <= until) {
                 Assert.Equal(since.DayOfWeek == DayOfWeek.Saturday || since.DayOfWeek == DayOfWeek.Sunday, !calendar.IsBusinessDay(since));
                 since = since.AddDays(1);
             }
@@ -36,9 +37,12 @@ namespace WmcSoft.Business.Calendars
         [Fact]
         public void CanCreateBusinessCalendarWithWeekends()
         {
+            var since = new DateTime(2015, 1, 1);
+            var until = since.AddDays(100);
+
             var calendar = new BusinessCalendar(
-                new Date(2015, 1, 1),
-                TimeSpan.FromDays(100),
+                since,
+                until,
                 new WeekendSpecification(DayOfWeek.Saturday, DayOfWeek.Sunday));
 
             Assert.True(calendar.IsBusinessDay(new Date(2015, 1, 2)));
@@ -46,8 +50,6 @@ namespace WmcSoft.Business.Calendars
             Assert.False(calendar.IsBusinessDay(new Date(2015, 1, 4)));
             Assert.True(calendar.IsBusinessDay(new Date(2015, 1, 5)));
 
-            var since = new DateTime(2015, 1, 5);
-            var until = new DateTime(2015, 1, 1).AddDays(100);
             while (since <= until) {
                 Assert.Equal(since.DayOfWeek == DayOfWeek.Saturday || since.DayOfWeek == DayOfWeek.Sunday, !calendar.IsBusinessDay(since));
                 since = since.AddDays(1);

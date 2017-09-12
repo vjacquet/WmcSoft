@@ -26,11 +26,15 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
+    [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
+    [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public sealed class BusinessCalendar : IBusinessCalendar
     {
         readonly Date _epoch;
@@ -51,15 +55,15 @@ namespace WmcSoft.Business.Calendars
             // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
-        public BusinessCalendar(Date since, TimeSpan duration)
+        public BusinessCalendar(Date since, int count)
         {
             _epoch = since;
 
-            _holidays = new BitArray(1 + (int)duration.TotalDays, false);
+            _holidays = new BitArray(count, false);
         }
 
-        public BusinessCalendar(Date since, TimeSpan duration, params Predicate<Date>[] holidays)
-            : this(since, duration)
+        public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
+            : this(since, 1 + since.DaysUntil(until))
         {
             var length = _holidays.Length;
             for (int i = 0; i < length; i++) {
@@ -69,10 +73,9 @@ namespace WmcSoft.Business.Calendars
             }
         }
 
-        public BusinessCalendar(Date since, TimeSpan duration, params IDateSpecification[] specifications)
-            : this(since, duration)
+        public BusinessCalendar(Date since, Date until, params IDateSpecification[] specifications)
+            : this(since, 1 + since.DaysUntil(until))
         {
-            var until = since.Add(duration);
             var interval = Interval.Closed(since, until);
             foreach (var specification in specifications) {
                 foreach (var day in specification.EnumerateOver(interval)) {
@@ -82,7 +85,7 @@ namespace WmcSoft.Business.Calendars
         }
 
         public Date MinDate => _epoch;
-        public Date MaxDate => _epoch.AddDays(_holidays.Length);
+        public Date MaxDate => _epoch.AddDays(_holidays.Length - 1);
 
         public bool IsBusinessDay(Date date)
         {
@@ -116,5 +119,46 @@ namespace WmcSoft.Business.Calendars
         {
             return date.Month == 1 && date.Day == 1;
         }
+    }
+
+    class BusinessCalendarDebugView
+    {
+        [DebuggerDisplay("{Date.ToString(\"ddd yyyy-MM-dd\"),nq}", Name = "{Index,nq}")]
+        public class Holiday
+        {
+            public int Index { get; set; }
+            public Date Date { get; set; }
+        }
+
+        [DebuggerDisplay("#{Holidays.Length,nq}", Name = "{Name,nq}")]
+        public class Year
+        {
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Name { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public Holiday[] Holidays { get; set; }
+        }
+
+        public BusinessCalendarDebugView(IBusinessCalendar calendar)
+        {
+            var result = new List<Holiday>();
+            var since = calendar.MinDate;
+            var until = calendar.MaxDate;
+            var index = 0;
+
+            while (since <= until) {
+                if (!calendar.IsBusinessDay(since))
+                    result.Add(new Holiday { Index = index, Date = since });
+                since = since.AddDays(1);
+                index++;
+            }
+            var query = from h in result
+                        group h by h.Date.Year into g
+                        select new Year { Name = g.Key, Holidays = g.ToArray() };
+            Years = query.ToArray();
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public Year[] Years { get; }
     }
 }
