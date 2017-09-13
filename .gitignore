@@ -196,3 +196,8 @@ FakesAssemblies/
 /.vs/WmcSoft/v15
 /Sandbox/WmcSoft.Drawing.Abstractions
 /Sandbox/Linq
+/.vs
+/WmcSoft.Business.Primitives.Tests/Olean.Business.Primitives.Tests.csproj
+/WmcSoft.Business.Primitives/Olean.Business.Primitives.csproj
+/WmcSoft.Business.Calendars.Tests/Olean.Business.Calendars.Tests.csproj
+/WmcSoft.Business.Calendars/Olean.Business.Calendars.csproj

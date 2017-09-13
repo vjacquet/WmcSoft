@@ -24,7 +24,6 @@
 
 #endregion
 
-
 namespace WmcSoft
 {
     public enum RoundingMode
