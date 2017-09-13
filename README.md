@@ -70,6 +70,26 @@ them easy to use. They are not aimed to be the fastest but I hope they will be f
 ### WmcSoft.Units
 _Library of units and quantities._
 
+### WmcSoft.Business.Primitives
+_Library of primitives types to build business applications._
+
+- Time, adapted from <http://domainlanguage.com>'s time & money:
+
+  - `TimePoint` is equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
+  - `DateTime`, with a `DateTimeKind.Unspecified`, replaces `CalendarMinute`
+  - `TimeUnit` should derive from WmcSoft's units.
+  - `newOfSameType()` factory methods are not required for value types.
+
+QuantLib also defines some time related types. The current implementatio of `TimeUnit` is close to `Period`. The types might be merged.
+
+Finally, it looks like a [`Date`](https://github.com/dotnet/corefxlab/blob/master/src/System.Time/System/Date.cs) and 
+[`TimeOfDay`](https://github.com/dotnet/corefxlab/blob/master/src/System.Time/System/TimeOfDay.cs) types 
+are being added to the framework therefore the current design should be as close as possible to those.
+
+### WmcSoft.Business.Calendars
+_Library of utilities to manage business calendar._
+
+
 ### WmcSoft.Business
 _Library of components to build business applications._
 
@@ -82,13 +102,6 @@ _Library of components to build business applications._
 - ProductType, ProductInstance, Package
 
 - Accounting
-
-- Time, adapted from <http://domainlanguage.com>'s time & money:
-
-  - `TimePoint` is equivalent to DateTime in GMT yet it is more abstract as it does not have accessors to its part.
-  - `DateTime`, with a `DateTimeKind.Unspecified`, replaces `CalendarMinute`
-  - `TimeUnit` should derive from WmcSoft's units.
-  - `newOfSameType()` factory methods are not required for value types.
 
 ### WmcSoft.Jobs
 _Library to dispatch jobs. It predates the Task in .Net._
