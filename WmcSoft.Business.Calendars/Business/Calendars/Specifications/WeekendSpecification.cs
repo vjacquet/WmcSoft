@@ -32,7 +32,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
@@ -105,13 +104,11 @@ namespace WmcSoft.Business.Calendars.Specifications
             }
         }
 
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval)
+        public IEnumerable<Date> EnumerateBetween(Date since, Date until)
         {
-            if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
+            if (since > until) throw new ArgumentException();
 
-            var start = interval.Lower.GetValueOrDefault();
-            var end = UpperBoundExclusive(interval);
-            return UnguardedEnumerateOver(start, end);
+            return UnguardedEnumerateOver(since, until);
         }
     }
 }

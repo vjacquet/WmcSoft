@@ -30,16 +30,53 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WmcSoft.Time
 {
     public static class DateSpecificationExtensions
     {
+        static Date GetLowerInclusive(Interval<Date> interval)
+        {
+            if (!interval.HasLowerLimit)
+                return Date.MinValue;
+            else if (interval.IsLowerIncluded)
+                return interval.GetLowerOrDefault();
+            else
+                return interval.GetLowerOrDefault().AddDays(1);
+        }
+
+        static Date GetUpperInclusive(Interval<Date> interval)
+        {
+            if (!interval.HasUpperLimit)
+                return Date.MaxValue;
+            else if (interval.IsUpperIncluded)
+                return interval.GetUpperOrDefault();
+            else
+                return interval.GetUpperOrDefault().AddDays(-1);
+        }
+
+        public static IEnumerable<Date> EnumerateOver<TSpecification>(this TSpecification specification, Interval<Date> interval)
+            where TSpecification : IDateSpecification
+        {
+            if (interval.IsEmpty())
+                return Enumerable.Empty<Date>();
+            var since = GetLowerInclusive(interval);
+            var until = GetUpperInclusive(interval);
+            return specification.EnumerateBetween(since, until);
+        }
+
+        public static Date? FirstOccurrenceIn<TSpecification>(this TSpecification specification, Date since, Date until)
+            where TSpecification : IDateSpecification
+        {
+            return specification.EnumerateBetween(since, until).FirstOrDefault();
+        }
+
         public static Date? FirstOccurrenceIn<TSpecification>(this TSpecification specification, Interval<Date> interval)
             where TSpecification : IDateSpecification
         {
-            return specification.EnumerateOver(interval).FirstOrDefault();
+            return EnumerateOver(specification, interval).FirstOrDefault();
         }
     }
 }

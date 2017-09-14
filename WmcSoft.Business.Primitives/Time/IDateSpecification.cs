@@ -31,11 +31,18 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Time
 {
     public interface IDateSpecification : ISpecification<Date>
     {
-        IEnumerable<Date> EnumerateOver(Interval<Date> interval);
+        /// <summary>
+        /// Enumerates over the given closed interval the <see cref="Date"/>s satisfying this specification.
+        /// </summary>
+        /// <param name="since">The date, inclusive, since when to start enumerating.</param>
+        /// <param name="until">The date, inclusive, until when to end enumerating.</param>
+        /// <returns>The <see cref="Date"/>s satisfying this specification.</returns>
+        IEnumerable<Date> EnumerateBetween(Date since, Date until);
     }
 }

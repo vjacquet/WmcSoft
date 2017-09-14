@@ -39,27 +39,25 @@ namespace WmcSoft.Time
     {
         public abstract Date OfYear(int year);
 
-        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Interval<Date> interval)
+        protected virtual IEnumerable<Date> UnguardedEnumerateOver(Date since, Date until)
         {
-            var start = interval.Lower.GetValueOrDefault();
-            var year = ((DateTime)start).Year;
+            var year = since.Year;
 
             var current = OfYear(year);
-            if (interval.Includes(current))
-                yield return current;
+            if (current < since)
+                current = OfYear(++year);
 
-            current = OfYear(++year);
-            while (interval.Includes(current)) {
+            while (current <= until) {
                 yield return current;
                 current = OfYear(++year);
             }
         }
 
-        public IEnumerable<Date> EnumerateOver(Interval<Date> interval)
+        public IEnumerable<Date> EnumerateBetween(Date since, Date until)
         {
-            if (!interval.HasLowerLimit) throw new ArgumentOutOfRangeException(nameof(interval));
+            if (since > until) throw new ArgumentException();
 
-            return UnguardedEnumerateOver(interval);
+            return UnguardedEnumerateOver(since, until);
         }
 
         public abstract bool IsSatisfiedBy(Date date);
