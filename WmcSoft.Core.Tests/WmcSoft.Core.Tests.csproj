@@ -44,9 +44,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
@@ -121,6 +120,7 @@
     <Compile Include="Diagnostics\TraceIndentTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />
+    <Compile Include="Globalization\Dates.cs" />
     <Compile Include="IndexedAlgorithmsTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceSetTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceTests.cs" />
@@ -193,9 +193,7 @@
       <Name>WmcSoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Globalization\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\TestResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -28,7 +28,9 @@ using System;
 
 namespace WmcSoft
 {
+#if !NETSTANDARD1_6
     [Serializable]
+#endif
     public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>, IFormattable
     {
         public GeographicPosition(Latitude latitude, Longitude longitude)
@@ -74,7 +76,7 @@ namespace WmcSoft
             return result;
         }
 
-        #region Operators
+#region Operators
 
         public static bool operator ==(GeographicPosition x, GeographicPosition y)
         {
@@ -103,9 +105,9 @@ namespace WmcSoft
             return x.CompareTo(y) >= 0;
         }
 
-        #endregion
+#endregion
 
-        #region IFormattable Membres
+#region IFormattable Membres
 
         public override string ToString()
         {
@@ -123,6 +125,6 @@ namespace WmcSoft
                 + formatter.Format(Longitude.Degrees, Longitude.Minutes, Longitude.Seconds);
         }
 
-        #endregion
+#endregion
     }
 }
