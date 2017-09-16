@@ -86,6 +86,8 @@ namespace WmcSoft
             return Equals(x, y);
         }
 
+#if REMOVED_FEATURES
+
         public static bool operator !(Expected<T> x)
         {
             return x.IsFaulted;
@@ -100,6 +102,8 @@ namespace WmcSoft
         {
             return x.IsFaulted;
         }
+
+#endif
 
         public static implicit operator Expected<T>(T value)
         {
@@ -126,9 +130,9 @@ namespace WmcSoft
             return new Fault(x._exception);
         }
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
         /// <summary>
         /// True is the Expected contains a value; otherwise, false.
@@ -197,9 +201,9 @@ namespace WmcSoft
             return Enumerable.Empty<Exception>();
         }
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static Exception PassThrough(Exception exception, Func<Exception, Exception> translate)
@@ -238,9 +242,9 @@ namespace WmcSoft
             }
         }
 
-        #endregion
+#endregion
 
-        #region Overrides
+#region Overrides
 
         public override bool Equals(object other)
         {
@@ -278,12 +282,12 @@ namespace WmcSoft
             return HasValue ? _value.ToString() : (@"/!\ " + _exception.Message);
         }
 
-        #endregion
+#endregion
     }
 
     public static class Expected
     {
-        #region Factory functions
+#region Factory functions
 
         public static Expected<T> Success<T>(T value)
         {
@@ -294,9 +298,9 @@ namespace WmcSoft
             return exception;
         }
 
-        #endregion
+#endregion
 
-        #region Functional helpers
+#region Functional helpers
 
         static Exception Compose(Exception x, Exception y)
         {
@@ -358,6 +362,6 @@ namespace WmcSoft
             }
         }
 
-        #endregion
+#endregion
     }
 }

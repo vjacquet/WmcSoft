@@ -54,14 +54,5 @@ namespace WmcSoft
             var actual = converter.ConvertTo("key");
             Assert.Equal("my.own.key", actual);
         }
-
-        [Fact]
-        public void CanUseInIfStatements()
-        {
-            var result = Failed<int>(new ArgumentOutOfRangeException());
-            if (result) {
-                Assert.True(false, "Fail");
-            }
-        }
     }
 }
