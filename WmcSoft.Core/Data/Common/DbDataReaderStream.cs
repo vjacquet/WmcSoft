@@ -41,7 +41,7 @@ namespace WmcSoft.Data.Common
 
         public DbDataReaderStream(IDataReader reader, int ordinal)
         {
-            if (reader == null) throw new ArgumentNullException("reader");
+            if (reader == null) throw new ArgumentNullException(nameof(reader));
 
             _reader = reader;
             _ordinal = ordinal;

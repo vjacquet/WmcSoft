@@ -38,8 +38,6 @@ namespace WmcSoft.Data.Common
     /// </summary>
     public static class DbDataReaderExtensions
     {
-        #region GetObjectFromXml
-
         public static T GetObjectFromXml<T>(this DbDataReader reader, int i)
             where T : class
         {
@@ -61,6 +59,4 @@ namespace WmcSoft.Data.Common
             return WmcSoft.Runtime.Serialization.DataRecordExtensions.GetObjectFromXml<T>(reader, i, serializer);
         }
     }
-
-    #endregion
 }
