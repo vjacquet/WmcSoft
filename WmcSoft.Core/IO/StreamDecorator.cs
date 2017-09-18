@@ -49,9 +49,8 @@ namespace WmcSoft.IO
 
         protected StreamDecorator(Stream stream)
         {
-            if (stream == null) {
-                throw new ArgumentNullException("decoratedStream");
-            }
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+
             _underlying = stream;
         }
 

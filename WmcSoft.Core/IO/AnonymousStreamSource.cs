@@ -31,28 +31,16 @@ namespace WmcSoft.IO
 {
     public class AnonymousStreamSource : IStreamSource
     {
-        #region Fields
-
         private readonly Func<Stream> _func;
-
-        #endregion
-
-        #region Lifecycle
 
         public AnonymousStreamSource(Func<Stream> opener)
         {
             _func = opener;
         }
 
-        #endregion
-
-        #region IStreamSource Membres
-
         public Stream GetStream()
         {
             return _func();
         }
-
-        #endregion
     }
 }

@@ -30,14 +30,14 @@ using System.IO;
 namespace WmcSoft.IO
 {
     /// <summary>
-    /// 
+    /// Dumps the data written into another stream.
     /// </summary>
     public class MirroringStream : Stream
     {
         #region Fields
 
-        private Stream master;
-        private Stream mirror;
+        private Stream _master;
+        private Stream _mirror;
 
         #endregion
 
@@ -45,14 +45,17 @@ namespace WmcSoft.IO
 
         public MirroringStream(Stream master, Stream mirror)
         {
-            this.master = master;
-            this.mirror = mirror;
+            if (master == null) throw new ArgumentNullException(nameof(master));
+            if (mirror == null) throw new ArgumentNullException(nameof(mirror));
+
+            _master = master;
+            _mirror = mirror;
         }
 
         public override void Close()
         {
-            this.master.Close();
-            this.mirror.Close();
+            _master.Close();
+            _mirror.Close();
             base.Close();
         }
 
@@ -61,42 +64,28 @@ namespace WmcSoft.IO
         #region Info class Methods & Properties
 
         public override bool CanRead {
-            get {
-                return master.CanRead;
-            }
+            get { return _master.CanRead; }
         }
 
         public override bool CanSeek {
-            get {
-                return master.CanSeek;
-            }
+            get { return _master.CanSeek; }
         }
 
         public override bool CanWrite {
-            get {
-                return master.CanWrite;
-            }
+            get { return _master.CanWrite; }
         }
 
         public override long Length {
-            get {
-                return master.Length;
-            }
+            get { return _master.Length; }
         }
 
         public override long Position {
-            get {
-                return master.Position;
-            }
-            set {
-                master.Position = value;
-            }
+            get { return _master.Position; }
+            set { _master.Position = value; }
         }
 
         public override bool CanTimeout {
-            get {
-                return master.CanTimeout;
-            }
+            get { return _master.CanTimeout; }
         }
 
         #endregion
@@ -105,20 +94,20 @@ namespace WmcSoft.IO
 
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
-            if (!mirror.CanSeek && !mirror.CanRead)
+            if (!_mirror.CanSeek && !_mirror.CanRead)
                 throw new NotSupportedException();
-            return master.BeginRead(buffer, offset, count, callback, state);
+            return _master.BeginRead(buffer, offset, count, callback, state);
         }
 
         public override int EndRead(IAsyncResult asyncResult)
         {
-            int read = master.EndRead(asyncResult);
+            int read = _master.EndRead(asyncResult);
 
-            if (mirror.CanSeek)
-                mirror.Seek(read, SeekOrigin.Current);
+            if (_mirror.CanSeek)
+                _mirror.Seek(read, SeekOrigin.Current);
             else {
                 byte[] temporaryBuffer = new byte[read];
-                mirror.Read(temporaryBuffer, 0, read);
+                _mirror.Read(temporaryBuffer, 0, read);
             }
 
             return read;
@@ -126,35 +115,30 @@ namespace WmcSoft.IO
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int read = master.Read(buffer, offset, count);
+            int read = _master.Read(buffer, offset, count);
 
-            if (mirror.CanSeek)
-                mirror.Seek(read, SeekOrigin.Current);
+            if (_mirror.CanSeek)
+                _mirror.Seek(read, SeekOrigin.Current);
             else {
                 byte[] temporaryBuffer = new byte[read];
-                mirror.Read(temporaryBuffer, 0, read);
+                _mirror.Read(temporaryBuffer, 0, read);
             }
 
             return read;
         }
 
-
         public override long Seek(long offset, SeekOrigin origin)
         {
-            long retVal = master.Seek(offset, origin);
+            long retVal = _master.Seek(offset, origin);
 
-            mirror.Seek(offset, origin);
+            _mirror.Seek(offset, origin);
 
             return retVal;
         }
 
         public override int ReadTimeout {
-            get {
-                return master.ReadTimeout;
-            }
-            set {
-                master.ReadTimeout = value;
-            }
+            get {                return _master.ReadTimeout;            }
+            set {                _master.ReadTimeout = value;            }
         }
         #endregion
 
@@ -162,44 +146,44 @@ namespace WmcSoft.IO
 
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
-            IAsyncResult retVal = master.BeginWrite(buffer, offset, count, callback, state);
+            IAsyncResult retVal = _master.BeginWrite(buffer, offset, count, callback, state);
 
-            mirror.Write(buffer, offset, count);
-            mirror.Flush();
+            _mirror.Write(buffer, offset, count);
+            _mirror.Flush();
 
             return retVal;
         }
 
         public override void EndWrite(IAsyncResult asyncResult)
         {
-            master.EndWrite(asyncResult);
+            _master.EndWrite(asyncResult);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            master.Write(buffer, offset, count);
+            _master.Write(buffer, offset, count);
 
-            mirror.Write(buffer, offset, count);
-            mirror.Flush();
+            _mirror.Write(buffer, offset, count);
+            _mirror.Flush();
         }
 
         public override void Flush()
         {
-            master.Flush();
+            _master.Flush();
         }
 
         public override void SetLength(long value)
         {
-            master.SetLength(value);
-            mirror.SetLength(value);
+            _master.SetLength(value);
+            _mirror.SetLength(value);
         }
 
         public override int WriteTimeout {
             get {
-                return master.WriteTimeout;
+                return _master.WriteTimeout;
             }
             set {
-                master.WriteTimeout = value;
+                _master.WriteTimeout = value;
             }
         }
         #endregion

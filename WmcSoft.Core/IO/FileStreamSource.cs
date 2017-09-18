@@ -30,13 +30,7 @@ namespace WmcSoft.IO
 {
     public sealed class FileStreamSource : IStreamSource
     {
-        #region Fields
-
         readonly string _path;
-
-        #endregion
-
-        #region Lifecycle
 
         public FileStreamSource(string path)
         {
@@ -44,23 +38,13 @@ namespace WmcSoft.IO
             _path = info.FullName;
         }
 
-        #endregion
-
-        #region Properties
-
         public string Path {
             get { return _path; }
         }
-
-        #endregion
-
-        #region IStreamSource Membres
 
         public Stream GetStream()
         {
             return File.OpenRead(_path);
         }
-
-        #endregion
     }
 }

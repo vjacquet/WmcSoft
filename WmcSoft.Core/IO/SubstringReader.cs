@@ -50,8 +50,8 @@ namespace WmcSoft.IO
         public SubstringReader(string s, int startIndex, int length)
         {
             if (s == null) throw new ArgumentNullException("s");
-            if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException("startIndex");
-            if (length < 0 || startIndex > (s.Length - length)) throw new ArgumentOutOfRangeException("length");
+            if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (length < 0 || startIndex > (s.Length - length)) throw new ArgumentOutOfRangeException(nameof(length));
 
             _s = s;
             _pos = startIndex;
@@ -89,9 +89,9 @@ namespace WmcSoft.IO
 
         public override int Read(char[] buffer, int index, int count)
         {
-            if (buffer == null) throw new ArgumentNullException("buffer");
-            if (index < 0) throw new ArgumentOutOfRangeException("index");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (buffer.Length - index < count) throw new ArgumentException();
 
             if (_s == null) throw new ObjectDisposedException(null);

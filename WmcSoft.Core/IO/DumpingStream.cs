@@ -40,6 +40,9 @@ namespace WmcSoft.IO
 
         public DumpingStream(Stream stream, Stream dump)
         {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            if (dump == null) throw new ArgumentNullException(nameof(dump));
+
             _stream = stream;
             _dump = dump;
         }
@@ -52,21 +55,15 @@ namespace WmcSoft.IO
         }
 
         public override bool CanRead {
-            get {
-                return _stream.CanRead;
-            }
+            get { return _stream.CanRead; }
         }
 
         public override bool CanSeek {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool CanWrite {
-            get {
-                return false;
-            }
+            get { return false; }
         }
 
         public override void Flush()
