@@ -52,6 +52,18 @@ namespace WmcSoft.Data
             get { return 0; }
         }
 
+        static DataColumn AddColumn<T>(DataTable table, string columnName)
+        {
+            return table.Columns.Add(columnName, typeof(T));
+        }
+
+        static DataColumn AddColumn<T>(DataTable table, string columnName, T defaultValue)
+        {
+            var column = table.Columns.Add(columnName, typeof(T));
+            column.DefaultValue = defaultValue;
+            return column;
+        }
+
         /// <summary>
         /// Returns a <see cref="DataTable"/> that describes the column metadata of the <see cref="IDataReader"/>.
         /// </summary>
@@ -62,19 +74,19 @@ namespace WmcSoft.Data
             var dt = new DataTable("SchemaTable");
             dt.Locale = System.Globalization.CultureInfo.InvariantCulture;
 
-            dt.AddColumn<string>(SchemaTableColumn.ColumnName);
-            dt.AddColumn<int>(SchemaTableColumn.ColumnOrdinal);
-            dt.AddColumn<Type>(SchemaTableColumn.DataType);
-            dt.AddColumn<int>(SchemaTableColumn.ColumnSize, defaultValue: -1);
-            dt.AddColumn<short>(SchemaTableColumn.NumericPrecision);
-            dt.AddColumn<short>(SchemaTableColumn.NumericScale);
-            dt.AddColumn<int>(SchemaTableColumn.ProviderType);
-            dt.AddColumn<bool>(SchemaTableColumn.IsLong);
-            dt.AddColumn<bool>(SchemaTableColumn.AllowDBNull);
-            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsReadOnly, defaultValue: false);
-            dt.AddColumn<bool>(SchemaTableOptionalColumn.IsRowVersion);
-            dt.AddColumn<bool>(SchemaTableColumn.IsUnique);
-            dt.AddColumn<bool>(SchemaTableColumn.IsKey);
+            AddColumn<string>(dt, SchemaTableColumn.ColumnName);
+            AddColumn<int>(dt, SchemaTableColumn.ColumnOrdinal);
+            AddColumn<Type>(dt, SchemaTableColumn.DataType);
+            AddColumn<int>(dt, SchemaTableColumn.ColumnSize, defaultValue: -1);
+            AddColumn<short>(dt, SchemaTableColumn.NumericPrecision);
+            AddColumn<short>(dt, SchemaTableColumn.NumericScale);
+            AddColumn<int>(dt, SchemaTableColumn.ProviderType);
+            AddColumn<bool>(dt, SchemaTableColumn.IsLong);
+            AddColumn<bool>(dt, SchemaTableColumn.AllowDBNull);
+            AddColumn<bool>(dt, SchemaTableOptionalColumn.IsReadOnly, defaultValue: false);
+            AddColumn<bool>(dt, SchemaTableOptionalColumn.IsRowVersion);
+            AddColumn<bool>(dt, SchemaTableColumn.IsUnique);
+            AddColumn<bool>(dt, SchemaTableColumn.IsKey);
 
             var length = FieldCount;
             for (int i = 0; i < length; i++) {

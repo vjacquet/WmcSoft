@@ -85,7 +85,7 @@ namespace WmcSoft.Data
         public static string CreateUniqueName(this IEnumerable<string> names, string format)
         {
             if (format.EndsWith("{0}"))
-                return names.CreateUniquePrefixedName(format.Left(-3));
+                return names.CreateUniquePrefixedName(format.Substring(0, format.Length - 3));
 
             var set = new HashSet<string>(names);
             var i = 1;

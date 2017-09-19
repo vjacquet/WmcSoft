@@ -44,6 +44,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SqlClient">
+      <HintPath>..\packages\System.Data.SqlClient.4.4.0\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -191,6 +194,14 @@
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
       <Name>WmcSoft.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Data.Common\WmcSoft.Data.Common.csproj">
+      <Project>{17994c79-8b88-48b9-9880-e715326a1532}</Project>
+      <Name>WmcSoft.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Data.SqlClient\WmcSoft.Data.SqlClient.csproj">
+      <Project>{002fcce5-d8b2-4fa8-b065-bec594345caa}</Project>
+      <Name>WmcSoft.Data.SqlClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

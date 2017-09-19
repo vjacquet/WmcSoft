@@ -184,17 +184,11 @@
     <Compile Include="ComponentModel\Design\Serialization\InstanceDescriptorExtensions.cs" />
     <Compile Include="ComponentModel\StringArrayConverter.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
-    <Compile Include="Data\Common\DbDataReaderAdapter.cs" />
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
-    <Compile Include="Data\Common\DbDataReaderStream.cs" />
     <Compile Include="Data\DataTableCollectionExtensions.cs" />
-    <Compile Include="Data\DataColumnCollectionExtensions.cs" />
-    <Compile Include="Data\DataViewExtensions.cs" />
-    <Compile Include="Data\DataRowCollectionExtensions.cs" />
-    <Compile Include="Data\DbConnectionExtensions.Parametrized.cs" />
+    <Compile Include="Data\DbConnectionExtensions.cs" />
     <Compile Include="Data\Odbc\OdbcConnectionExtensions.Parametrized.cs" />
     <Compile Include="Data\OleDb\OleDbConnectionExtensions.Parametrized.cs" />
-    <Compile Include="Data\SqlClient\SqlConnectionExtensions.Parametrized.cs" />
     <Compile Include="Globalization\Dates.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />
@@ -284,15 +278,11 @@
     <Compile Include="Collections\Specialized\PriorityQueue.cs" />
     <Compile Include="ComponentModel\TypeConverterExtensions.cs" />
     <Compile Include="ComponentModel\TypeDescriptorExtensions.cs" />
-    <Compile Include="Data\DataConvert.cs" />
-    <Compile Include="Data\DataSetExtensions.cs" />
     <Compile Include="DelegateExtensions.cs" />
     <Compile Include="Diagnostics\ExceptionExtensions.cs" />
     <Compile Include="Diagnostics\IDataKeyConverter.cs" />
     <Compile Include="Diagnostics\DataKeyConverter.cs" />
     <Compile Include="Diagnostics\TraceStream.cs" />
-    <Compile Include="Data\DataReaderExtensions.cs" />
-    <Compile Include="Data\DataRecordExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlDataReaderExtensions.cs" />
     <Compile Include="Diagnostics\TimingTrace.cs" />
     <Compile Include="Diagnostics\TraceIndent.cs" />
@@ -313,11 +303,6 @@
     <Compile Include="IO\Batch.cs" />
     <Compile Include="IO\CloseBarrierStream.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
-    <Compile Include="Data\DataReaderBase.cs" />
-    <Compile Include="Data\DataReaderDecorator.cs" />
-    <Compile Include="Data\DbConnectionExtensions.cs" />
-    <Compile Include="Data\DbCommandExtensions.cs" />
-    <Compile Include="Data\TypeDescriptorDataReader.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="Diagnostics\TraceSourceExtensions.cs" />
     <Compile Include="FormatProviderExtensions.cs" />
@@ -452,7 +437,12 @@
       <Project>{0f12fb2c-e0a5-4bec-adc1-5edb69dd8bb4}</Project>
       <Name>WmcSoft.Business.Primitives</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WmcSoft.Data.Common\WmcSoft.Data.Common.csproj">
+      <Project>{17994c79-8b88-48b9-9880-e715326a1532}</Project>
+      <Name>WmcSoft.Data.Common</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
