@@ -30,15 +30,26 @@ namespace WmcSoft
 {
     public static class ConvertibleExtensions
     {
+        static T UnguardedChangeType<T>(object value)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(typeof(T));
+            if (value == DBNull.Value) {
+                if (underlyingType != null || !typeof(T).IsValueType)
+                    return default(T);
+                throw new InvalidCastException();
+            }
+            return (T)Convert.ChangeType(value, underlyingType ?? typeof(T));
+        }
+
         public static T ConvertTo<T>(this IConvertible convertible)
         {
-            return Data.DataConvert.ChangeType<T>(convertible);
+            return UnguardedChangeType<T>(convertible);
         }
 
         public static T? ConvertTo<T>(this T? convertible)
             where T : struct, IConvertible
         {
-            return Data.DataConvert.ChangeType<T?>(convertible);
+            return UnguardedChangeType<T?>(convertible);
         }
     }
 }
