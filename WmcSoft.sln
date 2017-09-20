@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core\WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
 EndProject
@@ -81,15 +81,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Configuration", "Wm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Configuration.Tests", "WmcSoft.Configuration.Tests\WmcSoft.Configuration.Tests.csproj", "{68C940AD-89B0-474A-9BE0-7EDD29513350}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Primitives", "WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj", "{0F12FB2C-E0A5-4BEC-ADC1-5EDB69DD8BB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Business.Primitives", "WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj", "{0F12FB2C-E0A5-4BEC-ADC1-5EDB69DD8BB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Primitives.Tests", "WmcSoft.Business.Primitives.Tests\WmcSoft.Business.Primitives.Tests.csproj", "{173C80E5-D516-445B-B1EB-ECEC9594FF7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Business.Primitives.Tests", "WmcSoft.Business.Primitives.Tests\WmcSoft.Business.Primitives.Tests.csproj", "{173C80E5-D516-445B-B1EB-ECEC9594FF7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Calendars", "WmcSoft.Business.Calendars\WmcSoft.Business.Calendars.csproj", "{15D86A23-5782-497D-82DB-D42FE75FAD92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Business.Calendars", "WmcSoft.Business.Calendars\WmcSoft.Business.Calendars.csproj", "{15D86A23-5782-497D-82DB-D42FE75FAD92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Business.Calendars.Tests", "WmcSoft.Business.Calendars.Tests\WmcSoft.Business.Calendars.Tests.csproj", "{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Business.Calendars.Tests", "WmcSoft.Business.Calendars.Tests\WmcSoft.Business.Calendars.Tests.csproj", "{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{24AF4E19-1326-42C3-879A-BE13F55A9043}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B031B180-BDBC-46B6-9824-6B4D9BED006F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Data.Common", "WmcSoft.Data.Common\WmcSoft.Data.Common.csproj", "{17994C79-8B88-48B9-9880-E715326A1532}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Data.SqlClient", "WmcSoft.Data.SqlClient\WmcSoft.Data.SqlClient.csproj", "{002FCCE5-D8B2-4FA8-B065-BEC594345CAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Data.Odbc", "WmcSoft.Data.Odbc\WmcSoft.Data.Odbc.csproj", "{7E144C76-4092-480F-8EC2-F70C086F775F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Data.OleDb", "WmcSoft.Data.OleDb\WmcSoft.Data.OleDb.csproj", "{803E0CD2-FBC5-462B-BFC5-4E4B29578DEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Data.Tests", "WmcSoft.Data.Tests\WmcSoft.Data.Tests.csproj", "{19F6F291-E622-4F4C-84BA-13DF06438C2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -233,6 +245,26 @@ Global
 		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17994C79-8B88-48B9-9880-E715326A1532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17994C79-8B88-48B9-9880-E715326A1532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17994C79-8B88-48B9-9880-E715326A1532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17994C79-8B88-48B9-9880-E715326A1532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{002FCCE5-D8B2-4FA8-B065-BEC594345CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{002FCCE5-D8B2-4FA8-B065-BEC594345CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{002FCCE5-D8B2-4FA8-B065-BEC594345CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{002FCCE5-D8B2-4FA8-B065-BEC594345CAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E144C76-4092-480F-8EC2-F70C086F775F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E144C76-4092-480F-8EC2-F70C086F775F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E144C76-4092-480F-8EC2-F70C086F775F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E144C76-4092-480F-8EC2-F70C086F775F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{803E0CD2-FBC5-462B-BFC5-4E4B29578DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803E0CD2-FBC5-462B-BFC5-4E4B29578DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803E0CD2-FBC5-462B-BFC5-4E4B29578DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803E0CD2-FBC5-462B-BFC5-4E4B29578DEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19F6F291-E622-4F4C-84BA-13DF06438C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F6F291-E622-4F4C-84BA-13DF06438C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F6F291-E622-4F4C-84BA-13DF06438C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F6F291-E622-4F4C-84BA-13DF06438C2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -255,6 +287,11 @@ Global
 		{173C80E5-D516-445B-B1EB-ECEC9594FF7F} = {24AF4E19-1326-42C3-879A-BE13F55A9043}
 		{15D86A23-5782-497D-82DB-D42FE75FAD92} = {24AF4E19-1326-42C3-879A-BE13F55A9043}
 		{068E7D9A-C4A3-44AC-91E4-07C224A8BC41} = {24AF4E19-1326-42C3-879A-BE13F55A9043}
+		{17994C79-8B88-48B9-9880-E715326A1532} = {B031B180-BDBC-46B6-9824-6B4D9BED006F}
+		{002FCCE5-D8B2-4FA8-B065-BEC594345CAA} = {B031B180-BDBC-46B6-9824-6B4D9BED006F}
+		{7E144C76-4092-480F-8EC2-F70C086F775F} = {B031B180-BDBC-46B6-9824-6B4D9BED006F}
+		{803E0CD2-FBC5-462B-BFC5-4E4B29578DEF} = {B031B180-BDBC-46B6-9824-6B4D9BED006F}
+		{19F6F291-E622-4F4C-84BA-13DF06438C2D} = {B031B180-BDBC-46B6-9824-6B4D9BED006F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E65C7E23-CCFC-4ED8-9596-CC28D553585B}
