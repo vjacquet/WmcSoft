@@ -36,6 +36,7 @@ using System.Diagnostics;
 namespace WmcSoft.Time
 {
     [DebuggerDisplay("{ToString(),nq}")]
+    [DebuggerStepThrough]
     public partial struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>
     {
         public static readonly TimeOfDay Midnight = new TimeOfDay(0);

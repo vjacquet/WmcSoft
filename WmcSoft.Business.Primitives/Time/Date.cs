@@ -36,6 +36,7 @@ using System.Diagnostics;
 namespace WmcSoft.Time
 {
     [DebuggerDisplay("{ToString(),nq}")]
+    [DebuggerStepThrough]
     public partial struct Date : IComparable<Date>, IEquatable<Date>, IFormattable
     {
         readonly int _storage;
@@ -81,7 +82,7 @@ namespace WmcSoft.Time
 
         public Timepoint AsTimepoint(TimeZoneInfo zone)
         {
-            var dateTime = TimeZoneInfo.ConvertTimeToUtc(new DateTime(_storage * TimeSpan.TicksPerDay), zone);
+            var dateTime = TimeZoneInfo.ConvertTimeToUtc(AsDateTime, zone);
             return new Timepoint(dateTime);
         }
 
@@ -107,17 +108,17 @@ namespace WmcSoft.Time
 
         public Date AddMonths(int value)
         {
-            return (Date)AsDateTime.AddMonths(value);
+            return AsDateTime.AddMonths(value);
         }
 
         public Date AddYears(int value)
         {
-            return (Date)AsDateTime.AddYears(value);
+            return AsDateTime.AddYears(value);
         }
 
         public Date Add(TimeSpan value)
         {
-            return (Date)AsDateTime.Add(value);
+            return AsDateTime.Add(value);
         }
 
         public int DaysSince(Date date)
