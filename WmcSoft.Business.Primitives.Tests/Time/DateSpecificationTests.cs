@@ -33,5 +33,21 @@ namespace WmcSoft.Time
             Assert.Equal(new Date(2016, 4, 12), april2016);
             Assert.True(april.IsSatisfiedBy(april2016));
         }
-    }
+
+        [Theory]
+        [InlineData(2014, 5, 26)]
+        [InlineData(2015, 5, 25)]
+        [InlineData(2016, 5, 30)]
+        [InlineData(2017, 5, 29)]
+        [InlineData(2018, 5, 28)]
+        [InlineData(2019, 5, 27)]
+        [InlineData(2020, 5, 25)]
+        [InlineData(2021, 5, 31)]
+        public void CanSpecifyMemorialDay(int year, int month, int day)
+        {
+            var memorialDay = DateSpecification.NthOccuranceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
+            var expected = new Date(year, month, day);
+            Assert.Equal(expected, memorialDay.OfYear(year));
+        }
+}
 }

@@ -39,12 +39,21 @@ namespace WmcSoft.Time
         private readonly int _month;
         private readonly DayOfWeek _dayOfWeek;
         private readonly int _occurrence;
+        private bool _fromStartOfMonth;
 
         public FloatingDateSpecification(int month, DayOfWeek dayOfWeek, int occurrence)
         {
             _month = month;
             _dayOfWeek = dayOfWeek;
-            _occurrence = occurrence - 1; // zero-based
+            if (occurrence > 0) {
+                _fromStartOfMonth = true;
+                _occurrence = occurrence - 1; // zero-based
+            } else if (occurrence < 0) {
+                _fromStartOfMonth = false;
+                _occurrence = -occurrence - 1; // zero-based
+            } else {
+                throw new ArgumentException(nameof(occurrence));
+            }
         }
 
         public override Date OfYear(int year)
@@ -52,8 +61,15 @@ namespace WmcSoft.Time
             var firstOfMonth = new Date(year, _month, 1);
             int dayOfWeekOffset = (int)_dayOfWeek - (int)firstOfMonth.DayOfWeek;
             int dateOfFirstOccurrenceOfDayOfWeek = (dayOfWeekOffset + 7) % 7 + 1;
-            int day = _occurrence * 7 + dateOfFirstOccurrenceOfDayOfWeek;
-            return new Date(year, _month, day);
+            if (_fromStartOfMonth) {
+                int day = _occurrence * 7 + dateOfFirstOccurrenceOfDayOfWeek;
+                return new Date(year, _month, day);
+            } else {
+                int daysInMonth = DateTime.DaysInMonth(year, _month);
+                int maxOccurences = (daysInMonth - dateOfFirstOccurrenceOfDayOfWeek) / 7;
+                int day = (maxOccurences - _occurrence) * 7 + dateOfFirstOccurrenceOfDayOfWeek;
+                return new Date(year, _month, day);
+            }
         }
     }
 }
