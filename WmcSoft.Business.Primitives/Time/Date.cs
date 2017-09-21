@@ -41,8 +41,8 @@ namespace WmcSoft.Time
     {
         readonly int _storage;
 
-        public static readonly Date MinValue = (Date)DateTime.MinValue;
-        public static readonly Date MaxValue = (Date)DateTime.MaxValue;
+        public static readonly Date MinValue = DateTime.MinValue;
+        public static readonly Date MaxValue = DateTime.MaxValue;
 
         private Date(int dayNumber)
         {

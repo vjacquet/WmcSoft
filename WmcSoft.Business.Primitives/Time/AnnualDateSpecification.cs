@@ -60,6 +60,9 @@ namespace WmcSoft.Time
             return UnguardedEnumerateOver(since, until);
         }
 
-        public abstract bool IsSatisfiedBy(Date date);
+        public virtual bool IsSatisfiedBy(Date date)
+        {
+            return date == OfYear(date.Year);
+        }
     }
 }
