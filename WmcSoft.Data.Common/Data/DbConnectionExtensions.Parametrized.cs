@@ -72,6 +72,11 @@ namespace WmcSoft.Data
             return command;
         }
 
+        public static IDbCommand CreateCommand(this IDbConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
+        {
+            throw new ArgumentException("You must use CreateParameterizedCommand");
+        }
+
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
         public static IDbCommand CreateParameterizedCommand(this IDbConnection connection, Func<IDbDataParameter, string, string> capture, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
