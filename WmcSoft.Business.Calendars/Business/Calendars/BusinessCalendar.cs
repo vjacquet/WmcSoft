@@ -62,18 +62,6 @@ namespace WmcSoft.Business.Calendars
             _holidays = new BitArray(count, false);
         }
 
-        [Obsolete("Use the specifications instead.", false)]
-        public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
-            : this(since, 1 + since.DaysUntil(until))
-        {
-            var length = _holidays.Length;
-            for (int i = 0; i < length; i++) {
-                if (holidays.Any(p => p(since)))
-                    _holidays.Set(i, true);
-                since = since.AddDays(1);
-            }
-        }
-
         public BusinessCalendar(Date since, Date until, params IDateSpecification[] specifications)
             : this(since, 1 + since.DaysUntil(until))
         {
@@ -93,7 +81,19 @@ namespace WmcSoft.Business.Calendars
             return !_holidays[date.DaysSince(_epoch)];
         }
 
+        #region Obsoletes
 
+        [Obsolete("Use the specifications instead.", false)]
+        public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
+            : this(since, 1 + since.DaysUntil(until))
+        {
+            var length = _holidays.Length;
+            for (int i = 0; i < length; i++) {
+                if (holidays.Any(p => p(since)))
+                    _holidays.Set(i, true);
+                since = since.AddDays(1);
+            }
+        }
 
         [Obsolete("Use the specifications instead.", false)]
         public static bool Saturdays(Date date)
@@ -125,6 +125,8 @@ namespace WmcSoft.Business.Calendars
         {
             return date.Month == 1 && date.Day == 1;
         }
+
+        #endregion
     }
 
     class BusinessCalendarDebugView
