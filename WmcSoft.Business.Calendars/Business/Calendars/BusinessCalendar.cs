@@ -55,13 +55,14 @@ namespace WmcSoft.Business.Calendars
             // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
-        public BusinessCalendar(Date since, int count)
+        private BusinessCalendar(Date since, int count)
         {
             _epoch = since;
 
             _holidays = new BitArray(count, false);
         }
 
+        [Obsolete("Use the specifications instead.", false)]
         public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
             : this(since, 1 + since.DaysUntil(until))
         {
@@ -94,27 +95,32 @@ namespace WmcSoft.Business.Calendars
 
 
 
+        [Obsolete("Use the specifications instead.", false)]
         public static bool Saturdays(Date date)
         {
             return date.DayOfWeek == DayOfWeek.Saturday;
         }
 
+        [Obsolete("Use the specifications instead.", false)]
         public static bool Sundays(Date date)
         {
             return date.DayOfWeek == DayOfWeek.Sunday;
         }
 
+        [Obsolete("Use the specifications instead.", false)]
         public static bool WeekEnds(Date date)
         {
             var dow = date.DayOfWeek;
             return dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday;
         }
 
+        [Obsolete("Use the specifications instead.", false)]
         public static bool Christmas(Date date)
         {
             return date.Month == 12 && date.Day == 25;
         }
 
+        [Obsolete("Use the specifications instead.", false)]
         public static bool NewYear(Date date)
         {
             return date.Month == 1 && date.Day == 1;

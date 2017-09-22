@@ -59,12 +59,12 @@ namespace WmcSoft.Business.Calendars
 
         public IEnumerator<IBusinessCalendar> GetEnumerator()
         {
-            return ((IEnumerable<IBusinessCalendar>)_calendars).GetEnumerator();
+            return _calendars.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<IBusinessCalendar>)_calendars).GetEnumerator();
+            return GetEnumerator();
         }
     }
 }
