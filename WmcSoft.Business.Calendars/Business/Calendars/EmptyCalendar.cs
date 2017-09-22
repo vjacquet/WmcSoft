@@ -24,16 +24,42 @@
 
 #endregion
 
-using System;
+using System.Diagnostics;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
+    [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
+    [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public struct EmptyCalendar : IBusinessCalendar
     {
         public Date MinDate => Date.MinValue;
         public Date MaxDate => Date.MaxValue;
 
-        public bool IsBusinessDay(Date  date) => true;
+        public bool IsBusinessDay(Date date) => true;
+
+        #region Required overrides
+
+        public override bool Equals(object obj)
+        {
+            return obj != null && obj.GetType() == typeof(EmptyCalendar);
+        }
+
+        public override int GetHashCode()
+        {
+            return 1515;
+        }
+
+        public static bool operator ==(EmptyCalendar left, EmptyCalendar right)
+        {
+            return true;
+        }
+
+        public static bool operator !=(EmptyCalendar left, EmptyCalendar right)
+        {
+            return false;
+        }
+
+        #endregion
     }
 }
