@@ -36,12 +36,25 @@ namespace WmcSoft.Time
 {
     public static class DateSpecification
     {
+        /// <summary>
+        /// Specifies a fixed day in a month, like January the 1rst.
+        /// </summary>
+        /// <param name="month">The month.</param>
+        /// <param name="day">The day of the month</param>
+        /// <returns>The <paramref name="day"/> of <paramref name="month"/>.</returns>
         public static AnnualDateSpecification Fixed(int month, int day)
         {
             return new FixedDateSpecification(month, day);
         }
 
-        public static AnnualDateSpecification NthOccuranceOfWeekdayInMonth(int month, DayOfWeek dayOfWeek, int n)
+        /// <summary>
+        /// Specifies the <paramref name="n"/>th <paramref name="dayOfWeek"/> of <paramref name="month"/>.
+        /// </summary>
+        /// <param name="month">The month.</param>
+        /// <param name="dayOfWeek">The day of the week in the month.</param>
+        /// <param name="n">The number of occurences, zero-based. A negative value indicates the number of occurences from the end of the month.</param>
+        /// <returns>The <paramref name="n"/>th <paramref name="dayOfWeek"/> of <paramref name="month"/>.</returns>
+        public static AnnualDateSpecification NthOccurenceOfWeekdayInMonth(int month, DayOfWeek dayOfWeek, int n)
         {
             return new FloatingDateSpecification(month, dayOfWeek, n);
         }
