@@ -39,37 +39,32 @@ namespace WmcSoft.Time
         private readonly int _month;
         private readonly DayOfWeek _dayOfWeek;
         private readonly int _occurrence;
-        private bool _fromStartOfMonth;
 
         public FloatingDateSpecification(int month, DayOfWeek dayOfWeek, int occurrence)
         {
+            if (occurrence == 0) throw new ArgumentException(nameof(occurrence));
             _month = month;
             _dayOfWeek = dayOfWeek;
-            if (occurrence > 0) {
-                _fromStartOfMonth = true;
-                _occurrence = occurrence - 1; // zero-based
-            } else if (occurrence < 0) {
-                _fromStartOfMonth = false;
-                _occurrence = -occurrence - 1; // zero-based
-            } else {
-                throw new ArgumentException(nameof(occurrence));
-            }
+            _occurrence = occurrence;
         }
 
-        public override Date OfYear(int year)
+        private int GetDay(int year)
         {
             var firstOfMonth = new Date(year, _month, 1);
             int dayOfWeekOffset = (int)_dayOfWeek - (int)firstOfMonth.DayOfWeek;
             int dateOfFirstOccurrenceOfDayOfWeek = (dayOfWeekOffset + 7) % 7 + 1;
-            if (_fromStartOfMonth) {
-                int day = _occurrence * 7 + dateOfFirstOccurrenceOfDayOfWeek;
-                return new Date(year, _month, day);
-            } else {
-                int daysInMonth = DateTime.DaysInMonth(year, _month);
-                int maxOccurences = (daysInMonth - dateOfFirstOccurrenceOfDayOfWeek) / 7;
-                int day = (maxOccurences - _occurrence) * 7 + dateOfFirstOccurrenceOfDayOfWeek;
-                return new Date(year, _month, day);
-            }
+
+            if (_occurrence > 0)
+                return (_occurrence - 1) * 7 + dateOfFirstOccurrenceOfDayOfWeek;
+
+            int daysInMonth = DateTime.DaysInMonth(year, _month);
+            int maxOccurences = (daysInMonth - dateOfFirstOccurrenceOfDayOfWeek) / 7;
+            return (maxOccurences + _occurrence + 1) * 7 + dateOfFirstOccurrenceOfDayOfWeek;
+        }
+
+        public override Date OfYear(int year)
+        {
+            return new Date(year, _month, GetDay(year));
         }
     }
 }

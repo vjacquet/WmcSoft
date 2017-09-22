@@ -45,9 +45,14 @@ namespace WmcSoft.Business.Calendars
         private readonly HashSet<Date> _removedHolidays = new HashSet<Date>();
 
         public BespokeCalendar(TCalendar calendar, Date since, TimeSpan duration, params DayOfWeek[] weekends)
+            : this(calendar, since, since.Add(duration), weekends)
+        {
+        }
+
+        public BespokeCalendar(TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
         {
             MinDate = since;
-            MaxDate = since.Add(duration);
+            MaxDate = until;
             _calendar = calendar;
             _weekends = weekends ?? new DayOfWeek[0];
         }

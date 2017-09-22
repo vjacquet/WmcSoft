@@ -23,12 +23,12 @@ namespace WmcSoft.Time
         [Fact]
         public void CanSpecifySecondTuesday()
         {
-            var february = DateSpecification.NthOccuranceOfWeekdayInMonth(2, DayOfWeek.Tuesday, 2);
+            var february = DateSpecification.NthOccurenceOfWeekdayInMonth(2, DayOfWeek.Tuesday, 2);
             var february2016 = february.OfYear(2016);
             Assert.Equal(new Date(2016, 2, 9), february2016);
             Assert.True(february.IsSatisfiedBy(february2016));
 
-            var april = DateSpecification.NthOccuranceOfWeekdayInMonth(4, DayOfWeek.Tuesday, 2);
+            var april = DateSpecification.NthOccurenceOfWeekdayInMonth(4, DayOfWeek.Tuesday, 2);
             var april2016 = april.OfYear(2016);
             Assert.Equal(new Date(2016, 4, 12), april2016);
             Assert.True(april.IsSatisfiedBy(april2016));
@@ -45,7 +45,7 @@ namespace WmcSoft.Time
         [InlineData(2021, 5, 31)]
         public void CanSpecifyMemorialDay(int year, int month, int day)
         {
-            var memorialDay = DateSpecification.NthOccuranceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
+            var memorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
             var expected = new Date(year, month, day);
             Assert.Equal(expected, memorialDay.OfYear(year));
         }
