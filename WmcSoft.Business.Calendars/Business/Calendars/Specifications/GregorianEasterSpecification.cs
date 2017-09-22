@@ -30,38 +30,29 @@
 
 #endregion
 
-using System;
+using System.Collections.Generic;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
 {
-    public static class KnownHolidays
+    public sealed class GregorianEasterSpecification : AnnualDateSpecification
     {
-        public static readonly AnnualDateSpecification NewYearDay = DateSpecification.Fixed(1, 1);
-
-        public static readonly AnnualDateSpecification LabourDay = DateSpecification.Fixed(5, 1);
-
-        public static readonly AnnualDateSpecification ChristmasEve = DateSpecification.Fixed(12, 24);
-
-        public static readonly AnnualDateSpecification Christmas = DateSpecification.Fixed(12, 25);
-
-        public static readonly AnnualDateSpecification BoxingDay = DateSpecification.Fixed(12, 26);
-
-        public static readonly AnnualDateSpecification NewYearEve = DateSpecification.Fixed(12, 31);
-
-        public static readonly AnnualDateSpecification MemorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
-
-
-        public static readonly GregorianEasterSpecification GregorianEaster = new GregorianEasterSpecification();
-
-        public static readonly ShiftedAnnualDateSpecification GregorianEasterFriday = new ShiftedAnnualDateSpecification(GregorianEaster, -2);
-
-        public static readonly ShiftedAnnualDateSpecification GregorianEasterMonday = new ShiftedAnnualDateSpecification(GregorianEaster, +1);
-
-
-        public static AdjustedAnnualDateSpecification Adjust(this AnnualDateSpecification specification, DayOfWeek dayOfWeek, int shift)
+        public override Date OfYear(int year)
         {
-            return new AdjustedAnnualDateSpecification(specification, dayOfWeek, shift);
+            // United States Naval Observatory Easter <http://www.cpearson.com/excel/easter.aspx>
+
+            var c = year / 100;
+            var N = year - 19 * (year / 19);
+            var K = (c - 17) / 25;
+            var i = c - c / 4 - (c - K) / 3 + 19 * N + 15;
+            i = i - 30 * (i / 30);
+            i = i - (i / 28) * (1 - (i / 28) * (29 / (i + 1)) * ((21 - N) / 11));
+            var j = year + year / 4 + i + 2 - c + c / 4;
+            j = j - 7 * (j / 7);
+            var l = i - j;
+            var m = 3 + (l + 40) / 44;
+            var d = l + 28 - 31 * (m / 4);
+            return new Date(year, (int)m, (int)d);
         }
     }
 }

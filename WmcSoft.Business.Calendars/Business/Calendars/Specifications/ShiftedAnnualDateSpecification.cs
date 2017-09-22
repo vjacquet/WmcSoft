@@ -31,37 +31,33 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
 {
-    public static class KnownHolidays
+    public sealed class ShiftedAnnualDateSpecification : AnnualDateSpecification
     {
-        public static readonly AnnualDateSpecification NewYearDay = DateSpecification.Fixed(1, 1);
+        private readonly AnnualDateSpecification _specification;
+        private readonly int _shift;
 
-        public static readonly AnnualDateSpecification LabourDay = DateSpecification.Fixed(5, 1);
-
-        public static readonly AnnualDateSpecification ChristmasEve = DateSpecification.Fixed(12, 24);
-
-        public static readonly AnnualDateSpecification Christmas = DateSpecification.Fixed(12, 25);
-
-        public static readonly AnnualDateSpecification BoxingDay = DateSpecification.Fixed(12, 26);
-
-        public static readonly AnnualDateSpecification NewYearEve = DateSpecification.Fixed(12, 31);
-
-        public static readonly AnnualDateSpecification MemorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
-
-
-        public static readonly GregorianEasterSpecification GregorianEaster = new GregorianEasterSpecification();
-
-        public static readonly ShiftedAnnualDateSpecification GregorianEasterFriday = new ShiftedAnnualDateSpecification(GregorianEaster, -2);
-
-        public static readonly ShiftedAnnualDateSpecification GregorianEasterMonday = new ShiftedAnnualDateSpecification(GregorianEaster, +1);
-
-
-        public static AdjustedAnnualDateSpecification Adjust(this AnnualDateSpecification specification, DayOfWeek dayOfWeek, int shift)
+        public ShiftedAnnualDateSpecification(AnnualDateSpecification specification, int shift)
         {
-            return new AdjustedAnnualDateSpecification(specification, dayOfWeek, shift);
+            _specification = specification;
+            _shift = shift;
+        }
+
+        protected override IEnumerable<Date> UnguardedEnumerateOver(Date since, Date until)
+        {
+            since = since.AddDays(-_shift);
+            until = until.AddDays(-_shift);
+            foreach (var date in _specification.EnumerateBetween(since, until))
+                yield return date.AddDays(_shift);
+        }
+
+        public override Date OfYear(int year)
+        {
+            return _specification.OfYear(year).AddDays(_shift);
         }
     }
 }

@@ -31,37 +31,41 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
 {
-    public static class KnownHolidays
+    public sealed class AdjustedAnnualDateSpecification : AnnualDateSpecification
     {
-        public static readonly AnnualDateSpecification NewYearDay = DateSpecification.Fixed(1, 1);
+        private readonly AnnualDateSpecification _specification;
+        private readonly int _shift;
+        private readonly DayOfWeek _dayOfWeek;
 
-        public static readonly AnnualDateSpecification LabourDay = DateSpecification.Fixed(5, 1);
-
-        public static readonly AnnualDateSpecification ChristmasEve = DateSpecification.Fixed(12, 24);
-
-        public static readonly AnnualDateSpecification Christmas = DateSpecification.Fixed(12, 25);
-
-        public static readonly AnnualDateSpecification BoxingDay = DateSpecification.Fixed(12, 26);
-
-        public static readonly AnnualDateSpecification NewYearEve = DateSpecification.Fixed(12, 31);
-
-        public static readonly AnnualDateSpecification MemorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
-
-
-        public static readonly GregorianEasterSpecification GregorianEaster = new GregorianEasterSpecification();
-
-        public static readonly ShiftedAnnualDateSpecification GregorianEasterFriday = new ShiftedAnnualDateSpecification(GregorianEaster, -2);
-
-        public static readonly ShiftedAnnualDateSpecification GregorianEasterMonday = new ShiftedAnnualDateSpecification(GregorianEaster, +1);
-
-
-        public static AdjustedAnnualDateSpecification Adjust(this AnnualDateSpecification specification, DayOfWeek dayOfWeek, int shift)
+        public AdjustedAnnualDateSpecification(AnnualDateSpecification specification, DayOfWeek dayOfWeek, int shift)
         {
-            return new AdjustedAnnualDateSpecification(specification, dayOfWeek, shift);
+            _specification = specification;
+            _shift = shift;
+            _dayOfWeek = dayOfWeek;
+        }
+
+        protected override IEnumerable<Date> UnguardedEnumerateOver(Date since, Date until)
+        {
+            return _specification.EnumerateBetween(since, until).Select(Adjust)
+                .SkipWhile(d => d < since)
+                .TakeWhile(d => d <= until);
+        }
+
+        private Date Adjust(Date date)
+        {
+            return (date.DayOfWeek == _dayOfWeek) ? date.AddDays(_shift) : date;
+        }
+
+        public override Date OfYear(int year)
+        {
+            var date = _specification.OfYear(year);
+            return Adjust(date);
         }
     }
 }
