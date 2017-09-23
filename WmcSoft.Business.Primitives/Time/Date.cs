@@ -257,4 +257,12 @@ namespace WmcSoft.Time
 
         #endregion
     }
+
+    public static class DateExtensions
+    {
+        public static double ToOADate(this Date date)
+        {
+            return ((DateTime)date).ToOADate();
+        }
+    }
 }
