@@ -49,5 +49,5 @@ namespace WmcSoft.Time
             var expected = new Date(year, month, day);
             Assert.Equal(expected, memorialDay.OfYear(year));
         }
-}
+    }
 }
