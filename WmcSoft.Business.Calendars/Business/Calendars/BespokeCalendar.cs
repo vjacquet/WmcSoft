@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using WmcSoft.Time;
 
+using static WmcSoft.Time.Algorithms;
+
 namespace WmcSoft.Business.Calendars
 {
     /// <summary>
@@ -44,18 +46,22 @@ namespace WmcSoft.Business.Calendars
         private readonly HashSet<Date> _addedHolidays = new HashSet<Date>();
         private readonly HashSet<Date> _removedHolidays = new HashSet<Date>();
 
-        public BespokeCalendar(TCalendar calendar, Date since, TimeSpan duration, params DayOfWeek[] weekends)
-            : this(calendar, since, since.Add(duration), weekends)
-        {
-        }
-
         public BespokeCalendar(TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
         {
-            MinDate = since;
-            MaxDate = until;
+            MinDate = Max(calendar.MinDate, since);
+            MaxDate = Min(calendar.MaxDate, until);
             _calendar = calendar;
             _weekends = weekends ?? new DayOfWeek[0];
         }
+
+        public BespokeCalendar(TCalendar calendar, params DayOfWeek[] weekends)
+        {
+            MinDate = calendar.MinDate;
+            MaxDate = calendar.MaxDate;
+            _calendar = calendar;
+            _weekends = weekends ?? new DayOfWeek[0];
+        }
+
 
         public Date MinDate { get; }
         public Date MaxDate { get; }
