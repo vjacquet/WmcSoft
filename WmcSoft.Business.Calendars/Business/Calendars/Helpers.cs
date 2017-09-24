@@ -24,44 +24,42 @@
 
 #endregion
 
-using System.Diagnostics;
-using WmcSoft.Time;
+using System;
+using System.Text;
 
 namespace WmcSoft.Business.Calendars
 {
-    [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
-    [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
-    public struct EmptyCalendar : IBusinessCalendar
+    internal static class Helpers
     {
-        public string Name => "{Empty}";
-
-        public Date MinDate => Date.MinValue;
-        public Date MaxDate => Date.MaxValue;
-
-        public bool IsBusinessDay(Date date) => true;
-
-        #region Required overrides
-
-        public override bool Equals(object obj)
+        public static string HumanizeList(params IBusinessCalendar[] calendars)
         {
-            return obj != null && obj.GetType() == typeof(EmptyCalendar);
-        }
+            if (calendars == null) throw new ArgumentNullException(nameof(calendars));
 
-        public override int GetHashCode()
-        {
-            return 1515;
+            var sb = new StringBuilder();
+            var length = calendars.Length;
+            switch (length) {
+            case 0:
+                break;
+            case 1:
+                sb.Append(calendars[0].Name);
+                break;
+            case 2:
+                sb.Append(calendars[0].Name);
+                sb.Append(" & ");
+                sb.Append(calendars[1].Name);
+                break;
+            default:
+                sb.Append(calendars[0].Name);
+                length--;
+                for (int i = 1; i < length; i++) {
+                    sb.Append(", ");
+                    sb.Append(calendars[i].Name);
+                }
+                sb.Append(" & ");
+                sb.Append(calendars[length].Name);
+                break;
+            }
+            return sb.ToString();
         }
-
-        public static bool operator ==(EmptyCalendar left, EmptyCalendar right)
-        {
-            return true;
-        }
-
-        public static bool operator !=(EmptyCalendar left, EmptyCalendar right)
-        {
-            return false;
-        }
-
-        #endregion
     }
 }

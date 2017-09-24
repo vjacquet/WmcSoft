@@ -31,6 +31,8 @@ using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Time;
 
+using static WmcSoft.Business.Calendars.Helpers;
+
 namespace WmcSoft.Business.Calendars
 {
     /// <summary>
@@ -44,10 +46,18 @@ namespace WmcSoft.Business.Calendars
         private readonly int _quorum;
 
         public JoinQuorumBusinessDayCalendars(int quorum, params IBusinessCalendar[] calendars)
+            : this($"Business day in at least {quorum} of {HumanizeList(calendars)} calendars", quorum, calendars)
         {
+        }
+
+        public JoinQuorumBusinessDayCalendars(string name, int quorum, params IBusinessCalendar[] calendars)
+        {
+            Name = name;
             _calendars = new List<IBusinessCalendar>(calendars);
             _quorum = 2;
         }
+
+        public string Name { get; }
 
         public Date MinDate => _calendars.Min(c => c.MinDate);
         public Date MaxDate => _calendars.Max(c => c.MaxDate);

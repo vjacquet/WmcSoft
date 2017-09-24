@@ -42,10 +42,18 @@ namespace WmcSoft.Business.Calendars
     {
         private readonly List<IBusinessCalendar> _calendars;
 
-        public JoinBusinessDaysCalendar(params IBusinessCalendar[] calendars)
+        public JoinBusinessDaysCalendar( params IBusinessCalendar[] calendars)
+            :this("Business day in any of {HumanizeList(calendars)} calendars", calendars)
         {
+        }
+
+        public JoinBusinessDaysCalendar(string name, params IBusinessCalendar[] calendars)
+        {
+            Name = name;
             _calendars = new List<IBusinessCalendar>(calendars);
         }
+
+        public string Name { get; }
 
         public Date MinDate => _calendars.Min(c => c.MinDate);
         public Date MaxDate => _calendars.Max(c => c.MaxDate);

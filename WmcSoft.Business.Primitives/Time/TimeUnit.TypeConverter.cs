@@ -30,7 +30,7 @@
 
 #endregion
 
-using System;
+ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
@@ -40,7 +40,7 @@ using System.Security.Permissions;
 namespace WmcSoft.Time
 {
     [TypeConverter(typeof(TimeUnitConverter))]
-    public partial struct TimeUnit : IComparable<TimeUnit>, IEquatable<TimeUnit>
+    public partial struct TimeUnit
     {
 #if NET461
         [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]

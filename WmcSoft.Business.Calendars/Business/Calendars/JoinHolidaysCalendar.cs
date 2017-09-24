@@ -43,14 +43,22 @@ namespace WmcSoft.Business.Calendars
         private readonly List<IBusinessCalendar> _calendars;
 
         public JoinHolidaysCalendar(params IBusinessCalendar[] calendars)
+            : this("Holiday in any of {HumanizeList(calendars)} calendars", calendars)
         {
+        }
+
+        public JoinHolidaysCalendar(string name, params IBusinessCalendar[] calendars)
+        {
+            Name = name;
             _calendars = new List<IBusinessCalendar>(calendars);
         }
+
+        public string Name { get; }
 
         public Date MinDate => _calendars.Min(c => c.MinDate);
         public Date MaxDate => _calendars.Max(c => c.MaxDate);
 
-        public bool IsBusinessDay(Date  date) => _calendars.All(c => c.IsBusinessDay(date));
+        public bool IsBusinessDay(Date date) => _calendars.All(c => c.IsBusinessDay(date));
 
         public void Add(IBusinessCalendar calendar)
         {

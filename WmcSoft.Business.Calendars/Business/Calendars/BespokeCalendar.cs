@@ -47,21 +47,36 @@ namespace WmcSoft.Business.Calendars
         private readonly HashSet<Date> _removedHolidays = new HashSet<Date>();
 
         public BespokeCalendar(TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
+            : this($"Bespoke of {calendar.Name}", calendar, since, until, weekends)
         {
+        }
+
+        public BespokeCalendar(TCalendar calendar, params DayOfWeek[] weekends)
+            : this($"Bespoke of {calendar.Name}", calendar, weekends)
+        {
+        }
+
+        public BespokeCalendar(string name, TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
+        {
+            Name = name;
             MinDate = Max(calendar.MinDate, since);
             MaxDate = Min(calendar.MaxDate, until);
             _calendar = calendar;
             _weekends = weekends ?? new DayOfWeek[0];
         }
 
-        public BespokeCalendar(TCalendar calendar, params DayOfWeek[] weekends)
+        public BespokeCalendar(string name, TCalendar calendar, params DayOfWeek[] weekends)
         {
+            Name = name;
             MinDate = calendar.MinDate;
             MaxDate = calendar.MaxDate;
             _calendar = calendar;
             _weekends = weekends ?? new DayOfWeek[0];
         }
 
+
+
+        public string Name { get; }
 
         public Date MinDate { get; }
         public Date MaxDate { get; }

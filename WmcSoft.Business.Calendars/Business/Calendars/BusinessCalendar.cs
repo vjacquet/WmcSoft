@@ -40,8 +40,10 @@ namespace WmcSoft.Business.Calendars
         readonly Date _epoch;
         readonly BitArray _holidays;
 
-        private BusinessCalendar(Date epoch, BitArray holidays)
+        private BusinessCalendar(string name, Date epoch, BitArray holidays)
         {
+            Name = name;
+
             _epoch = epoch;
             _holidays = holidays;
 
@@ -55,15 +57,16 @@ namespace WmcSoft.Business.Calendars
             // 0000 1100 0001 1000 0011 0000 0110 0000 
         }
 
-        private BusinessCalendar(Date since, int count)
+        private BusinessCalendar(string name, Date since, int count)
         {
-            _epoch = since;
+            Name = name;
 
+            _epoch = since;
             _holidays = new BitArray(count, false);
         }
 
-        public BusinessCalendar(Date since, Date until, params IDateSpecification[] specifications)
-            : this(since, 1 + since.DaysUntil(until))
+        public BusinessCalendar(string name, Date since, Date until, params IDateSpecification[] specifications)
+            : this(name, since, 1 + since.DaysUntil(until))
         {
             var interval = Interval.Closed(since, until);
             foreach (var specification in specifications) {
@@ -72,6 +75,13 @@ namespace WmcSoft.Business.Calendars
                 }
             }
         }
+
+        public BusinessCalendar(Date since, Date until, params IDateSpecification[] specifications)
+          : this("Busines calendar since {since} and until {until}", since, until, specifications)
+        {
+        }
+
+        public string Name { get; }
 
         public Date MinDate => _epoch;
         public Date MaxDate => _epoch.AddDays(_holidays.Length - 1);
@@ -85,7 +95,7 @@ namespace WmcSoft.Business.Calendars
 
         [Obsolete("Use the specifications instead.", false)]
         public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
-            : this(since, 1 + since.DaysUntil(until))
+            : this("{Obsolete}", since, 1 + since.DaysUntil(until))
         {
             var length = _holidays.Length;
             for (int i = 0; i < length; i++) {

@@ -32,6 +32,8 @@ namespace WmcSoft.Business.Calendars
 {
     public interface IBusinessCalendar
     {
+        string Name { get; }
+
         Date MinDate { get; }
         Date MaxDate { get; }
 
@@ -55,8 +57,9 @@ namespace WmcSoft.Business.Calendars
                 _until = until;
             }
 
-            public Date MinDate => _since;
+            public string Name => _calendar.Name;
 
+            public Date MinDate => _since;
             public Date MaxDate => _until;
 
             public bool IsBusinessDay(Date date)
