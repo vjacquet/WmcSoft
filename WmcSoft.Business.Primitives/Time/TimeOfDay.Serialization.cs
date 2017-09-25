@@ -35,11 +35,14 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using WmcSoft.Serialization.Json;
 
 namespace WmcSoft.Time
 {
     [Serializable]
     [XmlSchemaProvider("GetSchema")]
+    [JsonConverter(typeof(TimeOfDayConverter))]
     public partial struct TimeOfDay : IXmlSerializable
     {
         public static XmlQualifiedName GetSchema(XmlSchemaSet xs)

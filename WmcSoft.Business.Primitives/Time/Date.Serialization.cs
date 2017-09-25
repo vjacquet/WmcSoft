@@ -35,11 +35,14 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using WmcSoft.Serialization.Json;
 
 namespace WmcSoft.Time
 {
     [Serializable]
     [XmlSchemaProvider("GetSchema")]
+    [JsonConverter(typeof(DateConverter))]
     public partial struct Date : IXmlSerializable
     {
         public static XmlQualifiedName GetSchema(XmlSchemaSet xs)
