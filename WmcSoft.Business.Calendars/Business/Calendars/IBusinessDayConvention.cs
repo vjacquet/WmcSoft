@@ -37,7 +37,25 @@ namespace WmcSoft.Business.Calendars
 
     public static class BusinessDayConventionExtensions
     {
-        public static DateTime LastDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, Date date, TConvention convention)
+        public static Date FirstDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, Date date, TConvention convention)
+            where TConvention : IBusinessDayConvention
+            where TCalendar : IBusinessCalendar
+        {
+            var year = date.Year;
+            var month = date.Month;
+            var firstDayOfMonth = new DateTime(year, month, 1);
+            return convention.Adjust(calendar, date);
+        }
+
+        public static bool IsFirstDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, Date date, TConvention convention)
+            where TConvention : IBusinessDayConvention
+            where TCalendar : IBusinessCalendar
+        {
+            var prevDay = convention.Adjust(calendar, date.AddDays(-1));
+            return prevDay.Month != date.Month;
+        }
+
+        public static Date LastDayOfMonth<TCalendar, TConvention>(this TCalendar calendar, Date date, TConvention convention)
             where TConvention : IBusinessDayConvention
             where TCalendar : IBusinessCalendar
         {
