@@ -41,7 +41,7 @@ namespace WmcSoft.Collections.Generic
     {
         #region Fields
 
-        readonly IComparer<T>[] _comparers;
+        private readonly IComparer<T>[] _comparers;
 
         #endregion
 

@@ -115,7 +115,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The source dictionary</param>
         /// <param name="keys">The keys of the expected values.</param>
         /// <returns>An array of <typeparamref name="TValue"/>.</returns>
-        public static TValue[] Project<TKey,  TValue>(this IDictionary<TKey, TValue> source, params TKey[] keys)
+        public static TValue[] Project<TKey, TValue>(this IDictionary<TKey, TValue> source, params TKey[] keys)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -355,6 +355,7 @@ namespace WmcSoft.Collections.Generic
         public static bool RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey oldKey, TKey newKey)
         {
             if (oldKey == null) throw new ArgumentNullException(nameof(oldKey));
+
             try {
                 if (dictionary.TryGetValue(oldKey, out TValue value)) {
                     dictionary.Add(newKey, value);

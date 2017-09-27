@@ -39,27 +39,27 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="TValue">The type of values in the mutable index.</typeparam>
     public partial class Index<TKey, TValue> : IIndex<TKey, TValue>
     {
-        private readonly Dictionary<TKey, List<TValue>> _storage;
+        private readonly Dictionary<TKey, ICollection<TValue>> _storage;
         private int _count;
 
         public Index()
         {
-            _storage = new Dictionary<TKey, List<TValue>>();
+            _storage = new Dictionary<TKey, ICollection<TValue>>();
         }
 
         public Index(IEqualityComparer<TKey> comparer)
         {
-            _storage = new Dictionary<TKey, List<TValue>>(comparer);
+            _storage = new Dictionary<TKey, ICollection<TValue>>(comparer);
         }
 
         public Index(int capacity, IEqualityComparer<TKey> comparer)
         {
-            _storage = new Dictionary<TKey, List<TValue>>(capacity, comparer);
+            _storage = new Dictionary<TKey, ICollection<TValue>>(capacity, comparer);
         }
 
-        public IReadOnlyList<TValue> this[TKey key] {
+        public IReadOnlyCollection<TValue> this[TKey key] {
             get {
-                if (_storage.TryGetValue(key, out List<TValue> list))
+                if (_storage.TryGetValue(key, out ICollection<TValue> list))
                     return list.AsReadOnly();
                 return EmptyReadOnlyList<TValue>.Instance;
             }
@@ -83,7 +83,7 @@ namespace WmcSoft.Collections.Generic
 
         public bool Add(TKey key, TValue value)
         {
-            if (!_storage.TryGetValue(key, out List<TValue> list)) {
+            if (!_storage.TryGetValue(key, out ICollection<TValue> list)) {
                 list = new List<TValue>();
                 _storage.Add(key, list);
             }
@@ -114,7 +114,7 @@ namespace WmcSoft.Collections.Generic
 
         public bool Contains(TKey key, TValue value)
         {
-            if (_storage.TryGetValue(key, out List<TValue> list)) {
+            if (_storage.TryGetValue(key, out ICollection<TValue> list)) {
                 return list.Contains(value);
             }
             return false;
@@ -127,7 +127,7 @@ namespace WmcSoft.Collections.Generic
 
         public int Remove(TKey key)
         {
-            if (_storage.TryGetValue(key, out List<TValue> list)) {
+            if (_storage.TryGetValue(key, out ICollection<TValue> list)) {
                 _storage.Remove(key);
 
                 var removed = list.Count;
@@ -140,7 +140,7 @@ namespace WmcSoft.Collections.Generic
 
         public bool Remove(TKey key, TValue value)
         {
-            if (_storage.TryGetValue(key, out List<TValue> list) && list.Remove(value)) {
+            if (_storage.TryGetValue(key, out ICollection<TValue> list) && list.Remove(value)) {
                 if (list.Count == 0) {
                     _storage.Remove(key);
                 }
@@ -195,9 +195,9 @@ namespace WmcSoft.Collections.Generic
 
         class LookupAdapter : ILookup<TKey, TValue>
         {
-            private readonly IDictionary<TKey, List<TValue>> _index;
+            private readonly IDictionary<TKey, ICollection<TValue>> _index;
 
-            public LookupAdapter(IDictionary<TKey, List<TValue>> index)
+            public LookupAdapter(IDictionary<TKey, ICollection<TValue>> index)
             {
                 _index = index;
             }
@@ -211,7 +211,7 @@ namespace WmcSoft.Collections.Generic
             public IEnumerator<IGrouping<TKey, TValue>> GetEnumerator()
             {
                 foreach (var kv in _index)
-                    yield return new Grouping<TKey, TValue>(kv.Key, kv.Value);
+                    yield return new Grouping<TKey, TValue>(kv.Key, kv.Value.AsReadOnly());
             }
 
             IEnumerator IEnumerable.GetEnumerator()

@@ -36,12 +36,13 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="T">The type of values in the arrays.</typeparam>
     public class ArrayEqualityComparer<T> : IEqualityComparer<Array>
     {
-        readonly IEqualityComparer<T> _comparer;
+        private readonly IEqualityComparer<T> _comparer;
 
         public ArrayEqualityComparer(IEqualityComparer<T> comparer)
         {
             _comparer = comparer;
         }
+
         public ArrayEqualityComparer()
             : this(EqualityComparer<T>.Default)
         {

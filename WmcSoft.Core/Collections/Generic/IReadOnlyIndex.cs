@@ -40,7 +40,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="key">The key to locate.</param>
         /// <returns>The element that has the specified key in the read-only index.</returns>
         /// <exception cref="ArgumentNullException">key is null.</exception>
-        IReadOnlyList<TValue> this[TKey key] { get; }
+        IReadOnlyCollection<TValue> this[TKey key] { get; }
 
         /// <summary>
         ///  Gets an enumerable collection that contains the keys in the read-only index.

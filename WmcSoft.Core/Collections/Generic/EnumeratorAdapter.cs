@@ -31,7 +31,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Adapts an <see cref="IEnumerator"/> as an <see cref="IEnumerator{object}"/>.
+    /// Adapts an <see cref="IEnumerator"/> as an <see cref="IEnumerator{T}"/>.
     /// </summary>
     public struct EnumeratorAdapter<T> : IEnumerator<T>
     {
@@ -42,13 +42,9 @@ namespace WmcSoft.Collections.Generic
             _enumerator = enumerator;
         }
 
-        object IEnumerator.Current {
-            get { return _enumerator.Current; }
-        }
+        object IEnumerator.Current => _enumerator.Current;
 
-        public T Current {
-            get { return (T)_enumerator.Current; }
-        }
+        public T Current => (T)_enumerator.Current;
 
         public void Dispose()
         {

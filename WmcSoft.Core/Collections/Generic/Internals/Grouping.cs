@@ -35,9 +35,9 @@ namespace WmcSoft.Collections.Generic
     internal class Grouping<TKey, TValue> : IGrouping<TKey, TValue>
     {
         private readonly TKey _key;
-        private readonly IReadOnlyList<TValue> _values;
+        private readonly IReadOnlyCollection<TValue> _values;
 
-        public Grouping(TKey key, IReadOnlyList<TValue> values)
+        public Grouping(TKey key, IReadOnlyCollection<TValue> values)
         {
             _key = key;
             _values = values;
