@@ -24,7 +24,6 @@
 
 #endregion
 
-using System;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
