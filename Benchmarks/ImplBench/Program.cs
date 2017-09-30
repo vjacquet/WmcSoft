@@ -20,7 +20,7 @@ namespace ImplBench
 
                 var engine = new MicrobenchEngine(traceSource);
                 //var discovery = new AssemblyBenchmarkDiscovery(assembly);
-                var discovery = new TypesBenchmarkDiscovery(typeof(OrderedBench));
+                var discovery = new TypesBenchmarkDiscovery(typeof(HasherBench));
                 foreach (var benchmark in discovery) {
                     engine.Run(benchmark, args);
                 }

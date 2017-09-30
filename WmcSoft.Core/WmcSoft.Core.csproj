@@ -95,6 +95,7 @@
     <Compile Include="Collections\Generic\EnumerableExtensions.MinMax.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Traits.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Expected.cs" />
+    <Compile Include="Collections\Generic\Hasher.cs" />
     <Compile Include="Collections\Generic\IndexExtensions.cs" />
     <Compile Include="Collections\Generic\Internals\Grouping.cs" />
     <Compile Include="Collections\Generic\Internals\BackwardsReadOnlyList.cs" />
@@ -187,8 +188,6 @@
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
     <Compile Include="Data\DataTableCollectionExtensions.cs" />
     <Compile Include="Data\DbConnectionExtensions.cs" />
-    <Compile Include="Data\Odbc\OdbcConnectionExtensions.Parametrized.cs" />
-    <Compile Include="Data\OleDb\OleDbConnectionExtensions.Parametrized.cs" />
     <Compile Include="Globalization\Dates.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />

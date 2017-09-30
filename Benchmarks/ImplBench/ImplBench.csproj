@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HasherBench.cs" />
     <Compile Include="OrderedBench.cs" />
     <Compile Include="BagBench.cs" />
     <Compile Include="Program.cs" />

@@ -116,7 +116,7 @@ namespace ImplBench
             }
         }
 
-        struct ClassiComparer : IComparer<Record>
+        struct ClassicComparer : IComparer<Record>
         {
             public int Compare(Record x, Record y)
             {
@@ -173,7 +173,7 @@ namespace ImplBench
         [Measure]
         public static void MeasureSortWithClassicComparer()
         {
-            records.Sort(new ClassiComparer());
+            records.Sort(new ClassicComparer());
         }
 
         [Measure]
