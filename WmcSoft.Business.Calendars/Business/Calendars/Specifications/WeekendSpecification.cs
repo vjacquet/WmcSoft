@@ -82,17 +82,6 @@ namespace WmcSoft.Business.Calendars.Specifications
             return IsWeekend(date.DayOfWeek);
         }
 
-        private Date UpperBoundExclusive(Interval<Date> interval)
-        {
-            if (!interval.HasUpperLimit) {
-                return Date.MaxValue;
-            } else if (interval.IsUpperIncluded) {
-                return interval.GetUpperOrDefault();
-            } else {
-                return interval.GetUpperOrDefault().AddDays(-1);
-            }
-        }
-
         private IEnumerable<Date> UnguardedEnumerateOver(Date start, Date end)
         {
             if (IsSatisfiedBy(start))

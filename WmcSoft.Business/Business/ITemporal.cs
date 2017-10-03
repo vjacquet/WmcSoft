@@ -50,9 +50,10 @@ namespace WmcSoft.Business
         /// <param name="self">The temporal.</param>
         /// <param name="dateTime">The date time.</param>
         /// <returns>Returns true if the <see cref="ITemporal"/> is valid at the specified date & time.</returns>
-        public static bool IsValidOn<TTemporal>(this TTemporal self, DateTime dateTime) where TTemporal : ITemporal {
-            return (!self.ValidSince.HasValue || dateTime >= self.ValidSince.GetValueOrDefault())
-                && (!self.ValidUntil.HasValue || dateTime < self.ValidUntil.GetValueOrDefault());
+        public static bool IsValidOn<TTemporal>(this TTemporal self, DateTime dateTime)
+            where TTemporal : ITemporal
+        {
+            return !(dateTime < self.ValidSince) && !(dateTime >= self.ValidUntil);
         }
     }
 }

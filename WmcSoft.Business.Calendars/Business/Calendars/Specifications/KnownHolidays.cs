@@ -51,13 +51,11 @@ namespace WmcSoft.Business.Calendars.Specifications
 
         public static readonly AnnualDateSpecification MemorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
 
-
         public static readonly GregorianEasterSpecification GregorianEaster = new GregorianEasterSpecification();
 
         public static readonly ShiftedAnnualDateSpecification GregorianEasterFriday = new ShiftedAnnualDateSpecification(GregorianEaster, -2);
 
         public static readonly ShiftedAnnualDateSpecification GregorianEasterMonday = new ShiftedAnnualDateSpecification(GregorianEaster, +1);
-
 
         public static AdjustedAnnualDateSpecification Adjust(this AnnualDateSpecification specification, DayOfWeek dayOfWeek, int shift)
         {

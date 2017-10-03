@@ -29,7 +29,7 @@ namespace ImplBench
             }
         }
 
-        struct ClassiComparer : IEqualityComparer<Record>
+        struct ClassicComparer : IEqualityComparer<Record>
         {
             public bool Equals(Record x, Record y)
             {
@@ -104,7 +104,7 @@ namespace ImplBench
         [Measure]
         public static void MeasureHashWithClassicComparer()
         {
-            records = new HashSet<Record>(book, new ClassiComparer());
+            records = new HashSet<Record>(book, new ClassicComparer());
         }
 
         [Measure]
