@@ -68,4 +68,38 @@ namespace WmcSoft.Business.Calendars.Specifications
             return Adjust(date);
         }
     }
+
+    public sealed class AdjustedAnnualDateSpecification<TCalendar, TConvention> : AnnualDateSpecification
+        where TCalendar : IBusinessCalendar
+        where TConvention : IBusinessDayConvention
+    {
+        private readonly AnnualDateSpecification _specification;
+        private readonly TCalendar _calendar;
+        private readonly TConvention _convention;
+
+        public AdjustedAnnualDateSpecification(TCalendar calendar, AnnualDateSpecification specification, TConvention convention = default(TConvention))
+        {
+            _specification = specification;
+            _calendar = calendar;
+            _convention = convention;
+        }
+
+        protected override IEnumerable<Date> UnguardedEnumerateOver(Date since, Date until)
+        {
+            return _specification.EnumerateBetween(since, until).Select(Adjust)
+                .SkipWhile(d => d < since)
+                .TakeWhile(d => d <= until);
+        }
+
+        private Date Adjust(Date date)
+        {
+            return _convention.Adjust(_calendar, date);
+        }
+
+        public override Date OfYear(int year)
+        {
+            var date = _specification.OfYear(year);
+            return Adjust(date);
+        }
+    }
 }
