@@ -990,17 +990,15 @@ namespace WmcSoft
         #region Substring
 
         /// <summary>
-        /// Extracts the substring that precedes the <paramref name="find"/> char.
+        /// Extracts the substring that precedes the <paramref name="value"/> char.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter char to look for.</param>
-        /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
-        public static string SubstringBefore(this string self, char find)
+        /// <param name="value">The delimiter char to look for.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
+        /// <returns>Returns the substring that precedes the <paramref name="value"/> char, or null if the delimiter is not found.</returns>
+        public static string SubstringBefore(this string self, char value)
         {
-            if (string.IsNullOrEmpty(self))
-                return null;
-
-            var index = self.IndexOf(find);
+            var index = self.IndexOf(value);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -1012,25 +1010,25 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static string SubstringBeforeOrSelf(this string self, char find)
         {
             return SubstringBefore(self, find) ?? self;
         }
 
         /// <summary>
-        /// Extracts the substring that precedes the <paramref name="find"/> string.
+        /// Extracts the substring that precedes the <paramref name="value"/> string.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter string to look for.</param>
-        /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static string SubstringBefore(this string self, string find)
+        /// <param name="value">The delimiter string to look for.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
+        /// <returns>Returns the substring that precedes the <paramref name="value"/> string, or null if the delimiter is not found.</returns>
+        public static string SubstringBefore(this string self, string value)
         {
-            if (string.IsNullOrEmpty(self))
-                return null;
-            if (string.IsNullOrEmpty(find))
-                return self;
+            if (string.IsNullOrEmpty(value))
+                return "";
 
-            var index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(value, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -1042,6 +1040,7 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static string SubstringBeforeOrSelf(this string self, string find)
         {
             return SubstringBefore(self, find) ?? self;
@@ -1052,12 +1051,10 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
         public static string SubstringAfter(this string self, char find)
         {
-            if (string.IsNullOrEmpty(self))
-                return null;
-
             var index = self.IndexOf(find);
             if (index < 0)
                 return null;
@@ -1065,33 +1062,34 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Extracts the substring that follows the <paramref name="find"/> char.
+        /// Extracts the substring that follows the <paramref name="value"/> char.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter char to look for.</param>
-        /// <returns>Returns the substring that follows the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
-        public static string SubstringAfterOrSelf(this string self, char find)
+        /// <param name="value">The delimiter char to look for.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
+        /// <returns>Returns the substring that follows the <paramref name="value"/> char, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
+        public static string SubstringAfterOrSelf(this string self, char value)
         {
-            return SubstringAfter(self, find) ?? self;
+            return SubstringAfter(self, value) ?? self;
         }
 
         /// <summary>
-        /// Extracts the substring that follows the <paramref name="find"/> string.
+        /// Extracts the substring that follows the <paramref name="value"/> string.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter string to look for.</param>
-        /// <returns>Returns the substring that follows the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static string SubstringAfter(this string self, string find)
+        /// <param name="value">The delimiter string to look for.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
+        /// <returns>Returns the substring that follows the <paramref name="value"/> string, or null if the delimiter is not found.</returns>
+        public static string SubstringAfter(this string self, string value)
         {
-            if (string.IsNullOrEmpty(self))
-                return null;
-            if (string.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(value))
                 return self;
 
-            var index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(value, StringComparison.Ordinal);
             if (index < 0)
                 return null;
-            return self.Substring(index + find.Length);
+            return self.Substring(index + value.Length);
         }
 
         /// <summary>
@@ -1099,7 +1097,9 @@ namespace WmcSoft
         /// </summary>
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static string SubstringAfterOrSelf(this string self, string find)
         {
             return SubstringAfter(self, find) ?? self;
@@ -1111,6 +1111,7 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
         /// <returns>The substring between the prefix and the suffix, or null if the prefix or the suffix is not found.</returns>
         public static string SubstringBetween(this string self, string prefix, string suffix)
         {
@@ -1135,7 +1136,9 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
+        /// <exception cref="NullReferenceException"><paramref name="self"/> is <c>null</c>.</exception>
         /// <returns>The substring between the prefix and the suffix, or the string if the prefix or the suffix is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static string SubstringBetweenOrSelf(this string self, string prefix, string suffix)
         {
             return SubstringBetween(self, prefix, suffix) ?? self;

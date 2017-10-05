@@ -55,37 +55,41 @@ namespace WmcSoft
             Assert.Equal("abcdefghijkl", s.Remove(' ', '-', ','));
         }
 
-        [Fact]
-        public void CheckSubstringAfter()
+        [Theory]
+        [InlineData(null, "", "q")]
+        [InlineData("aa-bb", "aa-bb", null)]
+        [InlineData("aa-bb", "aa-bb", "")]
+        [InlineData("bb", "aa-bb", "-")]
+        [InlineData("a-bb", "aa-bb", "a")]
+        [InlineData("b", "aa-bb", "b")]
+        [InlineData(null, "aa-bb", "q")]
+        public void CheckSubstringAfter(string expected, string s, string find)
         {
-            Assert.Equal(null, "".SubstringAfter("q"));
-            Assert.Equal("aa-bb", "aa-bb".SubstringAfter(""));
-            Assert.Equal("bb", "aa-bb".SubstringAfter("-"));
-            Assert.Equal("a-bb", "aa-bb".SubstringAfter("a"));
-            Assert.Equal("b", "aa-bb".SubstringAfter("b"));
-            Assert.Equal(null, "aa-bb".SubstringAfter("q"));
-            Assert.Equal("z", "aa-bb".SubstringAfter("q") ?? "z");
+            Assert.Equal(expected, s.SubstringAfter(find));
         }
 
-        [Fact]
-        public void CheckSubstringBefore()
+        [Theory]
+        [InlineData(null, "", "q")]
+        [InlineData("", "aa-bb", null)]
+        [InlineData("", "aa-bb", "")]
+        [InlineData("aa", "aa-bb", "-")]
+        [InlineData("", "aa-bb", "a")]
+        [InlineData("aa-", "aa-bb", "b")]
+        [InlineData(null, "aa-bb", "q")]
+        public void CheckSubstringBefore(string expected, string s, string find)
         {
-            Assert.Equal(null, "".SubstringBefore("q"));
-            Assert.Equal("aa-bb", "aa-bb".SubstringBefore(""));
-            Assert.Equal("aa", "aa-bb".SubstringBefore("-"));
-            Assert.Equal("", "aa-bb".SubstringBefore("a"));
-            Assert.Equal("aa-", "aa-bb".SubstringBefore("b"));
-            Assert.Equal(null, "aa-bb".SubstringBefore("q"));
+            Assert.Equal(expected, s.SubstringBefore(find));
         }
 
-        [Fact]
-        public void CheckSubstringBetween()
+        [Theory]
+        [InlineData(null, "", "q", "r")]
+        [InlineData("a-b", "a[a-b]b", "[", "]")]
+        [InlineData(null, "a[a-b]b", "]", "[")]
+        [InlineData("a-b", "a]a-b]b", "]", "]")]
+        [InlineData("", "a[]b", "[", "]")]
+        public void CheckSubstringBetween(string expected, string s, string prefix, string suffix)
         {
-            Assert.Equal(null, "".SubstringBetween("q", "r"));
-            Assert.Equal("a-b", "a[a-b]b".SubstringBetween("[", "]"));
-            Assert.Equal(null, "a[a-b]b".SubstringBetween("]", "["));
-            Assert.Equal("a-b", "a]a-b]b".SubstringBetween("]", "]"));
-            Assert.Equal("", "a[]b".SubstringBetween("[", "]"));
+            Assert.Equal(expected, s.SubstringBetween(prefix, suffix));
         }
 
         [Fact]
