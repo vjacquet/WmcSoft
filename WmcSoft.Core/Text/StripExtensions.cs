@@ -150,7 +150,7 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The string.</param>
         /// <returns>Returns null if the string contains only whitespace; otherwise, the string.</returns>
-        public static Strip NullifyWhiteSpace(this Strip value)
+        public static Strip NullifyWhiteSpace(Strip value)
         {
             if (Strip.IsNullOrWhiteSpace(value))
                 return null;
@@ -162,7 +162,7 @@ namespace WmcSoft
         /// </summary>
         /// <param name="value">The string.</param>
         /// <returns>Returns null if the string is empty; otherwise, the string.</returns>
-        public static Strip NullifyEmpty(this Strip value)
+        public static Strip NullifyEmpty(Strip value)
         {
             if (Strip.IsNullOrEmpty(value))
                 return null;
@@ -175,7 +175,7 @@ namespace WmcSoft
         /// <param name="value">The string.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns>Returns null if the string verifies the predicate; otherwise, the string.</returns>
-        public static Strip Nullify(this Strip value, Predicate<Strip> predicate)
+        public static Strip Nullify(Strip value, Predicate<Strip> predicate)
         {
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
@@ -340,17 +340,14 @@ namespace WmcSoft
         #region Substring
 
         /// <summary>
-        /// Extracts the substring that precedes the <paramref name="find"/> char.
+        /// Extracts the substring that precedes the <paramref name="value"/> char.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter char to look for.</param>
-        /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
-        public static Strip SubstringBefore(this Strip self, char find)
+        /// <param name="value">The delimiter char to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="value"/> char, or null if the delimiter is not found.</returns>
+        public static Strip SubstringBefore(this Strip self, char value)
         {
-            if (Strip.IsNullOrEmpty(self))
-                return null;
-
-            var index = self.IndexOf(find);
+            var index = self.IndexOf(value);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -362,25 +359,24 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static Strip SubstringBeforeOrSelf(this Strip self, char find)
         {
             return SubstringBefore(self, find) ?? self;
         }
 
         /// <summary>
-        /// Extracts the substring that precedes the <paramref name="find"/> string.
+        /// Extracts the substring that precedes the <paramref name="value"/> string.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter string to look for.</param>
-        /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static Strip SubstringBefore(this Strip self, string find)
+        /// <param name="value">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that precedes the <paramref name="value"/> string, or null if the delimiter is not found.</returns>
+        public static Strip SubstringBefore(this Strip self, string value)
         {
-            if (Strip.IsNullOrEmpty(self))
-                return null;
-            if (string.IsNullOrEmpty(find))
-                return self;
+            if (string.IsNullOrEmpty(value))
+                return Strip.Empty;
 
-            var index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(value, StringComparison.Ordinal);
             if (index < 0)
                 return null;
             return self.Substring(0, index);
@@ -392,6 +388,7 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that precedes the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static Strip SubstringBeforeOrSelf(this Strip self, string find)
         {
             return SubstringBefore(self, find) ?? self;
@@ -405,9 +402,6 @@ namespace WmcSoft
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or null if the delimiter is not found.</returns>
         public static Strip SubstringAfter(this Strip self, char find)
         {
-            if (Strip.IsNullOrEmpty(self))
-                return null;
-
             var index = self.IndexOf(find);
             if (index < 0)
                 return null;
@@ -420,28 +414,27 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter char to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> char, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static Strip SubstringAfterOrSelf(this Strip self, char find)
         {
             return SubstringAfter(self, find) ?? self;
         }
 
         /// <summary>
-        /// Extracts the substring that follows the <paramref name="find"/> string.
+        /// Extracts the substring that follows the <paramref name="value"/> string.
         /// </summary>
         /// <param name="self">The initial string.</param>
-        /// <param name="find">The delimiter string to look for.</param>
-        /// <returns>Returns the substring that follows the <paramref name="find"/> string, or null if the delimiter is not found.</returns>
-        public static Strip SubstringAfter(this Strip self, string find)
+        /// <param name="value">The delimiter string to look for.</param>
+        /// <returns>Returns the substring that follows the <paramref name="value"/> string, or null if the delimiter is not found.</returns>
+        public static Strip SubstringAfter(this Strip self, string value)
         {
-            if (Strip.IsNullOrEmpty(self))
-                return null;
-            if (string.IsNullOrEmpty(find))
+            if (string.IsNullOrEmpty(value))
                 return self;
 
-            var index = self.IndexOf(find, StringComparison.Ordinal);
+            var index = self.IndexOf(value, StringComparison.Ordinal);
             if (index < 0)
                 return null;
-            return self.Substring(index + find.Length);
+            return self.Substring(index + value.Length);
         }
 
         /// <summary>
@@ -450,6 +443,7 @@ namespace WmcSoft
         /// <param name="self">The initial string.</param>
         /// <param name="find">The delimiter string to look for.</param>
         /// <returns>Returns the substring that follows the <paramref name="find"/> string, or the string if the delimiter is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static Strip SubstringAfterOrSelf(this Strip self, string find)
         {
             return SubstringAfter(self, find) ?? self;
@@ -486,6 +480,7 @@ namespace WmcSoft
         /// <param name="prefix">The prefix.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The substring between the prefix and the suffix, or the string if the prefix or the suffix is not found.</returns>
+        [Obsolete("Too complex.", true)]
         public static Strip SubstringBetweenOrSelf(this Strip self, string prefix, string suffix)
         {
             return SubstringBetween(self, prefix, suffix) ?? self;

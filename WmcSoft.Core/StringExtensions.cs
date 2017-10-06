@@ -644,8 +644,6 @@ namespace WmcSoft
         /// <returns>The joined string.</returns>
         public static string JoinWith(this IEnumerable<string> values, string separator)
         {
-            if (values == null) throw new ArgumentNullException(nameof(values));
-
             return string.Join(separator, values);
         }
 
@@ -1026,7 +1024,7 @@ namespace WmcSoft
         public static string SubstringBefore(this string self, string value)
         {
             if (string.IsNullOrEmpty(value))
-                return "";
+                return string.Empty;
 
             var index = self.IndexOf(value, StringComparison.Ordinal);
             if (index < 0)

@@ -41,7 +41,9 @@ To improve readability:
 
   On a side note, it is unfortunate that the convention for a null `this` argument of the extensions should throw `ArgumentNullException`
   instead of `NullReferenceException`. Not only the latter is what calling a method on a null reference would throw but also we would not
-  have to always guard for null.
+  have to always guard for null. We will follow this convention the Linq context. In all other cases, we prefer to throw `NullReferenceException`.
+
+- For readability, extensions methods should not accept a null `this`. If the method is defined when the first parameter is null, then the method should not be an extension method. `using static`.
 
 - Linq-like extensions methods should not mutate the enumerable, therefore `ForEach` on an enumerable is not recommended, as stated by Eric Lippert in [“foreach” vs “ForEach”](https://blogs.msdn.microsoft.com/ericlippert/2009/05/18/foreach-vs-foreach/).
 
@@ -54,7 +56,6 @@ a clear policy on whether the function should be static or not. It is static for
         public static Rational Negate(Rational x) {
             return -x;
         }
-
 
 ## Libraries
 
