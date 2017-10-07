@@ -37,11 +37,13 @@ namespace WmcSoft
 
         public Specification(ISpecification<T> spec)
         {
-            _spec = spec ?? Specification.Null<T>();
+            _spec = spec;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
+            if (_spec == null)
+                return false;
             return _spec.IsSatisfiedBy(candidate);
         }
 
@@ -54,16 +56,24 @@ namespace WmcSoft
 
         public static Specification<T> operator &(Specification<T> x, Specification<T> y)
         {
+            if (x._spec == null) return x;
+            if (y._spec == null) return y;
+
             return new Specification<T>(new AndSpecification<T>(x._spec, y._spec));
         }
 
         public static Specification<T> operator |(Specification<T> x, Specification<T> y)
         {
+            if (x._spec == null) return y;
+            if (y._spec == null) return x;
+
             return new Specification<T>(new OrSpecification<T>(x._spec, y._spec));
         }
 
         public static Specification<T> operator ~(Specification<T> x)
         {
+            if (x._spec == null)
+                return new Specification<T>(Specification.Never<T>());
             return new Specification<T>(new NotSpecification<T>(x._spec));
         }
 
@@ -72,9 +82,14 @@ namespace WmcSoft
 
     public static class Specification
     {
-        public static NullSpecification<T> Null<T>()
+        public static AlwaysSpecification<T> Always<T>()
         {
-            return NullSpecification<T>.Default;
+            return default(AlwaysSpecification<T>);
+        }
+
+        public static NeverSpecification<T> Never<T>()
+        {
+            return default(NeverSpecification<T>);
         }
 
         public static PredicateSpecification<T> Create<T>(Predicate<T> predicate)
@@ -104,15 +119,21 @@ namespace WmcSoft
         public static NotSpecification<T> Not<T>(ISpecification<T> spec)
         {
             return new NotSpecification<T>(spec);
-        } 
+        }
     }
 
     #region Specialized specifications
 
-    public struct NullSpecification<T> : ISpecification<T>
+    public struct NeverSpecification<T> : ISpecification<T>
     {
-        public static readonly NullSpecification<T> Default = default(NullSpecification<T>);
+        public bool IsSatisfiedBy(T candidate)
+        {
+            return false;
+        }
+    }
 
+    public struct AlwaysSpecification<T> : ISpecification<T>
+    {
         public bool IsSatisfiedBy(T candidate)
         {
             return true;
@@ -128,13 +149,13 @@ namespace WmcSoft
             if (predicate != null)
                 _predicate = x => predicate(x);
             else
-                _predicate = NullSpecification<T>.Default.IsSatisfiedBy;
+                _predicate = default(AlwaysSpecification<T>).IsSatisfiedBy;
         }
         public PredicateSpecification(Func<T, bool> predicate)
         {
             _predicate = (predicate != null)
                 ? predicate
-                : NullSpecification<T>.Default.IsSatisfiedBy;
+                : default(AlwaysSpecification<T>).IsSatisfiedBy;
         }
 
         public bool IsSatisfiedBy(T candidate)
