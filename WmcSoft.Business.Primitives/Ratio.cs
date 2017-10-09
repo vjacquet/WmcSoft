@@ -84,6 +84,12 @@ namespace WmcSoft
             }
         }
 
+        public void Deconstruct(out decimal numerator, out decimal denominator)
+        {
+            numerator = _numerator;
+            denominator = _denominator;
+        }
+
         #endregion
 
         #region Operators
