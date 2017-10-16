@@ -25,15 +25,50 @@
 #endregion
 
 using System;
-using System.Configuration;
 using System.Data;
-using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 
 namespace WmcSoft.Data
 {
     public static partial class DbConnectionExtensions
     {
+
+        #region Borrow connection
+
+        class NoopDisposable : IDisposable
+        {
+            public void Dispose()
+            {
+            }
+        }
+
+        class ClosingDisposable : IDisposable
+        {
+            private readonly IDbConnection _connection;
+
+            public ClosingDisposable(IDbConnection connection)
+            {
+                _connection = connection;
+            }
+
+            public void Dispose()
+            {
+                _connection.Close();
+            }
+        }
+
+        public static IDisposable Borrow(this IDbConnection connection)
+        {
+            if (connection.State == ConnectionState.Open)
+                return new NoopDisposable();
+
+            connection.Close();
+            connection.Open();
+            return new ClosingDisposable(connection);
+        }
+
+        #endregion
+
         #region Factory methods
 
         /// <summary>
