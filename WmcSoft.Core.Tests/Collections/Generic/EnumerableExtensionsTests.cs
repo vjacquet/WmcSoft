@@ -26,6 +26,17 @@ namespace WmcSoft.Collections.Generic
             Assert.True(list.Quorum(3, i => (i & 1) == 1));
         }
 
+        [Fact]
+        public void CheckEmptyOrAny()
+        {
+            var empty = new int[] { };
+            var list = new[] { 1, 2, 3, 4, 5, 6, 7 };
+
+            Assert.True(empty.EmptyOrAny(i => i % 3 == 0));
+            Assert.True(list.EmptyOrAny(i => i % 3 == 0));
+            Assert.False(list.EmptyOrAny(i => i % 9 == 0));
+        }
+
         [Theory]
         [InlineData("A", new[] { "A", "B", null, "", "A", "C", "B", "A" })]
         [InlineData("B", new[] { "A", "B", null, "", "A", "C", "B", "A", "B", "B" })]

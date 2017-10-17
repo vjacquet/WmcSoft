@@ -494,19 +494,21 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns><c>true</c> if the source is empty or if any element match the predicate; otherwise, <c>false</c>.</returns>
-        public static bool EmptyOrAny<T>(this IEnumerable<T> source, Predicate<T> predicate)
+        public static bool EmptyOrAny<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     return true;
+
                 do {
                     if (predicate(enumerator.Current))
                         return true;
                 } while (enumerator.MoveNext());
+                return false;
             }
-            return false;
         }
 
         #endregion
