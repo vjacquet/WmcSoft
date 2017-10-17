@@ -658,6 +658,54 @@ namespace WmcSoft
             return JoinWith(values, separator.ToString());
         }
 
+        /// <summary>
+        /// Joins the sequence of strings with the value, using the specified separator.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="separator">The separator.</param>
+        /// <param name="values">The sequence of strings.</param>
+        /// <returns>The joined string.</returns>
+        public static string JoinWith(this string value, string separator, params string[] values)
+        {
+            var endsWithSeparator = value.EndsWith(separator); // throw when value is null.
+            if (values == null || values.Length == 0)
+                return value;
+            if (separator == null)
+                separator = "";
+            var sb = new StringBuilder(value);
+            var i = 0;
+            if (endsWithSeparator)
+                sb.Append(values[i++]);
+            while (i < values.Length) {
+                sb.Append(separator);
+                sb.Append(values[i++]);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Joins the sequence of strings with the value, using the specified separator.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="separator">The separator.</param>
+        /// <param name="values">The sequence of strings.</param>
+        /// <returns>The joined string.</returns>
+        public static string JoinWith(this string value, char separator, params string[] values)
+        {
+            var endsWithSeparator = value.EndsWith(separator); // throw when value is null.
+            if (values == null || values.Length == 0)
+                return value;
+            var sb = new StringBuilder(value);
+            var i = 0;
+            if (endsWithSeparator)
+                sb.Append(values[i++]);
+            while (i < values.Length) {
+                sb.Append(separator);
+                sb.Append(values[i++]);
+            }
+            return sb.ToString();
+        }
+
         #endregion
 
         #region Nullify methods

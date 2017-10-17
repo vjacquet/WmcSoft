@@ -258,5 +258,15 @@ namespace WmcSoft
         {
             Assert.Equal(expected, value.ContainsWord(word, '|'));
         }
+
+        [Theory]
+        [InlineData("a|b|c", "a", new [] { "b","c"})]
+        [InlineData("a|b|c", "a|", new [] { "b","c"})]
+        [InlineData("a|b||d", "a", new [] { "b",null, "d"})]
+        public void CanJoinWithStrings(string expected, string value, string[] values)
+        {
+            var actual = value.JoinWith("|", values);
+            Assert.Equal(expected, actual);
+        }
     }
 }
