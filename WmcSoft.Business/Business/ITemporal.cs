@@ -55,5 +55,10 @@ namespace WmcSoft.Business
         {
             return !(dateTime < self.ValidSince) && !(dateTime >= self.ValidUntil);
         }
+
+        public static bool IsValidOn(this ITemporal self, DateTime since, DateTime until)
+        {
+            return !(until <= self.ValidSince) && !(since > self.ValidUntil);
+        }
     }
 }
