@@ -258,7 +258,7 @@ namespace WmcSoft.Time
         #endregion
     }
 
-    public static class DateExtensions
+    public static partial class DateExtensions
     {
         public static double ToOADate(this Date date)
         {
