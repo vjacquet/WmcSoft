@@ -56,7 +56,15 @@ namespace WmcSoft.Business
             return !(dateTime < self.ValidSince) && !(dateTime >= self.ValidUntil);
         }
 
-        public static bool IsValidOn(this ITemporal self, DateTime since, DateTime until)
+        /// <summary>
+        /// Check if the specified <see cref="ITemporal"/> overlaps with the specified range of dates.
+        /// </summary>
+        /// <param name="self">The temporal.</param>
+        /// <param name="since">The begining of the range, inclusive.</param>
+        /// <param name="until">The end of the range, exclusive.</param>
+        /// <returns>Returns true if the <see cref="ITemporal"/> overlaps with the specified range of dates.</returns>
+        public static bool IsValidOn<TTemporal>(this TTemporal self, DateTime since, DateTime until)
+            where TTemporal : ITemporal
         {
             return !(until <= self.ValidSince) && !(since > self.ValidUntil);
         }
