@@ -27,14 +27,14 @@ namespace WmcSoft.Collections.Generic
         }
 
         [Fact]
-        public void CheckEmptyOrAny()
+        public void CheckAnyOrEmpty()
         {
             var empty = new int[] { };
             var list = new[] { 1, 2, 3, 4, 5, 6, 7 };
 
-            Assert.True(empty.EmptyOrAny(i => i % 3 == 0));
-            Assert.True(list.EmptyOrAny(i => i % 3 == 0));
-            Assert.False(list.EmptyOrAny(i => i % 9 == 0));
+            Assert.True(empty.AnyOrEmpty(i => i % 3 == 0));
+            Assert.True(list.AnyOrEmpty(i => i % 3 == 0));
+            Assert.False(list.AnyOrEmpty(i => i % 9 == 0));
         }
 
         [Theory]

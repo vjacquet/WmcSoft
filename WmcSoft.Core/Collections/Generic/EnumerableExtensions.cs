@@ -67,6 +67,54 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region AsReadOnlyCollection
+
+        /// <summary>
+        /// Returns an enumerable optimized for functions requiring a Count
+        /// </summary>
+        /// <typeparam name="T">The type of elements</typeparam>
+        /// <param name="source">The sequence of items</param>
+        /// <param name="count">The count of items.</param>
+        /// <returns>The decorated enumerable</returns>
+        /// <remarks>For optimization, the function does not guard against wrong count.</remarks>
+        public static IReadOnlyCollection<T> AsReadOnlyCollection<T>(this IEnumerable<T> source, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
+            return new CollectionAdapter<T>(count, source);
+        }
+
+        #endregion
+
+        #region AnyOrEmpty
+
+        /// <summary>
+        /// Determines if a sequence is empty or if any of its elements match the specified predicate.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns><c>true</c> if the source is empty or if any element match the predicate; otherwise, <c>false</c>.</returns>
+        public static bool AnyOrEmpty<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    return true;
+
+                do {
+                    if (predicate(enumerator.Current))
+                        return true;
+                } while (enumerator.MoveNext());
+                return false;
+            }
+        }
+
+        #endregion
+
         #region AtLeast / AtMost
 
         /// <summary>
@@ -157,26 +205,6 @@ namespace WmcSoft.Collections.Generic
                     return false;
             }
             return true;
-        }
-
-        #endregion
-
-        #region AsReadOnlyCollection
-
-        /// <summary>
-        /// Returns an enumerable optimized for functions requiring a Count
-        /// </summary>
-        /// <typeparam name="T">The type of elements</typeparam>
-        /// <param name="source">The sequence of items</param>
-        /// <param name="count">The count of items.</param>
-        /// <returns>The decorated enumerable</returns>
-        /// <remarks>For optimization, the function does not guard against wrong count.</remarks>
-        public static IReadOnlyCollection<T> AsReadOnlyCollection<T>(this IEnumerable<T> source, int count)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-
-            return new CollectionAdapter<T>(count, source);
         }
 
         #endregion
@@ -481,34 +509,6 @@ namespace WmcSoft.Collections.Generic
                 }
             }
             return default(TResult);
-        }
-
-        #endregion
-
-        #region EmptyOrAny
-
-        /// <summary>
-        /// Determines if a sequence is empty or if any of its elements match the specified predicate.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
-        /// <param name="predicate">A function to test each element for a condition.</param>
-        /// <returns><c>true</c> if the source is empty or if any element match the predicate; otherwise, <c>false</c>.</returns>
-        public static bool EmptyOrAny<T>(this IEnumerable<T> source, Func<T, bool> predicate)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-
-            using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    return true;
-
-                do {
-                    if (predicate(enumerator.Current))
-                        return true;
-                } while (enumerator.MoveNext());
-                return false;
-            }
         }
 
         #endregion
