@@ -95,6 +95,7 @@
     <Compile Include="Collections\Generic\EnumerableExtensions.MinMax.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Traits.cs" />
     <Compile Include="Collections\Generic\EnumerableExtensions.Expected.cs" />
+    <Compile Include="Collections\Generic\FieldwiseEqualityComparer.cs" />
     <Compile Include="Collections\Generic\Hasher.cs" />
     <Compile Include="Collections\Generic\IndexExtensions.cs" />
     <Compile Include="Collections\Generic\Internals\Grouping.cs" />
