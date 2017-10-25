@@ -37,7 +37,6 @@ namespace WmcSoft.Diagnostics
     [DebuggerDisplay("{ToString(),nq}")]
     public sealed class Counter : IComparable<Counter>
     {
-        readonly string _name;
         int _count;
 
         /// <summary>
@@ -48,15 +47,13 @@ namespace WmcSoft.Diagnostics
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
-            _name = name;
+            Name = name;
         }
 
         /// <summary>
         /// Name of the counter.
         /// </summary>
-        public string Name {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         /// <summary>
         /// Increment the counter.
@@ -86,7 +83,7 @@ namespace WmcSoft.Diagnostics
         /// <returns>A string that represents the current counter.</returns>
         public override string ToString()
         {
-            return _count + " (" + _name + ')';
+            return _count + " (" + Name + ')';
         }
 
         /// <summary>
