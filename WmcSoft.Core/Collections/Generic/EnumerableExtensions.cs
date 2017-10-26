@@ -536,6 +536,35 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Except
+
+        /// <summary>
+        /// Produces the set difference of two sequences by using the default equality comparer to compare values.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the input sequences.</typeparam>
+        /// <param name="first">An <see cref="IEnumerable{T}"/> whose elements that are not also in <paramref name="second"/> will be returned.</param>
+        /// <param name="second">Elements that also occur in the <paramref name="second"/> sequence will be removed from the returned sequence.</param>
+        /// <returns>A sequence that contains the set difference of the elements of two sequences.</returns>
+        public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, params TSource[] second)
+        {
+            return Enumerable.Except(first, second);
+        }
+
+        /// <summary>
+        /// Produces the set difference of two sequences by using the specified <see cref="IEqualityComparer{T}"/> to compare values.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the input sequences.</typeparam>
+        /// <param name="first">An <see cref="IEnumerable{T}"/> whose elements that are not also in <paramref name="second"/> will be returned.</param>
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare values.</param>
+        /// <param name="second">Elements that also occur in the <paramref name="second"/> sequence will be removed from the returned sequence.</param>
+        /// <returns>A sequence that contains the set difference of the elements of two sequences.</returns>
+        public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEqualityComparer<TSource> comparer, params TSource[] second)
+        {
+            return Enumerable.Except(first, second, comparer);
+        }
+
+        #endregion
+
         #region Extract
 
         public static int Extract<TSource>(this IEnumerable<TSource> source, out TSource value)

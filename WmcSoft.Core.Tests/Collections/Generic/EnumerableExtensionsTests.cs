@@ -519,5 +519,14 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(1, occurences.Count);
             Assert.Equal('A', occurences.Single().Key);
         }
+
+        [Fact]
+        public void CanUseExceptWithVariadicParameters()
+        {
+            var first = new List<int> { 1, 2, 3, 4, 5 };
+            var expected = new[] { 1, 2, 4 };
+            var actual = first.Except(3, 5);
+            Assert.Equal(expected, actual);
+        }
     }
 }
