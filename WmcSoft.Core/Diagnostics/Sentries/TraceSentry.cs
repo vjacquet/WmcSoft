@@ -29,6 +29,9 @@ using System.Diagnostics;
 
 namespace WmcSoft.Diagnostics.Sentries
 {
+    /// <summary>
+    /// Decorates a <see cref="ISentry"/> to trace observed status while others are observing it.
+    /// </summary>
     public class TraceSentry : ISentry
     {
         #region Utility classes
@@ -86,6 +89,8 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_syncRoot) {
                 if (++_refCount == 1) {
+                    // register the tracer only when someone observe this sentry.
+                     _traceSource.TraceInformation($"Sentry {Name} subscribed.");
                     _unsubscriber = _decorated.Subscribe(new Tracer(this));
                 }
             }

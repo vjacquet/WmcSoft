@@ -26,11 +26,26 @@
 
 namespace WmcSoft.Diagnostics.Sentries
 {
+    /// <summary>
+    /// Specifies what status <see cref="ISentry"/> may report.
+    /// </summary>
     public enum SentryStatus
     {
+        /// <summary>
+        /// The sentry does not have anything to report.
+        /// </summary>
         None,
+        /// <summary>
+        /// The sentry reports no problem.
+        /// </summary>
         Success,
+        /// <summary>
+        /// The sentry reports a warning.
+        /// </summary>
         Warning,
+        /// <summary>
+        /// The sentry reports an error.
+        /// </summary>
         Error,
     }
 }
