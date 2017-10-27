@@ -42,13 +42,13 @@ namespace WmcSoft.Business.Calendars.Specifications
         private readonly DayOfWeek[] _weekend;
         private readonly int[] _nextWeekendDay;
 
-        public WeekendSpecification(params DayOfWeek[] weekend)
+        public WeekendSpecification(params DayOfWeek[] days)
         {
-            _weekend = weekend;
+            _weekend = days;
 
             // optimize EnumerateOver by precomputing the number of days until the next week end day.
             var twoWeeks = 0;
-            foreach (DayOfWeek day in weekend)
+            foreach (DayOfWeek day in days)
                 twoWeeks |= (0b0000001_0000001 << (int)day);
 
             _nextWeekendDay = new int[DaysOfWeek];
