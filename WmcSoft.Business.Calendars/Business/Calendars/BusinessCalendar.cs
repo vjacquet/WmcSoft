@@ -66,6 +66,11 @@ namespace WmcSoft.Business.Calendars
         }
 
         public BusinessCalendar(string name, Date since, Date until, params IDateSpecification[] specifications)
+            : this(name, since, until, specifications.AsEnumerable())
+        {
+        }
+
+        public BusinessCalendar(string name, Date since, Date until, IEnumerable<IDateSpecification> specifications)
             : this(name, since, 1 + since.DaysUntil(until))
         {
             var interval = Interval.Closed(since, until);
@@ -77,6 +82,11 @@ namespace WmcSoft.Business.Calendars
         }
 
         public BusinessCalendar(Date since, Date until, params IDateSpecification[] specifications)
+         : this(since, until, specifications.AsEnumerable())
+        {
+        }
+
+        public BusinessCalendar(Date since, Date until, IEnumerable<IDateSpecification> specifications)
           : this("Busines calendar since {since} and until {until}", since, until, specifications)
         {
         }
