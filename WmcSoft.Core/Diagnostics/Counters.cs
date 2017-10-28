@@ -29,6 +29,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Diagnostics
 {
+    /// <summary>
+    /// Represents a collection of named counters
+    /// </summary>
+    /// <typeparam name="TName">The type of name.</typeparam>
     public sealed class Counters<TName> : IReadOnlyDictionary<TName, int>
     {
         private readonly Dictionary<TName, int> _occurences;

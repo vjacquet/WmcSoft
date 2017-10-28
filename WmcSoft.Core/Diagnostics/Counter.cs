@@ -119,7 +119,54 @@ namespace WmcSoft.Diagnostics
             if (other == null)
                 return 1;
 
-            return Comparer<int>.Default.Compare(_count, other._count);
+            var result = Comparer<int>.Default.Compare(_count, other._count);
+            if (result == 0)
+                return StringComparer.InvariantCulture.Compare(Name, other.Name);
+            return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return CompareTo(obj as Counter) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+
+        public static bool operator ==(Counter left, Counter right)
+        {
+            if (ReferenceEquals(left, null)) {
+                return ReferenceEquals(right, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Counter left, Counter right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(Counter left, Counter right)
+        {
+            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(Counter left, Counter right)
+        {
+            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(Counter left, Counter right)
+        {
+            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(Counter left, Counter right)
+        {
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
         }
     }
 }
