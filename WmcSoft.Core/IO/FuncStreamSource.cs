@@ -24,23 +24,23 @@
 
 #endregion
 
+using System;
 using System.IO;
 
 namespace WmcSoft.IO
 {
-    public sealed class FileStreamSource : IStreamSource
+    public sealed class FuncStreamSource : IStreamSource
     {
-        public FileStreamSource(string path)
-        {
-            var info = new FileInfo(path);
-            Path = info.FullName;
-        }
+        readonly Func<Stream> _func;
 
-        public string Path { get; }
+        public FuncStreamSource(Func<Stream> func)
+        {
+            _func = func;
+        }
 
         public Stream GetStream()
         {
-            return File.OpenRead(Path);
+            return _func();
         }
     }
 }

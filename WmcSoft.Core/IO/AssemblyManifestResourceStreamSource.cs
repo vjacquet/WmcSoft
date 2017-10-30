@@ -25,22 +25,24 @@
 #endregion
 
 using System.IO;
+using System.Reflection;
 
 namespace WmcSoft.IO
 {
-    public sealed class FileStreamSource : IStreamSource
+    public sealed class AssemblyManifestResourceStreamSource : IStreamSource
     {
-        public FileStreamSource(string path)
+        public AssemblyManifestResourceStreamSource(Assembly assembly, string name)
         {
-            var info = new FileInfo(path);
-            Path = info.FullName;
+            Assembly = assembly;
+            Name = name;
         }
 
-        public string Path { get; }
+        public Assembly Assembly { get; }
+        public string Name { get; }
 
         public Stream GetStream()
         {
-            return File.OpenRead(Path);
+            return Assembly.GetManifestResourceStream(Name);
         }
     }
 }

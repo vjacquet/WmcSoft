@@ -24,23 +24,30 @@
 
 #endregion
 
+using System;
+using System.Globalization;
 using System.IO;
+using System.Resources;
 
 namespace WmcSoft.IO
 {
-    public sealed class FileStreamSource : IStreamSource
+    public sealed class ResourceStreamSource : IStreamSource
     {
-        public FileStreamSource(string path)
+        public ResourceStreamSource(Type resourceSource, string name, CultureInfo culture = null)
         {
-            var info = new FileInfo(path);
-            Path = info.FullName;
+            ResourceSource = resourceSource;
+            Name = name;
+            Culture = culture;
         }
 
-        public string Path { get; }
+        public Type ResourceSource { get; }
+        public string Name { get; }
+        public CultureInfo Culture { get; }
 
         public Stream GetStream()
         {
-            return File.OpenRead(Path);
+            var rm = new ResourceManager(ResourceSource);
+            return rm.GetStream(Name, Culture);
         }
     }
 }
