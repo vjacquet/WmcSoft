@@ -53,7 +53,7 @@ namespace WmcSoft.Data
 
         public override object GetValue(int i)
         {
-            return i == 0 ? Cursor : _interpreter(Current, i);
+            return _interpreter(Current, i);
         }
 
         public override int FieldCount {
