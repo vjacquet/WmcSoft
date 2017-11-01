@@ -28,6 +28,9 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Returns a <see cref="Stream"/> from the specified <see cref="Path"/>.
+    /// </summary>
     public sealed class FileStreamSource : IStreamSource
     {
         public FileStreamSource(string path)

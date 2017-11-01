@@ -29,6 +29,9 @@ using System.Reflection;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Returns a <see cref="Stream"/> from the specified manifest resource from the specified assembly.
+    /// </summary>
     public sealed class AssemblyManifestResourceStreamSource : IStreamSource
     {
         public AssemblyManifestResourceStreamSource(Assembly assembly, string name)

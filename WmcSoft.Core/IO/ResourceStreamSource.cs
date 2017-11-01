@@ -31,6 +31,9 @@ using System.Resources;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Returns <see cref="Stream"/> from the specified resource, using the specified culture.
+    /// </summary>
     public sealed class ResourceStreamSource : IStreamSource
     {
         public ResourceStreamSource(Type resourceSource, string name, CultureInfo culture = null)
