@@ -96,6 +96,7 @@
     <Compile Include="Business\InventoryModel\ProductInventoryEntry.cs" />
     <Compile Include="Business\InventoryModel\RestockPolicy.cs" />
     <Compile Include="Business\IPublishable.cs" />
+    <Compile Include="Business\Temporal.Enumerable.cs" />
     <Compile Include="Business\ITemporal.cs" />
     <Compile Include="Business\IUniqueIdentifier.cs" />
     <Compile Include="Business\ModerationStatus.cs" />

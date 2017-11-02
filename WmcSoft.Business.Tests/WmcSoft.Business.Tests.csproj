@@ -101,6 +101,7 @@
     <Compile Include="Security\SecurableBase.cs" />
     <Compile Include="Security\SecurableTests.cs" />
     <Compile Include="Security\Todo.cs" />
+    <Compile Include="TemporalEnumerableTests.cs" />
     <Compile Include="TemporalTests.cs" />
     <Compile Include="UniqueIdentifierTests.cs" />
   </ItemGroup>
