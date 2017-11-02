@@ -40,7 +40,14 @@ namespace WmcSoft.IO
             Name = name;
         }
 
+        /// <summary>
+        /// The assembly containing the resource.
+        /// </summary>
         public Assembly Assembly { get; }
+
+        /// <summary>
+        /// The case-sensitive name of the manifest resource being requested. 
+        /// </summary>
         public string Name { get; }
 
         public Stream GetStream()

@@ -39,6 +39,9 @@ namespace WmcSoft.IO
             Path = info.FullName;
         }
 
+        /// <summary>
+        /// The full path to the file.
+        /// </summary>
         public string Path { get; }
 
         public Stream GetStream()

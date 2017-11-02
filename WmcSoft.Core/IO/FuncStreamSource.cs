@@ -29,6 +29,9 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Returns a <see cref="Stream"/> produced on demand by a function.
+    /// </summary>
     public sealed class FuncStreamSource : IStreamSource
     {
         readonly Func<Stream> _func;

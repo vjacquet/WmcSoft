@@ -43,8 +43,20 @@ namespace WmcSoft.IO
             Culture = culture;
         }
 
+        /// <summary>
+        /// The type from which the resource manager derives all information for finding .resources files. 
+        /// </summary>
         public Type ResourceSource { get; }
+
+        /// <summary>
+        /// The name of the resource.
+        /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// An object that specifies the culture to use for the resource lookup.
+        /// If <see cref="Culture"/> is null, the culture for the current thread is used.
+        /// </summary>
         public CultureInfo Culture { get; }
 
         public Stream GetStream()

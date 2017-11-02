@@ -34,6 +34,11 @@ namespace WmcSoft.IO
     /// <remarks>Types implementing this interface should favor composition over inheritance.</remarks>
     public interface IStreamSource
     {
+        /// <summary>
+        /// Gets the stream from the source.
+        /// </summary>
+        /// <returns>A stream.</returns>
+        /// <remarks>The caller owns the stream and, therefore, should dispose it.</remarks>
         Stream GetStream();
     }
 }
