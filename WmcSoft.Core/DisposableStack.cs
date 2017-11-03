@@ -42,26 +42,30 @@ namespace WmcSoft
             _stack = new Stack<IDisposable>();
         }
 
-        ~DisposableStack()
-        {
-            Dispose(false);
-        }
+        // ~DisposableStack() { } // no unmanaged resources so no need to implement the finalizer.
 
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Adds a disposable to the stack.
         /// </summary>
         /// <param name="disposable">The disposable</param>
-        /// <returns>Always <code>true</code></returns>
-        public bool Add(IDisposable disposable)
+        /// <returns>Returns <code>false</code> when <paramref name="disposable"/> is <c>null</c>.</returns>
+        public virtual bool Add(IDisposable disposable)
+        {
+            if (disposable == null)
+                return false;
+
+            Push(disposable);
+            return true;
+        }
+
+        protected void Push(IDisposable disposable)
         {
             _stack.Push(disposable);
-            return true;
         }
 
         protected virtual void Dispose(bool disposing)

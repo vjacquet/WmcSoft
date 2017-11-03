@@ -53,6 +53,11 @@ namespace WmcSoft
             bin.Add(new Disposer(action));
         }
 
+        public static void Push(this IDisposableBin bin, IDisposable disposable)
+        {
+            bin.Add(disposable);
+        }
+
         #endregion
     }
 }

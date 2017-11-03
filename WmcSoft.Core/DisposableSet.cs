@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft
@@ -34,26 +33,14 @@ namespace WmcSoft
     /// Stack disposables to Dispose them in reverse order. 
     /// </summary>
     /// <remarks>An <see cref="IDisposable"/> is added only once.</remarks>
-    public class DisposableSet : IDisposableBin
+    public class DisposableSet : DisposableStack
     {
         readonly HashSet<IDisposable> _set;
-        readonly Stack<IDisposable> _stack;
 
         public DisposableSet()
         {
             _set = new HashSet<IDisposable>();
-            _stack = new Stack<IDisposable>();
-        }
-
-        ~DisposableSet()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _set.Add(null); // so null cannot be push onto the base stack.
         }
 
         /// <summary>
@@ -61,32 +48,19 @@ namespace WmcSoft
         /// </summary>
         /// <param name="disposable">The disposable.</param>
         /// <returns><code>true</code> if the disposable is not already in the set.</returns>
-        public bool Add(IDisposable disposable)
+        public override bool Add(IDisposable disposable)
         {
             if (_set.Add(disposable)) {
-                _stack.Push(disposable);
+                Push(disposable);
                 return true;
             }
             return false;
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             _set.Clear();
-            while (_stack.Count != 0) {
-                var disposable = _stack.Pop();
-                disposable.Dispose();
-            }
-        }
-
-        public IEnumerator<IDisposable> GetEnumerator()
-        {
-            return _stack.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _stack.GetEnumerator();
+            base.Dispose(disposing);
         }
     }
 }
