@@ -29,15 +29,26 @@ using System.Linq;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Represents a quoted string that should not be escaped again.
+    /// </summary>
     public class QuotedString : IQuotedString
     {
         private readonly string _storage;
 
-        public QuotedString(string s)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuotedString"/> class.
+        /// </summary>
+        /// <param name="value">A quoted string that should not be escaped again.</param>
+        public QuotedString(string value)
         {
-            _storage = s ?? "";
+            _storage = value ?? "";
         }
 
+        /// <summary>
+        /// Returns a quoted string.
+        /// </summary>
+        /// <returns>A quoted string.</returns>
         public string ToQuotedString()
         {
             return _storage;
@@ -48,6 +59,13 @@ namespace WmcSoft.IO
             return _storage;
         }
 
+        /// <summary>
+        /// Quote a string, escaping quotes if necessary.
+        /// </summary>
+        /// <exception cref="ArgumentException">The <paramref name="text"/> is quoted but the quotes are not properly escaped.</exception>
+        /// <param name="text">The text to quote</param>
+        /// <returns>A quoted string.</returns>
+        /// <remarks>Does nothing if the <paramref name="text"/> is already quoted.</remarks>
         public static IQuotedString Quote(string text)
         {
             if (string.IsNullOrEmpty(text))

@@ -24,11 +24,17 @@
 
 #endregion
 
-
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Represents a quoted string that should not be escaped again.
+    /// </summary>
     public interface IQuotedString
     {
+        /// <summary>
+        /// Returns a quoted string.
+        /// </summary>
+        /// <returns>A quoted string.</returns>
         string ToQuotedString();
     }
 }
