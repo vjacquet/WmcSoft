@@ -219,38 +219,38 @@ namespace WmcSoft.Collections.Generic
         }
 
         [Fact]
-        public void CheckNthElements()
+        public void CheckTakeEveryNthElements()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 6, 9 };
-            var actual = collection.NthElements(3).ToArray();
+            var actual = collection.TakeEveryNthElements(3).ToArray();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void CheckNthElements2()
+        public void CheckTakeEveryNthElements2()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 5, 6, 9 };
-            var actual = collection.NthElements(3, 5).ToArray();
+            var actual = collection.TakeEveryNthElements(3, 5).ToArray();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void CheckNthElementsN()
+        public void CheckTakeEveryNthElementsN()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var expected = new[] { 3, 5, 6, 8, 9, 10 };
-            var actual = collection.NthElements(3, 5, 8).ToArray();
+            var actual = collection.TakeEveryNthElements(3, 5, 8).ToArray();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void CheckNthElementsNWithMultiples()
+        public void CheckTakeEveryNthElementsNWithMultiples()
         {
             var collection = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var expected = new[] { 3, 5, 6, 8, 9, 10 };
-            var actual = collection.NthElements(3, 6, 5, 8).ToArray();
+            var actual = collection.TakeEveryNthElements(3, 6, 5, 8).ToArray();
             Assert.Equal(expected, actual);
         }
 
