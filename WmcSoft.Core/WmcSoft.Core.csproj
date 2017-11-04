@@ -307,7 +307,6 @@
     <Compile Include="FuncExtensions.cs" />
     <Compile Include="Indices.cs" />
     <Compile Include="IOrdinal.cs" />
-    <Compile Include="IO\AnonymousStreamSource.cs" />
     <Compile Include="IO\Batch.cs" />
     <Compile Include="IO\CloseBarrierStream.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />

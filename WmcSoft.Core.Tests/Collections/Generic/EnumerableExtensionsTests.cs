@@ -374,7 +374,7 @@ namespace WmcSoft.Collections.Generic
         public void EnsureDrawLotsDistributionIsUniform()
         {
             var counts = new int[10];
-            var values = Enumerable.Range(0, counts.Length).ToList();
+            var values = Enumerable.Range(0, counts.Length);
             var random = new Random(1664);
             var N = 10_000;
             for (var i = 0; i < N; i++) {
@@ -392,6 +392,16 @@ namespace WmcSoft.Collections.Generic
             chi2 /= Nr;
             // critical value of 11.070 at 95% significance level
             Assert.True(chi2 < 11.070d);
+        }
+
+        [Fact]
+        public void EnsureDrawLotsOnListCallsRandomOnce()
+        {
+            var random = new MockRandom((x, y) => 2);
+            var list = new[] { 1, 2, 3, 4, 5 };
+            var actual = list.DrawLots(random);
+            Assert.Equal(1, random.Called);
+            Assert.Equal(3, actual);
         }
 
         [Fact]

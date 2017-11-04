@@ -412,6 +412,19 @@ namespace WmcSoft.Collections.Generic
 
         static T UnguardedDrawLots<T>(IEnumerable<T> source, Random random)
         {
+            switch(source) {
+            case IReadOnlyList<T> list:
+                return list[random.Next(list.Count)];
+            case IList<T> list:
+                return list[random.Next(list.Count)];
+            case IReadOnlyCollection<T> collection:
+                return source.Skip(random.Next(collection.Count)).First();
+            case ICollection<T> collection:
+                return source.Skip(random.Next(collection.Count)).First();
+            case ICollection collection:
+                return source.Skip(random.Next(collection.Count)).First();
+            }
+
             using (var enumerator = source.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
                     var value = enumerator.Current;
