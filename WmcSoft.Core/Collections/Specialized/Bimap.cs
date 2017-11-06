@@ -35,7 +35,7 @@ namespace WmcSoft.Collections.Specialized
     /// </summary>
     /// <typeparam name="TKey">The type of key.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public class Bimap<TKey, TValue> : IDictionary<TKey, TValue>
+    public class Bimap<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey,TValue>
     {
         private readonly Dictionary<TKey, TValue> _index;
         private readonly Dictionary<TValue, TKey> _reverse;
@@ -56,6 +56,10 @@ namespace WmcSoft.Collections.Specialized
         {
         }
 
+        /// <summary>
+        /// Creates an new <see cref="Bimap{TKey, TValue}"/> where the keys and values are exchanged.
+        /// </summary>
+        /// <returns></returns>
         public Bimap<TValue, TKey> Inverse()
         {
             return new Bimap<TValue, TKey>(_reverse, _index);
@@ -77,6 +81,8 @@ namespace WmcSoft.Collections.Specialized
         public ICollection<TKey> Keys {
             get { return _index.Keys; }
         }
+
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
 
         public bool Remove(TKey key)
         {
@@ -100,6 +106,8 @@ namespace WmcSoft.Collections.Specialized
         public ICollection<TValue> Values {
             get { return _index.Values; }
         }
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
         public TValue this[TKey key] {
             get {
@@ -189,6 +197,16 @@ namespace WmcSoft.Collections.Specialized
             return GetEnumerator();
         }
 
+        bool IReadOnlyDictionary<TKey, TValue>.ContainsKey(TKey key)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IReadOnlyDictionary<TKey, TValue>.TryGetValue(TKey key, out TValue value)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 
@@ -196,7 +214,7 @@ namespace WmcSoft.Collections.Specialized
     /// Represents a bidirectional map that preserves the uniqueness of its values as well as that of its keys.
     /// </summary>
     /// <typeparam name="T">The type of key and value.</typeparam>
-    public class Bimap<T> : IDictionary<T, T>
+    public class Bimap<T> : IDictionary<T, T>, IReadOnlyDictionary<T, T>
     {
         private readonly Dictionary<T, T> _index;
         private readonly Dictionary<T, T> _reverse;
@@ -222,6 +240,10 @@ namespace WmcSoft.Collections.Specialized
         {
         }
 
+        /// <summary>
+        /// Creates an new <see cref="Bimap{T}"/> where the keys and values are exchanged.
+        /// </summary>
+        /// <returns></returns>
         public Bimap<T> Inverse()
         {
             return new Bimap<T>(_reverse, _index);
@@ -243,6 +265,8 @@ namespace WmcSoft.Collections.Specialized
         public ICollection<T> Keys {
             get { return _index.Keys; }
         }
+
+        IEnumerable<T> IReadOnlyDictionary<T, T>.Keys => Keys;
 
         public bool Remove(T key)
         {
@@ -266,6 +290,8 @@ namespace WmcSoft.Collections.Specialized
         public ICollection<T> Values {
             get { return _index.Values; }
         }
+
+        IEnumerable<T> IReadOnlyDictionary<T, T>.Values => Values;
 
         public T this[T key] {
             get {
