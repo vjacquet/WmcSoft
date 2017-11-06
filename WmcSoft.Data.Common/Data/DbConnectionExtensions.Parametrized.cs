@@ -74,7 +74,7 @@ namespace WmcSoft.Data
 
         public static IDbCommand CreateCommand(this IDbConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
-            throw new ArgumentException("You must use CreateParameterizedCommand");
+            throw new ArgumentException("To prevent security vulnerabilities, you must call CreateParameterizedCommand when using string interpolation for the command.", nameof(commandText));
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100:ReviewSqlQueriesForSecurityVulnerabilities")]
