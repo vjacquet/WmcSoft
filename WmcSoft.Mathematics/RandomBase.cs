@@ -31,7 +31,7 @@ namespace WmcSoft
     /// <summary>
     /// Provides a base for implementing <see cref="Random"/> generators.
     /// </summary>
-    /// <remarks>Unlike Random, all methods call Sample</remarks>
+    /// <remarks>Unlike Random, all methods call Sample.</remarks>
     public abstract class RandomBase : Random
     {
         public sealed override double NextDouble()
@@ -41,7 +41,7 @@ namespace WmcSoft
 
         public sealed override int Next()
         {
-            return Next(0, Int32.MaxValue);
+            return Next(0, int.MaxValue);
         }
 
         public sealed override int Next(int maxValue)
@@ -52,7 +52,7 @@ namespace WmcSoft
         public sealed override int Next(int minValue, int maxValue)
         {
             double value = Sample();
-            return minValue + (int)Math.Floor(0.5 + value * ((long)maxValue - (long)minValue));
+            return minValue + (int)Math.Floor(0.5 + value * ((long)maxValue - minValue));
         }
     }
 }
