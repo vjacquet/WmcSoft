@@ -30,7 +30,7 @@ using System.Text;
 namespace WmcSoft.IO
 {
     /// <summary>
-    /// Decorates a TextWriter to write a header line when the first char is written.
+    /// Decorates a <see cref="TextWriter"/> to write a header line when the first char is written.
     /// </summary>
     public class HeaderedTextWriter : TextWriter
     {

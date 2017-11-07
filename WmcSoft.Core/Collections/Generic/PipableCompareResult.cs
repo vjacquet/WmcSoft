@@ -29,7 +29,7 @@ using System.Diagnostics;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Utility device aloowing to pipe the trichotomy compare result while maintaining the shortcut evaluation.
+    /// Utility device allowing to pipe the trichotomy compare result while maintaining the shortcut evaluation.
     /// </summary>
     public struct PipableCompareResult
     {

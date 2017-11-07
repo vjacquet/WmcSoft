@@ -36,22 +36,46 @@ namespace WmcSoft.IO
     {
         #region Fields
 
-        readonly IProgress<int> _progress;
-        readonly long _length;
-        long _read;
+        private readonly IProgress<int> _progress;
+        private readonly long _length;
+        private long _read;
 
         #endregion
 
         #region Lifecycle
 
+        static Stream GuardAgainstNull(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            return stream;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReportProgressStream"/> class.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="progress">The progression, in percentage.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> or <paramref name="progress"/> are <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException">The stream does not support reading or seeking.</exception>
         public ReportProgressStream(Stream stream, IProgress<int> progress)
-            : this(stream, stream.Length, progress)
+            : this(stream, GuardAgainstNull(stream).Length, progress)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReportProgressStream"/> class.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="length">The length of the stream.</param>
+        /// <param name="progress">The progression, in percentage.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> or <paramref name="progress"/> are <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
         public ReportProgressStream(Stream stream, long length, IProgress<int> progress)
             : base(stream)
         {
+            if (!GuardAgainstNull(stream).CanRead) throw new NotSupportedException();
+            if (progress == null) throw new ArgumentNullException(nameof(progress));
+
             _progress = progress;
             _length = length;
         }

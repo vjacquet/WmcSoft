@@ -25,13 +25,12 @@
 #endregion
 
 using System.Collections;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 
 namespace WmcSoft.ComponentModel.Design
 {
     /// <summary>
-    /// Provides a lazy implementation of the IDictionaryService.
+    /// Provides a lazy implementation of the <see cref="IDictionaryService"/>.
     /// </summary>
     /// <remarks>The use of this class is not restricted to designers.</remarks>
     public class LazyDictionaryService : IDictionaryService

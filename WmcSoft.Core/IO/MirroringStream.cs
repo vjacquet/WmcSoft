@@ -137,8 +137,8 @@ namespace WmcSoft.IO
         }
 
         public override int ReadTimeout {
-            get {                return _master.ReadTimeout;            }
-            set {                _master.ReadTimeout = value;            }
+            get { return _master.ReadTimeout; }
+            set { _master.ReadTimeout = value; }
         }
         #endregion
 
@@ -186,6 +186,7 @@ namespace WmcSoft.IO
                 _master.WriteTimeout = value;
             }
         }
+
         #endregion
     }
 }
