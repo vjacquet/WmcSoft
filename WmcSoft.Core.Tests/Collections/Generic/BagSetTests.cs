@@ -17,9 +17,9 @@ namespace WmcSoft.Collections.Generic
         {
             var bag = new BagSet<int>() { 1, 2, 3, 4, 5, 6 };
             Assert.Equal(6, bag.Count);
-            Assert.False(bag.Contains(0));
-            Assert.False(bag.Contains(8));
-            Assert.True(bag.Contains(2));
+            Assert.DoesNotContain(0, bag);
+            Assert.DoesNotContain(8, bag);
+            Assert.Contains(2, bag);
         }
 
         [Fact]
@@ -48,9 +48,9 @@ namespace WmcSoft.Collections.Generic
         {
             var bag = new BagSet<string> { "a", "b", null, "d", "e" };
 
-            Assert.True(bag.Contains("a"));
-            Assert.False(bag.Contains("c"));
-            Assert.True(bag.Contains(null));
+            Assert.Contains("a", bag);
+            Assert.DoesNotContain("c", bag);
+            Assert.Contains(null, bag);
         }
     }
 }

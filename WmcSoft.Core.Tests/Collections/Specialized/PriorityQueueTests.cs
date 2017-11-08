@@ -70,7 +70,7 @@ namespace WmcSoft.Collections.Specialized
                 list.RemoveAt(index);
             }
 
-            Assert.Equal(0, list.Count);
+            Assert.Empty(list);
         }
 
         [Fact]

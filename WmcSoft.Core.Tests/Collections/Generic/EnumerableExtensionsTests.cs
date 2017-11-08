@@ -526,7 +526,7 @@ namespace WmcSoft.Collections.Generic
             var occurences = data.CountOccurences(CaseInsensitiveCharComparer.InvariantCulture);
             Assert.Equal(2, occurences['A']);
             Assert.Equal(2, occurences['a']);
-            Assert.Equal(1, occurences.Count);
+            Assert.Single(occurences);
             Assert.Equal('A', occurences.Single().Key);
         }
 

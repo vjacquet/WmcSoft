@@ -9,7 +9,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckIndexer()
         {
             var list = new SingleItemList<int>(5);
-            Assert.Equal(1, list.Count);
+            Assert.Single(list);
             Assert.Equal(5, list[0]);
         }
 

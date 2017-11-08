@@ -37,7 +37,7 @@ namespace WmcSoft.Collections.Generic
             cow.Clear();
 
             Assert.Equal(5, dictionary.Count);
-            Assert.Equal(0, cow.Count);
+            Assert.Empty(cow);
         }
 
         [Fact]

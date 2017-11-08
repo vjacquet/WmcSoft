@@ -116,7 +116,7 @@ namespace WmcSoft.Collections.Specialized
             CheckSearch(graph, 9, false, 9, 10, 11, 12);
         }
 
-        public void CheckPaths(DepthFirstPathsAlgorithm paths, int v, params int[] expected)
+        void CheckPaths(DepthFirstPathsAlgorithm paths, int v, params int[] expected)
         {
             Assert.Equal(paths.PathTo(v).ToList(), expected);
         }
@@ -135,7 +135,7 @@ namespace WmcSoft.Collections.Specialized
             CheckPaths(paths, 5, 0, 2, 3, 5);
         }
 
-        public void CheckPaths(BreathFirstPathsAlgorithm paths, int v, params int[] expected)
+        void CheckPaths(BreathFirstPathsAlgorithm paths, int v, params int[] expected)
         {
             Assert.Equal(paths.PathTo(v).ToList(), expected);
         }
@@ -154,7 +154,7 @@ namespace WmcSoft.Collections.Specialized
             CheckPaths(paths, 5, 0, 5);
         }
 
-        public void CheckComponents(IConnectedComponents<int> cc, int id, params int[] expected)
+        void CheckComponents(IConnectedComponents<int> cc, int id, params int[] expected)
         {
             Assert.Equal(cc.Components(id).ToList(), expected);
         }

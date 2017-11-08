@@ -8,7 +8,7 @@ namespace WmcSoft.Text
         public void CheckCountOnDefaultStrings()
         {
             var s = default(Strings);
-            Assert.Equal(0, s.Count);
+            Assert.Empty(s);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace WmcSoft.Text
         public void CanConstructStrings()
         {
             var a = new Strings("a");
-            Assert.Equal(1, a.Count);
+            Assert.Single(a);
         }
 
         [Fact]

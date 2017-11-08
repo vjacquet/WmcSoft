@@ -61,7 +61,7 @@ namespace WmcSoft
             var consonants = new Letters("bcdfghjklmnpqrstvwxz");
             var none = vowels & consonants;
 
-            Assert.Equal(0, none.Count);
+            Assert.Empty(none);
         }
 
         [Fact]

@@ -36,7 +36,7 @@ namespace WmcSoft.Collections.Specialized
             Assert.Equal(5, bimap.Count);
 
             bimap.Clear();
-            Assert.Equal(0, bimap.Count);
+            Assert.Empty(bimap);
         }
 
         [Fact]

@@ -27,7 +27,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("  abc   ");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.Trim());
+            Assert.Equal(expected, data.Trim());
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("");
             var expected = "";
-            Assert.Equal<string>(expected, data.Trim());
+            Assert.Equal(expected, data.Trim());
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("    ");
             var expected = "";
-            Assert.Equal<string>(expected, data.Trim());
+            Assert.Equal(expected, data.Trim());
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("    abc    ");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.Trim(' '));
+            Assert.Equal(expected, data.Trim(' '));
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("  ..abc..  ");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.Trim('.', ' '));
+            Assert.Equal(expected, data.Trim('.', ' '));
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("   abc");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.TrimStart());
+            Assert.Equal(expected, data.TrimStart());
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("    abc");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.TrimStart(' '));
+            Assert.Equal(expected, data.TrimStart(' '));
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("  ..abc");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.TrimStart('.', ' '));
+            Assert.Equal(expected, data.TrimStart('.', ' '));
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("abc   ");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.TrimEnd());
+            Assert.Equal(expected, data.TrimEnd());
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("abc    ");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.TrimEnd(' '));
+            Assert.Equal(expected, data.TrimEnd(' '));
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace WmcSoft.Text
         {
             var data = new Strip("abc..  ");
             var expected = "abc";
-            Assert.Equal<string>(expected, data.TrimEnd('.', ' '));
+            Assert.Equal(expected, data.TrimEnd('.', ' '));
         }
 
         [Fact]

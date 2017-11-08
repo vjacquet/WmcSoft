@@ -19,6 +19,7 @@ namespace WmcSoft
             Assert.True(IsValid(value));
         }
 
+        [Theory]
         [InlineData("AAAAAAàAAAAAAAAAAAAAA0")]
         [InlineData("AAA)AAAAAAAAAAAAAAAAA0")]
         [InlineData("AAAAAAAA+AAAAAAAAAAAA0")]

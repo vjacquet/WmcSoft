@@ -50,7 +50,7 @@ namespace WmcSoft.Xml.XPath
 
             Assert.Null(actual["a01"]);
             Assert.NotNull(actual["b01"]);
-            Assert.Equal(actual["b01"], "ignore b01");
+            Assert.Equal("ignore b01", actual["b01"]);
             Assert.Null(actual["c01"]);
         }
     }

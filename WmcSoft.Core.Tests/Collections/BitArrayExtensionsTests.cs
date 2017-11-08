@@ -33,7 +33,7 @@ namespace WmcSoft
         {
             var bits = new BitArray(48, true);
             bits.Resize(64, true);
-            Assert.Equal(true, bits[48]);
+            Assert.True(bits[48]);
         }
 
         [Fact]

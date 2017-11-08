@@ -24,9 +24,9 @@ namespace WmcSoft.Collections.Generic
             cow.Remove(2);
 
             Assert.Equal(5, collection.Count);
-            Assert.True(collection.Contains(2));
+            Assert.Contains(2, collection);
             Assert.Equal(4, cow.Count);
-            Assert.False(cow.Contains(2));
+            Assert.DoesNotContain(2, cow);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace WmcSoft.Collections.Generic
             cow.Clear();
 
             Assert.Equal(5, collection.Count);
-            Assert.Equal(0, cow.Count);
+            Assert.Empty(cow);
         }
 
         [Fact]

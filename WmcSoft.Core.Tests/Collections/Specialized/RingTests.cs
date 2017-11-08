@@ -48,7 +48,7 @@ namespace WmcSoft.Collections.Specialized
             Assert.Equal(2, ring.Dequeue());
             Assert.Equal(3, ring.Dequeue());
             Assert.Equal(4, ring.Dequeue());
-            Assert.Equal(0, ring.Count);
+            Assert.Empty(ring);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace WmcSoft.Collections.Specialized
             Assert.Equal(1, ring.Dequeue());
             Assert.Equal(2, ring.Dequeue());
             Assert.Equal(3, ring.Dequeue());
-            Assert.Equal(0, ring.Count);
+            Assert.Empty(ring);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace WmcSoft.Collections.Specialized
             Assert.Equal(1, ring.Dequeue());
             Assert.Equal(2, ring.Dequeue());
             Assert.Equal(3, ring.Dequeue());
-            Assert.Equal(0, ring.Count);
+            Assert.Empty(ring);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace WmcSoft.Collections.Specialized
             Assert.Equal(2, ring.Count);
             Assert.Equal(1, ring.Dequeue());
             Assert.Equal(2, ring.Dequeue());
-            Assert.Equal(0, ring.Count);
+            Assert.Empty(ring);
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace WmcSoft.Collections.Specialized
             var i = 0;
             foreach (var value in ring)
                 Assert.Equal(++i, value);
-            Assert.Equal(i, 3);
+            Assert.Equal(3, i);
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace WmcSoft.Collections.Specialized
             var i = 0;
             foreach (var value in ring)
                 Assert.Equal(++i, value);
-            Assert.Equal(i, 2);
+            Assert.Equal(2, i);
         }
 
         [Fact]

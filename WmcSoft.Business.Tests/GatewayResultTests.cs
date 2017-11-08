@@ -17,9 +17,9 @@ namespace WmcSoft.Business
             Assert.True(ok.Succeeded);
             Assert.False(undefined.Succeeded);
             Assert.NotNull(undefined.Errors);
-            Assert.Equal(0, undefined.Errors.Count);
+            Assert.Empty(undefined.Errors);
             Assert.False(failed.Succeeded);
-            Assert.Equal(1, failed.Errors.Count);
+            Assert.Single(failed.Errors);
         }
 
         [Fact]

@@ -71,11 +71,11 @@ namespace WmcSoft.Collections.Specialized
             collection.Add("number", "1");
             Assert.Equal(2, collection.Count);
             Assert.Equal(1, collection.PopValue<int>("number"));
-            Assert.Equal(1, collection.Count);
+            Assert.Single(collection);
             Assert.Equal(0d, collection.PopValue<double>("number"));
-            Assert.Equal(1, collection.Count);
+            Assert.Single(collection);
             Assert.Equal(new[] { "a", "b" }, collection.PopValues<string>("letter").ToArray());
-            Assert.Equal(0, collection.Count);
+            Assert.Empty(collection);
         }
 
     }

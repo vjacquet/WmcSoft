@@ -31,7 +31,7 @@ namespace WmcSoft
             var regex = new Regex(@"^(?<n>\d+)");
             var m = regex.Match("abc");
             var actual = m.GetNullableGroupValue<int>("n");
-            Assert.Equal(null, actual);
+            Assert.Null(actual);
         }
 
         [Fact]

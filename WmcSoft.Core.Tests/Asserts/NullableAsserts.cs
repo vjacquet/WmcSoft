@@ -68,28 +68,13 @@ namespace WmcSoft.Asserts
             int? c = null;
 
             Assert.Null(a + b);
-            Assert.Equal(a + b, null);
-
             Assert.Null(a + c);
-            Assert.Equal(a + c, null);
-
             Assert.Null(a - b);
-            Assert.Equal(a - b, null);
-
             Assert.Null(a - c);
-            Assert.Equal(a - c, null);
-
             Assert.Null(a * b);
-            Assert.Equal(a * b, null);
-
             Assert.Null(a * c);
-            Assert.Equal(a * c, null);
-
             Assert.Null(a / b);
-            Assert.Equal(a / b, null);
-
             Assert.Null(a / c);
-            Assert.Equal(a / c, null);
         }
 
         [Fact]
@@ -101,17 +86,9 @@ namespace WmcSoft.Asserts
                 int? c = null;
 
                 Assert.Null(a & b);
-                Assert.Equal(a & b, null);
-
                 Assert.Null(a & c);
-                Assert.Equal(a & c, null);
-
                 Assert.Null(a | b);
-                Assert.Equal(a | b, null);
-
                 Assert.Null(a | c);
-                Assert.Equal(a | c, null);
-
                 Assert.Null(~a);
             }
         }

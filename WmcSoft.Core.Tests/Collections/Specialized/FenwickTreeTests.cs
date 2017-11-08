@@ -13,10 +13,10 @@ namespace WmcSoft.Collections.Specialized
             tree.Add(2, 8);
             tree.Add(3, 16);
 
-            Assert.Equal(tree[0], 2);
-            Assert.Equal(tree[1], 4);
-            Assert.Equal(tree[2], 8);
-            Assert.Equal(tree[3], 16);
+            Assert.Equal(2, tree[0]);
+            Assert.Equal(4, tree[1]);
+            Assert.Equal(8, tree[2]);
+            Assert.Equal(16, tree[3]);
 
             Assert.Equal(30, tree.Tally());
         }
@@ -26,10 +26,10 @@ namespace WmcSoft.Collections.Specialized
         {
             var tree = new FenwickTree(2, 4, 8, 16);
 
-            Assert.Equal(tree[0], 2);
-            Assert.Equal(tree[1], 4);
-            Assert.Equal(tree[2], 8);
-            Assert.Equal(tree[3], 16);
+            Assert.Equal(2, tree[0]);
+            Assert.Equal(4, tree[1]);
+            Assert.Equal(8, tree[2]);
+            Assert.Equal(16, tree[3]);
 
             Assert.Equal(30, tree.Tally());
         }

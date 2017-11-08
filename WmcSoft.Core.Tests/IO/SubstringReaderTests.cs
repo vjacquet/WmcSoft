@@ -34,7 +34,7 @@ namespace WmcSoft.IO
                 Assert.Equal("abcde", reader.ReadLine());
                 Assert.Equal("fghij", reader.ReadLine());
                 Assert.Equal("kl", reader.ReadLine());
-                Assert.Equal(null, reader.ReadLine());
+                Assert.Null(reader.ReadLine());
             }
         }
 
@@ -45,7 +45,7 @@ namespace WmcSoft.IO
             using (var reader = new SubstringReader(data, 0, 14)) {
                 Assert.Equal("abcde", reader.ReadLine());
                 Assert.Equal("fghij", reader.ReadLine());
-                Assert.Equal(null, reader.ReadLine());
+                Assert.Null(reader.ReadLine());
             }
         }
     }
