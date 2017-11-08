@@ -11,8 +11,8 @@ namespace WmcSoft.Security
             var write = Permissions.Write;
             var set = read | write;
 
-            Assert.True(set.Contains(read));
-            Assert.True(set.Contains(write));
+            Assert.Contains(read, set);
+            Assert.Contains(write, set);
         }
 
         [Fact]
@@ -26,9 +26,9 @@ namespace WmcSoft.Security
 
             var set3 = set1 | set2;
 
-            Assert.True(set3.Contains(read));
-            Assert.True(set3.Contains(write));
-            Assert.True(set3.Contains(execute));
+            Assert.Contains(read, set3);
+            Assert.Contains(write, set3);
+            Assert.Contains(execute, set3);
         }
 
         [Fact]
@@ -42,9 +42,9 @@ namespace WmcSoft.Security
 
             var set3 = set1 & set2;
 
-            Assert.True(set3.Contains(read));
-            Assert.False(set3.Contains(write));
-            Assert.False(set3.Contains(execute));
+            Assert.Contains(read, set3);
+            Assert.DoesNotContain(write, set3);
+            Assert.DoesNotContain(execute, set3);
         }
 
         [Fact]
