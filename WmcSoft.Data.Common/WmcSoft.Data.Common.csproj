@@ -5,4 +5,8 @@
     <RootNamespace>WmcSoft</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Olean.Data.Common.csproj.vspscc" />
+  </ItemGroup>
+
 </Project>
