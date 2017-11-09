@@ -29,7 +29,11 @@ namespace WmcSoft
     public enum SemVerRelease
     {
         Major,
+        Premajor,
         Minor,
+        Preminor,
         Patch,
+        Prepatch,
+        Prerelease
     }
 }

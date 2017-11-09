@@ -28,9 +28,19 @@ using System;
 
 namespace WmcSoft
 {
-    public static class VersionExtensions
+    public static class SemVerExtensions
     {
-        public static bool Statisfies(this Version version, Predicate<Version> predicate) {
+        public static bool Satisfies(this SemVer version, string range)
+        {
+            if (version == null) throw new ArgumentNullException(nameof(version));
+            if (range == null) throw new ArgumentNullException(nameof(range));
+
+            // see <https://github.com/npm/node-semver/blob/master/semver.js>
+            throw new NotImplementedException();
+        }
+
+        public static bool Statisfies(this SemVer version, Predicate<SemVer> predicate)
+        {
             if (version == null) throw new ArgumentNullException(nameof(version));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 

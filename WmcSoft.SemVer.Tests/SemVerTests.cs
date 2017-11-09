@@ -26,19 +26,24 @@ namespace WmcSoft
             Assert.Equal(3, patch);
         }
 
-        [Fact]
-        public void CheckToString()
+        [Theory]
+        [InlineData(1, 2, 3, null, "1.2.3")]
+        [InlineData(2, 0, 0, null, "2.0.0")]
+        public void CanConvertSemVerToString(int major, int minor, int patch, string prerelease, string expected)
         {
-            var semver = new SemVer(1, 2, 3);
-            Assert.Equal("1.2.3", semver.ToString());
+            var semver = new SemVer(major, minor, patch, prerelease);
+            var actual = semver.ToString();
+            Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void CanIncrement()
+        [Theory]
+        [InlineData(1, 2, 3, null, "1.2.4")]
+        public void CanIncrement(int major, int minor, int patch, string prerelease, string expected)
         {
-            var semver = new SemVer(1, 2, 3);
+            var semver = new SemVer(major, minor, patch, prerelease);
             semver++;
-            Assert.Equal("1.2.4", semver.ToString());
+            var actual = semver.ToString();
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -65,6 +70,18 @@ namespace WmcSoft
 
             Assert.True(v0 == w0);
             Assert.False(v0 != w0);
+        }
+
+        [Theory]
+        [InlineData("1.2.3", 1, 2, 3, null, null)]
+        [InlineData("2.0.0", 2, 0, 0, null, null)]
+        [InlineData("1.0.0-alpha+001", 1, 0, 0, "alpha", "001")]
+        public void CanParseStrict(string s, int major, int minor, int patch, string prerelease, string build)
+        {
+            var v = SemVer.Parse(s);
+            Assert.True(v.Major == major);
+            Assert.True(v.Minor == minor);
+            Assert.True(v.Patch == patch);
         }
     }
 }

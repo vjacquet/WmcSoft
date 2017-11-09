@@ -231,7 +231,6 @@
     </Compile>
     <Compile Include="OrdinalSet.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
-    <Compile Include="SemVerRelease.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />
@@ -251,7 +250,6 @@
     <Compile Include="Triple.cs" />
     <Compile Include="Pair.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
-    <Compile Include="SemVer.cs" />
     <Compile Include="Suid.cs" />
     <Compile Include="Text\IString.cs" />
     <Compile Include="Text\StripExtensions.cs" />
