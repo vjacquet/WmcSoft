@@ -13,9 +13,9 @@ namespace WmcSoft.CommandLine
             var parsed = commandLine.ParseArguments("/string:test", "/choice:A", "/switch", "/boolean-");
             Assert.Equal("test", commandLine.Options["string"].Value.ToString());
             Assert.Equal("A", commandLine.Options["choice"].Value.ToString());
-            Assert.Equal(true, commandLine.Options["switch"].IsPresent);
-            Assert.Equal(true, commandLine.Options["boolean"].IsPresent);
-            Assert.Equal(true, commandLine.Options["boolean"].Value.Equals(false));
+            Assert.True(commandLine.Options["switch"].IsPresent);
+            Assert.True(commandLine.Options["boolean"].IsPresent);
+            Assert.True(commandLine.Options["boolean"].Value.Equals(false));
         }
     }
 }

@@ -82,8 +82,8 @@ namespace WmcSoft
             t.Add(5);
             t.Add(3);
 
-            Assert.True(t.Contains(2));
-            Assert.False(t.Contains(4));
+            Assert.Contains(2, t);
+            Assert.DoesNotContain(4, t);
         }
 
         [Fact]

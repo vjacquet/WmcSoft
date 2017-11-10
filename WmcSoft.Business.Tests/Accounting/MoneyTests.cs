@@ -179,7 +179,7 @@ namespace WmcSoft.Business.Accounting
             var eur = new CultureInfoCurrency(CultureInfo.GetCultureInfo("fr-FR"));
             var m = new Money(2m, eur);
             var actual = m1 + m;
-            Assert.IsType(typeof(Money<EUR>), actual);
+            Assert.IsType<Money<EUR>>(actual);
             Assert.Equal(expected, actual);
         }
 

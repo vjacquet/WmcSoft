@@ -201,3 +201,5 @@ FakesAssemblies/
 /WmcSoft.Business.Primitives/Olean.Business.Primitives.csproj
 /WmcSoft.Business.Calendars.Tests/Olean.Business.Calendars.Tests.csproj
 /WmcSoft.Business.Calendars/Olean.Business.Calendars.csproj
+/WmcSoft.Data.Common/Olean.Data.Common.csproj
+/WmcSoft.Data.SqlClient/Olean.Data.SqlClient.csproj

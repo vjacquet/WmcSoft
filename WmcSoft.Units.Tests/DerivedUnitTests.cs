@@ -8,14 +8,14 @@ namespace WmcSoft.Units
         public void SpeedSymbol()
         {
             var speed = new DerivedUnit("speed", SI.Meter, SI.Second ^ -1);
-            Assert.Equal(speed.Symbol, "ms\u207B\u00B9");
+            Assert.Equal("ms\u207B\u00B9", speed.Symbol);
         }
 
         [Fact]
         public void Area()
         {
             var square = SI.Meter ^ 2;
-            Assert.Equal(square.Symbol, "m²");
+            Assert.Equal("m²", square.Symbol);
         }
     }
 }

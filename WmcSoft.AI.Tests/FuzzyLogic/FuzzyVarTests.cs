@@ -30,7 +30,7 @@ namespace WmcSoft.AI.FuzzyLogic
             FuzzyVar lhs = 0.5d;
             FuzzyVar rhs = 0.7d;
             FuzzyVar result = lhs & rhs;
-            Assert.Equal((double)result, 0.5d);
+            Assert.Equal(0.5d, (double)result);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace WmcSoft.AI.FuzzyLogic
             FuzzyVar lhs = 0.5d;
             FuzzyVar rhs = 0.7d;
             FuzzyVar result = lhs | rhs;
-            Assert.Equal((double)result, 0.7d);
+            Assert.Equal(0.7d, (double)result);
         }
 
         [Fact]

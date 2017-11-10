@@ -5,7 +5,7 @@ namespace WmcSoft.Units
     public class EqualsTests
     {
         [Fact]
-        public void EqualsUnit()
+        public void IdenticalUnitsAreEqual()
         {
             var expected = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
             var actual = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
@@ -14,7 +14,7 @@ namespace WmcSoft.Units
         }
 
         [Fact]
-        public void op_equalityUnit()
+        public void CanCompareUnitsUsingEqualityOperator()
         {
             var expected = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
             var actual = new DerivedUnit("speed", "km/h", SI.Meter, SI.Second ^ -1);
@@ -22,7 +22,7 @@ namespace WmcSoft.Units
         }
 
         [Fact]
-        public void op_greaterthanQuantity()
+        public void CanCompareQuantitiesUsingLessThanOperator()
         {
             Quantity q1 = new Quantity(5, SI.Meter);
             Quantity q2 = new Quantity(10, SI.Meter);
@@ -30,7 +30,7 @@ namespace WmcSoft.Units
         }
 
         [Fact]
-        public void op_equalityQuantity()
+        public void CanCompareQuantitiesUsingEqualityOperator()
         {
             Quantity q1 = new Quantity(5, SI.Meter);
             Quantity q2 = new Quantity(5, SI.Meter);
