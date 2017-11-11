@@ -39,7 +39,7 @@ namespace WmcSoft.Collections.Specialized
     /// <typeparam name="T">The type of the element in the priority queue.</typeparam>
     [Serializable]
     [ComVisible(true)]
-    public class PriorityQueue<T> : IReadOnlyCollection<T>, ICloneable<PriorityQueue<T>>, ICollection
+    public class PriorityQueue<T> : IReadOnlyCollection<T>, ICollection, ICloneable
     {
         const int MaxCapacity = 0X7FEFFFFE;
         const int DefaultCapacity = 16;
@@ -54,32 +54,36 @@ namespace WmcSoft.Collections.Specialized
             PriorityQueue<T> _clone;
             T _current;
 
-            public Enumerator(PriorityQueue<T> heap) {
+            public Enumerator(PriorityQueue<T> heap)
+            {
                 _priorityQueue = heap;
-                _clone = _priorityQueue.Clone();
+                _clone = new PriorityQueue<T>(_priorityQueue);
                 _version = heap._version;
                 _current = default(T);
             }
 
             public T Current { get { return _current; } }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
-            public void Reset() {
+            public void Reset()
+            {
                 if (_version != _priorityQueue._version) throw new InvalidOperationException();
-                _clone = _priorityQueue.Clone();
+                _clone = new PriorityQueue<T>(_priorityQueue);
                 _current = default(T);
             }
 
             object IEnumerator.Current {
                 get {
-                    if (_version != _priorityQueue._version || _clone.Count != _priorityQueue.Count) throw new InvalidOperationException();
+                    if (_version != _priorityQueue._version || _clone.Count == _priorityQueue.Count) throw new InvalidOperationException();
                     return _current;
                 }
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_version != _priorityQueue._version) throw new InvalidOperationException();
 
                 if (_clone.Count > 0) {
@@ -98,7 +102,8 @@ namespace WmcSoft.Collections.Specialized
         {
             PriorityQueue<T> _heap;
 
-            public SyncPriorityQueue(PriorityQueue<T> heap) {
+            public SyncPriorityQueue(PriorityQueue<T> heap)
+            {
                 _heap = heap;
             }
 
@@ -115,25 +120,29 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override void Clear() {
+            public override void Clear()
+            {
                 lock (_heap.SyncRoot) {
                     _heap.Clear();
                 }
             }
 
-            public override PriorityQueue<T> Clone() {
+            protected override object Clone(Cloning.Shallow strategy)
+            {
                 lock (_heap.SyncRoot) {
-                    return new SyncPriorityQueue((PriorityQueue<T>)_heap.Clone());
+                    return new SyncPriorityQueue((PriorityQueue<T>)_heap.Clone(strategy));
                 }
             }
 
-            public override bool Contains(T value) {
+            public override bool Contains(T value)
+            {
                 lock (_heap.SyncRoot) {
                     return _heap.Contains(value);
                 }
             }
 
-            public override void CopyTo(T[] array, int index) {
+            public override void CopyTo(T[] array, int index)
+            {
                 lock (_heap.SyncRoot) {
                     _heap.CopyTo(array, index);
                 }
@@ -147,19 +156,22 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override T Dequeue() {
+            public override T Dequeue()
+            {
                 lock (_heap.SyncRoot) {
                     return _heap.Dequeue();
                 }
             }
 
-            public override void Enqueue(T value) {
+            public override void Enqueue(T value)
+            {
                 lock (_heap.SyncRoot) {
                     _heap.Enqueue(value);
                 }
             }
 
-            public override Enumerator GetEnumerator() {
+            public override Enumerator GetEnumerator()
+            {
                 lock (_heap.SyncRoot) {
                     return _heap.GetEnumerator();
                 }
@@ -169,7 +181,8 @@ namespace WmcSoft.Collections.Specialized
                 get { return true; }
             }
 
-            public override T Peek() {
+            public override T Peek()
+            {
                 lock (_heap.SyncRoot) {
                     return _heap.Peek();
                 }
@@ -195,7 +208,8 @@ namespace WmcSoft.Collections.Specialized
         /// the specified IComparer interface.
         /// </summary>
         public PriorityQueue()
-            : this(Comparer<T>.Default, 0) {
+            : this(Comparer<T>.Default, 0)
+        {
         }
 
         /// <summary>
@@ -205,7 +219,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="comparer"></param>
         public PriorityQueue(IComparer<T> comparer)
-            : this(comparer, 0) {
+            : this(comparer, 0)
+        {
         }
 
         /// <summary>
@@ -216,7 +231,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="collection"></param>
         public PriorityQueue(ICollection<T> collection)
-            : this(collection, Comparer<T>.Default) {
+            : this(collection, null)
+        {
         }
 
         /// <summary>
@@ -226,7 +242,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="initialCapacity"></param>
         public PriorityQueue(int initialCapacity)
-            : this(Comparer<T>.Default, initialCapacity) {
+            : this(null, initialCapacity)
+        {
         }
 
         /// <summary>
@@ -236,8 +253,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="comparer"></param>
         /// <param name="initialCapacity"></param>
-        public PriorityQueue(IComparer<T> comparer, int initialCapacity) {
-            if (initialCapacity < 0) throw new ArgumentOutOfRangeException("initialCapacity");
+        public PriorityQueue(IComparer<T> comparer, int initialCapacity)
+        {
+            if (initialCapacity < 0) throw new ArgumentOutOfRangeException(nameof(initialCapacity));
 
             _comparer = comparer ?? Comparer<T>.Default;
             _items = initialCapacity == 0 ? ContiguousStorage<T>.Empty : new T[initialCapacity + 1];
@@ -251,8 +269,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="collection"></param>
         /// <param name="comparer"></param>
-        public PriorityQueue(ICollection<T> collection, IComparer<T> comparer) {
-            if (collection == null) throw new ArgumentNullException("collection");
+        public PriorityQueue(ICollection<T> collection, IComparer<T> comparer)
+        {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
 
             _comparer = comparer ?? Comparer<T>.Default;
             if (collection.Count == 0) {
@@ -267,13 +286,22 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
+        private PriorityQueue(PriorityQueue<T> pq)
+        {
+            _comparer = pq._comparer;
+            _count = pq._count;
+            _items = (T[])pq._items.Clone();
+        }
+
         #endregion
 
-        bool Prioritized(T x, T y) {
+        bool Prioritized(T x, T y)
+        {
             return _comparer.Compare(x, y) < 0;
         }
 
-        void ReorganizeDownUp(int index) {
+        void ReorganizeDownUp(int index)
+        {
             var value = _items[index];
             while (index > 1 && Prioritized(_items[index / 2], value)) {
                 _items[index] = _items[index / 2];
@@ -282,7 +310,8 @@ namespace WmcSoft.Collections.Specialized
             _items[index] = value;
         }
 
-        void ReorganizeUpDown(int index) {
+        void ReorganizeUpDown(int index)
+        {
             var value = _items[index];
             var half = _count / 2;
             while (index <= half) {
@@ -297,13 +326,15 @@ namespace WmcSoft.Collections.Specialized
             _items[index] = value;
         }
 
-        private void DoEnqueue(T value) {
+        private void DoEnqueue(T value)
+        {
             var index = ++_count;
             _items[index] = value;
             ReorganizeDownUp(index);
         }
 
-        public virtual void Enqueue(T value) {
+        public virtual void Enqueue(T value)
+        {
             if (value == null) throw new ArgumentNullException("value");
 
             ++_version;
@@ -311,7 +342,8 @@ namespace WmcSoft.Collections.Specialized
             DoEnqueue(value);
         }
 
-        public virtual T Dequeue() {
+        public virtual T Dequeue()
+        {
             if (_count < 1) {
                 throw new InvalidOperationException();
             }
@@ -324,21 +356,24 @@ namespace WmcSoft.Collections.Specialized
             return value;
         }
 
-        public virtual T Peek() {
+        public virtual T Peek()
+        {
             if (_count < 1)
                 throw new InvalidOperationException();
 
             return _items[1];
         }
 
-        public virtual bool Contains(T value) {
+        public virtual bool Contains(T value)
+        {
             if (value == null)
                 throw new ArgumentNullException("value");
 
             return Array.IndexOf(_items, value, 1) >= 0;
         }
 
-        public virtual void Clear() {
+        public virtual void Clear()
+        {
             ContiguousStorage<T>.Fill(_items, 1, _count);
             _count = 0;
         }
@@ -365,7 +400,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private void GrowCapacity(int value) {
+        private void GrowCapacity(int value)
+        {
             var array = new T[value];
             if (_count > 0) {
                 Array.Copy(_items, 0, array, 0, _count);
@@ -373,7 +409,8 @@ namespace WmcSoft.Collections.Specialized
             _items = array;
         }
 
-        private void EnsureCapacity(int min) {
+        private void EnsureCapacity(int min)
+        {
             var length = _items.Length - 1;
             if (length < min) {
                 int capacity = length == -1 ? DefaultCapacity : length * 2;
@@ -385,7 +422,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public static PriorityQueue<T> Synchronized(PriorityQueue<T> heap) {
+        public static PriorityQueue<T> Synchronized(PriorityQueue<T> heap)
+        {
             if (heap == null) {
                 throw new ArgumentNullException("heap");
             }
@@ -402,11 +440,13 @@ namespace WmcSoft.Collections.Specialized
             get { return _count; }
         }
 
-        void ICollection.CopyTo(Array array, int index) {
+        void ICollection.CopyTo(Array array, int index)
+        {
             CopyTo((T[])array, index);
         }
 
-        public virtual void CopyTo(T[] array, int index) {
+        public virtual void CopyTo(T[] array, int index)
+        {
             Array.Copy(_items, 1, array, index, _count);
             array.InsertionSort(index + 1, _count - 1, _comparer.Reverse());
         }
@@ -419,35 +459,37 @@ namespace WmcSoft.Collections.Specialized
 
         #region IEnumerable Members
 
-        public virtual Enumerator GetEnumerator() {
+        public virtual Enumerator GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
-        }
-
-        #endregion
-
-        #region ICloneable<T> Members
-
-        public virtual PriorityQueue<T> Clone() {
-            var clone = new PriorityQueue<T>(_count);
-            clone._count = _count;
-            Array.Copy(_items, 1, clone._items, 1, _count);
-            return clone;
         }
 
         #endregion
 
         #region ICloneable Members
 
-        object ICloneable.Clone() {
-            return Clone();
+        protected virtual object Clone(Cloning.Shallow strategy)
+        {
+            var clone = (PriorityQueue<T>)MemberwiseClone();
+            if (_items != null) {
+                clone._items = _items.Clone<T[]>();
+            }
+            return clone;
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone(Cloning.SuggestShallow);
         }
 
         #endregion

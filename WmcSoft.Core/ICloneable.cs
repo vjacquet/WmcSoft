@@ -33,6 +33,7 @@ namespace WmcSoft
     /// as an existing instance.
     /// </summary>
     /// <typeparam name="T">The type of the object to clone.</typeparam>
+    [Obsolete("Can be replaced by an extension method.", true)]
     public interface ICloneable<out T> : ICloneable
     {
         /// <summary>

@@ -45,14 +45,16 @@ namespace WmcSoft.Windows.Forms
         /// Creates a BorderEdges with the value of one on all sides.
         /// </summary>
         public BorderEdges()
-            : this(1) {
+            : this(1)
+        {
         }
 
         /// <summary>
         /// Creates a BorderEdges with the same value on all sides.
         /// </summary>
         /// <param name="value">The width</param>
-        public BorderEdges(int value) {
+        public BorderEdges(int value)
+        {
             _top = value;
             _sameOnAllSides = true;
         }
@@ -64,7 +66,8 @@ namespace WmcSoft.Windows.Forms
         /// <param name="top">The width on the top</param>
         /// <param name="right">The width on the right</param>
         /// <param name="bottom">The width on the bottom</param>
-        public BorderEdges(int left, int top, int right, int bottom) {
+        public BorderEdges(int left, int top, int right, int bottom)
+        {
             if (top == left && top == right && top == bottom) {
                 _top = top;
                 _sameOnAllSides = true;
@@ -78,14 +81,14 @@ namespace WmcSoft.Windows.Forms
 
         #region Membres de ICloneable
 
-        public object Clone() {
-            BorderEdges edges = new BorderEdges();
-            edges._sameOnAllSides = _sameOnAllSides;
-            edges._top = _top;
-            edges._right = _right;
-            edges._bottom = _bottom;
-            edges._left = _left;
-            return edges;
+        protected virtual object Clone(Cloning.Deep strategy)
+        {
+            return MemberwiseClone();
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone(Cloning.SuggestDeep);
         }
 
         #endregion
@@ -111,17 +114,20 @@ namespace WmcSoft.Windows.Forms
 
         public event EventHandler AllChanged;
 
-        protected virtual void OnAllChanged(System.EventArgs e) {
+        protected virtual void OnAllChanged(System.EventArgs e)
+        {
             EventHandler handler = AllChanged;
             if (handler != null)
                 handler(this, e);
         }
 
-        private void ResetAll() {
+        private void ResetAll()
+        {
             All = 0;
         }
 
-        private bool SouldSerializeAll() {
+        private bool SouldSerializeAll()
+        {
             if (_sameOnAllSides)
                 return (_top != 1);
             return false;
@@ -144,17 +150,20 @@ namespace WmcSoft.Windows.Forms
 
         public event EventHandler TopChanged;
 
-        protected virtual void OnTopChanged(System.EventArgs e) {
+        protected virtual void OnTopChanged(System.EventArgs e)
+        {
             EventHandler handler = TopChanged;
             if (handler != null)
                 handler(this, e);
         }
 
-        private void ResetTop() {
+        private void ResetTop()
+        {
             Top = 1;
         }
 
-        private bool SouldSerializeTop() {
+        private bool SouldSerializeTop()
+        {
             if (!_sameOnAllSides)
                 return (_top != 1);
             return false;
@@ -179,17 +188,20 @@ namespace WmcSoft.Windows.Forms
 
         public event EventHandler LeftChanged;
 
-        protected virtual void OnLeftChanged(System.EventArgs e) {
+        protected virtual void OnLeftChanged(System.EventArgs e)
+        {
             EventHandler handler = LeftChanged;
             if (handler != null)
                 handler(this, e);
         }
 
-        private void ResetLeft() {
+        private void ResetLeft()
+        {
             Left = 1;
         }
 
-        private bool SouldSerializeLeft() {
+        private bool SouldSerializeLeft()
+        {
             if (!_sameOnAllSides)
                 return (_left != 1);
             return false;
@@ -214,16 +226,19 @@ namespace WmcSoft.Windows.Forms
 
         public event EventHandler RightChanged;
 
-        protected virtual void OnRightChanged(System.EventArgs e) {
+        protected virtual void OnRightChanged(System.EventArgs e)
+        {
             EventHandler handler = RightChanged;
             if (handler != null)
                 handler(this, e);
         }
-        private void ResetRight() {
+        private void ResetRight()
+        {
             Right = 1;
         }
 
-        private bool SouldSerializeRight() {
+        private bool SouldSerializeRight()
+        {
             if (!_sameOnAllSides)
                 return (_right != 1);
             return false;
@@ -248,17 +263,20 @@ namespace WmcSoft.Windows.Forms
 
         public event EventHandler BottomChanged;
 
-        protected virtual void OnBottomChanged(System.EventArgs e) {
+        protected virtual void OnBottomChanged(System.EventArgs e)
+        {
             EventHandler handler = BottomChanged;
             if (handler != null)
                 handler(this, e);
         }
 
-        private void ResetBottom() {
+        private void ResetBottom()
+        {
             Bottom = 1;
         }
 
-        private bool SouldSerializeBottom() {
+        private bool SouldSerializeBottom()
+        {
             if (!_sameOnAllSides)
                 return (_bottom != 1);
             return false;
@@ -271,7 +289,8 @@ namespace WmcSoft.Windows.Forms
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             BorderEdges edges = (obj as BorderEdges);
             if (edges == null)
                 return false;
@@ -283,11 +302,13 @@ namespace WmcSoft.Windows.Forms
                 && (edges._bottom == _bottom);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return base.GetHashCode();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return String.Empty;
         }
     }

@@ -33,7 +33,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Specifies a set of features to support on the <see cref="CsvWriter"/> object created by the <see cref="CsvWriter.Create"/> method.
     /// </summary>
-    public class CsvWriterSettings : IReadOnlyCsvWriterSettings
+    public sealed class CsvWriterSettings : IReadOnlyCsvWriterSettings, ICloneable
     {
         #region Readonly
 
@@ -78,6 +78,11 @@ namespace WmcSoft.IO
         public CsvWriterSettings Clone()
         {
             return (CsvWriterSettings)MemberwiseClone();
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
     }
 }

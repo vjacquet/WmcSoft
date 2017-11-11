@@ -69,5 +69,22 @@ namespace WmcSoft.Collections.Specialized
 
             Assert.Throws<IndexOutOfRangeException>(() => pq.Contains(5));
         }
+
+        [Fact]
+        public void CanClone()
+        {
+            var pq = new IndexedPriorityQueue<string>(4);
+            pq.Enqueue(0, "zero");
+            pq.Enqueue(2, "two");
+
+            var clone = pq.Clone();
+            Assert.Equal(pq, clone);
+
+            pq.Enqueue(1, "one");
+            Assert.NotEqual(pq, clone);
+
+            clone.Enqueue(1, "one");
+            Assert.Equal(pq, clone);
+        }
     }
 }

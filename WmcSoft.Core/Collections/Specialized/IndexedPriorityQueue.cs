@@ -42,13 +42,14 @@ namespace WmcSoft.Collections.Specialized
     [ComVisible(true)]
     [DebuggerDisplay("Count={Count,nq}")]
     [DebuggerTypeProxy(typeof(IndexedPriorityQueue<>.DebugView))]
-    public class IndexedPriorityQueue<T> : IReadOnlyCollection<T>, ICloneable<IndexedPriorityQueue<T>>
+    public class IndexedPriorityQueue<T> : IReadOnlyCollection<T>, ICloneable
     {
         internal class DebugView
         {
             private readonly IndexedPriorityQueue<T> _priorityQueue;
 
-            public DebugView(IndexedPriorityQueue<T> priorityQueue) {
+            public DebugView(IndexedPriorityQueue<T> priorityQueue)
+            {
                 if (priorityQueue == null) throw new ArgumentNullException(nameof(priorityQueue));
                 _priorityQueue = priorityQueue;
             }
@@ -77,9 +78,10 @@ namespace WmcSoft.Collections.Specialized
             IndexedPriorityQueue<T> _clone;
             T _current;
 
-            public Enumerator(IndexedPriorityQueue<T> heap) {
+            public Enumerator(IndexedPriorityQueue<T> heap)
+            {
                 _priorityQueue = heap;
-                _clone = _priorityQueue.Clone();
+                _clone = new IndexedPriorityQueue<T>(_priorityQueue);
                 _version = heap._version;
                 _current = default(T);
             }
@@ -92,17 +94,19 @@ namespace WmcSoft.Collections.Specialized
 
             #region IDisposable Members
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
             #endregion
 
             #region Membres de IEnumerator
 
-            public void Reset() {
+            public void Reset()
+            {
                 if (_version != _priorityQueue._version) throw new InvalidOperationException();
 
-                _clone = _priorityQueue.Clone();
+                _clone = new IndexedPriorityQueue<T>(_priorityQueue);
                 _current = default(T);
             }
 
@@ -110,7 +114,8 @@ namespace WmcSoft.Collections.Specialized
                 get { return Current; }
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_version != _priorityQueue._version) throw new InvalidOperationException();
 
                 if (_clone.Count > 0) {
@@ -135,7 +140,8 @@ namespace WmcSoft.Collections.Specialized
 
         #region Lifetime
 
-        protected IndexedPriorityQueue() {
+        protected IndexedPriorityQueue()
+        {
         }
 
         /// <summary>
@@ -146,7 +152,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="collection"></param>
         public IndexedPriorityQueue(ICollection<T> collection)
-            : this(collection, Comparer<T>.Default) {
+            : this(collection, Comparer<T>.Default)
+        {
         }
 
         /// <summary>
@@ -156,7 +163,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="capacity"></param>
         public IndexedPriorityQueue(int capacity)
-            : this(Comparer<T>.Default, capacity) {
+            : this(Comparer<T>.Default, capacity)
+        {
         }
 
         /// <summary>
@@ -166,7 +174,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="comparer"></param>
         /// <param name="capacity"></param>
-        public IndexedPriorityQueue(IComparer<T> comparer, int capacity) {
+        public IndexedPriorityQueue(IComparer<T> comparer, int capacity)
+        {
             if (capacity <= 0) throw new ArgumentOutOfRangeException("initialCapacity");
 
             _comparer = comparer ?? Comparer<T>.Default;
@@ -175,7 +184,8 @@ namespace WmcSoft.Collections.Specialized
             _qp = new int[capacity];
         }
 
-        static int ExtractCount(ICollection<T> collection) {
+        static int ExtractCount(ICollection<T> collection)
+        {
             if (collection == null) throw new ArgumentNullException("collection");
             if (collection.Count == 0) throw new ArgumentException("collection");
             return collection.Count;
@@ -189,7 +199,8 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="collection"></param>
         /// <param name="comparer"></param>
         public IndexedPriorityQueue(ICollection<T> collection, IComparer<T> comparer)
-            : this(comparer, ExtractCount(collection)) {
+            : this(comparer, ExtractCount(collection))
+        {
 
             _items = new T[collection.Count + 1];
             int i = 0;
@@ -199,9 +210,20 @@ namespace WmcSoft.Collections.Specialized
                 UnguardedEnqueue(i++, item);
             }
         }
+
+        private IndexedPriorityQueue(IndexedPriorityQueue<T> pq)
+        {
+            _comparer = pq._comparer;
+            _count = pq._count;
+            _items = (T[])pq._items.Clone();
+            _pq = (int[])pq._pq.Clone();
+            _qp = (int[])pq._qp.Clone();
+        }
+
         #endregion
 
-        public bool Contains(int i) {
+        public bool Contains(int i)
+        {
             return _qp[i] != 0;
         }
 
@@ -209,14 +231,17 @@ namespace WmcSoft.Collections.Specialized
             get { return _count; }
         }
 
-        bool Prioritized(T x, T y) {
+        bool Prioritized(T x, T y)
+        {
             return _comparer.Compare(x, y) < 0;
         }
-        bool PrioritizedIndex(int i, int j) {
+        bool PrioritizedIndex(int i, int j)
+        {
             return Prioritized(_items[_pq[i]], _items[_pq[j]]);
         }
 
-        void Swap(int i, int j) {
+        void Swap(int i, int j)
+        {
             var tmp = _pq[i];
             _pq[i] = _pq[j];
             _pq[j] = tmp;
@@ -228,7 +253,8 @@ namespace WmcSoft.Collections.Specialized
         /// Reorganizes down up.
         /// </summary>
         /// <param name="k">The index</param>
-        void Swim(int k) {
+        void Swim(int k)
+        {
             while (k > 1 && PrioritizedIndex(k / 2, k)) {
                 Swap(k, k / 2);
             }
@@ -238,7 +264,8 @@ namespace WmcSoft.Collections.Specialized
         /// Reorganizes up down
         /// </summary>
         /// <param name="k"></param>
-        void Sink(int k) {
+        void Sink(int k)
+        {
             var n = _count;
             while (2 * k <= n) {
                 var j = k * 2;
@@ -251,7 +278,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        void UnguardedEnqueue(int i, T value) {
+        void UnguardedEnqueue(int i, T value)
+        {
             _count++;
             _qp[i] = _count;
             _pq[_count] = i;
@@ -259,7 +287,8 @@ namespace WmcSoft.Collections.Specialized
             Swim(_count);
         }
 
-        public void Enqueue(int i, T value) {
+        public void Enqueue(int i, T value)
+        {
             if (value == null) throw new ArgumentNullException("value");
             if (Contains(i)) throw new ArgumentException("i");
 
@@ -273,7 +302,8 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="i">The index.</param>
         /// <param name="value">The new value.</param>
         /// <return>The old value.</return>
-        public T ChangeValue(int i, T value) {
+        public T ChangeValue(int i, T value)
+        {
             if (!Contains(i)) throw new ArgumentOutOfRangeException(nameof(i));
 
             var result = _items[i];
@@ -284,7 +314,8 @@ namespace WmcSoft.Collections.Specialized
             return result;
         }
 
-        public T IncreaseValue(int i, T value) {
+        public T IncreaseValue(int i, T value)
+        {
             if (!Contains(i)) throw new ArgumentOutOfRangeException(nameof(i));
 
             var result = _items[i];
@@ -296,7 +327,8 @@ namespace WmcSoft.Collections.Specialized
             return result;
         }
 
-        public T DecreaseValue(int i, T value) {
+        public T DecreaseValue(int i, T value)
+        {
             if (!Contains(i)) throw new ArgumentOutOfRangeException(nameof(i));
 
             var result = _items[i];
@@ -313,7 +345,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="i">The index.</param>
         /// <returns><c>true</c> if the value was removed; otherwise <c>false</c>.</returns>
-        public bool Remove(int i) {
+        public bool Remove(int i)
+        {
             if (Contains(i)) {
                 int index = _qp[i];
                 Swap(index, _count--);
@@ -326,7 +359,8 @@ namespace WmcSoft.Collections.Specialized
             return false;
         }
 
-        int UnguardedDequeue() {
+        int UnguardedDequeue()
+        {
             var index = _pq[1];
             ++_version;
             Swap(1, _count--);
@@ -337,20 +371,23 @@ namespace WmcSoft.Collections.Specialized
             return index;
         }
 
-        public int Dequeue() {
+        public int Dequeue()
+        {
             if (_count < 1) throw new InvalidOperationException();
 
             return UnguardedDequeue();
         }
 
-        public int Dequeue(out T value) {
+        public int Dequeue(out T value)
+        {
             if (_count < 1) throw new InvalidOperationException();
 
             value = _items[_pq[1]];
             return UnguardedDequeue();
         }
 
-        public int Peek() {
+        public int Peek()
+        {
             if (_count < 1) throw new InvalidOperationException();
 
             return _pq[1];
@@ -368,14 +405,16 @@ namespace WmcSoft.Collections.Specialized
             get { return _items[i]; }
         }
 
-        public bool Contains(T value) {
+        public bool Contains(T value)
+        {
             if (value == null)
                 throw new ArgumentNullException("value");
 
             return Array.IndexOf(_items, value, 0) >= 0;
         }
 
-        public void Clear() {
+        public void Clear()
+        {
             ContiguousStorage<T>.Fill(_items, 1, _count);
             _count = 0;
         }
@@ -389,35 +428,39 @@ namespace WmcSoft.Collections.Specialized
 
         #region IEnumerable Members
 
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
-        }
-
-        #endregion
-
-        #region ICloneable<T> Members
-
-        public IndexedPriorityQueue<T> Clone() {
-            var clone = new IndexedPriorityQueue<T>(_count);
-            clone._count = _count;
-            Array.Copy(_items, 1, clone._items, 1, _count);
-            return clone;
         }
 
         #endregion
 
         #region ICloneable Members
 
-        object ICloneable.Clone() {
-            return Clone();
+        protected virtual object Clone(Cloning.Shallow strategy)
+        {
+            var clone = (IndexedPriorityQueue<T>)MemberwiseClone();
+            if (_items != null) {
+                clone._items = _items.Clone<T[]>();
+                clone._pq = _pq.Clone<int[]>();
+                clone._qp = _qp.Clone<int[]>();
+            }
+            return clone;
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone(Cloning.SuggestShallow);
         }
 
         #endregion

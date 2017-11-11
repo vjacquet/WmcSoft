@@ -35,7 +35,8 @@ namespace WmcSoft.Xml.XPath
     public class FileSystemNavigator : XPathNavigator
     {
         #region class NavigatorAdapter
-        abstract class NavigatorAdapter : ICloneable
+
+        abstract class NavigatorAdapter
         {
             protected readonly string[] names;
 
@@ -60,14 +61,10 @@ namespace WmcSoft.Xml.XPath
 
             public abstract FileSystemInfo GetParent(FileSystemInfo value);
 
-            #region ICloneable Members
-
-            public object Clone()
+            public NavigatorAdapter Clone()
             {
-                return MemberwiseClone();
+                return (NavigatorAdapter) MemberwiseClone();
             }
-
-            #endregion
         }
 
         class DirectoryInfoNavigatorAdapter : NavigatorAdapter

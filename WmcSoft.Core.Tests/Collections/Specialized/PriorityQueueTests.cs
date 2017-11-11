@@ -96,5 +96,22 @@ namespace WmcSoft.Collections.Specialized
                     priorityQueue.Dequeue();
             });
         }
+
+        [Fact]
+        public void CanClone()
+        {
+            var pq = new PriorityQueue<int>();
+            pq.Enqueue(15);
+            pq.Enqueue(3);
+
+            var clone = pq.Clone();
+            Assert.Equal(pq, clone);
+
+            pq.Enqueue(17);
+            Assert.NotEqual(pq, clone);
+
+            clone.Enqueue(17);
+            Assert.Equal(pq, clone);
+        }
     }
 }

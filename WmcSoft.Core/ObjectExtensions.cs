@@ -27,52 +27,25 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
-using System.Runtime.Serialization;
-using WmcSoft.IO;
-
-using Cloner = System.Runtime.Serialization.Formatters.Binary.BinaryFormatter;
 
 namespace WmcSoft
 {
     public static class ObjectExtensions
     {
-        #region Clone
-
-        /// <summary>
-        /// Clone the instance.
-        /// </summary>
-        /// <typeparam name="T">The type of the instance</typeparam>
-        /// <param name="instance">The instance</param>
-        /// <returns>A clone of the instance.</returns>
-        /// <remarks> This extensions works better for classes implementing <see cref="ICloneable"/> explicitly.</remarks>
-        public static T Clone<T>(this T instance)
-            where T : class {
-            var cloneable = instance as ICloneable;
-            if (cloneable != null)
-                return (T)cloneable.Clone();
-
-            using (var ms = new MemoryStream()) {
-                var f = new Cloner(null, new StreamingContext(StreamingContextStates.Clone));
-                f.Serialize(ms, instance);
-                ms.Rewind();
-                return (T)f.Deserialize(ms);
-            }
-        }
-
-        #endregion
-
         #region ConvertTo
 
-        public static T ConvertTo<T>(this object value) {
+        public static T ConvertTo<T>(this object value)
+        {
             return (T)ConvertTo(value, typeof(T));
         }
 
-        public static T ConvertTo<T>(this object value, CultureInfo culture) {
+        public static T ConvertTo<T>(this object value, CultureInfo culture)
+        {
             return (T)ConvertTo(value, typeof(T), culture);
         }
 
-        public static object ConvertTo(this object value, Type destinationType) {
+        public static object ConvertTo(this object value, Type destinationType)
+        {
             return ConvertTo(value, destinationType, CultureInfo.CurrentCulture);
         }
 
@@ -86,7 +59,8 @@ namespace WmcSoft
         /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> is <c>null</c>.</exception>
         /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
         /// <remarks>This method eagerly tries to convert the value.</remarks>
-        public static object ConvertTo(this object value, Type destinationType, CultureInfo culture) {
+        public static object ConvertTo(this object value, Type destinationType, CultureInfo culture)
+        {
             if (destinationType == null) throw new ArgumentNullException("type");
 
             if (value == null) {
@@ -110,6 +84,22 @@ namespace WmcSoft
 
             converter = TypeDescriptor.GetConverter(sourceType);
             return converter.ConvertTo(null, culture, value, destinationType);
+        }
+
+        #endregion
+
+        #region Clone
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <typeparam name="T">The type of the instance</typeparam>
+        /// <param name="obj">The instance</param>
+        /// <returns>A new object that is a copy of this instance.</returns>
+        public static T Clone<T>(this T obj)
+            where T : ICloneable
+        {
+            return (T)obj.Clone();
         }
 
         #endregion

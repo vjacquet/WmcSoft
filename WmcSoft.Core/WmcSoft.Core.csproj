@@ -54,6 +54,7 @@
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BytesFormatter.cs" />
     <Compile Include="BitArithmetics.cs" />
+    <Compile Include="Cloning.cs" />
     <Compile Include="CodeDom\CodeGuardArgumentNotNulllStatement.cs" />
     <Compile Include="CodeDom\CodeDomExtensions.cs" />
     <Compile Include="CodeDom\CodeDomTypeBuilder.cs" />

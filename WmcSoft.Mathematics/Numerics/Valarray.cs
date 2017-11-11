@@ -34,7 +34,7 @@ namespace WmcSoft.Numerics
     /// Represents an array of values that can be reshaped.
     /// </summary>
     [Serializable]
-    public sealed class Valarray : IEnumerable<double>, ICloneable<Valarray>, IEquatable<Valarray>
+    public sealed class Valarray : IEnumerable<double>, IEquatable<Valarray>, ICloneable
     {
         public static Valarray Empty = new Valarray(0);
 
@@ -200,7 +200,8 @@ namespace WmcSoft.Numerics
         /// <remarks>The <see cref="Valarray"/> takes ownership of the values, it does not copy them.</remarks>
         public Valarray(params double[] values)
         {
-            if (values == null) throw new ArgumentNullException("values");
+            if (values == null) throw new ArgumentNullException(nameof(values));
+
             if (values.Length == 0) {
                 _dimensions = Empty._dimensions;
                 _data = Empty._data;
@@ -384,7 +385,7 @@ namespace WmcSoft.Numerics
         public Valarray Map(Func<double, double> op)
         {
             if (Rank == 0)
-                return Clone();
+                return new Valarray();
 
             var length = _data.Length;
             var data = new double[_data.Length];
@@ -640,20 +641,11 @@ namespace WmcSoft.Numerics
 
         #endregion
 
-        #region ICloneable<Valarray> Membres
-
-        public Valarray Clone()
-        {
-            return new Valarray(_dimensions, (double[])_data.Clone());
-        }
-
-        #endregion
-
         #region ICloneable Membres
 
         object ICloneable.Clone()
         {
-            return Clone();
+            return new Valarray(_dimensions, (double[])_data.Clone());
         }
 
         #endregion

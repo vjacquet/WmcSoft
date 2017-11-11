@@ -34,7 +34,7 @@ namespace WmcSoft.Numerics
     /// Represents an array of bool.
     /// </summary>
     [Serializable]
-    public sealed class Boolarray : IEnumerable<bool>, ICloneable<Boolarray>, IEquatable<Boolarray>
+    public sealed class Boolarray : IEnumerable<bool>, IEquatable<Boolarray>, ICloneable
     {
         public static Boolarray Empty = new Boolarray(0);
 
@@ -204,7 +204,8 @@ namespace WmcSoft.Numerics
         /// <remarks>The <see cref="Boolarray"/> takes ownership of the values, it does not copy them.</remarks>
         public Boolarray(params bool[] values)
         {
-            if (values == null) throw new ArgumentNullException("values");
+            if (values == null) throw new ArgumentNullException(nameof(values));
+
             if (values.Length == 0) {
                 _dimensions = Empty._dimensions;
                 _data = Empty._data;
@@ -391,7 +392,7 @@ namespace WmcSoft.Numerics
         public Boolarray Map(Func<bool, bool> op)
         {
             if (Rank == 0)
-                return Clone();
+                return new Boolarray();
 
             var result = new Boolarray(_dimensions);
             var length = result._data.Length;
@@ -506,20 +507,11 @@ namespace WmcSoft.Numerics
 
         #endregion
 
-        #region ICloneable<Boolarray> Membres
-
-        public Boolarray Clone()
-        {
-            return new Boolarray(_dimensions, (bool[])_data.Clone());
-        }
-
-        #endregion
-
         #region ICloneable Membres
 
         object ICloneable.Clone()
         {
-            return Clone();
+            return new Boolarray(_dimensions, (bool[])_data.Clone());
         }
 
         #endregion

@@ -36,7 +36,7 @@ namespace WmcSoft.Text
     /// <summary>
     /// Represents a lazy substring of a string.
     /// </summary>
-    public sealed class Strip : IEquatable<string>, IComparable<string>, ICloneable<Strip>, IReadOnlyList<char>, IList<char>
+    public sealed class Strip : IEquatable<string>, IComparable<string>, IReadOnlyList<char>, IList<char>, ICloneable
     {
         #region Public fields
 
@@ -576,12 +576,7 @@ namespace WmcSoft.Text
 
         #endregion
 
-        #region ICloneable<Strip> Members
-
-        public Strip Clone()
-        {
-            return this;
-        }
+        #region ICloneable Members
 
         object ICloneable.Clone()
         {
