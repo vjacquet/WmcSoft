@@ -25,7 +25,8 @@ To improve readability:
 
 - Extensions methods yielding `IEnumerable<T>` should check the arguments and then return the result from an unguarded version. 
   The unguarded version might be called separately from other places and the verification of the arguments will not be defered 
-  until the start of the enumeration.
+  until the start of the enumeration. It serves two purpose: not only the unguarded can be called from other algorithms but also the 
+  validation of the arguments will be done right away and not when the enumeration starts.
 
         static IEnumerable<T> UnguardedBackwards<T>(IReadOnlyList<T> source) {
             for (int i = source.Count - 1; i >= 0; i--) {
@@ -41,7 +42,8 @@ To improve readability:
 
   On a side note, it is unfortunate that the convention for a null `this` argument of the extensions should throw `ArgumentNullException`
   instead of `NullReferenceException`. Not only the latter is what calling a method on a null reference would throw but also we would not
-  have to always guard for null. We will follow this convention the Linq context. In all other cases, we prefer to throw `NullReferenceException`.
+  have to always guard for null. Anyway, we will follow this convention the Linq context. 
+  In all other cases, we prefer to throw `NullReferenceException`.
 
 - For readability, extensions methods should not accept a null `this`. If the method is defined when the first parameter is null, then the method should not be an extension method. `using static`.
 
