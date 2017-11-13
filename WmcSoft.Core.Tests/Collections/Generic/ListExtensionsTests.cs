@@ -189,6 +189,16 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(target, list);
         }
 
+        [Fact]
+        public void CanRemoveAllDuplicates()
+        {
+            var list = new List<int> { 1, 2, 3, 4, 2, 2, 5, 1, 6 };
+            var expected = new[] { 1, 2, 3, 4, 5, 6 };
+            var count = list.RemoveDuplicates();
+            Assert.Equal(3, count);
+            Assert.Equal(expected, list);
+        }
+
         #region Slice
 
         [Fact]

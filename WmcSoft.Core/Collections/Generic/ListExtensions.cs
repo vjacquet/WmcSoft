@@ -157,6 +157,24 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region RemoveDuplicates
+
+        /// <summary>
+        /// Removes all the duplicates from the list.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
+        /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
+        public static int RemoveDuplicates<T>(this List<T> list, IEqualityComparer<T> comparer = null)
+        {
+            var unique = new HashSet<T>(comparer);
+            return list.RemoveAll(x => !unique.Add(x));
+        }
+
+        #endregion
+
         #region Repeat
 
         class RepeatedList<T> : IReadOnlyList<T>
@@ -563,7 +581,7 @@ namespace WmcSoft.Collections.Generic
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
 
-            start =  NormalizeZeroBasedIndex(start, list.Count);
+            start = NormalizeZeroBasedIndex(start, list.Count);
             deleteCount = Min(list.Count - start, deleteCount);
             var removed = new T[deleteCount];
             list.CopyTo(start, removed, 0, deleteCount);
