@@ -199,6 +199,24 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(expected, list);
         }
 
+        [Fact]
+        public void CanRemoveFirst()
+        {
+            var list = new List<int> { 1, 4, 2, 3, 4, 5, 6 };
+            var expected = new[] { 1, 2, 3, 4, 5, 6 };
+            Assert.True(list.RemoveFirst(x => x == 4));
+            Assert.Equal(expected, list);
+        }
+
+        [Fact]
+        public void CanRemoveLast()
+        {
+            var list = new List<int> { 1, 2, 3, 4, 5, 4, 6 };
+            var expected = new[] { 1, 2, 3, 4, 5, 6 };
+            Assert.True(list.RemoveLast(x => x == 4));
+            Assert.Equal(expected, list);
+        }
+
         #region Slice
 
         [Fact]

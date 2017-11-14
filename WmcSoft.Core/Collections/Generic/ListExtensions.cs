@@ -136,7 +136,7 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
-        #region Remove
+        #region RemoveFirst / RemoveLast
 
         /// <summary>
         /// Removes the first occurrence that matches the conditions defined by the specified predicate.
@@ -145,9 +145,26 @@ namespace WmcSoft.Collections.Generic
         /// <param name="list">The list.</param>
         /// <param name="match">The <see cref="Predicate{T}"/> delegate that defines the conditions of the element to search for.</param>
         /// <returns><c>true</c> if item is successfully removed; otherwise, <c>false</c>.</returns>
-        public static bool Remove<T>(this List<T> list, Predicate<T> match)
+        public static bool RemoveFirst<T>(this List<T> list, Predicate<T> match)
         {
             var index = list.FindIndex(match);
+            if (index >= 0) {
+                list.RemoveAt(index);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the last occurrence that matches the conditions defined by the specified predicate.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="match">The <see cref="Predicate{T}"/> delegate that defines the conditions of the element to search for.</param>
+        /// <returns><c>true</c> if item is successfully removed; otherwise, <c>false</c>.</returns>
+        public static bool RemoveLast<T>(this List<T> list, Predicate<T> match)
+        {
+            var index = list.FindLastIndex(match);
             if (index >= 0) {
                 list.RemoveAt(index);
                 return true;
