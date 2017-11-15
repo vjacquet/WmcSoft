@@ -206,6 +206,7 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 1, 2, 3, 4, 5, 6 };
             Assert.True(list.RemoveFirst(x => x == 4));
             Assert.Equal(expected, list);
+            Assert.False(list.RemoveFirst(x => x == 9));
         }
 
         [Fact]
@@ -215,6 +216,7 @@ namespace WmcSoft.Collections.Generic
             var expected = new[] { 1, 2, 3, 4, 5, 6 };
             Assert.True(list.RemoveLast(x => x == 4));
             Assert.Equal(expected, list);
+            Assert.False(list.RemoveLast(x => x == 9));
         }
 
         #region Slice

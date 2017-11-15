@@ -40,14 +40,12 @@ namespace WmcSoft.Collections.Generic
     {
         static void Guard<T>(IReadOnlyList<T> list, int startIndex, int count)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
         }
 
         static void Guard<T>(IList<T> list, int startIndex, int count)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
             if (startIndex < 0 || startIndex > list.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0 || startIndex > (list.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
         }
@@ -121,7 +119,6 @@ namespace WmcSoft.Collections.Generic
 
         public static int IndexOf<T>(this IList<T> list, IReadOnlyList<T> value)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
@@ -232,18 +229,17 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static IReadOnlyList<T> Repeat<T>(this IReadOnlyList<T> source, int count)
+        public static IReadOnlyList<T> Repeat<T>(this IReadOnlyList<T> list, int count)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             switch (count) {
             case 0:
                 return new T[0];
             case 1:
-                return source;
+                return list;
             default:
-                return new RepeatedList<T>(source, count);
+                return new RepeatedList<T>(list, count);
             }
         }
 
@@ -266,8 +262,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The amount by wich to rotate the list.</returns>
         public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-            if (rotation == null) throw new ArgumentNullException("rotation");
+            if (rotation == null) throw new ArgumentNullException(nameof(rotation));
 
             if (rotation.Count != list.Count)
                 return -1;
@@ -295,8 +290,7 @@ namespace WmcSoft.Collections.Generic
 
         public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-            if (rotation == null) throw new ArgumentNullException("rotation");
+            if (rotation == null) throw new ArgumentNullException(nameof(rotation));
 
             if (rotation.Count != list.Count)
                 return false;
@@ -305,8 +299,7 @@ namespace WmcSoft.Collections.Generic
 
         public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-            if (rotation == null) throw new ArgumentNullException("rotation");
+            if (rotation == null) throw new ArgumentNullException(nameof(rotation));
 
             if (rotation.Count != count)
                 return false;
@@ -327,8 +320,6 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The shallow copy of the specified portion of the array.</returns>
         public static T[] Slice<T>(this IList<T> list, int start, int end)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-
             var length = list.Count;
             var k = NormalizeZeroBasedIndex(start, length);
             var final = NormalizeZeroBasedIndex(end, length);
@@ -525,8 +516,6 @@ namespace WmcSoft.Collections.Generic
         /// <param name="comparison">The comparison function.</param>
         public static void SortBackwards<T>(this List<T> list, Comparison<T> comparison)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-
             list.Sort((x, y) => comparison(y, x));
         }
 
@@ -536,10 +525,8 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of elements</typeparam>
         /// <param name="list">The source list</param>
         /// <param name="comparer">The comparer object.</param>
-        public static void SortBackwards<T>(this List<T> list, IComparer<T> comparer)
+        public static void SortBackwards<T>(this List<T> list, IComparer<T> comparer = null)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-
             list.Sort(new ReverseComparer<T>(comparer ?? Comparer<T>.Default));
         }
 
@@ -571,8 +558,6 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An array containing the removed elements. If no elements are removed, returns an empty array.</returns>
         public static T[] Splice<T>(this IList<T> list, int start)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-
             start = NormalizeZeroBasedIndex(start, list.Count);
             var count = list.Count - start;
             if (count < 0)
@@ -596,8 +581,6 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An array containing the removed elements. If no elements are removed, returns an empty array.</returns>
         public static T[] Splice<T>(this IList<T> list, int start, int deleteCount, params T[] items)
         {
-            if (list == null) throw new ArgumentNullException(nameof(list));
-
             start = NormalizeZeroBasedIndex(start, list.Count);
             deleteCount = Min(list.Count - start, deleteCount);
             var removed = new T[deleteCount];
