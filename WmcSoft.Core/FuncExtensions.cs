@@ -370,6 +370,48 @@ namespace WmcSoft
 
         #endregion
 
+        #region Once / Before
+
+        /// <summary>
+        /// Creates a version of the <see cref="Func{TResult}"/> that can only be call one time.
+        /// </summary>
+        /// <param name="func">The function to run.</param>
+        /// <returns>A new func.</returns>
+        public static Func<TResult> Once<TResult>(this Func<TResult> func)
+        {
+            bool ran = false;
+
+            TResult result = default(TResult);
+            return () => {
+                if (!ran) {
+                    ran = true;
+                    result = func();
+                }
+                return result;
+            };
+        }
+
+        /// <summary>
+        /// Creates a version of the <see cref="Func{TResult}"/> that can be called no more than <paramref name="count"/> times.
+        /// </summary>
+        /// <param name="action">The action to run.</param>
+        /// <param name="count">The number of times to call the action.</param>
+        /// <returns>A new func.</returns>
+        /// <remarks>The result of the last function call is memoized and returned when <paramref name="count"/> has been reached.</remarks>
+        public static Func<TResult> Before<TResult>(this Func<TResult> func, int count)
+        {
+            TResult result = default(TResult);
+            return () => {
+                if (count > 0) {
+                    count--;
+                    result = func();
+                }
+                return result;
+            };
+        }
+
+        #endregion
+
         #region Logical operators
 
         public static Func<T, bool> Negation<T>(this Func<T, bool> predicate)
