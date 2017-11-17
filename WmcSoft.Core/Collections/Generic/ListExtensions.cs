@@ -229,6 +229,13 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
+        /// <summary>
+        /// Adapts a readonly list to create one with the same elements repeated <paramref name="count"/> times.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="count">The repetition count</param>
+        /// <returns>The adapated readonly list.</returns>
         public static IReadOnlyList<T> Repeat<T>(this IReadOnlyList<T> list, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
@@ -247,63 +254,88 @@ namespace WmcSoft.Collections.Generic
 
         #region Rotation
 
-        static int UnguardedFindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int endIndex)
+        static int UnguardedFindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int endIndex, IEqualityComparer<T> comparer)
         {
             var doubled = rotation.Repeat(2);
-            return UnguardedIndexOf(doubled, list.Sublist(startIndex, endIndex - startIndex).AsReadOnly(), 0, doubled.Count, EqualityComparer<T>.Default);
+            return UnguardedIndexOf(doubled, list.Sublist(startIndex, endIndex - startIndex).AsReadOnly(), 0, doubled.Count, comparer);
         }
 
         /// <summary>
-        /// Finds the amount by which to rotate <paramref name="list"/> so it equals <paramref name="rotation"/>.
+        /// Finds the amount by which to rotate list so it equals <paramref name="rotation"/>.
         /// </summary>
         /// <typeparam name="T">The type of elements.</typeparam>
         /// <param name="list">The list.</param>
         /// <param name="rotation">The target rotation.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
         /// <returns>The amount by wich to rotate the list.</returns>
-        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation)
+        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, IEqualityComparer<T> comparer = null)
         {
             if (rotation == null) throw new ArgumentNullException(nameof(rotation));
 
             if (rotation.Count != list.Count)
                 return -1;
-            return UnguardedFindRotationPoint(list, rotation, 0, list.Count);
+            return UnguardedFindRotationPoint(list, rotation, 0, list.Count, comparer ?? EqualityComparer<T>.Default);
         }
 
         /// <summary>
-        /// Finds the amount by which to rotate part of <paramref name="list"/> so it equals <paramref name="rotation"/>.
+        /// Finds the amount by which to rotate part of list so it equals <paramref name="rotation"/>.
         /// </summary>
         /// <typeparam name="T">The type of elements.</typeparam>
         /// <param name="list">The list.</param>
         /// <param name="rotation">The target rotation.</param>
         /// <param name="startIndex">The start index in the list.</param>
         /// <param name="count">The end index in the list.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
         /// <returns>The amount by wich to rotate the list.</returns>
-        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count)
+        public static int FindRotationPoint<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count, IEqualityComparer<T> comparer = null)
         {
-            if (rotation == null) throw new ArgumentNullException("rotation");
+            if (rotation == null) throw new ArgumentNullException(nameof(rotation));
             Guard(list, startIndex, count);
 
             if (rotation.Count != count)
                 return -1;
-            return UnguardedFindRotationPoint(list, rotation, startIndex, startIndex + count);
+            return UnguardedFindRotationPoint(list, rotation, startIndex, startIndex + count, comparer ?? EqualityComparer<T>.Default);
         }
 
-        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation)
+        /// <summary>
+        /// Returns <c>true</c> if <paramref name="rotation"/> is a rotation of the list.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="rotation">The target rotation.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
+        /// <returns><c>true</c> if <paramref name="rotation"/> is a rotation of the list; otherwise, <c>false</c>.</returns>
+        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, IEqualityComparer<T> comparer = null)
         {
             if (rotation == null) throw new ArgumentNullException(nameof(rotation));
 
             if (rotation.Count != list.Count)
                 return false;
-            return UnguardedFindRotationPoint(list, rotation, 0, list.Count) >= 0;
+            return UnguardedFindRotationPoint(list, rotation, 0, list.Count, comparer ?? EqualityComparer<T>.Default) >= 0;
         }
 
-        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count)
+        /// <summary>
+        /// Returns <c>true</c> if <paramref name="rotation"/> is a rotation of the sublist of <paramref name="count"/> elements, started at <paramref name="startIndex"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="rotation">The target rotation.</param>
+        /// <param name="startIndex">The start index in the list.</param>
+        /// <param name="count">The end index in the list.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
+        /// <returns><c>true</c> if <paramref name="rotation"/> is a rotation of the list; otherwise, <c>false</c>.</returns>
+        public static bool IsRotation<T>(this IList<T> list, IReadOnlyList<T> rotation, int startIndex, int count, IEqualityComparer<T> comparer = null)
         {
             if (rotation == null) throw new ArgumentNullException(nameof(rotation));
+            Guard(list, startIndex, count);
 
             if (rotation.Count != count)
                 return false;
-            return UnguardedFindRotationPoint(list, rotation, startIndex, startIndex + count) >= 0;
+            return UnguardedFindRotationPoint(list, rotation, startIndex, startIndex + count, comparer ?? EqualityComparer<T>.Default) >= 0;
         }
 
         #endregion
