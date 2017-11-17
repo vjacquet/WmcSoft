@@ -36,6 +36,7 @@ namespace WmcSoft.Collections.Generic
 {
     /// <summary>
     /// Provides a set of static methods to extend collection related classes or interfaces.
+    /// This is a static class.
     /// </summary>
     public static partial class CollectionExtensions
     {

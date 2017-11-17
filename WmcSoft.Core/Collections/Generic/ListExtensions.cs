@@ -34,7 +34,8 @@ using static System.Math;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="List{T}"/> class. This is a static class. 
+    /// Defines the extension methods to the <see cref="List{T}"/> class.
+    /// This is a static class. 
     /// </summary>
     public static class ListExtensions
     {

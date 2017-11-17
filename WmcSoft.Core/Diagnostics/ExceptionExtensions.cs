@@ -33,6 +33,10 @@ using System.Reflection;
 
 namespace WmcSoft.Diagnostics
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Exception"/> class.
+    /// This is a static class. 
+    /// </summary>
     public static class ExceptionExtensions
     {
         static IEnumerable<DictionaryEntry> DoCrawlData<K>(Exception exception, K converter)
