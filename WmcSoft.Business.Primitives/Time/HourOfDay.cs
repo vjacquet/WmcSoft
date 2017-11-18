@@ -140,11 +140,11 @@ namespace WmcSoft.Time
 
         static int ConvertTo24Hour(int hour, string am_pm)
         {
-            if (hour < 0 | hour > 12) throw new ArgumentOutOfRangeException("hour");
+            if (hour < 0 | hour > 12) throw new ArgumentOutOfRangeException(nameof(hour));
 
             var am = "AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
             var pm = "PM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
-            if (!(am || pm)) throw new ArgumentOutOfRangeException("am_pm");
+            if (!(am || pm)) throw new ArgumentOutOfRangeException(nameof(am_pm));
 
             int translatedAmPm = am ? 0 : 12;
             translatedAmPm -= (hour == 12) ? 12 : 0;

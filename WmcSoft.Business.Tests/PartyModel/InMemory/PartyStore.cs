@@ -67,7 +67,7 @@ namespace WmcSoft.Business.PartyModel.InMemory
         {
             var key = ConvertPartyIdentifierToKey(partyId);
             if (!_context.TryGetValue(key, out TParty party))
-                return Task.FromException<TParty>(new ArgumentOutOfRangeException("partyId"));
+                return Task.FromException<TParty>(new ArgumentOutOfRangeException(nameof(partyId)));
             return Task.FromResult(party);
         }
 

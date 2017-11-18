@@ -34,7 +34,8 @@ namespace WmcSoft.Business.ProductModel
         static Dictionary<Type, IList<ProductFeatureType>> mandatoryFeatures = new Dictionary<Type, IList<ProductFeatureType>>();
         static Dictionary<Type, IList<ProductFeatureType>> optionalFeatures = new Dictionary<Type, IList<ProductFeatureType>>();
 
-        private static IEnumerable<T> EnumerateHierarchy<T>(Type baseType, Type type, IDictionary<Type, IList<T>> dictionary) {
+        private static IEnumerable<T> EnumerateHierarchy<T>(Type baseType, Type type, IDictionary<Type, IList<T>> dictionary)
+        {
             var stack = new Stack<Type>();
             stack.Push(type);
             while (type != baseType) {
@@ -52,15 +53,18 @@ namespace WmcSoft.Business.ProductModel
             }
         }
 
-        public static IEnumerable<ProductFeatureType> GetMandatoryFeatures(this ProductType product) {
+        public static IEnumerable<ProductFeatureType> GetMandatoryFeatures(this ProductType product)
+        {
             return EnumerateHierarchy(typeof(ProductType), product.GetType(), mandatoryFeatures);
         }
 
-        public static IEnumerable<ProductFeatureType> GetOptionalFeatures(this ProductType product) {
+        public static IEnumerable<ProductFeatureType> GetOptionalFeatures(this ProductType product)
+        {
             return EnumerateHierarchy(typeof(ProductType), product.GetType(), optionalFeatures);
         }
 
-        public static void AddFeature(this ProductType product, ProductFeatureType feature, RegistrationPolicy policy) {
+        public static void AddFeature(this ProductType product, ProductFeatureType feature, RegistrationPolicy policy)
+        {
             Dictionary<Type, IList<ProductFeatureType>> dictionary;
             switch (policy) {
             case RegistrationPolicy.Optional:
@@ -70,7 +74,7 @@ namespace WmcSoft.Business.ProductModel
                 dictionary = mandatoryFeatures;
                 break;
             default:
-                throw new ArgumentOutOfRangeException("policy");
+                throw new ArgumentOutOfRangeException(nameof(policy));
             }
             var type = product.GetType();
             IList<ProductFeatureType> list;

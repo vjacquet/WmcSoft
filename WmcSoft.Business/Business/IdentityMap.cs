@@ -44,17 +44,19 @@ namespace WmcSoft.Business
         #endregion
 
         public IdentityMap()
-            : this(new Dictionary<long, object>(), new ObjectIDGenerator()) {
+            : this(new Dictionary<long, object>(), new ObjectIDGenerator())
+        {
         }
 
-        public IdentityMap(IDictionary<long, object> manager, ObjectIDGenerator generator) {
+        public IdentityMap(IDictionary<long, object> manager, ObjectIDGenerator generator)
+        {
             _map = manager;
             _generator = generator;
         }
 
-        public long Register(object instance) {
-            if (instance == null)
-                throw new ArgumentNullException("instance");
+        public long Register(object instance)
+        {
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
 
             bool firstTime;
             long id = _generator.GetId(instance, out firstTime);
@@ -64,7 +66,8 @@ namespace WmcSoft.Business
             return id;
         }
 
-        public object Get(long id) {
+        public object Get(long id)
+        {
             object obj;
             if (_map.TryGetValue(id, out obj))
                 return obj;

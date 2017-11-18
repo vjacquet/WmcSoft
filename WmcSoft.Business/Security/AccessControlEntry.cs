@@ -52,10 +52,8 @@ namespace WmcSoft.Security
 
         public AccessControlEntry(Permission permission, Principal principal)
         {
-            if (permission == null)
-                throw new ArgumentNullException("permission");
-            if (principal == null)
-                throw new ArgumentNullException("principal");
+            if (permission == null) throw new ArgumentNullException(nameof(permission));
+            if (principal == null) throw new ArgumentNullException(nameof(principal));
 
             _permission = permission;
             _principal = principal;

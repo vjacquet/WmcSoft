@@ -83,14 +83,9 @@ namespace WmcSoft.ComponentModel
         /// <param name="callback">A callback object that is used to create the service. This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
         public void AddService(Type serviceType, ServiceCreatorCallback callback)
         {
-            if (serviceType == null)
-                throw new ArgumentNullException("serviceType");
-
-            if (callback == null)
-                throw new ArgumentNullException("callback");
-
-            if (_services.Contains(serviceType))
-                throw new ArgumentException("Service already exists.", "serviceType");
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if (callback == null) throw new ArgumentNullException(nameof(callback));
+            if (_services.Contains(serviceType)) throw new ArgumentException("Service already exists.", nameof(serviceType));
 
             _services[serviceType] = callback;
         }
@@ -115,20 +110,17 @@ namespace WmcSoft.ComponentModel
         /// <param name="serviceInstance">An instance of the service type to add. This object must implement or inherit from the type indicated by the serviceType parameter. </param>
         public void AddService(Type serviceType, object serviceInstance)
         {
-            if (serviceType == null)
-                throw new ArgumentNullException("serviceType");
-
-            if (serviceInstance == null)
-                throw new ArgumentNullException("serviceInstance");
+            if (serviceType == null) throw new ArgumentNullException(nameof(serviceType));
+            if (serviceInstance == null) throw new ArgumentNullException(nameof(serviceInstance));
 
             // __ComObjects are assignable anyway. We can't check that. 
             // This is what System.ComponentModel.Design.ServiceContainer does.
             if (((serviceInstance as ServiceCreatorCallback) == null) &&
                 ((!serviceInstance.GetType().IsCOMObject && !serviceType.IsAssignableFrom(serviceInstance.GetType()))))
-                throw new ArgumentException("Invalid service instance.", "serviceInstance");
+                throw new ArgumentException("Invalid service instance.", nameof(serviceInstance));
 
             if (_services.Contains(serviceType))
-                throw new ArgumentException("Service already exists.", "serviceType");
+                throw new ArgumentException("Service already exists.", nameof(serviceType));
 
             _services[serviceType] = serviceInstance;
         }

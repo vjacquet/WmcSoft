@@ -67,7 +67,7 @@ namespace WmcSoft.Security
 
         public void Grant(IEnumerable<Permission> permissions, params Principal[] principals)
         {
-            if (principals == null) throw new ArgumentNullException("principals");
+            if (principals == null) throw new ArgumentNullException(nameof(principals));
             if (principals.Any(p => p == null)) throw new ArgumentException();
 
             foreach (var p in permissions) {
@@ -83,7 +83,7 @@ namespace WmcSoft.Security
 
         public void Deny(IEnumerable<Permission> permissions, params Principal[] principals)
         {
-            if (principals == null) throw new ArgumentNullException("principals");
+            if (principals == null) throw new ArgumentNullException(nameof(principals));
             if (principals.Any(p => p == null)) throw new ArgumentException();
 
             foreach (var p in permissions) {
@@ -99,7 +99,7 @@ namespace WmcSoft.Security
 
         public void Revoke(IEnumerable<Permission> permissions, params Principal[] principals)
         {
-            if (principals == null) throw new ArgumentNullException("principals");
+            if (principals == null) throw new ArgumentNullException(nameof(principals));
             if (principals.Any(p => p == null)) throw new ArgumentException();
 
             foreach (var p in permissions) {
@@ -115,7 +115,7 @@ namespace WmcSoft.Security
 
         public bool Verify(Principal principal, Permission permission)
         {
-            if (principal == null) throw new ArgumentNullException("principal");
+            if (principal == null) throw new ArgumentNullException(nameof(principal));
             if (permission == null)
                 return false;
 
@@ -126,7 +126,7 @@ namespace WmcSoft.Security
 
         public IEnumerable<Permission> Verify(Principal principal, IEnumerable<Permission> permissions)
         {
-            if (principal == null) throw new ArgumentNullException("principal");
+            if (principal == null) throw new ArgumentNullException(nameof(principal));
             if (permissions == null)
                 return Enumerable.Empty<Permission>();
 

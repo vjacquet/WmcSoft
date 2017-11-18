@@ -41,12 +41,13 @@ namespace WmcSoft.Business.Accounting
         #region Lifecycle
 
         public Money(Currency currency)
-            : this(Decimal.Zero, currency) {
+            : this(Decimal.Zero, currency)
+        {
         }
 
-        public Money(decimal amount, Currency currency) {
-            if (currency == null)
-                throw new ArgumentNullException("currency");
+        public Money(decimal amount, Currency currency)
+        {
+            if (currency == null) throw new ArgumentNullException(nameof(currency));
             Amount = amount;
             Currency = currency;
         }
@@ -63,14 +64,16 @@ namespace WmcSoft.Business.Accounting
 
         #region Methods
 
-        public Money Round(RoundingPolicy policy) {
+        public Money Round(RoundingPolicy policy)
+        {
             if (policy == null)
                 throw new ArgumentNullException("policy");
 
             return new Money(policy.Round(Amount), Currency);
         }
 
-        public decimal[] AllocateAmounts(int n) {
+        public decimal[] AllocateAmounts(int n)
+        {
             var decimalDigits = Currency.DecimalDigits;
 
             var lo = Floor(Amount / n, decimalDigits);
@@ -85,7 +88,8 @@ namespace WmcSoft.Business.Accounting
             return results;
         }
 
-        public decimal[] AllocateAmounts(params int[] ratios) {
+        public decimal[] AllocateAmounts(params int[] ratios)
+        {
             var decimalDigits = Currency.DecimalDigits;
             var espilon = new Decimal(System.Math.Pow(0.1, decimalDigits));
 
@@ -103,12 +107,14 @@ namespace WmcSoft.Business.Accounting
             return results;
         }
 
-        public Money[] Allocate(int n) {
+        public Money[] Allocate(int n)
+        {
             var currency = Currency;
             return AllocateAmounts(n).ConvertAll(a => new Money(a, currency));
         }
 
-        public Money[] Allocate(params int[] ratios) {
+        public Money[] Allocate(params int[] ratios)
+        {
             var currency = Currency;
             return AllocateAmounts(ratios).ConvertAll(a => new Money(a, currency));
         }
@@ -117,107 +123,131 @@ namespace WmcSoft.Business.Accounting
 
         #region Operators
 
-        static void GuardCompatibility(Money x, Money y) {
+        static void GuardCompatibility(Money x, Money y)
+        {
             if (x.Currency != y.Currency)
                 throw new IncompatibleCurrencyException();
         }
 
-        public static explicit operator decimal(Money x) {
+        public static explicit operator decimal(Money x)
+        {
             return x.Amount;
         }
 
-        public static Money operator +(Money x, Money y) {
+        public static Money operator +(Money x, Money y)
+        {
             GuardCompatibility(x, y);
             return new Money(x.Amount + y.Amount, x.Currency);
         }
 
-        public static Money Add(Money x, Money y) {
+        public static Money Add(Money x, Money y)
+        {
             return x + y;
         }
 
-        public static Money operator -(Money x) {
+        public static Money operator -(Money x)
+        {
             return new Money(-x.Amount, x.Currency);
         }
 
-        public static Money Negate(Money x) {
+        public static Money Negate(Money x)
+        {
             return -x;
         }
 
-        public static Money operator -(Money x, Money y) {
+        public static Money operator -(Money x, Money y)
+        {
             GuardCompatibility(x, y);
             return new Money(x.Amount - y.Amount, x.Currency);
         }
 
-        public static Money Subtract(Money x, Money y) {
+        public static Money Subtract(Money x, Money y)
+        {
             return x - y;
         }
 
-        public static Money operator *(Money value, decimal multiplier) {
+        public static Money operator *(Money value, decimal multiplier)
+        {
             return new Money(multiplier * value.Amount, value.Currency);
         }
 
-        public static Money Multiply(Money value, decimal multiplier) {
+        public static Money Multiply(Money value, decimal multiplier)
+        {
             return value * multiplier;
         }
 
-        public static Money operator *(decimal multiplier, Money value) {
+        public static Money operator *(decimal multiplier, Money value)
+        {
             return new Money(multiplier * value.Amount, value.Currency);
         }
 
-        public static Money Multiply(decimal multiplier, Money value) {
+        public static Money Multiply(decimal multiplier, Money value)
+        {
             return value * multiplier;
         }
 
-        public static decimal operator /(Money x, Money y) {
+        public static decimal operator /(Money x, Money y)
+        {
             GuardCompatibility(x, y);
             return x.Amount / y.Amount;
         }
 
-        public static decimal Divide(Money x, Money y) {
+        public static decimal Divide(Money x, Money y)
+        {
             return x / y;
         }
 
-        public static Money operator /(Money value, decimal divisor) {
+        public static Money operator /(Money value, decimal divisor)
+        {
             return new Money(value.Amount / divisor, value.Currency);
         }
 
-        public static Money Divide(Money value, decimal divisor) {
+        public static Money Divide(Money value, decimal divisor)
+        {
             return value / divisor;
         }
 
-        public static bool operator >=(Money x, Money y) {
+        public static bool operator >=(Money x, Money y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static bool operator >(Money x, Money y) {
+        public static bool operator >(Money x, Money y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(Money x, Money y) {
+        public static bool operator <=(Money x, Money y)
+        {
             if (((object)x) != null)
                 return x.CompareTo(y) <= 0;
             return false;
         }
 
-        public static bool operator <(Money x, Money y) {
+        public static bool operator <(Money x, Money y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator ==(Money x, Money y) {
+        public static bool operator ==(Money x, Money y)
+        {
             return x.CompareTo(y) == 0;
         }
 
-        public static bool operator !=(Money x, Money y) {
+        public static bool operator !=(Money x, Money y)
+        {
             return x.CompareTo(y) != 0;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return false;
             return this.CompareTo((Money)obj) == 0;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return this.Amount.GetHashCode() ^ this.Currency.GetHashCode();
         }
 
@@ -225,7 +255,8 @@ namespace WmcSoft.Business.Accounting
 
         #region Membres de IComparable
 
-        int IComparable.CompareTo(object obj) {
+        int IComparable.CompareTo(object obj)
+        {
             if (obj == null)
                 return 1;
             return CompareTo((Money)obj);
@@ -235,7 +266,8 @@ namespace WmcSoft.Business.Accounting
 
         #region IEquatable<Money> Membres
 
-        public bool Equals(Money other) {
+        public bool Equals(Money other)
+        {
             if (Currency != other.Currency)
                 return false;
             return CompareTo(other) == 0;
@@ -245,7 +277,8 @@ namespace WmcSoft.Business.Accounting
 
         #region IComparable<Money> Membres
 
-        public int CompareTo(Money other) {
+        public int CompareTo(Money other)
+        {
             // TODO: attempt to convert before deciding...
             if (this.Currency != other.Currency)
                 throw new IncompatibleCurrencyException();
@@ -256,21 +289,24 @@ namespace WmcSoft.Business.Accounting
 
         #region Round
 
-        static decimal GetAwayFromZeroBoundary(int decimalDigits) {
+        static decimal GetAwayFromZeroBoundary(int decimalDigits)
+        {
             if (decimalDigits == 2)
                 return 0.005m;
             var boundary = 0.5m / (decimal)Math.Pow(10, decimalDigits);
             return boundary;
         }
 
-        static decimal GetTowardsZeroBoundary(int decimalDigits) {
+        static decimal GetTowardsZeroBoundary(int decimalDigits)
+        {
             if (decimalDigits == 2)
                 return 0.004m;
             var boundary = 0.4m / (decimal)Math.Pow(10, decimalDigits);
             return boundary;
         }
 
-        static decimal Floor(decimal amount, int decimalDigits) {
+        static decimal Floor(decimal amount, int decimalDigits)
+        {
             if (decimalDigits == 0)
                 return Decimal.Floor(amount);
             var boundary = (amount >= 0)
@@ -279,13 +315,15 @@ namespace WmcSoft.Business.Accounting
             return Decimal.Round(amount - boundary, decimalDigits, MidpointRounding.AwayFromZero);
         }
 
-        public static Money Floor(Money money) {
+        public static Money Floor(Money money)
+        {
             var decimalDigits = money.Currency.DecimalDigits;
             var amount = Floor(money.Amount, decimalDigits);
             return new Money(amount, money.Currency);
         }
 
-        static decimal Ceiling(decimal amount, int decimalDigits) {
+        static decimal Ceiling(decimal amount, int decimalDigits)
+        {
             if (decimalDigits == 0)
                 return Decimal.Ceiling(amount);
             var boundary = (amount >= 0)
@@ -294,19 +332,22 @@ namespace WmcSoft.Business.Accounting
             return Decimal.Round(amount + boundary, decimalDigits, MidpointRounding.AwayFromZero);
         }
 
-        public static Money Ceiling(Money money) {
+        public static Money Ceiling(Money money)
+        {
             var decimalDigits = money.Currency.DecimalDigits;
             var amount = Ceiling(money.Amount, decimalDigits);
             return new Money(amount, money.Currency);
         }
 
-        public static Money Round(Money money, MidpointRounding mode) {
+        public static Money Round(Money money, MidpointRounding mode)
+        {
             var decimalDigits = money.Currency.DecimalDigits;
             var amount = Decimal.Round(money.Amount, decimalDigits, mode);
             return new Money(amount, money.Currency);
         }
 
-        public static Money Round(Money money) {
+        public static Money Round(Money money)
+        {
             var decimalDigits = money.Currency.DecimalDigits;
             var amount = Decimal.Round(money.Amount, decimalDigits, MidpointRounding.AwayFromZero);
             return new Money(amount, money.Currency);
@@ -330,7 +371,8 @@ namespace WmcSoft.Business.Accounting
 
         #region Lifecycle
 
-        public Money(decimal amount) {
+        public Money(decimal amount)
+        {
             _amount = amount;
         }
 
@@ -338,125 +380,154 @@ namespace WmcSoft.Business.Accounting
 
         #region Operators
 
-        public static implicit operator Money<C>(int value) {
+        public static implicit operator Money<C>(int value)
+        {
             return new Money<C>(value);
         }
-        public static implicit operator Money<C>(double value) {
+        public static implicit operator Money<C>(double value)
+        {
             return new Money<C>((decimal)value);
         }
-        public static implicit operator Money<C>(decimal value) {
+        public static implicit operator Money<C>(decimal value)
+        {
             return new Money<C>(value);
         }
 
-        public static explicit operator Money(Money<C> that) {
+        public static explicit operator Money(Money<C> that)
+        {
             return new Money(that._amount, new C());
         }
 
-        public static explicit operator decimal(Money<C> that) {
+        public static explicit operator decimal(Money<C> that)
+        {
             return that._amount;
         }
 
-        public static Money<C> operator +(Money<C> x, Money<C> y) {
+        public static Money<C> operator +(Money<C> x, Money<C> y)
+        {
             return new Money<C>(x._amount + y._amount);
         }
 
-        public static Money<C> Add(Money<C> x, Money<C> y) {
+        public static Money<C> Add(Money<C> x, Money<C> y)
+        {
             return x + y;
         }
 
-        public static Money<C> operator +(Money<C> x, Money y) {
+        public static Money<C> operator +(Money<C> x, Money y)
+        {
             if (y.Currency.ThreeLetterISOCode != typeof(C).Name)
                 throw new IncompatibleCurrencyException();
             return new Money<C>((decimal)x + (decimal)y);
         }
 
-        public static Money<C> Add(Money<C> x, Money y) {
+        public static Money<C> Add(Money<C> x, Money y)
+        {
             return x + y;
         }
 
-        public static Money<C> operator +(Money x, Money<C> y) {
+        public static Money<C> operator +(Money x, Money<C> y)
+        {
             if (x.Currency.ThreeLetterISOCode != typeof(C).Name)
                 throw new IncompatibleCurrencyException();
             return new Money<C>((decimal)x + (decimal)y);
         }
 
-        public static Money<C> Add(Money x, Money<C> y) {
+        public static Money<C> Add(Money x, Money<C> y)
+        {
             return x + y;
         }
 
-        public static Money<C> operator -(Money<C> x) {
+        public static Money<C> operator -(Money<C> x)
+        {
             return new Money<C>(-x._amount);
         }
 
-        public static Money<C> Negate(Money<C> x) {
+        public static Money<C> Negate(Money<C> x)
+        {
             return -x;
         }
 
-        public static Money<C> operator -(Money<C> x, Money<C> y) {
+        public static Money<C> operator -(Money<C> x, Money<C> y)
+        {
             return new Money<C>(x._amount - y._amount);
         }
 
-        public static Money<C> Subtract(Money<C> x, Money<C> y) {
+        public static Money<C> Subtract(Money<C> x, Money<C> y)
+        {
             return x - y;
         }
 
-        public static Money<C> operator -(Money<C> x, Money y) {
+        public static Money<C> operator -(Money<C> x, Money y)
+        {
             if (y.Currency.ThreeLetterISOCode != typeof(C).Name)
                 throw new IncompatibleCurrencyException();
             return new Money<C>((decimal)x + (decimal)y);
         }
 
-        public static Money<C> Subtract(Money<C> x, Money y) {
+        public static Money<C> Subtract(Money<C> x, Money y)
+        {
             return x - y;
         }
 
-        public static Money<C> operator -(Money x, Money<C> y) {
+        public static Money<C> operator -(Money x, Money<C> y)
+        {
             if (x.Currency.ThreeLetterISOCode != typeof(C).Name)
                 throw new IncompatibleCurrencyException();
             return new Money<C>((decimal)x + (decimal)y);
         }
 
-        public static Money<C> Subtract(Money x, Money<C> y) {
+        public static Money<C> Subtract(Money x, Money<C> y)
+        {
             return x - y;
         }
 
-        public static Money<C> operator *(decimal multiplier, Money<C> value) {
+        public static Money<C> operator *(decimal multiplier, Money<C> value)
+        {
             return new Money<C>(multiplier * value._amount);
         }
 
-        public static Money<C> Multiply(decimal multiplier, Money<C> value) {
+        public static Money<C> Multiply(decimal multiplier, Money<C> value)
+        {
             return value * multiplier;
         }
 
-        public static Money<C> operator *(Money<C> value, decimal multiplier) {
+        public static Money<C> operator *(Money<C> value, decimal multiplier)
+        {
             return new Money<C>(multiplier * value._amount);
         }
 
-        public static Money<C> Multiply(Money<C> value, decimal multiplier) {
+        public static Money<C> Multiply(Money<C> value, decimal multiplier)
+        {
             return value * multiplier;
         }
 
-        public static bool operator >=(Money<C> x, Money<C> y) {
+        public static bool operator >=(Money<C> x, Money<C> y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
-        public static bool operator >(Money<C> x, Money<C> y) {
+        public static bool operator >(Money<C> x, Money<C> y)
+        {
             return x.CompareTo(y) > 0;
         }
 
-        public static bool operator <=(Money<C> x, Money<C> y) {
+        public static bool operator <=(Money<C> x, Money<C> y)
+        {
             return x.CompareTo(y) <= 0;
         }
 
-        public static bool operator <(Money<C> x, Money<C> y) {
+        public static bool operator <(Money<C> x, Money<C> y)
+        {
             return x.CompareTo(y) < 0;
         }
 
-        public static bool operator ==(Money<C> x, Money<C> y) {
+        public static bool operator ==(Money<C> x, Money<C> y)
+        {
             return x.CompareTo(y) == 0;
         }
 
-        public static bool operator !=(Money<C> x, Money<C> y) {
+        public static bool operator !=(Money<C> x, Money<C> y)
+        {
             return x.CompareTo(y) != 0;
         }
 
@@ -464,7 +535,8 @@ namespace WmcSoft.Business.Accounting
 
         #region IComparable<Quantity<M>> Members
 
-        public int CompareTo(Money<C> other) {
+        public int CompareTo(Money<C> other)
+        {
             return _amount.CompareTo(other._amount);
         }
 
@@ -472,7 +544,8 @@ namespace WmcSoft.Business.Accounting
 
         #region IEquatable<Quantity<M>> Members
 
-        public bool Equals(Money<C> other) {
+        public bool Equals(Money<C> other)
+        {
             return CompareTo(other) == 0;
         }
 
@@ -480,7 +553,8 @@ namespace WmcSoft.Business.Accounting
 
         #region IComparable Members
 
-        public int CompareTo(object obj) {
+        public int CompareTo(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return 1;
             var other = (Money<C>)obj;
@@ -489,14 +563,16 @@ namespace WmcSoft.Business.Accounting
 
         #endregion
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
             var that = (Money<C>)obj;
             return (that == this);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _amount.GetHashCode();
         }
     }
