@@ -61,7 +61,7 @@ namespace WmcSoft
         /// <remarks>This method eagerly tries to convert the value.</remarks>
         public static object ConvertTo(this object value, Type destinationType, CultureInfo culture)
         {
-            if (destinationType == null) throw new ArgumentNullException("type");
+            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
 
             if (value == null) {
                 if (destinationType.AllowsNull())

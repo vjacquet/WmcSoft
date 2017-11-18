@@ -536,7 +536,7 @@ namespace WmcSoft
         public static T Min<T>(Comparison<T> comparison, params T[] args)
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
 
             var min = args[0];
             for (int i = 1; i < args.Length; i++) {
@@ -570,7 +570,7 @@ namespace WmcSoft
         public static T Min<T>(Relation<T> relation, params T[] args)
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
 
             var min = args[0];
             for (int i = 1; i < args.Length; i++) {
@@ -656,7 +656,7 @@ namespace WmcSoft
         public static T Max<T>(Comparison<T> comparison, params T[] args)
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
 
             var max = args[0];
             for (int i = 1; i < args.Length; i++) {
@@ -690,7 +690,7 @@ namespace WmcSoft
         public static T Max<T>(Relation<T> relation, params T[] args)
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
 
             var max = args[0];
             for (int i = 1; i < args.Length; i++) {
@@ -738,7 +738,7 @@ namespace WmcSoft
         public static Pair<T> MinMax<T>(params T[] args) where T : IComparable<T>
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
             if (args.Length == 1)
                 return Pair.Create(args[0], args[0]);
 
@@ -764,7 +764,7 @@ namespace WmcSoft
         public static Pair<T> MinMax<T>(Comparison<T> comparison, params T[] args)
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
             if (args.Length == 1)
                 return Pair.Create(args[0], args[0]);
 
@@ -790,7 +790,7 @@ namespace WmcSoft
         public static Pair<T> MinMax<T>(Relation<T> relation, params T[] args)
         {
             if (args == null || args.Length == 0)
-                throw new ArgumentException("args");
+                throw new ArgumentException(nameof(args));
             if (args.Length == 1)
                 return Pair.Create(args[0], args[0]);
 

@@ -176,7 +176,7 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="capacity"></param>
         public IndexedPriorityQueue(IComparer<T> comparer, int capacity)
         {
-            if (capacity <= 0) throw new ArgumentOutOfRangeException("initialCapacity");
+            if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
             _comparer = comparer ?? Comparer<T>.Default;
             _items = new T[capacity];
@@ -186,8 +186,9 @@ namespace WmcSoft.Collections.Specialized
 
         static int ExtractCount(ICollection<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
-            if (collection.Count == 0) throw new ArgumentException("collection");
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (collection.Count == 0) throw new ArgumentException(nameof(collection));
+
             return collection.Count;
         }
         /// <summary>
@@ -289,8 +290,8 @@ namespace WmcSoft.Collections.Specialized
 
         public void Enqueue(int i, T value)
         {
-            if (value == null) throw new ArgumentNullException("value");
-            if (Contains(i)) throw new ArgumentException("i");
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (Contains(i)) throw new ArgumentException(nameof(i));
 
             UnguardedEnqueue(i, value);
             ++_version;

@@ -33,9 +33,10 @@ namespace WmcSoft.Collections.Specialized
 {
     public class MutableOrdinalSet<T> : ISet<T>
     {
-       class Settings
+        class Settings
         {
-            public Settings(IOrdinal<T> ordinal, T lowerBound, int extent) {
+            public Settings(IOrdinal<T> ordinal, T lowerBound, int extent)
+            {
                 Ordinal = ordinal;
                 LowerBound = lowerBound;
                 Extent = extent + 1;
@@ -47,7 +48,8 @@ namespace WmcSoft.Collections.Specialized
 
             public T UpperBound { get { return Ordinal.Advance(LowerBound, Extent - 1); } }
 
-            public int IndexOf(T item) {
+            public int IndexOf(T item)
+            {
                 var n = Ordinal.Distance(LowerBound, item);
                 if (n >= 0 && n < Extent)
                     return n;
@@ -66,7 +68,8 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="ordinal">The ordinal.</param>
         /// <param name="lowerBound">The lower bound for the set.</param>
         /// <param name="upperBound">The upper bound for the set.</param>
-        public MutableOrdinalSet(IOrdinal<T> ordinal, T lowerBound, T upperBound) {
+        public MutableOrdinalSet(IOrdinal<T> ordinal, T lowerBound, T upperBound)
+        {
             // make sure lowerbound is less than or equal to upperbound
             var extent = ordinal.Distance(lowerBound, upperBound);
             if (extent <= 0)
@@ -85,7 +88,8 @@ namespace WmcSoft.Collections.Specialized
         /// <param name="upperBound">The upper bound for the set.</param>
         /// <param name="collection">The collection whose elements are copied to the new set.</param>
         public MutableOrdinalSet(IOrdinal<T> ordinal, T lowerBound, T upperBound, IEnumerable<T> collection)
-            : this(ordinal, lowerBound, upperBound) {
+            : this(ordinal, lowerBound, upperBound)
+        {
             // Populuate the BitArray with the passed-in initialData array.
             foreach (var item in collection) {
                 var n = _settings.IndexOf(item);
@@ -96,7 +100,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private MutableOrdinalSet(MutableOrdinalSet<T> template, IEnumerable<T> collection) {
+        private MutableOrdinalSet(MutableOrdinalSet<T> template, IEnumerable<T> collection)
+        {
             _settings = template._settings;
             _storage = new BitArray(_settings.Extent + 1);
 
@@ -108,7 +113,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private MutableOrdinalSet(MutableOrdinalSet<T> template, IEnumerable<T> collection, out bool hasOutOfBound) {
+        private MutableOrdinalSet(MutableOrdinalSet<T> template, IEnumerable<T> collection, out bool hasOutOfBound)
+        {
             _settings = template._settings;
             _storage = new BitArray(_settings.Extent + 1);
 
@@ -123,7 +129,8 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        ArgumentException OutOfRange(T value) {
+        ArgumentException OutOfRange(T value)
+        {
             var lowerBound = _settings.LowerBound;
             var upperBound = _settings.UpperBound;
             return new ArgumentOutOfRangeException($"Attempting to add an element with value {value} that is outside of the set's universe.  Value must be between {lowerBound} and {upperBound}.");
@@ -146,7 +153,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="item">The element to add to the set.</param>
         /// <returns>true if item is added to the set; otherwise, false. </returns>
-        public bool Add(T item) {
+        public bool Add(T item)
+        {
             var n = _settings.IndexOf(item);
             if (n >= 0) {
                 if (_storage.Get(n))
@@ -161,9 +169,9 @@ namespace WmcSoft.Collections.Specialized
         /// Removes all elements that are in a specified collection from the current Set.
         /// </summary>
         /// <param name="other">The collection of items to remove from the Set.</param>
-        public void ExceptWith(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public void ExceptWith(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             foreach (var item in other) {
                 Remove(item);
@@ -175,9 +183,9 @@ namespace WmcSoft.Collections.Specialized
         /// Modifies the current Set so that it contains only elements that are also in a specified collection.
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
-        public void IntersectWith(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public void IntersectWith(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
             if (_storage.Count == 0 || _storage.Cardinality() == 0)
@@ -198,9 +206,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the Set is a proper subset of other; otherwise, false.</returns>
-        public bool IsProperSubsetOf(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public bool IsProperSubsetOf(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             bool hasOutOfBound;
             var tmp = new MutableOrdinalSet<T>(this, other, out hasOutOfBound);
@@ -216,9 +224,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="other">The collection to compare to the current Set. </param>
         /// <returns>true if the Set is a proper superset of other; otherwise, false.</returns>
-        public bool IsProperSupersetOf(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public bool IsProperSupersetOf(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             bool hasOutOfBound;
             var tmp = new MutableOrdinalSet<T>(this, other, out hasOutOfBound);
@@ -230,9 +238,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the current Set is a subset of other; otherwise, false.</returns>
-        public bool IsSubsetOf(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public bool IsSubsetOf(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             bool hasOutOfBound;
             var tmp = new MutableOrdinalSet<T>(this, other, out hasOutOfBound);
@@ -248,9 +256,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="other">The collection to compare to the current Set. </param>
         /// <returns>true if the Set is a superset of other; otherwise, false.</returns>
-        public bool IsSupersetOf(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public bool IsSupersetOf(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new MutableOrdinalSet<T>(this, other);
             return tmp.IsSubsetOf(this);
@@ -261,9 +269,10 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the Set and other share at least one common element; otherwise, false.</returns>
-        public bool Overlaps(IEnumerable<T> other) {
+        public bool Overlaps(IEnumerable<T> other)
+        {
             if (other == null)
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
             if (_storage.Count == 0)
@@ -285,9 +294,9 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
         /// <returns>true if the current Set is equal to other; otherwise, false.</returns>
-        public bool SetEquals(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public bool SetEquals(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             bool hasOutOfBound;
             var tmp = new MutableOrdinalSet<T>(this, other, out hasOutOfBound);
@@ -300,9 +309,9 @@ namespace WmcSoft.Collections.Specialized
             return tmp.Count == 0;
         }
 
-        public void SymmetricExceptWith(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public void SymmetricExceptWith(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             bool hasOutOfBound;
             var tmp = new MutableOrdinalSet<T>(this, other, out hasOutOfBound);
@@ -317,9 +326,9 @@ namespace WmcSoft.Collections.Specialized
         /// in either the current object or the specified collection.
         /// </summary>
         /// <param name="other">The collection to compare to the current Set.</param>
-        public void UnionWith(IEnumerable<T> other) {
-            if (other == null)
-                throw new ArgumentNullException("other");
+        public void UnionWith(IEnumerable<T> other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             foreach (var item in other)
                 Add(item);
@@ -329,14 +338,16 @@ namespace WmcSoft.Collections.Specialized
 
         #region ICollection<T> Membres
 
-        void ICollection<T>.Add(T item) {
+        void ICollection<T>.Add(T item)
+        {
             Add(item);
         }
 
         /// <summary>
         /// Removes all elements from the set.
         /// </summary>
-        public virtual void Clear() {
+        public virtual void Clear()
+        {
             _storage.SetAll(false);
         }
 
@@ -345,7 +356,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="item">The element to locate in the set.</param>
         /// <returns>true if the set contains item; otherwise, false.</returns>
-        public virtual bool Contains(T item) {
+        public virtual bool Contains(T item)
+        {
             var n = _settings.IndexOf(item);
             return n >= 0 && _storage.Get(n);
         }
@@ -355,7 +367,8 @@ namespace WmcSoft.Collections.Specialized
         /// </summary>
         /// <param name="array">A one-dimensional array that is the destination of the elements copied from the set. The array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             var ordinal = _settings.Ordinal;
             var current = _settings.LowerBound;
             var pos = 0;
@@ -378,7 +391,8 @@ namespace WmcSoft.Collections.Specialized
             get { return false; }
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             var n = _settings.IndexOf(item);
             if (n >= 0 && _storage.Get(n)) {
                 _storage.Set(n, false);
@@ -391,7 +405,8 @@ namespace WmcSoft.Collections.Specialized
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             var ordinal = _settings.Ordinal;
             var current = _settings.LowerBound;
             var pos = 0;
@@ -410,7 +425,8 @@ namespace WmcSoft.Collections.Specialized
 
         #region IEnumerable Membres
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 

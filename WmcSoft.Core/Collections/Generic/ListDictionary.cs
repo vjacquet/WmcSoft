@@ -192,7 +192,7 @@ namespace WmcSoft.Collections.Generic
 
         int IndexOfKey(TKey key)
         {
-            if (key == null) throw new ArgumentNullException("key");
+            if (key == null) throw new ArgumentNullException(nameof(key));
             return _storage.FindIndex(p => _comparer.Equals(key, p.Key));
         }
 

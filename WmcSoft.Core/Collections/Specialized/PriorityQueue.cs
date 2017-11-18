@@ -335,7 +335,7 @@ namespace WmcSoft.Collections.Specialized
 
         public virtual void Enqueue(T value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             ++_version;
             EnsureCapacity(_count + 1);
@@ -366,8 +366,7 @@ namespace WmcSoft.Collections.Specialized
 
         public virtual bool Contains(T value)
         {
-            if (value == null)
-                throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             return Array.IndexOf(_items, value, 1) >= 0;
         }
@@ -424,9 +423,8 @@ namespace WmcSoft.Collections.Specialized
 
         public static PriorityQueue<T> Synchronized(PriorityQueue<T> heap)
         {
-            if (heap == null) {
-                throw new ArgumentNullException("heap");
-            }
+            if (heap == null) throw new ArgumentNullException(nameof(heap));
+
             return new SyncPriorityQueue(heap);
         }
 

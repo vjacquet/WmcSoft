@@ -50,7 +50,7 @@ namespace WmcSoft.Collections.Generic
         public SequenceSet(IEqualityComparer<T> comparer)
         {
             _storage = new List<T>();
-            _comparer = comparer;
+            _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
         public SequenceSet()
@@ -58,15 +58,10 @@ namespace WmcSoft.Collections.Generic
         {
         }
 
-        public SequenceSet(IEnumerable<T> enumerable, IEqualityComparer<T> comparer)
+        public SequenceSet(IEnumerable<T> enumerable, IEqualityComparer<T> comparer = null)
             : this(comparer)
         {
             _storage.AddRange(enumerable);
-        }
-
-        public SequenceSet(IEnumerable<T> enumerable)
-            : this(enumerable, EqualityComparer<T>.Default)
-        {
         }
 
         #endregion
@@ -120,8 +115,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The collection of items to remove from the Set.</param>
         public void ExceptWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             foreach (var item in other) {
                 Remove(item);
@@ -134,8 +128,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The collection to compare to the current Set.</param>
         public void IntersectWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
             if (_storage.Count == 0)
@@ -157,8 +150,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set is a proper subset of other; otherwise, false.</returns>
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new SequenceSet<T>(other, Comparer);
             foreach (var item in this) {
@@ -175,8 +167,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set is a proper superset of other; otherwise, false.</returns>
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new SequenceSet<T>(other, Comparer);
             return tmp.IsProperSubsetOf(this);
@@ -189,8 +180,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the current Set is a subset of other; otherwise, false.</returns>
         public bool IsSubsetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new SequenceSet<T>(other, Comparer);
             foreach (var item in this) {
@@ -207,8 +197,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set is a superset of other; otherwise, false.</returns>
         public bool IsSupersetOf(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new SequenceSet<T>(other, Comparer);
             return tmp.IsSubsetOf(this);
@@ -221,8 +210,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the Set and other share at least one common element; otherwise, false.</returns>
         public bool Overlaps(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
             if (_storage.Count == 0)
@@ -243,8 +231,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the current Set is equal to other; otherwise, false.</returns>
         public bool SetEquals(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new SequenceSet<T>(this, Comparer);
             foreach (var item in other) {
@@ -256,8 +243,7 @@ namespace WmcSoft.Collections.Generic
 
         public void SymmetricExceptWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             var tmp = new SequenceSet<T>(other, Comparer);
             foreach (var item in tmp) {
@@ -273,8 +259,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="other">The collection to compare to the current Set.</param>
         public void UnionWith(IEnumerable<T> other)
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            if (other == null) throw new ArgumentNullException(nameof(other));
 
             foreach (var item in other)
                 Add(item);

@@ -51,10 +51,8 @@ namespace WmcSoft.Diagnostics
 
         public TraceStream(Stream stream, TraceSource traceSource)
         {
-            if (stream == null)
-                throw new ArgumentNullException("stream");
-            if (traceSource == null)
-                throw new ArgumentNullException("traceSource");
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            if (traceSource == null) throw new ArgumentNullException(nameof(traceSource));
 
             _stream = stream;
             _traceSource = traceSource;

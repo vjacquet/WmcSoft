@@ -47,13 +47,13 @@ namespace WmcSoft.Collections.Specialized
         {
             private readonly WeightedGraph _graph;
 
-            public DebugView(WeightedGraph graph) {
-                if (graph == null) throw new ArgumentNullException("collection");
+            public DebugView(WeightedGraph graph)
+            {
                 _graph = graph;
             }
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public Bag<Edge>[] Items { get { return _graph._adj; } }
+            public Bag<Edge>[] Items { get { return _graph?._adj; } }
         }
 
         [DebuggerDisplay("{ToString(), nq}")]
@@ -62,14 +62,16 @@ namespace WmcSoft.Collections.Specialized
             internal readonly int _v;
             internal readonly int _w;
 
-            public Edge(int v, int w, TWeight weight) {
+            public Edge(int v, int w, TWeight weight)
+            {
                 _v = v;
                 _w = w;
                 Weight = weight;
             }
 
             public int Either { get { return _v; } }
-            public int Other(int vertex) {
+            public int Other(int vertex)
+            {
                 if (vertex == _v) return _w;
                 if (vertex == _w) return _v;
                 throw new ArgumentException(nameof(vertex));
@@ -77,35 +79,42 @@ namespace WmcSoft.Collections.Specialized
 
             public TWeight Weight { get; }
 
-            public int CompareTo(Edge other) {
+            public int CompareTo(Edge other)
+            {
                 return Comparer<TWeight>.Default.Compare(Weight, other.Weight);
             }
 
-            public override string ToString() {
+            public override string ToString()
+            {
                 return string.Format("{0}↔{1} {2}", _v, _w, Weight);
             }
 
-            public override int GetHashCode() {
+            public override int GetHashCode()
+            {
                 return CombineHashCodes(_v, _w, Weight.GetHashCode());
             }
 
-            public override bool Equals(object obj) {
+            public override bool Equals(object obj)
+            {
                 if (obj == null || obj.GetType() != typeof(Edge))
                     return false;
                 return Equals((Edge)obj);
             }
 
-            public bool Equals(Edge other) {
+            public bool Equals(Edge other)
+            {
                 return _v.Equals(other._v) && _w.Equals(other._w) && Weight.Equals(other.Weight);
             }
 
             #region Operators
 
-            public static bool operator ==(Edge x, Edge y) {
+            public static bool operator ==(Edge x, Edge y)
+            {
                 return x.Equals(y);
             }
 
-            public static bool operator !=(Edge a, Edge b) {
+            public static bool operator !=(Edge a, Edge b)
+            {
                 return !a.Equals(b);
             }
 
@@ -115,7 +124,8 @@ namespace WmcSoft.Collections.Specialized
         private readonly Bag<Edge>[] _adj;
         private int _edges;
 
-        public WeightedGraph(int vertices) {
+        public WeightedGraph(int vertices)
+        {
             _adj = new Bag<Edge>[vertices];
             for (int i = 0; i < _adj.Length; i++) {
                 _adj[i] = new Bag<Edge>();
@@ -125,7 +135,8 @@ namespace WmcSoft.Collections.Specialized
         public int VerticeCount { get { return _adj.Length; } }
         public int EdgeCount { get { return _edges; } }
 
-        public void Connect(int v, int w, TWeight weight) {
+        public void Connect(int v, int w, TWeight weight)
+        {
             if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
             if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
 
@@ -134,7 +145,8 @@ namespace WmcSoft.Collections.Specialized
             ++_edges;
         }
 
-        public void Disconnect(int v, int w) {
+        public void Disconnect(int v, int w)
+        {
             if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
             if (w < 0 | w >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(w));
 
@@ -144,7 +156,8 @@ namespace WmcSoft.Collections.Specialized
             _edges -= nv;
         }
 
-        public ReadOnlyBag<Edge> Edges(int v) {
+        public ReadOnlyBag<Edge> Edges(int v)
+        {
             if (v < 0 | v >= VerticeCount) throw new ArgumentOutOfRangeException(nameof(v));
 
             return new ReadOnlyBag<Edge>(_adj[v]);
@@ -152,11 +165,13 @@ namespace WmcSoft.Collections.Specialized
 
         #region IWeightedGraph implementation
 
-        IReadOnlyCollection<Edge> IWeightedGraph<Edge>.Edges(int v) {
+        IReadOnlyCollection<Edge> IWeightedGraph<Edge>.Edges(int v)
+        {
             return Edges(v);
         }
 
-        public IReadOnlyCollection<int> Adjacents(int v) {
+        public IReadOnlyCollection<int> Adjacents(int v)
+        {
             return new ConvertingCollectionAdapter<Edge, int>(Edges(v), e => e.Other(v));
         }
 

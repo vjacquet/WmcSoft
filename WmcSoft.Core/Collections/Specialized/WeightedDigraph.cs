@@ -48,12 +48,11 @@ namespace WmcSoft.Collections.Specialized
             private readonly WeightedDigraph _graph;
 
             public DebugView(WeightedDigraph graph) {
-                if (graph == null) throw new ArgumentNullException("collection");
                 _graph = graph;
             }
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public Bag<Edge>[] Items { get { return _graph._adj; } }
+            public Bag<Edge>[] Items { get { return _graph?._adj; } }
         }
 
         [DebuggerDisplay("{ToString(), nq}")]

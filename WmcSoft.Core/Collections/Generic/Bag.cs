@@ -114,7 +114,6 @@ namespace WmcSoft.Collections.Generic
         #endregion
 
         private T[] _storage;
-        [ContractPublicPropertyName("Count")]
         private int _count;
         private int _version;
 
