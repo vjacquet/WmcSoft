@@ -31,7 +31,8 @@ using System.Linq;
 namespace WmcSoft
 {
     /// <summary>
-    /// Defines the extension methods to the <see cref="Delegate"/> class. This is a static class.
+    /// Defines the extension methods to the <see cref="Delegate"/> class.
+    /// This is a static class.
     /// </summary>
     public static class DelegateExtensions
     {

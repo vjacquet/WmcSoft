@@ -29,25 +29,37 @@ using System.Globalization;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="IFormatProvider"/> interface.
+    /// This is a static class.
+    /// </summary>
     public static class FormatProviderExtensions
     {
+        /// <summary>
+        /// Returns an object that provides formatting services for the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of format object to return.</typeparam>
+        /// <param name="formatProvider">The format provider.</param>
+        /// <returns>An instance of the object specified by <typeparamref name="T"/>, if the <see cref="IFormatProvider"/> implementation can supply that type of object; otherwise, <c>null</c>.</returns>
+        /// <remarks>This method is eager to find a type: it also checks <see cref="TextInfo"/>, <see cref="RegionInfo"/> and <see cref="Calendar"/>.</remarks>
         public static T GetFormat<T>(this IFormatProvider formatProvider)
         {
+            // TODO: Remove fallback to CurrentCulture?
             formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
             var result = (T)formatProvider.GetFormat(typeof(T));
-            if (result == null) {
-                if (typeof(TextInfo).IsAssignableFrom(typeof(T))) {
-                    var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
-                    return (T)(object)cultureProvider.TextInfo;
-                } else if (typeof(RegionInfo).IsAssignableFrom(typeof(T))) {
-                    var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
-                    return (T)(object)new RegionInfo(cultureProvider.LCID);
-                } else if (typeof(Calendar).IsAssignableFrom(typeof(T))) {
-                    var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
-                    return (T)(object)cultureProvider.Calendar;
-                }
+            if (result != null) {
+                return result;
+            } else if (typeof(TextInfo).IsAssignableFrom(typeof(T))) {
+                var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
+                return (T)(object)cultureProvider.TextInfo;
+            } else if (typeof(RegionInfo).IsAssignableFrom(typeof(T))) {
+                var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
+                return (T)(object)new RegionInfo(cultureProvider.LCID);
+            } else if (typeof(Calendar).IsAssignableFrom(typeof(T))) {
+                var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
+                return (T)(object)cultureProvider.Calendar;
             }
-            return result;
+            return default(T);
         }
     }
 }
