@@ -31,6 +31,9 @@ using WmcSoft.Diagnostics;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Func{TResult}"/> delegate.
+    /// This is a static class.
     public static class FuncExtensions
     {
         #region ApplyEach & TryEach

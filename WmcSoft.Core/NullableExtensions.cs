@@ -28,13 +28,18 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to nullable types.
+    /// This is a static class.
+    /// </summary>
     public static class NullableExtensions
     {
         #region Map & Bind
 
         public static R? Map<T, R>(this T? value, Func<T, R> fn)
             where T : struct
-            where R : struct {
+            where R : struct
+        {
             if (value.HasValue)
                 return fn(value.GetValueOrDefault());
             return null;
@@ -42,7 +47,8 @@ namespace WmcSoft
 
         public static R? Map<T, R>(this T? value, Func<T, R?> fn)
             where T : struct
-            where R : struct {
+            where R : struct
+        {
             if (value.HasValue)
                 return fn(value.GetValueOrDefault());
             return null;
@@ -59,15 +65,31 @@ namespace WmcSoft
 
         #region NullIf
 
+        /// <summary>
+        /// Returns <c>null</c> if <paramref name="self"/> equals the given <paramref name="value"/>.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="self">The instance.</param>
+        /// <param name="value">The value.</param>
+        /// <returns><c>null</c> if the instance equals the given value; otherwise, the instance.</returns>
         public static T? NullIf<T>(this T self, T value)
-            where T : struct, IEquatable<T> {
+            where T : struct, IEquatable<T>
+        {
             if (self.Equals(value))
                 return null;
             return self;
         }
 
+        /// <summary>
+        /// Returns <c>null</c> if <paramref name="self"/> satisfies the given <paramref name="predicate"/>.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="self">The instance.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns><c>null</c> if the instance satisfies the predicate; otherwise, the instance.</returns>
         public static T? NullIf<T>(this T self, Predicate<T> predicate)
-            where T : struct {
+            where T : struct
+        {
             if (predicate(self))
                 return null;
             return self;
@@ -78,14 +100,16 @@ namespace WmcSoft
         #region ToString
 
         public static string ToString<T>(this T? formattable, string format, IFormatProvider formatProvider = null)
-            where T : struct, IFormattable {
+            where T : struct, IFormattable
+        {
             if (formattable.HasValue) {
                 return formattable.GetValueOrDefault().ToString(format, formatProvider);
             }
             return String.Empty;
         }
         public static string ToString<T>(this T? formattable, IFormatProvider formatProvider)
-            where T : struct, IFormattable {
+            where T : struct, IFormattable
+        {
             return formattable.ToString(null, formatProvider);
         }
 
