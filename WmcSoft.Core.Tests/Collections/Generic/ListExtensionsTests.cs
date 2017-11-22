@@ -304,5 +304,25 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Unique
+
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("aabcccdeffg", "abcdefg")]
+        [InlineData("abcdefg", "abcdefg")]
+        [InlineData("abcdefgg", "abcdefg")]
+        [InlineData("aabcdefg", "abcdefg")]
+        [InlineData("abccddefg", "abcdefg")]
+        public void CanGetUniqueElements(string data, string expected)
+        {
+            var list = new List<char>(data);
+            Assert.Equal(data.Length - expected.Length, list.Unique());
+
+            var actual = new string(list.ToArray());
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
     }
 }

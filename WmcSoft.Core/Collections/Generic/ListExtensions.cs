@@ -638,5 +638,46 @@ namespace WmcSoft.Collections.Generic
         }
 
         #endregion
+
+        #region Unique
+
+        /// <summary>
+        /// Removes all but the first element from every consecutive group of equal elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
+        /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
+        public static int Unique<T>(this List<T> list, IEqualityComparer<T> comparer = null)
+        {
+           return Unique(list, (comparer ?? EqualityComparer<T>.Default).Equals);
+        }
+
+        /// <summary>
+        /// Removes all but the first element from every consecutive group of equivalent elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="relation">The equivalence relation.</param>
+        /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
+        public static int Unique<T>(this List<T> list, Func<T, T, bool> relation)
+        {
+            if (list.Count == 0)
+                return 0;
+
+            var first = 0;
+            var last = list.Count;
+            var result = first;
+            while (++first != last) {
+                if (!relation(list[result], list[first]) && ++result != first)
+                    list[result] = list[first];
+            }
+            last -= result + 1;
+            list.RemoveRange(result, last);
+            return last;
+        }
+
+        #endregion
     }
 }
