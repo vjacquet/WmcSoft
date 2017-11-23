@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Time;
 
+using static WmcSoft.Time.Algorithms;
 using static WmcSoft.Business.Calendars.Helpers;
 
 namespace WmcSoft.Business.Calendars
@@ -44,8 +45,8 @@ namespace WmcSoft.Business.Calendars
     {
         private readonly List<IBusinessCalendar> _calendars;
 
-        public JoinBusinessDaysCalendar( params IBusinessCalendar[] calendars)
-            :this($"Business day in any of {HumanizeList(calendars)} calendars", calendars)
+        public JoinBusinessDaysCalendar(params IBusinessCalendar[] calendars)
+            : this($"Business day in any of {HumanizeList(calendars)} calendars", calendars)
         {
         }
 
@@ -68,6 +69,13 @@ namespace WmcSoft.Business.Calendars
 
         public void Add(IBusinessCalendar calendar)
         {
+            if (calendar == null)
+                return;
+
+            var min = Max(calendar.MinDate, MinDate);
+            var max = Min(calendar.MaxDate, MaxDate);
+            if (min > max) throw new ArgumentOutOfRangeException(nameof(calendar));
+
             _calendars.Add(calendar);
         }
 
