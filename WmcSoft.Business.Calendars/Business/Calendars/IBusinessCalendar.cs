@@ -69,8 +69,16 @@ namespace WmcSoft.Business.Calendars
             }
         }
 
+        /// <summary>
+        /// Creates a view on a business calendar by giving it a new name.
+        /// </summary>
+        /// <typeparam name="TCalendar">The type of calendar</typeparam>
+        /// <param name="calendar">The business calendar to create a view on.</param>
+        /// <param name="name">The new name of the business calendar.</param>
+        /// <returns>A view on the business calendar.</returns>
+        /// <remarks>Changes on the original calendar will be reflected in the created calendar.</remarks>
         public static IBusinessCalendar RenameAs<TCalendar>(this TCalendar calendar, string name)
-         where TCalendar : IBusinessCalendar
+            where TCalendar : IBusinessCalendar
         {
             return new AliasBusinessCalendar(calendar, name);
         }
@@ -104,6 +112,17 @@ namespace WmcSoft.Business.Calendars
             }
         }
 
+        /// <summary>
+        /// Creates a view on a business calendar starting latter and ending sooner.
+        /// </summary>
+        /// <typeparam name="TCalendar">The type of calendar</typeparam>
+        /// <param name="calendar">The business calendar to create a view on.</param>
+        /// <param name="since">The new starting date of the business calendar.</param>
+        /// <param name="until">The new ending date of the business calendar.</param>
+        /// <returns>A view on the business calendar.</returns>
+        /// <remarks>Changes on the original calendar will be reflected in the created calendar.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="since"/> is sooner than <paramref name="calendar"/>'s min date
+        /// or <paramref name="until"/> is latter than <paramref name="calendar"/>'s max date.</exception>
         public static IBusinessCalendar Truncate<TCalendar>(this TCalendar calendar, Date since, Date until)
             where TCalendar : IBusinessCalendar
         {
