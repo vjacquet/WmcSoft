@@ -31,6 +31,8 @@ using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Time;
 
+using static WmcSoft.Business.Calendars.Helpers;
+
 namespace WmcSoft.Business.Calendars
 {
     /// <summary>
@@ -43,20 +45,24 @@ namespace WmcSoft.Business.Calendars
         private readonly List<IBusinessCalendar> _calendars;
 
         public JoinHolidaysCalendar(params IBusinessCalendar[] calendars)
-            : this("Holiday in any of {HumanizeList(calendars)} calendars", calendars)
+            : this($"Holiday in any of {HumanizeList(calendars)} calendars", calendars)
         {
         }
 
         public JoinHolidaysCalendar(string name, params IBusinessCalendar[] calendars)
         {
-            Name = name;
             _calendars = new List<IBusinessCalendar>(calendars);
+            Name = name;
+            MinDate = _calendars.Max(c => c.MinDate);
+            MaxDate = _calendars.Min(c => c.MaxDate);
+
+            if (MinDate > MaxDate) throw new ArgumentException();
         }
 
         public string Name { get; }
 
-        public Date MinDate => _calendars.Min(c => c.MinDate);
-        public Date MaxDate => _calendars.Max(c => c.MaxDate);
+        public Date MinDate { get; }
+        public Date MaxDate { get; }
 
         public bool IsBusinessDay(Date date) => _calendars.All(c => c.IsBusinessDay(date));
 
