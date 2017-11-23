@@ -42,6 +42,39 @@ namespace WmcSoft.Business.Calendars
 
     public static class BusinessCalendarExtensions
     {
+        [DebuggerDisplay("{Name} [{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
+        [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
+        class AliasBusinessCalendar : IBusinessCalendar
+        {
+            private readonly IBusinessCalendar _calendar;
+            private readonly string _name;
+
+            public AliasBusinessCalendar(IBusinessCalendar calendar, string name)
+            {
+                if (calendar == null) throw new NullReferenceException(); // because the class can only be instanciated by the extension method.
+                if (name == null) throw new ArgumentNullException(nameof(name));
+
+                _calendar = calendar;
+                _name = name;
+            }
+
+            public string Name => _name;
+
+            public Date MinDate => _calendar.MinDate;
+            public Date MaxDate => _calendar.MaxDate;
+
+            public bool IsBusinessDay(Date date)
+            {
+                return _calendar.IsBusinessDay(date);
+            }
+        }
+
+        public static IBusinessCalendar RenameAs<TCalendar>(this TCalendar calendar, string name)
+         where TCalendar : IBusinessCalendar
+        {
+            return new AliasBusinessCalendar(calendar, name);
+        }
+
         [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
         [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
         class TruncatedBusinessCalendar : IBusinessCalendar
@@ -52,6 +85,9 @@ namespace WmcSoft.Business.Calendars
 
             public TruncatedBusinessCalendar(IBusinessCalendar calendar, Date since, Date until)
             {
+                if (since < calendar.MinDate) throw new ArgumentOutOfRangeException(nameof(since));
+                if (until > calendar.MaxDate) throw new ArgumentOutOfRangeException(nameof(until));
+
                 _calendar = calendar;
                 _since = since;
                 _until = until;
