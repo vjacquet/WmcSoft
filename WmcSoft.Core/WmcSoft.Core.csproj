@@ -148,6 +148,7 @@
     <Compile Include="Collections\Specialized\BreathFirstPathsAlgorithm.cs" />
     <Compile Include="Collections\Specialized\BipartiteAlgorithm.cs" />
     <Compile Include="Collections\Specialized\FenwickTree.cs" />
+    <Compile Include="Collections\Specialized\IntervalsList.cs" />
     <Compile Include="Collections\Specialized\NGram.cs" />
     <Compile Include="Collections\Specialized\Ring.cs" />
     <Compile Include="Collections\Specialized\RecentlyUsedList.cs" />

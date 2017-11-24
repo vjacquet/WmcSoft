@@ -87,6 +87,7 @@
     <Compile Include="Collections\Generic\TreeTests.cs" />
     <Compile Include="Collections\Specialized\BimapTests.cs" />
     <Compile Include="Collections\Specialized\FenwickTreeTests.cs" />
+    <Compile Include="Collections\Specialized\IntervalsListTests.cs" />
     <Compile Include="Collections\Specialized\NGramTests.cs" />
     <Compile Include="Collections\Specialized\RingTests.cs" />
     <Compile Include="Collections\Specialized\MutableOrdinalSetTests.cs" />

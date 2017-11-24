@@ -35,7 +35,7 @@ namespace WmcSoft.Collections.Specialized
     /// </summary>
     /// <typeparam name="TKey">The type of key.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public class Bimap<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey,TValue>
+    public class Bimap<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         private readonly Dictionary<TKey, TValue> _index;
         private readonly Dictionary<TValue, TKey> _reverse;
