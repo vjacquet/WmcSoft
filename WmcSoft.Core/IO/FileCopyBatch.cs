@@ -91,7 +91,5 @@ namespace WmcSoft.IO
                 stream.CopyTo(target);
             }
         }
-
     }
-
 }

@@ -38,25 +38,19 @@ namespace WmcSoft.Net
     {
         public sealed class Scope : IDisposable
         {
-            private readonly Uri _baseUri;
-            private readonly string _method;
-
             public Scope(Uri baseUri, string method)
             {
-                _baseUri = baseUri;
-                _method = method;
+                BaseUri = baseUri;
+                Method = method;
             }
 
-            public Uri BaseUri { get { return _baseUri; } }
-            public string Method { get { return _method; } }
+            public Uri BaseUri { get; }
+            public string Method { get; }
 
             public void Dispose()
             {
             }
         }
-
-        private readonly WebClient _webClient;
-        private readonly string _method;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebClientBatch"/> class.
@@ -65,8 +59,8 @@ namespace WmcSoft.Net
         /// <param name="method">The method to use to upload.</param>
         protected WebClientBatch(WebClient webClient, string method)
         {
-            _webClient = webClient;
-            _method = method;
+            WebClient = webClient;
+            Method = method;
         }
 
         /// <summary>
@@ -79,7 +73,8 @@ namespace WmcSoft.Net
 
         #region Properties
 
-        protected WebClient WebClient { get { return _webClient; } }
+        protected WebClient WebClient { get; }
+        protected string Method { get; }
 
         #endregion
 
@@ -91,7 +86,7 @@ namespace WmcSoft.Net
         /// <param name="password">The password.</param>
         public void Impersonate(string domainName, string userName, string password)
         {
-            _webClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
+            WebClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
         }
 
         /// <summary>
@@ -102,7 +97,7 @@ namespace WmcSoft.Net
         /// <param name="password">The password.</param>
         public void Impersonate(string domainName, string userName, SecureString password)
         {
-            _webClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
+            WebClient.Credentials = new NetworkCredential(userName, password, domainName ?? "");
         }
 
         protected abstract string GetMethod(Uri uri);
@@ -115,8 +110,8 @@ namespace WmcSoft.Net
         /// </returns>
         protected override Scope CreateCommitScope()
         {
-            var uri = new Uri(_webClient.BaseAddress);
-            return new Scope(uri, _method ?? GetMethod(uri));
+            var uri = new Uri(WebClient.BaseAddress);
+            return new Scope(uri, Method ?? GetMethod(uri));
         }
     }
 }

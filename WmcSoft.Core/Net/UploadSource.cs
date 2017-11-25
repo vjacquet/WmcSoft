@@ -31,52 +31,52 @@ using WmcSoft.IO;
 
 namespace WmcSoft.Net
 {
+    /// <summary>
+    /// Represents a <see cref="IStreamSource"/> to open a rstream for writing data to the specified resource with a given URI.
+    /// </summary>
     public class UploadSource : IStreamSource
     {
-        #region Fields
-
-        private readonly WebClient _webClient;
-        private readonly Uri _uri;
         private readonly string _method;
 
-        #endregion
-
-        #region Lifecycle
-
+        /// <summary>
+        /// Constructs an instances of the <see cref="UploadSource"/>.
+        /// </summary>
+        /// <param name="webClient">The <see cref="WebClient"/> to use to upload the resource.</param>
+        /// <param name="uri">The URI of the resource.</param>
         public UploadSource(WebClient webClient, Uri uri, string method = null)
         {
-            _webClient = webClient;
-            _uri = uri;
+            if (webClient == null) throw new ArgumentNullException(nameof(webClient));
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
+
+            WebClient = webClient;
+            Uri = uri;
             _method = method;
         }
 
-        #endregion
 
-        #region Properties
-
-        public WebClient WebClient { get { return _webClient; } }
-        public Uri Uri { get { return _uri; } }
-
-        #endregion
+        public WebClient WebClient { get; }
+        public Uri Uri { get; }
+        public string Method => _method ?? GetMethod(Uri);
 
         protected virtual string GetMethod(Uri uri)
         {
             return WebClientHelper.MapMethod(uri);
         }
 
-        #region IStreamSource Membres
-
+        /// <summary>
+        /// Gets astream for writing data to the specified resource.
+        /// </summary>
+        /// <returns>A <see cref="Stream"/> used to write data to a resource.</returns>
+        /// <exception cref="WebException">The URI formed by combining <see cref="WebClient.BaseAddress"/>, address is invalid.-or-
+        ///    An error occurred while downloading data.</exception>
         public Stream GetStream()
         {
-            return GetStream(_uri, _method ?? GetMethod(_uri));
+            return GetStream(Uri, Method);
         }
 
         protected virtual Stream GetStream(Uri uri, string method)
         {
-            return _webClient.OpenWrite(uri, method);
-
+            return WebClient.OpenWrite(uri, method);
         }
-
-        #endregion
     }
 }

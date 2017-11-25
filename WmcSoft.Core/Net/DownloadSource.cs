@@ -31,44 +31,42 @@ using WmcSoft.IO;
 
 namespace WmcSoft.Net
 {
+    /// <summary>
+    /// Represents a <see cref="IStreamSource"/> to open a readable stream for the data downloaded from a resource with a given URI.
+    /// </summary>
     public class DownloadSource : IStreamSource
     {
-        #region Fields
-
-        private readonly WebClient _webClient;
-        private readonly Uri _uri;
-
-        #endregion
-
-        #region Lifecycle
-
+        /// <summary>
+        /// Constructs an instances of the <see cref="DownloadSource"/>.
+        /// </summary>
+        /// <param name="webClient">The <see cref="WebClient"/> to use to download the resource.</param>
+        /// <param name="uri">The URI of the resource.</param>
         public DownloadSource(WebClient webClient, Uri uri)
         {
-            _webClient = webClient;
-            _uri = uri;
+            if (webClient == null) throw new ArgumentNullException(nameof(webClient));
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
+
+            WebClient = webClient;
+            Uri = uri;
         }
 
-        #endregion
+        public WebClient WebClient { get; }
+        public Uri Uri { get; }
 
-        #region Properties
-
-        public WebClient WebClient { get { return _webClient; } }
-        public Uri Uri { get { return _uri; } }
-
-        #endregion
-
-        #region IStreamSource Membres
-
+        /// <summary>
+        /// Gets a readable stream for the data downloaded from the given resource.
+        /// </summary>
+        /// <returns>A <see cref="Stream"/> used to read data from a resource.</returns>
+        /// <exception cref="WebException">The URI formed by combining <see cref="WebClient.BaseAddress"/>, address is invalid.-or-
+        ///    An error occurred while downloading data.</exception>
         public Stream GetStream()
         {
-            return GetStream(_uri);
+            return GetStream(Uri);
         }
 
         protected virtual Stream GetStream(Uri uri)
         {
-            return _webClient.OpenRead(uri);
+            return WebClient.OpenRead(uri);
         }
-
-        #endregion
     }
 }

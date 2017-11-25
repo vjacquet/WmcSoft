@@ -30,12 +30,12 @@ using System.Collections.Generic;
 namespace WmcSoft.IO
 {
     /// <summary>
-    /// Registers files to be included in a batch but differs the actual processing to the commit phase.
+    /// Registers stream sources to be included in a batch but defers the actual processing to the commit phase.
     /// </summary>
-    public abstract class Batch<TScope> : IDisposable
+    public abstract class Batch<TScope> : IBatch
         where TScope : IDisposable
     {
-        private IList<KeyValuePair<string, IStreamSource>> _entries;
+        private readonly List<KeyValuePair<string, IStreamSource>> _entries = new List<KeyValuePair<string, IStreamSource>>();
 
         /// <summary>
         /// Adds the specified data source.
@@ -44,25 +44,22 @@ namespace WmcSoft.IO
         /// <param name="name">Name of the entry.</param>
         public void Add(string name, IStreamSource source)
         {
-            if (_entries == null) {
-                _entries = new List<KeyValuePair<string, IStreamSource>>();
-            }
             _entries.Add(new KeyValuePair<string, IStreamSource>(name, source));
         }
 
         /// <summary>
-        /// Commits this instance.
+        /// Commits this batch.
         /// </summary>
         public void Commit()
         {
-            if (_entries != null && _entries.Count > 0) {
+            if (_entries.Count > 0) {
                 using (var scope = CreateCommitScope()) {
                     foreach (var entry in _entries) {
                         Process(scope, entry.Key, entry.Value);
                     }
                 }
+                _entries.Clear();
             }
-            _entries = null;
         }
 
         /// <summary>
@@ -104,5 +101,4 @@ namespace WmcSoft.IO
             Dispose(false);
         }
     }
-
 }

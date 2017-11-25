@@ -218,6 +218,7 @@
     <Compile Include="IO\CsvWriter.cs" />
     <Compile Include="IO\CsvWriterSettings.cs" />
     <Compile Include="IO\FuncStreamSource.cs" />
+    <Compile Include="IO\IBatch.cs" />
     <Compile Include="IO\IQuotedString.cs" />
     <Compile Include="IO\IReadOnlyCsvWriterSettings.cs" />
     <Compile Include="IO\NativeMethods.cs" />
