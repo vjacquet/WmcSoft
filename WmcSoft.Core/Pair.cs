@@ -69,7 +69,7 @@ namespace WmcSoft
     /// <remarks>This class mimics <see cref="Tuple{T1, T2}"/> where T1 = T2.</remarks>
     [Serializable]
     [DebuggerDisplay("{ToString(),nq}")]
-    public sealed class Pair<T> : IStructuralEquatable, IStructuralComparable, IComparable, IEquatable<Pair<T>>, IComparable<Pair<T>>
+    public struct Pair<T> : IStructuralEquatable, IStructuralComparable, IComparable, IEquatable<Pair<T>>, IComparable<Pair<T>>
     {
         public T Item1 { get; }
         public T Item2 { get; }
@@ -84,6 +84,16 @@ namespace WmcSoft
         {
             item1 = Item1;
             item2 = Item2;
+        }
+
+        public static implicit operator ValueTuple<T, T>(Pair<T> pair)
+        {
+            return ValueTuple.Create(pair.Item1, pair.Item2);
+        }
+
+        public static implicit operator Pair<T>(ValueTuple<T, T> tuple)
+        {
+            return new Pair<T>(tuple.Item1, tuple.Item2);
         }
 
         public static implicit operator Tuple<T, T>(Pair<T> pair)

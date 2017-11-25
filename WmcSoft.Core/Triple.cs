@@ -90,6 +90,16 @@ namespace WmcSoft
             item3 = Item3;
         }
 
+        public static implicit operator ValueTuple<T, T, T>(Triple<T> triple)
+        {
+            return ValueTuple.Create(triple.Item1, triple.Item2, triple.Item3);
+        }
+
+        public static implicit operator Triple<T>(ValueTuple<T, T, T> tuple)
+        {
+            return new Triple<T>(tuple.Item1, tuple.Item2, tuple.Item3);
+        }
+
         public static implicit operator Tuple<T, T, T>(Triple<T> triple)
         {
             return Tuple.Create(triple.Item1, triple.Item2, triple.Item3);

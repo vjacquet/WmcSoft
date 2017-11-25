@@ -72,7 +72,5 @@ namespace WmcSoft.Collections.Specialized
 
             Assert.Equal(expected, intervals);
         }
-
-
     }
 }

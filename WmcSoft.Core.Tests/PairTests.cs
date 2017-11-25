@@ -57,5 +57,25 @@ namespace WmcSoft
             var p = Pair.Create(16, 64);
             Assert.Equal("(16, 64)", p.ToString());
         }
+
+        [Fact]
+        public void CanConvertPairToValueTuple()
+        {
+            var vt = (1, 2);
+            Pair<int> p = vt;
+
+            Assert.Equal(vt.Item1, p.Item1);
+            Assert.Equal(vt.Item2, p.Item2);
+        }
+
+        [Fact]
+        public void CanConvertValueTupleToPair()
+        {
+            var p = Pair.Create(1, 2);
+            ValueTuple<int, int> vt = p;
+
+            Assert.Equal(vt.Item1, p.Item1);
+            Assert.Equal(vt.Item2, p.Item2);
+        }
     }
 }

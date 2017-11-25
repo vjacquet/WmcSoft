@@ -60,5 +60,28 @@ namespace WmcSoft
             var p = Triple.Create(1, 66, 4);
             Assert.Equal("(1, 66, 4)", p.ToString());
         }
+
+        [Fact]
+        public void CanConvertTripleToValueTuple()
+        {
+            var vt = (1, 2, 3);
+            Triple<int> t = vt;
+
+            Assert.Equal(vt.Item1, t.Item1);
+            Assert.Equal(vt.Item2, t.Item2);
+            Assert.Equal(vt.Item3, t.Item3);
+        }
+
+        [Fact]
+        public void CanConvertValueTupleToTriple()
+        {
+            var t = Triple.Create(1, 2, 3);
+            ValueTuple<int, int, int> vt = t;
+
+            Assert.Equal(vt.Item1, t.Item1);
+            Assert.Equal(vt.Item2, t.Item2);
+            Assert.Equal(vt.Item3, t.Item3);
+        }
+
     }
 }
