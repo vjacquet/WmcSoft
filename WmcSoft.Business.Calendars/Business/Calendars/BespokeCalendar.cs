@@ -34,7 +34,7 @@ using static WmcSoft.Time.Algorithms;
 namespace WmcSoft.Business.Calendars
 {
     /// <summary>
-    /// Business calendar with no predefined set of business days.
+    /// Decorates an existing calendar Business calendar with no predefined set of business days.
     /// </summary>
     [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
     [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
@@ -58,6 +58,10 @@ namespace WmcSoft.Business.Calendars
 
         public BespokeCalendar(string name, TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
         {
+            var min = Max(calendar.MinDate, since);
+            var max = Min(calendar.MaxDate, until);
+            if (min > max) throw new ArgumentOutOfRangeException(nameof(calendar));
+
             Name = name;
             MinDate = Max(calendar.MinDate, since);
             MaxDate = Min(calendar.MaxDate, until);
@@ -73,8 +77,6 @@ namespace WmcSoft.Business.Calendars
             _calendar = calendar;
             _weekends = weekends ?? new DayOfWeek[0];
         }
-
-
 
         public string Name { get; }
 
@@ -112,6 +114,37 @@ namespace WmcSoft.Business.Calendars
         bool IsWeekend(DayOfWeek day)
         {
             return Array.IndexOf(_weekends, day) >= 0;
+        }
+    }
+
+    public static class BespokeCalendar
+    {
+        public static BespokeCalendar<TCalendar> From<TCalendar>(string name, TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
+            where TCalendar : IBusinessCalendar
+        {
+            return new BespokeCalendar<TCalendar>(name, calendar, since, until, weekends);
+        }
+
+        public static void Add<TCalendar>(this BespokeCalendar<TCalendar> calendar, params IDateSpecification[] specifications)
+            where TCalendar : IBusinessCalendar
+        {
+            var interval = Interval.Closed(calendar.MinDate, calendar.MaxDate);
+            foreach (var specification in specifications) {
+                foreach (var day in specification.EnumerateOver(interval)) {
+                    calendar.Add(day);
+                }
+            }
+        }
+
+        public static void Remove<TCalendar>(this BespokeCalendar<TCalendar> calendar, params IDateSpecification[] specifications)
+            where TCalendar : IBusinessCalendar
+        {
+            var interval = Interval.Closed(calendar.MinDate, calendar.MaxDate);
+            foreach (var specification in specifications) {
+                foreach (var day in specification.EnumerateOver(interval)) {
+                    calendar.Remove(day);
+                }
+            }
         }
     }
 }
