@@ -54,9 +54,9 @@ namespace WmcSoft.Time
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>The first day of the month</returns>
-        public static DateTime FirstDayOfMonth(this Date date)
+        public static Date FirstDayOfMonth(this Date date)
         {
-            return new DateTime(date.Year, date.Month, 1);
+            return new Date(date.Year, date.Month, 1);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace WmcSoft.Time
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>The first day of the month</returns>
-        public static DateTime FirstDayOfNextMonth(this Date date)
+        public static Date FirstDayOfNextMonth(this Date date)
         {
             return FirstDayOfMonth(date).AddMonths(1);
         }
@@ -74,14 +74,14 @@ namespace WmcSoft.Time
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>The last day of the month</returns>
-        public static DateTime LastDayOfMonth(this Date date)
+        public static Date LastDayOfMonth(this Date date)
         {
             var year = date.Year;
             var month = date.Month;
-            return new DateTime(year, month, DateTime.DaysInMonth(year, month));
+            return new Date(year, month, DateTime.DaysInMonth(year, month));
         }
 
-        static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider)
+        static Date UnguardedFirstDayOfWeek(Date date, IFormatProvider formatProvider)
         {
             var dateTimeFormatInfo = (DateTimeFormatInfo)formatProvider.GetFormat(typeof(DateTimeFormatInfo));
             var firstDayOfWeek = dateTimeFormatInfo.FirstDayOfWeek;
@@ -89,7 +89,7 @@ namespace WmcSoft.Time
             var delta = firstDayOfWeek - dayOfWeek;
             if (delta > 0)
                 delta -= 7;
-            return date.Date.AddDays(delta);
+            return date.AddDays(delta);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace WmcSoft.Time
         /// <param name="date">The date</param>
         /// <param name="formatProvider">The format provider to retrieve <see cref="DateTimeFormatInfo.FirstDayOfWeek"/>.</param>
         /// <returns>The first day of the week</returns>
-        public static DateTime FirstDayOfWeek(this Date date, IFormatProvider formatProvider = null)
+        public static Date FirstDayOfWeek(this Date date, IFormatProvider formatProvider = null)
         {
             return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture);
         }
@@ -109,7 +109,7 @@ namespace WmcSoft.Time
         /// <param name="date">The date</param>
         /// <param name="formatProvider">The format provider to retrieve <see cref="DateTimeFormatInfo.FirstDayOfWeek"/>.</param>
         /// <returns>The last day of the week</returns>
-        public static DateTime LastDayOfWeek(this Date date, IFormatProvider formatProvider = null)
+        public static Date LastDayOfWeek(this Date date, IFormatProvider formatProvider = null)
         {
             return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture)
                 .AddDays(6);
