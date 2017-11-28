@@ -28,9 +28,7 @@ using System;
 
 namespace WmcSoft
 {
-#if !NETSTANDARD1_6
     [Serializable]
-#endif
     public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>, IFormattable
     {
         public GeographicPosition(Latitude latitude, Longitude longitude)

@@ -87,21 +87,5 @@ namespace WmcSoft
         }
 
         #endregion
-
-        #region Clone
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <typeparam name="T">The type of the instance</typeparam>
-        /// <param name="obj">The instance</param>
-        /// <returns>A new object that is a copy of this instance.</returns>
-        public static T Clone<T>(this T obj)
-            where T : ICloneable
-        {
-            return (T)obj.Clone();
-        }
-
-        #endregion
     }
 }
