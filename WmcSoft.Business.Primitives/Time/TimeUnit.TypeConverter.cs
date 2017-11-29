@@ -42,8 +42,8 @@ namespace WmcSoft.Time
     public partial struct TimeUnit
     {
 #if NET461
-        [System.Security.Permissions.PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-        [System.Security.Permissions.PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.InheritanceDemand, Name = "FullTrust")]
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.LinkDemand, Name = "FullTrust")]
 #endif
         class TimeUnitConverter : TypeConverter
         {

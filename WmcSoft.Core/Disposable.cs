@@ -53,9 +53,18 @@ namespace WmcSoft
             bin.Add(new Disposer(action));
         }
 
-        public static void Push(this IDisposableBin bin, IDisposable disposable)
+        public static TDisposable Push<TDisposable>(this IDisposableBin bin, TDisposable disposable)
+            where TDisposable : IDisposable
         {
             bin.Add(disposable);
+            return disposable;
+        }
+
+        public static TDisposable ThrowIn<TDisposable>(this TDisposable disposable, IDisposableBin bin)
+            where TDisposable : IDisposable
+        {
+            bin.Add(disposable);
+            return disposable;
         }
 
         #endregion

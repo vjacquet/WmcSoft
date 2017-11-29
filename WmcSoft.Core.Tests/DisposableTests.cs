@@ -134,5 +134,21 @@ namespace WmcSoft
 
             Assert.False(bin.Add(one));
         }
+
+        static Disposer Create(Action action)
+        {
+            return new Disposer(action);
+        }
+
+        [Fact]
+        public void CanThrowInBin()
+        {
+            int sequence = 0;
+            using (var bin = new DisposableSet()) {
+                var one = Create(() => ++sequence).ThrowIn(bin);
+                var two = bin.Push(Create(() => ++sequence)); 
+            }
+            Assert.Equal(2, sequence);
+        }
     }
 }
