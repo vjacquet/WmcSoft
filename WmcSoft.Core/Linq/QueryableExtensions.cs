@@ -77,5 +77,14 @@ namespace WmcSoft.Linq
         }
 
         #endregion
+
+        #region Filter
+
+        public static IQueryable<T> Filter<T>(this IQueryable<T> source, IQueryableFilter<T> filter)
+        {
+            return filter.Filter(source);
+        }
+
+        #endregion
     }
 }
