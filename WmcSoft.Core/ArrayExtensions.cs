@@ -538,7 +538,7 @@ namespace WmcSoft
         /// </summary>
         /// <typeparam name="T">The type of the elements of the array.</typeparam>
         /// <param name="array">The one-dimensional, zero-based Array to sort.</param>
-        /// <param name="comparer">The <see cref="IComparer{T}"/> generic interface implementation to use when comparing elements, or null to use the IComparable<T> generic interface implementation of each element.</param>
+        /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or <c>null</c> to use the default comparer Comparer<T>.Default.</param>
         /// <returns>The one-dimensional, zero-based sorted Array</returns>
         public static T[] Sort<T>(this T[] array, IComparer<T> comparer)
         {

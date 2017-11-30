@@ -68,7 +68,7 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         /// <typeparam name="TSource">The type of the element of source</typeparam>
         /// <param name="source">The source element</param>
-        /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or null to use the default comparer Comparer<T>.Default.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> implementation to use when comparing elements, or <c>null</c> to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
         public static int MinElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer)
         {
@@ -85,7 +85,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="source">The source element</param>
         /// <param name="index">The zero-based starting index of the range to get the min element from.</param>
         /// <param name="count">The length of the range to get the min element from.</param>
-        /// <param name="comparer">The IComparer<T> implementation to use when comparing elements, or null to use the default comparer Comparer<T>.Default.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> implementation to use when comparing elements, or <c>null</c> to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         /// <returns>The zero-based index of the min element or -1 if the range is empty.</returns>
         public static int MinElement<TSource>(this IList<TSource> source, int index, int count, IComparer<TSource> comparer)
         {
