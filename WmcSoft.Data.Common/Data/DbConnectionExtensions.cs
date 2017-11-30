@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 
@@ -32,7 +33,6 @@ namespace WmcSoft.Data
 {
     public static partial class DbConnectionExtensions
     {
-
         #region Borrow connection
 
         class NoopDisposable : IDisposable
@@ -130,6 +130,20 @@ namespace WmcSoft.Data
         {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters)) {
                 return command.ExecuteNullableScalar<T>();
+            }
+        }
+
+        #endregion
+
+        #region ReadAll
+
+        public static IEnumerable<IDataRecord> ReadAll(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+        {
+            using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters))
+            using (var reader = command.ExecuteReader(behavior)) {
+                while (reader.Read()) {
+                    yield return reader;
+                }
             }
         }
 
