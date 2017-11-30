@@ -33,7 +33,7 @@ namespace WmcSoft.Collections.Generic
     /// Represents a generic collection over a readonly underlying collection.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-    public class CopyOnWriteCollection<T> : ICollection<T>
+    public class CopyOnWriteCollection<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         private readonly ICollection<T> _source;
         private ICollection<T> _inner;

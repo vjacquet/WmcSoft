@@ -35,7 +35,7 @@ namespace WmcSoft.Collections.Generic
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
     /// <remarks>The underlying dictionary is copied only when the first write operation occurs.</remarks>
-    public class CopyOnWriteDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    public class CopyOnWriteDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey,TValue>
     {
         private readonly IDictionary<TKey, TValue> _source;
         private IDictionary<TKey, TValue> _inner;
@@ -144,5 +144,8 @@ namespace WmcSoft.Collections.Generic
         {
             return Readable.GetEnumerator();
         }
+
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
     }
 }
