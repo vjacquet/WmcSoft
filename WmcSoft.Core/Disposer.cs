@@ -30,13 +30,17 @@ using System.Threading;
 namespace WmcSoft
 {
     /// <summary>
-    /// Executes the <see cref="Action"/> on Dispose.
+    /// Executes the <see cref="Action"/> on <see cref="IDisposable.Dispose"/>.
     /// </summary>
     /// <remarks>Dispose must be called. The action is not executed in the finalizer.</remarks>
     public sealed class Disposer : IDisposable
     {
         private Action _action;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Disposer"/>.
+        /// </summary>
+        /// <param name="action">The action to execute on <see cref="IDisposable.Dispose"/>.</param>
         public Disposer(Action action)
         {
             _action = action;

@@ -48,11 +48,23 @@ namespace WmcSoft
 
         #region Extensions
 
+        /// <summary>
+        /// Pushes in the <paramref name="bin"/> an <paramref name="action"/> to execute on <see cref="IDisposable.Dispose"/>.
+        /// </summary>
+        /// <param name="bin">The disposable bin.</param>
+        /// <param name="action">The action to execute on <see cref="IDisposable.Dispose"/>.</param>
         public static void Push(this IDisposableBin bin, Action action)
         {
             bin.Add(new Disposer(action));
         }
 
+        /// <summary>
+        /// Pushes in the <paramref name="bin"/> a <paramref name="disposable"/> and returns it.
+        /// </summary>
+        /// <typeparam name="TDisposable">The type of the <paramref name="disposable"/>.</typeparam>
+        /// <param name="bin">The disposable bin.</param>
+        /// <param name="disposable">The instance to dispose.</param>
+        /// <returns>The <paramref name="disposable"/>.</returns>
         public static TDisposable Push<TDisposable>(this IDisposableBin bin, TDisposable disposable)
             where TDisposable : IDisposable
         {
@@ -60,6 +72,13 @@ namespace WmcSoft
             return disposable;
         }
 
+        /// <summary>
+        /// Throws the <paramref name="disposable"/> in the <paramref name="bin"/> and returns it.
+        /// </summary>
+        /// <typeparam name="TDisposable">The type of the <paramref name="disposable"/>.</typeparam>
+        /// <param name="bin">The disposable bin.</param>
+        /// <param name="disposable">The instance to dispose.</param>
+        /// <returns>The <paramref name="disposable"/>.</returns>
         public static TDisposable ThrowIn<TDisposable>(this TDisposable disposable, IDisposableBin bin)
             where TDisposable : IDisposable
         {
