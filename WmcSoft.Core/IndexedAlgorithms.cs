@@ -49,88 +49,290 @@ namespace WmcSoft
             }
         }
 
+        static internal void UnguardedReverseCopy<T>(IList<T> source, int sourceIndex, IList<T> destination, int destinationIndex, int length)
+        {
+            var end = sourceIndex + length;
+            for (int i = sourceIndex + length - 1, j = destinationIndex; i >= sourceIndex; i--, j++) {
+                destination[j] = source[i];
+            }
+        }
+
         #endregion
 
         #region CopyTo methods
 
+        /// <summary>
+        /// Copies a range of elements from an array starting at the specified source
+        /// index and pastes them to another array starting at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="source">The array that contains the data to copy.</param>
+        /// <param name="array">The array that receives the data.</param>
+        /// <param name="arrayIndex">The index in the <paramref name="array"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="array"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="arrayIndex"/> is less than zero.</exception>
+        public static void CopyTo<T>(this T[] source, T[] array, int arrayIndex)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            Array.Copy(source, 0, array, arrayIndex, source.Length);
+        }
+
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The list that contains the data to copy.</param>
+        /// <param name="list">The list that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="listIndex"/> is less than zero.</exception>
+        public static void CopyTo<T>(this IList<T> source, IList<T> list, int listIndex)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (list.Count < (listIndex + source.Count)) throw new ArgumentException(nameof(list));
+
+            UnguardedCopy(source, 0, list, listIndex, source.Count);
+        }
+
+        /// <summary>
+        /// Copies a range of elements from an array starting at the specified source
+        /// index and pastes them to another array starting at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="source">The array that contains the data to copy.</param>
+        /// <param name="array">The array that receives the data.</param>
+        /// <param name="arrayIndex">The index in the <paramref name="array"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="array"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="arrayIndex"/> is less than zero.-or-<paramref name="length"/> is less than zero.</exception>
         public static void CopyTo<T>(this T[] source, T[] array, int arrayIndex, int length)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+
             Array.Copy(source, 0, array, arrayIndex, length);
         }
 
-        public static void CopyTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length)
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The list that contains the data to copy.</param>
+        /// <param name="list">The list that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="listIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero./// </exception>
+        public static void CopyTo<T>(this IList<T> source, IList<T> list, int listIndex, int length)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (list.Count < (listIndex + length)) throw new ArgumentException(nameof(list));
             if (source.Count < length) throw new ArgumentException(nameof(source));
 
-            for (int i = 0; i < length; i++) {
-                array[arrayIndex++] = source[i];
-            }
+            UnguardedCopy(source, 0, list, listIndex, length);
         }
 
+        /// <summary>
+        /// Copies a range of elements from an array starting at the specified source
+        /// index and pastes them to another array starting at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="source">The array that contains the data to copy.</param>
+        /// <param name="sourceIndex">he index in the <paramref name="source"/> at which copying begins.</param>
+        /// <param name="array">The array that receives the data.</param>
+        /// <param name="arrayIndex">The index in the <paramref name="array"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="array"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="sourceIndex"/> is less than zero.-or-<paramref name="arrayIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero.</exception>
         public static void CopyTo<T>(this T[] source, int sourceIndex, T[] array, int arrayIndex, int length)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             Array.Copy(source, sourceIndex, array, arrayIndex, length);
         }
 
-        public static void CopyTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length)
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list starting at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="source">The array that contains the data to copy.</param>
+        /// <param name="sourceIndex">he index in the <paramref name="source"/> at which copying begins.</param>
+        /// <param name="list">The array that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="sourceIndex"/> is less than zero.-or-<paramref name="listIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero.</exception>
+        public static void CopyTo<T>(this IList<T> source, int sourceIndex, IList<T> list, int listIndex, int length)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (list.Count < (listIndex + length)) throw new ArgumentException(nameof(list));
             if (source.Count < length) throw new ArgumentException(nameof(source));
-            length += sourceIndex;
 
-            for (int i = sourceIndex; i < length; i++) {
-                array[arrayIndex++] = source[i];
-            }
+            UnguardedCopy(source, sourceIndex, list, listIndex, length);
         }
 
         #endregion
 
         #region CopyBackwardsTo methods
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, IList<T> array, int arrayIndex, int length)
+        /// <summary>
+        /// Copies a range of elements from an array starting at the specified source
+        /// index and pastes them to another array starting at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// The elements are copied in reverse order (the last element is copied first), but their relative order is preserved.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="source">The array that contains the data to copy.</param>
+        /// <param name="sourceIndex">he index in the <paramref name="source"/> at which copying begins.</param>
+        /// <param name="list">The array that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="sourceIndex"/> is less than zero.-or-<paramref name="listIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero.</exception>
+        public static void CopyBackwardsTo<T>(this IList<T> source, int sourceIndex, IList<T> list, int listIndex, int length)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (list.Count < (listIndex + length)) throw new ArgumentException(nameof(list));
             if (source.Count < (sourceIndex + length)) throw new ArgumentException(nameof(source));
 
-            for (int i = sourceIndex + length - 1; i >= sourceIndex; i--) {
-                array[arrayIndex++] = source[i];
-            }
+            UnguardedCopyBackwards(source, sourceIndex, list, listIndex, length);
         }
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex, int length)
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// The elements are copied in reverse order (the last element is copied first), but their relative order is preserved.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The list that contains the data to copy.</param>
+        /// <param name="list">The list that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="listIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero./// </exception>
+        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> list, int listIndex, int length)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (list == null) throw new ArgumentNullException(nameof(list));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (array.Count < (arrayIndex + length)) throw new ArgumentException(nameof(array));
+            if (list.Count < (listIndex + length)) throw new ArgumentException(nameof(list));
             if (source.Count < length) throw new ArgumentException(nameof(source));
 
-            for (int i = length - 1; i >= 0; i--) {
-                array[arrayIndex++] = source[i];
-            }
+            UnguardedCopyBackwards(source, 0, list, listIndex, length);
         }
 
-        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> array, int arrayIndex)
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// The elements are copied in reverse order (the last element is copied first), but their relative order is preserved.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The list that contains the data to copy.</param>
+        /// <param name="list">The list that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="listIndex"/> is less than zero.</exception>
+        public static void CopyBackwardsTo<T>(this IList<T> source, IList<T> list, int listIndex)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (array == null) throw new ArgumentNullException(nameof(array));
-            if (array.Count < arrayIndex) throw new ArgumentException(nameof(array));
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (list.Count < listIndex) throw new ArgumentException(nameof(list));
 
-            for (int i = source.Count - 1; i >= 0; i--) {
-                array[arrayIndex++] = source[i];
-            }
+            UnguardedCopyBackwards(source, 0, list, 0, source.Count);
+        }
+
+        #endregion
+
+        #region ReverseCopyTo
+
+        /// <summary>
+        /// Copies a range of elements from an array starting at the specified source
+        /// index and pastes them to another array starting at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// The elements are copied in reverse order into the destination list.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the array.</typeparam>
+        /// <param name="source">The array that contains the data to copy.</param>
+        /// <param name="sourceIndex">he index in the <paramref name="source"/> at which copying begins.</param>
+        /// <param name="list">The array that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="sourceIndex"/> is less than zero.-or-<paramref name="listIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero.</exception>
+        public static void ReverseCopyTo<T>(this IList<T> source, int sourceIndex, IList<T> list, int listIndex, int length)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (list.Count < (listIndex + length)) throw new ArgumentException(nameof(list));
+            if (source.Count < (sourceIndex + length)) throw new ArgumentException(nameof(source));
+
+            UnguardedReverseCopy(source, sourceIndex, list, listIndex, length);
+        }
+
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// The elements are copied in reverse order into the destination <paramref name="list"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The list that contains the data to copy.</param>
+        /// <param name="list">The list that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="listIndex"/> is less than zero.-or-<paramref name="length"/>is less than zero./// </exception>
+        public static void ReverseCopyTo<T>(this IList<T> source, IList<T> list, int listIndex, int length)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (list.Count < (listIndex + length)) throw new ArgumentException(nameof(list));
+            if (source.Count < length) throw new ArgumentException(nameof(source));
+
+            UnguardedReverseCopy(source, 0, list, listIndex, length);
+        }
+
+        /// <summary>
+        /// Copies a range of elements from a list starting at the specified source
+        /// index and pastes them to another list at the specified destination
+        /// index. The length and the indexes are specified as 32-bit integers.
+        /// The elements are copied in reverse order into the list.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The list that contains the data to copy.</param>
+        /// <param name="list">The list that receives the data.</param>
+        /// <param name="listIndex">The index in the <paramref name="list"/> at which storing begins.</param>
+        /// <param name="length">The number of elements to copy.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.-or-<paramref name="list"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="listIndex"/> is less than zero.</exception>
+        public static void ReverseCopyTo<T>(this IList<T> source, IList<T> list, int listIndex)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (list.Count < listIndex) throw new ArgumentException(nameof(list));
+
+            UnguardedReverseCopy(source, 0, list, 0, source.Count);
         }
 
         #endregion
