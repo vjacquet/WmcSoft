@@ -109,12 +109,12 @@ namespace WmcSoft.Collections.Generic
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
-            case 0:
-                return -1;
-            case 1:
-                return UnguardedIndexOf(list.AsReadOnly(), value[0], startIndex, startIndex + count, EqualityComparer<T>.Default);
-            default:
-                return UnguardedIndexOf(list.AsReadOnly(), value, startIndex, startIndex + count, EqualityComparer<T>.Default);
+                case 0:
+                    return -1;
+                case 1:
+                    return UnguardedIndexOf(list.AsReadOnly(), value[0], startIndex, startIndex + count, EqualityComparer<T>.Default);
+                default:
+                    return UnguardedIndexOf(list.AsReadOnly(), value, startIndex, startIndex + count, EqualityComparer<T>.Default);
             }
         }
 
@@ -123,12 +123,12 @@ namespace WmcSoft.Collections.Generic
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
-            case 0:
-                return -1;
-            case 1:
-                return UnguardedIndexOf(list.AsReadOnly(), value[0], 0, list.Count, EqualityComparer<T>.Default);
-            default:
-                return UnguardedIndexOf(list.AsReadOnly(), value, 0, list.Count, EqualityComparer<T>.Default);
+                case 0:
+                    return -1;
+                case 1:
+                    return UnguardedIndexOf(list.AsReadOnly(), value[0], 0, list.Count, EqualityComparer<T>.Default);
+                default:
+                    return UnguardedIndexOf(list.AsReadOnly(), value, 0, list.Count, EqualityComparer<T>.Default);
             }
         }
 
@@ -242,12 +242,12 @@ namespace WmcSoft.Collections.Generic
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             switch (count) {
-            case 0:
-                return new T[0];
-            case 1:
-                return list;
-            default:
-                return new RepeatedList<T>(list, count);
+                case 0:
+                    return new T[0];
+                case 1:
+                    return list;
+                default:
+                    return new RepeatedList<T>(list, count);
             }
         }
 
@@ -641,6 +641,23 @@ namespace WmcSoft.Collections.Generic
 
         #region Unique
 
+        public static int UnguardedUnique<T>(List<T> list, int startIndex, int count, Func<T, T, bool> relation)
+        {
+            if (count == 0)
+                return 0;
+
+            var first = startIndex;
+            var last = startIndex + count;
+            var result = first;
+            while (++first != last) {
+                if (!relation(list[result], list[first]) && ++result != first)
+                    list[result] = list[first];
+            }
+            last -= result + 1;
+            list.RemoveRange(result, last);
+            return last;
+        }
+
         /// <summary>
         /// Removes all but the first element from every consecutive group of equal elements.
         /// </summary>
@@ -651,7 +668,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
         public static int Unique<T>(this List<T> list, IEqualityComparer<T> comparer = null)
         {
-           return Unique(list, (comparer ?? EqualityComparer<T>.Default).Equals);
+            return Unique(list, (comparer ?? EqualityComparer<T>.Default).Equals);
         }
 
         /// <summary>
@@ -663,19 +680,41 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
         public static int Unique<T>(this List<T> list, Func<T, T, bool> relation)
         {
-            if (list.Count == 0)
-                return 0;
+            if (list == null) throw new ArgumentNullException(nameof(list));
 
-            var first = 0;
-            var last = list.Count;
-            var result = first;
-            while (++first != last) {
-                if (!relation(list[result], list[first]) && ++result != first)
-                    list[result] = list[first];
-            }
-            last -= result + 1;
-            list.RemoveRange(result, last);
-            return last;
+            return UnguardedUnique(list, 0, list.Count, relation);
+        }
+
+        /// <summary>
+        /// Removes all but the first element from every consecutive group of equal elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="startIndex">The start index in the list.</param>
+        /// <param name="count">The end index in the list.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values,
+        ///   or <c>null</c> to use the default <see cref="EqualityComparer{T}"/> implementation.</param>
+        /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
+        public static int Unique<T>(this List<T> list, int startIndex, int count, IEqualityComparer<T> comparer = null)
+        {
+            return Unique(list, startIndex, count, (comparer ?? EqualityComparer<T>.Default).Equals);
+        }
+
+        /// <summary>
+        /// Removes all but the first element from every consecutive group of equivalent elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="startIndex">The start index in the list.</param>
+        /// <param name="count">The end index in the list.</param>
+        /// <param name="relation">The equivalence relation.</param>
+        /// <returns>The number of elements removed from the <see cref="List{T}"/>.</returns>
+        public static int Unique<T>(this List<T> list, int startIndex, int count, Func<T, T, bool> relation)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            Guard((IReadOnlyList<T>)list, startIndex, count);
+
+            return UnguardedUnique(list, startIndex, count, relation);
         }
 
         #endregion

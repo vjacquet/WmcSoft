@@ -323,6 +323,18 @@ namespace WmcSoft.Collections.Generic
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void CanGetUniqueElementsOnSublist()
+        {
+            var data = "aabcccdeffg";
+            var expected = "aabccdeffg";
+            var list = new List<char>(data);
+            Assert.Equal(data.Length - expected.Length, list.Unique(1, 4));
+
+            var actual = new string(list.ToArray());
+            Assert.Equal(expected, actual);
+        }
+
         #endregion
     }
 }
