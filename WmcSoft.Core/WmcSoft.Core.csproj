@@ -54,6 +54,7 @@
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BytesFormatter.cs" />
     <Compile Include="BitArithmetics.cs" />
+    <Compile Include="CloneableExtensions.cs" />
     <Compile Include="Cloning.cs" />
     <Compile Include="CodeDom\CodeGuardArgumentNotNulllStatement.cs" />
     <Compile Include="CodeDom\CodeDomExtensions.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Linq\Expressions\ParameterRebindExpressionVisitor.cs" />
     <Compile Include="Linq\Expressions\ReplaceExpressionVisitor.cs" />
+    <Compile Include="Linq\IQueryableFilter.cs" />
     <Compile Include="Net\CookieAwareWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
