@@ -210,11 +210,11 @@ namespace WmcSoft.Data
         /// <param name="record">The record.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <returns>The value of the specified column.</returns>
-        public static double? GetNullableDecimal(this IDataRecord record, int i)
+        public static decimal? GetNullableDecimal(this IDataRecord record, int i)
         {
             if (record.IsDBNull(i))
                 return null;
-            return (double)record.GetDecimal(i);
+            return record.GetDecimal(i);
         }
 
         #endregion
