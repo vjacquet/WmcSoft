@@ -62,20 +62,19 @@ namespace WmcSoft
         #region Clone
 
         /// <summary>
-        /// Clone the instance.
+        /// Clone the instance. If the type does not implement the <see cref="ICloneable"/> interface, then this method tries to serialize/deserialize the instance.
         /// </summary>
         /// <typeparam name="T">The type of the instance</typeparam>
         /// <param name="obj">The instance</param>
         /// <returns>A clone of the instance.</returns>
-        /// <remarks> This helper works better for classes implementing <see cref="ICloneable"/> explicitly.</remarks>
+        /// <remarks>This helper works better for classes implementing <see cref="ICloneable"/> explicitly.</remarks>
         public static T Clone<T>(T obj)
             where T : class
         {
             if (obj == null)
                 return null;
 
-            var cloneable = obj as ICloneable;
-            if (cloneable != null)
+            if (obj is ICloneable cloneable)
                 return (T)cloneable.Clone();
 
             using (var ms = new MemoryStream()) {

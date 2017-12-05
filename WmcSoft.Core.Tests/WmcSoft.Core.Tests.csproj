@@ -58,6 +58,7 @@
     <Compile Include="Asserts\NullableAsserts.cs" />
     <Compile Include="BytesFormatterTests.cs" />
     <Compile Include="BitArithmeticsTests.cs" />
+    <Compile Include="CloneableTests.cs" />
     <Compile Include="Collections\Generic\Accumulators\KahanAdderTests.cs" />
     <Compile Include="Collections\Generic\ArrayComparerTests.cs" />
     <Compile Include="Collections\BitArrayExtensionsTests.cs" />
