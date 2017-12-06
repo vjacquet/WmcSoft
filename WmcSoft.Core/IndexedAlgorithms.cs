@@ -342,12 +342,14 @@ namespace WmcSoft
         /// <summary>
         /// Replaces the value at the index with a new <paramref name="value"/> and returns the old value. 
         /// </summary>
+        /// <typeparam name="TList">The type of list.</typeparam>
         /// <typeparam name="T">The type of items.</typeparam>
         /// <param name="source">The source list</param>
         /// <param name="value">The new value.</param>
         /// <param name="index">The index.</param>
         /// <returns>The old value at the specified index.</returns>
-        public static T Exchange<T>(this IList<T> source, T value, int index)
+        public static T Exchange<TList, T>(this TList source, T value, int index)
+            where TList : IList<T>
         {
             var temp = source[index];
             source[index] = value;
@@ -358,13 +360,15 @@ namespace WmcSoft
         /// Replaces the value at the first index, pushes its old value to the second index and then returns
         /// its old value.
         /// </summary>
+        /// <typeparam name="TList">The type of list.</typeparam>
         /// <typeparam name="T">The type of items.</typeparam>
         /// <param name="source">The source list</param>
         /// <param name="value">The new value.</param>
         /// <param name="index1">The first index.</param>
         /// <param name="index2">The second index.</param>
         /// <returns>The old value at the second index.</returns>
-        public static T Exchange<T>(this IList<T> source, T value, int index1, int index2)
+        public static T Exchange<TList, T>(this TList source, T value, int index1, int index2)
+            where TList : IList<T>
         {
             var temp = source[index2];
             source[index2] = source[index1];
@@ -376,22 +380,18 @@ namespace WmcSoft
 
         #region Fill
 
-        public static void UnguardedFill<TList, T>(this TList source, T value, int startIndex, int length)
+        public static void UnguardedFill<TList, T>(this TList source, T value, int first, int last)
           where TList : IList<T>
         {
-            var endIndex = startIndex + length;
-            for (int i = startIndex; i < endIndex; i++) {
-                source[i] = value;
+            while (first != last) {
+                source[first++] = value;
             }
         }
 
         public static void UnguardedFill<TList, T>(this TList source, T value)
             where TList : IList<T>
         {
-            var length = source.Count;
-            for (int i = 0; i < length; i++) {
-                source[i] = value;
-            }
+            UnguardedFill(source, value, 0, source.Count);
         }
 
         public static void Fill<TList, T>(this TList source, T value)
@@ -400,6 +400,53 @@ namespace WmcSoft
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             UnguardedFill(source, value);
+        }
+
+        #endregion
+
+        #region FindXXX
+
+        public static int UnguardedFindIf<TList, T>(this TList list, int first, int last, Predicate<T> pred)
+            where TList : IList<T>
+        {
+            while (first != last) {
+                if (pred(list[first]))
+                    return first;
+                ++first;
+            }
+            return last;
+        }
+
+        public static int UnguardedFindIfNot<TList, T>(this TList list, int first, int last, Predicate<T> pred)
+            where TList : IList<T>
+        {
+            while (first != last) {
+                if (!pred(list[first]))
+                    return first;
+                ++first;
+            }
+            return last;
+        }
+
+        public static int UnguardedAdjacentFindNotEmpty<TList, T>(this TList list, int first, int last, Func<T, T, bool> pred)
+            where TList : IList<T>
+        {
+            var next = first + 1;
+            while (next != last) {
+                if (pred(list[first], list[next]))
+                    return first;
+                ++next;
+                ++first;
+            }
+            return last;
+        }
+
+        public static int UnguardedAdjacentFind<TList, T>(this TList list, int first, int last, Func<T, T, bool> pred)
+            where TList : IList<T>
+        {
+            if (first == last)
+                return last;
+            return UnguardedAdjacentFindNotEmpty(list, first, last, pred);
         }
 
         #endregion
