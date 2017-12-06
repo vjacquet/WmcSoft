@@ -406,34 +406,34 @@ namespace WmcSoft
 
         #region FindXXX
 
-        public static int UnguardedFindIf<TList, T>(this TList list, int first, int last, Predicate<T> pred)
+        public static int UnguardedFindIf<TList, T>(this TList list, int first, int last, Predicate<T> relation)
             where TList : IList<T>
         {
             while (first != last) {
-                if (pred(list[first]))
+                if (relation(list[first]))
                     return first;
                 ++first;
             }
             return last;
         }
 
-        public static int UnguardedFindIfNot<TList, T>(this TList list, int first, int last, Predicate<T> pred)
+        public static int UnguardedFindIfNot<TList, T>(this TList list, int first, int last, Predicate<T> relation)
             where TList : IList<T>
         {
             while (first != last) {
-                if (!pred(list[first]))
+                if (!relation(list[first]))
                     return first;
                 ++first;
             }
             return last;
         }
 
-        public static int UnguardedAdjacentFindNotEmpty<TList, T>(this TList list, int first, int last, Func<T, T, bool> pred)
+        public static int UnguardedAdjacentFindNotEmpty<TList, T>(this TList list, int first, int last, Relation<T> relation)
             where TList : IList<T>
         {
             var next = first + 1;
             while (next != last) {
-                if (pred(list[first], list[next]))
+                if (relation(list[first], list[next]))
                     return first;
                 ++next;
                 ++first;
@@ -441,12 +441,12 @@ namespace WmcSoft
             return last;
         }
 
-        public static int UnguardedAdjacentFind<TList, T>(this TList list, int first, int last, Func<T, T, bool> pred)
+        public static int UnguardedAdjacentFind<TList, T>(this TList list, int first, int last, Relation<T> relation)
             where TList : IList<T>
         {
             if (first == last)
                 return last;
-            return UnguardedAdjacentFindNotEmpty(list, first, last, pred);
+            return UnguardedAdjacentFindNotEmpty(list, first, last, relation);
         }
 
         #endregion
@@ -467,24 +467,14 @@ namespace WmcSoft
             }
         }
 
-        public static void InsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer)
+        public static void InsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer = null)
         {
             UnguardedInsertionSort(source, index, length, comparer ?? Comparer<T>.Default);
         }
 
-        public static void InsertionSort<T>(this IList<T> source, int index, int length)
-        {
-            UnguardedInsertionSort(source, index, length, Comparer<T>.Default);
-        }
-
-        public static void InsertionSort<T>(this IList<T> source, IComparer<T> comparer)
+        public static void InsertionSort<T>(this IList<T> source, IComparer<T> comparer = null)
         {
             UnguardedInsertionSort(source, 0, source.Count, comparer ?? Comparer<T>.Default);
-        }
-
-        public static void InsertionSort<T>(this IList<T> source)
-        {
-            UnguardedInsertionSort(source, 0, source.Count, Comparer<T>.Default);
         }
 
         public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation)
