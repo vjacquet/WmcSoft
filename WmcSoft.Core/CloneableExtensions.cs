@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="ICloneable"/> interface.
+    /// This is a static class.
+    /// </summary>
     public static class CloneableExtensions
     {
         #region Clone

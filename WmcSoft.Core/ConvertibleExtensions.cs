@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="IConvertible"/> interface.
+    /// This is a static class.
+    /// </summary>
     public static class ConvertibleExtensions
     {
         static T UnguardedChangeType<T>(object value)
@@ -41,15 +45,33 @@ namespace WmcSoft
             return (T)Convert.ChangeType(value, underlyingType ?? typeof(T));
         }
 
-        public static T ConvertTo<T>(this IConvertible convertible)
+        /// <summary>
+        /// Returns an object of the specified type and whose value is equivalent to the specified object.
+        /// </summary>
+        /// <typeparam name="T">The type of object to return.</typeparam>
+        /// <param name="value">A convertible object.</param>
+        /// <returns>An object whose type is <typeparamref name="T"/> and whose value is equivalent to value.-or-A <c>null</c> reference , if <paramref name="value"/> is null.</returns>
+        /// <exception cref="InvalidCastException">This conversion is not supported. -or-value is <c>null</c> and <typeparamref name="T"/> is a value type.</exception>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in a format recognized by <typeparamref name="T"/>.</exception>
+        /// <exception cref="OverflowException"><paramref name="value"/> represents a number that is out of the range of <typeparamref name="T"/>.</exception>
+        public static T ConvertTo<T>(this IConvertible value)
         {
-            return UnguardedChangeType<T>(convertible);
+            return UnguardedChangeType<T>(value);
         }
 
-        public static T? ConvertTo<T>(this T? convertible)
+        /// <summary>
+        /// Returns an object of the specified type and whose value is equivalent to the specified object.
+        /// </summary>
+        /// <typeparam name="T">The type of object to return.</typeparam>
+        /// <param name="value">A convertible object.</param>
+        /// <returns>An object whose type is <typeparamref name="T"/> and whose value is equivalent to value.-or-A <c>null</c> reference , if <paramref name="value"/> is null.</returns>
+        /// <exception cref="InvalidCastException">This conversion is not supported.</exception>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in a format recognized by <typeparamref name="T"/>.</exception>
+        /// <exception cref="OverflowException"><paramref name="value"/> represents a number that is out of the range of <typeparamref name="T"/>.</exception>
+        public static T? ConvertTo<T>(this T? value)
             where T : struct, IConvertible
         {
-            return UnguardedChangeType<T?>(convertible);
+            return UnguardedChangeType<T?>(value);
         }
     }
 }
