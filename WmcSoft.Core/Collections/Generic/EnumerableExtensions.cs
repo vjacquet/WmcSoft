@@ -361,12 +361,12 @@ namespace WmcSoft.Collections.Generic
 
             var length = predicates == null ? 0 : predicates.Length;
             switch (length) {
-            case 0:
-                return source;
-            case 1:
-                return source.Where(predicates[0]);
-            default:
-                return UnguardedChoose(source, predicates);
+                case 0:
+                    return source;
+                case 1:
+                    return source.Where(predicates[0]);
+                default:
+                    return UnguardedChoose(source, predicates);
             }
         }
 
@@ -412,17 +412,17 @@ namespace WmcSoft.Collections.Generic
 
         static T UnguardedDrawLots<T>(IEnumerable<T> source, Random random)
         {
-            switch(source) {
-            case IReadOnlyList<T> list:
-                return list[random.Next(list.Count)];
-            case IList<T> list:
-                return list[random.Next(list.Count)];
-            case IReadOnlyCollection<T> collection:
-                return source.Skip(random.Next(collection.Count)).First();
-            case ICollection<T> collection:
-                return source.Skip(random.Next(collection.Count)).First();
-            case ICollection collection:
-                return source.Skip(random.Next(collection.Count)).First();
+            switch (source) {
+                case IReadOnlyList<T> list:
+                    return list[random.Next(list.Count)];
+                case IList<T> list:
+                    return list[random.Next(list.Count)];
+                case IReadOnlyCollection<T> collection:
+                    return source.Skip(random.Next(collection.Count)).First();
+                case ICollection<T> collection:
+                    return source.Skip(random.Next(collection.Count)).First();
+                case ICollection collection:
+                    return source.Skip(random.Next(collection.Count)).First();
             }
 
             using (var enumerator = source.GetEnumerator()) {
@@ -1131,15 +1131,15 @@ namespace WmcSoft.Collections.Generic
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             switch (count) {
-            case 0:
-                return Enumerable.Empty<T>();
-            case 1:
-                return source;
-            default:
-                // most optimized implementation tries to cast as ICollection<T>, not IReadOnlyCollection, to get the count of items.
-                return collate
-                    ? new CollateRepeat<T>(source, count).AsCollection()
-                    : new GroupedRepeat<T>(source, count).AsCollection();
+                case 0:
+                    return Enumerable.Empty<T>();
+                case 1:
+                    return source;
+                default:
+                    // most optimized implementation tries to cast as ICollection<T>, not IReadOnlyCollection, to get the count of items.
+                    return collate
+                        ? new CollateRepeat<T>(source, count).AsCollection()
+                        : new GroupedRepeat<T>(source, count).AsCollection();
             }
         }
 
@@ -1147,7 +1147,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Scan
 
-        static IEnumerable<T> UnguardedScan<T>(this IEnumerable<T> source, Action<T> action)
+        static IEnumerable<T> UnguardedScan<T>(IEnumerable<T> source, Action<T> action)
         {
             foreach (var item in source) {
                 action(item);
@@ -1170,7 +1170,7 @@ namespace WmcSoft.Collections.Generic
             return UnguardedScan(source, action);
         }
 
-        static IEnumerable<T> UnguardedScan<T>(this IEnumerable<T> source, Action<T, int> action)
+        static IEnumerable<T> UnguardedScan<T>(IEnumerable<T> source, Action<T, int> action)
         {
             var i = 0;
             foreach (var item in source) {
@@ -1198,7 +1198,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Stride
 
-        static IEnumerable<T> UnguardedStride<T>(this IEnumerable<T> source, int step)
+        static IEnumerable<T> UnguardedStride<T>( IEnumerable<T> source, int step)
         {
             var i = step - 1;
             foreach (var item in source) {
@@ -1472,30 +1472,30 @@ namespace WmcSoft.Collections.Generic
 
             var d = new Dictionary<TKey, TElement>(comparer);
             switch (policy) {
-            case DuplicatePolicy.ThrowException:
-                foreach (var item in source) {
-                    var key = keySelector(item);
-                    var value = elementSelector(item);
-                    try {
-                        d.Add(key, value);
-                    } catch (ArgumentException e) {
-                        e.CaptureContext(new { key });
-                        throw;
+                case DuplicatePolicy.ThrowException:
+                    foreach (var item in source) {
+                        var key = keySelector(item);
+                        var value = elementSelector(item);
+                        try {
+                            d.Add(key, value);
+                        } catch (ArgumentException e) {
+                            e.CaptureContext(new { key });
+                            throw;
+                        }
                     }
-                }
-                break;
-            case DuplicatePolicy.KeepFirst:
-                foreach (var item in source) {
-                    var selector = keySelector(item);
-                    if (!d.ContainsKey(selector))
-                        d.Add(selector, elementSelector(item));
-                }
-                break;
-            case DuplicatePolicy.KeepLast:
-                foreach (var item in source) {
-                    d[keySelector(item)] = elementSelector(item);
-                }
-                break;
+                    break;
+                case DuplicatePolicy.KeepFirst:
+                    foreach (var item in source) {
+                        var selector = keySelector(item);
+                        if (!d.ContainsKey(selector))
+                            d.Add(selector, elementSelector(item));
+                    }
+                    break;
+                case DuplicatePolicy.KeepLast:
+                    foreach (var item in source) {
+                        d[keySelector(item)] = elementSelector(item);
+                    }
+                    break;
             }
             return d;
         }

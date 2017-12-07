@@ -285,10 +285,10 @@ namespace WmcSoft.Collections.Generic
             var data = new DisposeMonitorEnumerable<char>("a1bcd2ef3");
 
             Func<char, bool> vowel = c => "aeiouy".Contains(c);
-            Func<char, bool> digits = c => Char.IsDigit(c);
-            Func<char, bool> uppercase = c => Char.IsUpper(c);
-            Func<char, bool> letter = c => Char.IsLetter(c);
-            Func<char, bool> white = c => Char.IsWhiteSpace(c);
+            Func<char, bool> digits = char.IsDigit;
+            Func<char, bool> uppercase = char.IsUpper;
+            Func<char, bool> letter = char.IsLetter;
+            Func<char, bool> white = char.IsWhiteSpace;
 
             Assert.Equal("ae", string.Join("", data.Choose(vowel, uppercase, digits)));
             Assert.Equal("abcdef", string.Join("", data.Choose(letter, vowel, digits)));

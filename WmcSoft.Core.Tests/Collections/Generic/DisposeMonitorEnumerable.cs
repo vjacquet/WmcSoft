@@ -27,8 +27,8 @@ namespace WmcSoft.Collections.Generic
         }
 
 
-        public T Current { get { return _enumerator.Current; } }
-        object IEnumerator.Current { get { return Current; } }
+        public T Current => _enumerator.Current;
+        object IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
@@ -45,6 +45,6 @@ namespace WmcSoft.Collections.Generic
             _disposed++;
         }
 
-        public int Tally { get { return _disposed; } }
+        public int Tally => _disposed;
     }
 }
