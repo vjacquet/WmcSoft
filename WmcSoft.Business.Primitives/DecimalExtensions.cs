@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="decimal"/> value type.
+    /// This is a static class.
+    /// </summary>
     public static class DecimalExtensions
     {
         const int MaxPower = 29; // last power before overflow
@@ -45,15 +49,21 @@ namespace WmcSoft
             }
         }
 
-        public static decimal Pow10(this decimal d, int n)
+        /// <summary>
+        /// Multiplies the decimal <paramref name="value"/> by 10^<paramref name="n"/>.
+        /// </summary>
+        /// <param name="value">The decimal value.</param>
+        /// <param name="n">The power of ten.</param>
+        /// <returns><paramref name="value"/> x 10^<paramref name="n"/>.</returns>
+        public static decimal Times10Pow(this decimal value, int n)
         {
-            if (n > 0) return d * Powers[n];
-            else if (n < 0) return d / Powers[-n];
-            return 1m;
+            if (n > 0) return value * Powers[n];
+            else if (n < 0) return value / Powers[-n];
+            return value;
         }
 
         /// <summary>
-        /// Returns the number of digits in the unscaled value.
+        /// Returns the number of digits in the unscaled <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The decimal value.</param>
         /// <returns>Returns the <paramref name="value"/>'s precision.</returns>
@@ -88,6 +98,12 @@ namespace WmcSoft
             return (bits[3] & ScaleMask) >> ScaleShift;
         }
 
+        /// <summary>
+        /// Round the decimal <paramref name="value"/> using given <paramref name="rounding"/> strategy.
+        /// </summary>
+        /// <param name="value">The decimal value.</param>
+        /// <param name="rounding">The rounding strategy.</param>
+        /// <returns>The rounded value.</returns>
         public static decimal Round(this decimal value, RoundingMode rounding)
         {
             switch (rounding) {
@@ -113,9 +129,16 @@ namespace WmcSoft
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Round the decimal <paramref name="value"/> using given <paramref name="rounding"/> strategy.
+        /// </summary>
+        /// <param name="value">The decimal value.</param>
+        /// <param name="scale">The scale.</param>
+        /// <param name="rounding">The rounding strategy.</param>
+        /// <returns>The rounded value.</returns>
         public static decimal Round(this decimal value, int scale, RoundingMode rounding)
         {
-            return value.Pow10(scale).Round(rounding).Pow10(-scale);
+            return value.Times10Pow(scale).Round(rounding).Times10Pow(-scale);
         }
     }
 }

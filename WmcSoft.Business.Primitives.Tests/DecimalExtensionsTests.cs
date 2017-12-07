@@ -106,11 +106,21 @@ namespace WmcSoft
             }
         }
 
+        [Theory]
+        [InlineData("0.12345", 2, RoundingMode.Down, "0.12")]
+        public void CanRoundAtAGivenScale(string value, int scale, RoundingMode mode, string result)
+        {
+            var d = decimal.Parse(value, CultureInfo.InvariantCulture);
+            var expected = decimal.Parse(result, CultureInfo.InvariantCulture);
+            var actual = d.Round(scale, mode);
+            Assert.Equal(expected, actual);
+        }
+
         [Fact]
         public void CanPowerUp()
         {
             var expected = 200m;
-            var actual = 2m.Pow10(2);
+            var actual = 2m.Times10Pow(2);
             Assert.Equal(expected, actual);
         }
 
@@ -118,14 +128,14 @@ namespace WmcSoft
         public void CanPowerDown()
         {
             var expected = 0.02m;
-            var actual = 2m.Pow10(-2);
+            var actual = 2m.Times10Pow(-2);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void CheckOverflow()
         {
-            Assert.Throws<OverflowException>(() => 123456789m.Pow10(28));
+            Assert.Throws<OverflowException>(() => 123456789m.Times10Pow(28));
         }
     }
 }
