@@ -406,8 +406,7 @@ namespace WmcSoft
 
         #region FindXXX
 
-        public static int UnguardedFindIf<TList, T>(this TList list, int first, int last, Predicate<T> relation)
-            where TList : IList<T>
+        public static int UnguardedFindIf<T>( IList<T> list, int first, int last, Predicate<T> relation)
         {
             while (first != last) {
                 if (relation(list[first]))
@@ -417,8 +416,7 @@ namespace WmcSoft
             return last;
         }
 
-        public static int UnguardedFindIfNot<TList, T>(this TList list, int first, int last, Predicate<T> relation)
-            where TList : IList<T>
+        public static int UnguardedFindIfNot<T>( IList<T> list, int first, int last, Predicate<T> relation)
         {
             while (first != last) {
                 if (!relation(list[first]))
@@ -428,8 +426,7 @@ namespace WmcSoft
             return last;
         }
 
-        public static int UnguardedAdjacentFindNotEmpty<TList, T>(this TList list, int first, int last, Relation<T> relation)
-            where TList : IList<T>
+        public static int UnguardedAdjacentFindNotEmpty<T>( IList<T> list, int first, int last, Relation<T> relation)
         {
             var next = first + 1;
             while (next != last) {
@@ -441,8 +438,7 @@ namespace WmcSoft
             return last;
         }
 
-        public static int UnguardedAdjacentFind<TList, T>(this TList list, int first, int last, Relation<T> relation)
-            where TList : IList<T>
+        public static int UnguardedAdjacentFind<T>( IList<T> list, int first, int last, Relation<T> relation)
         {
             if (first == last)
                 return last;
@@ -453,7 +449,7 @@ namespace WmcSoft
 
         #region InsertionSort
 
-        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, IComparer<T> comparer)
+        public static void UnguardedInsertionSort<T>( IList<T> source, int index, int length, IComparer<T> comparer)
         {
             var endIndex = index + length;
             for (int i = index + 1; i < endIndex; i++) {
@@ -477,7 +473,7 @@ namespace WmcSoft
             UnguardedInsertionSort(source, 0, source.Count, comparer ?? Comparer<T>.Default);
         }
 
-        public static void UnguardedInsertionSort<T>(this IList<T> source, int index, int length, Relation<T> relation)
+        public static void UnguardedInsertionSort<T>( IList<T> source, int index, int length, Relation<T> relation)
         {
             var endIndex = index + length;
             for (int i = index + 1; i < endIndex; i++) {
@@ -604,7 +600,7 @@ namespace WmcSoft
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            if (maxKey <= 0 || maxKey > UInt16.MaxValue) throw new ArgumentOutOfRangeException(nameof(maxKey));
+            if (maxKey <= 0 || maxKey > ushort.MaxValue) throw new ArgumentOutOfRangeException(nameof(maxKey));
 
             var counters = new int[maxKey + 1];
             UnguardedKeyIndexCountingSort(source, keySelector, counters);
@@ -614,7 +610,7 @@ namespace WmcSoft
 
         #region Rotate
 
-        public static int UnguardedRotate<T>(this IList<T> source, int n, int startIndex, int length)
+        public static int UnguardedRotate<T>(IList<T> source, int n, int startIndex, int length)
         {
             if (n == 0)
                 return startIndex;
