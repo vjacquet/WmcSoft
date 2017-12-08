@@ -30,67 +30,66 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Represents a generic read only dictionary for which the keys are sorted.
+    /// Represents a generec read only collection for which the elements are sorted
     /// </summary>
-    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
-    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    public interface IReadOnlyOrderedDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+    /// <typeparam name="T"></typeparam>
+    public interface IReadOnlyOrderedCollection<T> : IReadOnlyCollection<T>
     {
         /// <summary>
         /// The comparer used to sort the keys.
         /// </summary>
-        IComparer<TKey> Comparer { get; }
+        IComparer<T> Comparer { get; }
 
         /// <summary>
-        /// The <see cref="KeyValuePair{TKey, TValue}"/> with the smalled key.
+        /// The smalled element.
         /// </summary>
         /// <exception cref="InvalidOperationException">No such element exist in the list.</exception>
-        KeyValuePair<TKey, TValue> Min { get; }
+        T Min { get; }
 
         /// <summary>
-        /// The <see cref="KeyValuePair{TKey, TValue}"/> with the largest key.
+        /// The largest element.
         /// </summary>
         /// <exception cref="InvalidOperationException">No such element exist in the list.</exception>
-        KeyValuePair<TKey, TValue> Max { get; }
+        T Max { get; }
 
         /// <summary>
-        /// Largest key less than or equal to <paramref name="key"/>.
+        /// Largest element less than or equal to <paramref name="value"/>.
         /// </summary>
         /// <exception cref="InvalidOperationException">No such element exist in the list.</exception>
-        KeyValuePair<TKey, TValue> Floor(TKey key);
+        T Floor(T value);
 
         /// <summary>
-        /// Smallest key greater than or equal to <paramref name="key"/>.
+        /// Smallest element greater than or equal to <paramref name="value"/>.
         /// </summary>
         /// <exception cref="InvalidOperationException">No such element exist in the list.</exception>
-        KeyValuePair<TKey, TValue> Ceiling(TKey key);
+        T Ceiling(T value);
 
         /// <summary>
-        /// Number of keys less than <paramref name="key"/>.
+        /// Number of elements less than <paramref name="value"/>.
         /// </summary>
-        int Rank(TKey key);
+        int Rank(T value);
 
         /// <summary>
         /// Key of rank <paramref name="k"/>.
         /// </summary>
-        KeyValuePair<TKey, TValue> Select(int k);
+        T Select(int k);
 
         /// <summary>
-        /// The number of values between the <paramref name="lo"/> and <paramref name="hi"/> keys.
+        /// The number of elements between the <paramref name="lo"/> and <paramref name="hi"/> values.
         /// </summary>
-        /// <param name="lo">The lowest key.</param>
-        /// <param name="hi">The highest key</param>
+        /// <param name="lo">The lowest value.</param>
+        /// <param name="hi">The highest value</param>
         /// <returns>The number of values.</returns>
         /// <remarks><paramref name="lo"/> is included and <paramref name="hi"/> is excluded.</remarks>
-        int CountBetween(TKey lo, TKey hi);
+        int CountBetween(T lo, T hi);
 
         /// <summary>
-        /// The values between the <paramref name="lo"/> and <paramref name="hi"/> keys.
+        /// The values between the <paramref name="lo"/> and <paramref name="hi"/> values.
         /// </summary>
-        /// <param name="lo">The lowest key.</param>
-        /// <param name="hi">The highest key</param>
+        /// <param name="lo">The lowest value.</param>
+        /// <param name="hi">The highest value</param>
         /// <returns>The values.</returns>
         /// <remarks><paramref name="lo"/> is included and <paramref name="hi"/> is excluded.</remarks>
-        IReadOnlyCollection<KeyValuePair<TKey, TValue>> EnumerateBetween(TKey lo, TKey hi);
+        IReadOnlyCollection<T> EnumerateBetween(T lo, T hi);
     }
 }

@@ -31,7 +31,7 @@ using System.Diagnostics;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Represents a set of objects that is maintained in sorted order.
+    /// Represents a set of objects.
     /// </summary>
     /// <typeparam name="T">The type of elements in the set.</typeparam>
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]

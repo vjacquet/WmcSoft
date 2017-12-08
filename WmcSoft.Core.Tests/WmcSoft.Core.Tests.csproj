@@ -65,6 +65,7 @@
     <Compile Include="Collections\Generic\Algorithms\FinderTests.cs" />
     <Compile Include="Collections\Generic\BagSetTests.cs" />
     <Compile Include="Collections\Generic\FieldwiseEqualityComparerTests.cs" />
+    <Compile Include="Collections\Generic\OrderedDictionaryTests.cs" />
     <Compile Include="Collections\Generic\RandomBagTests.cs" />
     <Compile Include="Collections\Generic\BagTests.cs" />
     <Compile Include="Collections\Generic\ComparerTests.cs" />

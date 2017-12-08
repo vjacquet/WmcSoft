@@ -106,8 +106,11 @@
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyList.cs" />
     <Compile Include="Collections\Generic\Internals\EmptyReadOnlyDictionary.cs" />
     <Compile Include="Collections\Generic\ConformingReverseComparer.cs" />
+    <Compile Include="Collections\Generic\IOrderedCollection.cs" />
+    <Compile Include="Collections\Generic\IReadOnlyOrderedCollection.cs" />
     <Compile Include="Collections\Generic\KeyValuePairComparer.cs" />
     <Compile Include="Collections\Generic\KeyValuePairEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\OrderedDictionary.cs" />
     <Compile Include="Collections\Generic\PipableCompareResult.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionDebugView.cs" />
     <Compile Include="Collections\Generic\ZipFixedSizeDictionary.cs" />

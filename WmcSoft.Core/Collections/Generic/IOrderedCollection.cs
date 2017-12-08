@@ -29,11 +29,10 @@ using System.Collections.Generic;
 namespace WmcSoft.Collections.Generic
 {
     /// <summary>
-    /// Represents a generic dictionary for which the keys are sorted.
+    /// Represents a generic collection for which the elements are sorted.
     /// </summary>
-    /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
-    /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    public interface IOrderedDictionary<TKey, TValue> : IReadOnlyOrderedDictionary<TKey, TValue>, IDictionary<TKey, TValue>
+    /// <typeparam name="T">The type of items.</typeparam>
+    public interface IOrderedCollection<T> : IReadOnlyOrderedCollection<T>, ICollection<T>
     {
         /// <summary>
         /// Removes the minimum value.
