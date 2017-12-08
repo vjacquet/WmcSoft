@@ -97,7 +97,7 @@ namespace WmcSoft.Business.Calendars
             var calendar1 = new BespokeCalendar<BusinessCalendar>("xmas", reference);
             calendar1.Add(KnownHolidays.Christmas);
 
-            var calendar2 = new BespokeCalendar<BusinessCalendar>("easter", reference);
+            var calendar2 = new BespokeCalendar<BusinessCalendar>("new year", reference);
             calendar2.Add(KnownHolidays.NewYearDay);
 
             var calendar = new JoinHolidaysCalendar(calendar1, calendar2);
@@ -122,7 +122,7 @@ namespace WmcSoft.Business.Calendars
             var calendar1 = new BespokeCalendar<BusinessCalendar>("xmas", reference);
             calendar1.Add(KnownHolidays.Christmas);
 
-            var calendar2 = new BespokeCalendar<BusinessCalendar>("easter", reference);
+            var calendar2 = new BespokeCalendar<BusinessCalendar>("new year", reference);
             calendar2.Add(KnownHolidays.NewYearDay);
 
             var calendar = new JoinBusinessDaysCalendar(calendar1, calendar2);
