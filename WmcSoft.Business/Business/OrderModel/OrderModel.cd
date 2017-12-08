@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="WmcSoft.Business.OrderModel.Order">
-    <Position X="7" Y="5.5" Width="1.5" />
+    <Position X="7" Y="5.5" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AEAAAAAEEAAAAAAAAAAAgAAAAAAAAAAAAAAIQAAAAAA=</HashCode>
+      <HashCode>DEQEAAAEEAAAAACAAAAAggAAAAQAAABAAABIQQAAIAA=</HashCode>
       <FileName>Business\OrderModel\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -19,7 +19,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.SalesOrder" Collapsed="true">
-    <Position X="8" Y="7.5" Width="1.5" />
+    <Position X="8.75" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\OrderModel\SalesOrder.cs</FileName>
@@ -27,19 +27,26 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.PurchaseOrder" Collapsed="true">
-    <Position X="5.75" Y="7.5" Width="1.5" />
+    <Position X="5.5" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\OrderModel\PurchaseOrder.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.OrderLine">
-    <Position X="4.25" Y="4" Width="1.5" />
+    <Position X="3.75" Y="4" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <AssociationLine Name="ChargeLines" Type="WmcSoft.Business.OrderModel.ChargeLine" ManuallyRouted="true">
+      <Path>
+        <Point X="5.125" Y="4" />
+        <Point X="5.125" Y="3.25" />
+        <Point X="7" Y="3.25" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>IAAAAAAQAAAgAAAAAAABgAAAAAEAAAABAAAIQgAAAAA=</HashCode>
+      <HashCode>IAAAAAAQAAAgAAAoAAABgAAAAEEAAAABAAAIRgAAAAA=</HashCode>
       <FileName>Business\OrderModel\OrderLine.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -50,7 +57,7 @@
   <Class Name="WmcSoft.Business.OrderModel.OrderIdentifier" Collapsed="true">
     <Position X="10" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAgAAAgAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\OrderModel\OrderIdentifier.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -69,7 +76,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.SalesTaxPolicy" Collapsed="true">
-    <Position X="12.5" Y="1.75" Width="1.5" />
+    <Position X="10.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAEAAQAAA=</HashCode>
       <FileName>Business\OrderModel\SalesTaxPolicy.cs</FileName>
@@ -84,7 +91,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.OrderEvent">
-    <Position X="20.25" Y="0.5" Width="1.5" />
+    <Position X="16.25" Y="1.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -95,31 +102,31 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.LifecycleEvent" Collapsed="true">
-    <Position X="20.25" Y="3.5" Width="1.5" />
+    <Position X="16.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+      <FileName>Business\OrderModel\LifecycleEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.OpenEvent" Collapsed="true">
-    <Position X="20.25" Y="4.75" Width="1.5" />
+    <Position X="16.25" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+      <FileName>Business\OrderModel\LifecycleEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.CloseEvent" Collapsed="true">
-    <Position X="22.5" Y="4.75" Width="1.5" />
+    <Position X="18.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+      <FileName>Business\OrderModel\LifecycleEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.OrderModel.CancelEvent" Collapsed="true">
-    <Position X="18" Y="4.75" Width="1.5" />
+    <Position X="14" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
-      <FileName>Business\OrderModel\OrderEvent.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\OrderModel\LifecycleEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="WmcSoft.Business.OrderModel.OrderStatus" Collapsed="true">
