@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using static System.Math;
+using static WmcSoft.IndexedAlgorithms;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -55,6 +56,27 @@ namespace WmcSoft.Collections.Generic
         {
             return start < 0 ? Max(length + start, 0) : Min(start, length);
         }
+
+        #region Collapse
+
+        public static int Collapse<T>(this List<T> list, int startIndex, int count, Relation<T> relation, Func<IReadOnlyList<T>, T> aggregator)
+        {
+            var first = startIndex;
+            var last = startIndex + count;
+
+            var result = first;
+            while (first < last) {
+                var next = UnguardedFindIfNot(list, first + 1, last, x => relation(list[first], x));
+                list[result++] = aggregator(list.ReadOnlySublist(first, next - first));
+                first = next;
+            }
+
+            count = last - result;
+            list.RemoveRange(result, count);
+            return count;
+        }
+
+        #endregion
 
         #region Equals
 
