@@ -29,6 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="xunit">
@@ -131,6 +133,7 @@
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="OrdinalSetTests.cs" />
     <Compile Include="OrdinalTests.cs" />
+    <Compile Include="SubscriptionTests.cs" />
     <Compile Include="Text\NumericalComparerTests.cs" />
     <Compile Include="TripleTests.cs" />
     <Compile Include="PairTests.cs" />
