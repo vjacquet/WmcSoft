@@ -48,6 +48,8 @@ namespace WmcSoft
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
+
             var action = Interlocked.Exchange(ref _action, null);
             if (action != null)
                 action();

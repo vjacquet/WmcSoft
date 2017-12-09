@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Threading;
 
 namespace WmcSoft
 {
@@ -46,7 +47,7 @@ namespace WmcSoft
         {
             if (unsubscriber == null) throw new ArgumentNullException(nameof(unsubscriber));
 
-            _unsubscribe = () => unsubscriber.Dispose();
+            _unsubscribe = unsubscriber.Dispose;
         }
 
         /// <summary>
@@ -57,19 +58,14 @@ namespace WmcSoft
             ((IDisposable)this).Dispose();
         }
 
-        ~Subscription()
-        {
-            // in the finalizer only when not disposed, so _unsubscribe cannot be null
-            _unsubscribe();
-        }
-
         void IDisposable.Dispose()
         {
-            if (_unsubscribe != null) {
-                _unsubscribe();
-                _unsubscribe = null;
-            }
             GC.SuppressFinalize(this);
+
+            var action = Interlocked.Exchange(ref _unsubscribe, null);
+            if (action != null) {
+                action();
+            }
         }
     }
 }
