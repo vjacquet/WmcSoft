@@ -40,6 +40,7 @@ namespace WmcSoft
         /// <summary>
         /// Marker to indicate the cloning should be deep.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "This marker struct make senss only in the context of cloning.")]
         public struct Deep { }
 
         /// <summary>
@@ -50,6 +51,7 @@ namespace WmcSoft
         /// <summary>
         /// Marker to indicate the cloning should be shallow.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "This marker struct make senss only in the context of cloning.")]
         public struct Shallow { }
 
         /// <summary>
