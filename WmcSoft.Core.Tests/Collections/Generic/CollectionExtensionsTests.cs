@@ -50,9 +50,10 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void CheckToTwoDimensionalArray()
         {
-            var list = new List<Tuple<int, int, int>>(2);
-            list.Add(Tuple.Create(1, 2, 3));
-            list.Add(Tuple.Create(4, 5, 6));
+            var list = new List<Tuple<int, int, int>>(2) {
+                Tuple.Create(1, 2, 3),
+                Tuple.Create(4, 5, 6)
+            };
 
             var expected = new[,] {
                { 1, 2, 3},
@@ -140,7 +141,7 @@ namespace WmcSoft.Collections.Generic
         {
             var array = "aabbbc";
             var expected = "abc";
-            var actual = new String(array.SortedCombine((char c, char g) => c).ToArray());
+            var actual = new string(array.SortedCombine((char c, char g) => c).ToArray());
             Assert.Equal(expected, actual);
         }
 
@@ -332,7 +333,7 @@ namespace WmcSoft.Collections.Generic
         public void CanPartition()
         {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
-            Predicate<int> odd = e => e % 2 == 1;
+            bool odd(int e) => e % 2 == 1;
             var p = data.Partition(odd);
             Assert.Equal(4, p);
             int i;
@@ -346,7 +347,7 @@ namespace WmcSoft.Collections.Generic
         public void CannotFindPartitionPointWhenNotPartitioned()
         {
             var data = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
-            Predicate<int> odd = e => e % 2 == 1;
+            bool odd(int e) => e % 2 == 1;
             var actual = data.FindPartitionPoint(odd);
 
             Assert.Equal(-1, actual);
@@ -356,7 +357,7 @@ namespace WmcSoft.Collections.Generic
         public void CanFindPartitionPointWhenPartitioned()
         {
             var data = new[] { 2, 4, 6, 7, 8, 1, 3, 9 };
-            Predicate<int> odd = e => e % 2 == 1;
+            bool odd(int e) => e % 2 == 1;
             var expected = data.Partition(odd);
             var actual = data.FindPartitionPoint(odd);
 
@@ -367,7 +368,7 @@ namespace WmcSoft.Collections.Generic
         public void CanStablePartition()
         {
             var data = new[] { 2, 1, 3, 4, 6, 7, 8, 9, 11 };
-            Predicate<int> odd = e => e % 2 == 1;
+            bool odd(int e) => e % 2 == 1;
             var p = data.StablePartition(odd);
             Assert.Equal(4, p);
             int i;
@@ -538,8 +539,8 @@ namespace WmcSoft.Collections.Generic
         {
             var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
             var r = data.EqualRange(value);
-            Assert.Equal(lo, r.Item1);
-            Assert.Equal(hi, r.Item2);
+            Assert.Equal(lo, r.lo);
+            Assert.Equal(hi, r.hi);
         }
 
         [Theory]
@@ -573,8 +574,8 @@ namespace WmcSoft.Collections.Generic
         {
             var data = new[] { 1, 3, 4, 6, 7, 8, 9 };
             var r = data.Storey(value, -1);
-            Assert.Equal(floor, r.Item1);
-            Assert.Equal(ceiling, r.Item2);
+            Assert.Equal(floor, r.floor);
+            Assert.Equal(ceiling, r.ceiling);
         }
     }
 }

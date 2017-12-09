@@ -68,9 +68,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Properties
 
-        public IEqualityComparer<T> Comparer {
-            get { return _comparer; }
-        }
+        public IEqualityComparer<T> Comparer => _comparer;
 
         #endregion
 
@@ -302,13 +300,9 @@ namespace WmcSoft.Collections.Generic
             _storage.CopyTo(array, arrayIndex);
         }
 
-        public int Count {
-            get { return _storage.Count; }
-        }
+        public int Count => _storage.Count;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(T item)
         {

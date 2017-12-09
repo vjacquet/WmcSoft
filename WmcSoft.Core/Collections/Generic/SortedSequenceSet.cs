@@ -69,9 +69,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Properties
 
-        public IComparer<T> Comparer {
-            get { return _comparer; }
-        }
+        public IComparer<T> Comparer => _comparer;
 
         /// <summary>
         /// Gets the minimum value, as defined by the comparer.
@@ -80,7 +78,7 @@ namespace WmcSoft.Collections.Generic
         public T Min {
             get {
                 if (_storage.Count == 0)
-                    return default(T);
+                    return default;
                 return _storage[1];
             }
         }
@@ -92,7 +90,7 @@ namespace WmcSoft.Collections.Generic
         public T Max {
             get {
                 if (_storage.Count == 0)
-                    return default(T);
+                    return default;
                 return _storage[_storage.Count - 1];
             }
         }
@@ -362,13 +360,9 @@ namespace WmcSoft.Collections.Generic
             _storage.CopyTo(array, arrayIndex);
         }
 
-        public int Count {
-            get { return _storage.Count; }
-        }
+        public int Count => _storage.Count;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(T item)
         {

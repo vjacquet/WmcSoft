@@ -118,7 +118,7 @@ namespace WmcSoft
                 _begin = startIndex;
                 _end = startIndex + length;
                 _index = _begin;
-                _current = default(T);
+                _current = default;
             }
 
             public void Dispose()
@@ -132,14 +132,14 @@ namespace WmcSoft
                     ++_index;
                     return true;
                 }
-                _current = default(T);
+                _current = default;
                 return false;
             }
 
             public void Reset()
             {
                 _index = _begin;
-                _current = default(T);
+                _current = default;
             }
 
             public T Current => _current;
