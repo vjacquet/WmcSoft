@@ -78,9 +78,7 @@ namespace WmcSoft.Collections.Specialized
             return _index.ContainsKey(key);
         }
 
-        public ICollection<TKey> Keys {
-            get { return _index.Keys; }
-        }
+        public ICollection<TKey> Keys => _index.Keys;
 
         IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
 
@@ -103,9 +101,7 @@ namespace WmcSoft.Collections.Specialized
             return _reverse.TryGetValue(value, out key);
         }
 
-        public ICollection<TValue> Values {
-            get { return _index.Values; }
-        }
+        public ICollection<TValue> Values => _index.Values;
 
         IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
@@ -156,13 +152,9 @@ namespace WmcSoft.Collections.Specialized
             collection.CopyTo(array, arrayIndex);
         }
 
-        public int Count {
-            get { return _index.Count; }
-        }
+        public int Count => _index.Count;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
@@ -262,9 +254,7 @@ namespace WmcSoft.Collections.Specialized
             return _index.ContainsKey(key);
         }
 
-        public ICollection<T> Keys {
-            get { return _index.Keys; }
-        }
+        public ICollection<T> Keys => _index.Keys;
 
         IEnumerable<T> IReadOnlyDictionary<T, T>.Keys => Keys;
 
@@ -287,9 +277,7 @@ namespace WmcSoft.Collections.Specialized
             return _reverse.TryGetValue(value, out key);
         }
 
-        public ICollection<T> Values {
-            get { return _index.Values; }
-        }
+        public ICollection<T> Values => _index.Values;
 
         IEnumerable<T> IReadOnlyDictionary<T, T>.Values => Values;
 
@@ -340,13 +328,9 @@ namespace WmcSoft.Collections.Specialized
             collection.CopyTo(array, arrayIndex);
         }
 
-        public int Count {
-            get { return _index.Count; }
-        }
+        public int Count => _index.Count;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(KeyValuePair<T, T> item)
         {

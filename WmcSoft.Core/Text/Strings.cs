@@ -48,9 +48,9 @@ namespace WmcSoft.Text
                 index = -1;
             }
 
-            public string Current { get { return _values[index]; } }
+            public string Current => _values[index];
 
-            object IEnumerator.Current { get { return Current; } }
+            object IEnumerator.Current => Current;
 
             public void Dispose()
             {
@@ -81,7 +81,7 @@ namespace WmcSoft.Text
             _values = values;
         }
 
-        private string[] Values { get { return _values ?? EmptyArray; } }
+        private string[] Values => _values ?? EmptyArray;
 
         public static implicit operator Strings(string value)
         {
@@ -103,9 +103,7 @@ namespace WmcSoft.Text
             return value.ToArray();
         }
 
-        public int Count {
-            get { return _values == null ? 0 : _values.Length; }
-        }
+        public int Count => _values == null ? 0 : _values.Length;
 
         public string this[int index] {
             get {
@@ -232,7 +230,7 @@ namespace WmcSoft.Text
             var cy = y.Count;
             var count = Math.Min(cx, cy);
             if (count == 0)
-                return default(Strings);
+                return default;
 
             var values = new string[count];
             for (int i = 0; i < count; i++) {

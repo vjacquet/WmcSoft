@@ -82,7 +82,7 @@ namespace WmcSoft.Text
                 result = new Counter(value - 1);
                 return true;
             }
-            result = default(Counter);
+            result = default;
             return false;
         }
 

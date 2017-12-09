@@ -36,7 +36,7 @@ namespace WmcSoft.Diagnostics
     {
         #region Fields
 
-        public static readonly Fault Empty = default(Fault);
+        public static readonly Fault Empty = default;
 
         readonly Exception _exception;
 
@@ -63,7 +63,7 @@ namespace WmcSoft.Diagnostics
 
         #region Properties
 
-        public Exception Exception { get { return _exception; } }
+        public Exception Exception => _exception;
 
         #endregion
 
@@ -91,19 +91,24 @@ namespace WmcSoft.Diagnostics
 
         public static bool operator true(Fault x)
         {
-            return x._exception != null;
+            return IsTrue(x);
         }
 
         public static bool operator false(Fault x)
         {
-            return x._exception == null;
+            return !IsTrue(x);
+        }
+
+        public static bool IsTrue(Fault x)
+        {
+            return x._exception != null;
         }
 
         public static Fault operator &(Fault x, Fault y)
         {
             if (x._exception != null && y._exception != null)
                 return new Fault(x._exception, y._exception);
-            return default(Fault);
+            return default;
         }
 
         public static Fault operator |(Fault x, Fault y)
@@ -115,7 +120,7 @@ namespace WmcSoft.Diagnostics
             }
             if (y._exception != null)
                 return y;
-            return default(Fault);
+            return default;
         }
 
         #endregion

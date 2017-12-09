@@ -299,40 +299,40 @@ namespace WmcSoft
 
         public static bool StartsWith(this Strip self, char c)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            return self.StartsWith(Char.ToString(c));
+            return self.StartsWith(char.ToString(c));
         }
         public static bool StartsWith(this Strip self, char c, StringComparison comparison)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            return self.StartsWith(Char.ToString(c), comparison);
+            return self.StartsWith(char.ToString(c), comparison);
         }
         public static bool StartsWith(this Strip self, char c, bool ignoreCase, CultureInfo culture)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            return self.StartsWith(Char.ToString(c), ignoreCase, culture);
+            return self.StartsWith(char.ToString(c), ignoreCase, culture);
         }
 
         public static bool EndsWith(this Strip self, char c)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            return self.EndsWith(Char.ToString(c));
+            return self.EndsWith(char.ToString(c));
         }
         public static bool EndsWith(this Strip self, char c, StringComparison comparison)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            return self.EndsWith(Char.ToString(c), comparison);
+            return self.EndsWith(char.ToString(c), comparison);
         }
         public static bool EndsWith(this Strip self, char c, bool ignoreCase, CultureInfo culture)
         {
-            if (String.IsNullOrEmpty(self))
+            if (string.IsNullOrEmpty(self))
                 return false;
-            return self.EndsWith(Char.ToString(c), ignoreCase, culture);
+            return self.EndsWith(char.ToString(c), ignoreCase, culture);
         }
 
         #endregion
@@ -458,9 +458,9 @@ namespace WmcSoft
         /// <returns>The substring between the prefix and the suffix, or null if the prefix or the suffix is not found.</returns>
         public static Strip SubstringBetween(this Strip self, string prefix, string suffix)
         {
-            if (String.IsNullOrEmpty(prefix))
+            if (string.IsNullOrEmpty(prefix))
                 return SubstringBefore(self, suffix);
-            else if (String.IsNullOrEmpty(suffix))
+            else if (string.IsNullOrEmpty(suffix))
                 return SubstringAfter(self, prefix);
 
             var start = self.IndexOf(prefix, StringComparison.Ordinal);
@@ -557,7 +557,7 @@ namespace WmcSoft
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self, params char[] separators) {
             if (separators == null || separators.Length == 0)
-                return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
+                return Tokenize(self, new PredicateTokenizer(char.IsWhiteSpace));
             if (separators.Length == 1)
                 return Tokenize(self, new CharTokenizer(separators[0]));
             return Tokenize(self, new CharsTokenizer(separators));
@@ -579,7 +579,7 @@ namespace WmcSoft
         /// <param name="self">The string.</param>
         /// <returns>The sequence of substrings.</returns>
         public static IEnumerable<string> Tokenize(this string self) {
-            return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
+            return Tokenize(self, new PredicateTokenizer(char.IsWhiteSpace));
         }
 #endif
 

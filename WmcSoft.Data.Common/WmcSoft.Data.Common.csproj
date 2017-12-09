@@ -5,6 +5,10 @@
     <RootNamespace>WmcSoft</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Olean.Data.Common.csproj.vspscc" />
   </ItemGroup>

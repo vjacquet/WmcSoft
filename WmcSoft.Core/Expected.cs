@@ -137,15 +137,11 @@ namespace WmcSoft
         /// <summary>
         /// True is the Expected contains a value; otherwise, false.
         /// </summary>
-        public bool HasValue {
-            get { return _exception == null; }
-        }
+        public bool HasValue => _exception == null;
         /// <summary>
         /// True is the Expected does not contain a value; otherwise, false.
         /// </summary>
-        public bool IsFaulted {
-            get { return _exception != null; }
-        }
+        public bool IsFaulted => _exception != null;
 
         /// <summary>
         /// The value.
@@ -186,15 +182,12 @@ namespace WmcSoft
         /// <summary>
         /// The exception or <c>null</c>.
         /// </summary>
-        public Exception Exception {
-            get { return _exception; }
-        }
+        public Exception Exception => _exception;
 
         public IEnumerable<Exception> GetExceptions()
         {
             if (IsFaulted) {
-                var aggregated = _exception as AggregateException;
-                if (aggregated != null)
+                if (_exception is AggregateException aggregated)
                     return aggregated.InnerExceptions;
                 return new SingleItemReadOnlyList<Exception>(_exception);
             }
@@ -272,7 +265,7 @@ namespace WmcSoft
         {
             if (_exception != null)
                 return _exception.GetHashCode();
-            if (Object.ReferenceEquals(_value, null))
+            if (ReferenceEquals(_value, null))
                 return 0;
             return _value.GetHashCode();
         }

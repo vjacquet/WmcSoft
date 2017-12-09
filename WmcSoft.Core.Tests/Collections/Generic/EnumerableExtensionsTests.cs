@@ -279,6 +279,7 @@ namespace WmcSoft.Collections.Generic
             Assert.False(data.AtMost(2, i => i > 100));
         }
 
+#pragma warning disable IDE0039 // Use local function
         [Fact]
         public void CheckChoose()
         {
@@ -300,6 +301,7 @@ namespace WmcSoft.Collections.Generic
 
             Assert.Equal(7, data.Tally);
         }
+#pragma warning restore IDE0039 // Use local function
 
         [Fact]
         public void CheckMinMax()

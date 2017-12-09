@@ -44,14 +44,14 @@ namespace WmcSoft.Collections.Specialized
 
         public T this[int index] {
             get {
-                if (index < 0) throw new ArgumentOutOfRangeException();
+                if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
 
                 if (_indexes.TryGetValue(index, out T value))
                     return value;
                 return _defaultValue;
             }
             set {
-                if (index < 0) throw new ArgumentOutOfRangeException();
+                if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
                 _indexes[index] = value;
             }
         }

@@ -142,13 +142,9 @@ namespace WmcSoft
                 _current = default(T);
             }
 
-            public T Current {
-                get { return _current; }
-            }
+            public T Current => _current;
 
-            object IEnumerator.Current {
-                get { return Current; }
-            }
+            object IEnumerator.Current => Current;
         }
 
         public static RangeEnumerator<T> GetEnumerator<T>(this T[] array, int startIndex, int length)

@@ -76,7 +76,7 @@ namespace WmcSoft.Text
             _alphabet = alphabet.ToCharArray();
             _radix = alphabet.Length;
 
-            _inverse = new int[Char.MaxValue];
+            _inverse = new int[char.MaxValue];
             for (int i = 0; i < _inverse.Length; i++)
                 _inverse[i] = -1;
 
@@ -104,9 +104,9 @@ namespace WmcSoft.Text
             return _inverse[c] != -1;
         }
 
-        public int Radix { get { return _radix; } }
+        public int Radix => _radix;
 
-        public int LbRadix { get { return Lb(Radix); } }
+        public int LbRadix => Lb(Radix);
 
         public int this[char c] {
             get {

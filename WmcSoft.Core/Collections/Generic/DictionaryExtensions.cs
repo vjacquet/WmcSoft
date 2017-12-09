@@ -47,7 +47,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="defaultValue">The default value</param>
         /// <returns>The converted value if present, otherwise the default value.</returns>
         /// <remarks>Returns the default value if the source parameter is null.</remarks>
-        public static TValue ConvertOrDefault<TKey, TValue>(this IDictionary<TKey, object> dictionary, TKey key, TValue defaultValue = default(TValue))
+        public static TValue ConvertOrDefault<TKey, TValue>(this IDictionary<TKey, object> dictionary, TKey key, TValue defaultValue = default)
         {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
@@ -70,7 +70,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value if present, otherwise the default value.</returns>
         /// <remarks>Returns the default value if the source parameter is null.</remarks>
-        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default)
         {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
@@ -92,7 +92,7 @@ namespace WmcSoft.Collections.Generic
             return value;
         }
 
-        public static TValue PopOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+        public static TValue PopOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default)
         {
             if (dictionary != null) {
                 if (dictionary.TryGetValue(key, out TValue value)) {

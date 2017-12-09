@@ -44,13 +44,13 @@ namespace WmcSoft.Threading
         private int _changed;
         private readonly IEqualityComparer<T> _comparer;
 
-        public Register(T value = default(T), IEqualityComparer<T> comparer = null)
+        public Register(T value = default, IEqualityComparer<T> comparer = null)
         {
             _value = value;
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
-        public Register(IEqualityComparer<T> comparer) : this(default(T), comparer)
+        public Register(IEqualityComparer<T> comparer) : this(default, comparer)
         {
         }
 
@@ -93,9 +93,7 @@ namespace WmcSoft.Threading
         /// <summary>
         /// The value.
         /// </summary>
-        public T Value {
-            get { return _value; }
-        }
+        public T Value => _value;
 
         /// <summary>
         /// Implicit cast to get the stored value.

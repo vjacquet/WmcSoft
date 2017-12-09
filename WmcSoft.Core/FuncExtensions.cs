@@ -362,7 +362,7 @@ namespace WmcSoft
         /// <param name="accumulator">The accumulator function.</param>
         /// <param name="seed">The seed.</param>
         /// <returns>The sequence of values.</returns>
-        public static IEnumerable<T> Unfold<T>(this Func<T, T> accumulator, T seed = default(T))
+        public static IEnumerable<T> Unfold<T>(this Func<T, T> accumulator, T seed = default)
         {
             var next = seed;
             while (true) {
@@ -384,7 +384,7 @@ namespace WmcSoft
         {
             bool ran = false;
 
-            TResult result = default(TResult);
+            TResult result = default;
             return () => {
                 if (!ran) {
                     ran = true;
@@ -403,7 +403,7 @@ namespace WmcSoft
         /// <remarks>The result of the last function call is memoized and returned when <paramref name="count"/> has been reached.</remarks>
         public static Func<TResult> Before<TResult>(this Func<TResult> func, int count)
         {
-            TResult result = default(TResult);
+            var result = default(TResult);
             return () => {
                 if (count > 0) {
                     count--;

@@ -62,7 +62,7 @@ namespace WmcSoft.Collections.Specialized
                 _current = default(T);
             }
 
-            public T Current { get { return _current; } }
+            public T Current => _current;
 
             public void Dispose()
             {
@@ -177,9 +177,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override bool IsSynchronized {
-                get { return true; }
-            }
+            public override bool IsSynchronized => true;
 
             public override T Peek()
             {
@@ -188,9 +186,7 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            public override object SyncRoot {
-                get { return _heap.SyncRoot; }
-            }
+            public override object SyncRoot => _heap.SyncRoot;
 
         }
         #endregion
@@ -430,13 +426,9 @@ namespace WmcSoft.Collections.Specialized
 
         #region ICollection Members
 
-        public virtual bool IsSynchronized {
-            get { return false; }
-        }
+        public virtual bool IsSynchronized => false;
 
-        public virtual int Count {
-            get { return _count; }
-        }
+        public virtual int Count => _count;
 
         void ICollection.CopyTo(Array array, int index)
         {
@@ -449,9 +441,7 @@ namespace WmcSoft.Collections.Specialized
             array.InsertionSort(index + 1, _count - 1, _comparer.Reverse());
         }
 
-        public virtual object SyncRoot {
-            get { return this; }
-        }
+        public virtual object SyncRoot => this;
 
         #endregion
 

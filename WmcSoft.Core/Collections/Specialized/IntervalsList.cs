@@ -35,10 +35,15 @@ namespace WmcSoft.Collections.Specialized
         private List<T> _storage;
         private IComparer<T> _comparer;
 
-        public IntervalsList(T minValue, T maxValue, IComparer<T> comparer = null)
+        public IntervalsList(T minValue, T maxValue, IComparer<T> comparer)
         {
             _storage = new List<T> { minValue, maxValue };
             _comparer = comparer ?? Comparer<T>.Default;
+        }
+
+        public IntervalsList(T minValue, T maxValue)
+            : this(minValue, maxValue, null)
+        {
         }
 
         static bool IsOdd(int i)

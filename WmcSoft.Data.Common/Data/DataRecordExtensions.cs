@@ -256,7 +256,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static byte GetByteOrDefault(this IDataRecord record, int i, byte defaultValue = default(byte))
+        public static byte GetByteOrDefault(this IDataRecord record, int i, byte defaultValue = default)
         {
             if (record.IsDBNull(i))
                 return defaultValue;
@@ -270,7 +270,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static char GetCharOrDefault(this IDataRecord record, int i, char defaultValue = default(char))
+        public static char GetCharOrDefault(this IDataRecord record, int i, char defaultValue = default)
         {
             if (record.IsDBNull(i))
                 return defaultValue;
@@ -284,7 +284,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static DateTime GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = default(DateTime))
+        public static DateTime GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = default)
         {
             if (record.IsDBNull(i))
                 return defaultValue;
@@ -298,7 +298,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The value of the specified column.</returns>
-        public static Guid GetGuidOrDefault(this IDataRecord record, int i, Guid defaultValue = default(Guid))
+        public static Guid GetGuidOrDefault(this IDataRecord record, int i, Guid defaultValue = default)
         {
             if (record.IsDBNull(i))
                 return defaultValue;
@@ -501,7 +501,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<byte> GetByteOrDefault(this IEnumerable<IDataRecord> source, int i = 0, byte defaultValue = default(byte))
+        public static IEnumerable<byte> GetByteOrDefault(this IEnumerable<IDataRecord> source, int i = 0, byte defaultValue = default)
         {
             return Materialize(source, r => r.GetByteOrDefault(i, defaultValue));
         }
@@ -537,7 +537,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<char> GetCharOrDefault(this IEnumerable<IDataRecord> source, int i = 0, char defaultValue = default(char))
+        public static IEnumerable<char> GetCharOrDefault(this IEnumerable<IDataRecord> source, int i = 0, char defaultValue = default)
         {
             return Materialize(source, r => r.GetCharOrDefault(i, defaultValue));
         }
@@ -573,7 +573,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<DateTime> GetDateTimeOrDefault(this IEnumerable<IDataRecord> source, int i = 0, DateTime defaultValue = default(DateTime))
+        public static IEnumerable<DateTime> GetDateTimeOrDefault(this IEnumerable<IDataRecord> source, int i = 0, DateTime defaultValue = default)
         {
             return Materialize(source, r => r.GetDateTimeOrDefault(i, defaultValue));
         }
@@ -609,7 +609,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<Guid> GetGuidOrDefault(this IEnumerable<IDataRecord> source, int i = 0, Guid defaultValue = default(Guid))
+        public static IEnumerable<Guid> GetGuidOrDefault(this IEnumerable<IDataRecord> source, int i = 0, Guid defaultValue = default)
         {
             return Materialize(source, r => r.GetGuidOrDefault(i, defaultValue));
         }
@@ -627,7 +627,7 @@ namespace WmcSoft.Data
         }
 
         /// <summary>
-        /// Gets the value of the specified column as a <see cref="Int16"/>, or null, for all records.
+        /// Gets the value of the specified column as a <see cref="short"/>, or null, for all records.
         /// </summary>
         /// <param name="source">The records.</param>
         /// <param name="i">The zero-based column ordinal. </param>
@@ -639,13 +639,13 @@ namespace WmcSoft.Data
         }
 
         /// <summary>
-        /// Gets the value of the specified column as a <see cref="Int16"/>, or the default value, for all records.
+        /// Gets the value of the specified column as a <see cref="short"/>, or the default value, for all records.
         /// </summary>
         /// <param name="source">The records.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<short> GetInt16OrDefault(this IEnumerable<IDataRecord> source, int i = 0, short defaultValue = default(short))
+        public static IEnumerable<short> GetInt16OrDefault(this IEnumerable<IDataRecord> source, int i = 0, short defaultValue = default)
         {
             return Materialize(source, r => r.GetInt16OrDefault(i, defaultValue));
         }
@@ -675,13 +675,13 @@ namespace WmcSoft.Data
         }
 
         /// <summary>
-        /// Gets the value of the specified column as a <see cref="Int32"/>, or the default value, for all records.
+        /// Gets the value of the specified column as a <see cref="int"/>, or the default value, for all records.
         /// </summary>
         /// <param name="source">The records.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<int> GetInt32OrDefault(this IEnumerable<IDataRecord> source, int i = 0, int defaultValue = default(int))
+        public static IEnumerable<int> GetInt32OrDefault(this IEnumerable<IDataRecord> source, int i = 0, int defaultValue = default)
         {
             return Materialize(source, r => r.GetInt32OrDefault(i, defaultValue));
         }
@@ -717,7 +717,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<long> GetInt64OrDefault(this IEnumerable<IDataRecord> source, int i = 0, long defaultValue = default(long))
+        public static IEnumerable<long> GetInt64OrDefault(this IEnumerable<IDataRecord> source, int i = 0, long defaultValue = default)
         {
             return Materialize(source, r => r.GetInt64OrDefault(i, defaultValue));
         }
@@ -753,7 +753,7 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<float> GetFloatOrDefault(this IEnumerable<IDataRecord> source, int i = 0, float defaultValue = default(float))
+        public static IEnumerable<float> GetFloatOrDefault(this IEnumerable<IDataRecord> source, int i = 0, float defaultValue = default)
         {
             return Materialize(source, r => r.GetFloatOrDefault(i, defaultValue));
         }
@@ -789,13 +789,13 @@ namespace WmcSoft.Data
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<double> GetDoubleOrDefault(this IEnumerable<IDataRecord> source, int i = 0, double defaultValue = default(double))
+        public static IEnumerable<double> GetDoubleOrDefault(this IEnumerable<IDataRecord> source, int i = 0, double defaultValue = default)
         {
             return Materialize(source, r => r.GetDoubleOrDefault(i, defaultValue));
         }
 
         /// <summary>
-        /// Gets the <see cref="Decimal"/> value of the specified column for the given records.
+        /// Gets the <see cref="decimal"/> value of the specified column for the given records.
         /// </summary>
         /// <param name="source">The records.</param>
         /// <param name="i">The index of the field to find.</param>
@@ -807,7 +807,7 @@ namespace WmcSoft.Data
         }
 
         /// <summary>
-        /// Gets the value of the specified column as a <see cref="Decimal"/>, or null, for all records.
+        /// Gets the value of the specified column as a <see cref="decimal"/>, or null, for all records.
         /// </summary>
         /// <param name="source">The records.</param>
         /// <param name="i">The zero-based column ordinal. </param>
@@ -819,13 +819,13 @@ namespace WmcSoft.Data
         }
 
         /// <summary>
-        /// Gets the value of the specified column as a <see cref="Decimal"/>, or the default value, for all records.
+        /// Gets the value of the specified column as a <see cref="decimal"/>, or the default value, for all records.
         /// </summary>
         /// <param name="source">The records.</param>
         /// <param name="i">The zero-based column ordinal. </param>
         /// <param name="defaultValue">The default value</param>
         /// <returns>The enumeration of the values of the specified column.</returns>
-        public static IEnumerable<decimal> GetDecimalOrDefault(this IEnumerable<IDataRecord> source, int i = 0, decimal defaultValue = default(decimal))
+        public static IEnumerable<decimal> GetDecimalOrDefault(this IEnumerable<IDataRecord> source, int i = 0, decimal defaultValue = default)
         {
             return Materialize(source, r => r.GetDecimalOrDefault(i, defaultValue));
         }

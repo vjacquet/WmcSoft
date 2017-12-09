@@ -105,7 +105,7 @@ namespace WmcSoft
             if (formattable.HasValue) {
                 return formattable.GetValueOrDefault().ToString(format, formatProvider);
             }
-            return String.Empty;
+            return string.Empty;
         }
         public static string ToString<T>(this T? formattable, IFormatProvider formatProvider)
             where T : struct, IFormattable

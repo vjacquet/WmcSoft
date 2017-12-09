@@ -232,9 +232,7 @@ namespace WmcSoft.Collections.Generic
                 }
             }
 
-            public int Count {
-                get { return _count; }
-            }
+            public int Count => _count;
 
             public IEnumerator<T> GetEnumerator()
             {
@@ -410,13 +408,9 @@ namespace WmcSoft.Collections.Generic
                 return x;
             }
 
-            public int Count {
-                get { return Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex); }
-            }
+            public int Count => Clamp(_endIndex - _startIndex, 0, _base.Count - _startIndex);
 
-            public bool IsReadOnly {
-                get { return _base.IsReadOnly; }
-            }
+            public bool IsReadOnly => _base.IsReadOnly;
 
             public T this[int index] {
                 get { return _base[_startIndex + index]; }
@@ -435,8 +429,7 @@ namespace WmcSoft.Collections.Generic
 
             public void Insert(int index, T item)
             {
-                if (index < 0 || index > Count)
-                    throw new ArgumentOutOfRangeException();
+                if (index < 0 | index >= Count) throw new ArgumentOutOfRangeException(nameof(index));
                 _base.Insert(_startIndex + index, item);
                 _endIndex++;
             }
@@ -449,8 +442,7 @@ namespace WmcSoft.Collections.Generic
 
             public void RemoveAt(int index)
             {
-                if (index < 0 || index > Count)
-                    throw new ArgumentOutOfRangeException();
+                if (index < 0 | index >= Count) throw new ArgumentOutOfRangeException(nameof(index));
                 DoRemoveAt(index);
             }
 
@@ -519,9 +511,7 @@ namespace WmcSoft.Collections.Generic
                 _endIndex = _startIndex + count;
             }
 
-            public int Count {
-                get { return _endIndex - _startIndex; }
-            }
+            public int Count => _endIndex - _startIndex;
 
             public T this[int index] {
                 get {

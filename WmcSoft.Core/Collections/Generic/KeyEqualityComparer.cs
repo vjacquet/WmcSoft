@@ -47,7 +47,7 @@ namespace WmcSoft.Collections.Generic
         {
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            _selector = (x) => (x != null) ? selector(x) : default(K);
+            _selector = (x) => (x != null) ? selector(x) : default;
             _comparer = comparer ?? EqualityComparer<K>.Default;
         }
 

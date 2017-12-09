@@ -37,7 +37,7 @@ namespace WmcSoft.Collections.Specialized
         private readonly T _defaultValue;
         private int _count;
 
-        public SparseArray(int length, T defaultValue = default(T))
+        public SparseArray(int length, T defaultValue = default)
         {
             if (length < 0) throw new ArgumentException(nameof(length));
 
@@ -48,14 +48,14 @@ namespace WmcSoft.Collections.Specialized
 
         public T this[int index] {
             get {
-                if (index < 0 || index >= _count) throw new ArgumentOutOfRangeException();
+                if (index < 0 | index >= _count) throw new ArgumentOutOfRangeException(nameof(index));
 
                 if (_indexes.TryGetValue(index, out T value))
                     return value;
                 return _defaultValue;
             }
             set {
-                if (index < 0 || index >= _count) throw new ArgumentOutOfRangeException();
+                if (index < 0 | index >= _count) throw new ArgumentOutOfRangeException(nameof(index));
                 _indexes[index] = value;
             }
         }

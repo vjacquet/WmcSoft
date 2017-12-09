@@ -19,7 +19,6 @@ namespace WmcSoft.Threading
 {
     public sealed class LockFreeStack<T>
     {
-
         class StackNode
         {
             internal readonly T value;
@@ -32,7 +31,7 @@ namespace WmcSoft.Threading
 #pragma warning disable 0420
         public void Push(T item)
         {
-            StackNode node = new StackNode(item);
+            var node = new StackNode(item);
             StackNode head;
             do {
                 head = _head;
@@ -43,7 +42,7 @@ namespace WmcSoft.Threading
         public T Pop()
         {
             StackNode head;
-            SpinWait s = new SpinWait();
+            var s = new SpinWait();
 
             while (true) {
                 StackNode next;

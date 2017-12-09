@@ -58,7 +58,7 @@ namespace WmcSoft
         public static T Move<T>(ref T obj)
         {
             var moved = obj;
-            obj = default(T);
+            obj = default;
             return moved;
         }
 

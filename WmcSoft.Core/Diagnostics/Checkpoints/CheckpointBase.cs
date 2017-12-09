@@ -84,22 +84,22 @@ namespace WmcSoft.Diagnostics.Checkpoints
 
         protected CheckpointResult Info(string format, object arg0)
         {
-            return new CheckpointResult(CheckpointResultType.Info, String.Format(format, arg0));
+            return new CheckpointResult(CheckpointResultType.Info, string.Format(format, arg0));
         }
 
         protected CheckpointResult Info(string format, object arg0, object arg1)
         {
-            return new CheckpointResult(CheckpointResultType.Info, String.Format(format, arg0, arg1));
+            return new CheckpointResult(CheckpointResultType.Info, string.Format(format, arg0, arg1));
         }
 
         protected CheckpointResult Info(string format, object arg0, object arg1, object arg2)
         {
-            return new CheckpointResult(CheckpointResultType.Info, String.Format(format, arg0, arg1, arg2));
+            return new CheckpointResult(CheckpointResultType.Info, string.Format(format, arg0, arg1, arg2));
         }
 
         protected CheckpointResult Info(string format, params object[] args)
         {
-            return new CheckpointResult(CheckpointResultType.Info, String.Format(format, args));
+            return new CheckpointResult(CheckpointResultType.Info, string.Format(format, args));
         }
 
         protected CheckpointResult Warn(string message)
@@ -109,22 +109,22 @@ namespace WmcSoft.Diagnostics.Checkpoints
 
         protected CheckpointResult Warn(string format, object arg0)
         {
-            return new CheckpointResult(CheckpointResultType.Warn, String.Format(format, arg0));
+            return new CheckpointResult(CheckpointResultType.Warn, string.Format(format, arg0));
         }
 
         protected CheckpointResult Warn(string format, object arg0, object arg1)
         {
-            return new CheckpointResult(CheckpointResultType.Warn, String.Format(format, arg0, arg1));
+            return new CheckpointResult(CheckpointResultType.Warn, string.Format(format, arg0, arg1));
         }
 
         protected CheckpointResult Warn(string format, object arg0, object arg1, object arg2)
         {
-            return new CheckpointResult(CheckpointResultType.Warn, String.Format(format, arg0, arg1, arg2));
+            return new CheckpointResult(CheckpointResultType.Warn, string.Format(format, arg0, arg1, arg2));
         }
 
         protected CheckpointResult Warn(string format, params object[] args)
         {
-            return new CheckpointResult(CheckpointResultType.Info, String.Format(format, args));
+            return new CheckpointResult(CheckpointResultType.Info, string.Format(format, args));
         }
 
         protected CheckpointResult Error(string message)
@@ -134,22 +134,22 @@ namespace WmcSoft.Diagnostics.Checkpoints
 
         protected CheckpointResult Error(string format, object arg0)
         {
-            return new CheckpointResult(CheckpointResultType.Error, String.Format(format, arg0));
+            return new CheckpointResult(CheckpointResultType.Error, string.Format(format, arg0));
         }
 
         protected CheckpointResult Error(string format, object arg0, object arg1)
         {
-            return new CheckpointResult(CheckpointResultType.Error, String.Format(format, arg0, arg1));
+            return new CheckpointResult(CheckpointResultType.Error, string.Format(format, arg0, arg1));
         }
 
         protected CheckpointResult Error(string format, object arg0, object arg1, object arg2)
         {
-            return new CheckpointResult(CheckpointResultType.Info, String.Format(format, arg0, arg1, arg2));
+            return new CheckpointResult(CheckpointResultType.Info, string.Format(format, arg0, arg1, arg2));
         }
 
         protected CheckpointResult Error(string format, params object[] args)
         {
-            return new CheckpointResult(CheckpointResultType.Error, String.Format(format, args));
+            return new CheckpointResult(CheckpointResultType.Error, string.Format(format, args));
         }
 
         #endregion

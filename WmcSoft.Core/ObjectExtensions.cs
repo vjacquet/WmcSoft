@@ -74,8 +74,7 @@ namespace WmcSoft
             if (destinationType.IsAssignableFrom(sourceType))
                 return value;
 
-            var convertible = value as IConvertible;
-            if (convertible != null)
+            if (value is IConvertible convertible)
                 return convertible.ToType(destinationType, culture);
 
             var converter = TypeDescriptor.GetConverter(destinationType);
