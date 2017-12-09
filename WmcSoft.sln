@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core\WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
 EndProject
@@ -41,6 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{74CC7D80-4E21-4853-B3BB-B8F208CF4B6B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		CustomDictionary.xml = CustomDictionary.xml
 		README.md = README.md
 	EndProjectSection
 EndProject
