@@ -44,7 +44,7 @@ namespace WmcSoft.Xml.XPath.Internal
             // add base class
             string inherits;
             if (!type.IsInterface) {
-                if (type.BaseType != typeof(System.Object))
+                if (type.BaseType != typeof(object))
                     this.childNodes.Add(new InheritedTypeAdapter("inherits", type.BaseType, this, index++));
                 inherits = "implements";
             } else {
@@ -101,7 +101,7 @@ namespace WmcSoft.Xml.XPath.Internal
             case 2:
                 return GetModifiersAttribute(nameTable);
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         protected string GetModifiersAttribute(XmlNameTable nameTable)
@@ -182,7 +182,7 @@ namespace WmcSoft.Xml.XPath.Internal
             case 0:
                 return nameTable.Add(((EnumAdapter)parent).names[indexInParent]);
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public override string GetElementName(XmlNameTable nameTable)
@@ -325,7 +325,7 @@ namespace WmcSoft.Xml.XPath.Internal
             case 5:
                 return fieldInfo.MetadataToken.ToString("x");
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public override string GetElementName(XmlNameTable nameTable)
@@ -390,7 +390,7 @@ namespace WmcSoft.Xml.XPath.Internal
             case 2:
                 return propertyInfo.MetadataToken.ToString("x");
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public override string GetElementName(XmlNameTable nameTable)
@@ -434,7 +434,7 @@ namespace WmcSoft.Xml.XPath.Internal
             case 1:
                 return nameTable.Add(parameterInfo.ParameterType.FullName);
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public override string GetElementName(XmlNameTable nameTable)
@@ -522,7 +522,7 @@ namespace WmcSoft.Xml.XPath.Internal
         public MethodAdapter(MethodBase method, NavigationAdapter parent, int indexInParent)
             : base(method, parent, indexInParent)
         {
-            MethodInfo methodInfo = (MethodInfo)method;
+            var methodInfo = (MethodInfo)method;
             if (methodInfo.ReturnType != typeof(void)) {
                 this.childNodes.Add(new ReturnAdapter(methodInfo.ReturnParameter, this, this.childNodes.Count));
             }

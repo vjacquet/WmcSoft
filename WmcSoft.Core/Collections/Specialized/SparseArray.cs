@@ -60,7 +60,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public int Count { get { return _count; } }
+        public int Count => _count;
 
         public Pair<int> Extent {
             get {
@@ -87,7 +87,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public bool IsReadOnly { get { return false; } }
+        public bool IsReadOnly => false;
 
         public void Add(T item)
         {

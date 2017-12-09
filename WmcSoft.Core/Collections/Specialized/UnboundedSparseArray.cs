@@ -36,7 +36,7 @@ namespace WmcSoft.Collections.Specialized
         private readonly SortedDictionary<int, T> _indexes;
         private readonly T _defaultValue;
 
-        public UnboundedSparseArray(T defaultValue = default(T))
+        public UnboundedSparseArray(T defaultValue = default)
         {
             _indexes = new SortedDictionary<int, T>();
             _defaultValue = defaultValue;
@@ -56,9 +56,13 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public int Count { get { return MaxIndex + 1; } }
+        public int Count => MaxIndex + 1;
 
-        int MinIndex { get { return _indexes.Keys.First(); } }
+        int MinIndex {
+            get {
+                return _indexes.Keys.First();
+            }
+        }
 
         int MaxIndex {
             get {
@@ -99,7 +103,7 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        public bool IsReadOnly { get { return false; } }
+        public bool IsReadOnly => false;
 
         public void Add(T item)
         {

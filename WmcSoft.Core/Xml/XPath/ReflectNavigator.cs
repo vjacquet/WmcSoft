@@ -65,20 +65,17 @@ namespace WmcSoft.Xml.XPath
 
         static internal NavigationAdapter CreateAdapter(MemberInfo memberInfo, NavigationAdapter parent, int indexInParent)
         {
-            if (memberInfo is FieldInfo) {
-                return new FieldAdapter((FieldInfo)memberInfo, parent, indexInParent);
-            } else if (memberInfo is ConstructorInfo) {
-                return new ConstructorAdapter((MethodBase)memberInfo, parent, indexInParent);
-            } else if (memberInfo is MethodInfo) {
-                var methodInfo = (MethodInfo)memberInfo;
-                if (!methodInfo.IsConstructor
-                    && !methodInfo.IsSpecialName) {
-                    return new MethodAdapter((MethodBase)memberInfo, parent, indexInParent);
-                }
-            } else if (memberInfo is PropertyInfo) {
-                return new PropertyAdapter((PropertyInfo)memberInfo, parent, indexInParent);
-            } else if (memberInfo is EventInfo) {
-                return new EventAdapter((EventInfo)memberInfo, parent, indexInParent);
+            switch (memberInfo) {
+            case FieldInfo fieldInfo:
+                return new FieldAdapter(fieldInfo, parent, indexInParent);
+            case ConstructorInfo ctorInfo:
+                return new ConstructorAdapter(ctorInfo, parent, indexInParent);
+            case MethodInfo methodInfo when !methodInfo.IsConstructor && !methodInfo.IsSpecialName:
+                return new MethodAdapter(methodInfo, parent, indexInParent);
+            case PropertyInfo propertyInfo:
+                return new PropertyAdapter(propertyInfo, parent, indexInParent);
+            case EventInfo eventInfo:
+                return new EventAdapter(eventInfo, parent, indexInParent);
             }
             return null;
         }
