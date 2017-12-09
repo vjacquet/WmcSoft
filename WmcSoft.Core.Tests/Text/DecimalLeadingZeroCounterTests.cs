@@ -8,14 +8,14 @@ namespace WmcSoft.Text
         [Fact]
         public void CanDecimalLeadingZeroCounterDetectOverflowOnNegativeValues()
         {
-            Assert.Throws<OverflowException>(() => new DecimalLeadingZeroCounter(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new DecimalLeadingZeroCounter(-1));
         }
 
         [Fact]
         public void CanDecimalLeadingZeroCounterDetectOverflow()
         {
             var value = DecimalLeadingZeroCounter.MaxValue;
-            Assert.Throws<OverflowException>(() => value++);
+            Assert.Throws<ArgumentOutOfRangeException>(() => value++);
         }
 
         [Fact]

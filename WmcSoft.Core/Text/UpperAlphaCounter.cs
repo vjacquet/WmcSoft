@@ -43,13 +43,15 @@ namespace WmcSoft.Text
 
         readonly int _storage;
 
-        public UpperAlphaCounter(int value) {
-            if (value > MaxStoredValue || value < MinStoredValue)
-                throw new OverflowException();
+        public UpperAlphaCounter(int value)
+        {
+            if (value > MaxStoredValue | value < MinStoredValue) throw new ArgumentOutOfRangeException(nameof(value));
+
             _storage = value;
         }
 
-        public UpperAlphaCounter(string value) {
+        public UpperAlphaCounter(string value)
+        {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (!Validator.IsMatch(value)) throw new ArgumentException(nameof(value));
 
@@ -61,19 +63,23 @@ namespace WmcSoft.Text
             _storage = x - 1;
         }
 
-        public int CompareTo(UpperAlphaCounter other) {
+        public int CompareTo(UpperAlphaCounter other)
+        {
             return _storage - other._storage;
         }
 
-        public UpperAlphaCounter Increment(int n) {
+        public UpperAlphaCounter Increment(int n)
+        {
             return new UpperAlphaCounter(_storage + n);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return _storage;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (_storage < 26)
                 return ((char)(FirstLetter + _storage)).ToString();
 
@@ -88,11 +94,13 @@ namespace WmcSoft.Text
             return new string(chars, startIndex, 3 - startIndex);
         }
 
-        public bool Equals(UpperAlphaCounter other) {
+        public bool Equals(UpperAlphaCounter other)
+        {
             return _storage == other._storage;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(UpperAlphaCounter))
                 return false;
             return Equals((UpperAlphaCounter)obj);
@@ -100,19 +108,23 @@ namespace WmcSoft.Text
 
         #region Conversion operators
 
-        public static implicit operator int(UpperAlphaCounter x) {
+        public static implicit operator int(UpperAlphaCounter x)
+        {
             return x._storage;
         }
 
-        public static implicit operator string(UpperAlphaCounter x) {
+        public static implicit operator string(UpperAlphaCounter x)
+        {
             return x.ToString();
         }
 
-        public static implicit operator UpperAlphaCounter(int x) {
+        public static implicit operator UpperAlphaCounter(int x)
+        {
             return new UpperAlphaCounter(x);
         }
 
-        public static implicit operator UpperAlphaCounter(string x) {
+        public static implicit operator UpperAlphaCounter(string x)
+        {
             return new UpperAlphaCounter(x);
         }
 
@@ -120,23 +132,29 @@ namespace WmcSoft.Text
 
         #region Relational operators
 
-        public static bool operator ==(UpperAlphaCounter a, UpperAlphaCounter b) {
+        public static bool operator ==(UpperAlphaCounter a, UpperAlphaCounter b)
+        {
             return a.Equals(b);
         }
-        public static bool operator !=(UpperAlphaCounter a, UpperAlphaCounter b) {
+        public static bool operator !=(UpperAlphaCounter a, UpperAlphaCounter b)
+        {
             return !a.Equals(b);
         }
 
-        public static bool operator <(UpperAlphaCounter x, UpperAlphaCounter y) {
+        public static bool operator <(UpperAlphaCounter x, UpperAlphaCounter y)
+        {
             return x.CompareTo(y) < 0;
         }
-        public static bool operator <=(UpperAlphaCounter x, UpperAlphaCounter y) {
+        public static bool operator <=(UpperAlphaCounter x, UpperAlphaCounter y)
+        {
             return x.CompareTo(y) <= 0;
         }
-        public static bool operator >(UpperAlphaCounter x, UpperAlphaCounter y) {
+        public static bool operator >(UpperAlphaCounter x, UpperAlphaCounter y)
+        {
             return x.CompareTo(y) > 0;
         }
-        public static bool operator >=(UpperAlphaCounter x, UpperAlphaCounter y) {
+        public static bool operator >=(UpperAlphaCounter x, UpperAlphaCounter y)
+        {
             return x.CompareTo(y) >= 0;
         }
 
@@ -144,19 +162,23 @@ namespace WmcSoft.Text
 
         #region Arithmetic operators
 
-        public static UpperAlphaCounter operator +(UpperAlphaCounter x, int n) {
+        public static UpperAlphaCounter operator +(UpperAlphaCounter x, int n)
+        {
             return x.Increment(n);
         }
 
-        public static UpperAlphaCounter operator -(UpperAlphaCounter x, int n) {
+        public static UpperAlphaCounter operator -(UpperAlphaCounter x, int n)
+        {
             return x.Increment(-n);
         }
 
-        public static UpperAlphaCounter operator ++(UpperAlphaCounter x) {
+        public static UpperAlphaCounter operator ++(UpperAlphaCounter x)
+        {
             return x.Increment(1);
         }
 
-        public static UpperAlphaCounter operator --(UpperAlphaCounter x) {
+        public static UpperAlphaCounter operator --(UpperAlphaCounter x)
+        {
             return x.Increment(-1);
         }
 

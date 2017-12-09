@@ -45,8 +45,8 @@ namespace WmcSoft.Text
 
         public LowerAlphaCounter(int value)
         {
-            if (value > MaxStoredValue || value < MinStoredValue)
-                throw new OverflowException();
+            if (value > MaxStoredValue | value < MinStoredValue) throw new ArgumentOutOfRangeException(nameof(value));
+
             _storage = value;
         }
 

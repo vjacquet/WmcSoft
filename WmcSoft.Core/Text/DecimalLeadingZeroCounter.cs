@@ -33,7 +33,7 @@ namespace WmcSoft.Text
     public struct DecimalLeadingZeroCounter : IComparable<DecimalLeadingZeroCounter>, IEquatable<DecimalLeadingZeroCounter>
     {
         const int MinStoredValue = 0;
-        const int MaxStoredValue = Int32.MaxValue - 1;
+        const int MaxStoredValue = int.MaxValue - 1;
 
         static readonly Regex Validator = new Regex("^(0[1-9])|([1-9][0-9]+)$", RegexOptions.CultureInvariant | RegexOptions.Singleline);
 
@@ -44,8 +44,7 @@ namespace WmcSoft.Text
 
         public DecimalLeadingZeroCounter(int value)
         {
-            if (value > MaxStoredValue || value < MinStoredValue)
-                throw new OverflowException();
+            if (value > MaxStoredValue | value < MinStoredValue) throw new ArgumentOutOfRangeException(nameof(value));
 
             _storage = value;
         }
@@ -55,10 +54,14 @@ namespace WmcSoft.Text
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (!Validator.IsMatch(value)) throw new ArgumentException(nameof(value));
 
-            var x = int.Parse(value, CultureInfo.InvariantCulture);
-            if (x > MaxStoredValue || x < MinStoredValue)
-                throw new OverflowException();
-            _storage = x - 1;
+            try {
+                var x = int.Parse(value, CultureInfo.InvariantCulture);
+                _storage = x - 1;
+            } catch (FormatException e) {
+                throw new ArgumentException(nameof(value), e);
+            }
+            if (_storage > MaxStoredValue | _storage < MinStoredValue)
+                throw new ArgumentOutOfRangeException(nameof(value));
         }
 
         public int CompareTo(DecimalLeadingZeroCounter other)

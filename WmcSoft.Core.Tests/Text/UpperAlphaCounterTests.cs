@@ -8,14 +8,14 @@ namespace WmcSoft.Text
         [Fact]
         public void CanUpperLatinCounterDetectOverflowOnNegativeValues()
         {
-            Assert.Throws<OverflowException>(() => new UpperAlphaCounter(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new UpperAlphaCounter(-1));
         }
 
         [Fact]
         public void CanUpperLatinCounterDetectOverflow()
         {
             var value = UpperAlphaCounter.MaxValue;
-            Assert.Throws<OverflowException>(() => value++);
+            Assert.Throws<ArgumentOutOfRangeException>(() => value++);
         }
 
         [Fact]
