@@ -46,6 +46,8 @@ namespace WmcSoft
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
+
             Dispose(true);
         }
 
