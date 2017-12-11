@@ -22,7 +22,7 @@ namespace WmcSoft.Collections.Generic
         public void KeyCannotBeNullOnAdd()
         {
             var dictionary = CreateDictionary();
-            Assert.Throws<ArgumentNullException>(() => dictionary.Add(null, default(TValue)));
+            Assert.Throws<ArgumentNullException>(() => dictionary.Add(null, default));
         }
 
         [Fact]

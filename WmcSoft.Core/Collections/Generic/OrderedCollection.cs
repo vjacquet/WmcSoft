@@ -95,20 +95,20 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public T Ceiling(T value)
-        {
-            var found = _storage.BinarySearch(value, Comparer);
-            if (found >= 0)
-                return _storage[found];
-            return _storage[~found];
-        }
-
         public T Floor(T value)
         {
             var found = _storage.BinarySearch(value, Comparer);
             if (found >= 0)
                 return _storage[found];
             return _storage[~found - 1];
+        }
+
+        public T Ceiling(T value)
+        {
+            var found = _storage.BinarySearch(value, Comparer);
+            if (found >= 0)
+                return _storage[found];
+            return _storage[~found];
         }
 
         public void Clear()
