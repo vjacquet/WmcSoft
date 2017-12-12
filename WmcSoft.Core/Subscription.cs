@@ -30,12 +30,18 @@ using System.Threading;
 namespace WmcSoft
 {
     /// <summary>
-    /// Utility to explicit the nature of the disposable received from subscribing to an observable for instance. 
+    /// Utility to explicit the nature of the disposable.
+    /// For instance received, it could be an <see cref="IDisposable"/> returned when subscribing to an observable. 
     /// </summary>
     public sealed class Subscription : IDisposable
     {
-        Action _unsubscribe;
+        private Action _unsubscribe;
 
+        /// <summary>
+        /// Creates a new <see cref="Subscription"/> from an unsubscribe action.
+        /// </summary>
+        /// <param name="unsubscribe">The action to execute to unsubscribe.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="unsubscribe"/> is <c>null</c>.</exception>
         public Subscription(Action unsubscribe)
         {
             if (unsubscribe == null) throw new ArgumentNullException(nameof(unsubscribe));
@@ -43,6 +49,11 @@ namespace WmcSoft
             _unsubscribe = unsubscribe;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Subscription"/> from an <see cref="IDisposable"/>.
+        /// </summary>
+        /// <param name="unsubscriber">The disposable to dispose to unsubscribe.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="unsubscriber"/> is <c>null</c>.</exception>
         public Subscription(IDisposable unsubscriber)
         {
             if (unsubscriber == null) throw new ArgumentNullException(nameof(unsubscriber));
@@ -51,7 +62,7 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Explicitly unsubscribe the <see cref="IObserver{T}"/> from the <see cref="IObservable{T}"/>.
+        /// Explicitly unsubscribe.
         /// </summary>
         public void Unsubscribe()
         {

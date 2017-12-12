@@ -41,6 +41,7 @@ namespace WmcSoft
         /// Creates a new instance of <see cref="Disposer"/>.
         /// </summary>
         /// <param name="action">The action to execute on <see cref="IDisposable.Dispose"/>.</param>
+        /// <remarks><paramref name="action"/> may be <c>null</c>.</remarks>
         public Disposer(Action action)
         {
             _action = action;
