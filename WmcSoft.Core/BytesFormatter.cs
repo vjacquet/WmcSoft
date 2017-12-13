@@ -35,16 +35,23 @@ using WmcSoft.Text.RegularExpressions;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Utility to format byte or array of bytes.
+    /// </summary>
     public class BytesFormatter : IFormatProvider, ICustomFormatter
     {
-        static readonly Regex regex;
+        static readonly Regex regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         static BytesFormatter()
         {
-            regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
         }
 
-        #region IFormatProvider Members
-
+        /// <summary>
+        /// Returns an object that provides formatting services for the specified type.
+        /// </summary>
+        /// <param name="formatType">An object that specifies the type of format object to return.</param>
+        /// <returns>An instance of the object specified by <paramref name="formatType"/>, if the <see cref="IFormatProvider"/>
+        ///    implementation can supply that type of object; otherwise, <c>null</c>.</returns>
         public object GetFormat(Type formatType)
         {
             if (formatType == typeof(ICustomFormatter))
@@ -52,16 +59,22 @@ namespace WmcSoft
             return null;
         }
 
-        #endregion
-
-        #region ICustomFormatter Members
-
+        /// <summary>
+        ///  Converts the value of a specified object to an equivalent string representation
+        ///  using specified format and culture-specific formatting information.
+        /// </summary>
+        /// <param name="format">A format string containing formatting specifications.</param>
+        /// <param name="arg">An object to format.</param>
+        /// <param name="formatProvider">An object that supplies format information about the current instance.</param>
+        /// <returns>The string representation of the value of arg, formatted as specified by format
+        /// and formatProvider.</returns>
+        /// <exception cref="FormatException"><paramref name="format"/> is not valid format.</exception>
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
             try {
                 return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
             } catch (FormatException e) {
-                throw new FormatException(Resources.InvalidFormatMessage.FormatWith(format), e);
+                throw new FormatException(string.Format(Resources.InvalidFormatMessage, format), e);
             }
         }
 
@@ -69,7 +82,7 @@ namespace WmcSoft
         {
             switch (Convert.GetTypeCode(arg)) {
             case TypeCode.SByte:
-                return new byte[1] { Byte.Parse(((sbyte)arg).ToString("X2"), NumberStyles.HexNumber) };
+                return new byte[1] { byte.Parse(((sbyte)arg).ToString("X2"), NumberStyles.HexNumber) };
             case TypeCode.Byte:
                 return new byte[1] { (byte)arg };
             case TypeCode.Int16:
@@ -86,13 +99,14 @@ namespace WmcSoft
                 return BitConverter.GetBytes((ulong)arg);
             }
 
-            if (arg is byte[]) {
-                return (byte[])arg;
+            switch (arg) {
+            case byte[] array:
+                return array;
+            case BigInteger integer:
+                return integer.ToByteArray();
+            default:
+                return null;
             }
-            if (arg is BigInteger) {
-                return ((BigInteger)arg).ToByteArray();
-            }
-            return null;
         }
 
         private static string Format(Func<int, string> reader, int lo, int hi, int groupSize)
@@ -151,7 +165,5 @@ namespace WmcSoft
 
             return null;
         }
-
-        #endregion
     }
 }
