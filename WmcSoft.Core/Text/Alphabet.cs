@@ -39,6 +39,8 @@ namespace WmcSoft.Text
     {
         #region Known alphabets
 
+        static Alphabet() { } // for lazyness.
+
         public static readonly Alphabet Binary = new Alphabet("01");
         public static readonly Alphabet Octal = new Alphabet("01234567");
         public static readonly Alphabet Decimal = new Alphabet("0123456789");

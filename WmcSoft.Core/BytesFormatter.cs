@@ -40,11 +40,9 @@ namespace WmcSoft
     /// </summary>
     public class BytesFormatter : IFormatProvider, ICustomFormatter
     {
-        static readonly Regex regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        static BytesFormatter() { } // for lazyness.
 
-        static BytesFormatter()
-        {
-        }
+        static readonly Regex regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Returns an object that provides formatting services for the specified type.
