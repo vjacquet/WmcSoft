@@ -33,7 +33,7 @@ using static WmcSoft.BitArithmetics;
 namespace WmcSoft.Text
 {
     /// <summary>
-    /// Represents an alphabet
+    /// Represents an alphabet.
     /// </summary>
     public class Alphabet
     {
@@ -47,7 +47,11 @@ namespace WmcSoft.Text
         public static readonly Alphabet LowerCase = new Alphabet("abcdefghijklmnopqrstuvwxyz");
         public static readonly Alphabet UpperCase = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         public static readonly Alphabet Protein = new Alphabet("ACDEFGHIKLMNPQRSTVWY");
+        public static readonly Alphabet Base32 = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
+        public static readonly Alphabet ZBase32 = new Alphabet("ybndrfg8ejkmcpqxot1uwisza345h769");
+        public static readonly Alphabet CrockfordBase32 = new Alphabet("0123456789ABCDEFGHJKMNPQRSTVWXYZ");
         public static readonly Alphabet Base64 = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+        public static readonly Alphabet Base64Url = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
         public static readonly Alphabet ASCII = new Alphabet(128);
         public static readonly Alphabet ExtendedASCII = new Alphabet(256);
         public static readonly Alphabet Unicode = new Alphabet(65536);
@@ -68,23 +72,31 @@ namespace WmcSoft.Text
             }
         }
 
-        public Alphabet(string alphabet)
+        /// <summary>
+        /// Creates a new alphabet with the given letters.
+        /// </summary>
+        /// <param name="letters">The string ot letters of the alphabet.</param>
+        public Alphabet(string letters)
         {
-            if (alphabet == null) throw new ArgumentNullException(nameof(alphabet));
-            ThrowOnDuplicate(alphabet);
+            if (letters == null) throw new ArgumentNullException(nameof(letters));
+            ThrowOnDuplicate(letters);
 
-            _alphabet = alphabet.ToCharArray();
-            _radix = alphabet.Length;
+            _alphabet = letters.ToCharArray();
+            _radix = letters.Length;
 
             _inverse = new int[char.MaxValue];
             for (int i = 0; i < _inverse.Length; i++)
                 _inverse[i] = -1;
 
             for (int c = 0; c < _radix; c++)
-                _inverse[alphabet[c]] = c;
+                _inverse[letters[c]] = c;
         }
 
-        private Alphabet(int radix)
+        /// <summary>
+        /// Creates a new alphabet with the given number of chars.
+        /// </summary>
+        /// <param name="radix">The number of chars in the alphabet.</param>
+        public Alphabet(int radix)
         {
             _radix = radix;
             _alphabet = new char[radix];
@@ -95,39 +107,86 @@ namespace WmcSoft.Text
             }
         }
 
-        public Alphabet() : this(256)
-        {
-        }
-
+        /// <summary>
+        /// Returns <c>true</c> if <paramref name="c"/> is in the alphabet.
+        /// </summary>
+        /// <param name="c">The char.</param>
+        /// <returns><c>true</c> if <paramref name="c"/> is in the alphabet; otherwise, <c>false</c>.</returns>
         public bool Contains(char c)
         {
             return _inverse[c] != -1;
         }
 
+        /// <summary>
+        /// The number of characters in the alphabet.
+        /// </summary>
         public int Radix => _radix;
 
+        /// <summary>
+        /// The number of bits needed to represent and index.
+        /// </summary>
         public int LbRadix => Lb(Radix);
 
+        /// <summary>
+        /// Converts c to an index between 0 and <see cref="Radix"/> - 1.
+        /// </summary>
+        /// <param name="c">The char.</param>
+        /// <returns>The index.</returns>
         public int this[char c] {
             get {
-                var index = _inverse[c];
-                if (index == -1) throw new ArgumentException(nameof(c));
-                return index;
+                return ToIndex(c);
             }
         }
 
+        /// <summary>
+        /// Converts c to an index between 0 and <see cref="Radix"/> - 1.
+        /// </summary>
+        /// <param name="c">The char.</param>
+        /// <returns>The index.</returns>
+        public int ToIndex(char c)
+        {
+            var index = _inverse[c];
+            if (index == -1) throw new ArgumentException(nameof(c));
+            return index;
+        }
+
+        /// <summary>
+        /// Converts an index to the corresponding char in the alphabet.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The char.</returns>
+        public char this[int index] {
+            get { return ToChar(index); }
+        }
+
+        /// <summary>
+        /// Converts an index to the corresponding char in the alphabet.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The char.</returns>
+        public char ToChar(int index)
+        {
+            return _alphabet[index];
+        }
+
+        /// <summary>
+        /// Gets the indices corresponding to the requested chars.
+        /// </summary>
+        /// <param name="sequence">The sequence of chars to get the indices of.</param>
+        /// <returns>The sequence of indices.</returns>
         public IEnumerable<int> ToIndices(IEnumerable<char> sequence)
         {
-            return sequence.Select(c => this[c]).ToArray();
+            return sequence.Select(ToIndex).ToList();
         }
 
-        public char this[int index] {
-            get { return _alphabet[index]; }
-        }
-
+        /// <summary>
+        /// Gets the chars at the given indices.
+        /// </summary>
+        /// <param name="sequence">The sequence of indices.</param>
+        /// <returns>The sequence of chars.</returns>
         public IEnumerable<char> ToChars(IEnumerable<int> sequence)
         {
-            return sequence.Select(i => _alphabet[i]).ToArray();
+            return sequence.Select(ToChar).ToList();
         }
     }
 }
