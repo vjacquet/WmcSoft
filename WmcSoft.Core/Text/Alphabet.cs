@@ -52,6 +52,7 @@ namespace WmcSoft.Text
         public static readonly Alphabet Base32 = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
         public static readonly Alphabet ZBase32 = new Alphabet("ybndrfg8ejkmcpqxot1uwisza345h769");
         public static readonly Alphabet CrockfordBase32 = new Alphabet("0123456789ABCDEFGHJKMNPQRSTVWXYZ");
+        public static readonly Alphabet Base32Hex = new Alphabet("0123456789ABCDEFGHIJKLMNOPQRSTUV");
         public static readonly Alphabet Base64 = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
         public static readonly Alphabet Base64Url = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
         public static readonly Alphabet ASCII = new Alphabet(128);
