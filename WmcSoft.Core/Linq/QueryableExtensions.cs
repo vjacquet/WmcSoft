@@ -31,6 +31,10 @@ using System.Linq.Expressions;
 
 namespace WmcSoft.Linq
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="IQueryable{T}"/> interface.
+    /// This is a static class.
+    /// </summary>
     public static class QueryableExtensions
     {
         #region Conversions
@@ -80,7 +84,14 @@ namespace WmcSoft.Linq
 
         #region Filter
 
-        public static IQueryable<T> Filter<T>(this IQueryable<T> source, IQueryableFilter<T> filter)
+        /// <summary>
+        /// Applies a <paramref name="filter"/> to the queryable.
+        /// </summary>
+        /// <typeparam name="T">The type of the data in the data source.</typeparam>
+        /// <param name="source">The data source.</param>
+        /// <param name="filter">The filter.</param>
+        /// <returns>The adapted <see cref="IQueryable{T}"/>.</returns>
+        public static IQueryable<T> FilterBy<T>(this IQueryable<T> source, IQueryableFilter<T> filter)
         {
             return filter.Filter(source);
         }
