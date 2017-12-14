@@ -52,13 +52,42 @@ namespace WmcSoft.Net.Mail
 
         #endregion
 
-        public static void AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses, IEqualityComparer<MailAddress> comparer = null)
+        /// <summary>
+        /// Adds the <paramref name="addresses"/> to the list of mail addresses.
+        /// </summary>
+        /// <param name="self">The list of mail addresses.</param>
+        /// <param name="addresses">The addresses to add.</param>
+        /// <param name="comparer">The comparer to use, or <c>null</c> to use the default comparer.</param>
+        /// <returns>The number of added addresses.</returns>
+        public static int AddRange(this MailAddressCollection self, IEnumerable<MailAddress> addresses, IEqualityComparer<MailAddress> comparer = null)
         {
             comparer = comparer ?? MailAddressEqualityComparer.Default;
+            var count = 0;
             foreach (var address in addresses) {
-                if (!self.Contains(address, comparer))
+                if (!self.Contains(address, comparer)) {
                     self.Add(address);
+                    count++;
+                }
             }
+            return count;
+        }
+
+        /// <summary>
+        /// Removes the <paramref name="addresses"/> from the list of mail addresses.
+        /// </summary>
+        /// <param name="self">The list of mail addresses.</param>
+        /// <param name="addresses">The addresses to add.</param>
+        /// <param name="comparer">The comparer to use, or <c>null</c> to use the default comparer.</param>
+        /// <returns>The number of removed addresses.</returns>
+        public static int RemoveAll(this MailAddressCollection self, IEnumerable<MailAddress> addresses, IEqualityComparer<MailAddress> comparer = null)
+        {
+            comparer = comparer ?? MailAddressEqualityComparer.Default;
+            var count = 0;
+            foreach (var address in addresses) {
+                if (self.Remove(address))
+                    count++;
+            }
+            return count;
         }
     }
 }
