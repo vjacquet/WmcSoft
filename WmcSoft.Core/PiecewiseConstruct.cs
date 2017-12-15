@@ -31,6 +31,6 @@ namespace WmcSoft
     /// </summary>
     public struct PiecewiseConstruct
     {
-        public static readonly PiecewiseConstruct Tag = default(PiecewiseConstruct);
+        public static readonly PiecewiseConstruct Tag = default;
     }
 }

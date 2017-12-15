@@ -37,7 +37,7 @@ namespace WmcSoft.IO
         private static readonly char[] InvalidPathChars = Path.GetInvalidPathChars();
 
         struct UninitializedTag { }
-        static readonly UninitializedTag Uninitialized = default(UninitializedTag);
+        static readonly UninitializedTag Uninitialized = default;
 
         #region Fields
 

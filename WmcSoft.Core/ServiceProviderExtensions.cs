@@ -76,34 +76,94 @@ namespace WmcSoft
 
         #region Service container extensions
 
-        public static void AddService<T>(this IServiceContainer container, T instance) {
-            container.AddService(typeof(T), instance);
-        }
-        public static void AddService<T>(this IServiceContainer container, T instance, bool promote) {
-            container.AddService(typeof(T), instance, promote);
-        }
-        public static void AddService<T>(this IServiceContainer container, Func<T> factory) {
-            ServiceCreatorCallback callback = (c, t) => factory();
-            container.AddService(typeof(T), callback);
-        }
-        public static void AddService<T>(this IServiceContainer container, Func<T> factory, bool promote) {
-            ServiceCreatorCallback callback = (c, t) => factory();
-            container.AddService(typeof(T), callback, promote);
-        }
-        public static void AddService<T>(this IServiceContainer container, Func<IServiceProvider, T> factory) {
-            ServiceCreatorCallback callback = (c, t) => factory(c);
-            container.AddService(typeof(T), callback);
-        }
-        public static void AddService<T>(this IServiceContainer container, Func<IServiceProvider, T> factory, bool promote) {
-            ServiceCreatorCallback callback = (c, t) => factory(c);
-            container.AddService(typeof(T), callback, promote);
+        /// <summary>
+        /// Adds the specified service to the service container.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="instance">An instance of the service type to add. </param>
+        public static void AddService<T>(this IServiceContainer self, T instance) {
+            self.AddService(typeof(T), instance);
         }
 
-        public static void RemoveService<T>(this IServiceContainer container) {
-            container.RemoveService(typeof(T));
+        /// <summary>
+        /// Adds the specified service to the service container.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="instance">An instance of the service type to add. </param>
+        /// <param name="promote"></param>
+        /// <param name="promote"><c><see langword="true"/></c> to promote this request to any parent service containers; otherwise, <c><see langword="false"/></c>.</param>
+        public static void AddService<T>(this IServiceContainer self, T instance, bool promote) {
+            self.AddService(typeof(T), instance, promote);
         }
-        public static void RemoveService<T>(this IServiceContainer container, bool promote) {
-            container.RemoveService(typeof(T), promote);
+
+        /// <summary>
+        /// Adds the specified service to the service container.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="factory">A callback that is used to create the service.
+        /// This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
+        public static void AddService<T>(this IServiceContainer self, Func<T> factory) {
+            object callback(IServiceContainer c, Type t) => factory();
+            self.AddService(typeof(T), callback);
+        }
+        /// <summary>
+        /// Adds the specified service to the service container, and optionally the service to parent service containers.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="factory">A callback that is used to create the service.
+        /// This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
+        /// <param name="promote"><c><see langword="true"/></c> to promote this request to any parent service containers; otherwise, <c><see langword="false"/></c>.</param>
+        public static void AddService<T>(this IServiceContainer self, Func<T> factory, bool promote) {
+            object callback(IServiceContainer c, Type t) => factory();
+            self.AddService(typeof(T), callback, promote);
+        }
+
+        /// <summary>
+        /// Adds the specified service to the service container.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="factory">A callback that is used to create the service.
+        /// This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
+        public static void AddService<T>(this IServiceContainer self, Func<IServiceProvider, T> factory) {
+            object callback(IServiceContainer c, Type t) => factory(c);
+            self.AddService(typeof(T), callback);
+        }
+
+        /// <summary>
+        /// Adds the specified service to the service container, and optionally the service to parent service containers.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="factory">A callback that is used to create the service.
+        /// This allows a service to be declared as available, but delays the creation of the object until the service is requested.</param>
+        /// <param name="promote"><c><see langword="true"/></c> to promote this request to any parent service containers; otherwise, <c><see langword="false"/></c>.</param>
+        public static void AddService<T>(this IServiceContainer self, Func<IServiceProvider, T> factory, bool promote) {
+            object callback(IServiceContainer c, Type t) => factory(c);
+            self.AddService(typeof(T), callback, promote);
+        }
+
+        /// <summary>
+        /// Removes the specified service type from the service container.
+        /// </summary>
+        /// <typeparam name="T">The type of service.</typeparam>
+        /// <param name="self">The service container.</param>
+        public static void RemoveService<T>(this IServiceContainer self) {
+            self.RemoveService(typeof(T));
+        }
+
+        /// <summary>
+        /// Removes the specified service type from the service container, and optionally promotes the request to parent service containers.
+        /// </summary>
+        /// <typeparam name="T">The type of service to remove.</typeparam>
+        /// <param name="self">The service container.</param>
+        /// <param name="promote"><c><see langword="true"/></c> to promote this request to any parent service containers; otherwise, <c><see langword="false"/></c>.</param>
+        public static void RemoveService<T>(this IServiceContainer self, bool promote) {
+            self.RemoveService(typeof(T), promote);
         }
 
         #endregion
