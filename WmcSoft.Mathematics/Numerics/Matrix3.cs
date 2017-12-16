@@ -152,7 +152,7 @@ namespace WmcSoft.Numerics
 
             var det = ms[0] * mt[0] + ms[1] * mt[3] + ms[2] * mt[6];
             if (det == 0d) {
-                m = default(Matrix3);
+                m = default;
                 return false;
             }
 

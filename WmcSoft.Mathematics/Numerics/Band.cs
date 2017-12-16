@@ -75,7 +75,7 @@ namespace WmcSoft.Numerics
 
         #region IReadOnlyCollection<T> Membres
 
-        public int Count { get { return _count; } }
+        public int Count => _count;
 
         #endregion
 
@@ -109,13 +109,9 @@ namespace WmcSoft.Numerics
             }
         }
 
-        public object SyncRoot {
-            get { return _data; }
-        }
+        public object SyncRoot => _data;
 
-        public bool IsSynchronized {
-            get { return true; }
-        }
+        public bool IsSynchronized => true;
 
         #endregion
 
