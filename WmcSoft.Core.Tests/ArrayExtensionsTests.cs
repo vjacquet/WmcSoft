@@ -8,7 +8,18 @@ namespace WmcSoft
     public class ArrayExtensionsTests
     {
         [Fact]
-        public void CheckGetColumn() {
+        public void CanConcatTwoArrays()
+        {
+            var a = new[] { 1, 2, 3 };
+            var b = new[] { 4, 5 };
+            var actual = a.Concat(b);
+            var expected = new[] { 1, 2, 3, 4, 5 };
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanGetColumn()
+        {
             var array = new[,] {
                { 1, 2, 3},
                { 4, 5, 6},
@@ -19,7 +30,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CheckGetRow() {
+        public void CanGetRow()
+        {
             var array = new[,] {
                { 1, 2, 3},
                { 4, 5, 6},
@@ -30,14 +42,16 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CheckStructuralEquals() {
+        public void CheckStructuralEquals()
+        {
             var expected = new[] { 1, 2, 3 };
             var actual = new[] { 1, 2, 3 };
             Assert.True(expected.SequenceEqual(actual));
         }
 
         [Fact]
-        public void CheckTranspose() {
+        public void CanTranspose()
+        {
             var expected = new[,] { { 1, 3 }, { 2, 4 } };
             var array = new[,] { { 1, 2 }, { 3, 4 } };
             var actual = array.Transpose();
@@ -45,7 +59,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CheckToMultiDimensional() {
+        public void CheckToMultiDimensional()
+        {
             var expected = new[,] { { 1, 2 }, { 3, 4 } };
             var array = new int[][] { new[] { 1, 2 }, new[] { 3, 4 } };
             var actual = array.ToMultiDimensional();
@@ -53,7 +68,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CanFlattenJaggedArray() {
+        public void CanFlattenJaggedArray()
+        {
             var expected = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var jagged = new int[][] { new[] { 1, 2 }, null, new[] { 3, 4 }, new[] { 5 }, new[] { 6, 7, 8, 9 } };
             var actual = jagged.Flatten();
@@ -70,7 +86,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CheckRotateLeft() {
+        public void CanRotateLeft()
+        {
             var actual = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 4, 5, 6, 7, 8, 9, 1, 2, 3 };
             var position = actual.Rotate(-3);
@@ -79,7 +96,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CheckRotateRight() {
+        public void CanRotateRight()
+        {
             var actual = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 7, 8, 9, 1, 2, 3, 4, 5, 6 };
             var position = actual.Rotate(3);
@@ -88,7 +106,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CanEnumerateRange() {
+        public void CanEnumerateRange()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 3, 4, 5, 6 };
             var list = new List<int>();
@@ -101,7 +120,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CanEnumeratePath() {
+        public void CanEnumeratePath()
+        {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expected = new[] { 2, 5, 6, 8 };
             var actual = data.Path(1, 4, 5, 7).ToArray();
@@ -109,7 +129,8 @@ namespace WmcSoft
         }
 
         [Fact]
-        public void CanPlayTicTacToe() {
+        public void CanPlayTicTacToe()
+        {
             var tictactoe = new[] { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 
             Assert.True(tictactoe.Path(1, 4, 7).All(p => p == 1));

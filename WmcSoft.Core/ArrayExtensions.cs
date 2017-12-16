@@ -47,6 +47,26 @@ namespace WmcSoft
 
         #endregion
 
+        #region Concat
+
+        public static T[] Concat<T>(this T[] self, params T[] values)
+        {
+            if (values == null || values.Length == 0) {
+                if (self.Length == 0) // throw NullReferenceException...
+                    return Array.Empty<T>(); // ... or removes a useless reference.
+                return self;
+            }
+            if (self.Length == 0)
+                return values;
+
+            var result = new T[self.Length + values.Length];
+            Array.Copy(self, result, self.Length);
+            Array.Copy(values, 0, result, self.Length, values.Length);
+            return result;
+        }
+
+        #endregion
+
         #region ConvertAll
 
         /// <summary>
@@ -338,6 +358,8 @@ namespace WmcSoft
         /// <exception cref="IndexOutOfRangeException">Thrown when an indice is not in the array.</exception>
         public static IEnumerable<T> Path<T>(this T[] source, params int[] indices)
         {
+            if (indices == null) throw new ArgumentNullException(nameof(indices));
+
             var length = indices.Length;
             for (int i = 0; i < length; i++) {
                 yield return source[indices[i]];
