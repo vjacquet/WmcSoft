@@ -51,12 +51,12 @@ namespace WmcSoft.CodeDom
             where T : CodeObject
         {
             foreach (CodeStatement statement in statements) {
-                T expression = statement as T;
+                var expression = statement as T;
                 var expressionStatement = statement as CodeExpressionStatement;
-                if ((expression == null) && (expressionStatement != null)) {
+                if (expression == null && expressionStatement != null) {
                     expression = expressionStatement.Expression as T;
                 }
-                if ((expression != null) && predicate(expression)) {
+                if (expression != null && predicate(expression)) {
                     yield return expression;
                 }
             }
@@ -74,28 +74,28 @@ namespace WmcSoft.CodeDom
             where T : CodeObject
         {
             foreach (CodeStatement statement in statements) {
-                T expression = statement as T;
+                var expression = statement as T;
                 var expressionStatement = statement as CodeExpressionStatement;
-                if ((expression == null) && (expressionStatement != null)) {
+                if (expression == null && expressionStatement != null) {
                     expression = expressionStatement.Expression as T;
                 }
-                if ((expression != null) && predicate(expression)) {
+                if (expression != null && predicate(expression)) {
                     return expression;
                 }
             }
-            return default(T);
+            return default;
         }
 
         public static T FindMember<T>(this CodeTypeDeclaration declaration, string memberName)
             where T : CodeObject
         {
             foreach (CodeTypeMember member in declaration.Members) {
-                T local = member as T;
-                if ((local != null) && (member.Name == memberName)) {
+                var local = member as T;
+                if (local != null && member.Name == memberName) {
                     return local;
                 }
             }
-            return default(T);
+            return default;
         }
 
         #endregion
@@ -107,12 +107,12 @@ namespace WmcSoft.CodeDom
         {
             var list = new List<CodeStatement>();
             foreach (CodeStatement statement in statements) {
-                T expression = statement as T;
+                var expression = statement as T;
                 var expressionStatement = statement as CodeExpressionStatement;
-                if ((expression == null) && (expressionStatement != null)) {
+                if (expression == null && expressionStatement != null) {
                     expression = expressionStatement.Expression as T;
                 }
-                if ((expression != null) && shouldRemove(expression)) {
+                if (expression != null && shouldRemove(expression)) {
                     list.Add(statement);
                 }
             }
@@ -273,9 +273,10 @@ namespace WmcSoft.CodeDom
 
         public static CodeMemberProperty AddProperty(this CodeTypeDeclaration typeDeclaration, CodeTypeReference type, string name)
         {
-            var property = new CodeMemberProperty();
-            property.Name = name;
-            property.Type = type;
+            var property = new CodeMemberProperty {
+                Name = name,
+                Type = type
+            };
             typeDeclaration.Members.Add(property);
             return property;
         }
@@ -295,24 +296,29 @@ namespace WmcSoft.CodeDom
             return Encapsulate(typeDeclaration, field, false);
         }
 
+        static string TranslateFieldNameToPropertyName(string name)
+        {
+            if (name.StartsWith("_"))
+                return name.Substring(1);
+            else if (name.StartsWith("m_"))
+                return name.Substring(2);
+            else if (name.StartsWith("m") && char.IsUpper(name[1]))
+                return name.Substring(1);
+            else
+                return char.ToUpper(name[0]) + name.Substring(1);
+        }
+
         public static CodeMemberProperty Encapsulate(this CodeTypeDeclaration typeDeclaration, CodeMemberField field, bool notifyChanges)
         {
             if (!typeDeclaration.Members.Contains(field)) {
                 typeDeclaration.Members.Add(field);
             }
 
-            var property = new CodeMemberProperty();
-            var name = field.Name;
-            if (name.StartsWith("_"))
-                property.Name = name.Substring(1);
-            else if (name.StartsWith("m_"))
-                property.Name = name.Substring(2);
-            else if (name.StartsWith("m") && Char.IsUpper(name[1]))
-                property.Name = name.Substring(1);
-            else
-                property.Name = Char.ToLower(name[0]) + name.Substring(1);
-            property.Type = field.Type;
-            property.Attributes = MemberAttributes.Public;
+            var property = new CodeMemberProperty {
+                Name = TranslateFieldNameToPropertyName(field.Name),
+                Type = field.Type,
+                Attributes = MemberAttributes.Public
+            };
 
             // Declares a property get statement to return the value of the integer field.
             property.GetStatements.Add(new CodeMethodReturnStatement(Reference(field)));
