@@ -47,6 +47,26 @@ namespace ImplBench
             }
         }
 
+        struct UncheckedComparer : IEqualityComparer<Record>
+        {
+            public bool Equals(Record x, Record y)
+            {
+                return x.Name == y.Name
+                    && x.DateOfBirth == y.DateOfBirth
+                    && x.PayRate == y.PayRate;
+            }
+
+            public int GetHashCode(Record obj)
+            {
+                unchecked {
+                    int h = obj.Name == null ? 0 : obj.Name.GetHashCode();
+                    h = ((h << 5) + h) ^ obj.DateOfBirth.GetHashCode();
+                    h = ((h << 5) + h) ^ obj.PayRate.GetHashCode();
+                    return h;
+                }
+            }
+        }
+
         struct CombineComparer : IEqualityComparer<Record>
         {
             public bool Equals(Record x, Record y)
@@ -105,6 +125,12 @@ namespace ImplBench
         public static void MeasureHashWithClassicComparer()
         {
             records = new HashSet<Record>(book, new ClassicComparer());
+        }
+
+        [Measure]
+        public static void MeasureHashWithUncheckedComparer()
+        {
+            records = new HashSet<Record>(book, new UncheckedComparer());
         }
 
         [Measure]

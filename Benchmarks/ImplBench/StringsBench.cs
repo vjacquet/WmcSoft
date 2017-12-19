@@ -52,16 +52,19 @@ namespace ImplBench
         static string LatestString;
         static string[] LatestStringArray;
 
-        static string Sample(Random random) {
+        static string Sample(Random random)
+        {
             return samples[random.Next(0, samples.Length)];
         }
 
-        static IEnumerable<string> Samples(Random random, int count) {
+        static IEnumerable<string> Samples(Random random, int count)
+        {
             while (count-- > 0)
                 yield return Sample(random);
         }
 
-        public static void Init(string[] args) {
+        public static void Init(string[] args)
+        {
             stringValues = new StringValues[Count];
             strings = new Strings[Count];
 
@@ -80,15 +83,18 @@ namespace ImplBench
             }
         }
 
-        public static void Reset() {
+        public static void Reset()
+        {
             Values = 0;
         }
 
-        public static void Check() {
+        public static void Check()
+        {
         }
 
         [Measure]
-        public static void MeasureCtorOnStringValues() {
+        public static void MeasureCtorOnStringValues()
+        {
             var result = new StringValues[Count];
             for (int n = 0; n < Count; n++) {
                 var reference = strings[n].ToArray();
@@ -101,7 +107,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureCtorOnStrings() {
+        public static void MeasureCtorOnStrings()
+        {
             var result = new Strings[Count];
             for (int n = 0; n < Count; n++) {
                 var reference = strings[n].ToArray();
@@ -114,7 +121,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureForEachOnStringValues() {
+        public static void MeasureForEachOnStringValues()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 foreach (var value in stringValues[n]) {
@@ -125,7 +133,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureForEachOnStrings() {
+        public static void MeasureForEachOnStrings()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 foreach (var value in strings[n]) {
@@ -136,7 +145,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureForOnStringValues() {
+        public static void MeasureForOnStringValues()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 var candidate = stringValues[n];
@@ -148,7 +158,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureForOnStrings() {
+        public static void MeasureForOnStrings()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 var candidate = strings[n];
@@ -160,7 +171,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureGetAsStringOnStringValues() {
+        public static void MeasureGetAsStringOnStringValues()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 var candidate = stringValues[n];
@@ -172,7 +184,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureGetAsStringOnStrings() {
+        public static void MeasureGetAsStringOnStrings()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 var candidate = strings[n];
@@ -184,7 +197,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureGetAsArrayOnStringValues() {
+        public static void MeasureGetAsArrayOnStringValues()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 var candidate = stringValues[n];
@@ -196,7 +210,8 @@ namespace ImplBench
         }
 
         [Measure]
-        public static void MeasureGetAsArrayOnStrings() {
+        public static void MeasureGetAsArrayOnStrings()
+        {
             int count = 0;
             for (int n = 0; n < Count; n++) {
                 var candidate = strings[n];
@@ -222,29 +237,35 @@ namespace Microsoft.Extensions.Primitives
         private readonly string _value;
         private readonly string[] _values;
 
-        public StringValues(string value) {
+        public StringValues(string value)
+        {
             _value = value;
             _values = null;
         }
 
-        public StringValues(string[] values) {
+        public StringValues(string[] values)
+        {
             _value = null;
             _values = values;
         }
 
-        public static implicit operator StringValues(string value) {
+        public static implicit operator StringValues(string value)
+        {
             return new StringValues(value);
         }
 
-        public static implicit operator StringValues(string[] values) {
+        public static implicit operator StringValues(string[] values)
+        {
             return new StringValues(values);
         }
 
-        public static implicit operator string(StringValues values) {
+        public static implicit operator string(StringValues values)
+        {
             return values.GetStringValue();
         }
 
-        public static implicit operator string[] (StringValues value) {
+        public static implicit operator string[] (StringValues value)
+        {
             return value.GetArrayValue();
         }
 
@@ -271,11 +292,13 @@ namespace Microsoft.Extensions.Primitives
             }
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return GetStringValue() ?? string.Empty;
         }
 
-        private string GetStringValue() {
+        private string GetStringValue()
+        {
             if (_values == null) {
                 return _value;
             }
@@ -286,22 +309,26 @@ namespace Microsoft.Extensions.Primitives
             }
         }
 
-        public string[] ToArray() {
+        public string[] ToArray()
+        {
             return GetArrayValue() ?? EmptyArray;
         }
 
-        private string[] GetArrayValue() {
+        private string[] GetArrayValue()
+        {
             if (_value != null) {
                 return new[] { _value };
             }
             return _values;
         }
 
-        int IList<string>.IndexOf(string item) {
+        int IList<string>.IndexOf(string item)
+        {
             return IndexOf(item);
         }
 
-        private int IndexOf(string item) {
+        private int IndexOf(string item)
+        {
             if (_values != null) {
                 var values = _values;
                 for (int i = 0; i < values.Length; i++) {
@@ -319,15 +346,18 @@ namespace Microsoft.Extensions.Primitives
             return -1;
         }
 
-        bool ICollection<string>.Contains(string item) {
+        bool ICollection<string>.Contains(string item)
+        {
             return IndexOf(item) >= 0;
         }
 
-        void ICollection<string>.CopyTo(string[] array, int arrayIndex) {
+        void ICollection<string>.CopyTo(string[] array, int arrayIndex)
+        {
             CopyTo(array, arrayIndex);
         }
 
-        private void CopyTo(string[] array, int arrayIndex) {
+        private void CopyTo(string[] array, int arrayIndex)
+        {
             if (_values != null) {
                 Array.Copy(_values, 0, array, arrayIndex, _values.Length);
                 return;
@@ -349,39 +379,48 @@ namespace Microsoft.Extensions.Primitives
             }
         }
 
-        void ICollection<string>.Add(string item) {
+        void ICollection<string>.Add(string item)
+        {
             throw new NotSupportedException();
         }
 
-        void IList<string>.Insert(int index, string item) {
+        void IList<string>.Insert(int index, string item)
+        {
             throw new NotSupportedException();
         }
 
-        bool ICollection<string>.Remove(string item) {
+        bool ICollection<string>.Remove(string item)
+        {
             throw new NotSupportedException();
         }
 
-        void IList<string>.RemoveAt(int index) {
+        void IList<string>.RemoveAt(int index)
+        {
             throw new NotSupportedException();
         }
 
-        void ICollection<string>.Clear() {
+        void ICollection<string>.Clear()
+        {
             throw new NotSupportedException();
         }
 
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(ref this);
         }
 
-        IEnumerator<string> IEnumerable<string>.GetEnumerator() {
+        IEnumerator<string> IEnumerable<string>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        public static bool IsNullOrEmpty(StringValues value) {
+        public static bool IsNullOrEmpty(StringValues value)
+        {
             if (value._values == null) {
                 return string.IsNullOrEmpty(value._value);
             }
@@ -392,7 +431,8 @@ namespace Microsoft.Extensions.Primitives
             }
         }
 
-        public static StringValues Concat(StringValues values1, StringValues values2) {
+        public static StringValues Concat(StringValues values1, StringValues values2)
+        {
             var count1 = values1.Count;
             var count2 = values2.Count;
 
@@ -410,7 +450,8 @@ namespace Microsoft.Extensions.Primitives
             return new StringValues(combined);
         }
 
-        public static bool Equals(StringValues left, StringValues right) {
+        public static bool Equals(StringValues left, StringValues right)
+        {
             var count = left.Count;
 
             if (count != right.Count) {
@@ -426,90 +467,112 @@ namespace Microsoft.Extensions.Primitives
             return true;
         }
 
-        public static bool operator ==(StringValues left, StringValues right) {
+        public static bool operator ==(StringValues left, StringValues right)
+        {
             return Equals(left, right);
         }
 
-        public static bool operator !=(StringValues left, StringValues right) {
+        public static bool operator !=(StringValues left, StringValues right)
+        {
             return !Equals(left, right);
         }
 
-        public bool Equals(StringValues other) {
+        public bool Equals(StringValues other)
+        {
             return Equals(this, other);
         }
 
-        public static bool Equals(string left, StringValues right) {
+        public static bool Equals(string left, StringValues right)
+        {
             return Equals(new StringValues(left), right);
         }
 
-        public static bool Equals(StringValues left, string right) {
+        public static bool Equals(StringValues left, string right)
+        {
             return Equals(left, new StringValues(right));
         }
 
-        public bool Equals(string other) {
+        public bool Equals(string other)
+        {
             return Equals(this, new StringValues(other));
         }
 
-        public static bool Equals(string[] left, StringValues right) {
+        public static bool Equals(string[] left, StringValues right)
+        {
             return Equals(new StringValues(left), right);
         }
 
-        public static bool Equals(StringValues left, string[] right) {
+        public static bool Equals(StringValues left, string[] right)
+        {
             return Equals(left, new StringValues(right));
         }
 
-        public bool Equals(string[] other) {
+        public bool Equals(string[] other)
+        {
             return Equals(this, new StringValues(other));
         }
 
-        public static bool operator ==(StringValues left, string right) {
+        public static bool operator ==(StringValues left, string right)
+        {
             return Equals(left, new StringValues(right));
         }
 
-        public static bool operator !=(StringValues left, string right) {
+        public static bool operator !=(StringValues left, string right)
+        {
             return !Equals(left, new StringValues(right));
         }
 
-        public static bool operator ==(string left, StringValues right) {
+        public static bool operator ==(string left, StringValues right)
+        {
             return Equals(new StringValues(left), right);
         }
 
-        public static bool operator !=(string left, StringValues right) {
+        public static bool operator !=(string left, StringValues right)
+        {
             return !Equals(new StringValues(left), right);
         }
 
-        public static bool operator ==(StringValues left, string[] right) {
+        public static bool operator ==(StringValues left, string[] right)
+        {
             return Equals(left, new StringValues(right));
         }
 
-        public static bool operator !=(StringValues left, string[] right) {
+        public static bool operator !=(StringValues left, string[] right)
+        {
             return !Equals(left, new StringValues(right));
         }
 
-        public static bool operator ==(string[] left, StringValues right) {
+        public static bool operator ==(string[] left, StringValues right)
+        {
             return Equals(new StringValues(left), right);
         }
 
-        public static bool operator !=(string[] left, StringValues right) {
+        public static bool operator !=(string[] left, StringValues right)
+        {
             return !Equals(new StringValues(left), right);
         }
 
-        public static bool operator ==(StringValues left, object right) {
+        public static bool operator ==(StringValues left, object right)
+        {
             return left.Equals(right);
         }
 
-        public static bool operator !=(StringValues left, object right) {
+        public static bool operator !=(StringValues left, object right)
+        {
             return !left.Equals(right);
         }
-        public static bool operator ==(object left, StringValues right) {
+        public static bool operator ==(object left, StringValues right)
+        {
             return right.Equals(left);
         }
 
-        public static bool operator !=(object left, StringValues right) {
+        public static bool operator !=(object left, StringValues right)
+        {
             return !right.Equals(left);
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null) {
                 return Equals(this, StringValues.Empty);
             }
@@ -529,16 +592,19 @@ namespace Microsoft.Extensions.Primitives
             return false;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (_values == null) {
                 return _value == null ? 0 : _value.GetHashCode();
             }
 
-            var h = 0;
-            for (var i = 0; i < _values.Length; i++) {
-                h = ((h << 5) + h) ^ _values[i].GetHashCode();
+            unchecked {
+                var h = 0;
+                for (var i = 0; i < _values.Length; i++) {
+                    h = ((h << 5) + h) ^ _values[i].GetHashCode();
+                }
+                return h;
             }
-            return h;
         }
 
         public struct Enumerator : IEnumerator<string>
@@ -547,13 +613,15 @@ namespace Microsoft.Extensions.Primitives
             private string _current;
             private int _index;
 
-            public Enumerator(ref StringValues values) {
+            public Enumerator(ref StringValues values)
+            {
                 _values = values._values;
                 _current = values._value;
                 _index = 0;
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_index < 0) {
                     return false;
                 }
@@ -577,11 +645,13 @@ namespace Microsoft.Extensions.Primitives
 
             object IEnumerator.Current => _current;
 
-            void IEnumerator.Reset() {
+            void IEnumerator.Reset()
+            {
                 throw new NotSupportedException();
             }
 
-            void IDisposable.Dispose() {
+            void IDisposable.Dispose()
+            {
             }
         }
     }
