@@ -39,7 +39,8 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public RegisteredIdentifier(string identifier, string registrationAuthority) {
+        public RegisteredIdentifier(string identifier, string registrationAuthority)
+        {
             Identifier = identifier;
             RegistrationAuthority = registrationAuthority;
         }
@@ -62,13 +63,15 @@ namespace WmcSoft.Business.PartyModel
 
         #region IEquatable<RegisteredIdentifier> Members
 
-        public bool Equals(RegisteredIdentifier other) {
+        public bool Equals(RegisteredIdentifier other)
+        {
             if (!Match(other))
                 return false;
             return ValidSince == other.ValidSince && ValidUntil == other.ValidUntil;
         }
 
-        public bool Match(RegisteredIdentifier other) {
+        public bool Match(RegisteredIdentifier other)
+        {
             if (other == null)
                 return false;
             return String.Equals(Identifier, other.Identifier, StringComparison.CurrentCulture)
@@ -79,14 +82,18 @@ namespace WmcSoft.Business.PartyModel
 
         #region Overrides
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return base.Equals(obj as RegisteredIdentifier);
         }
 
-        public override int GetHashCode() {
-            var identifier = Hash(Identifier);
-            var authority = Hash(RegistrationAuthority);
-            return (authority * 397) ^ identifier;
+        public override int GetHashCode()
+        {
+            unchecked {
+                var identifier = Hash(Identifier);
+                var authority = Hash(RegistrationAuthority);
+                return (authority * 397) ^ identifier;
+            }
         }
 
         #endregion

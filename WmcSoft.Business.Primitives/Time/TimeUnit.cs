@@ -253,7 +253,9 @@ namespace WmcSoft.Time
         public override int GetHashCode()
         {
             // CHECK: is it a good hash function?
-            return _factor + BaseType.GetHashCode() + _type.GetHashCode();
+            unchecked {
+                return _factor + BaseType.GetHashCode() + _type.GetHashCode();
+            }
         }
 
         #endregion

@@ -175,9 +175,11 @@ namespace WmcSoft
 
         public override int GetHashCode()
         {
-            var h1 = _state.GetHashCode();
-            var h2 = _value.GetHashCode();
-            return (((h1 << 5) + h1) ^ h2);
+            unchecked {
+                var h1 = _state.GetHashCode();
+                var h2 = _value.GetHashCode();
+                return (((h1 << 5) + h1) ^ h2);
+            }
         }
 
         #region Operators

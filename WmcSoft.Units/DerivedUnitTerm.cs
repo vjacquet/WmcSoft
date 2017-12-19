@@ -96,7 +96,9 @@ namespace WmcSoft.Units
 
         public override int GetHashCode()
         {
-            return (_unit.GetHashCode() * 397) ^ _power;
+            unchecked {
+                return (_unit.GetHashCode() * 397) ^ _power;
+            }
         }
     }
 }

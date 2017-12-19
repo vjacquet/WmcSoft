@@ -37,40 +37,87 @@ namespace WmcSoft.Business
     /// </summary>
     public static partial class Temporal
     {
-        class AsOfEnumerable<T> : ITemporalEnumerable<T>
+        static Func<IBox<T>, IBox<U>> Transform<T, U>(Func<T, U> func)
+        {
+            return x => new BoxOnTransformedTemporal<U>(func(x.Value), x.Source);
+        }
+
+        static Func<IBox<T>, bool> Filter<T>(Func<T, bool> predicate)
+        {
+            return x => predicate(x.Value);
+        }
+
+        internal static IEnumerable<IBox<T>> Box<T>(IEnumerable<T> source)
             where T : ITemporal
         {
-            private readonly IEnumerable<T> _filtered;
+            return source.Select(x => new BoxOnTemporal<T>(x));
+        }
 
-            public AsOfEnumerable(DateTime asOf, IEnumerable<T> source)
+        internal static IEnumerable<T> Unbox<T>(IEnumerable<IBox<T>> source)
+        {
+            return source.Select(x => x.Value);
+        }
+
+        #region AsOf
+
+        public class AsOfEnumerable<T> : ITemporalEnumerable<T>
+        {
+            private readonly IEnumerable<IBox<T>> _valid;
+
+            internal AsOfEnumerable(DateTime asOf, IEnumerable<IBox<T>> valid)
             {
                 AsOf = asOf;
-                _filtered = source.Where(x => x.IsValidOn(asOf));
+                _valid = valid;
             }
 
             public DateTime AsOf { get; }
 
             public IEnumerator<T> GetEnumerator()
             {
-                return _filtered.GetEnumerator();
+                return Unbox(_valid).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
+
+            #region Linq
+
+            public AsOfEnumerable<T> Where(Func<T, bool> predicate)
+            {
+                return new AsOfEnumerable<T>(AsOf, _valid.Where(Filter(predicate)));
+            }
+
+            public AsOfEnumerable<U> Select<U>(Func<T, U> selector)
+            {
+                return new AsOfEnumerable<U>(AsOf, _valid.Select(Transform(selector)));
+            }
+
+            #endregion
         }
 
-        class BetweenEnumerable<T> : ITemporalIntervalEnumerable<T>
-            where T : ITemporal
+        public static AsOfEnumerable<T> AsOf<T>(this IEnumerable<T> source, DateTime date)
+             where T : ITemporal
         {
-            private readonly IEnumerable<T> _filtered;
+            var result = Enumerable.Where(source, x => x.IsValidOn(date));
+            return new AsOfEnumerable<T>(date, Box(result));
+        }
 
-            public BetweenEnumerable(DateTime since, DateTime until, IEnumerable<T> source)
+        #endregion
+
+        #region Between
+
+        class BetweenEnumerable<T> : ITemporalIntervalEnumerable<T>
+          where T : ITemporal
+        {
+            private readonly IEnumerable<T> _valid;
+
+            public BetweenEnumerable(DateTime since, DateTime until, IEnumerable<T> valid)
             {
                 Since = since;
                 Until = until;
-                _filtered = source.Where(x => x.IsValidOn(since, until));
+                _valid = valid;
             }
 
             public DateTime Since { get; }
@@ -78,7 +125,7 @@ namespace WmcSoft.Business
 
             public IEnumerator<T> GetEnumerator()
             {
-                return _filtered.GetEnumerator();
+                return _valid.GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -87,25 +134,45 @@ namespace WmcSoft.Business
             }
         }
 
-        public static ITemporalEnumerable<T> AsOf<T>(this IEnumerable<T> source, DateTime date)
-             where T : ITemporal
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return new AsOfEnumerable<T>(date, source);
-        }
-
         public static ITemporalIntervalEnumerable<T> Between<T>(this IEnumerable<T> source, DateTime since, DateTime until)
              where T : ITemporal
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return new BetweenEnumerable<T>(since, until, source);
+            var result = Enumerable.Where(source, x => x.IsValidOn(since, until));
+            return new BetweenEnumerable<T>(since, until, result);
         }
+
+        #endregion
+    }
+
+    internal interface IBox<out T>
+    {
+        T Value { get; }
+        ITemporal Source { get; }
+    }
+
+    internal class BoxOnTemporal<T> : IBox<T>
+        where T : ITemporal
+    {
+        public BoxOnTemporal(T value)
+        {
+            Value = value;
+        }
+        public T Value { get; }
+        public ITemporal Source => Value;
+    }
+
+    internal class BoxOnTransformedTemporal<T> : IBox<T>
+    {
+        public BoxOnTransformedTemporal(T value, ITemporal source)
+        {
+            Value = value;
+            Source = source;
+        }
+        public T Value { get; }
+        public ITemporal Source { get; }
     }
 
     public interface ITemporalEnumerable<out T> : IEnumerable<T>
-        where T : ITemporal
     {
         DateTime AsOf { get; }
     }

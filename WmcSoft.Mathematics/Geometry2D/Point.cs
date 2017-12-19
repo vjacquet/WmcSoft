@@ -80,7 +80,9 @@ namespace WmcSoft.Geometry2D
 
         public override int GetHashCode()
         {
-            return X.GetHashCode() * 397 ^ Y.GetHashCode();
+            unchecked {
+                return X.GetHashCode() * 397 ^ Y.GetHashCode();
+            }
         }
 
         public override string ToString()

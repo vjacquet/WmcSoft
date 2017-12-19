@@ -28,6 +28,7 @@ using System;
 using System.Diagnostics;
 using WmcSoft.Properties;
 
+using static System.Math;
 using static WmcSoft.Helpers;
 
 namespace WmcSoft.Numerics
@@ -54,11 +55,7 @@ namespace WmcSoft.Numerics
                 }
 
                 [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                public double[] Items {
-                    get {
-                        return _storage.data;
-                    }
-                }
+                public double[] Items => _storage.data;
             }
 
             public readonly double[] data;
@@ -79,9 +76,82 @@ namespace WmcSoft.Numerics
                 data = new double[m * n];
             }
 
+            public double this[int i, int j] {
+                get => data[i * n + j];
+                set => data[i * n + j] = value;
+            }
+
             public int Length => data.Length;
             public Dimensions Size => new Dimensions(m, n);
 
+            public T MapReduce<T>(int first, int last, int stride, Func<double, T> map, Func<T, T, T> reduce, T seed = default)
+            {
+                while (first != last) {
+                    seed = reduce(seed, map(data[first]));
+                    first += stride;
+                }
+                return seed;
+            }
+
+            public void SwapRows(int i, int k)
+            {
+                double temp;
+                var countdown = n;
+                while (countdown-- != 0) {
+                    temp = data[i];
+                    data[i] = data[k];
+                    data[k] = temp;
+
+                    i += n;
+                    k += n;
+                }
+            }
+
+            public void SwapColumns(int j, int k)
+            {
+                double temp;
+                j *= n;
+                k *= n;
+                var countdown = n;
+                while (countdown-- != 0) {
+                    temp = data[j];
+                    data[j] = data[k];
+                    data[k] = temp;
+
+                    j++;
+                    k++;
+                }
+            }
+
+            public T MapReduce<T>(int first, int last, int stride, Func<double, int, T> map, Func<T, T, T> reduce, T seed = default)
+            {
+                int i = 0;
+                while (first != last) {
+                    seed = reduce(seed, map(data[first], i++));
+                    first += stride;
+                }
+                return seed;
+            }
+
+            public (int k, int offset) Element<T>(int first, int last, int stride, Func<double, int, T> map, Relation<T> relation)
+            {
+                if (first == last)
+                    return (0, first);
+                T seed = map(data[first], 0);
+                var offset = first;
+                var k = 0;
+                int i = 0;
+                do {
+                    first += stride;
+                    var x = map(data[first], ++i);
+                    if (relation(seed, x)) {
+                        seed = x;
+                        k = i;
+                        offset = first;
+                    }
+                } while (first != last);
+                return (k, offset);
+            }
         }
 
         #region Fields
@@ -284,7 +354,7 @@ namespace WmcSoft.Numerics
         public double this[int i, int j] {
             get {
                 try {
-                    return _storage.data[i * _storage.n + j];
+                    return _storage[i, j];
                 } catch (NullReferenceException) {
                     throw new IndexOutOfRangeException();
                 }
@@ -371,7 +441,7 @@ namespace WmcSoft.Numerics
             // precondition: n >= 0
             if (n == 0)
                 return x;
-            for (;;) {
+            for (; ; ) {
                 if (Odd(n)) {
                     x = x * y;
                     if (n == 1)
@@ -561,6 +631,8 @@ namespace WmcSoft.Numerics
 
         struct LUDecomposition
         {
+            const double Tiny = 1.0e-40d;
+
             int n;
             Matrix a;
             Storage lu;
@@ -573,7 +645,69 @@ namespace WmcSoft.Numerics
                 n = a.Rows;
                 lu = new Storage(a._storage);
                 indx = new int[n];
-                d = 0d;
+                d = 1d;
+
+                try {
+                    var scaling = new double[n];
+                    for (int i = 0; i < lu.Length; i += n) {
+                        scaling[i] = 1d / lu.MapReduce(i, i + n, 1, Abs, Max);
+                    }
+                    for (int k = 0; k < n; k++) {
+                        var first = k * n;
+                        var (imax, _) = lu.Element(first, first + n, 1, (x, i) => scaling[i] * Abs(x), (x, y) => x < y);
+                        if (k != imax) {
+                            lu.SwapRows(k, imax);
+                            d = -d;
+                            scaling[imax] = scaling[k];
+                        }
+                        indx[k] = imax;
+                        var pivot = lu[k, k];
+                        if (Abs(pivot) < double.Epsilon) lu[k, k] = pivot = Tiny;
+                        for (int i = k + 1; i < n; i++) {
+                            var temp = lu[i, k] /= pivot;
+                            for (int j = k + 1; j < n; j++) {
+                                lu[i, j] -= temp * lu[k, j];
+                            }
+                        }
+                    }
+                } catch (DivideByZeroException) {
+                    throw new DivideByZeroException($"Singular matrix in {nameof(LUDecomposition)}");
+                }
+            }
+
+            public double Det()
+            {
+                var result = d;
+                for (int i = 0; i < n; i++) {
+                    result *= lu[i, i];
+                }
+                return result;
+            }
+
+            public double[] Solve(double[] b)
+            {
+                var x = (double[])b.Clone();
+                var ii = 0;
+                for (int i = 0; i < n; i++) {
+                    var ip = indx[i];
+                    var sum = x[ip];
+                    x[ip] = x[i];
+                    if(ii !=0) {
+                        for (int j = ii-1; j < i; j++) {
+                            sum -= lu[i, j] * x[j];
+                        }
+                    } else if(Abs(sum) > double.Epsilon) {
+                        ii = i +1;
+                    }
+                }
+                for (int i = n - 1; i >= 0; i--) {
+                    var sum = x[i];
+                    for (int j =i+1; j < n; j++) {
+                        sum -= lu[i, j] * x[j];
+                    }
+                    x[i] = sum / lu[i, i];
+                }
+                return x;
             }
         }
 

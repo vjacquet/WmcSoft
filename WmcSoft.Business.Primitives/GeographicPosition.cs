@@ -48,9 +48,11 @@ namespace WmcSoft
 
         public override int GetHashCode()
         {
-            var h1 = Latitude.GetHashCode();
-            var h2 = Longitude.GetHashCode();
-            return (((h1 << 5) + h1) ^ h2);
+            unchecked {
+                var h1 = Latitude.GetHashCode();
+                var h2 = Longitude.GetHashCode();
+                return (((h1 << 5) + h1) ^ h2);
+            }
         }
 
         public override bool Equals(object obj)
@@ -74,7 +76,7 @@ namespace WmcSoft
             return result;
         }
 
-#region Operators
+        #region Operators
 
         public static bool operator ==(GeographicPosition x, GeographicPosition y)
         {
@@ -103,9 +105,9 @@ namespace WmcSoft
             return x.CompareTo(y) >= 0;
         }
 
-#endregion
+        #endregion
 
-#region IFormattable Membres
+        #region IFormattable Membres
 
         public override string ToString()
         {
@@ -123,6 +125,6 @@ namespace WmcSoft
                 + formatter.Format(Longitude.Degrees, Longitude.Minutes, Longitude.Seconds);
         }
 
-#endregion
+        #endregion
     }
 }

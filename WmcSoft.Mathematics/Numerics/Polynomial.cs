@@ -89,7 +89,9 @@ namespace WmcSoft.Numerics
 
             public override int GetHashCode()
             {
-                return (Coef.GetHashCode() * 397) ^ Exp;
+                unchecked {
+                    return (Coef.GetHashCode() * 397) ^ Exp;
+                }
             }
 
             #endregion

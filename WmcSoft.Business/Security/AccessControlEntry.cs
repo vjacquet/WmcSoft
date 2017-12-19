@@ -91,7 +91,9 @@ namespace WmcSoft.Security
 
         public override int GetHashCode()
         {
-            return _permission.GetHashCode() * 397 ^ _principal.GetHashCode();
+            unchecked {
+                return _permission.GetHashCode() * 397 ^ _principal.GetHashCode();
+            }
         }
 
         #endregion

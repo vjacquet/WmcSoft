@@ -99,7 +99,7 @@ namespace WmcSoft.Geometry2D
 
         public override string ToString()
         {
-            if (String.IsNullOrWhiteSpace(P1.Name) || String.IsNullOrWhiteSpace(P2.Name))
+            if (string.IsNullOrWhiteSpace(P1.Name) || string.IsNullOrWhiteSpace(P2.Name))
                 return $"[{P1},{P2}]";
             return $"[{P1.Name}{P2.Name}]";
         }

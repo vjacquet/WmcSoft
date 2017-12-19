@@ -100,8 +100,10 @@ namespace WmcSoft.Time
 
         public override int GetHashCode()
         {
-            var h = _quantity.GetHashCode();
-            return ((h << 5) + h) ^ _unit.GetHashCode();
+            unchecked {
+                var h = _quantity.GetHashCode();
+                return ((h << 5) + h) ^ _unit.GetHashCode();
+            }
         }
 
         #endregion
