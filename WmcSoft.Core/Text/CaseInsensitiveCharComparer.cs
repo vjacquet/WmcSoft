@@ -33,7 +33,7 @@ namespace WmcSoft.Text
     {
         private readonly CultureInfo _culture;
 
-        public CaseInsensitiveCharComparer(System.Globalization.CultureInfo ci)
+        public CaseInsensitiveCharComparer(CultureInfo ci)
         {
             _culture = ci;
         }

@@ -187,7 +187,9 @@ namespace WmcSoft
 
         public override int GetHashCode()
         {
-            return (_months * DaysInMonth + _days).GetHashCode();
+            unchecked {
+                return (_months * DaysInMonth + _days).GetHashCode();
+            }
         }
 
         #endregion

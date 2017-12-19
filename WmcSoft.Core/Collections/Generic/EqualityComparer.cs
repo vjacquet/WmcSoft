@@ -43,7 +43,9 @@ namespace WmcSoft.Collections.Generic
         /// <returns>A hash code.</returns>
         public static int CombineHashCodes(int h1, int h2)
         {
-            return (((h1 << 5) + h1) ^ h2);
+            unchecked {
+                return (((h1 << 5) + h1) ^ h2);
+            }
         }
 
         /// <summary>
