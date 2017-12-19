@@ -35,9 +35,12 @@ using static WmcSoft.Collections.Generic.EqualityComparer;
 
 namespace WmcSoft.Collections.Generic
 {
+    /// <summary>
+    /// Utility to evaluate equality of two instances based on the value of their fields.
+    /// </summary>
+    /// <typeparam name="T">The type of the instances.</typeparam>
     public sealed class FieldwiseEqualityComparer<T> : IEqualityComparer<T>
     {
-
         private readonly IList<FieldInfo> _fields;
 
         public FieldwiseEqualityComparer(IList<FieldInfo> fields)

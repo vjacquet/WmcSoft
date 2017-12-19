@@ -51,8 +51,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void AddressEqualsWorksWithIdenticalAddresses()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            Address address2 = new Address("Address1", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new Address("Address1", "Austin", "TX");
 
             Assert.Equal(address, address2, Comparer);
         }
@@ -60,8 +60,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void AddressEqualsWorksWithNonIdenticalAddresses()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            Address address2 = new Address("Address2", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new Address("Address2", "Austin", "TX");
 
             Assert.NotEqual(address, address2, Comparer);
         }
@@ -88,8 +88,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void AddressEqualsWorksWithNullsOnOtherObject()
         {
-            Address address = new Address("Address2", "Austin", "TX");
-            Address address2 = new Address("Address2", null, "TX");
+            var address = new Address("Address2", "Austin", "TX");
+            var address2 = new Address("Address2", null, "TX");
 
             Assert.NotEqual(address, address2, Comparer);
         }
@@ -97,7 +97,7 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void AddressEqualsIsReflexive()
         {
-            Address address = new Address("Address1", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
 
             Assert.Equal(address, address, Comparer);
         }
@@ -105,8 +105,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void AddressEqualsIsSymmetric()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            Address address2 = new Address("Address2", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new Address("Address2", "Austin", "TX");
 
             Assert.NotEqual(address, address2, Comparer);
             Assert.NotEqual(address2, address, Comparer);
@@ -115,9 +115,9 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void AddressEqualsIsTransitive()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            Address address2 = new Address("Address1", "Austin", "TX");
-            Address address3 = new Address("Address1", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new Address("Address1", "Austin", "TX");
+            var address3 = new Address("Address1", "Austin", "TX");
 
             Assert.Equal(address, address2, Comparer);
             Assert.Equal(address2, address3, Comparer);
@@ -127,8 +127,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void DerivedTypesBehaveCorrectly()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            ExpandedAddress address2 = new ExpandedAddress("Address1", "Apt 123", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new ExpandedAddress("Address1", "Apt 123", "Austin", "TX");
 
             Assert.NotEqual(address, address2, Comparer);
         }
@@ -136,8 +136,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void EqualValueObjectsHaveSameHashCode()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            Address address2 = new Address("Address1", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new Address("Address1", "Austin", "TX");
 
             Assert.Equal(Comparer.GetHashCode(address), Comparer.GetHashCode(address2));
         }
@@ -145,8 +145,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void TransposedValuesGiveDifferentHashCodes()
         {
-            Address address = new Address(null, "Austin", "TX");
-            Address address2 = new Address("TX", "Austin", null);
+            var address = new Address(null, "Austin", "TX");
+            var address2 = new Address("TX", "Austin", null);
 
             Assert.NotEqual(Comparer.GetHashCode(address), Comparer.GetHashCode(address2));
         }
@@ -154,8 +154,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void UnequalValueObjectsHaveDifferentHashCodes()
         {
-            Address address = new Address("Address1", "Austin", "TX");
-            Address address2 = new Address("Address2", "Austin", "TX");
+            var address = new Address("Address1", "Austin", "TX");
+            var address2 = new Address("Address2", "Austin", "TX");
 
             Assert.NotEqual(Comparer.GetHashCode(address), Comparer.GetHashCode(address2));
         }
@@ -163,8 +163,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void TransposedValuesOfFieldNamesGivesDifferentHashCodes()
         {
-            Address address = new Address("_city", null, null);
-            Address address2 = new Address(null, "_address1", null);
+            var address = new Address("_city", null, null);
+            var address2 = new Address(null, "_address1", null);
 
             Assert.NotEqual(Comparer.GetHashCode(address), Comparer.GetHashCode(address2));
         }
@@ -172,8 +172,8 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void DerivedTypesHashCodesBehaveCorrectly()
         {
-            ExpandedAddress address = new ExpandedAddress("Address99999", "Apt 123", "New Orleans", "LA");
-            ExpandedAddress address2 = new ExpandedAddress("Address1", "Apt 123", "Austin", "TX");
+            var address = new ExpandedAddress("Address99999", "Apt 123", "New Orleans", "LA");
+            var address2 = new ExpandedAddress("Address1", "Apt 123", "Austin", "TX");
 
             Assert.NotEqual(Comparer.GetHashCode(address), Comparer.GetHashCode(address2));
         }
