@@ -109,7 +109,6 @@
     <Compile Include="DisposableTests.cs" />
     <Compile Include="ExceptionsExtensionsTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />
-    <Compile Include="Globalization\Dates.cs" />
     <Compile Include="IndexedAlgorithmsTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceSetTests.cs" />
     <Compile Include="Collections\Generic\SortedSequenceTests.cs" />

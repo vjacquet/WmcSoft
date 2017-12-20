@@ -20,37 +20,47 @@
 
     4. This notice may not be removed or altered.
 
+ ****************************************************************************
+ * Adapted from DateSpecification.java
+ * -----------------------------------
+ * Copyright (c) 2005 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
+ * For more information, see http://timeandmoney.sourceforge.net.
  ****************************************************************************/
 
 #endregion
 
 using System;
 
-namespace WmcSoft.Globalization
+namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Provides access to common dates and usefull methods.
+    /// This is a static class.
+    /// </summary>
     public static class Dates
     {
         /// <summary>
         /// Gets the current date.
         /// </summary>
-        public static DateTime Today => DateTime.Today;
+        public static Date Today => DateTime.Today;
 
         /// <summary>
         /// Gets the day after the current date.
         /// </summary>
-        public static DateTime Tomorrow => DayAfter(DateTime.Today);
+        public static Date Tomorrow => DayAfter(Today);
 
         /// <summary>
         /// Gets the day after the current date.
         /// </summary>
-        public static DateTime Yesterday => DayBefore(DateTime.Today);
+        public static Date Yesterday => DayBefore(Today);
 
         /// <summary>
         /// Returns the day before the <paramref name="date"/>^.
         /// </summary>
         /// <param name="date">The date.</param>
         /// <returns>The day before.</returns>
-        public static DateTime DayBefore(DateTime date)
+        public static Date DayBefore(Date date)
         {
             return date.AddDays(-1);
         }
@@ -60,7 +70,7 @@ namespace WmcSoft.Globalization
         /// </summary>
         /// <param name="date">The date.</param>
         /// <returns>The day before.</returns>
-        public static DateTime DayAfter(DateTime date)
+        public static Date DayAfter(Date date)
         {
             return date.AddDays(+1);
         }

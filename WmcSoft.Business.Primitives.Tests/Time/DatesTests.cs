@@ -1,8 +1,8 @@
 ﻿using Xunit;
 
-using static WmcSoft.Globalization.Dates;
+using static WmcSoft.Time.Dates;
 
-namespace WmcSoft.Globalization
+namespace WmcSoft.Time
 {
     public class DatesTests
     {
