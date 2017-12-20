@@ -41,11 +41,17 @@ namespace WmcSoft.Net.Mail
 
             public bool Equals(MailAddress x, MailAddress y)
             {
-                return String.Equals(x.Address, y.Address, StringComparison.InvariantCultureIgnoreCase);
+                if (ReferenceEquals(x, y))
+                    return true;
+                if (x == null || y == null)
+                    return false;
+                return string.Equals(x.Address, y.Address, StringComparison.InvariantCultureIgnoreCase);
             }
 
             public int GetHashCode(MailAddress obj)
             {
+                if (obj == null || obj.Address == null)
+                    return 0;
                 return obj.Address.ToLowerInvariant().GetHashCode();
             }
         }
