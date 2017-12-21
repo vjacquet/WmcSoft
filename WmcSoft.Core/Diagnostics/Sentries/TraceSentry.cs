@@ -77,20 +77,16 @@ namespace WmcSoft.Diagnostics.Sentries
             _refCount = 0;
         }
 
-        public string Name {
-            get { return _decorated.Name; }
-        }
+        public string Name => _decorated.Name;
 
-        public SentryStatus Status {
-            get { return _decorated.Status; }
-        }
+        public SentryStatus Status => _decorated.Status;
 
         public IDisposable Subscribe(IObserver<SentryStatus> observer)
         {
             lock (_syncRoot) {
                 if (++_refCount == 1) {
                     // register the tracer only when someone observe this sentry.
-                     _traceSource.TraceInformation($"Sentry {Name} subscribed.");
+                    TraceSubscribed();
                     _unsubscriber = _decorated.Subscribe(new Tracer(this));
                 }
             }
@@ -108,21 +104,32 @@ namespace WmcSoft.Diagnostics.Sentries
                 }
                 if (dispose) {
                     disposer.Dispose();
+                    TraceUnsubscribed();
                 }
             });
         }
 
-        private void TraceNext(SentryStatus value)
+        protected virtual void TraceSubscribed()
+        {
+            _traceSource.TraceInformation($"Subscribed to sentry {Name}.");
+        }
+
+        protected virtual void TraceUnsubscribed()
+        {
+            _traceSource.TraceInformation($"Unsubscribed from sentry {Name}.");
+        }
+
+        protected virtual void TraceNext(SentryStatus value)
         {
             _traceSource.TraceInformation($"Sentry {Name} observed {value}.");
         }
 
-        private void TraceCompleted()
+        protected virtual void TraceCompleted()
         {
             _traceSource.TraceInformation($"Sentry {Name} completed.");
         }
 
-        private void TraceError(Exception error)
+        protected virtual void TraceError(Exception error)
         {
             _traceSource.TraceError(0, $"Sentry {Name} failed: {error}.");
         }

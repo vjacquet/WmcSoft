@@ -118,20 +118,10 @@ namespace WmcSoft.Diagnostics.Sentries
         {
         }
 
-        ~AggregateSentry()
-        {
-            Dispose(false);
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
             UnsubscribeAll();
+            GC.SuppressFinalize(this);
         }
 
         private void UnsubscribeAll()

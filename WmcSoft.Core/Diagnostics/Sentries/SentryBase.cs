@@ -69,19 +69,18 @@ namespace WmcSoft.Diagnostics.Sentries
         #endregion
 
         private readonly List<IObserver<SentryStatus>> _observers;
-        private readonly string _name;
         private volatile SentryStatus _status;
 
         protected SentryBase(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
-            _name = name;
+            Name = name;
             _observers = new List<IObserver<SentryStatus>>();
         }
 
-        public string Name { get { return _name; } }
-        public SentryStatus Status { get { return _status; } }
+        public string Name { get; }
+        public SentryStatus Status => _status;
 
         /// <summary>
         /// Subscribes an observer on the sentry.
