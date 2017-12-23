@@ -63,30 +63,20 @@ namespace WmcSoft.IO
 
         #region Info class Methods & Properties
 
-        public override bool CanRead {
-            get { return _underlying.CanRead; }
-        }
+        public override bool CanRead => _underlying.CanRead;
 
-        public override bool CanSeek {
-            get { return _underlying.CanSeek; }
-        }
+        public override bool CanSeek => _underlying.CanSeek;
 
-        public override bool CanWrite {
-            get { return _underlying.CanWrite; }
-        }
+        public override bool CanWrite => _underlying.CanWrite;
 
-        public override long Length {
-            get { return _underlying.Length; }
-        }
+        public override long Length => _underlying.Length;
 
         public override long Position {
             get { return _underlying.Position; }
             set { _underlying.Position = value; }
         }
 
-        public override bool CanTimeout {
-            get { return _underlying.CanTimeout; }
-        }
+        public override bool CanTimeout => _underlying.CanTimeout;
 
         #endregion
 
