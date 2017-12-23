@@ -38,37 +38,51 @@ namespace WmcSoft
 
         public static uint TurnOffRightMostOne(uint x)
         {
-            return x & (x - 1);
+            unchecked {
+                return x & (x - 1);
+            }
         }
 
         public static uint TurnOnRightMostZero(uint x)
         {
-            return x | (x + 1);
+            unchecked {
+                return x | (x + 1);
+            }
         }
 
         public static uint TurnOffTrailingOnes(uint x)
         {
-            return x & (x + 1);
+            unchecked {
+                return x & (x + 1);
+            }
         }
 
         public static uint TurnOnTrailingZeroes(uint x)
         {
-            return x | (x - 1);
+            unchecked {
+                return x | (x - 1);
+            }
         }
 
         public static uint MarkRightMostZero(uint x)
         {
-            return ~x & (x + 1);
+            unchecked {
+                return ~x & (x + 1);
+            }
         }
 
         public static uint MarkRightMostOne(uint x)
         {
-            return ~(~x | (x - 1));
+            unchecked {
+                return ~(~x | (x - 1));
+            }
         }
 
         public static bool IsPowerOfTwo(uint x)
         {
-            return 0 == (x & (x - 1));
+            unchecked {
+                return 0 == (x & (x - 1));
+            }
         }
 
         public static int CountBits(uint x)

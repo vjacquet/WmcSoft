@@ -92,6 +92,7 @@ namespace WmcSoft.IO
 
     public enum FileStreamType
     {
+        None = 0,
         Data = 1,
         ExternalData = 2,
         SecurityData = 3,

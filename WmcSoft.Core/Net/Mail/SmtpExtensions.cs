@@ -52,7 +52,7 @@ namespace WmcSoft.Net.Mail
             {
                 if (obj == null || obj.Address == null)
                     return 0;
-                return obj.Address.ToLowerInvariant().GetHashCode();
+                return obj.Address.ToUpperInvariant().GetHashCode();
             }
         }
 

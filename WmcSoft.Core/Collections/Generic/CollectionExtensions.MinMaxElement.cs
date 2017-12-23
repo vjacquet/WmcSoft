@@ -202,13 +202,17 @@ namespace WmcSoft.Collections.Generic
         public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            if (index < 0) throw new ArgumentException(nameof(index));
+            if (length < 0) throw new ArgumentException(nameof(length));
+            if ((index + length) > source.Count) throw new ArgumentException();
 
-            if (source.Count == 0)
+            if (length == 0)
                 return Tuple.Create(-1, -1);
             var min = source[index];
             var max = source[index];
             var p = index;
             var q = index;
+            length += index;
             for (var i = index + 1; i < length; i++) {
                 if (comparison(source[i], min) < 0) {
                     min = source[p = i];

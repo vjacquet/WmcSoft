@@ -160,6 +160,16 @@ namespace WmcSoft.Collections.Specialized
             return base.Equals((NGram<T>)obj);
         }
 
+        public static bool operator==(NGram<T> a, NGram<T> b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(NGram<T> a, NGram<T> b)
+        {
+            return !a.Equals(b);
+        }
+
         public override int GetHashCode()
         {
             if (_storage == null || _count == 0)

@@ -32,7 +32,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Creates a temporary file that will be deleted on dispose.
     /// </summary>
-    public class TempFile : IDisposable
+    public sealed class TempFile : IDisposable
     {
         public TempFile()
         {

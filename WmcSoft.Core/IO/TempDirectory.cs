@@ -32,7 +32,7 @@ namespace WmcSoft.IO
     /// <summary>
     /// Creates a temporary folder that will be deleted on dispose, with all its files.
     /// </summary>
-    public class TempDirectory : IDisposable
+    public sealed class TempDirectory : IDisposable
     {
         public TempDirectory()
         {

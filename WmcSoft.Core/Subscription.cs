@@ -71,12 +71,11 @@ namespace WmcSoft
 
         void IDisposable.Dispose()
         {
-            GC.SuppressFinalize(this);
-
             var action = Interlocked.Exchange(ref _unsubscribe, null);
             if (action != null) {
                 action();
             }
+            GC.SuppressFinalize(this);
         }
     }
 }
