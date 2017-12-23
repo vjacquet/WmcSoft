@@ -34,59 +34,26 @@ namespace WmcSoft.IO
     /// </summary>
     public class TempDirectory : IDisposable
     {
-        #region Fields
-
-        private readonly string _fullPath;
-
-        #endregion
-
-        #region lifecycle
-
         public TempDirectory()
         {
-            _fullPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            Directory.CreateDirectory(_fullPath);
+            FullPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(FullPath);
         }
 
         public TempDirectory(params string[] fileNames)
             : this()
         {
             foreach (string fileName in fileNames) {
-                File.Copy(fileName, Path.Combine(_fullPath, Path.GetFileName(fileName)));
+                File.Copy(fileName, Path.Combine(FullPath, Path.GetFileName(fileName)));
             }
         }
 
-        #endregion
-
-        #region Properties
-
-        public string FullPath {
-            get { return _fullPath; }
-        }
-
-        #endregion
-
-        #region IDisposable Membres
+        public string FullPath { get; }
 
         public void Dispose()
         {
-            Dispose(true);
+            Directory.Delete(FullPath, true);
             GC.SuppressFinalize(this);
         }
-
-        private void Dispose(bool disposing)
-        {
-            Directory.Delete(_fullPath, true);
-        }
-
-        ~TempDirectory()
-        {
-            try {
-                Dispose(false);
-            } catch (Exception) {
-            }
-        }
-
-        #endregion
     }
 }

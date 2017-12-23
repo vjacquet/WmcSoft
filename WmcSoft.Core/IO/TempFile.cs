@@ -34,50 +34,17 @@ namespace WmcSoft.IO
     /// </summary>
     public class TempFile : IDisposable
     {
-        #region Fields
-
-        private string _fullPath;
-
-        #endregion
-
-        #region lifecycle
-
         public TempFile()
         {
-            _fullPath = Path.GetTempFileName();
+            FullPath = Path.GetTempFileName();
         }
 
-        #endregion
-
-        #region Properties
-
-        public string FullPath {
-            get { return _fullPath; }
-        }
-
-        #endregion
-
-        #region IDisposable Members
+        public string FullPath { get; }
 
         public void Dispose()
         {
-            Dispose(true);
+            File.Delete(FullPath);
             GC.SuppressFinalize(this);
         }
-
-        private void Dispose(bool disposing)
-        {
-            File.Delete(_fullPath);
-        }
-
-        ~TempFile()
-        {
-            try {
-                Dispose(false);
-            } catch (Exception) {
-            }
-        }
-
-        #endregion
     }
 }

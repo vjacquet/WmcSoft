@@ -44,9 +44,7 @@ namespace WmcSoft.IO
             _header = header;
         }
 
-        public override Encoding Encoding {
-            get { return _wrapped.Encoding; }
-        }
+        public override Encoding Encoding => _wrapped.Encoding;
 
         public override void Close()
         {
