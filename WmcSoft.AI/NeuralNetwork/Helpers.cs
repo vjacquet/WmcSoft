@@ -79,7 +79,7 @@ namespace WmcSoft.AI.NeuralNetwork
         /// </summary>
         /// <param name="values">The array of values</param>
         /// <param name="threshold">The threshold</param>
-        /// <returns>Number of values ggreater than or equal to the threshold.</returns>
+        /// <returns>Number of values greater than or equal to the threshold.</returns>
         /// <remarks>Assumes the array is sorted.</remarks>
         public static int Count(double[] values, double threshold)
         {

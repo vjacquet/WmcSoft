@@ -55,9 +55,7 @@ namespace WmcSoft.AI.FuzzyLogic
             container.Add(this);
         }
 
-        public ICollection<IFuzzyCategory> Categories {
-            get { return _list; }
-        }
+        public ICollection<IFuzzyCategory> Categories => _list;
 
         public IFuzzyCategory Interpret(double value)
         {

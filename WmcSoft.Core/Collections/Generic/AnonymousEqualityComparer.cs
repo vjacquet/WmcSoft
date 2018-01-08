@@ -58,7 +58,7 @@ namespace WmcSoft.Collections.Generic
 
         private int GetDefaultHashCode(T x)
         {
-            if (Equals(x, default(T)))
+            if (Equals(x, default))
                 return 0;
             return 1;
         }
