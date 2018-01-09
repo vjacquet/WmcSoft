@@ -33,7 +33,7 @@ namespace WmcSoft.Text
     /// </summary>
     /// <typeparam name="TInput">The type of input.</typeparam>
     /// <typeparam name="TToken">The type of tokens.</typeparam>
-    public interface ITokenizer<TInput, TToken>
+    public interface ITokenizer<in TInput, out TToken>
     {
         IEnumerable<TToken> Tokenize(TInput value);
     }
