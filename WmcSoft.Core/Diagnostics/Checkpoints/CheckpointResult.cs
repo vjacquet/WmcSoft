@@ -34,12 +34,11 @@ namespace WmcSoft.Diagnostics.Checkpoints
     /// </summary>
     public class CheckpointResult
     {
-        private readonly List<string> _lines;
+        private readonly List<string> _lines = new List<string>();
 
         public CheckpointResult(CheckpointResultType resultType, string message)
         {
             ResultType = resultType;
-            _lines = new List<string> { message };
             if (!string.IsNullOrEmpty(message))
                 _lines.Add(message);
         }
@@ -50,7 +49,7 @@ namespace WmcSoft.Diagnostics.Checkpoints
         }
 
         public CheckpointResultType ResultType { get; private set; }
-        public IReadOnlyCollection<string> Lines { get { return _lines; } }
+        public IReadOnlyCollection<string> Lines => _lines.AsReadOnly();
 
         /// <summary>
         /// Sets the result type only if it has a stronger meaning.
