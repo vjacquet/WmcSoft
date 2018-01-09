@@ -24,10 +24,16 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft.AI
 {
     public static class Series
     {
+        public static void Detrend(ReadOnlySpan<double> input, double slope, double intercept, Span<double> output)
+        {
+        }
+
         public static double[] Detrend(double[] input, double slope, double intercept)
         {
             var output = new double[input.Length];
@@ -39,7 +45,7 @@ namespace WmcSoft.AI
             return output;
         }
 
-        public static double[] Detrend<TAlgorithm>(double[] input) 
+        public static double[] Detrend<TAlgorithm>(double[] input)
             where TAlgorithm : ITrendEvaluator, new()
         {
             return Detrend(input, new TAlgorithm());
@@ -48,7 +54,7 @@ namespace WmcSoft.AI
         public static double[] Detrend<TAlgorithm>(double[] input, TAlgorithm algorithm)
             where TAlgorithm : ITrendEvaluator
         {
-            algorithm.Eval(input, out double slope, out double intercept);
+            var (slope, intercept) = algorithm.Eval(input);
             return Detrend(input, slope, intercept);
         }
 

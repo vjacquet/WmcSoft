@@ -37,6 +37,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,6 +71,7 @@
     <Compile Include="Arithmetics\TrapezoidalRule.cs" />
     <Compile Include="Arithmetics\MidOrdinateRule.cs" />
     <Compile Include="Arithmetics\Operations.cs" />
+    <Compile Include="BetterBellShapeRandom.cs" />
     <Compile Include="DeterministicRandom.cs" />
     <Compile Include="Generators.cs" />
     <Compile Include="Geometry2D\BSpline.cs" />
@@ -124,6 +128,9 @@
     <None Include="Algebra\AlgebraDiagram.cd" />
     <Compile Include="Algebra\IRingLikeTraits.cs" />
     <None Include="Numerics\NumericsDiagram.cd" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

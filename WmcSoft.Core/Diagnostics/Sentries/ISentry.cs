@@ -32,8 +32,8 @@ namespace WmcSoft.Diagnostics.Sentries
     /// Associates a name and a status for which changes can be observed.
     /// </summary>
     /// <remarks>Implementation must guarantee that observers won't miss a status, 
-    /// therefore the current status must be oberserved upon subscription.</remarks>
-    public interface ISentry : IObservable<SentryStatus>
+    /// therefore the current status must be observed upon subscription.</remarks>
+    public interface ISentry : IObservable<SentryStatus>, IFormattable
     {
         string Name { get; }
         SentryStatus Status { get; }

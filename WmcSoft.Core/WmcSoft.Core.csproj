@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>latest</LangVersion>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -200,6 +201,7 @@
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
     <Compile Include="Data\DataTableCollectionExtensions.cs" />
     <Compile Include="Data\DbConnectionExtensions.cs" />
+    <Compile Include="Diagnostics\Instruments\IInstrument.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="Diagnostics\Checkpoints\ActionCheckpoint.cs" />
     <Compile Include="Diagnostics\Checkpoints\AppSettingsCheckpoint.cs" />

@@ -25,23 +25,20 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 
-namespace WmcSoft.AI
+namespace WmcSoft
 {
     /// <summary>
-    /// Implements the end points strategy to determine the trend's slope and intercept.
+    /// Implementation using 4 samples to obtain a sample with a better bell-shape deviate.
     /// </summary>
-    public struct EndPoints : ITrendEvaluator
+    public class BetterBellShapeRandom : RandomBase
     {
-        public (double slope, double intercept) Eval(ReadOnlySpan<double> input)
-        {
-            Debug.Assert(input.Length > 1);
+        private static readonly double Coeff = Math.Sqrt(12d) / 2d;
 
-            var n = input.Length - 1;
-            var intercept = input[0];
-            var slope = (input[n] - intercept) / n;
-            return (slope, intercept);
+        protected override double Sample()
+        {
+            var r = base.Sample() + base.Sample() - base.Sample() - base.Sample();
+            return Coeff * r;
         }
     }
 }

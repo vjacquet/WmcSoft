@@ -107,7 +107,7 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentException(nameof(index));
             if (length < 0) throw new ArgumentException(nameof(length));
-            if ((index + length) > source.Count) throw new ArgumentException();
+            if ((source.Count - index) < index) throw new ArgumentException();
 
             return UnguardedMinElement(source, index, length, comparison);
         }
@@ -163,12 +163,12 @@ namespace WmcSoft.Collections.Generic
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentException(nameof(index));
             if (length < 0) throw new ArgumentException(nameof(length));
-            if ((index + length) > source.Count) throw new ArgumentException();
+            if ((source.Count - index) < index) throw new ArgumentException();
 
             return UnguardedMaxElement(source, index, length, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source)
+        public static (int minIndex, int maxIndex) MinMaxElement<TSource>(this IList<TSource> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -176,7 +176,7 @@ namespace WmcSoft.Collections.Generic
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer)
+        public static (int minIndex, int maxIndex) MinMaxElement<TSource>(this IList<TSource> source, IComparer<TSource> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -184,7 +184,7 @@ namespace WmcSoft.Collections.Generic
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer)
+        public static (int minIndex, int maxIndex) MinMaxElement<TSource>(this IList<TSource> source, int index, int length, IComparer<TSource> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -192,22 +192,22 @@ namespace WmcSoft.Collections.Generic
             return MinMaxElement(source, index, length, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison)
+        public static (int minIndex, int maxIndex) MinMaxElement<TSource>(this IList<TSource> source, Comparison<TSource> comparison)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return MinMaxElement(source, 0, source.Count, comparison);
         }
 
-        public static Tuple<int, int> MinMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
+        public static (int minIndex, int maxIndex) MinMaxElement<TSource>(this IList<TSource> source, int index, int length, Comparison<TSource> comparison)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (index < 0) throw new ArgumentException(nameof(index));
             if (length < 0) throw new ArgumentException(nameof(length));
-            if ((index + length) > source.Count) throw new ArgumentException();
+            if ((source.Count - index) < index) throw new ArgumentException();
 
             if (length == 0)
-                return Tuple.Create(-1, -1);
+                return (-1, -1);
             var min = source[index];
             var max = source[index];
             var p = index;
@@ -220,7 +220,7 @@ namespace WmcSoft.Collections.Generic
                     max = source[q = i];
                 }
             }
-            return Tuple.Create(p, q);
+            return (p, q);
         }
     }
 }

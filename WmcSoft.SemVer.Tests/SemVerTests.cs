@@ -82,6 +82,8 @@ namespace WmcSoft
             Assert.True(v.Major == major);
             Assert.True(v.Minor == minor);
             Assert.True(v.Patch == patch);
+            Assert.True(v.Prerelease == prerelease);
+            Assert.True(v.Build == build);
         }
     }
 }

@@ -42,8 +42,11 @@ namespace WmcSoft.Statistics
     {
         #region Fields
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         int _count;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         double _sum;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         double _sumOfSquares;
 
         #endregion

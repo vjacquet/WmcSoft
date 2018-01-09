@@ -24,6 +24,9 @@
 
 #endregion
 
+using System;
+using System.Diagnostics;
+
 namespace WmcSoft.AI
 {
     /// <summary>
@@ -31,30 +34,33 @@ namespace WmcSoft.AI
     /// </summary>
     public struct LeastSquare : ITrendEvaluator
     {
-        #region ITrendEvaluator Members
-
-        public void Eval(double[] input, out double slope, out double intercept)
+        private static double Mean(ReadOnlySpan<double> input)
         {
-            var n = input.Length - 1;
-            var ymean = 0d;
-            for (int i = 0; i < input.Length; i++) {
-                ymean += input[i];
+            var m = input[0];
+            for (int i = 1; i < input.Length; i++) {
+                m += input[i];
             }
+            return m / input.Length;
+        }
 
+        public (double slope, double intercept) Eval(ReadOnlySpan<double> input)
+        {
+            Debug.Assert(input.Length > 1);
+
+            var n = input.Length - 1;
             var xmean = n / 2d;
+            var ymean = Mean(input);
             var xx = 0d;
             var xy = 0d;
-            ymean /= input.Length;
             for (int i = 0; i < input.Length; i++) {
                 var x = (double)i - xmean;
                 var y = input[i] - ymean;
                 xx += x * x;
                 xy += x * y;
             }
-            slope = xy / xx;
-            intercept = ymean - slope * xmean;
+            var slope = xy / xx;
+            var intercept = ymean - slope * xmean;
+            return (slope, intercept);
         }
-
-        #endregion
     }
 }
