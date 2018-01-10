@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core\WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
 EndProject
@@ -112,8 +112,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notes", "notes", "{B5F15274
 	ProjectSection(SolutionItems) = preProject
 		notes\cloning.md = notes\cloning.md
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Memory", "WmcSoft.Memory\WmcSoft.Memory.csproj", "{79E4CAE0-EF92-48E9-B0D9-4CC7AB66D76C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -285,10 +283,6 @@ Global
 		{C4C75CA9-6EFA-4334-B8FC-F000A06BCAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4C75CA9-6EFA-4334-B8FC-F000A06BCAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4C75CA9-6EFA-4334-B8FC-F000A06BCAC3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79E4CAE0-EF92-48E9-B0D9-4CC7AB66D76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79E4CAE0-EF92-48E9-B0D9-4CC7AB66D76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79E4CAE0-EF92-48E9-B0D9-4CC7AB66D76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79E4CAE0-EF92-48E9-B0D9-4CC7AB66D76C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

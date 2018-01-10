@@ -24,8 +24,6 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.AI
 {
     /// <summary>
@@ -33,6 +31,6 @@ namespace WmcSoft.AI
     /// </summary>
     public interface ITrendEvaluator
     {
-        (double slope, double intercept) Eval(ReadOnlySpan<double> input);
+        void Eval(double[] input, out double slope, out double intercept);
     }
 }

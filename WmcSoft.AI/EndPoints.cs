@@ -24,9 +24,6 @@
 
 #endregion
 
-using System;
-using System.Diagnostics;
-
 namespace WmcSoft.AI
 {
     /// <summary>
@@ -34,14 +31,15 @@ namespace WmcSoft.AI
     /// </summary>
     public struct EndPoints : ITrendEvaluator
     {
-        public (double slope, double intercept) Eval(ReadOnlySpan<double> input)
-        {
-            Debug.Assert(input.Length > 1);
+        #region ITrendEvaluator Members
 
+        public void Eval(double[] input, out double slope, out double intercept)
+        {
             var n = input.Length - 1;
-            var intercept = input[0];
-            var slope = (input[n] - intercept) / n;
-            return (slope, intercept);
+            intercept = input[0];
+            slope = (input[n] - intercept) / n;
         }
+
+        #endregion
     }
 }

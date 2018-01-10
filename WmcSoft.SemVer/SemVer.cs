@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -100,9 +99,14 @@ namespace WmcSoft
         public string Prerelease => _prerelease;
         public string Build => _build;
 
+        public SemVer Clone()
+        {
+            return (SemVer)MemberwiseClone();
+        }
+
         object ICloneable.Clone()
         {
-            return MemberwiseClone();
+            return Clone();
         }
 
         public override int GetHashCode()
@@ -133,7 +137,7 @@ namespace WmcSoft
 
         public int CompareTo(SemVer other)
         {
-            if (other is null)
+            if (ReferenceEquals(other, null))
                 return 1;
             var result = _major.CompareTo(other._major);
             if (result != 0)
@@ -164,7 +168,7 @@ namespace WmcSoft
 
         public bool Equals(SemVer other)
         {
-            if (other is null)
+            if (ReferenceEquals(other, null))
                 return false;
             return _major == other._major
                 && _minor == other._minor
@@ -195,13 +199,13 @@ namespace WmcSoft
         public SemVer Increment(SemVerRelease release)
         {
             switch (release) {
-                case SemVerRelease.Major:
-                    return NextMajor();
-                case SemVerRelease.Minor:
-                    return NextMinor();
-                case SemVerRelease.Patch:
-                default:
-                    return Increment();
+            case SemVerRelease.Major:
+                return NextMajor();
+            case SemVerRelease.Minor:
+                return NextMinor();
+            case SemVerRelease.Patch:
+            default:
+                return Increment();
             }
         }
 
@@ -212,36 +216,36 @@ namespace WmcSoft
 
         public static bool operator <(SemVer x, SemVer y)
         {
-            if (y is null)
+            if (ReferenceEquals(y, null))
                 return false;
             return y.CompareTo(x) > 0;
         }
 
         public static bool operator >=(SemVer x, SemVer y)
         {
-            if (x is null)
-                return y is null;
+            if (ReferenceEquals(x, null))
+                return ReferenceEquals(y, null);
             return x.CompareTo(y) >= 0;
         }
 
         public static bool operator >(SemVer x, SemVer y)
         {
-            if (x is null)
+            if (ReferenceEquals(x, null))
                 return false;
             return x.CompareTo(y) > 0;
         }
 
         public static bool operator <=(SemVer x, SemVer y)
         {
-            if (x is null)
-                return y is null;
+            if (ReferenceEquals(x, null))
+                return ReferenceEquals(y, null);
             return x.CompareTo(y) <= 0;
         }
 
         public static bool operator ==(SemVer x, SemVer y)
         {
-            if (x is null)
-                return y is null;
+            if (ReferenceEquals(x, null))
+                return ReferenceEquals(y, null);
             return x.Equals(y);
         }
 
@@ -407,34 +411,8 @@ namespace WmcSoft
                     return true;
                 }
             }
-            result = default;
+            result = default(SemVer);
             return false;
-        }
-    }
-
-    public struct Identifier : IComparable<Identifier>
-    {
-        private readonly string _storage;
-
-        public Identifier(string value)
-        {
-            _storage = value;
-        }
-
-        public int Length => _storage != null ? _storage.Length : 0;
-        public bool IsNumeric => _storage != null && char.IsDigit(_storage[0]);
-        public bool IsAlpha => _storage != null && !char.IsDigit(_storage[0]);
-
-        public int CompareTo(Identifier other)
-        {
-            if (IsNumeric) {
-                if (!other.IsNumeric) return 1;
-
-                var result = Length - other.Length;
-                if (result != 0)
-                    return result;
-            }
-            return StringComparer.InvariantCulture.Compare(_storage, other._storage);
         }
     }
 }

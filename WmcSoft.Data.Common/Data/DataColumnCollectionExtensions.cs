@@ -37,7 +37,7 @@ namespace WmcSoft.Data
 
         public static DataColumn Add<T>(this DataColumnCollection columns, string columnName, T defaultValue)
         {
-            var column = Add<T>(columns, columnName);
+            var column = columns.Add(columnName, typeof(T));
             column.DefaultValue = defaultValue;
             return column;
         }
