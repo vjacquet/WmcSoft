@@ -41,7 +41,9 @@ namespace WmcSoft.Statistics
     {
         #region Fields
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         int _count;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         double _mean;
         double _s;
 
