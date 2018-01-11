@@ -94,7 +94,7 @@ namespace WmcSoft
         /// <param name="func">The function to obtain the next element from the previous one.</param>
         /// <param name="v0">The initial value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<T, T> func, T v0 = default(T))
+        public static IEnumerable<T> Sequence<T>(Func<T, T> func, T v0 = default)
         {
             yield return v0;
 
@@ -112,7 +112,7 @@ namespace WmcSoft
         /// <param name="func">The function to obtain the next element from the previous one, with the indice of the element as first parameter.</param>
         /// <param name="v0">The initial value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<int, T, T> func, T v0 = default(T))
+        public static IEnumerable<T> Sequence<T>(Func<int, T, T> func, T v0 = default)
         {
             yield return v0;
 
@@ -132,7 +132,7 @@ namespace WmcSoft
         /// <param name="v0">The first value.</param>
         /// <param name="v1">The second value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<T, T, T> func, T v0 = default(T), T v1 = default(T))
+        public static IEnumerable<T> Sequence<T>(Func<T, T, T> func, T v0 = default, T v1 = default)
         {
             yield return v0;
             yield return v1;
@@ -154,7 +154,7 @@ namespace WmcSoft
         /// <param name="v0">The first value.</param>
         /// <param name="v1">The second value.</param>
         /// <returns>The sequence as an enumerable of values.</returns>
-        public static IEnumerable<T> Sequence<T>(Func<int, T, T, T> func, T v0 = default(T), T v1 = default(T))
+        public static IEnumerable<T> Sequence<T>(Func<int, T, T, T> func, T v0 = default, T v1 = default)
         {
             yield return v0;
             yield return v1;
@@ -265,10 +265,9 @@ namespace WmcSoft
         {
             if (random == null) throw new ArgumentNullException(nameof(random));
 
-            while (true) {
-                yield return random.Next();
-            }
+            return UnguardedRandomDouble(random);
         }
+
         /// <summary>
         /// Returns a random number between 0.0 and 1.0, using the default <see cref="Random"/> generator. 
         /// </summary>
@@ -276,6 +275,11 @@ namespace WmcSoft
         public static IEnumerable<double> RandomDouble()
         {
             var random = new Random();
+            return UnguardedRandomDouble(random);
+        }
+
+        private static IEnumerable<double> UnguardedRandomDouble(Random random)
+        {
             while (true) {
                 yield return random.NextDouble();
             }
