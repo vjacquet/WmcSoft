@@ -218,6 +218,8 @@ namespace WmcSoft.Data
             if (buffer == null)
                 return source.LongLength;
             var count = Math.Min(source.LongLength - fieldoffset, length);
+            if (count <= 0)
+                return 0;
             Array.Copy(source, fieldoffset, buffer, bufferoffset, count);
             return count;
         }
@@ -250,6 +252,8 @@ namespace WmcSoft.Data
             if (buffer == null)
                 return source.LongLength;
             var count = Math.Min(source.LongLength - fieldoffset, length);
+            if (count <= 0)
+                return 0;
             Array.Copy(source, fieldoffset, buffer, bufferoffset, count);
             return count;
         }
