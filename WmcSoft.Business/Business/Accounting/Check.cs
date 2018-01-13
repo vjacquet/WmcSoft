@@ -25,7 +25,6 @@
 #endregion
 
 using System;
-using WmcSoft.Business.PartyModel;
 
 namespace WmcSoft.Business.Accounting
 {
@@ -35,8 +34,6 @@ namespace WmcSoft.Business.Accounting
     /// </summary>
     public class Check : PaymentMethod
     {
-        #region Properties
-
         /// <summary>
         /// The name of the account on which the <see cref="Check"/> is drawn.
         /// </summary>
@@ -79,7 +76,5 @@ namespace WmcSoft.Business.Accounting
         /// The unique identifier of the bank that issued the <see cref="Check"/>.
         /// </summary>
         public string BankIdentificationNumber { get; set; }
-
-        #endregion
     }
 }

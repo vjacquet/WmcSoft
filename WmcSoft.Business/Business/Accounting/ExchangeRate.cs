@@ -33,23 +33,15 @@ namespace WmcSoft.Business.Accounting
     /// </summary>
     public class ExchangeRate : ITemporal
     {
-        #region Lifecycle
-
         public ExchangeRate(Currency from, Currency to, decimal rate) {
             FromCurrency = from;
             ToCurrency = to;
             Rate = rate;
         }
 
-        #endregion
-
-        #region Properties
-
         public Currency FromCurrency { get; }
         public Currency ToCurrency { get; }
         public decimal Rate { get; }
-
-        #endregion
 
         #region ITemporal Members
 

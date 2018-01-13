@@ -35,8 +35,6 @@ namespace WmcSoft.Business.Accounting
     /// </summary>
     public abstract class PaymentCard : PaymentMethod, ITemporal
     {
-        #region Properties
-
         public string CardAssociationName { get; set; }
 
         public string CardNumber { get; set; }
@@ -58,12 +56,9 @@ namespace WmcSoft.Business.Accounting
 
         public string IssueNumber { get; set; }
 
-        #endregion
-
         #region ITemporal Members
 
         public DateTime? ValidSince { get; set; }
-
         public DateTime? ValidUntil { get; set; }
 
         #endregion

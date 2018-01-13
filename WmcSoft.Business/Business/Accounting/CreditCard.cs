@@ -32,11 +32,7 @@ namespace WmcSoft.Business.Accounting
     /// </summary>
     public class CreditCard : PaymentCard
     {
-        #region Properties
-
         public Money CreditLimit { get; set; }
         public Money DailyWithdrawalLimit { get; set; }
-
-        #endregion
     }
 }

@@ -31,10 +31,6 @@ namespace WmcSoft.Business.Accounting
     /// </summary>
     public class Cash : PaymentMethod
     {
-        #region Properties
-
         // none 
-
-        #endregion
     }
 }
