@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="xunit">
-      <Version>2.3.0</Version>
+      <Version>2.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <Choose>
@@ -133,6 +133,7 @@
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="OrdinalSetTests.cs" />
     <Compile Include="OrdinalTests.cs" />
+    <Compile Include="Runtime\Serialization\XmlSerializerTests.cs" />
     <Compile Include="SubscriptionTests.cs" />
     <Compile Include="Text\NumericalComparerTests.cs" />
     <Compile Include="TripleTests.cs" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

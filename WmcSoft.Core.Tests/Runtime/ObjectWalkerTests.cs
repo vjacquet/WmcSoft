@@ -24,8 +24,8 @@ namespace WmcSoft.Runtime
             }
 
             public int Age { get; set; }
-
         }
+
         [Fact]
         public void CanWalkSimpleObject()
         {
