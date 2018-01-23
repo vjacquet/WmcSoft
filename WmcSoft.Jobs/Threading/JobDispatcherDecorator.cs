@@ -25,25 +25,27 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace WmcSoft.Threading
 {
+    /// <summary>
+    /// Base class when creating job dispatchers decorating another one.
+    /// </summary>
     public class JobDispatcherDecorator : JobDispatcher
     {
         #region Private fields
 
         JobDispatcher _jobDispatcher;
-        protected JobDispatcher Inner {
-            get { return _jobDispatcher; }
-        }
+        protected JobDispatcher Inner => _jobDispatcher;
 
         #endregion
 
         #region Lifecycle
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JobDispatcherDecorator"/> class.
+        /// </summary>
+        /// <param name="jobDispatcher">The job dispatcher.</param>
         protected JobDispatcherDecorator(JobDispatcher jobDispatcher)
         {
             _jobDispatcher = jobDispatcher;
@@ -53,28 +55,44 @@ namespace WmcSoft.Threading
 
         #region Overrides
 
+        /// <summary>
+        /// Cancels the async operation.
+        /// </summary>
         public override void CancelAsync()
         {
             _jobDispatcher.CancelAsync();
         }
 
-        public override bool CancellationPending {
-            get {
-                return _jobDispatcher.CancellationPending;
-            }
-        }
+        /// <summary>
+        /// Gets a value indicating whether a cancellation is pending.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if a cancellation is pending; otherwise, <c>false</c>.
+        /// </value>
+        public override bool CancellationPending => _jobDispatcher.CancellationPending;
 
-        public override bool SupportsCancellation {
-            get {
-                return _jobDispatcher.SupportsCancellation;
-            }
-        }
+        /// <summary>
+        /// Gets a value indicating whether the dispatcher supports cancellation.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if the dispatcher supports cancellation; otherwise, <c>false</c>.
+        /// </value>
+        public override bool SupportsCancellation => _jobDispatcher.SupportsCancellation;
 
+        /// <summary>
+        /// Dispatches the specified job.
+        /// </summary>
+        /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
         public override void Dispatch(IJob job)
         {
             _jobDispatcher.Dispatch(job);
         }
 
+        /// <summary>
+        /// When overridden in a derived class, releases the unmanaged resources used by
+        /// the <see cref="JobDispatcher"/>, and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (_jobDispatcher != null) {
@@ -84,6 +102,15 @@ namespace WmcSoft.Threading
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// <c>null</c> if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public override object GetService(Type serviceType)
         {
             if (serviceType == typeof(JobDispatcher))

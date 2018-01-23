@@ -13,6 +13,8 @@ I try to respect the following laws, from "From Mathematics to Generic Programmi
 
 For now, all this code is a **work in progress**. Comments and questions are welcome.
 
+To open the class designers, you may need to add [ClassDesigner to the `ProjectCapability` element](https://github.com/dotnet/project-system/issues/256)
+
 ## Design notes
 
 To improve readability:
