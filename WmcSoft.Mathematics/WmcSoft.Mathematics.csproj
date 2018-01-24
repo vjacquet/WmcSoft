@@ -1,137 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{041E639D-20CD-454F-90D5-2852AA58E126}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net461</TargetFramework>
+    <Authors>Vincent J. JACQUET</Authors>
+    <Company>WmcSoft</Company>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Copyright © 2015</Copyright>
     <RootNamespace>WmcSoft</RootNamespace>
-    <AssemblyName>WmcSoft.Mathematics</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Algebra\GroupLikeExtensions.cs" />
-    <Compile Include="Algebra\IGroupLike.cs" />
-    <Compile Include="Algebra\IGroupLikeTraits.cs" />
-    <Compile Include="Algebra\IRingLike.cs" />
-    <Compile Include="Algebra\RingLikeExtensions.cs" />
-    <Compile Include="Arithmetics\AdditiveMultiplicativeRingAdapter.cs" />
-    <Compile Include="Arithmetics\DecimalArithmetics.cs" />
-    <Compile Include="Arithmetics\DoubleMultiplicationGroup.cs" />
-    <Compile Include="Arithmetics\IArithmetics.cs" />
-    <Compile Include="Arithmetics\DoubleArithmetics.cs" />
-    <Compile Include="Arithmetics\BigIntegerArithmetics.cs" />
-    <Compile Include="Arithmetics\IFunction.cs" />
-    <Compile Include="Arithmetics\IIntegralRule.cs" />
-    <Compile Include="Arithmetics\IInterpolation.cs" />
-    <Compile Include="Arithmetics\Int64Arithmetics.cs" />
-    <Compile Include="Arithmetics\Int32Arithmetics.cs" />
-    <Compile Include="Arithmetics\IntegralCalculus.cs" />
-    <Compile Include="Arithmetics\LinearFunction.cs" />
-    <Compile Include="Arithmetics\LinearInterpolation.cs" />
-    <Compile Include="Arithmetics\BooleRule.cs" />
-    <Compile Include="Arithmetics\SimpsonRule.cs" />
-    <Compile Include="Arithmetics\TrapezoidalRule.cs" />
-    <Compile Include="Arithmetics\MidOrdinateRule.cs" />
-    <Compile Include="Arithmetics\Operations.cs" />
-    <Compile Include="DeterministicRandom.cs" />
-    <Compile Include="Generators.cs" />
-    <Compile Include="Geometry2D\BSpline.cs" />
-    <Compile Include="Geometry2D\Helpers.cs" />
-    <Compile Include="Geometry2D\Point.cs" />
-    <Compile Include="Geometry2D\Polygon.cs" />
-    <Compile Include="Geometry2D\Segment.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="IntExtensions.cs" />
-    <Compile Include="Numerics\Algorithms.cs" />
-    <Compile Include="Numerics\Band.cs" />
-    <Compile Include="Numerics\Dimensions.cs" />
-    <Compile Include="Numerics\Generic\Vector.cs" />
-    <Compile Include="Numerics\Matrix.cs" />
-    <Compile Include="Numerics\BigFraction.cs" />
-    <Compile Include="Numerics\Matrix3.cs" />
-    <Compile Include="Numerics\NumericsTraits.cs" />
-    <Compile Include="Numerics\NumericsUtilities.cs" />
-    <Compile Include="Numerics\Polynomial.cs" />
-    <Compile Include="Numerics\Fraction.cs" />
-    <Compile Include="Numerics\StrideEnumerator.cs" />
-    <Compile Include="Numerics\Boolarray.cs" />
-    <Compile Include="Numerics\Valarray.cs" />
-    <Compile Include="Numerics\Vector3.cs" />
-    <Compile Include="Numerics\Vector.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RandomBase.cs" />
-    <Compile Include="RNGRandom.cs" />
-    <Compile Include="Statistics\PopulationAccumulator.cs" />
-    <Compile Include="Statistics\SamplesAccumulator.cs" />
-    <Compile Include="Statistics\StraightforwardAccumulator.cs" />
-    <Compile Include="Statistics\IAccumulator.cs" />
-    <Compile Include="Statistics\Quantiles.cs" />
-    <Compile Include="Tableau.cs" />
   </ItemGroup>
+
+
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
-      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
-      <Name>WmcSoft.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Algebra\AlgebraDiagram.cd" />
-    <Compile Include="Algebra\IRingLikeTraits.cs" />
-    <None Include="Numerics\NumericsDiagram.cd" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="(@1 @2 @3 Member=(Name=Eval OverloadingParameters=[(@1 @2 @3 ParameterIdentifier=0),(@1 @2 @3 ParameterIdentifier=0)]))" Category="CodeSchema_Method" Bounds="-9392.76687874479,-9968.29388307283,102.989999999998,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Eval" Icon="Microsoft.VisualStudio.Method.Public" Label="Eval(T, T) : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLike.cs StartLineNumber=31 StartCharacterOffset=10 EndLineNumber=31 EndCharacterOffset=14)" />
+    <Node Id="(@1 @2 @3 Member=(Name=Inverse OverloadingParameters=[(@1 @2 @3 ParameterIdentifier=0)]))" Category="CodeSchema_Method" Bounds="-9392.79220534961,-9940.28828306283,107.536666666667,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Inverse" Icon="Microsoft.VisualStudio.Method.Public" Label="Inverse(T) : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLike.cs StartLineNumber=32 StartCharacterOffset=10 EndLineNumber=32 EndCharacterOffset=17)" />
+    <Node Id="(@1 @2 @3 Member=Identity)" Category="CodeSchema_Property" Bounds="-9392.79220541146,-9912.30508308283,96.6333333333314,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Identity" Icon="Microsoft.VisualStudio.Property.Public" Label="Identity : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLike.cs StartLineNumber=30 StartCharacterOffset=10 EndLineNumber=30 EndCharacterOffset=18)" />
+    <Node Id="(@1 @2 @5 Member=(Name=Add OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0),(@1 @2 @5 ParameterIdentifier=0)]))" Category="CodeSchema_Method" Bounds="-9540.79536458333,-9796.29296875,104.033333333333,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Add" Icon="Microsoft.VisualStudio.Method.Public" Label="Add(T, T) : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=30 StartCharacterOffset=10 EndLineNumber=30 EndCharacterOffset=13)" />
+    <Node Id="(@1 @2 @5 Member=(Name=Multiply OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0),(@1 @2 @5 ParameterIdentifier=0)]))" Category="CodeSchema_Method" Bounds="-9540.79536458333,-9768.29296875,125.373333333333,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Multiply" Icon="Microsoft.VisualStudio.Method.Public" Label="Multiply(T, T) : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=34 StartCharacterOffset=10 EndLineNumber=34 EndCharacterOffset=18)" />
+    <Node Id="(@1 @2 @5 Member=(Name=Negate OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0)]))" Category="CodeSchema_Method" Bounds="-9540.79536458333,-9740.29296875,108.756666666668,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Negate" Icon="Microsoft.VisualStudio.Method.Public" Label="Negate(T) : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=31 StartCharacterOffset=10 EndLineNumber=31 EndCharacterOffset=16)" />
+    <Node Id="(@1 @2 @5 Member=(Name=Reciprocal OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0)]))" Category="CodeSchema_Method" Bounds="-9540.79536458333,-9712.29296875,124.353333333333,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Reciprocal" Icon="Microsoft.VisualStudio.Method.Public" Label="Reciprocal(T) : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=35 StartCharacterOffset=10 EndLineNumber=35 EndCharacterOffset=20)" />
+    <Node Id="(@1 @2 @5 Member=One)" Category="CodeSchema_Property" Bounds="-9540.79536458333,-9684.29296875,78.5733333333337,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="One" Icon="Microsoft.VisualStudio.Property.Public" Label="One : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=36 StartCharacterOffset=10 EndLineNumber=36 EndCharacterOffset=13)" />
+    <Node Id="(@1 @2 @5 Member=Zero)" Category="CodeSchema_Property" Bounds="-9413.42203125,-9796.29296875,80.7833333333328,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Zero" Icon="Microsoft.VisualStudio.Property.Public" Label="Zero : T" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=32 StartCharacterOffset=10 EndLineNumber=32 EndCharacterOffset=14)" />
+    <Node Id="(@1 @2 @7 Member=IsAssociative)" Category="CodeSchema_Property" Bounds="-9147.48724500325,-9683.39444105211,140.989999999998,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IsAssociative" Icon="Microsoft.VisualStudio.Property.Public" Label="IsAssociative : bool" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLikeTraits.cs StartLineNumber=33 StartCharacterOffset=13 EndLineNumber=33 EndCharacterOffset=26)" />
+    <Node Id="(@1 @2 @7 Member=IsCommutative)" Category="CodeSchema_Property" Bounds="-9147.48724500325,-9655.39444105211,153.573333333334,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IsCommutative" Icon="Microsoft.VisualStudio.Property.Public" Label="IsCommutative : bool" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLikeTraits.cs StartLineNumber=34 StartCharacterOffset=13 EndLineNumber=34 EndCharacterOffset=26)" />
+    <Node Id="(@1 @2 @7 Member=IsIdempotent)" Category="CodeSchema_Property" Bounds="-9147.48724500325,-9627.39444105211,144.636666666665,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IsIdempotent" Icon="Microsoft.VisualStudio.Property.Public" Label="IsIdempotent : bool" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLikeTraits.cs StartLineNumber=35 StartCharacterOffset=13 EndLineNumber=35 EndCharacterOffset=25)" />
+    <Node Id="(@1 @2 @7 Member=SupportIdentity)" Category="CodeSchema_Property" Bounds="-9147.48724500325,-9599.39444105211,156.906666666666,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="SupportIdentity" Icon="Microsoft.VisualStudio.Property.Public" Label="SupportIdentity : bool" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLikeTraits.cs StartLineNumber=30 StartCharacterOffset=13 EndLineNumber=30 EndCharacterOffset=28)" />
+    <Node Id="(@1 @2 @7 Member=SupportInverse)" Category="CodeSchema_Property" Bounds="-9147.48724500325,-9571.39444105211,154.283333333333,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="SupportInverse" Icon="Microsoft.VisualStudio.Property.Public" Label="SupportInverse : bool" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLikeTraits.cs StartLineNumber=31 StartCharacterOffset=13 EndLineNumber=31 EndCharacterOffset=27)" />
+    <Node Id="(@1 @2 Type=IRingLikeTraits Member=Addition)" Category="CodeSchema_Property" Bounds="-9504.64646484375,-9527.2431640625,180.606666666667,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Addition" Icon="Microsoft.VisualStudio.Property.Public" Label="Addition : IGroupLikeTraits" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLikeTraits.cs StartLineNumber=30 StartCharacterOffset=25 EndLineNumber=30 EndCharacterOffset=33)" />
+    <Node Id="(@1 @2 Type=IRingLikeTraits Member=Multiplication)" Category="CodeSchema_Property" Bounds="-9504.64646484375,-9499.2431640625,207.790000000001,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Multiplication" Icon="Microsoft.VisualStudio.Property.Public" Label="Multiplication : IGroupLikeTraits" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLikeTraits.cs StartLineNumber=31 StartCharacterOffset=25 EndLineNumber=31 EndCharacterOffset=39)" />
+    <Node Id="@4" Category="CodeSchema_Interface" Bounds="-9409.51286141146,-9994.29668310283,141.002396000002,114.005600060002" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IGroupLike&lt;T&gt;" Group="Expanded" Icon="Microsoft.VisualStudio.Interface.Public" Label="IGroupLike&lt;T&gt;" LayoutSettings="List" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLike.cs StartLineNumber=28 StartCharacterOffset=21 EndLineNumber=28 EndCharacterOffset=31)" UseManualLocation="True" />
+    <Node Id="@6" Category="CodeSchema_Interface" Bounds="-9546.79536458333,-9822.29296875,220.156666666666,170" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IRingLike&lt;T&gt;" Group="Expanded" Icon="Microsoft.VisualStudio.Interface.Public" Label="IRingLike&lt;T&gt;" LayoutSettings="List" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLike.cs StartLineNumber=28 StartCharacterOffset=21 EndLineNumber=28 EndCharacterOffset=30)" UseManualLocation="True" />
+    <Node Id="@8" Category="CodeSchema_Interface" Bounds="-9153.48724500325,-9709.39444105211,168.906666666666,170" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IGroupLikeTraits" Group="Expanded" Icon="Microsoft.VisualStudio.Interface.Public" Label="IGroupLikeTraits" LayoutSettings="List" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IGroupLikeTraits.cs StartLineNumber=28 StartCharacterOffset=21 EndLineNumber=28 EndCharacterOffset=37)" UseManualLocation="True" />
+    <Node Id="@9" Category="CodeSchema_Interface" Bounds="-9510.64646484375,-9553.2432640625,219.790000000001,86.0001999999986" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" CommonLabel="IRingLikeTraits" Group="Expanded" Icon="Microsoft.VisualStudio.Interface.Public" Label="IRingLikeTraits" LayoutSettings="List" SourceLocation="(Assembly=file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/Algebra/IRingLikeTraits.cs StartLineNumber=28 StartCharacterOffset=21 EndLineNumber=28 EndCharacterOffset=36)" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="@4" Target="(@1 @2 @3 Member=(Name=Eval OverloadingParameters=[(@1 @2 @3 ParameterIdentifier=0),(@1 @2 @3 ParameterIdentifier=0)]))" Category="Contains" />
+    <Link Source="@4" Target="(@1 @2 @3 Member=(Name=Inverse OverloadingParameters=[(@1 @2 @3 ParameterIdentifier=0)]))" Category="Contains" />
+    <Link Source="@4" Target="(@1 @2 @3 Member=Identity)" Category="Contains" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=(Name=Add OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0),(@1 @2 @5 ParameterIdentifier=0)]))" Category="Contains" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=(Name=Multiply OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0),(@1 @2 @5 ParameterIdentifier=0)]))" Category="Contains" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=(Name=Negate OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0)]))" Category="Contains" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=(Name=Reciprocal OverloadingParameters=[(@1 @2 @5 ParameterIdentifier=0)]))" Category="Contains" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=One)" Category="Contains" />
+    <Link Source="@6" Target="(@1 @2 @5 Member=Zero)" Category="Contains" />
+    <Link Source="@8" Target="(@1 @2 @7 Member=IsAssociative)" Category="Contains" />
+    <Link Source="@8" Target="(@1 @2 @7 Member=IsCommutative)" Category="Contains" />
+    <Link Source="@8" Target="(@1 @2 @7 Member=IsIdempotent)" Category="Contains" />
+    <Link Source="@8" Target="(@1 @2 @7 Member=SupportIdentity)" Category="Contains" />
+    <Link Source="@8" Target="(@1 @2 @7 Member=SupportInverse)" Category="Contains" />
+    <Link Source="@9" Target="(@1 @2 Type=IRingLikeTraits Member=Addition)" Category="Contains" />
+    <Link Source="@9" Target="(@1 @2 Type=IRingLikeTraits Member=Multiplication)" Category="Contains" />
+  </Links>
+  <Categories>
+    <Category Id="CodeSchema_Interface" Label="Interface" BasedOn="CodeSchema_Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Interface" NavigationActionLabel="Interfaces" />
+    <Category Id="CodeSchema_Member" Label="Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Field" NavigationActionLabel="Members" />
+    <Category Id="CodeSchema_Method" Label="Method" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Link:Forward:CodeSchema_Calls" Icon="CodeSchema_Method" NavigationActionLabel="Methods" />
+    <Category Id="CodeSchema_Property" Label="Property" BasedOn="CodeSchema_Member" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="CodeSchema_Property" NavigationActionLabel="Properties" />
+    <Category Id="CodeSchema_Type" Label="Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="Types" />
+    <Category Id="Contains" Label="Contains" Description="Whether the source of the link contains the target object" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Contained By" IsContainment="True" OutgoingActionLabel="Contains" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsAbstract" Label="Is Abstract" Description="Flag to indicate member is 'Abstract' does not provide a full implementation" DataType="System.Boolean" />
+    <Property Id="CodeSchemaProperty_IsPublic" Label="Is Public" Description="Flag to indicate the scope is Public" DataType="System.Boolean" />
+    <Property Id="CommonLabel" DataType="System.String" />
+    <Property Id="DefaultAction" Label="DefaultAction" Description="DefaultAction" DataType="System.String" />
+    <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="Icon" Label="Icon" Description="Icon" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="LayoutSettings" DataType="Microsoft.VisualStudio.Diagrams.View.GroupLayoutStyle" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="SourceLocation" Label="Start Line Number" DataType="Microsoft.VisualStudio.GraphModel.CodeSchema.SourceLocation" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <QualifiedNames>
+    <Name Id="Assembly" Label="Assembly" ValueType="Uri" />
+    <Name Id="GenericParameterCount" Label="Generic Parameter Count" ValueType="System.String" />
+    <Name Id="Member" Label="Member" ValueType="System.Object" />
+    <Name Id="Name" Label="Name" ValueType="System.String" />
+    <Name Id="Namespace" Label="Namespace" ValueType="System.String" />
+    <Name Id="OverloadingParameters" Label="Parameter" ValueType="Microsoft.VisualStudio.GraphModel.GraphNodeIdCollection" Formatter="NameValueNoEscape" />
+    <Name Id="ParameterIdentifier" Label="Parameter Identifier" ValueType="System.String" />
+    <Name Id="Type" Label="Type" ValueType="System.Object" />
+  </QualifiedNames>
+  <IdentifierAliases>
+    <Alias n="1" Uri="Assembly=$(041e639d-20cd-454f-90d5-2852aa58e126.OutputPathUri)" />
+    <Alias n="2" Id="Namespace=WmcSoft.Algebra" />
+    <Alias n="3" Id="Type=(Name=IGroupLike GenericParameterCount=1)" />
+    <Alias n="4" Id="(@1 @2 @3)" />
+    <Alias n="5" Id="Type=(Name=IRingLike GenericParameterCount=1)" />
+    <Alias n="6" Id="(@1 @2 @5)" />
+    <Alias n="7" Id="Type=IGroupLikeTraits" />
+    <Alias n="8" Id="(@1 @2 @7)" />
+    <Alias n="9" Id="(@1 @2 Type=IRingLikeTraits)" />
+  </IdentifierAliases>
+  <Paths>
+    <Path Id="041e639d-20cd-454f-90d5-2852aa58e126.OutputPath" Value="C:\Users\vincent\source\repos\WmcSoft\WmcSoft.Mathematics\bin\Debug\net461\WmcSoft.Mathematics.dll" />
+    <Path Id="041e639d-20cd-454f-90d5-2852aa58e126.OutputPathUri" Value="file:///C:/Users/vincent/source/repos/WmcSoft/WmcSoft.Mathematics/bin/Debug/net461/WmcSoft.Mathematics.dll" />
+  </Paths>
+</DirectedGraph>
