@@ -36,9 +36,13 @@ using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
 {
+    /// <summary>
+    /// Represents a predicate that determines if a date is a week end or not.
+    /// </summary>
     public sealed class WeekendSpecification : IDateSpecification
     {
         const int DaysOfWeek = 7;
+
         private readonly DayOfWeek[] _weekend;
         private readonly int[] _nextWeekendDay;
 
