@@ -37,9 +37,28 @@ namespace WmcSoft
     public class GatewayError
     {
         /// <summary>
+        /// Creates an instance of <see cref="GatewayError"/> without code or description.
+        /// </summary>
+        public GatewayError()
+        {
+        }
+
+        /// <summary>
+        /// Creates an intance of <see cref="GatewayError"/> with the given <paramref name="code"/> and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="code">The code of the error.</param>
+        /// <param name="description">The description of the error.</param>
+        public GatewayError(string code, string description = null)
+        {
+            Code = code;
+            Description = description;
+        }
+
+        /// <summary>
         /// The code for this error.
         /// </summary>
         public string Code { get; set; }
+
         /// <summary>
         /// The description for this error.
         /// </summary>
