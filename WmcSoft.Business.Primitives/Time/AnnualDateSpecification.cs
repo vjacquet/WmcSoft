@@ -35,6 +35,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Base class for specification on date that occurs once in a year.
+    /// </summary>
     public abstract class AnnualDateSpecification : IDateSpecification
     {
         public abstract Date OfYear(int year);

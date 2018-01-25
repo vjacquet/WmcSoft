@@ -31,7 +31,7 @@ namespace WmcSoft
     /// <summary>
     /// Represents a predicate that determines if an object does or does not satisfy some criteria.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public interface ISpecification<in T>
     {
         /// <summary>
