@@ -1,111 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FD4E34D4-7A77-4908-B135-268ABE7D2506}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.Units</RootNamespace>
-    <AssemblyName>WmcSoft.Units</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net461</TargetFramework>
+    <Authors>Vincent J. JACQUET</Authors>
+    <Company>WmcSoft</Company>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Copyright © 2015</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\WmcSoft.Business.Primitives\WmcSoft.Business.Primitives.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CompositeConversion.cs" />
-    <Compile Include="Conversion\Conversion.cs" />
-    <Compile Include="Conversion\CrossSystemConversions.cs" />
-    <Compile Include="DerivedUnit.cs" />
-    <Compile Include="DerivedUnitTerm.cs" />
-    <Compile Include="IdentityConversion.cs" />
-    <Compile Include="ImperialSystemOfUnit.cs" />
-    <Compile Include="IncompatibleMetricException.cs" />
-    <Compile Include="KnownDerivedUnit.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ReciprocalUnitConversion.cs" />
-    <Compile Include="SIPrefix.cs" />
-    <Compile Include="SIPrefixedScaledUnit.cs" />
-    <Compile Include="ManHour.cs" />
-    <Compile Include="Metric.cs" />
-    <Compile Include="MetricException.cs" />
-    <Compile Include="NaturalSystemOfUnit.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quantity.cs" />
-    <Compile Include="RM.cs" />
-    <Compile Include="RoundingPolicy.cs" />
-    <Compile Include="ScaledUnit.cs" />
-    <Compile Include="SIBaseUnit.cs" />
-    <Compile Include="SISystemOfUnit.cs" />
-    <Compile Include="LinearConversion.cs" />
-    <Compile Include="LinearConversionAttribute.cs" />
-    <Compile Include="SystemOfUnits.cs" />
-    <Compile Include="Unit.cs" />
-    <Compile Include="UnitConversion.cs" />
-    <Compile Include="UnitConversionAttribute.cs" />
-    <Compile Include="UnitConverter.cs" />
-    <Compile Include="USCustomarySystemOfUnit.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="Metric.cd" />
-    <None Include="UnitConversions.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.fr.resx" />
-    <EmbeddedResource Include="Properties\Resources.resx">
+
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RM.en-us.resx">
-      <DependentUpon>RM.cs</DependentUpon>
+    <EmbeddedResource Update="Properties\Resources.fr.resx">
+      <DependentUpon>Properties\Resources.resx</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RM.fr.resx">
-      <DependentUpon>RM.cs</DependentUpon>
+
+    <EmbeddedResource Update="RM.en-us.resx">
+      <DependentUpon>RM.resx</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RM.resx">
+    <EmbeddedResource Update="RM.fr.resx">
+      <DependentUpon>RM.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="RM.resx">
       <DependentUpon>RM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
