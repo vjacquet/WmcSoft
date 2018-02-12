@@ -77,7 +77,7 @@ namespace WmcSoft.Business.Calendars.Specifications
         private readonly TCalendar _calendar;
         private readonly TConvention _convention;
 
-        public AdjustedAnnualDateSpecification(TCalendar calendar, AnnualDateSpecification specification, TConvention convention = default(TConvention))
+        public AdjustedAnnualDateSpecification(TCalendar calendar, AnnualDateSpecification specification, TConvention convention = default)
         {
             _specification = specification;
             _calendar = calendar;
