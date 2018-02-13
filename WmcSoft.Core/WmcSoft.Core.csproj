@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>latest</LangVersion>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -244,6 +245,8 @@
     </Compile>
     <Compile Include="OrdinalSet.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
+    <Compile Include="Security\Cryptography\CRC32.cs" />
+    <Compile Include="Security\Cryptography\CRC32Managed.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />

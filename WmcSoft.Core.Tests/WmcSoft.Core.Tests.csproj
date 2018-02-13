@@ -44,6 +44,9 @@
     <PackageReference Include="xunit">
       <Version>2.3.1</Version>
     </PackageReference>
+    <PackageReference Include="xunit.runner.visualstudio">
+      <Version>2.3.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -134,6 +137,7 @@
     <Compile Include="OrdinalSetTests.cs" />
     <Compile Include="OrdinalTests.cs" />
     <Compile Include="Runtime\Serialization\XmlSerializerTests.cs" />
+    <Compile Include="Security\Cryptography\CRC32Tests.cs" />
     <Compile Include="SubscriptionTests.cs" />
     <Compile Include="Text\NumericalComparerTests.cs" />
     <Compile Include="TripleTests.cs" />
