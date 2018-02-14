@@ -235,6 +235,7 @@
     <Compile Include="IO\QuotedString.cs" />
     <Compile Include="IO\ReportProgressStream.cs" />
     <Compile Include="IO\ResourceStreamSource.cs" />
+    <Compile Include="IO\StreamComparer.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Linq\Expressions\ParameterRebindExpressionVisitor.cs" />
