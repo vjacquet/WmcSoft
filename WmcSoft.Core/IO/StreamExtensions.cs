@@ -107,8 +107,6 @@ namespace WmcSoft.IO
 
         public static long ConsumeAll(this Stream stream)
         {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
             int bytesRead = 0;
@@ -119,8 +117,6 @@ namespace WmcSoft.IO
 
         public static async Task<long> ConsumeAllAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
             int bytesRead = 0;
@@ -145,8 +141,6 @@ namespace WmcSoft.IO
         /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume the data until the end of stream.</remarks>
         public static void End(this Stream stream)
         {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-
             if (stream.CanSeek) {
                 stream.Seek(0L, SeekOrigin.End);
             } else {
