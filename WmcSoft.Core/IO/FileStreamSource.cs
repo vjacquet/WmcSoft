@@ -31,10 +31,12 @@ namespace WmcSoft.IO
     /// <summary>
     /// Returns a <see cref="Stream"/> from the specified <see cref="Path"/>.
     /// </summary>
-    public sealed class FileStreamSource : IStreamSource
+    /// <remarks>The base implementaion returns a read-only stream.</remarks>
+    public class FileStreamSource : IStreamSource
     {
         public FileStreamSource(string path)
         {
+            // let FileInfo check the argument
             var info = new FileInfo(path);
             Path = info.FullName;
         }
@@ -44,7 +46,7 @@ namespace WmcSoft.IO
         /// </summary>
         public string Path { get; }
 
-        public Stream GetStream()
+        public virtual Stream GetStream()
         {
             return File.OpenRead(Path);
         }

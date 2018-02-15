@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Permissions;
 using System.Threading;
@@ -51,7 +52,8 @@ namespace WmcSoft.IO
         /// <returns>The number of bytes copied</returns>
         public static void CopyTo(this Stream source, Stream destination, byte[] buffer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Debug.Assert(source != null);
+
             if (destination == null) throw new ArgumentNullException(nameof(destination));
             if (buffer == null) throw new ArgumentNullException(nameof(buffer));
 
@@ -68,7 +70,8 @@ namespace WmcSoft.IO
         [HostProtection(ExternalThreading = true)]
         public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<long> progress, CancellationToken cancellationToken)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Debug.Assert(source != null);
+
             if (destination == null) throw new ArgumentNullException(nameof(destination));
             if (bufferSize <= 0) throw new ArgumentOutOfRangeException(nameof(bufferSize));
             if (progress == null) throw new ArgumentNullException(nameof(progress));
@@ -107,6 +110,8 @@ namespace WmcSoft.IO
 
         public static long ConsumeAll(this Stream stream)
         {
+            Debug.Assert(stream != null);
+
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
             int bytesRead = 0;
@@ -117,6 +122,8 @@ namespace WmcSoft.IO
 
         public static async Task<long> ConsumeAllAsync(this Stream stream, CancellationToken cancellationToken)
         {
+            Debug.Assert(stream != null);
+
             byte[] buffer = new byte[DefaultBufferSize];
             long length = 0;
             int bytesRead = 0;
@@ -141,6 +148,8 @@ namespace WmcSoft.IO
         /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume the data until the end of stream.</remarks>
         public static void End(this Stream stream)
         {
+            Debug.Assert(stream != null);
+
             if (stream.CanSeek) {
                 stream.Seek(0L, SeekOrigin.End);
             } else {
@@ -161,6 +170,8 @@ namespace WmcSoft.IO
         /// <param name="stream">The stream.</param>
         public static void Rewind(this Stream stream)
         {
+            Debug.Assert(stream != null);
+
             stream.Seek(0L, SeekOrigin.Begin);
         }
 
@@ -176,6 +187,8 @@ namespace WmcSoft.IO
         /// <remarks>Uses <see cref="Stream.Seek"/> when <see cref="Stream.CanSeek"/> returns <c>true</c>; otherwise, consume up to <paramref name="count"/> bytes of data.</remarks>
         public static void Skip(this Stream stream, long count)
         {
+            Debug.Assert(stream != null);
+
             if (stream.CanSeek) {
                 stream.Seek(count, SeekOrigin.Current);
             } else {
