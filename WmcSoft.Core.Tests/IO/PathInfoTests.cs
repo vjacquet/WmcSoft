@@ -1,9 +1,34 @@
-﻿using Xunit;
+﻿using System.IO;
+using Xunit;
 
 namespace WmcSoft.IO
 {
     public class PathInfoTests
     {
+        [Theory]
+        [InlineData(@"c:\path\to\file.ext", @"c:\path\to\file-suffix.ext")]
+        [InlineData(@"path\to\file.ext", @"path\to\file-suffix.ext")]
+        [InlineData(@"file.ext", @"file-suffix.ext")]
+        [InlineData(@".ext", @"-suffix.ext")]
+        public void CanAddSuffixToFileName(string path, string expected)
+        {
+            var pi = new PathInfo(path);
+            Assert.Equal(expected, (string)pi.AppendBeforeExtension("-suffix"));
+        }
+
+        [Theory]
+        [InlineData(@"c:\path\to\file.ext", @"c:\path\to", "file", ".ext")]
+        [InlineData(@"unrooted-path\to\file.ext", @"unrooted-path\to", "file", ".ext")]
+        [InlineData(@"file.ext", @"", "file", ".ext")]
+        [InlineData(@"c:\path\to\.ext", @"c:\path\to", "", ".ext")]
+        public void CanGetPathParts(string path, string directory, string fileName, string extension)
+        {
+            var pi = new PathInfo(path);
+            Assert.Equal(directory, pi.DirectoryName);
+            Assert.Equal(fileName, pi.FileNameWithoutExtension);
+            Assert.Equal(extension, pi.Extension);
+        }
+
         [Fact]
         public void CheckUnrootedPathIsNull()
         {

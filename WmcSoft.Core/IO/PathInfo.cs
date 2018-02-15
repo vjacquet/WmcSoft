@@ -110,10 +110,14 @@ namespace WmcSoft.IO
         public PathInfo? Root {
             get {
                 var root = Path.GetPathRoot(_path);
-                if (root == "")
+                if (string.IsNullOrEmpty(root))
                     return null;
                 return new PathInfo(Uninitialized, root);
             }
+        }
+
+        public string DirectoryName {
+            get { return Path.GetDirectoryName(_path); }
         }
 
         public string FileName {
@@ -136,6 +140,27 @@ namespace WmcSoft.IO
         #endregion
 
         #region Methods
+
+        public PathInfo AppendBeforeExtension(string suffix)
+        {
+            if (string.IsNullOrEmpty(suffix))
+                return this;
+            var extension = Extension;
+            return new PathInfo(Uninitialized, Path.ChangeExtension(_path, null) + suffix + extension);
+        }
+
+        public PathInfo ChangeExtension(string extension)
+        {
+            return new PathInfo(Uninitialized, Path.ChangeExtension(_path, extension));
+        }
+
+        public PathInfo ReplaceExtension(string oldExtension, string newExtension, StringComparer comparer = null)
+        {
+            comparer = comparer ?? StringComparer.CurrentCultureIgnoreCase;
+            if (comparer.Equals(Extension, oldExtension))
+                return ChangeExtension(newExtension);
+            return this;
+        }
 
         public PathInfo GetFullPath()
         {
@@ -170,6 +195,7 @@ namespace WmcSoft.IO
                 return FileNameWithoutExtension;
             case "u":
             case "U":
+                // TODO: uses plateform specific values.
                 return _path.Replace('\\', '/');
             default:
                 return _path;
