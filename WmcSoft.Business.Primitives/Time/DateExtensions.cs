@@ -114,5 +114,14 @@ namespace WmcSoft.Time
             return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture)
                 .AddDays(6);
         }
+
+        public static Date Add(this Date date, Duration duration)
+        {
+            if (duration.Unit.IsConvertibleToDays())
+                return date.AddDays(checked((int)duration.InBaseUnits() / TimeUnit.Day.Factor));
+            if (duration.Unit.IsConvertibleToMonths())
+                return date.AddMonths(checked((int)duration.InBaseUnits()));
+            throw new ArgumentOutOfRangeException(nameof(duration));
+        }
     }
 }

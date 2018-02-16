@@ -105,8 +105,8 @@ namespace WmcSoft.Time
             }
         }
 
-        public TimeUnit Unit { get { return _unit; } }
-        public TimeUnit BaseUnit { get { return _unit.BaseUnit; } }
+        public TimeUnit Unit => _unit;
+        public TimeUnit BaseUnit => _unit.BaseUnit;
 
         public static Duration Milliseconds(long howMany)
         {
@@ -207,7 +207,7 @@ namespace WmcSoft.Time
 
         public static Duration operator +(Duration x, Duration y)
         {
-            if (!x._unit.IsConvertibleTo(y._unit)) throw new ArgumentException();
+            if (!x._unit.HasSameBaseTypes(y._unit)) throw new ArgumentException();
 
             var quantity = x.InBaseUnits() + y.InBaseUnits();
             return new Duration(quantity, x._unit.BaseUnit);
@@ -219,7 +219,7 @@ namespace WmcSoft.Time
 
         public static Duration operator -(Duration x, Duration y)
         {
-            if (!x._unit.IsConvertibleTo(y._unit)) throw new ArgumentException();
+            if (!x._unit.HasSameBaseTypes(y._unit)) throw new ArgumentException();
 
             var quantity = x.InBaseUnits() - y.InBaseUnits();
             if (quantity < 0) throw new OverflowException();
@@ -283,7 +283,7 @@ namespace WmcSoft.Time
 
         internal Ratio DividedBy(Duration divisor)
         {
-            Debug.Assert(_unit.IsConvertibleTo(divisor._unit));
+            Debug.Assert(_unit.HasSameBaseTypes(divisor._unit));
 
             return new Ratio(InBaseUnits(), divisor.InBaseUnits());
         }

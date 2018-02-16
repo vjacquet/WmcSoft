@@ -91,26 +91,14 @@ namespace WmcSoft.Time
             _factor = factor;
         }
 
-        private Type BaseType {
-            get { return _type & (Type.Millisecond | Type.Month); }
-        }
-        public TimeUnit BaseUnit {
-            get { return IsConvertibleToMilliseconds() ? Millisecond : Month; }
-        }
+        private Type BaseType => _type & (Type.Millisecond | Type.Month);
+        public TimeUnit BaseUnit => IsConvertibleToMilliseconds() ? Millisecond : Month;
 
-        public int Factor { get { return _factor; } }
+        public int Factor => _factor;
 
-        public TimeUnit[] DescendingUnits {
-            get {
-                return IsConvertibleToMilliseconds() ? DescendingMillisecondBased : DescendingMonthBased;
-            }
-        }
+        public TimeUnit[] DescendingUnits => IsConvertibleToMilliseconds() ? DescendingMillisecondBased : DescendingMonthBased;
 
-        public TimeUnit[] DescendingUnitsForDisplay {
-            get {
-                return IsConvertibleToMilliseconds() ? DescendingMillisecondBasedForDisplay : DescendingMonthBasedForDisplay;
-            }
-        }
+        public TimeUnit[] DescendingUnitsForDisplay => IsConvertibleToMilliseconds() ? DescendingMillisecondBasedForDisplay : DescendingMonthBasedForDisplay;
 
         public static TimeUnit NormalizeUnit(long quantity, TimeUnit unit)
         {
@@ -160,7 +148,22 @@ namespace WmcSoft.Time
             return (_type & Type.Millisecond) != 0;
         }
 
+        public bool IsConvertibleToDays()
+        {
+            return IsConvertibleToMilliseconds() & (int)_type >= (int)Type.Day;
+        }
+
+        public bool IsConvertibleToMonths()
+        {
+            return (_type & Type.Month) != 0;
+        }
+
         public bool IsConvertibleTo(TimeUnit other)
+        {
+            return BaseType == other.BaseType & (int)_type > (int)other._type;
+        }
+
+        public bool HasSameBaseTypes(TimeUnit other)
         {
             return BaseType == other.BaseType;
         }

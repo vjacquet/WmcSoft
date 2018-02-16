@@ -113,5 +113,36 @@ namespace WmcSoft.Time
             var actual = Array.ConvertAll(units, _ => _.BaseUnit);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void EnsureIsConvertibleDetectSimpleUnits()
+        {
+            var hour = new Duration(1, TimeUnit.Hour);
+            var day = new Duration(1, TimeUnit.Day);
+            var month = new Duration(1, TimeUnit.Month);
+
+            Assert.True(hour.Unit.IsConvertibleToMilliseconds());
+            Assert.False(hour.Unit.IsConvertibleToDays());
+            Assert.False(hour.Unit.IsConvertibleToMonths());
+
+            Assert.True(day.Unit.IsConvertibleToMilliseconds());
+            Assert.True(day.Unit.IsConvertibleToDays());
+            Assert.False(day.Unit.IsConvertibleToMonths());
+
+            Assert.False(month.Unit.IsConvertibleToMilliseconds());
+            Assert.False(month.Unit.IsConvertibleToDays());
+            Assert.True(month.Unit.IsConvertibleToMonths());
+        }
+
+        [Fact]
+        public void EnsureIsConvertibleDetectMixedUnits()
+        {
+            var hour = new Duration(1, TimeUnit.Hour);
+            var day = new Duration(1, TimeUnit.Day);
+            var mix = hour + day;
+
+            Assert.True(mix.Unit.IsConvertibleToMilliseconds());
+            Assert.False(mix.Unit.IsConvertibleToDays());
+        }
     }
 }

@@ -6,9 +6,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyVersion>0.9.0.0</AssemblyVersion>
-    <FileVersion>0.9.0.0</FileVersion>
-    <Version>0.9.0</Version>
+    <AssemblyVersion>0.9.1.0</AssemblyVersion>
+    <FileVersion>0.9.1.0</FileVersion>
+    <Version>0.9.1</Version>
+    <Authors>Vincent J. JACQUET</Authors>
+    <Company>WmcSoft</Company>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
