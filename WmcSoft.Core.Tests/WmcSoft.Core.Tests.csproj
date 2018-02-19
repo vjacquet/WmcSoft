@@ -128,6 +128,7 @@
     <Compile Include="IO\CsvWriterTests.cs" />
     <Compile Include="IO\MockConstrainedStream.cs" />
     <Compile Include="IO\PathInfoTests.cs" />
+    <Compile Include="IO\StreamComparerTests.cs" />
     <Compile Include="IO\StreamSourceTests.cs" />
     <Compile Include="IO\SubstringReaderTests.cs" />
     <Compile Include="Linq\Expressions\DynamicTests.cs" />
