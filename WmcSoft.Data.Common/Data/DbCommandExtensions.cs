@@ -142,7 +142,7 @@ namespace WmcSoft.Data
                 foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(parameters)) {
                     var parameter = command.CreateParameter();
                     parameter.ParameterName = descriptor.Name;
-                    parameter.Value = descriptor.GetValue(parameters);
+                    parameter.Value = descriptor.GetValue(parameters) ?? DBNull.Value;
                     command.Parameters.Add(parameter);
                 }
             }
