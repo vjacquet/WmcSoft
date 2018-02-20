@@ -59,6 +59,26 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region GetBytes
+
+        /// <summary>
+        /// Gets the value of the specified column as a byte array.
+        /// </summary>
+        /// <param name="record">The record.</param>
+        /// <param name="i">The zero-based column ordinal.</param>
+        /// <param name="length">The length of the buffer.</param>
+        /// <returns>The value of the specified column.</returns>
+        /// <returns></returns>
+        public static byte[] GetBytes(this IDataRecord record, int i, int length)
+        {
+            var buffer = new byte[length];
+            if (record.GetBytes(i, 0, buffer, 0, length) != length)
+                throw new InvalidOperationException();
+            return buffer;
+        }
+
+        #endregion
+
         #region GetNullableXxx
 
         /// <summary>
