@@ -105,8 +105,7 @@ namespace WmcSoft.Diagnostics.Sentries
 
         void IObserver<SentryStatus>.OnNext(SentryStatus value)
         {
-            var aggregator = new SentryStatusAggregator();
-            var aggregate = _sentries.Aggregate(aggregator, (a, s) => a.Add(s)).GetResult();
+            var aggregate = AggregateStatus(_sentries);
             OnNext(aggregate);
         }
 
@@ -131,6 +130,12 @@ namespace WmcSoft.Diagnostics.Sentries
                 var disposer = Interlocked.Exchange(ref _unsubscribers[i], null);
                 disposer?.Dispose();
             }
+        }
+
+        protected virtual SentryStatus AggregateStatus(ISentry[] sentries)
+        {
+            var aggregator = new SentryStatusAggregator();
+            return sentries.Aggregate(aggregator, (a, s) => a.Add(s)).GetResult();
         }
     }
 }
