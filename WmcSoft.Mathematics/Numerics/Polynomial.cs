@@ -154,8 +154,8 @@ namespace WmcSoft.Numerics
 
         #region Properties
 
-        public int Degree { get { return _nodes == null ? 0 : _nodes[0].Exp; } }
-        public double this[int index] { get { return _nodes.BinaryFind(d => d.Exp - index).Coef; } }
+        public int Degree => _nodes == null ? 0 : _nodes[0].Exp;
+        public double this[int index] => _nodes.BinaryFind(d => d.Exp - index).Coef;
 
         #endregion
 

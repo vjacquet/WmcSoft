@@ -106,8 +106,7 @@ namespace WmcSoft.Numerics
         {
             if (q._denominator == 1)
                 return q._numerator;
-            int rem;
-            var n = Math.DivRem(q._numerator, q._denominator, out rem);
+            var n = Math.DivRem(q._numerator, q._denominator, out var rem);
             if (rem == 0)
                 return n;
             throw new InvalidCastException();

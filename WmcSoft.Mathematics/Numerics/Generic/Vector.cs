@@ -75,9 +75,9 @@ namespace WmcSoft.Numerics.Generic
 
         #region Properties
 
-        public int Rank { get { return _data == null ? 0 : 1; } }
-        public int Cardinality { get { return _data == null ? 0 : _data.Length; } }
-        public T this[int index] { get { return _data[index]; } }
+        public int Rank => _data == null ? 0 : 1;
+        public int Cardinality => _data == null ? 0 : _data.Length;
+        public T this[int index] => _data[index];
 
         #endregion
 
@@ -256,9 +256,7 @@ namespace WmcSoft.Numerics.Generic
 
         #region IReadOnlyCollection<T> Members
 
-        int IReadOnlyCollection<T>.Count {
-            get { return Cardinality; }
-        }
+        int IReadOnlyCollection<T>.Count => Cardinality;
 
         #endregion
 

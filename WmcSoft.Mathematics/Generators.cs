@@ -177,7 +177,7 @@ namespace WmcSoft
         /// Returns a nonnegative random number. 
         /// </summary>
         /// <param name="random">The random generator.</param>
-        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="Int32.MaxValue"/>.</returns>
+        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="int.MaxValue"/>.</returns>
         public static IEnumerable<int> Random(Random random)
         {
             if (random == null)
@@ -190,7 +190,7 @@ namespace WmcSoft
         /// <summary>
         /// Returns a nonnegative random number, using the default <see cref="Random"/> generator. 
         /// </summary>
-        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="Int32.MaxValue"/>.</returns>
+        /// <returns>A 32-bit signed integer greater than or equal to zero and less than <see cref="int.MaxValue"/>.</returns>
         public static IEnumerable<int> Random()
         {
             return Random(new Random());
@@ -310,9 +310,7 @@ namespace WmcSoft
 
             #region IReadOnlyCollection<T> Members
 
-            public int Count {
-                get { return _indices.Length; }
-            }
+            public int Count => _indices.Length;
 
             #endregion
 
