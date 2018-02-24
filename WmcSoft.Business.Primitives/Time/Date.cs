@@ -140,7 +140,7 @@ namespace WmcSoft.Time
             return new Date(date);
         }
 
-        public static explicit operator Date(DateTimeOffset date)
+        public static implicit operator Date(DateTimeOffset date)
         {
             return new Date(date.Date);
         }
