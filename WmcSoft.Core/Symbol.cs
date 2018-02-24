@@ -41,49 +41,61 @@ namespace WmcSoft
 
         readonly string value;
 
-        public Symbol(string symbol) {
+        public Symbol(string symbol)
+        {
             value = nt.Add(symbol);
         }
 
-        public static implicit operator Symbol<T>(string symbol) {
+        public static implicit operator Symbol<T>(string symbol)
+        {
             return new Symbol<T>(symbol);
         }
-        public static explicit operator string(Symbol<T> symbol) {
+
+        public static explicit operator string(Symbol<T> symbol)
+        {
             return symbol.value;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             if (value == null)
                 return 0;
             return value.GetHashCode();
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null || obj.GetType() != typeof(Symbol<T>))
                 return false;
             return Equals((Symbol<T>)obj);
         }
 
-        public bool Equals(Symbol<T> other) {
+        public bool Equals(Symbol<T> other)
+        {
             return ReferenceEquals(value, other.value);
         }
 
-        public static bool operator ==(Symbol<T> x, Symbol<T> y) {
+        public static bool operator ==(Symbol<T> x, Symbol<T> y)
+        {
             return x.Equals(y);
         }
-        public static bool operator !=(Symbol<T> x, Symbol<T> y) {
+        public static bool operator !=(Symbol<T> x, Symbol<T> y)
+        {
             return !x.Equals(y);
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return value ?? "";
         }
 
         private Symbol(SerializationInfo info, StreamingContext context)
-            : this((string)info.GetValue("symbol", typeof(string))) {
+            : this((string)info.GetValue("symbol", typeof(string)))
+        {
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
             info.AddValue("symbol", value, typeof(string));
         }
     }
