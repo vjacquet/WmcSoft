@@ -115,6 +115,29 @@ namespace WmcSoft.Time
                 .AddDays(6);
         }
 
+        /// <summary>
+        /// Gets the week of the year using ISO-8601 convention.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns></returns>
+        public static int Iso8601WeekOfYear(this Date date)
+        {
+            // see <https://blogs.msdn.microsoft.com/shawnste/2006/01/24/iso-8601-week-of-year-format-in-microsoft-net/>
+            var cal = CultureInfo.InvariantCulture.Calendar;
+            var dateTime = (DateTime)date;
+
+            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll
+            // be the same week# as whatever Thursday, Friday or Saturday are,
+            // and we always get those right
+            DayOfWeek day = cal.GetDayOfWeek(dateTime);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday) {
+                dateTime = dateTime.AddDays(3);
+            }
+
+            // Return the week of our adjusted day
+            return cal.GetWeekOfYear(dateTime, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
         public static Date Add(this Date date, Duration duration)
         {
             if (duration.Unit.IsConvertibleToDays())

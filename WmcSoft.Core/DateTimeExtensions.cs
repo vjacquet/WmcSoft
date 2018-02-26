@@ -152,6 +152,28 @@ namespace WmcSoft
         }
 
         /// <summary>
+        /// Gets the week of the year using ISO-8601 convention.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns></returns>
+        public static int Iso8601WeekOfYear(this DateTime date)
+        {
+            // see <https://blogs.msdn.microsoft.com/shawnste/2006/01/24/iso-8601-week-of-year-format-in-microsoft-net/>
+            var cal = CultureInfo.InvariantCulture.Calendar;
+
+            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll
+            // be the same week# as whatever Thursday, Friday or Saturday are,
+            // and we always get those right
+            DayOfWeek day = cal.GetDayOfWeek(date);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday) {
+                date = date.AddDays(3);
+            }
+
+            // Return the week of our adjusted day
+            return cal.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
+        /// <summary>
         /// <para>Truncates a <see cref="DateTime"/> to a specified resolution.</para>
         /// <para>A convenient source for resolution is TimeSpan.TicksPerXXXX constants.</para>
         /// </summary>
