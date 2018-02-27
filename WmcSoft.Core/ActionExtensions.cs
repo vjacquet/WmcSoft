@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using WmcSoft.Diagnostics;
 
 namespace WmcSoft
@@ -54,6 +55,8 @@ namespace WmcSoft
         /// <remarks>If a call throw, the context {i, arg } is captured in the exception Data property, using the default DataKeyConverter.</remarks>
         public static void ApplyEach<T>(this Action<T> action, params T[] args)
         {
+            Debug.Assert(action != null);
+
             int i = 0;
             try {
                 for (; i < args.Length; i++) {
@@ -75,6 +78,8 @@ namespace WmcSoft
         /// <returns>The array of exception, in the order of the arguments.</returns>
         public static Exception[] TryEach<T>(this Action<T> action, params T[] args)
         {
+            Debug.Assert(action != null);
+
             var results = new Exception[args.Length];
             for (int i = 0; i < args.Length; i++) {
                 try {
@@ -99,6 +104,9 @@ namespace WmcSoft
         /// <returns>An action performing both actions.</returns>
         public static Action<T> Then<T>(this Action<T> action, Action<T> then)
         {
+            Debug.Assert(action != null);
+            if (then == null) throw new ArgumentNullException(nameof(then));
+
             return delegate (T obj) {
                 action(obj);
                 then(obj);
@@ -111,61 +119,73 @@ namespace WmcSoft
 
         public static Action<Tuple<T1, T2>> Pack<T1, T2>(this Action<T1, T2> action)
         {
+            Debug.Assert(action != null);
             return t => action(t.Item1, t.Item2);
         }
 
         public static Action<T1, T2> Unpack<T1, T2>(this Action<Tuple<T1, T2>> action)
         {
+            Debug.Assert(action != null);
             return (t1, t2) => action(Tuple.Create(t1, t2));
         }
 
         public static Action<Tuple<T1, T2, T3>> Pack<T1, T2, T3>(this Action<T1, T2, T3> action)
         {
+            Debug.Assert(action != null);
             return t => action(t.Item1, t.Item2, t.Item3);
         }
 
         public static Action<T1, T2, T3> Unpack<T1, T2, T3>(this Action<Tuple<T1, T2, T3>> action)
         {
+            Debug.Assert(action != null);
             return (t1, t2, t3) => action(Tuple.Create(t1, t2, t3));
         }
 
         public static Action<Tuple<T1, T2, T3, T4>> Pack<T1, T2, T3, T4>(this Action<T1, T2, T3, T4> action)
         {
+            Debug.Assert(action != null);
             return t => action(t.Item1, t.Item2, t.Item3, t.Item4);
         }
 
         public static Action<T1, T2, T3, T4> Unpack<T1, T2, T3, T4>(this Action<Tuple<T1, T2, T3, T4>> action)
         {
+            Debug.Assert(action != null);
             return (t1, t2, t3, t4) => action(Tuple.Create(t1, t2, t3, t4));
         }
 
         public static Action<Tuple<T1, T2, T3, T4, T5>> Pack<T1, T2, T3, T4, T5>(this Action<T1, T2, T3, T4, T5> action)
         {
+            Debug.Assert(action != null);
             return t => action(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5);
         }
 
         public static Action<T1, T2, T3, T4, T5> Unpack<T1, T2, T3, T4, T5>(this Action<Tuple<T1, T2, T3, T4, T5>> action)
         {
+            Debug.Assert(action != null);
             return (t1, t2, t3, t4, t5) => action(Tuple.Create(t1, t2, t3, t4, t5));
         }
 
         public static Action<Tuple<T1, T2, T3, T4, T5, T6>> Pack<T1, T2, T3, T4, T5, T6>(this Action<T1, T2, T3, T4, T5, T6> action)
         {
+            Debug.Assert(action != null);
             return t => action(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6);
         }
 
         public static Action<T1, T2, T3, T4, T5, T6> Unpack<T1, T2, T3, T4, T5, T6>(this Action<Tuple<T1, T2, T3, T4, T5, T6>> action)
         {
+            Debug.Assert(action != null);
             return (t1, t2, t3, t4, t5, t6) => action(Tuple.Create(t1, t2, t3, t4, t5, t6));
         }
 
         public static Action<Tuple<T1, T2, T3, T4, T5, T6, T7>> Pack<T1, T2, T3, T4, T5, T6, T7>(this Action<T1, T2, T3, T4, T5, T6, T7> action)
         {
+            Debug.Assert(action != null);
             return t => action(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7);
         }
 
         public static Action<T1, T2, T3, T4, T5, T6, T7> Unpack<T1, T2, T3, T4, T5, T6, T7>(this Action<Tuple<T1, T2, T3, T4, T5, T6, T7>> action)
         {
+            Debug.Assert(action != null);
             return (t1, t2, t3, t4, t5, t6, t7) => action(Tuple.Create(t1, t2, t3, t4, t5, t6, t7));
         }
 
@@ -182,6 +202,9 @@ namespace WmcSoft
         /// <returns>An action that combines testing the condition and executing the action.</returns>
         public static Action<T> Unless<T>(this Action<T> action, Predicate<T> condition)
         {
+            Debug.Assert(action != null);
+            if (condition == null) throw new ArgumentNullException(nameof(condition));
+
             return delegate (T obj) {
                 if (!condition(obj))
                     action(obj);
@@ -201,6 +224,8 @@ namespace WmcSoft
         public static Action<T> Using<T>(this Action<T> action)
             where T : IDisposable
         {
+            Debug.Assert(action != null);
+
             return delegate (T obj) {
                 using (obj) {
                     action(obj);
@@ -217,6 +242,8 @@ namespace WmcSoft
         /// <returns>An action</returns>
         public static Action<T> Using<T>(this Action<T> action, IDisposable usedBy)
         {
+            Debug.Assert(action != null);
+
             return delegate (T obj) {
                 using (usedBy) {
                     action(obj);
@@ -233,6 +260,8 @@ namespace WmcSoft
         /// <returns>An action</returns>
         public static Action<T> Using<T>(this Action<T> action, Func<T, IDisposable> usedBy)
         {
+            Debug.Assert(action != null);
+
             return delegate (T obj) {
                 using (usedBy(obj)) {
                     action(obj);
@@ -251,6 +280,8 @@ namespace WmcSoft
         /// <returns>A new action.</returns>
         public static Action Once(this Action action)
         {
+            Debug.Assert(action != null);
+
             bool ran = false;
             return () => {
                 if (!ran) {
@@ -268,6 +299,8 @@ namespace WmcSoft
         /// <returns>A new action.</returns>
         public static Action After(this Action action, int count)
         {
+            Debug.Assert(action != null);
+
             count = Math.Max(0, count);
             return () => {
                 if (count > 0) {
@@ -286,6 +319,8 @@ namespace WmcSoft
         /// <returns>A new action.</returns>
         public static Action Before(this Action action, int count)
         {
+            Debug.Assert(action != null);
+
             return () => {
                 if (count > 0) {
                     count--;
