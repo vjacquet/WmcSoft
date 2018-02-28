@@ -25,6 +25,7 @@
 #endregion
 
 using System.Data;
+using System.Diagnostics;
 
 namespace WmcSoft.Data
 {
@@ -32,6 +33,7 @@ namespace WmcSoft.Data
     {
         public static DataColumn Add<T>(this DataColumnCollection columns, string columnName)
         {
+            Debug.Assert(columns != null);
             return columns.Add(columnName, typeof(T));
         }
 

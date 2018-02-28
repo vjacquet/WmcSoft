@@ -39,6 +39,7 @@ namespace WmcSoft.Data.Common
 
         public DbDataReaderAdapter(IDataReader reader)
         {
+            if (reader == null) throw new ArgumentNullException(nameof(reader));
             _reader = reader;
         }
 

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using WmcSoft.Data.Common;
 
 namespace WmcSoft.Data
@@ -42,6 +43,8 @@ namespace WmcSoft.Data
 
         public static DbDataReader AsDbDataReader(this IDataReader reader)
         {
+            if (reader == null) throw new NullReferenceException("reader, the `this` parameter of the extension method should not be null.");
+
             var db = reader as DbDataReader;
             return db ?? new DbDataReaderAdapter(reader);
         }
@@ -50,8 +53,19 @@ namespace WmcSoft.Data
 
         #region ReadXxx
 
+        /// <summary>
+        /// Reads and materializes the next record.
+        /// </summary>
+        /// <typeparam name="T">The type of object to return.</typeparam>
+        /// <param name="reader">The reader.</param>
+        /// <param name="materializer">The materializer.</param>
+        /// <param name="entity">The materialized entity.</param>
+        /// <returns><c>true</c> if there was a next element. Otherwise, false</returns>
         public static bool ReadNext<T>(this IDataReader reader, Func<IDataRecord, T> materializer, out T entity)
         {
+            Debug.Assert(reader != null);
+            if (materializer == null) throw new ArgumentNullException(nameof(materializer));
+
             if (reader.Read()) {
                 entity = materializer(reader);
                 return true;
@@ -61,11 +75,26 @@ namespace WmcSoft.Data
             return false;
         }
 
-        public static IEnumerable<T> ReadAll<T>(this IDataReader reader, Func<IDataRecord, T> materializer)
+        static IEnumerable<T> UnguardedReadAll<T>(IDataReader reader, Func<IDataRecord, T> materializer)
         {
             T entity;
             while (reader.ReadNext(materializer, out entity))
                 yield return entity;
+        }
+
+        /// <summary>
+        /// Reads and materializes all records.
+        /// </summary>
+        /// <typeparam name="T">The type of object to return.</typeparam>
+        /// <param name="reader">The reader.</param>
+        /// <param name="materializer">The materializer.</param>
+        /// <returns>The entities.</returns>
+        public static IEnumerable<T> ReadAll<T>(this IDataReader reader, Func<IDataRecord, T> materializer)
+        {
+            Debug.Assert(reader != null);
+            if (materializer == null) throw new ArgumentNullException(nameof(materializer));
+
+            return UnguardedReadAll(reader, materializer);
         }
 
         #endregion
