@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 
 namespace WmcSoft.Data
@@ -37,6 +38,8 @@ namespace WmcSoft.Data
 
         public static IEnumerable<R> Cast<R>(this DataView view) where R : DataRow
         {
+            Debug.Assert(view != null);
+
             foreach (DataRowView r in view) {
                 yield return (R)r.Row;
             }
@@ -44,6 +47,8 @@ namespace WmcSoft.Data
 
         public static IEnumerable<R> Cast<R>(this DataView view, DataRowVersion rowVersion) where R : DataRow
         {
+            Debug.Assert(view != null);
+
             foreach (DataRowView r in view) {
                 if (r.RowVersion == rowVersion)
                     yield return (R)r.Row;
@@ -56,12 +61,16 @@ namespace WmcSoft.Data
 
         public static T Compute<T>(this DataTable dataTable, string expression, string filter)
         {
+            Debug.Assert(dataTable != null);
+
             var value = dataTable.Compute(expression, filter);
             return DataConvert.ChangeType<T>(value);
         }
 
         public static T ComputeOrDefault<T>(this DataTable dataTable, string expression, string filter)
         {
+            Debug.Assert(dataTable != null);
+
             var value = dataTable.Compute(expression, filter);
             return DataConvert.ChangeTypeOrDefault<T>(value);
         }
@@ -72,6 +81,8 @@ namespace WmcSoft.Data
 
         public static string CreateUniquePrefixedName(this IEnumerable<string> names, string prefix)
         {
+            Debug.Assert(names != null);
+
             var set = new HashSet<string>(names.Where(n => n.StartsWith(prefix)));
             var i = 1;
             var name = prefix + i;
@@ -84,26 +95,30 @@ namespace WmcSoft.Data
 
         public static string CreateUniqueName(this IEnumerable<string> names, string format)
         {
+            Debug.Assert(names != null);
+
             if (format.EndsWith("{0}"))
                 return names.CreateUniquePrefixedName(format.Substring(0, format.Length - 3));
 
             var set = new HashSet<string>(names);
             var i = 1;
-            var name = String.Format(format, i);
+            var name = string.Format(format, i);
             while (set.Contains(name)) {
                 i++;
-                name = String.Format(format, i);
+                name = string.Format(format, i);
             }
             return name;
         }
 
         public static string CreateUniqueName(this DataTableCollection collection, string format)
         {
+            Debug.Assert(collection != null);
             return collection.OfType<DataTable>().Select(t => t.TableName).CreateUniqueName(format);
         }
 
         public static string CreateUniqueName(this DataColumnCollection collection, string format)
         {
+            Debug.Assert(collection != null);
             return collection.OfType<DataColumn>().Select(t => t.ColumnName).CreateUniqueName(format);
         }
 
@@ -113,6 +128,10 @@ namespace WmcSoft.Data
 
         public static void RemoveAll(this DataRowCollection collection, IEnumerable<DataRow> rows)
         {
+            Debug.Assert(collection != null);
+
+            if (rows == null) throw new ArgumentNullException(nameof(rows));
+
             var bin = rows.ToList(); // copy to prevent modifying the underlying collection
             foreach (var row in bin)
                 collection.Remove(row);
@@ -124,6 +143,8 @@ namespace WmcSoft.Data
 
         public static IDictionary<string, object> ToDictionary(this DataRow row, IDictionary<string, object> additionalData)
         {
+            Debug.Assert(row != null);
+
             if (additionalData == null)
                 return row.ToDictionary();
 
@@ -139,6 +160,8 @@ namespace WmcSoft.Data
 
         public static IDictionary<string, object> ToDictionary(this DataRow row)
         {
+            Debug.Assert(row != null);
+
             var columns = row.Table.Columns;
             var dictionary = new Dictionary<string, object>(columns.Count);
             foreach (DataColumn dc in columns) {
@@ -182,6 +205,8 @@ namespace WmcSoft.Data
         /// <returns>The column that was added to the collection.</returns>
         public static DataColumn Transient(this DataColumnCollection collection, string columnName, Type type, string expression)
         {
+            Debug.Assert(collection != null);
+
             var t = new TransientDataColumn(columnName, type, expression);
             collection.Add(t);
             return t;
@@ -198,6 +223,8 @@ namespace WmcSoft.Data
         /// <remarks>If transient column with the same expression exists in the collection, it is returned.</remarks>
         public static DataColumn Transient(this DataColumnCollection collection, Type type, string expression)
         {
+            Debug.Assert(collection != null);
+
             var found = collection.OfType<TransientDataColumn>().SingleOrDefault(c => c.Expression == expression);
             if (found != null)
                 return found;
