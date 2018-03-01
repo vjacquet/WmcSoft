@@ -50,6 +50,7 @@ namespace WmcSoft.Data
         public static TEnum GetEnum<TEnum>(this IDataRecord record, int i)
         {
             Debug.Assert(typeof(TEnum).IsEnum);
+            Debug.Assert(record != null);
 
             var value = Enum.Parse(typeof(TEnum), record.GetValue(i).ToString());
             if (Enum.IsDefined(typeof(TEnum), value))
@@ -71,6 +72,8 @@ namespace WmcSoft.Data
         /// <returns></returns>
         public static byte[] GetBytes(this IDataRecord record, int i, int length)
         {
+            Debug.Assert(record != null);
+
             var buffer = new byte[length];
             if (record.GetBytes(i, 0, buffer, 0, length) != length)
                 throw new InvalidOperationException();
@@ -89,6 +92,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static string GetNullableString(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetString(i);
@@ -102,6 +107,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static bool? GetNullableBoolean(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetBoolean(i);
@@ -115,6 +122,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static byte? GetNullableByte(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetByte(i);
@@ -128,6 +137,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static char? GetNullableChar(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetChar(i);
@@ -141,6 +152,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static DateTime? GetNullableDateTime(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetDateTime(i);
@@ -154,6 +167,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static Guid? GetNullableGuid(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetGuid(i);
@@ -167,6 +182,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static short? GetNullableInt16(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetInt16(i);
@@ -180,6 +197,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static int? GetNullableInt32(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetInt32(i);
@@ -193,6 +212,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static long? GetNullableInt64(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetInt64(i);
@@ -206,6 +227,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static float? GetNullableFloat(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetFloat(i);
@@ -219,6 +242,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static double? GetNullableDouble(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetDouble(i);
@@ -232,6 +257,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static decimal? GetNullableDecimal(this IDataRecord record, int i)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return null;
             return record.GetDecimal(i);
@@ -250,6 +277,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static string GetStringOrDefault(this IDataRecord record, int i, string defaultValue = "")
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetString(i);
@@ -264,6 +293,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static bool GetBooleanOrDefault(this IDataRecord record, int i, bool defaultValue = false)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetBoolean(i);
@@ -278,6 +309,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static byte GetByteOrDefault(this IDataRecord record, int i, byte defaultValue = default)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetByte(i);
@@ -292,6 +325,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static char GetCharOrDefault(this IDataRecord record, int i, char defaultValue = default)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetChar(i);
@@ -306,6 +341,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static DateTime GetDateTimeOrDefault(this IDataRecord record, int i, DateTime defaultValue = default)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDateTime(i);
@@ -320,6 +357,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static Guid GetGuidOrDefault(this IDataRecord record, int i, Guid defaultValue = default)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetGuid(i);
@@ -334,6 +373,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static short GetInt16OrDefault(this IDataRecord record, int i, short defaultValue = 0)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt16(i);
@@ -348,6 +389,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static int GetInt32OrDefault(this IDataRecord record, int i, int defaultValue = 0)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt32(i);
@@ -362,6 +405,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static long GetInt64OrDefault(this IDataRecord record, int i, long defaultValue = 0)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetInt64(i);
@@ -376,6 +421,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static float GetFloatOrDefault(this IDataRecord record, int i, float defaultValue = 0f)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetFloat(i);
@@ -390,6 +437,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static double GetDoubleOrDefault(this IDataRecord record, int i, double defaultValue = 0d)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDouble(i);
@@ -404,6 +453,8 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static decimal GetDecimalOrDefault(this IDataRecord record, int i, decimal defaultValue = 0m)
         {
+            Debug.Assert(record != null);
+
             if (record.IsDBNull(i))
                 return defaultValue;
             return record.GetDecimal(i);
@@ -413,8 +464,22 @@ namespace WmcSoft.Data
 
         #region Materialize
 
+        static IEnumerable<T> UnguardedMaterialize<T>(this IEnumerable<IDataRecord> source, Func<IDataRecord, T> materializer)
+        {
+            return source.Select(materializer);
+        }
+
+        /// <summary>
+        /// Materializes entities from data records.
+        /// </summary>
+        /// <typeparam name="T">The type of entities.</typeparam>
+        /// <param name="source">The data records.</param>
+        /// <param name="materializer">The materializer.</param>
+        /// <returns>The materialized entities.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="materializer"/> is <c>null</c>.</exception>
         public static IEnumerable<T> Materialize<T>(this IEnumerable<IDataRecord> source, Func<IDataRecord, T> materializer)
         {
+            if (materializer == null) throw new ArgumentNullException(nameof(materializer));
             return source.Select(materializer);
         }
 
@@ -427,7 +492,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<string> GetString(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetString(i));
+            return UnguardedMaterialize(source, r => r.GetString(i));
         }
 
         /// <summary>
@@ -439,7 +504,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<string> GetNullableString(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableString(i));
+            return UnguardedMaterialize(source, r => r.GetNullableString(i));
         }
 
         /// <summary>
@@ -451,7 +516,7 @@ namespace WmcSoft.Data
         /// <returns>The value of the specified column.</returns>
         public static IEnumerable<string> GetStringOrDefault(this IEnumerable<IDataRecord> source, int i = 0, string defaultValue = "")
         {
-            return Materialize(source, r => r.GetStringOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetStringOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -463,7 +528,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<bool> GetBoolean(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetBoolean(i));
+            return UnguardedMaterialize(source, r => r.GetBoolean(i));
         }
 
         /// <summary>
@@ -475,7 +540,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<bool?> GetNullableBoolean(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableBoolean(i));
+            return UnguardedMaterialize(source, r => r.GetNullableBoolean(i));
         }
 
         /// <summary>
@@ -487,7 +552,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<bool> GetBooleanOrDefault(this IEnumerable<IDataRecord> source, int i = 0, bool defaultValue = false)
         {
-            return Materialize(source, r => r.GetBooleanOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetBooleanOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -499,7 +564,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<byte> GetByte(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetByte(i));
+            return UnguardedMaterialize(source, r => r.GetByte(i));
         }
 
         /// <summary>
@@ -511,7 +576,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<byte?> GetNullableByte(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableByte(i));
+            return UnguardedMaterialize(source, r => r.GetNullableByte(i));
         }
 
         /// <summary>
@@ -523,7 +588,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<byte> GetByteOrDefault(this IEnumerable<IDataRecord> source, int i = 0, byte defaultValue = default)
         {
-            return Materialize(source, r => r.GetByteOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetByteOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -535,7 +600,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<char> GetChar(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetChar(i));
+            return UnguardedMaterialize(source, r => r.GetChar(i));
         }
 
         /// <summary>
@@ -547,7 +612,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<char?> GetNullableChar(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableChar(i));
+            return UnguardedMaterialize(source, r => r.GetNullableChar(i));
         }
 
         /// <summary>
@@ -559,7 +624,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<char> GetCharOrDefault(this IEnumerable<IDataRecord> source, int i = 0, char defaultValue = default)
         {
-            return Materialize(source, r => r.GetCharOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetCharOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -571,7 +636,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<DateTime> GetDateTime(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetDateTime(i));
+            return UnguardedMaterialize(source, r => r.GetDateTime(i));
         }
 
         /// <summary>
@@ -583,7 +648,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<DateTime?> GetNullableDateTime(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableDateTime(i));
+            return UnguardedMaterialize(source, r => r.GetNullableDateTime(i));
         }
 
         /// <summary>
@@ -595,7 +660,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<DateTime> GetDateTimeOrDefault(this IEnumerable<IDataRecord> source, int i = 0, DateTime defaultValue = default)
         {
-            return Materialize(source, r => r.GetDateTimeOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetDateTimeOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -607,7 +672,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<Guid> GetGuid(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetGuid(i));
+            return UnguardedMaterialize(source, r => r.GetGuid(i));
         }
 
         /// <summary>
@@ -619,7 +684,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<Guid?> GetNullableGuid(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableGuid(i));
+            return UnguardedMaterialize(source, r => r.GetNullableGuid(i));
         }
 
         /// <summary>
@@ -631,7 +696,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<Guid> GetGuidOrDefault(this IEnumerable<IDataRecord> source, int i = 0, Guid defaultValue = default)
         {
-            return Materialize(source, r => r.GetGuidOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetGuidOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -643,7 +708,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<short> GetInt16(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetInt16(i));
+            return UnguardedMaterialize(source, r => r.GetInt16(i));
         }
 
         /// <summary>
@@ -655,7 +720,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<short?> GetNullableInt16(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableInt16(i));
+            return UnguardedMaterialize(source, r => r.GetNullableInt16(i));
         }
 
         /// <summary>
@@ -667,7 +732,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<short> GetInt16OrDefault(this IEnumerable<IDataRecord> source, int i = 0, short defaultValue = default)
         {
-            return Materialize(source, r => r.GetInt16OrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetInt16OrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -679,7 +744,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<int> GetInt32(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetInt32(i));
+            return UnguardedMaterialize(source, r => r.GetInt32(i));
         }
 
         /// <summary>
@@ -691,7 +756,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<int?> GetNullableInt32(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableInt32(i));
+            return UnguardedMaterialize(source, r => r.GetNullableInt32(i));
         }
 
         /// <summary>
@@ -703,7 +768,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<int> GetInt32OrDefault(this IEnumerable<IDataRecord> source, int i = 0, int defaultValue = default)
         {
-            return Materialize(source, r => r.GetInt32OrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetInt32OrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -715,7 +780,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<long> GetInt64(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetInt64(i));
+            return UnguardedMaterialize(source, r => r.GetInt64(i));
         }
 
         /// <summary>
@@ -727,7 +792,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<long?> GetNullableInt64(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableInt64(i));
+            return UnguardedMaterialize(source, r => r.GetNullableInt64(i));
         }
 
         /// <summary>
@@ -739,7 +804,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<long> GetInt64OrDefault(this IEnumerable<IDataRecord> source, int i = 0, long defaultValue = default)
         {
-            return Materialize(source, r => r.GetInt64OrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetInt64OrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -751,7 +816,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<float> GetFloat(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetFloat(i));
+            return UnguardedMaterialize(source, r => r.GetFloat(i));
         }
 
         /// <summary>
@@ -763,7 +828,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<float?> GetNullableFloat(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableFloat(i));
+            return UnguardedMaterialize(source, r => r.GetNullableFloat(i));
         }
 
         /// <summary>
@@ -775,7 +840,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<float> GetFloatOrDefault(this IEnumerable<IDataRecord> source, int i = 0, float defaultValue = default)
         {
-            return Materialize(source, r => r.GetFloatOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetFloatOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -787,7 +852,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<double> GetDouble(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetDouble(i));
+            return UnguardedMaterialize(source, r => r.GetDouble(i));
         }
 
         /// <summary>
@@ -799,7 +864,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<double?> GetNullableDouble(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableDouble(i));
+            return UnguardedMaterialize(source, r => r.GetNullableDouble(i));
         }
 
         /// <summary>
@@ -811,7 +876,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<double> GetDoubleOrDefault(this IEnumerable<IDataRecord> source, int i = 0, double defaultValue = default)
         {
-            return Materialize(source, r => r.GetDoubleOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetDoubleOrDefault(i, defaultValue));
         }
 
         /// <summary>
@@ -823,7 +888,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<decimal> GetDecimal(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetDecimal(i));
+            return UnguardedMaterialize(source, r => r.GetDecimal(i));
         }
 
         /// <summary>
@@ -835,7 +900,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public static IEnumerable<decimal?> GetNullableDecimal(this IEnumerable<IDataRecord> source, int i = 0)
         {
-            return Materialize(source, r => r.GetNullableDecimal(i));
+            return UnguardedMaterialize(source, r => r.GetNullableDecimal(i));
         }
 
         /// <summary>
@@ -847,7 +912,7 @@ namespace WmcSoft.Data
         /// <returns>The enumeration of the values of the specified column.</returns>
         public static IEnumerable<decimal> GetDecimalOrDefault(this IEnumerable<IDataRecord> source, int i = 0, decimal defaultValue = default)
         {
-            return Materialize(source, r => r.GetDecimalOrDefault(i, defaultValue));
+            return UnguardedMaterialize(source, r => r.GetDecimalOrDefault(i, defaultValue));
         }
 
         #endregion
