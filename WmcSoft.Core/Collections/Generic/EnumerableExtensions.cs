@@ -816,13 +816,14 @@ namespace WmcSoft.Collections.Generic
         #region CountOccurences
 
         public static Dictionary<TSource, int> CountOccurences<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer = null)
-            where TSource : struct
         {
             if (source == null) throw new ArgumentNullException();
 
             var dictionary = new Dictionary<TSource, int>(comparer);
             foreach (var item in source) {
-                if (dictionary.TryGetValue(item, out int count)) {
+                if (item == null) {
+                    continue;
+                } else if (dictionary.TryGetValue(item, out int count)) {
                     dictionary[item] = count + 1;
                 } else {
                     dictionary.Add(item, 1);
