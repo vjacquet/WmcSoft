@@ -32,22 +32,14 @@ namespace WmcSoft.Collections.Generic
 {
     public static class Vouch
     {
-        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer)
+        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable, IComparer<T> comparer = null)
         {
-            return new EnumerableVoucher<T>(false, enumerable, comparer);
-        }
-        public static EnumerableVoucher<T> IsSorted<T>(IEnumerable<T> enumerable)
-        {
-            return IsSorted(enumerable, Comparer<T>.Default);
+            return new EnumerableVoucher<T>(false, enumerable, comparer ?? Comparer<T>.Default);
         }
 
-        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer)
+        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable, IComparer<T> comparer = null)
         {
-            return new EnumerableVoucher<T>(true, enumerable, comparer);
-        }
-        public static EnumerableVoucher<T> IsSortedSet<T>(IEnumerable<T> enumerable)
-        {
-            return IsSortedSet(enumerable, Comparer<T>.Default);
+            return new EnumerableVoucher<T>(true, enumerable, comparer ?? Comparer<T>.Default);
         }
 
         public static EnumerableVoucher<T> IsSet<T>(IEnumerable<T> enumerable)

@@ -78,13 +78,9 @@ namespace WmcSoft.Collections
             throw new NotSupportedException();
         }
 
-        public bool IsFixedSize {
-            get { return true; }
-        }
+        public bool IsFixedSize => true;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public void Remove(object value)
         {
@@ -98,7 +94,7 @@ namespace WmcSoft.Collections
 
         public object this[int index] {
             get {
-                if (index != 0)                    throw new ArgumentOutOfRangeException(nameof(index));
+                if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
                 return _item;
             }
             set {
