@@ -35,7 +35,7 @@ using System.Collections.Generic;
 namespace WmcSoft.Time
 {
     /// <summary>
-    /// Represents a predicate that determines if a date does or does not satisfy some criteria.
+    /// Represents a predicate that determines if a <see cref="Date"/> does or does not satisfy some criteria.
     /// </summary>
     public interface IDateSpecification : ISpecification<Date>
     {

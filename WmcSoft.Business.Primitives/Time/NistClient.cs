@@ -38,6 +38,10 @@ using System.Text;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Provides common methods for querying the current time with the NIST protocol.
+    /// </summary>
+    /// <example><code lang="cs" source="..\..\WmcSoft.Business.Primitives.Tests\Time\ClockTests.cs" region="QueryNistTime" title="Usage" /></example>
     public sealed class NistClient : IDisposable
     {
         const string ServerDefault = "time.nist.gov";

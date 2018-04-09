@@ -40,6 +40,11 @@ namespace WmcSoft.Time
     /// </summary>
     public abstract class AnnualDateSpecification : IDateSpecification
     {
+        /// <summary>
+        /// Returns the <see cref="Date"/> of the <paramref name="year"/> satisfying the specification.
+        /// </summary>
+        /// <param name="year">Year for which the <see cref="Date"/> should be computed.</param>
+        /// <returns>The <see cref="Date"/> of the <paramref name="year"/> satisfying the specification.</returns>
         public abstract Date OfYear(int year);
 
         protected virtual IEnumerable<Date> UnguardedEnumerateOver(Date since, Date until)
@@ -56,6 +61,7 @@ namespace WmcSoft.Time
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Date> EnumerateBetween(Date since, Date until)
         {
             if (since > until) throw new ArgumentException();
@@ -63,6 +69,7 @@ namespace WmcSoft.Time
             return UnguardedEnumerateOver(since, until);
         }
 
+        /// <inheritdoc/>
         public virtual bool IsSatisfiedBy(Date date)
         {
             return date == OfYear(date.Year);

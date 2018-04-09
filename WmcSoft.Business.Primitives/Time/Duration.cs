@@ -318,6 +318,7 @@ namespace WmcSoft.Time
         ///   <description>Greater than zero</description>
         ///   <description>This instance follows <paramref name="other"/> in the sort order.</description>
         /// </item>
+        /// </list>
         /// </returns>
         /// <remarks><see cref="Duration"/>s in milliseconds are always less than <see cref="Duration"/>s in months.</remarks>
         public int CompareTo(Duration other)

@@ -30,6 +30,10 @@ using System.Net.Sockets;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Provides common methods for querying the current time with the SNTP protocol.
+    /// </summary>
+    /// <example><code lang="cs" source="..\..\WmcSoft.Business.Primitives.Tests\Time\ClockTests.cs" region="QuerySntpTime" title="Usage" /></example>
     public sealed class SntpClient : IDisposable
     {
         static readonly DateTime Epoch = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);

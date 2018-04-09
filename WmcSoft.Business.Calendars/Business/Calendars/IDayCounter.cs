@@ -24,16 +24,19 @@
 
 #endregion
 
-using System;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
+    /// <summary>
+    /// Provides methods for determining the length of a time period according to given market convention,
+    /// both as a number of days and as a year fraction.
+    /// </summary>
     public interface IDayCounter
     {
         string Name { get; }
 
-        int DayCount<TInterval>(TInterval interval) where TInterval : struct, IInterval<Date>;
-        decimal YearFraction<TInterval>(TInterval interval, TInterval? refPeriod) where TInterval : struct, IInterval<Date>;
+        int DayCount<TInterval>(TInterval period) where TInterval : struct, IInterval<Date>;
+        decimal YearFraction<TInterval>(TInterval period, TInterval? refPeriod) where TInterval : struct, IInterval<Date>;
     }
 }
