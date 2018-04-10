@@ -28,11 +28,23 @@ namespace WmcSoft.Time
 {
     public static class Algorithms
     {
+        /// <summary>
+        /// Returns the smaller of two dates.
+        /// </summary>
+        /// <param name="x">The first of two dates to compare. </param>
+        /// <param name="y">The second of two dates to compare. </param>
+        /// <returns>Parameter <paramref name="x"/> or <paramref name="y"/>, whichever is smaller.</returns>
         public static Date Min(Date x, Date y)
         {
             return y < x ? y : x;
         }
 
+        /// <summary>
+        /// Returns the larger of two dates.
+        /// </summary>
+        /// <param name="x">The first of two dates to compare. </param>
+        /// <param name="y">The second of two dates to compare. </param>
+        /// <returns>Parameter <paramref name="x"/> or <paramref name="y"/>, whichever is larger.</returns>
         public static Date Max(Date x, Date y)
         {
             return x > y ? x : y;

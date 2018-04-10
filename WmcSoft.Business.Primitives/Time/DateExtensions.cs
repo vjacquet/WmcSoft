@@ -119,7 +119,7 @@ namespace WmcSoft.Time
         /// Gets the week of the year using ISO-8601 convention.
         /// </summary>
         /// <param name="date">The date</param>
-        /// <returns></returns>
+        /// <returns>The week of the year following the ISO-8601 convention.</returns>
         public static int Iso8601WeekOfYear(this Date date)
         {
             // see <https://blogs.msdn.microsoft.com/shawnste/2006/01/24/iso-8601-week-of-year-format-in-microsoft-net/>
@@ -138,6 +138,12 @@ namespace WmcSoft.Time
             return cal.GetWeekOfYear(dateTime, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
+        /// <summary>
+        /// Adds the given duration.
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <param name="duration">The duration.</param>
+        /// <returns>The new date.</returns>
         public static Date Add(this Date date, Duration duration)
         {
             if (duration.Unit.IsConvertibleToDays())

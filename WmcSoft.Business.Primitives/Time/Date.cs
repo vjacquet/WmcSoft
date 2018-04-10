@@ -35,6 +35,10 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents a whole date, having a year, month and day component.
+    /// All values are in the proleptic Gregorian (ISO 8601) calendar.
+    /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [DebuggerStepThrough]
     public partial struct Date : IComparable<Date>, IEquatable<Date>, IFormattable

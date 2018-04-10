@@ -35,6 +35,9 @@ using System.Diagnostics;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents a time of day, as would be read from a clock, within the range 00:00:00 to 23:59:59.9999999
+    /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [DebuggerStepThrough]
     public partial struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>

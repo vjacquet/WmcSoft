@@ -53,7 +53,7 @@ namespace WmcSoft.Business.Calendars
         [InlineData(2017, 4, 16)]
         [InlineData(2019, 4, 21)]
         [InlineData(2042, 4, 6)]
-        public void CanComputerEaster(int year, int month, int day)
+        public void CanComputeEaster(int year, int month, int day)
         {
             var specification = KnownHolidays.GregorianEaster;
             var expected = new Date(year, month, day);
@@ -66,7 +66,7 @@ namespace WmcSoft.Business.Calendars
         [InlineData(2017, 4, 14)]
         [InlineData(2019, 4, 19)]
         [InlineData(2042, 4, 4)]
-        public void CanComputerEasterFriday(int year, int month, int day)
+        public void CanComputeEasterFriday(int year, int month, int day)
         {
             var specification = KnownHolidays.GregorianEasterFriday;
             var expected = new Date(year, month, day);
@@ -79,7 +79,7 @@ namespace WmcSoft.Business.Calendars
         [InlineData(2017, 4, 17)]
         [InlineData(2019, 4, 22)]
         [InlineData(2042, 4, 7)]
-        public void CanComputerEasterMonday(int year, int month, int day)
+        public void CanComputeEasterMonday(int year, int month, int day)
         {
             var specification = KnownHolidays.GregorianEasterMonday;
             var expected = new Date(year, month, day);
