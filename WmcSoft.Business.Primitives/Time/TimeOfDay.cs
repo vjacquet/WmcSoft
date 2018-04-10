@@ -36,7 +36,7 @@ using System.Diagnostics;
 namespace WmcSoft.Time
 {
     /// <summary>
-    /// Represents a time of day, as would be read from a clock, within the range 00:00:00 to 23:59:59.9999999
+    /// Represents a time of day, as would be read from a clock, within the range 00:00 to 23:59
     /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [DebuggerStepThrough]
@@ -47,6 +47,17 @@ namespace WmcSoft.Time
 
         private readonly TimeSpan _storage;
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour and minute.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 23).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 0 or greater than 23.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// </exception>
         public TimeOfDay(int hour, int minute)
         {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
