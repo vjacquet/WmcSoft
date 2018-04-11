@@ -34,22 +34,49 @@ namespace WmcSoft.Text
         #region Append
 
         /// <summary>
+        /// Appends <paramref name="repeatCount"/> times the <paramref name="value"/> at the end of this string builder.
+        /// </summary>
+        /// <param name="self">The <see cref="StringBuilder"/>.</param>
+        /// <param name="value">The string to repeat.</param>
+        /// <param name="repeatCount">The number of times the string is repeated.</param>
+        /// <returns>The string builder.</returns>
+        public static StringBuilder Append(this StringBuilder self, string value, int repeatCount)
+        {
+            switch (repeatCount) {
+            case 0:
+                return self;
+            case 1:
+                return self.Append(value);
+            default:
+                if (repeatCount < 0) throw new ArgumentOutOfRangeException(nameof(repeatCount));
+                while (repeatCount-- > 0) {
+                    self.Append(value);
+                }
+                return self;
+            }
+        }
+
+        #endregion
+
+        #region Append
+
+        /// <summary>
         /// Appends a copy of the specified <see cref="Strip"/> to this instance.
         /// </summary>
-        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="self">The <see cref="StringBuilder"/>.</param>
         /// <param name="value">The <see cref="Strip"/> to append.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Append(this StringBuilder sb, Strip value)
+        public static StringBuilder Append(this StringBuilder self, Strip value)
         {
-            return (value ?? Strip.Null).AppendTo(sb);
+            return (value ?? Strip.Null).AppendTo(self);
         }
 
         /// <summary>
         /// Appends a copy of a specified substring to this instance.
         /// </summary>
-        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="self">The <see cref="StringBuilder"/>.</param>
         /// <param name="value">The <see cref="Strip"/> that contains the substring to append.</param>
         /// <param name="startIndex">The starting position of the substring within <paramref name="value"/>.</param>
         /// <param name="count">The number of characters in <paramref name="value"/> to append.</param>
@@ -62,9 +89,9 @@ namespace WmcSoft.Text
         ///   -or- Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.
         /// </exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Append(this StringBuilder sb, Strip value, int startIndex, int count)
+        public static StringBuilder Append(this StringBuilder self, Strip value, int startIndex, int count)
         {
-            return (value ?? Strip.Null).AppendTo(sb, startIndex, count);
+            return (value ?? Strip.Null).AppendTo(self, startIndex, count);
         }
 
         #endregion
@@ -74,67 +101,67 @@ namespace WmcSoft.Text
         /// <summary>
         /// Appends all the elements of an object array, using the specified separator between each element.
         /// </summary>
-        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="self">The <see cref="StringBuilder"/>.</param>
         /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
         /// <param name="parts">An array that contains the elements to concatenate.</param>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, object[] parts)
+        public static StringBuilder AppendJoin(this StringBuilder self, string separator, object[] parts)
         {
             if (parts.Length > 0) {
-                sb.Append(parts[0]);
+                self.Append(parts[0]);
                 for (int i = 1; i < parts.Length; i++) {
-                    sb.Append(separator).Append(parts[i]);
+                    self.Append(separator).Append(parts[i]);
                 }
             }
-            return sb;
+            return self;
         }
 
         /// <summary>
         /// Appends all the elements of a string array, using the specified separator between each element.
         /// </summary>
-        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="self">The <see cref="StringBuilder"/>.</param>
         /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
         /// <param name="parts">An array that contains the elements to concatenate.</param>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder AppendJoin(this StringBuilder sb, string separator, string[] parts)
+        public static StringBuilder AppendJoin(this StringBuilder self, string separator, string[] parts)
         {
             if (parts != null && parts.Length > 0) {
-                sb.Append(parts[0]);
+                self.Append(parts[0]);
                 for (int i = 1; i < parts.Length; i++) {
-                    sb.Append(separator).Append(parts[i]);
+                    self.Append(separator).Append(parts[i]);
                 }
             }
-            return sb;
+            return self;
         }
 
         /// <summary>
         /// Appends all the elements of a string array, using the specified separator between each element.
         /// </summary>
         /// <typeparam name="T">The type of element to convert before inserting them.</typeparam>
-        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="self">The <see cref="StringBuilder"/>.</param>
         /// <param name="separator">The string to use as a separator. separator is included in the <see cref="StringBuilder"/> only if value has more than one element.</param>
         /// <param name="parts">An array that contains the elements to concatenate.</param>
         /// <param name="converter">The converter from the type <typeparamref name="T"/> to string.</param>
         /// <exception cref="ArgumentOutOfRangeException">Enlarging the value of this instance would exceed <see cref="StringBuilder.MaxCapacity"/>.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder AppendJoin<T>(this StringBuilder sb, string separator, T[] parts, Converter<T, string> converter)
+        public static StringBuilder AppendJoin<T>(this StringBuilder self, string separator, T[] parts, Converter<T, string> converter)
         {
             if (parts != null && parts.Length > 0) {
                 if (converter == null) {
-                    sb.Append(parts[0]);
+                    self.Append(parts[0]);
                     for (int i = 1; i < parts.Length; i++) {
-                        sb.Append(separator).Append(parts[i]);
+                        self.Append(separator).Append(parts[i]);
                     }
                 } else {
-                    sb.Append(converter(parts[0]));
+                    self.Append(converter(parts[0]));
                     for (int i = 1; i < parts.Length; i++) {
-                        sb.Append(separator).Append(converter(parts[i]));
+                        self.Append(separator).Append(converter(parts[i]));
                     }
                 }
             }
-            return sb;
+            return self;
         }
 
         #endregion
@@ -142,15 +169,15 @@ namespace WmcSoft.Text
         #region Insert
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Insert(this StringBuilder sb, int index, string value, int startIndex, int count)
+        public static StringBuilder Insert(this StringBuilder self, int index, string value, int startIndex, int count)
         {
-            return sb.Insert(index, value.Substring(startIndex, count));
+            return self.Insert(index, value.Substring(startIndex, count));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Insert(this StringBuilder sb, int index, Strip value)
+        public static StringBuilder Insert(this StringBuilder self, int index, Strip value)
         {
-            return value.InsertInto(sb, index);
+            return value.InsertInto(self, index);
         }
 
         #endregion
@@ -158,117 +185,117 @@ namespace WmcSoft.Text
         #region Prepend 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, bool value)
+        public static StringBuilder Prepend(this StringBuilder self, bool value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, byte value)
+        public static StringBuilder Prepend(this StringBuilder self, byte value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, char value)
+        public static StringBuilder Prepend(this StringBuilder self, char value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, char[] value)
+        public static StringBuilder Prepend(this StringBuilder self, char[] value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, decimal value)
+        public static StringBuilder Prepend(this StringBuilder self, decimal value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, double value)
+        public static StringBuilder Prepend(this StringBuilder self, double value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, float value)
+        public static StringBuilder Prepend(this StringBuilder self, float value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, int value)
+        public static StringBuilder Prepend(this StringBuilder self, int value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, long value)
+        public static StringBuilder Prepend(this StringBuilder self, long value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, object value)
+        public static StringBuilder Prepend(this StringBuilder self, object value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, sbyte value)
+        public static StringBuilder Prepend(this StringBuilder self, sbyte value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, short value)
+        public static StringBuilder Prepend(this StringBuilder self, short value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, uint value)
+        public static StringBuilder Prepend(this StringBuilder self, uint value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, ulong value)
+        public static StringBuilder Prepend(this StringBuilder self, ulong value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, ushort value)
+        public static StringBuilder Prepend(this StringBuilder self, ushort value)
         {
-            return sb.Insert(0, value);
+            return self.Insert(0, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, char[] value, int startIndex, int charCount)
+        public static StringBuilder Prepend(this StringBuilder self, char[] value, int startIndex, int charCount)
         {
-            return sb.Insert(0, value, startIndex, charCount);
+            return self.Insert(0, value, startIndex, charCount);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, string value, int count)
+        public static StringBuilder Prepend(this StringBuilder self, string value, int count)
         {
-            return sb.Insert(0, value, count);
+            return self.Insert(0, value, count);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, string value, int startIndex, int count)
+        public static StringBuilder Prepend(this StringBuilder self, string value, int startIndex, int count)
         {
-            return Insert(sb, 0, value, startIndex, count);
+            return Insert(self, 0, value, startIndex, count);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", Justification = "NullReferenceException is acceptable for non Linq-like extensions.", MessageId = "0")]
-        public static StringBuilder Prepend(this StringBuilder sb, Strip value)
+        public static StringBuilder Prepend(this StringBuilder self, Strip value)
         {
-            return value.PrependTo(sb);
+            return value.PrependTo(self);
         }
 
         #endregion
