@@ -191,12 +191,12 @@ namespace WmcSoft.Collections.Specialized
 
         bool IReadOnlyDictionary<TKey, TValue>.ContainsKey(TKey key)
         {
-            throw new NotImplementedException();
+            return ContainsKey(key);
         }
 
         bool IReadOnlyDictionary<TKey, TValue>.TryGetValue(TKey key, out TValue value)
         {
-            throw new NotImplementedException();
+            return TryGetValue(key, out value);
         }
 
         #endregion
