@@ -307,7 +307,7 @@ namespace WmcSoft.Collections.Generic
         public void CheckMinMax()
         {
             var data = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var expected = Tuple.Create(1, 9);
+            var expected = (1, 9);
             var actual = data.MinMax();
             Assert.Equal(expected, actual);
 
@@ -316,15 +316,16 @@ namespace WmcSoft.Collections.Generic
         [Fact]
         public void CheckMinMaxOnNullable()
         {
+            (int?, int?) undefined = (null, null);
             var empty = new List<int?>();
-            Assert.Equal(new Tuple<int?, int?>(null, null), empty.MinMax());
+            Assert.Equal(undefined, empty.MinMax());
 
             empty.Add(null);
             empty.Add(null);
-            Assert.Equal(new Tuple<int?, int?>(null, null), empty.MinMax());
+            Assert.Equal(undefined, empty.MinMax());
 
             var data = new List<int?> { null, 1, 2, 3, 4, null, 5, 6, 7, 8, 9 };
-            var expected = Tuple.Create<int?, int?>(1, 9);
+            (int?, int?) expected = (1, 9);
             var actual = data.MinMax();
             Assert.Equal(expected, actual);
         }

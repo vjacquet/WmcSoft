@@ -161,7 +161,7 @@ namespace WmcSoft.Collections.Specialized
                 .Max(v => graph.Adjacents(v).Count);
         }
 
-        public static Tuple<int, int> MinMaxDegree<TGraph>(this TGraph graph)
+        public static (int min, int max) MinMaxDegree<TGraph>(this TGraph graph)
             where TGraph : IGraph {
             return Enumerable.Range(0, graph.VerticeCount)
                 .MinMax(v => graph.Adjacents(v).Count);

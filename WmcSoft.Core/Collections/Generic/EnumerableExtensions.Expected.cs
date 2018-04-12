@@ -199,7 +199,7 @@ namespace WmcSoft.Collections.Generic
 
         #region MinMax
 
-        static Tuple<Expected<T>, Expected<T>> ValueTypeMinMax<T>(this IEnumerable<Expected<T>> source)
+        static (Expected<T> min, Expected<T> max) ValueTypeMinMax<T>(this IEnumerable<Expected<T>> source)
             where T : struct, IComparable<T>
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -210,7 +210,7 @@ namespace WmcSoft.Collections.Generic
                     ;
                 if (!hasData) {
                     var noelements = Expected.Failed<T>(new InvalidOperationException("No elements"));
-                    return Tuple.Create(noelements, noelements);
+                    return (noelements, noelements);
                 }
                 var min = enumerator.Current.GetValueOrDefault();
                 var max = min;
@@ -222,61 +222,61 @@ namespace WmcSoft.Collections.Generic
                     else if (max.CompareTo(enumerator.Current.GetValueOrDefault()) <= 0) // Ensure stability
                         max = enumerator.Current.GetValueOrDefault();
                 }
-                return Tuple.Create(Expected.Success(min), Expected.Success(max));
+                return (Expected.Success(min), Expected.Success(max));
             }
         }
 
-        public static Tuple<Expected<double>, Expected<double>> MinMax(this IEnumerable<Expected<double>> source)
+        public static (Expected<double> min, Expected<double> max) MinMax(this IEnumerable<Expected<double>> source)
         {
             return ValueTypeMinMax(source);
         }
 
-        public static Tuple<Expected<long>, Expected<long>> MinMax(this IEnumerable<Expected<long>> source)
+        public static (Expected<long> min, Expected<long> max) MinMax(this IEnumerable<Expected<long>> source)
         {
             return ValueTypeMinMax(source);
         }
 
-        public static Tuple<Expected<int>, Expected<int>> MinMax(this IEnumerable<Expected<int>> source)
+        public static (Expected<int> min, Expected<int> max) MinMax(this IEnumerable<Expected<int>> source)
         {
             return ValueTypeMinMax(source);
         }
 
-        public static Tuple<Expected<float>, Expected<float>> MinMax(this IEnumerable<Expected<float>> source)
+        public static (Expected<float> min, Expected<float> max) MinMax(this IEnumerable<Expected<float>> source)
         {
             return ValueTypeMinMax(source);
         }
 
-        public static Tuple<Expected<decimal>, Expected<decimal>> MinMax(this IEnumerable<Expected<decimal>> source)
+        public static (Expected<decimal> min, Expected<decimal> max) MinMax(this IEnumerable<Expected<decimal>> source)
         {
             return ValueTypeMinMax(source);
         }
 
-        public static Tuple<Expected<int>, Expected<int>> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)
+        public static (Expected<int> min, Expected<int> max) MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<int>> selector)
         {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<Expected<long>, Expected<long>> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<long>> selector)
+        public static (Expected<long> min, Expected<long> max) MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<long>> selector)
         {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<Expected<float>, Expected<float>> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<float>> selector)
+        public static (Expected<float> min, Expected<float> max) MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<float>> selector)
         {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<Expected<double>, Expected<double>> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<double>> selector)
+        public static (Expected<double> min, Expected<double> max) MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<double>> selector)
         {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<Expected<decimal>, Expected<decimal>> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<decimal>> selector)
+        public static (Expected<decimal> min, Expected<decimal> max) MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, Expected<decimal>> selector)
         {
             return source.Select(selector).MinMax();
         }
 
-        public static Tuple<Expected<TResult>, Expected<TResult>> MinMax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Expected<TResult>> selector)
+        public static (Expected<TResult> min, Expected<TResult> max) MinMax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Expected<TResult>> selector)
         {
             return source.Select(selector).MinMax();
         }
