@@ -43,6 +43,7 @@ namespace WmcSoft.Time
     [Serializable]
     public struct HourOfDay : IComparable<HourOfDay>, IEquatable<HourOfDay>
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly short _storage;
 
         public HourOfDay(int hour)

@@ -25,7 +25,7 @@
 #endregion
 
 using System;
-
+using System.Diagnostics;
 using static WmcSoft.GeoCoordinate;
 
 namespace WmcSoft
@@ -34,6 +34,7 @@ namespace WmcSoft
     /// Represents the latitude, a geographic coordinate that specifies the north-south position of a point on the Earth's surface.
     /// Latitude is an angle which ranges from 0° at the Equator to 90° at the north pole and -90° at the south pole.
     /// </summary>
+    [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
     public struct Latitude : IComparable<Latitude>, IEquatable<Latitude>, IFormattable
     {
@@ -42,6 +43,7 @@ namespace WmcSoft
         public static readonly Latitude MaxValue = new Latitude(Amplitude);
         public static readonly Latitude MinValue = new Latitude(-Amplitude);
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly int Storage;
 
         private Latitude(int degrees)

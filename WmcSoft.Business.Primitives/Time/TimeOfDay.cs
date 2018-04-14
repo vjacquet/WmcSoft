@@ -42,10 +42,14 @@ namespace WmcSoft.Time
     [DebuggerStepThrough]
     public partial struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly TimeSpan _storage;
+
+        public static readonly TimeOfDay MinValue = new TimeOfDay(0);
+        public static readonly TimeOfDay MaxValue = new TimeOfDay(23, 59);
+
         public static readonly TimeOfDay Midnight = new TimeOfDay(0);
         public static readonly TimeOfDay Noon = new TimeOfDay(12);
-
-        private readonly TimeSpan _storage;
 
         /// <summary>
         /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified

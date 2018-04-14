@@ -25,7 +25,7 @@
 #endregion
 
 using System;
-
+using System.Diagnostics;
 using static WmcSoft.GeoCoordinate;
 
 namespace WmcSoft
@@ -34,6 +34,7 @@ namespace WmcSoft
     /// Represents the longitude, a geographic coordinate that specifies the east-west position of a point on the Earth's surface.
     /// Longitude is an angle which ranges from 0° at the Prime Meridian to 180° eastward and -180° westward.
     /// </summary>
+    [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
     public struct Longitude : IComparable<Longitude>, IEquatable<Longitude>, IFormattable
     {
@@ -42,6 +43,7 @@ namespace WmcSoft
         public static readonly Longitude MaxValue = new Longitude(Amplitude);
         public static readonly Longitude MinValue = new Longitude(-Amplitude);
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly int Storage;
 
         private Longitude(int degrees)

@@ -43,7 +43,8 @@ namespace WmcSoft.Time
     [DebuggerStepThrough]
     public partial struct Date : IComparable<Date>, IEquatable<Date>, IFormattable
     {
-        readonly int _storage;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly int _storage;
 
         public static readonly Date MinValue = DateTime.MinValue;
         public static readonly Date MaxValue = DateTime.MaxValue;
@@ -60,6 +61,12 @@ namespace WmcSoft.Time
             _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Date"/> structure to the specified <paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/>.
+        /// </summary>
+        /// <param name="year">The year (1 through 9999)</param>
+        /// <param name="month">The month (1 through 12)</param>
+        /// <param name="day">The day (1 through the number of days in <paramref name="month"/>.</param>
         public Date(int year, int month, int day) : this(new DateTime(year, month, day))
         {
         }
