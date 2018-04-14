@@ -25,12 +25,14 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft
 {
     /// <summary>
     /// Represents a geographic position with both <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
+    [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
     public struct GeographicPosition : IEquatable<GeographicPosition>, IFormattable
     {
