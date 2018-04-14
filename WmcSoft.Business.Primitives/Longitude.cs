@@ -26,6 +26,7 @@
 
 using System;
 using System.Diagnostics;
+
 using static WmcSoft.GeoCoordinate;
 
 namespace WmcSoft

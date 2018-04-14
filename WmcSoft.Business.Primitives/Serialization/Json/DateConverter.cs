@@ -30,6 +30,9 @@ using WmcSoft.Time;
 
 namespace WmcSoft.Serialization.Json
 {
+    /// <summary>
+    /// Converts a <see cref="Date"/> to and from a string value. 
+    /// </summary>
     public class DateConverter : JsonConverter
     {
         /// <summary>

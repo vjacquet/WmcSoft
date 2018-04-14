@@ -11,13 +11,6 @@
     <Version>0.9.1</Version>
     <Authors>Vincent J. JACQUET</Authors>
     <Company>WmcSoft</Company>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

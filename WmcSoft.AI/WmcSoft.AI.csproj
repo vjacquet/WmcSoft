@@ -1,94 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0786C83A-3CDB-4963-A309-357B392738A2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WmcSoft.AI</RootNamespace>
-    <AssemblyName>WmcSoft.AI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net461</TargetFramework>
+    <RootNamespace>WmcSoft</RootNamespace>
+    <Authors>Vincent J. JACQUET</Authors>
+    <Company>WmcSoft</Company>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Memory" Version="4.4.0-preview2-25405-01" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AutoassociativeFilter.cs" />
-    <Compile Include="FuzzyLogic\Fuzzifier.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="FuzzyLogic\Fuzzifier.Designer.cs">
-      <DependentUpon>Fuzzifier.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FuzzyLogic\FuzzyCategory.cs" />
-    <Compile Include="FuzzyLogic\FuzzyVar.cs" />
-    <Compile Include="FuzzyLogic\HeavyTailedMembershipFunction.cs" />
-    <Compile Include="FuzzyLogic\GaussianMembershipFunction.cs" />
-    <Compile Include="FuzzyLogic\IFuzzyCategory.cs" />
-    <Compile Include="FuzzyLogic\IMembershipFunction.cs" />
-    <Compile Include="FuzzyLogic\TrapezoidMembershipFunction.cs" />
-    <Compile Include="FuzzyLogic\TriangularMembershipFunction.cs" />
-    <Compile Include="Gray.cs" />
-    <Compile Include="Measures.cs" />
-    <Compile Include="Measuring.cs" />
-    <Compile Include="NeuralNetwork\ActivationFunctions.cs" />
-    <Compile Include="NeuralNetwork\Helpers.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EndPoints.cs" />
-    <Compile Include="LeastSquare.cs" />
-    <Compile Include="ITrendEvaluator.cs" />
-    <Compile Include="Series.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="FuzzyLogic\FuzzyLogic.cd" />
+    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj" />
+    <ProjectReference Include="..\WmcSoft.Mathematics\WmcSoft.Mathematics.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
-      <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
-      <Name>WmcSoft.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WmcSoft.Mathematics\WmcSoft.Mathematics.csproj">
-      <Project>{041e639d-20cd-454f-90d5-2852aa58e126}</Project>
-      <Name>WmcSoft.Mathematics</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

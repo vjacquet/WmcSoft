@@ -31,6 +31,9 @@ using WmcSoft.Time;
 
 namespace WmcSoft.Serialization.Json
 {
+    /// <summary>
+    /// Converts a <see cref="TimeOfDay"/> to and from a string value. 
+    /// </summary>
     public class TimeOfDayConverter : JsonConverter
     {
         /// <summary>

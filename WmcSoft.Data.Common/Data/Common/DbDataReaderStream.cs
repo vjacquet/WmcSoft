@@ -39,6 +39,11 @@ namespace WmcSoft.Data.Common
         readonly int _ordinal;
         long _position;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="DbDataReaderStream"/>.
+        /// </summary>
+        /// <param name="reader">The data reader.</param>
+        /// <param name="ordinal">The zero based column ordinal.</param>
         public DbDataReaderStream(IDataReader reader, int ordinal)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
@@ -48,21 +53,13 @@ namespace WmcSoft.Data.Common
             _position = 0L;
         }
 
-        public override bool CanRead {
-            get { return true; }
-        }
+        public override bool CanRead => true;
 
-        public override bool CanSeek {
-            get { return true; }
-        }
+        public override bool CanSeek => true;
 
-        public override bool CanWrite {
-            get { return false; }
-        }
+        public override bool CanWrite => false;
 
-        public override long Length {
-            get { return _reader.GetBytes(_ordinal, 0, null, 0, 0); }
-        }
+        public override long Length => _reader.GetBytes(_ordinal, 0, null, 0, 0);
 
         public override long Position {
             get { return _position; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Xunit;
 
 namespace WmcSoft.Business
@@ -64,7 +63,7 @@ namespace WmcSoft.Business
         {
             var actual = new Range<int>();
 
-            Assert.Equal(true, actual.IsEmpty);
+            Assert.True(actual.IsEmpty);
         }
 
         [Fact]
@@ -101,7 +100,7 @@ namespace WmcSoft.Business
         {
             var actual = new Range<int>(2, 2);
 
-            Assert.Equal(true, actual.IsEmpty);
+            Assert.True(actual.IsEmpty);
         }
 
         [Fact]
@@ -260,14 +259,14 @@ namespace WmcSoft.Business
         }
 
         [Theory]
-        [MemberData("GetIntersectingRanges")]
+        [MemberData(nameof(GetIntersectingRanges))]
         public void UnionOfIntersectingRangesReturnsTheHullRange(Range<int> x, Range<int> y)
         {
             Assert.Equal(Range.Hull(x, y), Range.Union(x, y));
         }
 
         [Theory]
-        [MemberData("GetDisjoinedgRanges")]
+        [MemberData(nameof(GetDisjoinedgRanges))]
         public void UnionOfDisjoinedRangesThrows(Range<int> x, Range<int> y)
         {
             Assert.Throws<ArgumentException>(() => Range.Union(x, y));
