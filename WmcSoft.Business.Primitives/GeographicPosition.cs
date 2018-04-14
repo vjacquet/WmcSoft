@@ -32,7 +32,7 @@ namespace WmcSoft
     /// Represents a geographic position with both <see cref="Latitude"/> and <see cref="Longitude"/>.
     /// </summary>
     [Serializable]
-    public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>, IFormattable
+    public struct GeographicPosition : IEquatable<GeographicPosition>, IFormattable
     {
         public GeographicPosition(Latitude latitude, Longitude longitude)
         {
@@ -71,14 +71,6 @@ namespace WmcSoft
                 && Longitude.Equals(other.Longitude);
         }
 
-        public int CompareTo(GeographicPosition other)
-        {
-            var result = Latitude.CompareTo(other.Latitude);
-            if (result == 0)
-                result = Longitude.CompareTo(other.Longitude);
-            return result;
-        }
-
         #region Operators
 
         public static bool operator ==(GeographicPosition x, GeographicPosition y)
@@ -89,23 +81,6 @@ namespace WmcSoft
         public static bool operator !=(GeographicPosition a, GeographicPosition b)
         {
             return !a.Equals(b);
-        }
-
-        public static bool operator <(GeographicPosition x, GeographicPosition y)
-        {
-            return x.CompareTo(y) < 0;
-        }
-        public static bool operator <=(GeographicPosition x, GeographicPosition y)
-        {
-            return x.CompareTo(y) <= 0;
-        }
-        public static bool operator >(GeographicPosition x, GeographicPosition y)
-        {
-            return x.CompareTo(y) > 0;
-        }
-        public static bool operator >=(GeographicPosition x, GeographicPosition y)
-        {
-            return x.CompareTo(y) >= 0;
         }
 
         #endregion
