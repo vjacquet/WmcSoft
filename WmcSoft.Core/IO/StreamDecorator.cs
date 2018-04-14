@@ -106,6 +106,7 @@ namespace WmcSoft.IO
             get { return _underlying.ReadTimeout; }
             set { _underlying.ReadTimeout = value; }
         }
+
         #endregion
 
         #region Write Methods & Properties
@@ -139,6 +140,7 @@ namespace WmcSoft.IO
             get { return _underlying.WriteTimeout; }
             set { _underlying.WriteTimeout = value; }
         }
+
         #endregion
     }
 }
