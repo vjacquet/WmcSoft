@@ -29,10 +29,37 @@ using System.Collections.Generic;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Implements a comparer for <see cref="GeographicPosition"/> using lexycographical ordering on <see cref="Latitude"/> then <see cref="Longitude"/>.
     public struct LatitudeLongitudeComparer : IComparer<GeographicPosition>
     {
         public static LatitudeLongitudeComparer Default = default;
 
+        /// <summary>Compares two <see cref="<see cref="GeographicPosition"/> and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+        /// <param name="x">The first <see cref="<see cref="GeographicPosition"/> to compare.</param>
+        /// <param name="y">The second <see cref="<see cref="GeographicPosition"/> to compare.</param>
+        /// <returns>
+        /// A signed integer that indicates the relative values of x and y, as shown in the
+        /// following table.
+        /// <list type="table">
+        /// <listheader>
+        ///   <description>Value</description>
+        ///   <description>Meaning</description>
+        /// </listheader>
+        /// <item>
+        ///   <description>Less than zero</description>
+        ///   <description> x is less than y.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Zero</description>
+        ///   <description>x equals y.</description>
+        /// </item>
+        /// <item>
+        ///   <description>Greater than zero</description>
+        ///   <description>x is greater than y.</description>
+        /// </item>
+        /// </list>
+        /// </returns>
         public int Compare(GeographicPosition x, GeographicPosition y)
         {
             var result = x.Latitude.CompareTo(y.Latitude);
