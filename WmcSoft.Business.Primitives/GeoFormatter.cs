@@ -31,16 +31,17 @@ namespace WmcSoft
 {
     struct GeoFormatter
     {
-        private readonly char _specifier;
+        static readonly char[] SupportedSpecifiers = new[] { 'M', 'D', 'G' };
+
         private readonly string _precision;
         private readonly IFormatProvider _formatProvider;
+        private readonly char _specifier;
 
         public GeoFormatter(string format, IFormatProvider formatProvider)
         {
             _formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
 
-            int precision;
-            ParseFormat(format ?? "G", _formatProvider, out _specifier, out precision);
+            ParseFormat(format ?? "G", _formatProvider, out _specifier, out int precision);
             switch (_specifier) {
             case 'M':
             case 'G':
@@ -52,7 +53,6 @@ namespace WmcSoft
             }
         }
 
-        static readonly char[] SupportedSpecifiers = new[] { 'M', 'D', 'G' };
         static void ParseFormat(string format, IFormatProvider formatProvider, out char specifier, out int precision)
         {
             if (string.IsNullOrWhiteSpace(format))
@@ -86,14 +86,10 @@ namespace WmcSoft
             }
         }
 
-        string Format(int degrees, decimal minutes)
+        public string Format(int encoded)
         {
-            return degrees + "° " + minutes.ToString(_precision, _formatProvider) + "'";
-        }
-
-        string Format(decimal degrees)
-        {
-            return degrees.ToString(_precision, _formatProvider) + '°';
+            GeoCoordinate.Decode(encoded, out int degrees, out int minutes, out int seconds);
+            return Format(degrees, minutes, seconds);
         }
 
         public string Format(int degrees, int minutes, int seconds)
@@ -101,60 +97,21 @@ namespace WmcSoft
             switch (_specifier) {
             case 'M': // 49° 30,25′
                 return Format(degrees, minutes + seconds / 60m);
-            case 'D': // 49,5000°
+            case 'D': // 49,5042°
                 return Format(degrees > 0 ? (degrees + minutes / 60m + seconds / 3600m) : (degrees - minutes / 60m - seconds / 3600m));
-            default:
+            default: // 49° 30′ 15”
                 return degrees + "° " + minutes.ToString("00") + @"' " + seconds.ToString("00") + "\"";
             }
         }
 
-        public static int Encode(int degrees)
+        public string Format(int degrees, decimal minutes)
         {
-            return degrees * 3600_000;
+            return degrees + "° " + minutes.ToString(_precision, _formatProvider) + "'";
         }
 
-        public static int Encode(int degrees, int minutes, int seconds, int milliseconds)
+        public string Format(decimal degrees)
         {
-            return degrees >= 0
-                ? degrees * 3600_000 + minutes * 60_000 + seconds * 1000 + milliseconds
-                : degrees * 3600_000 - minutes * 60_000 - seconds * 1000 - milliseconds;
-        }
-
-        public static (int degrees, int minutes, int seconds, int milliseconds) Decode(int x)
-        {
-            var degrees = x / 3600_000;
-            if (x < 0) {
-                x = -x;
-            }
-            var minutes = (x / 60_000) % 60;
-            var seconds = (x / 1000) % 60;
-            var milliseconds = x / 1000;
-            return (degrees, minutes, seconds, milliseconds);
-        }
-
-        public static int DecodeDegrees(int x)
-        {
-            return x / 3600_000;
-        }
-
-        public static int DecodeMinutes(int x)
-        {
-            return (Abs(x) / 60_000) % 60;
-        }
-
-        public static int DecodeSeconds(int x)
-        {
-            return Abs(x / 1000) % 60;
-        }
-
-        public static int DecodeMilliseconds(int x)
-        {
-            return Abs(x) % 1000;
-        }
-
-        static int Abs(int x)
-        {
-            return (x >= 0) ? x : -x;
+            return degrees.ToString(_precision, _formatProvider) + '°';
         }
     }
 }

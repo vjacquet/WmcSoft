@@ -28,6 +28,9 @@ using System;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents a geographic position with both <see cref="Latitude"/> and <see cref="Longitude"/>.
+    /// </summary>
     [Serializable]
     public struct GeographicPosition : IComparable<GeographicPosition>, IEquatable<GeographicPosition>, IFormattable
     {
@@ -113,16 +116,18 @@ namespace WmcSoft
         {
             return ToString(null, null);
         }
+
         public string ToString(IFormatProvider formatProvider)
         {
             return ToString(null, formatProvider);
         }
+
         public string ToString(string format, IFormatProvider formatProvider = null)
         {
             var formatter = new GeoFormatter(format, formatProvider);
-            return formatter.Format(Latitude.Degrees, Latitude.Minutes, Latitude.Seconds)
+            return formatter.Format(Latitude.Storage)
                 + ';'
-                + formatter.Format(Longitude.Degrees, Longitude.Minutes, Longitude.Seconds);
+                + formatter.Format(Longitude.Storage);
         }
 
         #endregion

@@ -25,10 +25,15 @@
 #endregion
 
 using System;
-using static WmcSoft.GeoFormatter;
+
+using static WmcSoft.GeoCoordinate;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Represents the latitude, a geographic coordinate that specifies the north-south position of a point on the Earth's surface.
+    /// Latitude is an angle which ranges from 0° at the Equator to 90° at the north pole and -90° at the south pole.
+    /// </summary>
     [Serializable]
     public struct Latitude : IComparable<Latitude>, IEquatable<Latitude>, IFormattable
     {
@@ -37,11 +42,11 @@ namespace WmcSoft
         public static readonly Latitude MaxValue = new Latitude(Amplitude);
         public static readonly Latitude MinValue = new Latitude(-Amplitude);
 
-        private readonly int _storage;
+        internal readonly int Storage;
 
         private Latitude(int degrees)
         {
-            _storage = Encode(degrees);
+            Storage = Encode(degrees);
         }
 
         public Latitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
@@ -52,28 +57,27 @@ namespace WmcSoft
             if (seconds < 0 | seconds > 59) throw new ArgumentOutOfRangeException(nameof(seconds));
             if (milliseconds < 0 | milliseconds > 1000) throw new ArgumentOutOfRangeException(nameof(milliseconds));
 
-            _storage = Encode(degrees, minutes, seconds, milliseconds);
+            Storage = Encode(degrees, minutes, seconds, milliseconds);
         }
 
         public void Deconstruct(out int degrees, out int minutes, out int seconds)
         {
-            int ms;
-            (degrees, minutes, seconds, ms) = Decode(_storage);
+            Decode(Storage, out degrees, out minutes, out seconds);
         }
 
         public void Deconstruct(out int degrees, out int minutes, out int seconds, out int milliseconds)
         {
-            (degrees, minutes, seconds, milliseconds) = Decode(_storage);
+            Decode(Storage, out degrees, out minutes, out seconds, out milliseconds);
         }
 
-        public int Degrees => DecodeDegrees(_storage);
-        public int Minutes => DecodeMinutes(_storage);
-        public int Seconds => DecodeSeconds(_storage);
-        public int Milliseconds => DecodeMilliseconds(_storage);
+        public int Degrees => DecodeDegrees(Storage);
+        public int Minutes => DecodeMinutes(Storage);
+        public int Seconds => DecodeSeconds(Storage);
+        public int Milliseconds => DecodeMilliseconds(Storage);
 
         public override int GetHashCode()
         {
-            return _storage;
+            return Storage;
         }
 
         public override bool Equals(object obj)
@@ -85,19 +89,19 @@ namespace WmcSoft
 
         public bool Equals(Latitude other)
         {
-            return _storage.Equals(other._storage);
+            return Storage.Equals(other.Storage);
         }
 
         public int CompareTo(Latitude other)
         {
-            return _storage.CompareTo(other._storage);
+            return Storage.CompareTo(other.Storage);
         }
 
         #region Operators
 
         public static implicit operator decimal(Latitude x)
         {
-            return x._storage / 3600m;
+            return x.Storage / 3600m;
         }
 
         public static bool operator ==(Latitude x, Latitude y)
@@ -135,14 +139,16 @@ namespace WmcSoft
         {
             return ToString(null, null);
         }
+
         public string ToString(IFormatProvider formatProvider)
         {
             return ToString(null, formatProvider);
         }
+
         public string ToString(string format, IFormatProvider formatProvider = null)
         {
             var formatter = new GeoFormatter(format, formatProvider);
-            Deconstruct(out int d, out int m, out int s);
+            var (d, m, s) = this;
             return formatter.Format(d, m, s);
         }
 
