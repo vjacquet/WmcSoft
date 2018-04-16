@@ -46,6 +46,10 @@ namespace WmcSoft.Time
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly short _storage;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MinuteOfHour"/>.
+        /// </summary>
+        /// <param name="minute">The minutes (0 through 59).</param>
         public MinuteOfHour(int minute)
         {
             if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));

@@ -70,17 +70,24 @@ namespace WmcSoft.Time
             _storage = new TimeSpan(hour, minute, 0);
         }
 
-        public void Deconstruct(out int hour, out int minute)
-        {
-            hour = _storage.Hours;
-            minute = _storage.Minutes;
-        }
-
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified hour.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 23).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 0 or greater than 23.
+        /// </exception>
         public TimeOfDay(int hour)
         {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
 
             _storage = new TimeSpan(hour, 0, 0);
+        }
+
+        public void Deconstruct(out int hour, out int minute)
+        {
+            hour = _storage.Hours;
+            minute = _storage.Minutes;
         }
 
         public HourOfDay Hour {
@@ -147,9 +154,9 @@ namespace WmcSoft.Time
             return x.Equals(y);
         }
 
-        public static bool operator !=(TimeOfDay a, TimeOfDay b)
+        public static bool operator !=(TimeOfDay x, TimeOfDay y)
         {
-            return !a.Equals(b);
+            return !x.Equals(y);
         }
 
         public static bool operator <(TimeOfDay x, TimeOfDay y)

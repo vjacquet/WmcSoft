@@ -46,16 +46,28 @@ namespace WmcSoft.Time
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly short _storage;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="HourOfDay"/>.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 23).</param>
         public HourOfDay(int hour)
         {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
             _storage = (short)hour;
         }
 
-        public HourOfDay(int hour, string am_pm)
+        /// <summary>
+        /// Initializes a new instance of <see cref="HourOfDay"/>.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 12).</param>
+        /// <param name="meridiem">The meridiem, either <see cref="Meridiem.AM"/>,
+        /// or <see cref="Meridiem.PM"/>.</param>
+        public HourOfDay(int hour, Meridiem meridiem)
         {
-            _storage = (short)ConvertTo24Hour(hour, am_pm);
+            _storage = (short)ConvertTo24Hour(hour, meridiem);
         }
+
+        public int Value { get { return _storage; } }
 
         public override string ToString()
         {
@@ -83,8 +95,6 @@ namespace WmcSoft.Time
         {
             return _storage.CompareTo(other._storage);
         }
-
-        public int Value { get { return _storage; } }
 
         public bool IsAfter(HourOfDay other)
         {
@@ -139,15 +149,11 @@ namespace WmcSoft.Time
 
         #region Helpers
 
-        static int ConvertTo24Hour(int hour, string am_pm)
+        static int ConvertTo24Hour(int hour, Meridiem meridiem)
         {
             if (hour < 0 | hour > 12) throw new ArgumentOutOfRangeException(nameof(hour));
 
-            var am = "AM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
-            var pm = "PM".Equals(am_pm, StringComparison.OrdinalIgnoreCase);
-            if (!(am || pm)) throw new ArgumentOutOfRangeException(nameof(am_pm));
-
-            int translatedAmPm = am ? 0 : 12;
+            int translatedAmPm = meridiem == Meridiem.AM ? 0 : 12;
             translatedAmPm -= (hour == 12) ? 12 : 0;
             return hour + translatedAmPm;
         }
