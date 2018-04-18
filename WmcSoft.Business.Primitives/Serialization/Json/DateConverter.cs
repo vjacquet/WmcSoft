@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using Newtonsoft.Json;
 using WmcSoft.Time;
 
@@ -50,7 +51,7 @@ namespace WmcSoft.Serialization.Json
             }
             if (value.GetType() == typeof(Date))
             {
-                writer.WriteValue(value.ToString());
+                writer.WriteValue(((Date)value).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
                 return;
             }
             throw new JsonSerializationException("Expected Date object value");
@@ -72,12 +73,9 @@ namespace WmcSoft.Serialization.Json
             }
             if (reader.TokenType == JsonToken.String)
             {
-                try
-                {
-                    return (Date)DateTime.Parse((string)reader.Value);
-                } catch (Exception e)
-                {
-                    throw new JsonSerializationException("Unexpected error.", e);
+                var s = (string)reader.Value;
+                if (DateTime.TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime d)) {
+                    return (Date)d;
                 }
             }
             throw new JsonSerializationException($"Unexpected token or value when parsing version. Token: {reader.TokenType}, Value: {reader.Value}");

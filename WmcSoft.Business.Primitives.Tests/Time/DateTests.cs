@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -102,6 +103,20 @@ namespace WmcSoft.Time
             using (var reader = XmlReader.Create(new StringReader(xml))) {
                 actual = (DateTestObject)serializer.Deserialize(reader);
             }
+            Assert.Equal(obj.Date, actual.Date);
+        }
+
+        [Fact]
+        public void CanSerializeToJson()
+        {
+            var obj = new DateTestObject {
+                Date = new Date(1977, 02, 22)
+            };
+
+            var json = JsonConvert.SerializeObject(obj);
+            Assert.Contains("\"1977-02-22\"", json);
+
+            var actual = JsonConvert.DeserializeObject<DateTestObject>(json);
             Assert.Equal(obj.Date, actual.Date);
         }
 

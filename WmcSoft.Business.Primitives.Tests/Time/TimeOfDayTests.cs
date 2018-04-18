@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -82,6 +83,20 @@ namespace WmcSoft.Time
             using (var reader = XmlReader.Create(new StringReader(xml))) {
                 actual = (TimeOfDayTestObject)serializer.Deserialize(reader);
             }
+            Assert.Equal(obj.TimeOfDay, actual.TimeOfDay);
+        }
+
+        [Fact]
+        public void CanSerializeToJson()
+        {
+            var obj = new TimeOfDayTestObject {
+                TimeOfDay = new TimeOfDay(8, 30)
+            };
+
+            var json = JsonConvert.SerializeObject(obj);
+            Assert.Contains("\"08:30\"", json);
+
+            var actual = JsonConvert.DeserializeObject<TimeOfDayTestObject>(json);
             Assert.Equal(obj.TimeOfDay, actual.TimeOfDay);
         }
 
