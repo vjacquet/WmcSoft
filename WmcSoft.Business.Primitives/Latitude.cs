@@ -36,8 +36,7 @@ namespace WmcSoft
     /// Latitude is an angle which ranges from 0° at the Equator to 90° at the north pole and -90° at the south pole.
     /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
-    [Serializable]
-    public struct Latitude : IComparable<Latitude>, IEquatable<Latitude>, IFormattable
+    public partial struct Latitude : IComparable<Latitude>, IEquatable<Latitude>, IFormattable
     {
         const int Amplitude = 90;
 
@@ -50,6 +49,12 @@ namespace WmcSoft
         private Latitude(int degrees)
         {
             Storage = Encode(degrees);
+        }
+
+        public Latitude(decimal degrees)
+        {
+            if (degrees < -Amplitude | degrees > Amplitude) throw new ArgumentOutOfRangeException(nameof(degrees));
+            Storage = FromDecimal(degrees);
         }
 
         public Latitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
@@ -104,7 +109,7 @@ namespace WmcSoft
 
         public static implicit operator decimal(Latitude x)
         {
-            return x.Storage / 3600m;
+            return ToDecimal(x.Storage);
         }
 
         public static bool operator ==(Latitude x, Latitude y)

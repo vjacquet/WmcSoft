@@ -36,8 +36,7 @@ namespace WmcSoft
     /// Longitude is an angle which ranges from 0° at the Prime Meridian to 180° eastward and -180° westward.
     /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
-    [Serializable]
-    public struct Longitude : IComparable<Longitude>, IEquatable<Longitude>, IFormattable
+    public partial struct Longitude : IComparable<Longitude>, IEquatable<Longitude>, IFormattable
     {
         const int Amplitude = 180;
 
@@ -50,6 +49,12 @@ namespace WmcSoft
         private Longitude(int degrees)
         {
             Storage = Encode(degrees * 3600_000);
+        }
+
+        public Longitude(decimal degrees)
+        {
+            if (degrees < -Amplitude | degrees > Amplitude) throw new ArgumentOutOfRangeException(nameof(degrees));
+            Storage = FromDecimal(degrees);
         }
 
         public Longitude(int degrees, int minutes = 0, int seconds = 0, int milliseconds = 0)
@@ -104,7 +109,7 @@ namespace WmcSoft
 
         public static implicit operator decimal(Longitude x)
         {
-            return x.Storage / 3600m;
+            return ToDecimal(x.Storage);
         }
 
         public static bool operator ==(Longitude x, Longitude y)
@@ -150,7 +155,7 @@ namespace WmcSoft
 
         public string ToString(string format, IFormatProvider formatProvider = null)
         {
-           var formatter = new GeoFormatter(format, formatProvider);
+            var formatter = new GeoFormatter(format, formatProvider);
             var (d, m, s) = this;
             return formatter.Format(d, m, s);
         }

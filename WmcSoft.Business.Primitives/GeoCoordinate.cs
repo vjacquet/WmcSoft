@@ -24,6 +24,8 @@
 
 #endregion
 
+using System;
+
 namespace WmcSoft
 {
     static class GeoCoordinate
@@ -76,6 +78,16 @@ namespace WmcSoft
         public static int DecodeMilliseconds(int x)
         {
             return Abs(x) % 1000;
+        }
+
+        public static int FromDecimal(decimal degrees)
+        {
+            return (int)decimal.Round(degrees * 3600_000m, 0, MidpointRounding.AwayFromZero);
+        }
+
+        public static decimal ToDecimal(int x)
+        {
+            return x / 3600_000m;
         }
 
         static int Abs(int x)
