@@ -35,13 +35,29 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Defines the extension methods to the <see cref="Interval<Date>"/> class.
+    /// This is a static class. 
+    /// </summary>
     public static class DateInterval
     {
+        /// <summary>
+        /// Creates an interval including both <paramref name="start"/> and <paramref name="end"/>.
+        /// </summary>
+        /// <param name="start">The start date.</param>
+        /// <param name="end">The end date.</param>
+        /// <returns>The interval between <paramref name="start"/> and <paramref name="end"/>, included.</returns>
         public static Interval<Date> Inclusive(Date start, Date end)
         {
             return Interval.Closed(start, end);
         }
 
+        /// <summary>
+        /// Creates an interval for the given <paramref name="month"/> of the <paramref name="year"/>. All days of the <paramref name="month"/> are included.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month</param>
+        /// <returns>The interval containing all days of the month.</returns>
         public static Interval<Date> Month(int year, int month)
         {
             var start = new Date(year, month, 1);
@@ -49,6 +65,11 @@ namespace WmcSoft.Time
             return Inclusive(start, end);
         }
 
+        /// <summary>
+        /// Creates an interval for the given <paramref name="year"/>. All days of the <paramref name="year"/> are included.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <returns>The interval containing all days of the year.</returns>
         public static Interval<Date> Year(int year)
         {
             var start = new Date(year, 1, 1);
@@ -56,6 +77,11 @@ namespace WmcSoft.Time
             return Inclusive(start, end);
         }
 
+        /// <summary>
+        /// Enumerates all days in the interval in chronological order.
+        /// </summary>
+        /// <param name="interval">The date interval.</param>
+        /// <returns>A lazy enumeration of all days in the interval, in chronological order.</returns>
         public static IEnumerable<Date> Days(this Interval<Date> interval)
         {
             var start = interval.Lower.Value;
@@ -70,6 +96,11 @@ namespace WmcSoft.Time
                 yield return end;
         }
 
+        /// <summary>
+        /// Enumerates all days in the interval in reverse chronological order.
+        /// </summary>
+        /// <param name="interval">The date interval.</param>
+        /// <returns>A lazy enumeration of all days in the interval, in reverse chronological order.</returns>
         public static IEnumerable<Date> DaysBackwards(this Interval<Date> interval)
         {
             var start = interval.Lower.Value;
