@@ -110,16 +110,31 @@ namespace WmcSoft
 
         #region Methods
 
+        /// <summary>
+        /// Checks if the upper bound of this range is lower than the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns><c>true</c> if the upper bound is lower than the value; otherwise, <c>false</c>.</returns>
         public bool IsLowerThan(T value)
         {
             return value.CompareTo(Upper) > 0;
         }
 
+        /// <summary>
+        /// Checks if the lower bound of this range is upper than the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns><c>true</c> if the lower bound is upper than the value; otherwise, <c>false</c>.</returns>
         public bool IsUpperThan(T value)
         {
             return value.CompareTo(Lower) < 0;
         }
 
+        /// <summary>
+        /// Checks if this range as a common boundary with the <paramref name="other"/>.
+        /// </summary>
+        /// <param name="other">The other range.</param>
+        /// <returns><c>true</c> if this range has a common boundary with the other; otherwise, <c>false</c>.</returns>
         public bool Abuts(Range<T> other)
         {
             return Upper.CompareTo(other.Lower) == 0 || Lower.CompareTo(other.Upper) == 0;
@@ -149,14 +164,14 @@ namespace WmcSoft
             return other.IsLowerThan(Lower) || other.IsUpperThan(Upper);
         }
 
-        public Range<T> GapBetween(Range<T> other)
+        public static Range<T> GapBetween(Range<T> x, Range<T> y)
         {
-            if (Overlaps(other))
+            if (x.Overlaps(y))
                 return Empty;
-            else if (Upper.CompareTo(other.Lower) < 0)
-                return new Range<T>(Upper, other.Lower);
+            else if (x.Upper.CompareTo(y.Lower) < 0)
+                return new Range<T>(x.Upper, y.Lower);
             else
-                return new Range<T>(other.Upper, Lower);
+                return new Range<T>(y.Upper, x.Lower);
         }
 
         public Range<T> MergeWith(Range<T> other)
@@ -320,7 +335,7 @@ namespace WmcSoft
     public static class Range
     {
         internal struct UninitializedTag { }
-        static readonly UninitializedTag uninitialized = default(UninitializedTag);
+        static readonly UninitializedTag uninitialized = default;
 
         /// <summary>
         /// Creates a new range with given lower and upper bounds.
