@@ -349,8 +349,8 @@ namespace WmcSoft
             where T : struct, IComparable<T>
         {
             return value.HasValue
-                ? IntervalLimit<T>.UnboundedLower
-                : new IntervalLimit<T>(value.GetValueOrDefault(), true, !exclusive);
+                ? LowerLimit(value.GetValueOrDefault(), exclusive)
+                : IntervalLimit<T>.UnboundedLower;
         }
 
 
@@ -364,8 +364,8 @@ namespace WmcSoft
             where T : struct, IComparable<T>
         {
             return value.HasValue
-                ? IntervalLimit<T>.UnboundedUpper
-                : new IntervalLimit<T>(value.GetValueOrDefault(), false, !exclusive);
+                ? UpperLimit(value.GetValueOrDefault(), exclusive)
+                : IntervalLimit<T>.UnboundedUpper;
         }
 
         #endregion
@@ -458,6 +458,18 @@ namespace WmcSoft
             where T : struct, IComparable<T>
         {
             return new Interval<T>(LowerLimit(lower, lowerExcluded), UpperLimit(upper, upperExcluded));
+        }
+
+        public static Interval<T> Above<T>(T lower, bool exclusive = false)
+            where T : struct, IComparable<T>
+        {
+            return new Interval<T>(LowerLimit(lower, exclusive), IntervalLimit<T>.UnboundedUpper);
+        }
+
+        public static Interval<T> Below<T>(T upper, bool exclusive = false)
+            where T : struct, IComparable<T>
+        {
+            return new Interval<T>(IntervalLimit<T>.UnboundedLower, UpperLimit(upper, exclusive));
         }
     }
 
