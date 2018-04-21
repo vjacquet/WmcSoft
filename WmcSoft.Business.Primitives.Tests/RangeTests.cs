@@ -76,15 +76,15 @@ namespace WmcSoft.Business
         }
 
         [Theory]
-        [InlineData(1, 10, "fr-FR", "G", "[1; 10)")]
-        [InlineData(1, 10, "fr-FR", "M", "[1; 10)")]
-        [InlineData(1, 10, "fr-FR", "B", "[1; 10[")]
-        [InlineData(1, 10, "en-US", "G", "[1; 10)")]
-        [InlineData(1, 10, "en-US", "M", "[1; 10)")]
-        [InlineData(1, 10, "en-US", "B", "[1; 10[")]
-        [InlineData(1, 10, null, "G", "[1; 10)")]
-        [InlineData(1, 10, null, "M", "[1; 10)")]
-        [InlineData(1, 10, null, "B", "[1; 10[")]
+        [InlineData(1, 10, "fr-FR", "G", "[1, 10)")]
+        [InlineData(1, 10, "fr-FR", "M", "[1, 10)")]
+        [InlineData(1, 10, "fr-FR", "B", "[1, 10[")]
+        [InlineData(1, 10, "en-US", "G", "[1, 10)")]
+        [InlineData(1, 10, "en-US", "M", "[1, 10)")]
+        [InlineData(1, 10, "en-US", "B", "[1, 10[")]
+        [InlineData(1, 10, null, "G", "[1, 10)")]
+        [InlineData(1, 10, null, "M", "[1, 10)")]
+        [InlineData(1, 10, null, "B", "[1, 10[")]
         public void CanFormatRange(decimal i, decimal j, string culture, string format, string expected)
         {
             var ci = culture == null

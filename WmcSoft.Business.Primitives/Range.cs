@@ -203,7 +203,7 @@ namespace WmcSoft
             var builder = new StringBuilder();
             builder.Append('[');
             builder.Append(Lower);
-            builder.Append("; ");
+            builder.Append(", ");
             builder.Append(Upper);
             builder.Append(GetClosing(format));
             return builder.ToString();
@@ -216,7 +216,7 @@ namespace WmcSoft
             case "M":
             case "m":
                 return ')';
-            case "B":
+            case "B": // Bourbaki
             case "b":
                 return '[';
             default:
