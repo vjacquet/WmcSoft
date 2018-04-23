@@ -78,7 +78,14 @@ namespace WmcSoft
         public bool IsClosed => (_state & State.Closed) != 0;
         public bool IsOpen => (_state & State.Open) != 0;
 
+        /// <summary>
+        /// Gets a value indicating whether the current <see cref="IntervalLimit{T}"/> object has a valid value of its underlying type.
+        /// </summary>
         public bool HasValue => (_state & (State.Closed | State.Open)) != State.None;
+
+        /// <summary>
+        /// Gets the value of the current <see cref="IntervalLimit{T}"/> object if it has been assigned a valid underlying value.
+        /// </summary>
         public T Value {
             get {
                 if (!HasValue)
@@ -86,9 +93,26 @@ namespace WmcSoft
                 return _value;
             }
         }
+
+        /// <summary>
+        /// Retrieves the value of the current <see cref="IntervalLimit{T}"/> object, or the object's default value.
+        /// </summary>
+        /// <returns>The value of the <see cref="Value"/> property if the <see cref="HasValue"/> property is <c>true</c>;
+        /// otherwise, the default value of the current <see cref="IntervalLimit{T}"/> object.
+        /// The type of the default value is the type argument of the current <see cref="IntervalLimit{T}"/> object, and the value of the default value consists solely of binary zeroes.</returns>
         public T GetValueOrDefault()
         {
             return _value;
+        }
+
+        /// <summary>
+        /// Retrieves the value of the current <see cref="IntervalLimit{T}"/> object, or the specified default value.
+        /// </summary>
+        /// <param name="defaultValue">A value to return if the <see cref="HasValue"/> property is <c>false</c>.</param>
+        /// <returns>The value of the <see cref="Value"/> property if the <see cref="HasValue"/> property is <c>true</c>; otherwise, the <paramref name="defaultValue"/> parameter.</returns>
+        public T GetValueOrDefault(T defaultValue)
+        {
+            return HasValue ? _value: defaultValue;
         }
 
         internal bool IsOutside(T value)
