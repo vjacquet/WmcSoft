@@ -24,7 +24,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 using TKey = System.Guid;
@@ -38,15 +37,24 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public abstract class Party : DomainObject<TKey>
     {
+        #region Fields
+
+        private readonly List<AddressProperties> _addressProperties;
+
+        #endregion
+
         #region Lifecycle
 
-        protected Party() {
-            Addresses = new List<AddressProperties>();
-            RegisteredIdentifiers = new List<RegisteredIdentifier>();
+        protected Party()
+        {
+            _addressProperties = new List<AddressProperties>();
+            Addresses = ManyToMany<Party, AddressBase>.Adapt(this, _addressProperties);
+            RegisteredIdentifiers = new HashSet<RegisteredIdentifier>();
             Roles = new HashSet<PartyRole>(UniqueIdentifierComparer);
         }
 
-        protected Party(TKey identifier) : this() {
+        protected Party(TKey identifier) : this()
+        {
             Id = identifier;
         }
 
@@ -66,11 +74,12 @@ namespace WmcSoft.Business.PartyModel
 
         #region Properties
 
-        public virtual ICollection<RegisteredIdentifier> RegisteredIdentifiers { get; private set; }
+        public ICollection<RegisteredIdentifier> RegisteredIdentifiers { get; }
 
-        public virtual ICollection<AddressProperties> Addresses { get; private set; }
+        public ICollection<AddressProperties> AddressProperties { get { return _addressProperties; } }
+        public ICollection<AddressBase> Addresses { get; }
 
-        public virtual ICollection<PartyRole> Roles { get; private set; }
+        public ICollection<PartyRole> Roles { get; }
 
         #endregion
     }

@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -24,39 +24,22 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-using TKey = System.Guid;
-
-namespace WmcSoft.Business.PartyModel
+namespace WmcSoft.Business
 {
     /// <summary>
-    /// Specifies information about an Address assigned to a specific Party.
+    /// Defines a navigation property to a specified target.
     /// </summary>
-    public class AddressProperties : DomainObject<TKey>, ITemporal, INavigable<Party>, INavigable<AddressBase>
+    /// <typeparam name="TTarget"></typeparam>
+    public interface INavigable<TTarget>
     {
-        #region Properties
+        TTarget Target { get; set; }
+    }
 
-        public Party Party { get; set; }
-        public AddressBase Address { get; set; }
-        public string Use { get; set; }
-
-        #endregion
-
-        #region ITemporal Members
-
-        public DateTime? ValidSince { get; set; }
-        public DateTime? ValidUntil { get; set; }
-
-        #endregion
-
-        #region Navigation
-
-        Party INavigable<Party>.Target { get => Party; set => Party = value; }
-        AddressBase INavigable<AddressBase>.Target { get => Address; set => Address = value; }
-
-        #endregion
+    public static class NavigableExtensions
+    {
+        public static TTarget NavigateTo<TTarget>(this INavigable<TTarget> navigatable)
+        {
+            return navigatable.Target;
+        }
     }
 }

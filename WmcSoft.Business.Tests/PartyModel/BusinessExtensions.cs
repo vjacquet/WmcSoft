@@ -48,7 +48,8 @@ namespace WmcSoft.Business.PartyModel
             return new ReportsTo(supervisor.EnsureRole<Supervisor>(), subordinate.EnsureRole<Subordinate>());
         }
 
-        public static MemberOfProject WorksAs<R>(this Person person, EmployingProject project) where R : RoleInProject {
+        public static MemberOfProject WorksAs<R>(this Person person, EmployingProject project)
+            where R : RoleInProject {
             return new MemberOfProject(project, person.EnsureRole<R>());
         }
     }

@@ -78,7 +78,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.GeographicAddress">
-    <Position X="11.5" Y="10.75" Width="1.75" />
+    <Position X="11.5" Y="11.25" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -88,14 +88,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.TelecomAddress">
-    <Position X="14" Y="10.75" Width="1.5" />
+    <Position X="14" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAAAAAkAAAAAAAAAEAAAAAAAAAAAQACAAAAAAAAAAE=</HashCode>
       <FileName>Business\PartyModel\TelecomAddress.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.WebPageAddress">
-    <Position X="16.25" Y="10.75" Width="1.5" />
+    <Position X="16.25" Y="11.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -126,7 +126,7 @@
   <Class Name="WmcSoft.Business.PartyModel.Ethnicity" Collapsed="true">
     <Position X="8.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAgAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\Ethnicity.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -222,7 +222,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.EmailAddress">
-    <Position X="9" Y="10.75" Width="1.75" />
+    <Position X="9" Y="11.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\EmailAddress.cs</FileName>
@@ -231,7 +231,7 @@
   <Struct Name="WmcSoft.Business.PartyModel.PartyIdentifier" Collapsed="true">
     <Position X="1.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACCAAAAAACAAAAEgABAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACEAAAAAAAAAAEgABAAAAAAAAAAIAAAAIAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\PartyIdentifier.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -239,7 +239,7 @@
   <Struct Name="WmcSoft.Business.PartyModel.PartyRoleIdentifier" Collapsed="true">
     <Position X="3.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgCAAAAAACAAAAEgABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAEAAAAAAAEgABAAAAAAAAAAIAAAAAAAAAAIAA=</HashCode>
       <FileName>Business\PartyModel\PartyRoleIdentifier.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

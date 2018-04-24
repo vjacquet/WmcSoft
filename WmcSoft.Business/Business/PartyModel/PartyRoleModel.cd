@@ -6,33 +6,14 @@
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <NestedTypes>
-      <Class Name="WmcSoft.Business.PartyModel.PartyRole.UniqueIdentifierEqualityComparer" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Business\PartyModel\PartyRole.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AEFAAAAAAAFgAAgAAAAAgAQAAFAAAAAAAAAIRBYAAEQ=</HashCode>
+      <HashCode>AEFAAAAAAAFgAAAAAAAAAAQAAEAAAAAAAAAABBIAAAA=</HashCode>
       <FileName>Business\PartyModel\PartyRole.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Identifier" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Relationships" />
       <Property Name="AssignedResponsabilities" />
     </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="WmcSoft.Business.PartyModel.PartyRoleIdentifier" Collapsed="true">
-    <Position X="8.25" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Business\PartyModel\PartyRoleIdentifier.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="WmcSoft.Business.PartyModel.PartyRelationship">
     <Position X="1.75" Y="2" Width="2" />
@@ -83,7 +64,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAACAoIAAAAAAAAAAAQEAAAAACAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAIAAAAAAAAAAAAQEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\PartyModel\PartySignature.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -93,7 +74,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>gAAAEAAAAAAgAAEAACAAAAQAAAAAAAAAAAAAEAAAAAE=</HashCode>
+      <HashCode>AAAAEAAAAAAgAAEAAAAAAAQAAAAAAAAAAAAAEAAAAAE=</HashCode>
       <FileName>Business\PartyModel\AssignedResponsability.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -102,5 +83,13 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
+  <Struct Name="WmcSoft.Business.PartyModel.PartyRoleIdentifier" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAEgABAAAAAAAAAAIAAAAAAAAAAIAA=</HashCode>
+      <FileName>Business\PartyModel\PartyRoleIdentifier.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
