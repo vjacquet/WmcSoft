@@ -25,6 +25,8 @@
 #endregion
 
 using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -36,7 +38,13 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public TelecomAddress() {
+        public TelecomAddress()
+        {
+        }
+
+        public TelecomAddress(string address, TelecomPhysicalType type = TelecomPhysicalType.Phone)
+        {
+            (CountryCode, NationalDirectDialingPrefix, AreaType, Number, Extension) = Parse(address);
         }
 
         #endregion
@@ -59,8 +67,50 @@ namespace WmcSoft.Business.PartyModel
             get {
                 // TODO: decide how to render the address considering the locale.
                 // see <https://en.wikipedia.org/wiki/E.164>
-                return String.Empty;
+                var sb = new StringBuilder();
+                if (string.IsNullOrEmpty(CountryCode)) {
+                    sb.Append(NationalDirectDialingPrefix);
+                    sb.Append(AreaType);
+                } else {
+                    sb.Append('+');
+                    sb.Append(CountryCode);
+                    if (!string.IsNullOrEmpty(NationalDirectDialingPrefix)) {
+                        sb.Append(" (");
+                        sb.Append(NationalDirectDialingPrefix);
+                        sb.Append(')');
+                    } else {
+                        sb.Append(" ");
+                    }
+                }
+                if (sb.Length > 0)
+                    sb.Append(' ');
+                sb.Append(Number);
+                if (!string.IsNullOrEmpty(Extension)) {
+                    sb.Append(" ext. ");
+                    sb.Append(Extension);
+                }
+                return sb.ToString();
             }
+        }
+
+        #endregion
+
+        #region Helpers
+
+        static readonly Regex _parser = new Regex(@"^(\+(?<country>\d{1,3})?(\s+\((?<ndd>\d*)\)(?<area>\d*))?\s+)?(?<number>(\d|\s)*)( ext\. (?<ext>\d*))?$");
+
+        public static (string country, string ndd, string area, string number, string ext) Parse(string address)
+        {
+            var m = _parser.Match(address);
+            if (!m.Success)
+                throw new FormatException();
+            return (Val(m, "country"), Val(m, "ndd"), Val(m, "area"), Val(m, "number"), Val(m, "ext"));
+        }
+
+        static string Val(Match m, string name)
+        {
+            var g = m.Groups[name];
+            return g.Success ? g.Value : null;
         }
 
         #endregion

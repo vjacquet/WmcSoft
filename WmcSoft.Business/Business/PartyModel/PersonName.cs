@@ -35,6 +35,24 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class PersonName : DomainObject<TKey>, ITemporal
     {
+        #region Lifecycle
+
+        public PersonName()
+        {
+
+        }
+
+        public PersonName(string prefix = null, string givenNames = null, string famillyName = null, string suffix = null, string preferredName = null)
+        {
+            Prefix = prefix;
+            GivenNames = givenNames;
+            FamilyName = famillyName;
+            Suffix = suffix;
+            PreferredName = preferredName;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -47,12 +65,25 @@ namespace WmcSoft.Business.PartyModel
         /// hyphenated names (it.g., Jean-Paul) and names including 
         /// more than one word (it.g., Kwai Lin)
         /// </summary>
-        public string GivenName { get; set; }
+        public string GivenName {
+            get {
+                var name = GivenNames;
+                if (name == null)
+                    return null;
+                var index = name.IndexOf(',');
+                if (index < 0)
+                    return null;
+                return name.Substring(0, index);
+            }
+        }
 
         /// <summary>
-        /// Any name other than the given name and the family name
+        /// Any name other than the family name
         /// </summary>
-        public string MiddleName { get; set; }
+        public string GivenNames {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The last name in Western countries—this is the only 

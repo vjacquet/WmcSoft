@@ -38,6 +38,11 @@ namespace WmcSoft.Business.PartyModel
         public EmailAddress() {
         }
 
+        public EmailAddress(string email)
+        {
+            Email = email;
+        }
+
         #endregion
 
         #region Properties

@@ -38,17 +38,30 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public Person() {
+        public Person()
+        {
             OtherPersonNames = new List<PersonName>();
         }
 
         public Person(PersonName name)
-            : this() {
+            : this()
+        {
             PersonName = name;
         }
 
+        public Person(string prefix = null, string givenNames = null, string famillyName = null, string suffix = null, string preferredName = null)
+            : this()
+        {
+            PersonName = new PersonName {
+                Prefix = prefix,
+                GivenNames = givenNames,
+                FamilyName = famillyName
+            };
+        }
+
         public Person(string preferredName)
-            : this(new PersonName { PreferredName = preferredName }) {
+            : this(new PersonName { PreferredName = preferredName })
+        {
         }
 
         #endregion

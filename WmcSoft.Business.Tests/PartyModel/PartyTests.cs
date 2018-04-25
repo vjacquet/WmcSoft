@@ -41,5 +41,52 @@ namespace WmcSoft.Business.Tests.PartyModel
             Assert.Equal(OrganizationalNameUse.LegalName, company.OrganizationName.Use);
             Assert.Equal("MyLittleCompany", company.OrganizationName.ToString());
         }
+
+        [Fact]
+        public void CanUseOrganizationBuilders()
+        {
+            var mcdonald = new Company("McDonald's Coporation")
+                .TradingAs("McDonald's");
+
+            Assert.True(mcdonald is Party);
+            Assert.IsType<Company>(mcdonald);
+            Assert.NotNull(mcdonald.OrganizationName);
+            Assert.Equal(OrganizationalNameUse.LegalName, mcdonald.OrganizationName.Use);
+            Assert.Equal("McDonald's Coporation", mcdonald.OrganizationName.ToString());
+            Assert.NotEmpty(mcdonald.OtherOrganizationNames);
+        }
+
+        [Fact]
+        public void CanCreateAnonymousPerson()
+        {
+            var person = new Person();
+            Assert.IsType<Person>(person);
+            Assert.Null(person.PersonName);
+        }
+
+        [Fact]
+        public void CanUsePersonBuilders()
+        {
+            var tony = new Person("Mr", "Anthony", "Stark", preferredName: "Tony")
+                .WithAlias("Iron Man")
+                .WithEmail("tony@stark.com");
+
+            Assert.IsType<Person>(tony);
+            Assert.NotNull(tony.PersonName);
+            Assert.NotEmpty(tony.OtherPersonNames);
+            Assert.NotEmpty(tony.Addresses);
+        }
+
+        [Fact]
+        public void CanCreateDifferentAddresses()
+        {
+            var address = new GeographicAddress {
+
+            };
+            var company = new Company("MyLittleCompany")
+                .BillingTo(address)
+                .ShippingTo(address);
+            Assert.NotEmpty(company.Addresses);
+        }
     }
 }

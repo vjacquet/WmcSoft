@@ -9,7 +9,13 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public WebPageAddress() {
+        public WebPageAddress()
+        {
+        }
+
+        public WebPageAddress(Uri url)
+        {
+            Url = url;
         }
 
         #endregion
@@ -19,7 +25,7 @@ namespace WmcSoft.Business.PartyModel
         public Uri Url { get; set; }
 
         public override string Address {
-            get { return Url.ToString(); }
+            get { return Url?.ToString(); }
         }
 
         #endregion

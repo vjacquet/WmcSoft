@@ -42,6 +42,11 @@ namespace WmcSoft.Business
             return x => new BoxOnTransformedTemporal<U>(func(x.Value), x.Source);
         }
 
+        static Func<IBox<T>, U, IBox<V>> Transform<T, U, V>(Func<T,U, V> func)
+        {
+            return (x,y) => new BoxOnTransformedTemporal<V>(func(x.Value, y), x.Source);
+        }
+
         static Func<IBox<T>, bool> Filter<T>(Func<T, bool> predicate)
         {
             return x => predicate(x.Value);
@@ -92,6 +97,15 @@ namespace WmcSoft.Business
             public AsOfEnumerable<U> Select<U>(Func<T, U> selector)
             {
                 return new AsOfEnumerable<U>(AsOf, _valid.Select(Transform(selector)));
+            }
+
+            public AsOfEnumerable<V> Join<U, K, V>(IEnumerable<U> inner, Func<T, K> outerKeySelector, Func<U, K> innerKeySelector, Func<T, U, V> resultSelector)
+            {
+                if (typeof(ITemporal).IsAssignableFrom(typeof(U))) {
+                    return new AsOfEnumerable<V>(AsOf, _valid.Join(inner.Where(x => ((ITemporal)x).IsValidOn(AsOf)), x => outerKeySelector(x.Value), innerKeySelector, Transform(resultSelector)));
+                }else {
+                    return new AsOfEnumerable<V>(AsOf, _valid.Join(inner, x => outerKeySelector(x.Value), innerKeySelector, Transform(resultSelector)));
+                }
             }
 
             #endregion
