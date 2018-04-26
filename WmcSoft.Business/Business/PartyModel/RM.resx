@@ -135,4 +135,16 @@
   <data name="Company.Description" xml:space="preserve">
     <value>Represents an Organization created to make money by selling goods or services, with a legal identity that is separate from its owners.</value>
   </data>
+  <data name="PartyRelationship.Description" xml:space="preserve">
+    <value>Captures the fact that there is a semantic relationship between two person or organization in which each plays a specific role.</value>
+  </data>
+  <data name="PartyRelationship.Name" xml:space="preserve">
+    <value>Relationship</value>
+  </data>
+  <data name="PartyRole.Description" xml:space="preserve">
+    <value>Captures the semantics of the role played by a person or an organization in a particular relationship.</value>
+  </data>
+  <data name="PartyRole.Name" xml:space="preserve">
+    <value>Role</value>
+  </data>
 </root>

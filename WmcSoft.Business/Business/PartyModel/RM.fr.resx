@@ -129,6 +129,18 @@
   <data name="OrganizationUnit.Name" xml:space="preserve">
     <value>Unité d'organisation</value>
   </data>
+  <data name="PartyRelationship.Description" xml:space="preserve">
+    <value>Capture l'existence d'une relation entre deux personnes ou organisation dans laquelle chacune joue un rôle specifique.</value>
+  </data>
+  <data name="PartyRelationship.Name" xml:space="preserve">
+    <value>Relation</value>
+  </data>
+  <data name="PartyRole.Description" xml:space="preserve">
+    <value>Représente le rôle joué par une personne ou une organisation au sein d'une relation particulière.</value>
+  </data>
+  <data name="PartyRole.Name" xml:space="preserve">
+    <value>Rôle</value>
+  </data>
   <data name="Person.Description" xml:space="preserve">
     <value>Modélise les informations sur un être humain.</value>
   </data>
