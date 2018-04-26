@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="PartyModel\InMemory\PartyStore.cs" />
     <Compile Include="PartyModel\PartyStoreTests.cs" />
+    <Compile Include="PartyModel\PersonNameTests.cs" />
     <Compile Include="PartyModel\ProjectLikePartyRoleTests.cs" />
     <Compile Include="PartyModel\PartyTests.cs" />
     <Compile Include="PartyModel\ProjectLikeModel.cs" />

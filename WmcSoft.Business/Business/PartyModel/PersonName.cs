@@ -39,7 +39,11 @@ namespace WmcSoft.Business.PartyModel
 
         public PersonName()
         {
+        }
 
+        public PersonName(string preferredName)
+        {
+            PreferredName = preferredName;
         }
 
         public PersonName(string prefix = null, string givenNames = null, string famillyName = null, string suffix = null, string preferredName = null)
@@ -80,10 +84,7 @@ namespace WmcSoft.Business.PartyModel
         /// <summary>
         /// Any name other than the family name
         /// </summary>
-        public string GivenNames {
-            get;
-            set;
-        }
+        public string GivenNames { get; set; }
 
         /// <summary>
         /// The last name in Western countries—this is the only 

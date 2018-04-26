@@ -24,34 +24,18 @@
 
 #endregion
 
-using System;
 using Xunit;
 
 namespace WmcSoft.Business.PartyModel
 {
-    public class AddressTests
+    public class PersonNameTests
     {
-        [Theory]
-        [InlineData("+44 (0)208 123 4567 ext. 789", "44", "0", "208", "123 4567", "789")]
-        [InlineData("+44 (0)208 123 4567", "44", "0", "208", "123 4567", null)]
-        [InlineData("+44 0208 123 4567 ext. 789", "44", null, null, "0208 123 4567", "789")]
-        [InlineData("0208 123 4567 ext. 789", null, null, null, "0208 123 4567", "789")]
-        public void CanParseTelecomAddress(string address, string country, string ndd, string area, string number, string ext)
+        [Fact]
+        public void CanDistinguishBetweenPreferredAndFullNameConstructors()
         {
-            var (c, d, a, n, e) = TelecomAddress.Parse(address);
-            Assert.Equal(country, c);
-            Assert.Equal(ndd, d);
-            Assert.Equal(area, a);
-            Assert.Equal(number, n);
-            Assert.Equal(ext, e);
-        }
-
-        [Theory]
-        [InlineData("+44 0208 123 4567 ext 789")]
-        [InlineData("(0)208 123 4567 ext. 789")]
-        public void CannotParseIncorrectTelecomAddress(string address)
-        {
-            Assert.Throws<FormatException>(() => TelecomAddress.Parse(address));
+            var p = new PersonName("preferred");
+            Assert.Null(p.Prefix);
+            Assert.Equal("preferred", p.PreferredName);
         }
     }
 }

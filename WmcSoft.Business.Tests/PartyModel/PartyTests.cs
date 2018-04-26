@@ -25,9 +25,8 @@
 #endregion
 
 using Xunit;
-using WmcSoft.Business.PartyModel;
 
-namespace WmcSoft.Business.Tests.PartyModel
+namespace WmcSoft.Business.PartyModel
 {
     public class PartyTests
     {
