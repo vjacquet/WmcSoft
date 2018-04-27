@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace WmcSoft.Collections.Specialized
@@ -66,6 +67,52 @@ namespace WmcSoft.Collections.Specialized
 
             foreach (var entry in bimap)
                 Assert.Equal(entry.Key, pamib[entry.Value]);
+        }
+
+        [Fact]
+        public void EnsureInvariantAfterAttemtpingToAddTwiceTheSameValue()
+        {
+            var bimap = new Bimap<string, int>();
+            var pamib = bimap.Inverse();
+
+            bimap.Add("one", 1);
+            bimap.Add("two", 2);
+            Assert.Equal(2, bimap.Count);
+            Assert.Equal(2, bimap.Keys.Count);
+            Assert.Equal(2, bimap.Values.Count);
+
+            Assert.Throws<ArgumentException>(() => bimap.Add("un", 1));
+            Assert.Equal("one", pamib[1]);
+            Assert.Equal(2, bimap.Keys.Count);
+            Assert.Equal(2, bimap.Values.Count);
+
+            Assert.Throws<ArgumentException>(() => bimap["deux"] = 2);
+            Assert.Equal("two", pamib[2]);
+            Assert.Equal(2, bimap.Keys.Count);
+            Assert.Equal(2, bimap.Values.Count);
+        }
+
+        [Fact]
+        public void EnsureInvariantOnHomogeneousBimapAfterAttemtpingToAddTwiceTheSameValue()
+        {
+            var bimap = new Bimap<string>();
+            var pamib = bimap.Inverse();
+
+            bimap.Add("one", "1");
+            bimap.Add("two", "2");
+            Assert.Equal(2, bimap.Count);
+            Assert.Equal(2, bimap.Keys.Count);
+            Assert.Equal(2, bimap.Values.Count);
+
+            Assert.Throws<ArgumentException>(() => bimap.Add("un", "1"));
+            Assert.Equal("one", pamib["1"]);
+            Assert.Equal(2, bimap.Keys.Count);
+            Assert.Equal(2, bimap.Values.Count);
+
+            Assert.Throws<ArgumentException>(() => bimap["deux"] = "2");
+            Assert.Equal("two", pamib["2"]);
+            Assert.Equal(2, bimap.Keys.Count);
+            Assert.Equal(2, bimap.Values.Count);
         }
     }
 }

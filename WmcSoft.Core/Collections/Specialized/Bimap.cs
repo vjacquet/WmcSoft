@@ -70,7 +70,13 @@ namespace WmcSoft.Collections.Specialized
         public void Add(TKey key, TValue value)
         {
             _index.Add(key, value);
-            _reverse.Add(value, key);
+
+            try {
+                _reverse.Add(value, key);
+            } catch (Exception) {
+                _index.Remove(key);
+                throw;
+            }
         }
 
         public bool ContainsKey(TKey key)
@@ -246,7 +252,13 @@ namespace WmcSoft.Collections.Specialized
         public void Add(T key, T value)
         {
             _index.Add(key, value);
-            _reverse.Add(value, key);
+
+            try {
+                _reverse.Add(value, key);
+            } catch (Exception) {
+                _index.Remove(key);
+                throw;
+            }
         }
 
         public bool ContainsKey(T key)
