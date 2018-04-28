@@ -67,6 +67,7 @@ namespace WmcSoft.Drawing
         /// <param name="source">The source image</param>
         /// <returns>The negative image</returns>
         public static Bitmap Negative(this Bitmap source) {
+            // http://mariusbancila.ro/blog/2009/11/13/using-colormatrix-for-creating-negative-image/
             var attr = new ImageAttributes();
             // create the negative color matrix
             var m = new ColorMatrix(new[] {
