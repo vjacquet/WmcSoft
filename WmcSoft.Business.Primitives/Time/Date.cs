@@ -142,6 +142,11 @@ namespace WmcSoft.Time
             return date._storage - _storage;
         }
 
+        public DateTime ToDateTime()
+        {
+            return AsDateTime;
+        }
+
         #region Operators
 
         DateTime AsDateTime => new DateTime(_storage * TimeSpan.TicksPerDay);

@@ -147,6 +147,11 @@ namespace WmcSoft.Time
             return TimeZoneInfo.ConvertTime(dateTimeOffset, timeZone);
         }
 
+        public TimeSpan ToTimeSpan()
+        {
+            return _storage;
+        }
+
         #region Operators
 
         public static bool operator ==(TimeOfDay x, TimeOfDay y)
@@ -174,6 +179,11 @@ namespace WmcSoft.Time
         public static bool operator >=(TimeOfDay x, TimeOfDay y)
         {
             return x.CompareTo(y) >= 0;
+        }
+
+        public static implicit operator TimeSpan(TimeOfDay x)
+        {
+            return x._storage;
         }
 
         #endregion
