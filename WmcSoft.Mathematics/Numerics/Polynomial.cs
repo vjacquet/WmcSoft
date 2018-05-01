@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using WmcSoft.Collections.Generic;
 using WmcSoft.Arithmetics;
 
@@ -36,6 +37,7 @@ namespace WmcSoft.Numerics
     /// <summary>
     /// Represents a <see cref="Polynomial"/> of a single indeterminate.
     /// </summary>
+    [DebuggerDisplay("{ToString(),nq}")]
     public struct Polynomial : IEquatable<Polynomial>, IFormattable
     {
         public static Polynomial Zero;
