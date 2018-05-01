@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace WmcSoft.Business
 {
-    public interface IAsycnFilter<in TContext>
+    public interface IAsyncFilter<in TContext>
     {
         Task OnExecutionAsync(TContext context, ActionExecutionDelegate next);
     }

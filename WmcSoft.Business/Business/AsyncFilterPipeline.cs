@@ -31,14 +31,14 @@ namespace WmcSoft.Business
 {
     public class AsyncFilterPipeline<TContext>
     {
-        readonly IAsycnFilter<TContext>[] _filters;
+        readonly IAsyncFilter<TContext>[] _filters;
 
-        public AsyncFilterPipeline(params IAsycnFilter<TContext>[] rules)
+        public AsyncFilterPipeline(params IAsyncFilter<TContext>[] rules)
         {
             _filters = rules;
         }
 
-        static Task RunFilter(IEnumerator<IAsycnFilter<TContext>> enumerator, TContext context)
+        static Task RunFilter(IEnumerator<IAsyncFilter<TContext>> enumerator, TContext context)
         {
             if (enumerator.MoveNext())
                 return enumerator.Current.OnExecutionAsync(context, () => RunFilter(enumerator, context));
@@ -47,7 +47,7 @@ namespace WmcSoft.Business
 
         public Task RunAsync(TContext context)
         {
-            var filters = _filters.AsEnumerable<IAsycnFilter<TContext>>().GetEnumerator();
+            var filters = _filters.AsEnumerable<IAsyncFilter<TContext>>().GetEnumerator();
             return RunFilter(filters, context);
         }
     }

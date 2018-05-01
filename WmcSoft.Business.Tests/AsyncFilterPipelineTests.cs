@@ -6,7 +6,7 @@ namespace WmcSoft.Business
 {
     public class AsyncFilterPipelineTests
     {
-        class AddItemFilter<T> : IAsycnFilter<List<T>>
+        class AddItemFilter<T> : IAsyncFilter<List<T>>
         {
             private readonly T _item;
 

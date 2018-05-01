@@ -79,7 +79,7 @@
     <Compile Include="Business\DomainObject.cs" />
     <Compile Include="Business\AsyncFilterPipeline.cs" />
     <Compile Include="Business\FilterPipeline.cs" />
-    <Compile Include="Business\IAsycnFilter.cs" />
+    <Compile Include="Business\IAsyncFilter.cs" />
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\IdentityMap.cs" />
