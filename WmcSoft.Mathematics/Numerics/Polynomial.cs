@@ -33,38 +33,36 @@ using WmcSoft.Arithmetics;
 
 namespace WmcSoft.Numerics
 {
+    /// <summary>
+    /// Represents a <see cref="Polynomial"/> of a single indeterminate.
+    /// </summary>
     public struct Polynomial : IEquatable<Polynomial>, IFormattable
     {
         public static Polynomial Zero;
+        public static Polynomial One = new Polynomial(1d);
 
-        struct ExponentComparer : IComparer<Node>
+        struct ExponentComparer : IComparer<Term>
         {
-            public int Compare(Node x, Node y)
+            public int Compare(Term x, Term y)
             {
                 return y.Exp - x.Exp;
             }
         }
 
-        struct Node : IComparable<Node>, IEquatable<Node>, IFormattable
+        struct Term : IComparable<Term>, IEquatable<Term>, IFormattable
         {
             public readonly int Exp;
             public readonly double Coef;
 
-            public Node(int exponent, double coefficient)
+            public Term(double coefficient, int exponent = 0)
             {
                 Exp = exponent;
                 Coef = coefficient;
             }
 
-            public Node(double coefficient)
-            {
-                Exp = 0;
-                Coef = coefficient;
-            }
-
             #region IComparable<Node> Membres
 
-            public int CompareTo(Node other)
+            public int CompareTo(Term other)
             {
                 if (Exp == other.Exp)
                     return Coef.CompareTo(other.Coef);
@@ -75,7 +73,7 @@ namespace WmcSoft.Numerics
 
             #region IEquatable<Node> Membres
 
-            public bool Equals(Node other)
+            public bool Equals(Term other)
             {
                 return CompareTo(other) == 0;
             }
@@ -84,7 +82,7 @@ namespace WmcSoft.Numerics
             {
                 if (obj == null || GetType() != obj.GetType())
                     return false;
-                return Equals((Node)obj);
+                return Equals((Term)obj);
             }
 
             public override int GetHashCode()
@@ -117,17 +115,21 @@ namespace WmcSoft.Numerics
 
         #region Fields
 
-        private readonly Node[] _nodes;
+        private readonly Term[] _nodes;
 
         #endregion
 
         #region Lifecycle
 
-        Polynomial(Node[] nodes)
+        Polynomial(Term[] nodes)
         {
             _nodes = nodes;
         }
 
+        /// <summary>
+        /// Creates a new polynomial with the given <paramref name="coefficients"/>, from the highest down to 0.
+        /// </summary>
+        /// <param name="coefficients">The coefficients of the <see cref="Polynomial"/>, from the highest down to 0.</param>
         public Polynomial(params double[] coefficients)
         {
             if (coefficients == null || coefficients.Length == 0) {
@@ -140,14 +142,22 @@ namespace WmcSoft.Numerics
                 }
 
                 var degree = length - i - 1;
-                var list = new List<Node>(degree);
+                var list = new List<Term>(degree);
                 for (; i < length; i++, degree--) {
                     if (coefficients[i] != 0d) {
-                        list.Add(new Node(degree, coefficients[i]));
+                        list.Add(new Term(coefficients[i], degree));
                     }
                 }
                 _nodes = list.ToArray();
             }
+        }
+
+        /// <summary>
+        /// Creates a new polynomial with the given <paramref name="scalar"/> as the coefficient of the degree zero's term.
+        /// </summary>
+        public Polynomial(double scalar)
+        {
+            _nodes = new[] { new Term(scalar) };
         }
 
         #endregion
@@ -173,7 +183,7 @@ namespace WmcSoft.Numerics
             if (y._nodes == null)
                 return x;
             var comparer = new ExponentComparer();
-            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Node(a.Exp, a.Coef + b.Coef))
+            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Term(a.Coef + b.Coef, a.Exp))
                 .Where(n => n.Coef != 0);
             return new Polynomial(nodes.ToArray());
         }
@@ -189,7 +199,7 @@ namespace WmcSoft.Numerics
             if (y._nodes == null)
                 return x;
             var comparer = new ExponentComparer();
-            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Node(a.Exp, a.Coef - b.Coef))
+            var nodes = x._nodes.Combine(y._nodes, comparer, (a, b) => new Term(a.Coef - b.Coef, a.Exp))
                 .Where(n => n.Coef != 0);
             return new Polynomial(nodes.ToArray());
         }
@@ -202,7 +212,7 @@ namespace WmcSoft.Numerics
         {
             if (x._nodes == null)
                 return x;
-            var nodes = x._nodes.ToArray(n => new Node(n.Exp, -n.Coef));
+            var nodes = x._nodes.ToArray(n => new Term(-n.Coef, n.Exp));
             return new Polynomial(nodes);
         }
         public static Polynomial Negate(Polynomial x)
@@ -223,7 +233,7 @@ namespace WmcSoft.Numerics
         {
             if (x._nodes == null)
                 return x;
-            var nodes = x._nodes.ToArray(n => new Node(n.Exp, alpha * n.Coef));
+            var nodes = x._nodes.ToArray(n => new Term(alpha * n.Coef, n.Exp));
             return new Polynomial(nodes);
         }
         public static Polynomial Multiply(double alpha, Polynomial x)
@@ -258,10 +268,10 @@ namespace WmcSoft.Numerics
             }
 
             var degree = max;
-            var list = new List<Node>(length);
+            var list = new List<Term>(length);
             for (int i = 0; i < length; i++, degree--) {
                 if (coefficients[i] != 0d) {
-                    list.Add(new Node(degree, coefficients[i]));
+                    list.Add(new Term(coefficients[i], degree));
                 }
             }
             if (list.Count == 0)
