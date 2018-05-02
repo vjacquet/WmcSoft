@@ -102,6 +102,27 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region StoredProc
+
+        public static T ExecuteStoredProcedure<T>(this IDbConnection connection, string name, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
+        {
+            var command = connection.CreateCommand(name, CommandType.StoredProcedure, timeout, transaction, parameters);
+            var p = command.CreateParameter();
+            p.ParameterName = "RETURN_VALUE";
+            p.Direction = ParameterDirection.ReturnValue;
+            command.Parameters.Add(p);
+
+            command.ExecuteNonQuery();
+            return (T)Convert.ChangeType(p.Value, typeof(T));
+        }
+
+        public static T ExecuteStoredProcedure<T>(this IDbTransaction transaction, string name, TimeSpan? timeout = null, object parameters = null)
+        {
+            return ExecuteStoredProcedure<T>(transaction.Connection, name, timeout, transaction, parameters);
+        }
+
+        #endregion
+
         #region ExecuteXXX
 
         public static int ExecuteNonQuery(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
