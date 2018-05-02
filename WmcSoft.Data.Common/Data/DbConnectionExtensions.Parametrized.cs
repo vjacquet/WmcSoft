@@ -72,6 +72,7 @@ namespace WmcSoft.Data
             return command;
         }
 
+        [Obsolete("To prevent security vulnerabilities, you must call CreateParameterizedCommand when using string interpolation for the command.", true)]
         public static IDbCommand CreateCommand(this IDbConnection connection, FormattableString commandText, TimeSpan? timeout = null, IDbTransaction transaction = null)
         {
             throw new ArgumentException("To prevent security vulnerabilities, you must call CreateParameterizedCommand when using string interpolation for the command.", nameof(commandText));
