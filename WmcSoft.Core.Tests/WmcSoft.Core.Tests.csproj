@@ -140,6 +140,7 @@
     <Compile Include="Runtime\Serialization\XmlSerializerTests.cs" />
     <Compile Include="Security\Cryptography\CRC32Tests.cs" />
     <Compile Include="SubscriptionTests.cs" />
+    <Compile Include="TestTools\UnitTesting\ContractAssert.Ordinal.cs" />
     <Compile Include="Text\NumericalComparerTests.cs" />
     <Compile Include="TripleTests.cs" />
     <Compile Include="PairTests.cs" />

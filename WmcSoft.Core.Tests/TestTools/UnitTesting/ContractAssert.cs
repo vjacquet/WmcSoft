@@ -8,7 +8,7 @@ using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.TestTools.UnitTesting
 {
-    public static class ContractAssert
+    public static partial class ContractAssert
     {
         public const int CollectionMinValue = 1;
         public const int CollectionMaxValue = 5;
@@ -146,20 +146,12 @@ namespace WmcSoft.TestTools.UnitTesting
             set.Clear();
             set.AddRange(Enumerable.Range(1, 4));
 
-            var other = new SortedSequenceSet<int>(Enumerable.Range(1, 4));
+            var other = new HashSet<int>(Enumerable.Range(1, 4));
             Assert.True(set.SetEquals(other));
             Assert.True(set.IsSubsetOf(other));
             Assert.False(set.IsProperSubsetOf(other));
             Assert.True(set.IsSupersetOf(other));
             Assert.False(set.IsProperSupersetOf(other));
-        }
-
-        public static void Ordinal<TOrdinal, T>(TOrdinal ordinal, T startValue, T endValue, int distance)
-            where TOrdinal : IOrdinal<T>
-        {
-            var actual = ordinal.Advance(startValue, distance);
-            Assert.Equal(endValue, actual);
-            Assert.Equal(distance, ordinal.Distance(startValue, endValue));
         }
     }
 }
