@@ -50,7 +50,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An enumerable on the source</returns>
         public static IEnumerable<TSource> AsEnumerable<TSource>(TSource source)
         {
-            yield return source;
+            return new SingleItemReadOnlyList<TSource>(source);
         }
 
         /// <summary>
