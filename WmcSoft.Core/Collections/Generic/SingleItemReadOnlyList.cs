@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic
 {
-    public class SingleItemReadOnlyList<T> : IReadOnlyList<T>
+    public class SingleItemReadOnlyList<T> : IReadOnlyList<T>, IList<T>
     {
         #region Fields
 
@@ -54,14 +54,57 @@ namespace WmcSoft.Collections.Generic
 
                 return _item;
             }
+            set {
+                throw new NotSupportedException();
+            }
+        }
+
+        public int IndexOf(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAt(int index)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
 
         #region ICollection<T> Membres
 
-        public int Count {
-            get { return 1; }
+        public int Count => 1;
+
+        public bool IsReadOnly => true;
+
+        public void Add(T item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(T item)
+        {
+            return EqualityComparer<T>.Default.Equals(_item, item);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            array[arrayIndex] = _item;
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
