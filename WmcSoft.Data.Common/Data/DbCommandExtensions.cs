@@ -261,8 +261,26 @@ namespace WmcSoft.Data
 
         #endregion
 
+        #region WithinTransaction
+
+        public static TCommand WithinTransaction<TCommand>(this TCommand command, IDbTransaction transaction)
+            where TCommand : IDbCommand
+        {
+            command.Transaction = transaction;
+            return command;
+        }
+
+        #endregion
+
         #region ExecuteXXX
 
+        /// <summary>
+        /// Executes the query, and returns the first column of the first row in the resultset
+        /// returned by the query. Extra columns or rows are ignored.
+        /// </summary>
+        /// <typeparam name="T">The type to return.</typeparam>
+        /// <param name="command">The command.</param>
+        /// <returns>The first column of the first row in the resultset.</returns>
         public static T ExecuteScalar<T>(this IDbCommand command)
         {
             var result = command.ExecuteScalar();
@@ -280,6 +298,42 @@ namespace WmcSoft.Data
         public static T? ExecuteNullableScalar<T>(this IDbCommand command) where T : struct
         {
             var result = command.ExecuteScalar();
+            if (result == null || DBNull.Value.Equals(result))
+                return null;
+            return (T)Convert.ChangeType(result, typeof(T));
+        }
+
+        public static object ExecuteStoredProcedure(this IDbCommand command)
+        {
+            Debug.Assert(command.CommandType == CommandType.StoredProcedure);
+
+            var result = command.Parameters.Cast<IDbDataParameter>().FirstOrDefault(p => p.Direction == ParameterDirection.ReturnValue);
+            if (result == null) {
+                result = command.CreateParameter();
+                result.Direction = ParameterDirection.ReturnValue;
+                command.Parameters.Add(result);
+            }
+            command.ExecuteNonQuery();
+            return result.Value;
+        }
+
+        public static T ExecuteStoredProcedure<T>(this IDbCommand command)
+        {
+            var result = command.ExecuteStoredProcedure();
+            return (T)Convert.ChangeType(result, typeof(T));
+        }
+
+        public static T ExecuteStoredProcedureOrDefault<T>(this IDbCommand command, T defaultValue = default(T))
+        {
+            var result = command.ExecuteStoredProcedure();
+            if (result == null || DBNull.Value.Equals(result))
+                return defaultValue;
+            return (T)Convert.ChangeType(result, typeof(T));
+        }
+
+        public static T? ExecuteNullableStoredProcedure<T>(this IDbCommand command) where T : struct
+        {
+            var result = command.ExecuteStoredProcedure();
             if (result == null || DBNull.Value.Equals(result))
                 return null;
             return (T)Convert.ChangeType(result, typeof(T));
