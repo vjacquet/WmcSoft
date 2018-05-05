@@ -30,36 +30,33 @@ using System.Collections.Generic;
 namespace WmcSoft.Data
 {
     /// <summary>
-    /// Implements a <see cref="BulkAdapter{T}"/> calling a function to get the values.
+    /// Implements a <see cref="BulkAdapter{T}"/> calling a function per value to get.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class FuncBulkAdapter<T> : BulkAdapter<T>
+    public sealed class FuncArrayBulkAdapter<T> : BulkAdapter<T>
     {
-        private readonly int _fieldCount;
-        private readonly Func<T, int, object> _interpreter;
+        private readonly Func<T, object>[] _interpreters;
 
         /// <summary>
         /// Creates a new instance of the <see cref="FuncBulkAdapter{T}"/>.
         /// </summary>
         /// <param name="values">The values to adapt as a <see cref="System.Data.IDataReader"/>.</param>
-        /// <param name="fieldCount">The field count.</param>
-        /// <param name="interpreter">The interpreter function.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.-or-<paramref name="interpreter"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="fieldCount"/> is less than 1.</exception>
-        public FuncBulkAdapter(IEnumerable<T> values, int fieldCount, Func<T, int, object> interpreter)
+        /// <param name="interpreters">The interpreter functions.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.-or-<paramref name="interpreters"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="interpreters"/> is empty.</exception>
+        public FuncArrayBulkAdapter(IEnumerable<T> values, Func<T, object>[] interpreters)
             : base(values)
         {
-            if (interpreter == null) throw new ArgumentNullException(nameof(interpreter));
-            if (fieldCount < 1) throw new ArgumentOutOfRangeException(nameof(fieldCount));
+            if (interpreters == null) throw new ArgumentNullException(nameof(interpreters));
+            if (interpreters.Length < 1) throw new ArgumentException(nameof(interpreters));
 
-            _interpreter = interpreter;
-            _fieldCount = fieldCount;
+            _interpreters = interpreters;
         }
 
         /// <inheritdoc/>
-        public override object GetValue(int i) => _interpreter(Current, i);
+        public override object GetValue(int i) => _interpreters[i](Current);
 
         /// <inheritdoc/>
-        public override int FieldCount => _fieldCount;
+        public override int FieldCount => _interpreters.Length;
     }
 }

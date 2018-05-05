@@ -49,8 +49,11 @@ namespace WmcSoft.Data
         /// Constructs the adapter.
         /// </summary>
         /// <param name="values">The sequence of objects.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
         protected BulkAdapter(IEnumerable<T> values)
         {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+
             _enumerator = values.GetEnumerator();
             _cursor = -1;
         }
