@@ -30,28 +30,29 @@ using System.Data;
 
 namespace WmcSoft.Data
 {
+    /// <summary>
+    /// Base class to adapt an <see cref="IEnumerable{T}"/> as a <see cref="IDataReader"/> to allow bulk inserts.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class BulkAdapter<T> : IDataReader
     {
         #region Fields
 
         private readonly IEnumerator<T> _enumerator;
-        private T _current;
         private int _cursor;
-        private bool _isClosed;
 
         #endregion
 
         #region Lifecycle
 
         /// <summary>
-        /// Constructs the adapter
+        /// Constructs the adapter.
         /// </summary>
         /// <param name="values">The sequence of objects.</param>
         protected BulkAdapter(IEnumerable<T> values)
         {
             _enumerator = values.GetEnumerator();
             _cursor = -1;
-            _isClosed = false;
         }
 
         #endregion
@@ -61,12 +62,12 @@ namespace WmcSoft.Data
         /// <summary>
         /// Returns the current element in the enumeration.
         /// </summary>
-        protected T Current { get { return _current; } }
+        protected T Current => _enumerator.Current;
 
         /// <summary>
         /// Returns the index of the current element in the enumeration.
         /// </summary>
-        protected int Cursor { get { return _cursor; } }
+        protected int Cursor => _cursor;
 
         #endregion
 
@@ -77,7 +78,7 @@ namespace WmcSoft.Data
         /// </summary>
         public void Close()
         {
-            _isClosed = true;
+            _cursor = -2;
         }
 
         /// <summary>
@@ -86,9 +87,7 @@ namespace WmcSoft.Data
         /// <returns>
         /// The level of nesting.
         /// </returns>
-        public int Depth {
-            get { return 0; }
-        }
+        public int Depth => 0;
 
         /// <summary>
         /// Gets a value indicating whether the data reader is closed.
@@ -96,9 +95,7 @@ namespace WmcSoft.Data
         /// <returns>
         /// true if the data reader is closed; otherwise, false.
         /// </returns>
-        public bool IsClosed {
-            get { return _isClosed; }
-        }
+        public bool IsClosed => _cursor == -2;
 
         /// <summary>
         /// Advances the data reader to the next result, when reading the results of batch SQL statements.
@@ -120,7 +117,6 @@ namespace WmcSoft.Data
         public virtual bool Read()
         {
             if (_enumerator.MoveNext()) {
-                _current = _enumerator.Current;
                 _cursor++;
                 return true;
             }
@@ -147,7 +143,6 @@ namespace WmcSoft.Data
         public void Dispose()
         {
             Dispose(true);
-            // Suppress finalization.
             GC.SuppressFinalize(this);
         }
 

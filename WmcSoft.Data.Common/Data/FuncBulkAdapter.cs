@@ -29,17 +29,21 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Data
 {
-    public class FuncBulkAdapter<T> : BulkAdapter<T>
+    /// <summary>
+    /// Implements a <see cref="BulkAdapter{T}"/> calling a function to get the values.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed class FuncBulkAdapter<T> : BulkAdapter<T>
     {
-        #region Fields
-
         private readonly int _fieldCount;
         private readonly Func<T, int, object> _interpreter;
 
-        #endregion
-
-        #region Lifecycle
-
+        /// <summary>
+        /// Creates a new instance of the <see cref="FuncBulkAdapter{T}"/>.
+        /// </summary>
+        /// <param name="fieldCount">The field count.</param>
+        /// <param name="interpreter">The interpreter function.</param>
+        /// <param name="values">The values to adapt as a <see cref="System.Data.IDataReader"/>.</param>
         public FuncBulkAdapter(int fieldCount, Func<T, int, object> interpreter, IEnumerable<T> values)
             : base(values)
         {
@@ -47,19 +51,10 @@ namespace WmcSoft.Data
             _interpreter = interpreter;
         }
 
-        #endregion
+        /// <inheritdoc/>
+        public override object GetValue(int i) => _interpreter(Current, i);
 
-        #region IDataReader implementation
-
-        public override object GetValue(int i)
-        {
-            return _interpreter(Current, i);
-        }
-
-        public override int FieldCount {
-            get { return _fieldCount; }
-        }
-
-        #endregion
+        /// <inheritdoc/>
+        public override int FieldCount => _fieldCount;
     }
 }
