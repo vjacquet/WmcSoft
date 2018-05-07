@@ -38,22 +38,17 @@ namespace WmcSoft.Collections.Generic.Algorithms
         readonly IReadOnlyList<T> _pattern;
         readonly IEqualityComparer<T> _comparer;
 
-        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer=null)
+        /// <summary>
+        /// Creates a new instance of the <see cref="NaiveFinder{T}"/> for the given <paramref name="pattern"/> and <paramref name="comparer"/>.
+        /// </summary>
+        /// <param name="pattern">The pattern to match.</param>
+        /// <param name="comparer">The elemnt comparer.</param>
+        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer = null)
         {
             if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
             _pattern = pattern;
             _comparer = comparer ?? EqualityComparer<T>.Default;
-        }
-
-        bool EqualsPattern(IReadOnlyList<T> list, int startIndex)
-        {
-            var length = _pattern.Count;
-            for (int i = 0, j = startIndex; i < length; i++, j++) {
-                if (!_comparer.Equals(list[j], _pattern[i]))
-                    return false;
-            }
-            return true;
         }
 
         /// <inheritdoc/>
@@ -65,6 +60,16 @@ namespace WmcSoft.Collections.Generic.Algorithms
                     return i;
             }
             return -1;
+        }
+
+        private bool EqualsPattern(IReadOnlyList<T> list, int startIndex)
+        {
+            var length = _pattern.Count;
+            for (int i = 0, j = startIndex; i < length; i++, j++) {
+                if (!_comparer.Equals(list[j], _pattern[i]))
+                    return false;
+            }
+            return true;
         }
     }
 }

@@ -39,7 +39,12 @@ namespace WmcSoft.Collections.Generic.Algorithms
         readonly IEqualityComparer<T> _comparer;
         readonly int[] _next;
 
-        public KnuthMorrisPrattFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer)
+        /// <summary>
+        /// Creates a new instance of the <see cref="KnuthMorrisPrattFinder{T}"/> for the given <paramref name="pattern"/> and <paramref name="comparer"/>.
+        /// </summary>
+        /// <param name="pattern">The pattern to match.</param>
+        /// <param name="comparer">The elemnt comparer.</param>
+        public KnuthMorrisPrattFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer = null)
         {
             if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
