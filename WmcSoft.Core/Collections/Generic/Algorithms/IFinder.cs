@@ -28,8 +28,18 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Algorithms
 {
-    public interface IFinder<T>
+    /// <summary>
+    /// Represents an algorithm to find a pattern in a sequence.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IFinder<in T>
     {
-        int FindNextOccurence(IReadOnlyList<T> t, int startIndex);
+        /// <summary>
+        /// Finds the next occurence of the recorded pattern in the list.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="startIndex">The start index in the list.</param>
+        /// <returns>The index of the next occurence; - or - <c>-1</c> if not found.</returns>
+        int FindNextOccurence(IReadOnlyList<T> list, int startIndex);
     }
 }

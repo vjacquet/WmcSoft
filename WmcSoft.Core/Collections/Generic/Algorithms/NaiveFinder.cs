@@ -29,12 +29,16 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Algorithms
 {
+    /// <summary>
+    /// Implements the finder by comparing the pattern item by item.
+    /// </summary>
+    /// <typeparam name="T">The type of item in the sequence.</typeparam>
     public class NaiveFinder<T> : IFinder<T>
     {
         readonly IReadOnlyList<T> _pattern;
         readonly IEqualityComparer<T> _comparer;
 
-        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer)
+        public NaiveFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer=null)
         {
             if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
@@ -42,21 +46,22 @@ namespace WmcSoft.Collections.Generic.Algorithms
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
-        bool EqualsPattern(IReadOnlyList<T> t, int startIndex)
+        bool EqualsPattern(IReadOnlyList<T> list, int startIndex)
         {
             var length = _pattern.Count;
             for (int i = 0, j = startIndex; i < length; i++, j++) {
-                if (!_comparer.Equals(t[j], _pattern[i]))
+                if (!_comparer.Equals(list[j], _pattern[i]))
                     return false;
             }
             return true;
         }
 
-        public int FindNextOccurence(IReadOnlyList<T> t, int startIndex)
+        /// <inheritdoc/>
+        public int FindNextOccurence(IReadOnlyList<T> list, int startIndex)
         {
-            var length = t.Count - _pattern.Count;
+            var length = list.Count - _pattern.Count;
             for (int i = startIndex; i < length; i++) {
-                if (EqualsPattern(t, i))
+                if (EqualsPattern(list, i))
                     return i;
             }
             return -1;

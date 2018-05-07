@@ -29,13 +29,17 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Algorithms
 {
-    public class KnuthMorrisPratt<T> : IFinder<T>
+    /// <summary>
+    /// Implements the finder using the Knuth-Morris-Pratt alforithm.
+    /// </summary>
+    /// <typeparam name="T">The type of item in the sequence.</typeparam>
+    public class KnuthMorrisPrattFinder<T> : IFinder<T>
     {
         readonly IReadOnlyList<T> _pattern;
         readonly IEqualityComparer<T> _comparer;
         readonly int[] _next;
 
-        public KnuthMorrisPratt(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer)
+        public KnuthMorrisPrattFinder(IReadOnlyList<T> pattern, IEqualityComparer<T> comparer)
         {
             if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
@@ -51,11 +55,12 @@ namespace WmcSoft.Collections.Generic.Algorithms
             }
         }
 
-        public int FindNextOccurence(IReadOnlyList<T> t, int startIndex)
+        /// <inheritdoc/>
+        public int FindNextOccurence(IReadOnlyList<T> list, int startIndex)
         {
-            int i = startIndex, j = 0, m = _pattern.Count, n = t.Count;
+            int i = startIndex, j = 0, m = _pattern.Count, n = list.Count;
             for (; j < m && i < n; i++, j++) {
-                while (j >= 0 && !_comparer.Equals(t[i], _pattern[j]))
+                while (j >= 0 && !_comparer.Equals(list[i], _pattern[j]))
                     j = _next[j];
             }
             if (j == m)
