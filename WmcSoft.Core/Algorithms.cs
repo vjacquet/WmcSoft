@@ -752,12 +752,12 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(params T[] args) where T : IComparable<T>
+        public static (T min, T max) MinMax<T>(params T[] args) where T : IComparable<T>
         {
             if (args == null || args.Length == 0)
                 throw new ArgumentException(nameof(args));
             if (args.Length == 1)
-                return Pair.Create(args[0], args[0]);
+                return (args[0], args[0]);
 
             var min = args[0];
             var max = args[0];
@@ -767,7 +767,7 @@ namespace WmcSoft
                 else if (args[i].CompareTo(max) >= 0)
                     max = args[i];
             }
-            return Pair.Create(min, max);
+            return (min, max);
         }
 
         /// <summary>
@@ -778,12 +778,12 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(Comparison<T> comparison, params T[] args)
+        public static (T min, T max) MinMax<T>(Comparison<T> comparison, params T[] args)
         {
             if (args == null || args.Length == 0)
                 throw new ArgumentException(nameof(args));
             if (args.Length == 1)
-                return Pair.Create(args[0], args[0]);
+                return (args[0], args[0]);
 
             var min = args[0];
             var max = args[0];
@@ -793,7 +793,7 @@ namespace WmcSoft
                 else if (comparison(args[i], max) >= 0)
                     max = args[i];
             }
-            return Pair.Create(min, max);
+            return (min, max);
         }
 
         /// <summary>
@@ -804,12 +804,12 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(Relation<T> relation, params T[] args)
+        public static (T min, T max) MinMax<T>(Relation<T> relation, params T[] args)
         {
             if (args == null || args.Length == 0)
                 throw new ArgumentException(nameof(args));
             if (args.Length == 1)
-                return Pair.Create(args[0], args[0]);
+                return (args[0], args[0]);
 
             var min = args[0];
             var max = args[0];
@@ -819,7 +819,7 @@ namespace WmcSoft
                 else if (relation(max, args[i]))
                     max = args[i];
             }
-            return Pair.Create(min, max);
+            return (min, max);
         }
 
         /// <summary>
@@ -830,7 +830,7 @@ namespace WmcSoft
         /// <param name="x">The first instance.</param>
         /// <param name="y">The second instance</param>
         /// <returns>The pair of the smaller and larger of n instances.</returns>
-        public static Pair<T> MinMax<T>(IComparer<T> comparer, params T[] args)
+        public static (T min, T max)  MinMax<T>(IComparer<T> comparer, params T[] args)
         {
             Comparison<T> comparison = comparer.Compare;
             return MinMax(comparison, args);
