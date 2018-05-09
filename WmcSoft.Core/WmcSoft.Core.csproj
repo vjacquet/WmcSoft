@@ -79,7 +79,7 @@
     <Compile Include="Collections\Generic\Accumulators\SingleAdder.cs" />
     <Compile Include="Collections\Generic\Algorithms\FinderExtensions.cs" />
     <Compile Include="Collections\Generic\Algorithms\IFinder.cs" />
-    <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPratt.cs" />
+    <Compile Include="Collections\Generic\Algorithms\KnuthMorrisPrattFinder.cs" />
     <Compile Include="Collections\Generic\Algorithms\NaiveFinder.cs" />
     <Compile Include="Collections\Generic\ArrayShapeEqualityComparer.cs" />
     <Compile Include="Collections\Generic\Bag.cs" />
@@ -252,6 +252,7 @@
     <Compile Include="Security\Cryptography\CRC32Managed.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="Symbol.cs" />
+    <Compile Include="Text\Algorithms.cs" />
     <Compile Include="Text\Alphabet.cs" />
     <Compile Include="Text\CaseInsensitiveCharComparer.cs" />
     <Compile Include="Text\Counter.cs" />
