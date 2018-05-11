@@ -49,6 +49,13 @@ namespace WmcSoft
 
         #region Concat
 
+        /// <summary>
+        /// Creates a new array by concatenation the current values with the new <paramref name="values"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the array.</typeparam>
+        /// <param name="self">The array.</param>
+        /// <param name="values">The new values.</param>
+        /// <returns></returns>
         public static T[] Concat<T>(this T[] self, params T[] values)
         {
             if (values == null || values.Length == 0) {
@@ -176,7 +183,15 @@ namespace WmcSoft
 
         #region Multidimensional
 
-        public static bool StructuralEqual<T>(this T[] x, T[] y, IEqualityComparer<T> comparer = null)
+        /// <summary>
+        /// Compares the two array, element-wise.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="x">The first array.</param>
+        /// <param name="y">The second array.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values in the set, or null to use the default <see cref="EqualityComparer{T}"/> implementation for the set type.</param>
+        /// <returns><c>true</c> if the two arrays have equal element at the same index; otherwise, <c>false</c>.</returns>
+        public static bool StructuralEqual<T>(T[] x, T[] y, IEqualityComparer<T> comparer = null)
         {
             if (x == null)
                 return y == null;
@@ -187,7 +202,16 @@ namespace WmcSoft
             return x.SequenceEqual(y, comparer ?? EqualityComparer<T>.Default);
         }
 
-        public static bool StructuralEqual<T>(this T[,] x, T[,] y, IEqualityComparer<T> comparer = null)
+
+        /// <summary>
+        /// Compares the two array, element-wise.
+        /// </summary>
+        /// <typeparam name="T">The type of elements.</typeparam>
+        /// <param name="x">The first array.</param>
+        /// <param name="y">The second array.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing values in the set, or null to use the default <see cref="EqualityComparer{T}"/> implementation for the set type.</param>
+        /// <returns><c>true</c> if the two arrays have equal element at the same index; otherwise, <c>false</c>.</returns>
+        public static bool StructuralEqual<T>(T[,] x, T[,] y, IEqualityComparer<T> comparer = null)
         {
             if (x == null)
                 return y == null;

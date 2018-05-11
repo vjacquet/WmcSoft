@@ -115,10 +115,11 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="T">The type of enumerated element</typeparam>
         /// <param name="self">The first enumerable</param>
         /// <param name="other">The second enumerable</param>
-        /// <param name="comparer">The comparer</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> implementation to use when comparing elements, or <c>null</c> to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
         public static IEnumerable<T> Merge<T>(this IEnumerable<T> self, IEnumerable<T> other, IComparer<T> comparer) {
+            comparer = comparer ?? Comparer<T>.Default;
             using (var enumerator1 = self.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
@@ -185,10 +186,11 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="TSource">The type of enumerated element</typeparam>
         /// <param name="source">The first enumerable</param>
         /// <param name="other">The second enumerable</param>
-        /// <param name="comparer">The comparer</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> implementation to use when comparing elements, or <c>null</c> to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
         public static IEnumerable<TSource> Combine<TSource>(this IEnumerable<TSource> source, IEnumerable<TSource> other, IComparer<TSource> comparer, Func<TSource, TSource, TSource> combiner) {
+            comparer = comparer ?? Comparer<T>.Default;
             using (var enumerator1 = source.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
@@ -248,12 +250,13 @@ namespace WmcSoft.Collections.Generic
         /// <typeparam name="TOutput">The type of enumerated element</typeparam>
         /// <param name="source">The first enumerable</param>
         /// <param name="other">The second enumerable</param>
-        /// <param name="comparer">The comparer</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> implementation to use when comparing elements, or <c>null</c> to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         /// <param name="combiner">The combiner</param>
         /// <param name="defaultValue">The default value for the combiner when one value is missing</param>
         /// <returns>The sorted enumerable</returns>
         /// <remarks>If the two enumerables are not sorted using the comparer, the result is undefined.</remarks>
         public static IEnumerable<TOutput> Combine<TInput, TOutput>(this IEnumerable<TInput> source, IEnumerable<TInput> other, IComparer<TInput> comparer, Func<TInput, TInput, TOutput> combiner, TInput defaultValue = default(TInput)) {
+            comparer = comparer ?? Comparer<TInput>.Default;
             using (var enumerator1 = source.GetEnumerator())
             using (var enumerator2 = other.GetEnumerator()) {
                 var hasValue1 = enumerator1.MoveNext();
