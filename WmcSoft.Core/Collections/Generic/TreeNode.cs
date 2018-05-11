@@ -26,6 +26,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using static System.Math;
 
 namespace WmcSoft.Collections.Generic
