@@ -63,7 +63,6 @@
     <Compile Include="PartyModel\FamilyLikePartyRoleTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PartyModel\FormatterTests.cs" />
     <Compile Include="PartyModel\InMemory\PartyStore.cs" />
     <Compile Include="PartyModel\PartyStoreTests.cs" />
     <Compile Include="PartyModel\PersonNameTests.cs" />

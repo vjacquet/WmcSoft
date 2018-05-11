@@ -24,8 +24,6 @@
 
 #endregion
 
-using System;
-using System.Linq.Expressions;
 using WmcSoft.Algebra;
 
 namespace WmcSoft.Arithmetics
@@ -70,68 +68,5 @@ namespace WmcSoft.Arithmetics
         {
             return new AdditiveMultiplicativeRingAdapter<T, A>(arithmetics);
         }
-    }
-
-    public static class Arithmetics<T>
-    {
-        static readonly Func<T, T, T> Add;
-        static readonly Func<T, T, T> Subtract;
-        static readonly Func<T, T, T> Multiply;
-        static readonly Func<T, T, T> Divide;
-        static readonly Func<T, T, T> Remainder;
-
-        static readonly Func<T, T> Negate;
-        static readonly Func<T, T> Reciprocal;
-
-        static readonly T Zero = default;
-        static readonly T One = default;
-
-        static Func<T, T> Compile(UnaryExpression op)
-        {
-            return Expression.Lambda<Func<T, T>>(op, (ParameterExpression)op.Operand).Compile();
-        }
-
-        static Func<T, T, T> Compile(BinaryExpression op)
-        {
-            return Expression.Lambda<Func<T, T, T>>(op, (ParameterExpression)op.Left, (ParameterExpression)op.Right).Compile();
-        }
-
-        static Arithmetics()
-        {
-            var x = Expression.Parameter(typeof(T), "x");
-            var y = Expression.Parameter(typeof(T), "x");
-
-            Add = Compile(Expression.Add(x, y));
-            Subtract = Compile(Expression.Subtract(x, y));
-            Multiply = Compile(Expression.Multiply(x, y));
-            Divide = Compile(Expression.Divide(x, y));
-            Remainder = Compile(Expression.Modulo(x, y));
-            Negate = Compile(Expression.Negate(x));
-        }
-
-        public struct Impl : IArithmetics<T>
-        {
-            public T Zero => Arithmetics<T>.Zero;
-
-            public T One => Arithmetics<T>.One;
-
-            public bool SupportReciprocal => throw new NotImplementedException();
-
-            public T Add(T x, T y) => Arithmetics<T>.Add(x, y);
-            public T Subtract(T x, T y) => Arithmetics<T>.Add(x, y);
-            public T Multiply(T x, T y) => Arithmetics<T>.Add(x, y);
-            public T Divide(T x, T y) => Arithmetics<T>.Add(x, y);
-            public T Remainder(T x, T y) => Arithmetics<T>.Add(x, y);
-
-            public T Negate(T x) => Arithmetics<T>.Negate(x);
-            public T Reciprocal(T x) => Arithmetics<T>.Reciprocal(x);
-
-            public T DivideRemainder(T x, T y, out T remainder)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public static readonly Impl Default;
     }
 }

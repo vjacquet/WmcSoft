@@ -56,9 +56,8 @@ namespace WmcSoft.Diagnostics.Sentries
                 lock (observers) {
                     if (observers.Remove(_observer)) {
                         removed = true;
-                        if (observers.Count == 0) {
+                        if (observers.Count == 0)
                             _sentry.OnObserved();
-                        }
                     }
                 }
                 if (removed) {
@@ -69,15 +68,15 @@ namespace WmcSoft.Diagnostics.Sentries
 
         #endregion
 
-        private readonly List<IObserver<SentryStatus>> _observers = new List<IObserver<SentryStatus>>();
+        private readonly List<IObserver<SentryStatus>> _observers;
         private volatile SentryStatus _status;
 
         protected SentryBase(string name)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 
-            Name = name.Trim();
+            Name = name;
+            _observers = new List<IObserver<SentryStatus>>();
         }
 
         public string Name { get; }
@@ -146,27 +145,17 @@ namespace WmcSoft.Diagnostics.Sentries
         /// </summary>
         protected virtual void OnObserved()
         {
-            _status = SentryStatus.None;
-        }
-
-        protected void Clear(List<IObserver<SentryStatus>> observers)
-        {
-            observers.ForEach(OnUnsubscribe);
-            observers.Clear();
-
-            if (_observers.Count == 0)
-                OnObserved();
         }
 
         #endregion
 
         #region Observer support
 
-        protected void OnNext(SentryStatus value)
+        protected void OnNext(SentryStatus status)
         {
             lock (_observers) {
-                _status = value;
-                _observers.ForEach(o => o.OnNext(value));
+                _status = status;
+                _observers.ForEach(o => o.OnNext(status));
             }
         }
 
@@ -174,7 +163,6 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnError(error));
-                Clear(_observers);
             }
         }
 
@@ -182,38 +170,9 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnCompleted());
-                Clear(_observers);
             }
         }
 
         #endregion
-
-        protected virtual string ToGenericString(IFormatProvider formatProvider)
-        {
-            return ToString();
-        }
-
-        protected virtual string ToUnknownFormatString(string format, IFormatProvider formatProvider)
-        {
-            return ToGenericString(formatProvider);
-        }
-
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            switch (format) {
-            case null:
-            case "g":
-            case "G":
-                return ToGenericString(formatProvider);
-            case "n":
-                return Name;
-            case "N":
-                return Name.ToUpperInvariant();
-            case "S":
-                return _status.ToString();
-            default:
-                return ToUnknownFormatString(format, formatProvider);
-            }
-        }
     }
 }

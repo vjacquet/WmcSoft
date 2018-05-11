@@ -216,13 +216,8 @@ namespace WmcSoft
             return !_lower.IsOutside(value) && !_upper.IsOutside(value);
         }
 
-        public bool Covers(Interval<T> other)
+        public bool Covers(T value)
         {
-            //var lowerComparison = _lower.CompareTo(other._lower);
-            //var lowerPass = Includes(other.lowerLimit()) || (lowerComparison == 0 && !other.includesLowerLimit());
-            //var upperComparison = upperLimit().compareTo(other.upperLimit());
-            //var upperPass = this.includes(other.upperLimit()) || (upperComparison == 0 && !other.includesUpperLimit());
-            //return lowerPass && upperPass;
             throw new NotImplementedException();
         }
 
