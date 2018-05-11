@@ -50,6 +50,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Algebra\AlgebraTests.cs" />
+    <Compile Include="Arithmetics\DefaultArithmeticsTests.cs" />
     <Compile Include="Arithmetics\IntegralCalculusTests.cs" />
     <Compile Include="Arithmetics\InterpolationTests.cs" />
     <Compile Include="Arithmetics\OperationsTests.cs" />
@@ -88,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="xunit">
+      <Version>2.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.runner.visualstudio">
       <Version>2.3.1</Version>
     </PackageReference>
   </ItemGroup>

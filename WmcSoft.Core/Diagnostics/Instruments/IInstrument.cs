@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2018 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -26,16 +26,13 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Diagnostics.Instruments
 {
     /// <summary>
-    /// Associates a name and a status for which changes can be observed.
+    /// Represents a named instrument for which you can observe decimal samples.
     /// </summary>
-    /// <remarks>Implementation must guarantee that observers won't miss a status, 
-    /// therefore the current status must be observed upon subscription.</remarks>
-    public interface ISentry : IObservable<SentryStatus>, IFormattable
+    public interface IInstrument : IObservable<decimal>, IDisposable
     {
         string Name { get; }
-        SentryStatus Status { get; }
     }
 }

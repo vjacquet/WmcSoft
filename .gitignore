@@ -203,3 +203,4 @@ FakesAssemblies/
 /WmcSoft.Business.Calendars/Olean.Business.Calendars.csproj
 /WmcSoft.Data.Common/Olean.Data.Common.csproj
 /WmcSoft.Data.SqlClient/Olean.Data.SqlClient.csproj
+/local-publish.bat

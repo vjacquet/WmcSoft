@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="DbConnectionExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlDataTypeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WmcSoft.Data.Common\WmcSoft.Data.Common.csproj">

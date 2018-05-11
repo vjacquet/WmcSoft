@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2018 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -26,53 +26,47 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Diagnostics.Instruments
 {
-    /// <summary>
-    /// Represents a sentry.
-    /// </summary>
-    [DebuggerDisplay("{ToString(),nq}")]
-    public abstract class SentryBase : ISentry
+    public abstract class InstrumentBase : IInstrument,IDisposable
     {
         #region Utilities
 
         class Unsubscriber : IDisposable
         {
-            private readonly SentryBase _sentry;
-            private readonly IObserver<SentryStatus> _observer;
+            private readonly InstrumentBase _instrument;
+            private readonly IObserver<decimal> _observer;
 
-            public Unsubscriber(SentryBase sentry, IObserver<SentryStatus> observer)
+            public Unsubscriber(InstrumentBase instrument, IObserver<decimal> observer)
             {
-                _sentry = sentry;
+                _instrument = instrument;
                 _observer = observer;
             }
 
             public void Dispose()
             {
-                var observers = _sentry._observers;
+                var observers = _instrument._observers;
                 bool removed = false;
                 lock (observers) {
                     if (observers.Remove(_observer)) {
                         removed = true;
                         if (observers.Count == 0) {
-                            _sentry.OnObserved();
+                            _instrument.OnObserved();
                         }
                     }
                 }
                 if (removed) {
-                    _sentry.OnUnsubscribe(_observer);
+                    _instrument.OnUnsubscribe(_observer);
                 }
             }
         }
 
         #endregion
 
-        private readonly List<IObserver<SentryStatus>> _observers = new List<IObserver<SentryStatus>>();
-        private volatile SentryStatus _status;
+        private readonly List<IObserver<decimal>> _observers = new List<IObserver<decimal>>();
 
-        protected SentryBase(string name)
+        protected InstrumentBase(string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
@@ -81,7 +75,6 @@ namespace WmcSoft.Diagnostics.Sentries
         }
 
         public string Name { get; }
-        public SentryStatus Status => _status;
 
         /// <summary>
         /// Subscribes an observer on the sentry.
@@ -89,20 +82,19 @@ namespace WmcSoft.Diagnostics.Sentries
         /// <param name="observer">The observer</param>
         /// <returns>An <see cref="IDisposable"/> that unregisters the observer upon dispose.</returns>
         /// <remarks>Subscription and unscribscription are idempotent operations.</remarks>
-        public IDisposable Subscribe(IObserver<SentryStatus> observer)
+        public IDisposable Subscribe(IObserver<decimal> observer)
         {
             lock (_observers) {
                 if (Subscribing(observer)) {
                     OnSubscribe(observer);
 
-                    observer.OnNext(Status);
                     _observers.Add(observer);
                 }
             }
             return new Unsubscriber(this, observer);
         }
 
-        private bool Subscribing(IObserver<SentryStatus> observer)
+        private bool Subscribing(IObserver<decimal> observer)
         {
             if (_observers.Count == 0) {
                 OnObserving();
@@ -113,16 +105,11 @@ namespace WmcSoft.Diagnostics.Sentries
 
         #region Overridables methods
 
-        public override string ToString()
-        {
-            return Name + ": " + _status + " (" + _observers.Count + ")";
-        }
-
         /// <summary>
         /// Called before the <paramref name="observer"/> is added to the list of observers.
         /// </summary>
         /// <param name="observer">The observer.</param>
-        protected virtual void OnSubscribe(IObserver<SentryStatus> observer)
+        protected virtual void OnSubscribe(IObserver<decimal> observer)
         {
         }
 
@@ -130,7 +117,7 @@ namespace WmcSoft.Diagnostics.Sentries
         /// Called after the <paramref name="observer"/> is removed from the list of observers.
         /// </summary>
         /// <param name="observer">The observer.</param>
-        protected virtual void OnUnsubscribe(IObserver<SentryStatus> observer)
+        protected virtual void OnUnsubscribe(IObserver<decimal> observer)
         {
         }
 
@@ -146,26 +133,15 @@ namespace WmcSoft.Diagnostics.Sentries
         /// </summary>
         protected virtual void OnObserved()
         {
-            _status = SentryStatus.None;
-        }
-
-        protected void Clear(List<IObserver<SentryStatus>> observers)
-        {
-            observers.ForEach(OnUnsubscribe);
-            observers.Clear();
-
-            if (_observers.Count == 0)
-                OnObserved();
         }
 
         #endregion
 
         #region Observer support
 
-        protected void OnNext(SentryStatus value)
+        protected void OnNext(decimal value)
         {
             lock (_observers) {
-                _status = value;
                 _observers.ForEach(o => o.OnNext(value));
             }
         }
@@ -174,7 +150,7 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnError(error));
-                Clear(_observers);
+                _observers.Clear();
             }
         }
 
@@ -182,38 +158,10 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnCompleted());
-                Clear(_observers);
+                _observers.Clear();
             }
         }
 
         #endregion
-
-        protected virtual string ToGenericString(IFormatProvider formatProvider)
-        {
-            return ToString();
-        }
-
-        protected virtual string ToUnknownFormatString(string format, IFormatProvider formatProvider)
-        {
-            return ToGenericString(formatProvider);
-        }
-
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            switch (format) {
-            case null:
-            case "g":
-            case "G":
-                return ToGenericString(formatProvider);
-            case "n":
-                return Name;
-            case "N":
-                return Name.ToUpperInvariant();
-            case "S":
-                return _status.ToString();
-            default:
-                return ToUnknownFormatString(format, formatProvider);
-            }
-        }
     }
 }

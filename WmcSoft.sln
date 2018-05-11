@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core", "WmcSoft.Core\WmcSoft.Core.csproj", "{3E5C5EA0-2911-4C9E-9179-391E66320761}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Core.Tests", "WmcSoft.Core.Tests\WmcSoft.Core.Tests.csproj", "{FBD57B8C-27F2-4EB2-8F49-5483A0791854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics", "WmcSoft.Mathematics\WmcSoft.Mathematics.csproj", "{041E639D-20CD-454F-90D5-2852AA58E126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Mathematics", "WmcSoft.Mathematics\WmcSoft.Mathematics.csproj", "{041E639D-20CD-454F-90D5-2852AA58E126}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Mathematics.Tests", "WmcSoft.Mathematics.Tests\WmcSoft.Mathematics.Tests.csproj", "{DD347637-5EC5-45BA-A377-5B6A09605A7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Units", "WmcSoft.Units\WmcSoft.Units.csproj", "{FD4E34D4-7A77-4908-B135-268ABE7D2506}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Units", "WmcSoft.Units\WmcSoft.Units.csproj", "{FD4E34D4-7A77-4908-B135-268ABE7D2506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Units.Tests", "WmcSoft.Units.Tests\WmcSoft.Units.Tests.csproj", "{D12A494F-C06E-4B0D-98CA-70460D819BC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Units.Tests", "WmcSoft.Units.Tests\WmcSoft.Units.Tests.csproj", "{D12A494F-C06E-4B0D-98CA-70460D819BC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Benchmark", "WmcSoft.Benchmark\WmcSoft.Benchmark.csproj", "{0EB4ECD9-AA2B-4319-803F-1980A1F91E14}"
 EndProject
@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathematicsBench", "Benchmarks\MathematicsBench\MathematicsBench.csproj", "{D0383AA6-BFD4-4C85-9EEF-269F1886434A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Jobs", "WmcSoft.Jobs\WmcSoft.Jobs.csproj", "{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Jobs", "WmcSoft.Jobs\WmcSoft.Jobs.csproj", "{7DEC0C3F-08AA-4A65-B231-4FE53935D73C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{55C1E273-4025-4D2E-9E13-21385C65C725}"
 EndProject
@@ -112,6 +112,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notes", "notes", "{B5F15274
 	ProjectSection(SolutionItems) = preProject
 		notes\cloning.md = notes\cloning.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Memory", "WmcSoft.Memory\WmcSoft.Memory.csproj", "{F2FC0F43-B960-49A4-B554-856A5B33098D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Memory.Tests", "WmcSoft.Memory.Tests\WmcSoft.Memory.Tests.csproj", "{74717650-A785-4497-9224-588FDFECBF61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -283,6 +287,14 @@ Global
 		{C4C75CA9-6EFA-4334-B8FC-F000A06BCAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4C75CA9-6EFA-4334-B8FC-F000A06BCAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4C75CA9-6EFA-4334-B8FC-F000A06BCAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2FC0F43-B960-49A4-B554-856A5B33098D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2FC0F43-B960-49A4-B554-856A5B33098D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2FC0F43-B960-49A4-B554-856A5B33098D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2FC0F43-B960-49A4-B554-856A5B33098D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74717650-A785-4497-9224-588FDFECBF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74717650-A785-4497-9224-588FDFECBF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74717650-A785-4497-9224-588FDFECBF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74717650-A785-4497-9224-588FDFECBF61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

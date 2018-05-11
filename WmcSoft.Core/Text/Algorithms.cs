@@ -24,18 +24,36 @@
 
 #endregion
 
-using System;
+using System.Text;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Text
 {
-    /// <summary>
-    /// Associates a name and a status for which changes can be observed.
-    /// </summary>
-    /// <remarks>Implementation must guarantee that observers won't miss a status, 
-    /// therefore the current status must be observed upon subscription.</remarks>
-    public interface ISentry : IObservable<SentryStatus>, IFormattable
+    public static class Algorithms
     {
-        string Name { get; }
-        SentryStatus Status { get; }
+        static readonly (int, string)[] Numerals = new[] {
+            (1000, "M"),
+            ( 900, "CM"),
+            ( 500, "D"),
+            ( 400, "CD"),
+            ( 100, "C"),
+            (  90, "XC"),
+            (  50, "L"),
+            (  40, "XL"),
+            (  10, "X"),
+            (   9, "IX"),
+            (   5, "V"),
+            (   4, "IV"),
+            (   1, "I"),
+        };
+
+        public static string Roman(int number)
+        {
+            var sb = new StringBuilder();
+            foreach (var (value, letters) in Numerals) {
+                sb.Append(letters, number / value);
+                number %= value;
+            }
+            return sb.ToString();
+        }
     }
 }
