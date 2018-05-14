@@ -49,6 +49,11 @@ namespace WmcSoft.Diagnostics
         {
         }
 
+        /// <summary>
+        /// Creates a new <see cref="TraceStream"/>.
+        /// </summary>
+        /// <param name="stream">The underling stream.</param>
+        /// <param name="traceSource">The trace source.</param>
         public TraceStream(Stream stream, TraceSource traceSource)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
