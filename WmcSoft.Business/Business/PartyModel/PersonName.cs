@@ -25,7 +25,8 @@
 #endregion
 
 using System;
-
+using System.Globalization;
+using System.Linq;
 using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
@@ -33,7 +34,7 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents the name for a Person.
     /// </summary>
-    public class PersonName : DomainObject<TKey>, ITemporal
+    public class PersonName : DomainObject<TKey>, ITemporal, IFormattable
     {
         #region Lifecycle
 
@@ -111,6 +112,45 @@ namespace WmcSoft.Business.PartyModel
         public string Suffix { get; set; }
 
         public PersonNameUse Use { get; set; }
+
+        #endregion
+
+        #region IFormattable members
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            var culture = formatProvider as CultureInfo;
+            switch (format) {
+            case "g":
+                return GivenName ?? "";
+            case "G":
+                return (GivenName ?? "").ToUpper(culture);
+            case "p":
+                return PreferredName ?? ToString("n", formatProvider);
+            case "P":
+                return PreferredName.ToUpper(culture) ?? ToString("N", formatProvider);
+            case "N":
+                return Join(Prefix, GivenNames, FamilyName.ToUpper(culture), Suffix);
+            case "n":
+            default:
+                return Join(Prefix, GivenNames, FamilyName, Suffix);
+            }
+        }
+
+        static string Join(params string[] names)
+        {
+            return string.Join(" ", names.Where(n => !string.IsNullOrWhiteSpace(n)));
+        }
+
+        public string ToString(string format)
+        {
+            return ToString(format, null);
+        }
+
+        public sealed override string ToString()
+        {
+            return ToString(null, null) ?? base.ToString();
+        }
 
         #endregion
 

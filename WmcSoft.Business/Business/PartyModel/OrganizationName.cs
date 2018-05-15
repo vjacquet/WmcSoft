@@ -25,7 +25,7 @@
 #endregion
 
 using System;
-
+using System.Globalization;
 using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
@@ -33,14 +33,16 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents a noame for an Organization
     /// </summary>
-    public class OrganizationName : DomainObject<TKey>, ITemporal
+    public class OrganizationName : DomainObject<TKey>, ITemporal, IFormattable
     {
         #region Lifecycle
 
-        public OrganizationName() {
+        public OrganizationName()
+        {
         }
 
-        public OrganizationName(string name, OrganizationalNameUse use = OrganizationalNameUse.LegalName) {
+        public OrganizationName(string name, OrganizationalNameUse use = OrganizationalNameUse.LegalName)
+        {
             Name = name;
             Use = use;
         }
@@ -61,10 +63,28 @@ namespace WmcSoft.Business.PartyModel
 
         #endregion
 
-        #region Overrides
+        #region IFormattable members
 
-        public override string ToString() {
-            return Name ?? base.ToString();
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            var culture = formatProvider as CultureInfo;
+            switch (format) {
+            case "N":
+                return Name.ToUpper(culture);
+            case "n":
+            default:
+                return Name;
+            }
+        }
+
+        public string ToString(string format)
+        {
+            return ToString(format, null);
+        }
+
+        public sealed override string ToString()
+        {
+            return ToString(null, null) ?? base.ToString();
         }
 
         #endregion

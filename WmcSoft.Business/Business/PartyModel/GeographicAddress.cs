@@ -68,7 +68,7 @@ namespace WmcSoft.Business.PartyModel
 
         #region IFormattable
 
-        public override string ToString()
+        public sealed override string ToString()
         {
             return ToString("I", null);
         }
@@ -78,7 +78,7 @@ namespace WmcSoft.Business.PartyModel
             return ToString(format, null);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public virtual string ToString(string format, IFormatProvider formatProvider)
         {
             switch (format) {
             case "l":
