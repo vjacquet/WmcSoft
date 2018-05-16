@@ -27,8 +27,6 @@
 using System;
 using System.Collections.Generic;
 
-using TKey = System.Guid;
-
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
@@ -75,6 +73,17 @@ namespace WmcSoft.Business.PartyModel
         public virtual Gender Gender { get; set; }
         public virtual Ethnicity Ethnicity { get; set; }
         public virtual BodyMetrics BodyMetrics { get; set; }
+
+        #endregion
+
+        #region IFormattable overrides
+
+        public override string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (PersonName == null)
+                return Id.ToString();
+            return PersonName.ToString(format, formatProvider);
+        }
 
         #endregion
     }

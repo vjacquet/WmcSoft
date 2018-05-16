@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 using TKey = System.Guid;
@@ -35,7 +36,7 @@ namespace WmcSoft.Business.PartyModel
     /// and that normally has autonomous control over (at least some of) its
     /// actions.
     /// </summary>
-    public abstract class Party : DomainObject<TKey>
+    public abstract class Party : DomainObject<TKey>, IFormattable
     {
         #region Fields
 
@@ -80,6 +81,22 @@ namespace WmcSoft.Business.PartyModel
         public ICollection<AddressBase> Addresses { get; }
 
         public ICollection<PartyRole> Roles { get; }
+
+        #endregion
+
+        #region IFormattable members
+
+        public abstract string ToString(string format, IFormatProvider formatProvider);
+
+        public string ToString(string format)
+        {
+            return ToString(format, null);
+        }
+
+        public sealed override string ToString()
+        {
+            return ToString(null, null) ?? base.ToString();
+        }
 
         #endregion
     }

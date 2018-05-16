@@ -36,17 +36,20 @@ namespace WmcSoft.Business.PartyModel
     {
         #region Lifecycle
 
-        public Organization() {
+        public Organization()
+        {
             OtherOrganizationNames = new List<OrganizationName>();
         }
 
         public Organization(OrganizationName organizationName)
-            : this() {
+            : this()
+        {
             OrganizationName = organizationName;
         }
 
         public Organization(string organizationName)
-            : this(new OrganizationName(organizationName)) {
+            : this(new OrganizationName(organizationName))
+        {
         }
 
         #endregion
@@ -55,6 +58,17 @@ namespace WmcSoft.Business.PartyModel
 
         public virtual OrganizationName OrganizationName { get; set; }
         public virtual ICollection<OrganizationName> OtherOrganizationNames { get; private set; }
+
+        #endregion
+
+        #region IFormattable overrides
+
+        public override string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (OrganizationName == null)
+                return Id.ToString();
+            return OrganizationName.ToString(format, formatProvider);
+        }
 
         #endregion
     }
