@@ -27,12 +27,13 @@
 using System;
 using System.Globalization;
 using System.Linq;
+
 using TKey = System.Guid;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Represents the name for a Person.
+    /// Represents the name for a <see cref="Person"/>.
     /// </summary>
     public class PersonName : DomainObject<TKey>, ITemporal, IFormattable
     {

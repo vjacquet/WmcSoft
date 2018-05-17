@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -32,20 +32,19 @@ using TKey = System.Guid;
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// Represents a name for an <see cref="Organization"/>.
+    /// Represents a name for a <see cref="Bot"/>.
     /// </summary>
-    public class OrganizationName : DomainObject<TKey>, ITemporal, IFormattable
+    public class BotName : DomainObject<TKey>, ITemporal, IFormattable
     {
         #region Lifecycle
 
-        public OrganizationName()
+        public BotName()
         {
         }
 
-        public OrganizationName(string name, OrganizationNameUse use = OrganizationNameUse.LegalName)
+        public BotName(string name)
         {
             Name = name;
-            Use = use;
         }
 
         #endregion
@@ -53,7 +52,6 @@ namespace WmcSoft.Business.PartyModel
         #region Properties
 
         public virtual string Name { get; set; }
-        public virtual OrganizationNameUse Use { get; set; }
 
         #endregion
 

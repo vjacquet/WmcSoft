@@ -95,7 +95,7 @@ namespace WmcSoft.Business.PartyModel
         public static TOrganization TradingAs<TOrganization>(this TOrganization organization, string name)
             where TOrganization : Organization
         {
-            organization.OtherOrganizationNames.Add(new OrganizationName(name, OrganizationalNameUse.TradingName));
+            organization.OtherOrganizationNames.Add(new OrganizationName(name, OrganizationNameUse.TradingName));
             return organization;
         }
 

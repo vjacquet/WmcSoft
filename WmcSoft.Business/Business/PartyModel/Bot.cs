@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -25,17 +25,51 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace WmcSoft.Business.PartyModel
 {
     /// <summary>
-    /// A short description of what the name is used for.
+    /// Represents an automated agent.
     /// </summary>
-    [Flags]
-    public enum OrganizationalNameUse
+    public class Bot : Party
     {
-        None,
-        LegalName = 0x0001,
-        TradingName = 0x0002,
+        #region Lifecycle
+
+        public Bot()
+        {
+            OtherBotNames = new List<BotName>();
+        }
+
+        public Bot(BotName organizationName)
+            : this()
+        {
+            BotName = organizationName;
+        }
+
+        public Bot(string organizationName)
+            : this(new BotName(organizationName))
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        public virtual BotName BotName { get; set; }
+        public virtual ICollection<BotName> OtherBotNames { get; private set; }
+
+        #endregion
+
+        #region IFormattable overrides
+
+        public override string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (BotName == null)
+                return Id.ToString();
+            return BotName.ToString(format, formatProvider);
+        }
+
+        #endregion
     }
 }

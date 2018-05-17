@@ -37,7 +37,7 @@ namespace WmcSoft.Business.PartyModel
 
             Assert.True(company is Party);
             Assert.NotNull(company.OrganizationName);
-            Assert.Equal(OrganizationalNameUse.LegalName, company.OrganizationName.Use);
+            Assert.Equal(OrganizationNameUse.LegalName, company.OrganizationName.Use);
             Assert.Equal("MyLittleCompany", company.OrganizationName.ToString());
         }
 
@@ -50,7 +50,7 @@ namespace WmcSoft.Business.PartyModel
             Assert.True(mcdonald is Party);
             Assert.IsType<Company>(mcdonald);
             Assert.NotNull(mcdonald.OrganizationName);
-            Assert.Equal(OrganizationalNameUse.LegalName, mcdonald.OrganizationName.Use);
+            Assert.Equal(OrganizationNameUse.LegalName, mcdonald.OrganizationName.Use);
             Assert.Equal("McDonald's Coporation", mcdonald.OrganizationName.ToString());
             Assert.NotEmpty(mcdonald.OtherOrganizationNames);
         }
