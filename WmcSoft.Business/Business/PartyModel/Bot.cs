@@ -32,6 +32,8 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents an automated agent.
     /// </summary>
+    [RM.DisplayName(nameof(Bot))]
+    [RM.Description(nameof(Bot))]
     public class Bot : Party
     {
         #region Lifecycle

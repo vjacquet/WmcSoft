@@ -32,6 +32,8 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents informations about a human being.
     /// </summary>
+    [RM.DisplayName(nameof(Person))]
+    [RM.Description(nameof(Person))]
     public class Person : Party
     {
         #region Lifecycle

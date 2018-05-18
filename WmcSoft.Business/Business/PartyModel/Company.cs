@@ -32,10 +32,13 @@ namespace WmcSoft.Business.PartyModel
     /// Represents an Organization created to make money by selling goods
     /// or services, with a legal identity that is separate from its owners.
     /// </summary>
+    [RM.DisplayName(nameof(Company))]
+    [RM.Description(nameof(Company))]
     public class Company : Organization
     {
         public Company() {
         }
+
         public Company(string organizationName)
             : base(organizationName) {
         }

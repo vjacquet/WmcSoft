@@ -36,6 +36,8 @@ namespace WmcSoft.Business.PartyModel
     /// and that normally has autonomous control over (at least some of) its
     /// actions.
     /// </summary>
+    [RM.DisplayName(nameof(Party))]
+    [RM.Description(nameof(Party))]
     public abstract class Party : DomainObject<TKey>, IFormattable
     {
         #region Fields
@@ -57,18 +59,6 @@ namespace WmcSoft.Business.PartyModel
         protected Party(TKey identifier) : this()
         {
             Id = identifier;
-        }
-
-        #endregion
-
-        #region Traits
-
-        public virtual string Name {
-            get { return RM.GetInheritedName(GetType()); }
-        }
-
-        public virtual string Description {
-            get { return RM.GetInheritedDescription(GetType()); }
         }
 
         #endregion

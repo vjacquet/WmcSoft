@@ -117,16 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Bot.Description" xml:space="preserve">
+    <value>Modélise les informations d'un automate.</value>
+  </data>
+  <data name="Bot.DisplayName" xml:space="preserve">
+    <value>Bot</value>
+  </data>
   <data name="Company.Description" xml:space="preserve">
     <value>Modélise une organisation créée pour gagner de l'argent en vendant des biens ou des services, avec une identité légale séparée de ses propriétaires.</value>
   </data>
-  <data name="Company.Name" xml:space="preserve">
+  <data name="Company.DisplayName" xml:space="preserve">
     <value>Société</value>
+  </data>
+  <data name="Organization.Description" xml:space="preserve">
+    <value>Modélise les informations d'une structure administrative et fonctionnelle.</value>
+  </data>
+  <data name="Organization.DisplayName" xml:space="preserve">
+    <value>Organisation</value>
   </data>
   <data name="OrganizationUnit.Description" xml:space="preserve">
     <value>Modélise une organisation au sein d'une autre organisation.</value>
   </data>
-  <data name="OrganizationUnit.Name" xml:space="preserve">
+  <data name="OrganizationUnit.DisplayName" xml:space="preserve">
     <value>Unité d'organisation</value>
   </data>
   <data name="PartyRelationship.Description" xml:space="preserve">
@@ -142,9 +154,9 @@
     <value>Rôle</value>
   </data>
   <data name="Person.Description" xml:space="preserve">
-    <value>Modélise les informations sur un être humain.</value>
+    <value>Modélise les informations d'un être humain.</value>
   </data>
-  <data name="Person.Name" xml:space="preserve">
+  <data name="Person.DisplayName" xml:space="preserve">
     <value>Personne</value>
   </data>
 </root>

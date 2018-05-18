@@ -29,6 +29,8 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents an Organization that is part of another Organization.
     /// </summary>
+    [RM.DisplayName(nameof(OrganizationUnit))]
+    [RM.Description(nameof(OrganizationUnit))]
     public abstract class OrganizationUnit : Organization
     {
         #region Fields

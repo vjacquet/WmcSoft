@@ -120,13 +120,13 @@
   <data name="Person.Description" xml:space="preserve">
     <value>Represents informations about a human being.</value>
   </data>
-  <data name="Company.Name" xml:space="preserve">
+  <data name="Company.DisplayName" xml:space="preserve">
     <value>Company</value>
   </data>
-  <data name="Person.Name" xml:space="preserve">
+  <data name="Person.DisplayName" xml:space="preserve">
     <value>Person</value>
   </data>
-  <data name="OrganizationUnit.Name" xml:space="preserve">
+  <data name="OrganizationUnit.DisplayName" xml:space="preserve">
     <value>Organization unit</value>
   </data>
   <data name="OrganizationUnit.Description" xml:space="preserve">
@@ -146,5 +146,17 @@
   </data>
   <data name="PartyRole.Name" xml:space="preserve">
     <value>Role</value>
+  </data>
+  <data name="Bot.Description" xml:space="preserve">
+    <value>Represents informations about an automated agent.</value>
+  </data>
+  <data name="Bot.DisplayName" xml:space="preserve">
+    <value>Bot</value>
+  </data>
+  <data name="Organization.Description" xml:space="preserve">
+    <value>Represents informations about an administrative and functional structure.</value>
+  </data>
+  <data name="Organization.DisplayName" xml:space="preserve">
+    <value>Organization</value>
   </data>
 </root>

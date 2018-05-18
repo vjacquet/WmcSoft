@@ -32,6 +32,8 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents an administrative and functional structure.
     /// </summary>
+    [RM.DisplayName(nameof(Organization))]
+    [RM.Description(nameof(Organization))]
     public abstract class Organization : Party
     {
         #region Lifecycle

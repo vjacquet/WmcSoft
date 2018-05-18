@@ -37,9 +37,44 @@ namespace WmcSoft.Business.PartyModel
     [DebuggerStepThrough]
     internal sealed class RM
     {
+        #region Attributes
+
+        [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+        internal sealed class CategoryAttribute : System.ComponentModel.CategoryAttribute
+        {
+            // Methods
+            public CategoryAttribute(string resourceName)
+                : base(resourceName + ".Category")
+            {
+            }
+
+            protected override string GetLocalizedString(string value)
+            {
+                return RM.GetString(value);
+            }
+        }
+
+        internal class DescriptionAttribute : System.ComponentModel.DescriptionAttribute
+        {
+            public DescriptionAttribute(string resourceName)
+                : base(RM.GetString(resourceName + ".Description"))
+            {
+            }
+        }
+
+        internal class DisplayNameAttribute : System.ComponentModel.DisplayNameAttribute
+        {
+            public DisplayNameAttribute(string resourceName)
+                : base(RM.GetString(resourceName + ".DisplayName"))
+            {
+            }
+        }
+
+        #endregion
         static ResourceManager rm;
 
-        static ResourceManager GetManager() {
+        static ResourceManager GetManager()
+        {
             if (rm == null) {
                 lock (typeof(RM)) {
                     if (rm == null) {
@@ -50,32 +85,39 @@ namespace WmcSoft.Business.PartyModel
             return rm;
         }
 
-        public static string GetString(string name) {
+        public static string GetString(string name)
+        {
             return GetString(name, (CultureInfo)null);
         }
 
-        public static string GetString(string name, CultureInfo culture) {
+        public static string GetString(string name, CultureInfo culture)
+        {
             return GetManager().GetString(name, culture);
         }
 
-        public static string Format(string name, params object[] args) {
+        public static string Format(string name, params object[] args)
+        {
             return Format(name, (CultureInfo)null, args);
         }
 
-        public static string Format(string name, CultureInfo culture, params object[] args) {
+        public static string Format(string name, CultureInfo culture, params object[] args)
+        {
             return String.Format(GetManager().GetString(name, culture), args);
         }
 
-        static string UndecoratedName(Type type) {
+        static string UndecoratedName(Type type)
+        {
             var name = type.Name;
             return name.SubstringBefore('`') ?? name;
         }
 
-        public static string GetName(Type type, CultureInfo culture=null) {
+        public static string GetName(Type type, CultureInfo culture = null)
+        {
             return GetManager().GetString(String.Format("{0}.Name", UndecoratedName(type)), culture);
         }
 
-        public static string GetInheritedName(Type type, CultureInfo culture = null) {
+        public static string GetInheritedName(Type type, CultureInfo culture = null)
+        {
             while (type != typeof(object)) {
                 var name = GetName(type);
                 if (!String.IsNullOrEmpty(name))
@@ -84,11 +126,13 @@ namespace WmcSoft.Business.PartyModel
             return null;
         }
 
-        public static string GetDescription(Type type, CultureInfo culture=null) {
+        public static string GetDescription(Type type, CultureInfo culture = null)
+        {
             return GetManager().GetString(String.Format("{0}.Description", UndecoratedName(type)), culture);
         }
 
-        public static string GetInheritedDescription(Type type, CultureInfo culture = null) {
+        public static string GetInheritedDescription(Type type, CultureInfo culture = null)
+        {
             while (type != typeof(object)) {
                 // crawl the hierarchy of types to find a name
                 // then get the associated description
