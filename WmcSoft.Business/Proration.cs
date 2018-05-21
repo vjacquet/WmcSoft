@@ -35,11 +35,15 @@ using System.Diagnostics;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Helper class to deal with proration of amounts.
+    /// </summary>
     public static class Proration
     {
-        private static decimal SumNonEmpty(decimal[] elements, decimal sum = 0m)
+        private static decimal SumNonEmpty(decimal[] elements)
         {
-            for (int i = 0; i < elements.Length; i++) {
+            var sum = elements[0];
+            for (int i = 1; i < elements.Length; i++) {
                 sum += elements[i];
             }
             return sum;
@@ -59,11 +63,7 @@ namespace WmcSoft
             if (proportions.Length == 0)
                 return new Ratio[0];
             var total = SumNonEmpty(proportions);
-            var ratios = new Ratio[proportions.Length];
-            for (int i = 0; i < proportions.Length; i++) {
-                ratios[i] = new Ratio(proportions[i], total);
-            }
-            return ratios;
+            return Array.ConvertAll(proportions, p => new Ratio(p, total));
         }
 
         static decimal[] DistributeRemainderOver(decimal[] amounts, decimal remainder, decimal minimumIncrement)
