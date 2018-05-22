@@ -34,21 +34,21 @@ namespace WmcSoft
     /// </summary>
     [DebuggerDisplay("Code={Code,nq}")]
     [Serializable]
-    public class GatewayError
+    public class OperationError
     {
         /// <summary>
-        /// Creates an instance of <see cref="GatewayError"/> without code or description.
+        /// Creates an instance of <see cref="OperationError"/> without code or description.
         /// </summary>
-        public GatewayError()
+        public OperationError()
         {
         }
 
         /// <summary>
-        /// Creates an intance of <see cref="GatewayError"/> with the given <paramref name="code"/> and <paramref name="description"/>.
+        /// Creates an intance of <see cref="OperationError"/> with the given <paramref name="code"/> and <paramref name="description"/>.
         /// </summary>
         /// <param name="code">The code of the error.</param>
         /// <param name="description">The description of the error.</param>
-        public GatewayError(string code, string description = null)
+        public OperationError(string code, string description = null)
         {
             Code = code;
             Description = description;

@@ -33,26 +33,26 @@ using WmcSoft.Runtime.Serialization;
 namespace WmcSoft
 {
     /// <summary>
-    /// Represents the outcome of a gateway operation that does not return a value.
+    /// Represents the outcome of an operation that does not return a value.
     /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
-    public struct GatewayResult : ISerializable
+    public struct OperationResult : ISerializable
     {
-        internal static GatewayError[] None = new GatewayError[0];
-        internal static GatewayError[] Undefined = new GatewayError[0];
+        internal static OperationError[] None = new OperationError[0];
+        internal static OperationError[] Undefined = new OperationError[0];
 
-        internal readonly GatewayError[] _errors;
+        internal readonly OperationError[] _errors;
 
-        private GatewayResult(GatewayError[] errors)
+        private OperationResult(OperationError[] errors)
         {
             _errors = errors;
         }
 
         /// <summary>
-        /// Returns a <see cref="GatewayResult"/> indicating a successful operation.
+        /// Returns a <see cref="OperationResult"/> indicating a successful operation.
         /// </summary>
-        public static GatewayResult Success = new GatewayResult(None);
+        public static OperationResult Success = new OperationResult(None);
 
         /// <summary>
         /// Indicates whether the operation succeeded or not.
@@ -62,14 +62,14 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Returns an <see cref="GatewayResult{T}"/> indicating a successful operation.
+        /// Returns an <see cref="OperationResult{T}"/> indicating a successful operation.
         /// </summary>
         /// <typeparam name="T">The type of the value in the operation result.</typeparam>
         /// <param name="value">The value.</param>
         /// <returns>The operation result.</returns>
-        public static GatewayResult<T> Returns<T>(T value)
+        public static OperationResult<T> Returns<T>(T value)
         {
-            return new GatewayResult<T>(value);
+            return new OperationResult<T>(value);
         }
 
         /// <summary>
@@ -92,20 +92,20 @@ namespace WmcSoft
         /// <summary>
         /// Errors that occured during the operation.
         /// </summary>
-        public ReadOnlyCollection<GatewayError> Errors {
-            get { return new ReadOnlyCollection<GatewayError>(_errors); }
+        public ReadOnlyCollection<OperationError> Errors {
+            get { return new ReadOnlyCollection<OperationError>(_errors); }
         }
 
         /// <summary>
-        /// Creates a failed <see cref="GatewayResult"/> with a list of errors.
+        /// Creates a failed <see cref="OperationResult"/> with a list of errors.
         /// </summary>
         /// <param name="errors">The list of errors.</param>
         /// <returns>The result.</returns>
-        public static GatewayResult Failed(params GatewayError[] errors)
+        public static OperationResult Failed(params OperationError[] errors)
         {
             if (errors == null || errors.Length == 0)
-                return new GatewayResult(Undefined);
-            return new GatewayResult((GatewayError[])errors.Clone());
+                return new OperationResult(Undefined);
+            return new OperationResult((OperationError[])errors.Clone());
         }
 
         public override string ToString()
@@ -119,10 +119,10 @@ namespace WmcSoft
 
         #region Serialization
 
-        private GatewayResult(SerializationInfo info, StreamingContext context)
+        private OperationResult(SerializationInfo info, StreamingContext context)
         {
             var succeeded = info.GetBoolean("Succeeded");
-            _errors = succeeded ? None : info.GetValue<GatewayError[]>("Errors");
+            _errors = succeeded ? None : info.GetValue<OperationError[]>("Errors");
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
@@ -139,33 +139,33 @@ namespace WmcSoft
     }
 
     /// <summary>
-    /// Represents the outcome of a gateway operation that returns a value.
+    /// Represents the outcome of an operation that returns a value.
     /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [Serializable]
-    public struct GatewayResult<T> : ISerializable
+    public struct OperationResult<T> : ISerializable
     {
-        private GatewayResult _result;
+        private OperationResult _result;
         private readonly T _value;
 
-        public GatewayResult(T value)
+        public OperationResult(T value)
         {
-            _result = GatewayResult.Success;
+            _result = OperationResult.Success;
             _value = value;
         }
 
-        private GatewayResult(GatewayError[] errors)
+        private OperationResult(OperationError[] errors)
         {
-            _result = GatewayResult.Failed(errors);
+            _result = OperationResult.Failed(errors);
             _value = default(T);
         }
 
         /// <summary>
-        /// Retrieves the value of the current <see cref="GatewayResult{T}"/> object, or the object's default value.
+        /// Retrieves the value of the current <see cref="OperationResult{T}"/> object, or the object's default value.
         /// </summary>
         /// <returns>The value of the Value property if the <see cref="HasValue"/> property is <c>true</c>; otherwise,
-        /// the default value of the current <see cref="GatewayResult{T}"/> object.
-        /// The type of the default value is the type argument of the current <see cref="GatewayResult{T}"/> object,
+        /// the default value of the current <see cref="OperationResult{T}"/> object.
+        /// The type of the default value is the type argument of the current <see cref="OperationResult{T}"/> object,
         /// and the value of the default value consists solely of binary zeroes.</returns>
         /// <remarks>The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is <c>false</c>
         /// (unlike the <see cref="Value"/> property, which throws an exception).</remarks>
@@ -175,11 +175,11 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Retrieves the value of the current <see cref="GatewayResult{T}"/> object, or the specified default value.
+        /// Retrieves the value of the current <see cref="OperationResult{T}"/> object, or the specified default value.
         /// </summary>
         /// <returns>The value of the Value property if the <see cref="HasValue"/> property is <c>true</c>; otherwise,
         /// the <paramref name="defaultValue"/> parameter.
-        /// The type of the default value is the type argument of the current <see cref="GatewayResult{T}"/> object,
+        /// The type of the default value is the type argument of the current <see cref="OperationResult{T}"/> object,
         /// and the value of the default value consists solely of binary zeroes.</returns>
         /// <remarks>The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is <c>false</c>
         /// (unlike the <see cref="Value"/> property, which throws an exception).</remarks>
@@ -189,13 +189,13 @@ namespace WmcSoft
         }
 
         /// <summary>
-        /// Gets a value indicating whether the current <see cref="GatewayResult{T}"/> object has a valid value of its underlying type.
+        /// Gets a value indicating whether the current <see cref="OperationResult{T}"/> object has a valid value of its underlying type.
         /// </summary>
-        /// <value><c>true</c> if the current <see cref="GatewayResult{T}"/> object has a value; <c>false</c> if the current<see cref="GatewayResult{T}"/> object has no value.</value>
+        /// <value><c>true</c> if the current <see cref="OperationResult{T}"/> object has a value; <c>false</c> if the current<see cref="OperationResult{T}"/> object has no value.</value>
         public bool HasValue => Succeeded;
 
         /// <summary>
-        /// Gets the value of the current <see cref="GatewayResult{T}"/> object if it has been assigned a valid underlying value.
+        /// Gets the value of the current <see cref="OperationResult{T}"/> object if it has been assigned a valid underlying value.
         /// </summary>
         /// <value></value>
         /// <exception cref="InvalidOperationException">The <see cref="HasValue"/> property is <c>false</c>.</exception>
@@ -213,25 +213,25 @@ namespace WmcSoft
             get { return _result.Succeeded; }
         }
 
-        public static explicit operator T(GatewayResult<T> result)
+        public static explicit operator T(OperationResult<T> result)
         {
             return result.Value;
         }
 
-        public static implicit operator GatewayResult<T>(T value)
+        public static implicit operator OperationResult<T>(T value)
         {
-            return new GatewayResult<T>(value);
+            return new OperationResult<T>(value);
         }
 
         /// <summary>
-        /// Converts a <see cref="GatewayResult"/> to a <see cref="GatewayResult{T}"/>. If the <paramref name="result"/> result was successfull,
+        /// Converts a <see cref="OperationResult"/> to a <see cref="OperationResult{T}"/>. If the <paramref name="result"/> result was successfull,
         /// the returned value contains the type's default value.
         /// </summary>
-        /// <param name="result">The <see cref="GatewayResult"/> to convert.</param>
+        /// <param name="result">The <see cref="OperationResult"/> to convert.</param>
         /// <remarks>This conversion is useful to convert failed results.</remarks>
-        public static implicit operator GatewayResult<T>(GatewayResult result)
+        public static implicit operator OperationResult<T>(OperationResult result)
         {
-            return new GatewayResult<T>(result._errors);
+            return new OperationResult<T>(result._errors);
         }
 
         /// <summary>
@@ -247,18 +247,18 @@ namespace WmcSoft
         /// <summary>
         /// Errors that occured during the operation.
         /// </summary>
-        public ReadOnlyCollection<GatewayError> Errors => _result.Errors;
+        public ReadOnlyCollection<OperationError> Errors => _result.Errors;
 
         /// <summary>
-        /// Creates a failed <see cref="GatewayResult"/> with a list of errors.
+        /// Creates a failed <see cref="OperationResult"/> with a list of errors.
         /// </summary>
         /// <param name="errors">The list of errors.</param>
         /// <returns>The result.</returns>
-        public static GatewayResult<T> Failed(params GatewayError[] errors)
+        public static OperationResult<T> Failed(params OperationError[] errors)
         {
             if (errors == null || errors.Length == 0)
-                return new GatewayResult<T>(GatewayResult.Undefined);
-            return new GatewayResult<T>((GatewayError[])errors.Clone());
+                return new OperationResult<T>(OperationResult.Undefined);
+            return new OperationResult<T>((OperationError[])errors.Clone());
         }
 
         public override string ToString()
@@ -270,14 +270,14 @@ namespace WmcSoft
 
         #region Serialization
 
-        private GatewayResult(SerializationInfo info, StreamingContext context)
+        private OperationResult(SerializationInfo info, StreamingContext context)
         {
             var succeeded = info.GetBoolean("Succeeded");
             if (succeeded) {
                 _value = info.GetValue<T>("Value");
-                _result = GatewayResult.Success;
+                _result = OperationResult.Success;
             } else {
-                _result = GatewayResult.Failed(info.GetValue<GatewayError[]>("Errors"));
+                _result = OperationResult.Failed(info.GetValue<OperationError[]>("Errors"));
                 _value = default;
             }
         }

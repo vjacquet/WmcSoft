@@ -56,7 +56,7 @@
     <Compile Include="AsyncFilterPipelineTests.cs" />
     <Compile Include="AutorizableTests.cs" />
     <Compile Include="ExtendedTests.cs" />
-    <Compile Include="GatewayResultTests.cs" />
+    <Compile Include="OperationResultTests.cs" />
     <Compile Include="PartyModel\AddressTests.cs" />
     <Compile Include="PartyModel\BusinessExtensions.cs" />
     <Compile Include="PartyModel\FamilyLikeModel.cs" />

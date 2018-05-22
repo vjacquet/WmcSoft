@@ -5,14 +5,14 @@ using WmcSoft.Runtime.Serialization;
 
 namespace WmcSoft.Business
 {
-    public class GatewayResultTests
+    public class OperationResultTests
     {
         [Fact]
-        public void CanConstructGatewayResult()
+        public void CanConstructOperationResult()
         {
-            var ok = GatewayResult.Success;
-            var undefined = GatewayResult.Failed();
-            var failed = GatewayResult.Failed(new GatewayError { Code = "Error" });
+            var ok = OperationResult.Success;
+            var undefined = OperationResult.Failed();
+            var failed = OperationResult.Failed(new OperationError { Code = "Error" });
 
             Assert.True(ok.Succeeded);
             Assert.False(undefined.Succeeded);
@@ -23,10 +23,10 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CanRoundTripUndefinedGatewayResult()
+        public void CanRoundTripUndefinedOperationResult()
         {
-            var undefined = GatewayResult.Failed();
-            var serializer = new BinarySerializer<GatewayResult>();
+            var undefined = OperationResult.Failed();
+            var serializer = new BinarySerializer<OperationResult>();
             var ms = new MemoryStream();
 
             serializer.Serialize(ms, undefined);
@@ -39,10 +39,10 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CanRoundTripSuccessGatewayResult()
+        public void CanRoundTripSuccessOperationResult()
         {
-            var ok = GatewayResult.Success;
-            var serializer = new BinarySerializer<GatewayResult>();
+            var ok = OperationResult.Success;
+            var serializer = new BinarySerializer<OperationResult>();
             var ms = new MemoryStream();
 
             serializer.Serialize(ms, ok);
@@ -53,11 +53,11 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CanConstructGatewayResultWithValue()
+        public void CanConstructOperationResultWithValue()
         {
-           var ok = GatewayResult.Returns(42);
-           var undefined = GatewayResult<int>.Failed();
-           var failed = GatewayResult<int>.Failed(new GatewayError { Code = "Error" });
+           var ok = OperationResult.Returns(42);
+           var undefined = OperationResult<int>.Failed();
+           var failed = OperationResult<int>.Failed(new OperationError { Code = "Error" });
 
             Assert.True(ok.Succeeded);
             Assert.Equal(42, ok.Value);
@@ -69,10 +69,10 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CanRoundTripSuccessGatewayResultWithValue()
+        public void CanRoundTripSuccessOperationResultWithValue()
         {
-            var ok = GatewayResult.Returns(42);
-            var serializer = new BinarySerializer<GatewayResult<int>>();
+            var ok = OperationResult.Returns(42);
+            var serializer = new BinarySerializer<OperationResult<int>>();
             var ms = new MemoryStream();
 
             serializer.Serialize(ms, ok);
@@ -83,10 +83,10 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CanRoundTripUndefinedGatewayResultWithValue()
+        public void CanRoundTripUndefinedOperationResultWithValue()
         {
-            var undefined = GatewayResult<int>.Failed();
-            var serializer = new BinarySerializer<GatewayResult<int>>();
+            var undefined = OperationResult<int>.Failed();
+            var serializer = new BinarySerializer<OperationResult<int>>();
             var ms = new MemoryStream();
 
             serializer.Serialize(ms, undefined);
@@ -99,10 +99,10 @@ namespace WmcSoft.Business
         }
 
         [Fact]
-        public void CanRoundTripFailedGatewayResultWithValue()
+        public void CanRoundTripFailedOperationResultWithValue()
         {
-          var failed = GatewayResult<int>.Failed(new GatewayError { Code = "Error" });
-            var serializer = new BinarySerializer<GatewayResult<int>>();
+          var failed = OperationResult<int>.Failed(new OperationError { Code = "Error" });
+            var serializer = new BinarySerializer<OperationResult<int>>();
             var ms = new MemoryStream();
 
             serializer.Serialize(ms, failed);
