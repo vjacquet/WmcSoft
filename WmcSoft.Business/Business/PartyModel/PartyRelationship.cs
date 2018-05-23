@@ -38,6 +38,8 @@ namespace WmcSoft.Business.PartyModel
     /// Captures the fact that there is a semantic relationship between two parties 
     /// in which each Party plays a specific role.
     /// </summary>
+    [RM.DisplayName(nameof(PartyRelationship))]
+    [RM.Description(nameof(PartyRelationship))]
     public abstract class PartyRelationship : DomainObject<TKey>
     {
         #region Fields
@@ -73,18 +75,6 @@ namespace WmcSoft.Business.PartyModel
                 }
             }
             // no constraints, so ok
-        }
-
-        #endregion
-
-        #region Traits
-
-        public virtual string Name {
-            get { return RM.GetInheritedName(GetType()); }
-        }
-
-        public virtual string Description {
-            get { return RM.GetInheritedDescription(GetType()); }
         }
 
         #endregion

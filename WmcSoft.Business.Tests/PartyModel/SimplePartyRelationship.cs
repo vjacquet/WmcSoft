@@ -34,13 +34,5 @@ namespace WmcSoft.Business.PartyModel
         protected SimplePartyRelationship(PartyRole client, PartyRole supplier)
             : base(client, supplier) {
         }
-
-        public override string Name {
-            get { return GetType().Name; }
-        }
-
-        public override string Description {
-            get { return null; }
-        }
     }
 }

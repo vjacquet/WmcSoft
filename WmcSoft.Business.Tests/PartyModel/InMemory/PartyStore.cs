@@ -46,7 +46,7 @@ namespace WmcSoft.Business.PartyModel.InMemory
             var result = new List<Party>();
             foreach (var kv in _context) {
                 var p = kv.Value;
-                if (string.Equals(name, p.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(name, p.ToString(), StringComparison.CurrentCultureIgnoreCase))
                     result.Add(p);
             }
             return Task.FromResult((IEnumerable<TParty>)result);

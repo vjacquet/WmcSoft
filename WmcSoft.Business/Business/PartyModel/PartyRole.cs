@@ -37,6 +37,8 @@ namespace WmcSoft.Business.PartyModel
     /// Captures the semantics of the role played by a <see cref="Party"/> in a particular
     /// <see cref="PartyRelationship"/>.
     /// </summary>
+    [RM.DisplayName(nameof(PartyRole))]
+    [RM.Description(nameof(PartyRole))]
     public abstract class PartyRole : DomainObject<TKey>
     {
         #region Fields
@@ -72,18 +74,6 @@ namespace WmcSoft.Business.PartyModel
                 }
                 // no constraints, so ok
             }
-        }
-
-        #endregion
-
-        #region Traits
-
-        public virtual string Name {
-            get { return RM.GetInheritedName(GetType()); }
-        }
-
-        public virtual string Description {
-            get { return RM.GetInheritedDescription(GetType()); }
         }
 
         #endregion

@@ -24,51 +24,36 @@
 
 #endregion
 
+using System.ComponentModel;
 
 namespace WmcSoft.Business.PartyModel
 {
+    [DisplayName("Spouse")]
+    [Description("A partner in a marriage")]
     public class Spouse : PartyRole
     {
         public Spouse(Party party)
             : base(party) {
         }
-
-        public override string Name {
-            get { return "Spouse"; }
-        }
-        public override string Description {
-            get { return "A partner in a marriage"; }
-        }
     }
 
+    [DisplayName("Wife")]
+    [Description("A female partner in a marriage")]
     [FemaleConstraint]
     public class Wife : Spouse
     {
         public Wife(Party party)
             : base(party) {
         }
-
-        public override string Name {
-            get { return "Wife"; }
-        }
-        public override string Description {
-            get { return "A female partner in a marriage"; }
-        }
     }
 
-
+    [DisplayName("Husband")]
+    [Description("A male partner in a marriage")]
     [MaleConstraint]
     public class Husband : Spouse
     {
         public Husband(Party party)
             : base(party) {
-        }
-
-        public override string Name {
-            get { return "Husband"; }
-        }
-        public override string Description {
-            get { return "A male partner in a marriage"; }
         }
     }
 
@@ -100,18 +85,13 @@ namespace WmcSoft.Business.PartyModel
         }
     }
 
+    [DisplayName("Marriage")]
+    [Description("The state of being married.")]
     [PartyRelationshipConstraint(typeof(Husband), typeof(Wife))]
     public class TraditionalMarriage : PartyRelationship
     {
         public TraditionalMarriage(PartyRole client, PartyRole supplier)
             : base(client, supplier) {
-        }
-
-        public override string Name {
-            get { return "Marriage"; }
-        }
-        public override string Description {
-            get { return "The state of being married"; }
         }
 
         public Husband Husband { get { return (Husband)this.Client; } }
