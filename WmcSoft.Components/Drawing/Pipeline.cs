@@ -41,17 +41,9 @@ namespace WmcSoft.Drawing
             _transformations = new List<ImageTransformation>();
         }
 
-        public int Count {
-            get {
-                return _transformations.Count;
-            }
-        }
+        public int Count => _transformations.Count;
 
-        public bool IsReadOnly {
-            get {
-                return ((ICollection<ImageTransformation>)_transformations).IsReadOnly;
-            }
-        }
+        public bool IsReadOnly => false;
 
         public bool PreserveProperties { get; set; }
 
@@ -101,7 +93,7 @@ namespace WmcSoft.Drawing
 
         public IEnumerator<ImageTransformation> GetEnumerator()
         {
-            return ((ICollection<ImageTransformation>)_transformations).GetEnumerator();
+            return _transformations.GetEnumerator();
         }
 
         public bool Remove(ImageTransformation item)
@@ -111,7 +103,7 @@ namespace WmcSoft.Drawing
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((ICollection<ImageTransformation>)_transformations).GetEnumerator();
+            return GetEnumerator();
         }
     }
 }
