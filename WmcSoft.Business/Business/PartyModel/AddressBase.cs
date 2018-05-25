@@ -54,5 +54,28 @@ namespace WmcSoft.Business.PartyModel
         public virtual ICollection<AddressProperties> Parties { get; private set; }
 
         #endregion
+
+        #region Overrides
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj == null || obj.GetType() != GetType())
+                return false;
+            return string.Equals(Address, ((AddressBase)obj).Address, StringComparison.Ordinal);
+        }
+
+        public override string ToString()
+        {
+            return Address;
+        }
+
+        #endregion
     }
 }

@@ -65,32 +65,12 @@ namespace WmcSoft.Business.PartyModel
 
         #endregion
 
-        #region Overrides
-
-        public override int GetHashCode()
-        {
-            return email.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is EmailAddress address) {
-                return email == address.email;
-            }
-            return false;
-        }
-
-        public override string ToString()
-        {
-            return email;
-        }
-
-        #endregion
-
         #region Helpers
 
         static string GuardEmailAddress(string email)
         {
+            if (email == null) throw new ArgumentNullException(nameof(email));
+
             try {
                 var address = new System.Net.Mail.MailAddress(email);
                 return email;
