@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using TKey = System.Guid;
 
@@ -34,11 +35,13 @@ namespace WmcSoft.Business.PartyModel
     /// <summary>
     /// Represents information that can be used to contact a Party.
     /// </summary>
+    [DebuggerDisplay("{ToString()}")]
     public abstract class AddressBase : DomainObject<TKey>
     {
         #region Lifecycle
 
-        protected AddressBase() {
+        protected AddressBase()
+        {
             Parties = new List<AddressProperties>();
         }
 

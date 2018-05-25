@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace WmcSoft.Business.PartyModel
 {
@@ -33,9 +34,28 @@ namespace WmcSoft.Business.PartyModel
     /// </summary>
     public class EmailAddress : AddressBase
     {
+        #region Fields
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private string email;
+
+        #endregion
+
+        #region Properties
+
+        public string Email {
+            get => email;
+            set => email = GuardEmailAddress(value);
+        }
+
+        public override string Address => email;
+
+        #endregion
+
         #region Lifecycle
 
-        public EmailAddress() {
+        public EmailAddress()
+        {
+            email = "undefined@example.com";
         }
 
         public EmailAddress(string email)
@@ -45,12 +65,38 @@ namespace WmcSoft.Business.PartyModel
 
         #endregion
 
-        #region Properties
+        #region Overrides
 
-        public string Email { get; set; }
+        public override int GetHashCode()
+        {
+            return email.GetHashCode();
+        }
 
-        public override string Address {
-            get { return Email; }
+        public override bool Equals(object obj)
+        {
+            if (obj is EmailAddress address) {
+                return email == address.email;
+            }
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return email;
+        }
+
+        #endregion
+
+        #region Helpers
+
+        static string GuardEmailAddress(string email)
+        {
+            try {
+                var address = new System.Net.Mail.MailAddress(email);
+                return email;
+            } catch (Exception e) {
+                throw new ArgumentException(nameof(email), e);
+            }
         }
 
         #endregion
