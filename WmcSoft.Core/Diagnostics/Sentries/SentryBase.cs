@@ -150,7 +150,7 @@ namespace WmcSoft.Diagnostics.Sentries
             _status = SentryStatus.None;
         }
 
-        protected void Clear(List<IObserver<SentryStatus>> observers)
+        protected void Remove(List<IObserver<SentryStatus>> observers)
         {
             observers.ForEach(OnUnsubscribe);
             observers.Clear();
@@ -165,9 +165,13 @@ namespace WmcSoft.Diagnostics.Sentries
 
         protected void OnNext(SentryStatus value)
         {
-            lock (_observers) {
-                _status = value;
-                _observers.ForEach(o => o.OnNext(value));
+            if (_status != value) {
+                lock (_observers) {
+                    if (_status != value) {
+                        _observers.ForEach(o => o.OnNext(value));
+                        _status = value;
+                    }
+                }
             }
         }
 
@@ -175,7 +179,7 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnError(error));
-                Clear(_observers);
+                Remove(_observers);
             }
         }
 
@@ -183,7 +187,7 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnCompleted());
-                Clear(_observers);
+                Remove(_observers);
             }
         }
 
