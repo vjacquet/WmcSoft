@@ -133,5 +133,10 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             _traceSource.TraceError(0, $"Sentry {Name} failed: {error}.");
         }
+
+        public override string ToString()
+        {
+            return _decorated.ToString();
+        }
     }
 }

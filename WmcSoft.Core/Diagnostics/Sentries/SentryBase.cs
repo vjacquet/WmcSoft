@@ -56,8 +56,9 @@ namespace WmcSoft.Diagnostics.Sentries
                 lock (observers) {
                     if (observers.Remove(_observer)) {
                         removed = true;
-                        if (observers.Count == 0)
+                        if (observers.Count == 0) {
                             _sentry.OnObserved();
+                        }
                     }
                 }
                 if (removed) {
@@ -73,9 +74,10 @@ namespace WmcSoft.Diagnostics.Sentries
 
         protected SentryBase(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
-            Name = name;
+            Name = name.Trim();
             _observers = new List<IObserver<SentryStatus>>();
         }
 
@@ -145,17 +147,27 @@ namespace WmcSoft.Diagnostics.Sentries
         /// </summary>
         protected virtual void OnObserved()
         {
+            _status = SentryStatus.None;
+        }
+
+        protected void Clear(List<IObserver<SentryStatus>> observers)
+        {
+            observers.ForEach(OnUnsubscribe);
+            observers.Clear();
+
+            if (_observers.Count == 0)
+                OnObserved();
         }
 
         #endregion
 
         #region Observer support
 
-        protected void OnNext(SentryStatus status)
+        protected void OnNext(SentryStatus value)
         {
             lock (_observers) {
-                _status = status;
-                _observers.ForEach(o => o.OnNext(status));
+                _status = value;
+                _observers.ForEach(o => o.OnNext(value));
             }
         }
 
@@ -163,6 +175,7 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnError(error));
+                Clear(_observers);
             }
         }
 
@@ -170,6 +183,7 @@ namespace WmcSoft.Diagnostics.Sentries
         {
             lock (_observers) {
                 _observers.ForEach(o => o.OnCompleted());
+                Clear(_observers);
             }
         }
 
