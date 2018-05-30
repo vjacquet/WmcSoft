@@ -59,13 +59,12 @@ namespace WmcSoft.Text
         public static int ToInt32(string text)
         {
             var result = 0;
-            var i = 0;
             var index = 0;
-            while (index < text.Length) {
-                while (string.CompareOrdinal(Numerals[i].roman, 0, text, index, Numerals[i].roman.Length) != 0)
-                    i++;
-                result += Numerals[i].numeral;
-                index += Numerals[i].roman.Length;
+            foreach (var (value, letters) in Numerals) {
+                while (string.CompareOrdinal(letters, 0, text, index, letters.Length) == 0) {
+                    result += value;
+                    index += letters.Length;
+                }
             }
             return result;
         }
