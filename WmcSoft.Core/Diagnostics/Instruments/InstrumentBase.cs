@@ -40,36 +40,36 @@ namespace WmcSoft.Diagnostics.Instruments
 
         class Unsubscriber : IDisposable
         {
-            private readonly InstrumentBase _instrument;
-            private readonly IObserver<decimal> _observer;
+            private readonly InstrumentBase instrument;
+            private readonly IObserver<decimal> observer;
 
             public Unsubscriber(InstrumentBase instrument, IObserver<decimal> observer)
             {
-                _instrument = instrument;
-                _observer = observer;
+                this.instrument = instrument;
+                this.observer = observer;
             }
 
             public void Dispose()
             {
-                var observers = _instrument._observers;
+                var observers = instrument.observers;
                 bool removed = false;
                 lock (observers) {
-                    if (observers.Remove(_observer)) {
+                    if (observers.Remove(observer)) {
                         removed = true;
                         if (observers.Count == 0) {
-                            _instrument.OnObserved();
+                            instrument.OnObserved();
                         }
                     }
                 }
                 if (removed) {
-                    _instrument.OnUnsubscribe(_observer);
+                    instrument.OnUnsubscribe(observer);
                 }
             }
         }
 
         #endregion
 
-        private readonly List<IObserver<decimal>> _observers = new List<IObserver<decimal>>();
+        private readonly List<IObserver<decimal>> observers = new List<IObserver<decimal>>();
 
         protected InstrumentBase(string name)
         {
@@ -89,11 +89,11 @@ namespace WmcSoft.Diagnostics.Instruments
         /// <remarks>Subscription and unscribscription are idempotent operations.</remarks>
         public IDisposable Subscribe(IObserver<decimal> observer)
         {
-            lock (_observers) {
+            lock (observers) {
                 if (Subscribing(observer)) {
                     OnSubscribe(observer);
 
-                    _observers.Add(observer);
+                    observers.Add(observer);
                 }
             }
             return new Unsubscriber(this, observer);
@@ -101,11 +101,11 @@ namespace WmcSoft.Diagnostics.Instruments
 
         private bool Subscribing(IObserver<decimal> observer)
         {
-            if (_observers.Count == 0) {
+            if (observers.Count == 0) {
                 OnObserving();
                 return true;
             }
-            return !_observers.Contains(observer);
+            return !observers.Contains(observer);
         }
 
         #region Overridables methods
@@ -146,24 +146,24 @@ namespace WmcSoft.Diagnostics.Instruments
 
         protected void OnNext(decimal value)
         {
-            lock (_observers) {
-                _observers.ForEach(o => o.OnNext(value));
+            lock (observers) {
+                observers.ForEach(o => o.OnNext(value));
             }
         }
 
         protected void OnError(Exception error)
         {
-            lock (_observers) {
-                _observers.ForEach(o => o.OnError(error));
-                _observers.Clear();
+            lock (observers) {
+                observers.ForEach(o => o.OnError(error));
+                observers.Clear();
             }
         }
 
         protected void OnCompleted()
         {
-            lock (_observers) {
-                _observers.ForEach(o => o.OnCompleted());
-                _observers.Clear();
+            lock (observers) {
+                observers.ForEach(o => o.OnCompleted());
+                observers.Clear();
             }
         }
 

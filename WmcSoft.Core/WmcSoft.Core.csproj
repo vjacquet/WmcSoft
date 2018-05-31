@@ -201,6 +201,7 @@
     <Compile Include="Data\Common\DbDataReaderExtensions.cs" />
     <Compile Include="Data\DataTableCollectionExtensions.cs" />
     <Compile Include="Data\DbConnectionExtensions.cs" />
+    <Compile Include="Diagnostics\Instruments\DisableInstrument.cs" />
     <Compile Include="Diagnostics\Instruments\IInstrument.cs" />
     <Compile Include="Diagnostics\Instruments\InstrumentBase.cs" />
     <Compile Include="Diagnostics\Sentries\BestStatusAggregateSentry.cs" />

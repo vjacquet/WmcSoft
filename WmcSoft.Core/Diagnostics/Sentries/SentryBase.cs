@@ -40,37 +40,37 @@ namespace WmcSoft.Diagnostics.Sentries
 
         class Unsubscriber : IDisposable
         {
-            private readonly SentryBase _sentry;
-            private readonly IObserver<SentryStatus> _observer;
+            private readonly SentryBase sentry;
+            private readonly IObserver<SentryStatus> observer;
 
             public Unsubscriber(SentryBase sentry, IObserver<SentryStatus> observer)
             {
-                _sentry = sentry;
-                _observer = observer;
+                this.sentry = sentry;
+                this.observer = observer;
             }
 
             public void Dispose()
             {
-                var observers = _sentry._observers;
+                var observers = sentry.observers;
                 bool removed = false;
                 lock (observers) {
-                    if (observers.Remove(_observer)) {
+                    if (observers.Remove(observer)) {
                         removed = true;
                         if (observers.Count == 0) {
-                            _sentry.OnObserved();
+                            sentry.OnObserved();
                         }
                     }
                 }
                 if (removed) {
-                    _sentry.OnUnsubscribe(_observer);
+                    sentry.OnUnsubscribe(observer);
                 }
             }
         }
 
         #endregion
 
-        private readonly List<IObserver<SentryStatus>> _observers;
-        private volatile SentryStatus _status;
+        private readonly List<IObserver<SentryStatus>> observers;
+        private volatile SentryStatus status;
 
         protected SentryBase(string name)
         {
@@ -78,11 +78,11 @@ namespace WmcSoft.Diagnostics.Sentries
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
             Name = name.Trim();
-            _observers = new List<IObserver<SentryStatus>>();
+            observers = new List<IObserver<SentryStatus>>();
         }
 
         public string Name { get; }
-        public SentryStatus Status => _status;
+        public SentryStatus Status => status;
 
         /// <summary>
         /// Subscribes an observer on the sentry.
@@ -92,12 +92,12 @@ namespace WmcSoft.Diagnostics.Sentries
         /// <remarks>Subscription and unscribscription are idempotent operations.</remarks>
         public IDisposable Subscribe(IObserver<SentryStatus> observer)
         {
-            lock (_observers) {
+            lock (observers) {
                 if (Subscribing(observer)) {
                     OnSubscribe(observer);
 
                     observer.OnNext(Status);
-                    _observers.Add(observer);
+                    observers.Add(observer);
                 }
             }
             return new Unsubscriber(this, observer);
@@ -105,18 +105,18 @@ namespace WmcSoft.Diagnostics.Sentries
 
         private bool Subscribing(IObserver<SentryStatus> observer)
         {
-            if (_observers.Count == 0) {
+            if (observers.Count == 0) {
                 OnObserving();
                 return true;
             }
-            return !_observers.Contains(observer);
+            return !observers.Contains(observer);
         }
 
         #region Overridables methods
 
         public override string ToString()
         {
-            return Name + ": " + _status + " (" + _observers.Count + ")";
+            return Name + ": " + status + " (" + observers.Count + ")";
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace WmcSoft.Diagnostics.Sentries
         /// </summary>
         protected virtual void OnObserved()
         {
-            _status = SentryStatus.None;
+            status = SentryStatus.None;
         }
 
         protected void Remove(List<IObserver<SentryStatus>> observers)
@@ -155,7 +155,7 @@ namespace WmcSoft.Diagnostics.Sentries
             observers.ForEach(OnUnsubscribe);
             observers.Clear();
 
-            if (_observers.Count == 0)
+            if (this.observers.Count == 0)
                 OnObserved();
         }
 
@@ -165,11 +165,11 @@ namespace WmcSoft.Diagnostics.Sentries
 
         protected void OnNext(SentryStatus value)
         {
-            if (_status != value) {
-                lock (_observers) {
-                    if (_status != value) {
-                        _observers.ForEach(o => o.OnNext(value));
-                        _status = value;
+            if (status != value) {
+                lock (observers) {
+                    if (status != value) {
+                        observers.ForEach(o => o.OnNext(value));
+                        status = value;
                     }
                 }
             }
@@ -177,17 +177,17 @@ namespace WmcSoft.Diagnostics.Sentries
 
         protected void OnError(Exception error)
         {
-            lock (_observers) {
-                _observers.ForEach(o => o.OnError(error));
-                Remove(_observers);
+            lock (observers) {
+                observers.ForEach(o => o.OnError(error));
+                Remove(observers);
             }
         }
 
         protected void OnCompleted()
         {
-            lock (_observers) {
-                _observers.ForEach(o => o.OnCompleted());
-                Remove(_observers);
+            lock (observers) {
+                observers.ForEach(o => o.OnCompleted());
+                Remove(observers);
             }
         }
 
