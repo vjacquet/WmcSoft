@@ -49,13 +49,23 @@ namespace WmcSoft
             return sum;
         }
 
+        /// <summary>
+        /// Sums the <paramref name="elements"/>.
+        /// </summary>
+        /// <param name="elements">The elements to sum.</param>
+        /// <returns>The sum of the elements.</returns>
         public static decimal Sum(params decimal[] elements)
         {
-            if (elements == null || elements.Length == 0)
-                return 0m;
-            return SumNonEmpty(elements);
+            if (elements != null && elements.Length > 0)
+                return SumNonEmpty(elements);
+            return 0m;
         }
 
+        /// <summary>
+        /// Compute the ratio of each proportions in the total.
+        /// </summary>
+        /// <param name="proportions">The proportions.</param>
+        /// <returns>The corresponding ratio of each proportion.</returns>
         public static Ratio[] Ratios(params decimal[] proportions)
         {
             if (proportions == null)
@@ -69,7 +79,7 @@ namespace WmcSoft
         static decimal[] DistributeRemainderOver(decimal[] amounts, decimal remainder, decimal minimumIncrement)
         {
             Debug.Assert(minimumIncrement < 1m);
-            int increments = (int)(remainder / minimumIncrement);
+            int increments = (int)(remainder / minimumIncrement); // what about the remainder of the remainder ?
             Debug.Assert(increments <= amounts.Length);
 
             var results = (decimal[])amounts.Clone();
@@ -78,6 +88,13 @@ namespace WmcSoft
             return results;
         }
 
+        /// <summary>
+        /// Divides the <paramref name="total"/> in <paramref name="n"/> shares of the same amount.
+        /// </summary>
+        /// <param name="total">The total to distribute.</param>
+        /// <param name="n">The number of shares.</param>
+        /// <param name="minimumIncrement">The minimalIncrement</param>
+        /// <returns>The shares.</returns>
         public static decimal[] DividedEvenlyIntoParts(decimal total, int n, decimal minimumIncrement)
         {
             var lowResult = total / n;
