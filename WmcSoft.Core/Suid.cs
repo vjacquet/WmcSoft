@@ -230,29 +230,6 @@ namespace WmcSoft
             return false;
         }
 
-        /// <summary>
-        /// Formats the value of the current instance using the specified format.
-        /// </summary>
-        /// <param name="format">
-        ///   The format to use.
-        ///   -or- 
-        ///   A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="IFormattable"/> implementation.
-        /// </param>
-        /// <param name="formatProvider">
-        ///   The provider to use to format the value.
-        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
-        ///   of the operating system.
-        /// </param>
-        /// <returns>The value of the current instance in the specified format.</returns>
-        /// <remarks>Supports <see cref="Guid"/> five format in addition to "S" for the 22 chars short version.</remarks>
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            if (format == null || format == "S" || format == "s")
-                return Encode(_storage ?? Empty._storage);
-
-            var guid = new Guid(_storage);
-            return guid.ToString(format, formatProvider);
-        }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -286,6 +263,8 @@ namespace WmcSoft
             return Equals((Suid)obj);
         }
 
+        #region IEquatable<Suid> members
+
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -295,6 +274,10 @@ namespace WmcSoft
         {
             return CompareTo(other) == 0;
         }
+
+#endregion
+
+        #region IComparable<Suid> members
 
         /// <summary>
         ///   Compares the current instance with another object of the same type and returns
@@ -321,6 +304,10 @@ namespace WmcSoft
             return result;
         }
 
+#endregion
+
+        #region IComparable members
+
         /// <summary>
         ///  Compares the current instance with another object of the same type and returns
         ///  an integer that indicates whether the current instance precedes, follows, or
@@ -342,6 +329,51 @@ namespace WmcSoft
                 throw new ArgumentException();
             return CompareTo((Suid)obj);
         }
+
+        #endregion
+
+        #region IFormattable members
+
+        /// <summary>
+        /// Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <param name="format">
+        ///   The format to use.
+        ///   -or- 
+        ///   A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="IFormattable"/> implementation.
+        /// </param>
+        /// <returns>The value of the current instance in the specified format.</returns>
+        /// <remarks>Supports <see cref="Guid"/> five format in addition to "S" for the 22 chars short version.</remarks>
+        public string ToString(string format)
+        {
+            return ToString(format, null);
+        }
+
+        /// <summary>
+        /// Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <param name="format">
+        ///   The format to use.
+        ///   -or- 
+        ///   A null reference (Nothing in Visual Basic) to use the default format defined for the type of the <see cref="IFormattable"/> implementation.
+        /// </param>
+        /// <param name="formatProvider">
+        ///   The provider to use to format the value.
+        ///   -or- A null reference (Nothing in Visual Basic) to obtain the numeric format information from the current locale setting
+        ///   of the operating system.
+        /// </param>
+        /// <returns>The value of the current instance in the specified format.</returns>
+        /// <remarks>Supports <see cref="Guid"/> five format in addition to "S" for the 22 chars short version.</remarks>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (format == null || format == "S" || format == "s")
+                return Encode(_storage ?? Empty._storage);
+
+            var guid = new Guid(_storage);
+            return guid.ToString(format, formatProvider);
+        }
+
+        #endregion
 
         #region Helpers
 
