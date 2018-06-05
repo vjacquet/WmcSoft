@@ -131,7 +131,7 @@ namespace WmcSoft.Business.PartyModel
             case "P":
                 return PreferredName.ToUpper(culture) ?? ToString("N", formatProvider);
             case "N":
-                return Join(Prefix, GivenNames, FamilyName.ToUpper(culture), Suffix);
+                return Join(Prefix, GivenNames, FamilyName?.ToUpper(culture), Suffix);
             case "n":
             default:
                 return Join(Prefix, GivenNames, FamilyName, Suffix);
