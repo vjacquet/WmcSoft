@@ -29,7 +29,11 @@ using System.Threading;
 
 namespace WmcSoft.Diagnostics.Sentries
 {
-    public class ChainOfResponsabilitiesSentry<T> : SentryBase, IObserver<T>
+    /// <summary>
+    /// Represents a sentry observing an observable and evaluating its status through a chain of responsability.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ChainOfResponsabilitySentry<T> : SentryBase, IObserver<T>
     {
         static readonly Func<T, SentryStatus> Success = x => SentryStatus.Success;
         static readonly Func<T, SentryStatus>[] Default = new[] { Success };
@@ -38,7 +42,7 @@ namespace WmcSoft.Diagnostics.Sentries
         private readonly IObservable<T> underlying;
         private IDisposable subscription;
 
-        public ChainOfResponsabilitiesSentry(string name, IObservable<T> observable, params Func<T, SentryStatus>[] analyzers)
+        public ChainOfResponsabilitySentry(string name, IObservable<T> observable, params Func<T, SentryStatus>[] analyzers)
             : base(name)
         {
             if (observable == null) throw new ArgumentNullException(nameof(observable));
