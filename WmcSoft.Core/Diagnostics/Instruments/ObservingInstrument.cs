@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2018 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -27,27 +27,21 @@
 using System;
 using System.Threading;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Diagnostics.Instruments
 {
     /// <summary>
-    /// Represents a sentry observing an observable and evaluating its status through a chain of responsability.
+    /// Represents an instrument observing an observable and computing a metric from it.
     /// </summary>
     /// <typeparam name="T">The type of value observed.</typeparam>
-    public class ChainOfResponsabilitySentry<T> : SentryBase, IObserver<T>
+    public abstract class ObservingInstrument<T> : InstrumentBase, IObserver<T>
     {
-        static readonly Func<T, SentryStatus> Success = x => SentryStatus.Success;
-        static readonly Func<T, SentryStatus>[] Default = new[] { Success };
-
-        private readonly Func<T, SentryStatus>[] analyzers;
         private readonly IObservable<T> underlying;
         private IDisposable subscription;
 
-        public ChainOfResponsabilitySentry(string name, IObservable<T> observable, params Func<T, SentryStatus>[] analyzers)
+        public ObservingInstrument(string name, IObservable<T> observable)
             : base(name)
         {
             if (observable == null) throw new ArgumentNullException(nameof(observable));
-
-            this.analyzers = analyzers != null && analyzers.Length > 0 ? analyzers : Default;
             underlying = observable;
         }
 
@@ -66,20 +60,12 @@ namespace WmcSoft.Diagnostics.Sentries
             }
         }
 
-        protected virtual SentryStatus Analyze(T value)
-        {
-            foreach (var analyzer in analyzers) {
-                var status = analyzer(value);
-                if (status != SentryStatus.None)
-                    return status;
-            }
-            return SentryStatus.Error;
-        }
+        protected abstract decimal Measure(T value);
 
         void IObserver<T>.OnNext(T value)
         {
-            var status = Analyze(value);
-            OnNext(status);
+            var measure = Measure(value);
+            OnNext(measure);
         }
 
         void IObserver<T>.OnError(Exception error)
@@ -90,6 +76,23 @@ namespace WmcSoft.Diagnostics.Sentries
         void IObserver<T>.OnCompleted()
         {
             OnCompleted();
+        }
+
+    }
+
+    /// <summary>
+    /// Represents an instrument observing an observable producing decimals.
+    /// </summary>
+    public class ObservingInstrument : ObservingInstrument<decimal>
+    {
+        public ObservingInstrument(string name, IObservable<decimal> observable)
+            : base(name, observable)
+        {
+        }
+
+        protected override decimal Measure(decimal value)
+        {
+            return value;
         }
     }
 }
