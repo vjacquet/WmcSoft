@@ -260,12 +260,22 @@ namespace WmcSoft
         }
 
         [Theory]
-        [InlineData("a|b|c", "a", new [] { "b","c"})]
-        [InlineData("a|b|c", "a|", new [] { "b","c"})]
-        [InlineData("a|b||d", "a", new [] { "b",null, "d"})]
+        [InlineData("a|b|c", "a", new[] { "b", "c" })]
+        [InlineData("a|b|c", "a|", new[] { "b", "c" })]
+        [InlineData("a|b||d", "a", new[] { "b", null, "d" })]
         public void CanJoinWithStrings(string expected, string value, string[] values)
         {
             var actual = value.JoinWith("|", values);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("abcdefghij", 4, 0, "|", "abcd|efghij")]
+        [InlineData("abcdefghij", 4, 1, "E", "abcdEfghij")]
+        [InlineData("abcdefghij", 4, 2, "...", "abcd...ghij")]
+        public void CanStuff(string value, int startIndex, int length, string replacement, string expected)
+        {
+            var actual = value.Stuff(startIndex, length, replacement);
             Assert.Equal(expected, actual);
         }
     }

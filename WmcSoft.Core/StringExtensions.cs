@@ -1033,6 +1033,28 @@ namespace WmcSoft
 
         #endregion
 
+        #region Stuff
+
+        /// <summary>
+        /// Returns a new string in which the specified <paramref name="length"/> of characters at the <paramref name="startIndex"/> has been deleted
+        /// and the <paramref name="replacement"/> string has been inserted at the <paramref name="startIndex"/>.
+        /// </summary>
+        /// <param name="self">The string.</param>
+        /// <param name="startIndex">The zero-based index at which the range starts.</param>
+        /// <param name="length">The number of elements to remove.</param>
+        /// <param name="replacement">The string to replace the character with.</param>
+        /// <returns>A new string that is equivalent the current string except the specified range of character has been replaced by the replacement string.</returns>
+        public static string Stuff(this string self, int startIndex, int length, string replacement)
+        {
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (self.Length < (startIndex + length)) throw new ArgumentException();
+
+            return string.Concat(self.Substring(0, startIndex), replacement, self.Substring(startIndex + length));
+        }
+
+        #endregion
+
         #region Substring
 
         /// <summary>
