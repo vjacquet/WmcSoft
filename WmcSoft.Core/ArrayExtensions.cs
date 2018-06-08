@@ -139,7 +139,7 @@ namespace WmcSoft
                 if (array == null) throw new ArgumentNullException(nameof(array));
                 if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
                 if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-                if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
+                if (array.Length < (startIndex + length)) throw new ArgumentException();
 
                 _storage = array;
                 _begin = startIndex;
@@ -457,10 +457,9 @@ namespace WmcSoft
         /// <param name="newValue">The new value.</param>
         public static void ReplaceIf<T>(this T[] array, int startIndex, int length, Predicate<T> predicate, T newValue)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
+            if (array.Length < (startIndex + length)) throw new ArgumentException();
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             UnguardedReplaceIf(array, startIndex, length, predicate, newValue);
@@ -475,7 +474,6 @@ namespace WmcSoft
         /// <param name="newValue">The new value.</param>
         public static void ReplaceIf<T>(this T[] array, Predicate<T> predicate, T newValue)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             UnguardedReplaceIf(array, 0, array.Length, predicate, newValue);
