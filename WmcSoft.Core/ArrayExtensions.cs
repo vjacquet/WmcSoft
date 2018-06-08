@@ -415,7 +415,6 @@ namespace WmcSoft
         /// <param name="newValue">The new value.</param>
         public static void Replace<T>(this T[] array, int startIndex, int length, T oldValue, T newValue, IEqualityComparer<T> comparer = null)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
             if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (array.Length < (startIndex + length)) throw new ArgumentException(nameof(array));
@@ -432,8 +431,6 @@ namespace WmcSoft
         /// <param name="newValue">The new value.</param>
         public static void Replace<T>(this T[] array, T oldValue, T newValue, IEqualityComparer<T> comparer = null)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
-
             UnguardedReplace(array, 0, array.Length, oldValue, newValue, comparer);
         }
 
