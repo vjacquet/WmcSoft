@@ -26,7 +26,6 @@
 
 using System.Collections.Generic;
 
-
 namespace WmcSoft.Algorithms
 {
     public static class Primitives

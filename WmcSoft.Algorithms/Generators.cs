@@ -24,7 +24,7 @@
 
 #endregion
 
-
+using System.Collections.Generic;
 
 namespace WmcSoft.Algorithms
 {
@@ -33,7 +33,18 @@ namespace WmcSoft.Algorithms
         #region Iota
 
         /// <summary>
-        /// Returns an array of <paramref name="n"/> integerss increasing from zero.
+        /// Returns an increasing sequence of integers starting from zero.
+        /// </summary>
+        /// <returns>The enumerabale of integers.</returns>
+        public static IEnumerable<int> Iota()
+        {
+            var n = 0;
+            while (n < int.MaxValue)
+                yield return n++;
+        }
+
+        /// <summary>
+        /// Returns an array of <paramref name="n"/> integers increasing from zero.
         /// </summary>
         /// <param name="n">The number of integers in the array.</param>
         /// <returns>The array of n integers.</returns>
