@@ -43,6 +43,7 @@ namespace WmcSoft.Memory
 
         public static void Fill<T>(Span<T> output, T value = default)
         {
+            // TODO:Try divide and conquer
             var length = output.Length;
             for (int i = 0; i < length; i++) {
                 output[i] = value;
@@ -67,5 +68,21 @@ namespace WmcSoft.Memory
             return length;
         }
 
+        public static void Copy<T>(ReadOnlySpan<T> input, Span<T> output)
+        {
+            // TODO: what if input.Length != output.Length;
+            input.CopyTo(output);
+        }
+
+        public static int CopyIf<T>(ReadOnlySpan<T> input, Span<T> output, Predicate<T> predicate)
+        {
+            var length = Min(input.Length, output.Length);
+            var j = 0;
+            for (int i = 0; i < length; i++) {
+                if (predicate(input[i]))
+                    output[j++] = input[i];
+            }
+            return j;
+        }
     }
 }
