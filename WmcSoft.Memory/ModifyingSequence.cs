@@ -44,10 +44,17 @@ namespace WmcSoft.Memory
         public static void Fill<T>(Span<T> output, T value = default)
         {
             output.Fill(value);
-            //var length = output.Length;
-            //for (int i = 0; i < length; i++) {
-            //    output[i] = value;
-            //}
+        }
+
+        public static TGenerator Generate<T, TGenerator>(Span<T> output, TGenerator generator)
+            where TGenerator : IGenerator<T>
+        {
+            if (generator == null) throw new ArgumentNullException(nameof(generator));
+            var length = output.Length;
+            for (int i = 0; i < length; i++) {
+                output[i] = generator.Next();
+            }
+            return generator;
         }
 
         public static int Transform<T, U>(ReadOnlySpan<T> input, Span<U> output, Func<T, U> transform)
