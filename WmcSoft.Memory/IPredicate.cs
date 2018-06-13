@@ -27,8 +27,8 @@
 
 namespace WmcSoft.Memory
 {
-    public interface IGenerator<out T>
+    public interface IPredicate<in T>
     {
-        T Next();
+        bool Match(T value);
     }
 }

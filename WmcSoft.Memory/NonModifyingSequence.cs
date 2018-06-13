@@ -55,6 +55,18 @@ namespace WmcSoft.Memory
             return count;
         }
 
+        public static int CountIf<T, TPredicate>(ReadOnlySpan<T> input, TPredicate predicate)
+            where TPredicate : IPredicate<T>
+        {
+            var length = input.Length;
+            var count = 0;
+            for (int i = 0; i < length; i++) {
+                if (predicate.Match(input[i]))
+                    ++count;
+            }
+            return count;
+        }
+
         public static int Mismatch<T>(ReadOnlySpan<T> input1, ReadOnlySpan<T> input2, IEqualityComparer<T> comparer = null)
         {
             Debug.Assert(input1.Length <= input2.Length);
@@ -89,11 +101,33 @@ namespace WmcSoft.Memory
             return -1;
         }
 
+        public static int FindIf<T, TPredicate>(ReadOnlySpan<T> input, TPredicate predicate)
+            where TPredicate : IPredicate<T>
+        {
+            var length = input.Length;
+            for (int i = 0; i < length; i++) {
+                if (predicate.Match(input[i]))
+                    return i;
+            }
+            return -1;
+        }
+
         public static int FindIfNot<T>(ReadOnlySpan<T> input, Predicate<T> predicate)
         {
             var length = input.Length;
             for (int i = 0; i < length; i++) {
                 if (!predicate(input[i]))
+                    return i;
+            }
+            return -1;
+        }
+
+        public static int FindIfNot<T, TPredicate>(ReadOnlySpan<T> input, TPredicate predicate)
+            where TPredicate : IPredicate<T>
+        {
+            var length = input.Length;
+            for (int i = 0; i < length; i++) {
+                if (!predicate.Match(input[i]))
                     return i;
             }
             return -1;
