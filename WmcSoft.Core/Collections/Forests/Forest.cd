@@ -1,35 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="WmcSoft.Collections.Generic.Forest&lt;T&gt;">
+  <Class Name="WmcSoft.Collections.Generic.Forests.Forest&lt;T&gt;">
     <Position X="7.25" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAIAAAAAACAAABAQAAAABAQAAAAAAAAEAAAAAABQIAA=</HashCode>
-      <FileName>Collections\Generic\Forest.cs</FileName>
+      <FileName>Collections\Forests\Forest.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="WmcSoft.Collections.Generic.Tree&lt;T&gt;">
-    <Position X="1.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAADAAAAAAAAAAACAAAAAEAAAgAABAAAA=</HashCode>
-      <FileName>Collections\Generic\Tree.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Root" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="WmcSoft.Collections.Generic.TreeNode&lt;T&gt;">
+  <Class Name="WmcSoft.Collections.Generic.Forests.TreeNode&lt;T&gt;">
     <Position X="4.5" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAIBAAACABAACBEVAAAACAIQQkAAYAgAAAAAAA=</HashCode>
-      <FileName>Collections\Generic\TreeNode.cs</FileName>
+      <FileName>Collections\Forests\TreeNode.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Parent" />
@@ -37,6 +26,17 @@
       <Property Name="PrecedingSibling" />
       <Property Name="FirstChild" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="WmcSoft.Collections.Generic.Forests.Tree&lt;T&gt;">
+    <Position X="1.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAADAAAAAAAAAAACAAAAAEAAAgAABAAAA=</HashCode>
+      <FileName>Collections\Forests\Tree.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Root" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

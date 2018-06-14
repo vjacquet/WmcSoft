@@ -1,7 +1,7 @@
 ﻿#region Licence
 
 /****************************************************************************
-          Copyright 1999-2016 Vincent J. Jacquet.  All rights reserved.
+          Copyright 1999-2018 Vincent J. Jacquet.  All rights reserved.
 
     Permission is granted to anyone to use this software for any purpose on
     any computer system, and to alter it and redistribute it, subject
@@ -25,13 +25,10 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace WmcSoft.Collections.Generic
+namespace WmcSoft.Collections.Generic.Forests
 {
-    public class Tree<T> : IEnumerable<T>
+    public class Tree<T>
     {
         public Tree()
         {
@@ -39,12 +36,15 @@ namespace WmcSoft.Collections.Generic
 
         public TreeNode<T> Root { get; set; }
 
-        public T Value {
-            get {
+        public T Value
+        {
+            get
+            {
                 if (Root == null) throw new InvalidOperationException();
                 return Root.Value;
             }
-            set {
+            set
+            {
                 if (Root != null)
                     Root.Value = value;
                 else
@@ -57,32 +57,8 @@ namespace WmcSoft.Collections.Generic
             Root = null;
         }
 
-        public int Weight {
-            get {
-                if (Root == null)
-                    return 0;
-                return Root.Weight;
-            }
-        }
+        public int Weight => Root != null ? Root.Weight : 0;
 
-        public int Height {
-            get {
-                if (Root == null)
-                    return 0;
-                return Root.Height;
-            }
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            if (Root == null)
-                return Enumerable.Empty<T>().GetEnumerator();
-            return ((IEnumerable<T>)Root).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public int Height => Root != null ? Root.Height : 0;
     }
 }

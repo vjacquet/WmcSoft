@@ -69,6 +69,8 @@
     <Compile Include="CodeDom\CodeThrowNewExceptionStatement.cs" />
     <Compile Include="Collections\BitArrayExtensions.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\Forests\DepthFirst.cs" />
+    <Compile Include="Collections\Forests\ForestBuilder.cs" />
     <Compile Include="Collections\Generic\Accumulators\DecimalAdder.cs" />
     <Compile Include="Collections\Generic\Accumulators\KahanAdder.cs" />
     <Compile Include="Collections\Generic\Accumulators\DoubleAdder.cs" />
@@ -121,7 +123,7 @@
     <Compile Include="Collections\Generic\ReadOnlyCollectionDebugView.cs" />
     <Compile Include="Collections\Generic\ZipFixedSizeDictionary.cs" />
     <Compile Include="Collections\Generic\ZipReadOnlyDictionary.cs" />
-    <Compile Include="Collections\Generic\Forest.cs" />
+    <Compile Include="Collections\Forests\Forest.cs" />
     <Compile Include="Collections\Generic\Index.cs" />
     <Compile Include="Collections\Generic\Internals\BulkQueue.cs" />
     <Compile Include="Collections\Generic\Internals\BulkStack.cs" />
@@ -141,8 +143,8 @@
     <Compile Include="Collections\Generic\ListExtensions.cs" />
     <Compile Include="Collections\Generic\CustomSortComparer.cs" />
     <Compile Include="Collections\Generic\SequenceSet.cs" />
-    <Compile Include="Collections\Generic\Tree.cs" />
-    <Compile Include="Collections\Generic\TreeNode.cs" />
+    <Compile Include="Collections\Forests\Tree.cs" />
+    <Compile Include="Collections\Forests\TreeNode.cs" />
     <Compile Include="Collections\ReverseComparer.cs" />
     <Compile Include="Collections\DuplicatePolicy.cs" />
     <Compile Include="Collections\Generic\AnonymousComparer.cs" />
@@ -455,7 +457,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Collections\Generic\Forest.cd" />
+    <None Include="Collections\Forests\Forest.cd" />
     <None Include="Collections\Specialized\Graph.cd" />
     <None Include="Diagnostics\Checkpoints\CheckpointsDiagram.cd" />
     <None Include="Diagnostics\Sentries\SentriesDiagram.cd" />

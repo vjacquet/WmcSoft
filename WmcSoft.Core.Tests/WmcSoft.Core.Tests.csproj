@@ -92,7 +92,7 @@
     <Compile Include="Collections\Generic\ListExtensionsTests.cs" />
     <Compile Include="Collections\Generic\OnDemandDictionaryTests.cs" />
     <Compile Include="Collections\Generic\SequenceSetTests.cs" />
-    <Compile Include="Collections\Generic\TreeTests.cs" />
+    <Compile Include="Collections\Generic\Forests\TreeTests.cs" />
     <Compile Include="Collections\Specialized\BimapTests.cs" />
     <Compile Include="Collections\Specialized\FenwickTreeTests.cs" />
     <Compile Include="Collections\Specialized\IntervalsListTests.cs" />
