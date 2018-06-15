@@ -50,16 +50,9 @@ namespace WmcSoft.Collections.Generic.Forests
 
         public bool IsLeaf => _children.Count == 0;
 
-        public int Depth => Parent == null ? 1 : Parent.Depth + 1;
-        public int Weight {
-            get {
-                var result = 1;
-                foreach (var child in _children) {
-                    result += child.Weight;
-                }
-                return result;
-            }
-        }
+        public int Depth => (Parent?.Depth ?? 0) + 1;
+
+        public int Weight => this.Enumerate(DepthFirst.PreOrder).Count();
 
         public int Height => _children.Aggregate(0, (a, x) => Max(a, x.Height)) + 1;
 
@@ -86,8 +79,7 @@ namespace WmcSoft.Collections.Generic.Forests
         public bool Remove(T value)
         {
             var found = _children.FindIndex(t => EqualityComparer<T>.Default.Equals(value, t.Value));
-            if (found >= 0)
-            {
+            if (found >= 0) {
                 var node = _children[found];
                 _children.RemoveAt(found);
                 node.Parent = null;
@@ -98,8 +90,7 @@ namespace WmcSoft.Collections.Generic.Forests
 
         public bool Remove(TreeNode<T> tree)
         {
-            if (_children.Remove(tree))
-            {
+            if (_children.Remove(tree)) {
                 tree.Parent = null;
                 return true;
             }

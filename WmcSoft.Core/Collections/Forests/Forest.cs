@@ -28,6 +28,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Forests
 {
+    /// <summary>
+    /// Represents a collection of <see cref="Tree{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of element in the tree.</typeparam>
     public class Forest<T>
     {
         private readonly List<TreeNode<T>> _trees = new List<TreeNode<T>>();
@@ -50,8 +54,7 @@ namespace WmcSoft.Collections.Generic.Forests
         public bool Remove(T value)
         {
             var found = _trees.FindIndex(t => EqualityComparer<T>.Default.Equals(value, t.Value));
-            if (found >= 0)
-            {
+            if (found >= 0) {
                 _trees.RemoveAt(found);
                 return true;
             }
@@ -65,7 +68,8 @@ namespace WmcSoft.Collections.Generic.Forests
 
         public TreeNode<T> Find(T value)
         {
-            var found = _trees.FindIndex(t => EqualityComparer<T>.Default.Equals(value, t.Value));
+            var comparer = EqualityComparer<T>.Default;
+            var found = _trees.FindIndex(t => comparer.Equals(value, t.Value));
             if (found >= 0)
                 return _trees[found];
             return null;

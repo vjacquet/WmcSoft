@@ -28,6 +28,7 @@ using System;
 
 namespace WmcSoft.Collections.Generic.Forests
 {
+    // Represents a tree.
     public class Tree<T>
     {
         public Tree()
@@ -36,15 +37,12 @@ namespace WmcSoft.Collections.Generic.Forests
 
         public TreeNode<T> Root { get; set; }
 
-        public T Value
-        {
-            get
-            {
+        public T Value {
+            get {
                 if (Root == null) throw new InvalidOperationException();
                 return Root.Value;
             }
-            set
-            {
+            set {
                 if (Root != null)
                     Root.Value = value;
                 else
@@ -57,8 +55,8 @@ namespace WmcSoft.Collections.Generic.Forests
             Root = null;
         }
 
-        public int Weight => Root != null ? Root.Weight : 0;
+        public int Weight => Root?.Weight ?? 0;
 
-        public int Height => Root != null ? Root.Height : 0;
+        public int Height => Root?.Height ?? 0;
     }
 }
