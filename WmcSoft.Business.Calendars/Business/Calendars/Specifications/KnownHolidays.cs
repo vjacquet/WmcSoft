@@ -37,11 +37,15 @@ namespace WmcSoft.Business.Calendars.Specifications
 {
     public static class KnownHolidays
     {
+        /// <summary>
+        /// New Year's day.
+        /// </summary>
         public static readonly AnnualDateSpecification NewYearDay = DateSpecification.Fixed(1, 1);
 
         /// <summary>
-        /// Berchtold's Day commemorates Duke Berchtold V of Zähringen (d. 1218), who founded Bern, the capital of Switzerland, in the twelfth-century. 
+        /// Berchtold's Day.
         /// </summary>
+        /// <remarks>commemorates Duke Berchtold V of Zähringen (d. 1218), who founded Bern, the capital of Switzerland, in the twelfth-century. </remarks>
         public static readonly AnnualDateSpecification HollyBerchtoldDay = DateSpecification.Fixed(1, 2);
 
         public static readonly AnnualDateSpecification EpiphanyDay = DateSpecification.Fixed(1, 2);
@@ -56,14 +60,26 @@ namespace WmcSoft.Business.Calendars.Specifications
 
         public static readonly AnnualDateSpecification AllSaintsDay = DateSpecification.Fixed(11, 1);
 
+        /// <summary>
+        /// Finland's Independence Day.
+        /// </summary>
         public static readonly AnnualDateSpecification ItsenaisyyspaivaDay = DateSpecification.Fixed(12, 6);
 
+        /// <summary>
+        /// Christmas's eve.
+        /// </summary>
         public static readonly AnnualDateSpecification ChristmasEve = DateSpecification.Fixed(12, 24);
 
+        /// <summary>
+        /// Christmas.
+        /// </summary>
         public static readonly AnnualDateSpecification Christmas = DateSpecification.Fixed(12, 25);
 
         public static readonly AnnualDateSpecification BoxingDay = DateSpecification.Fixed(12, 26);
 
+        /// <summary>
+        /// New Year's eve.
+        /// </summary>
         public static readonly AnnualDateSpecification NewYearEve = DateSpecification.Fixed(12, 31);
 
         public static readonly AnnualDateSpecification MemorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
@@ -76,6 +92,9 @@ namespace WmcSoft.Business.Calendars.Specifications
 
         public static readonly AnnualDateSpecification Thanksgiving = DateSpecification.NthOccurenceOfWeekdayInMonth(11, DayOfWeek.Thursday, 4);
 
+        /// <summary>
+        /// United states' Independence Day
+        /// </summary>
         public static readonly AnnualDateSpecification IndependenceDay = DateSpecification.Fixed(7, 4);
 
         public static readonly GregorianEasterSpecification GregorianEaster = new GregorianEasterSpecification();
