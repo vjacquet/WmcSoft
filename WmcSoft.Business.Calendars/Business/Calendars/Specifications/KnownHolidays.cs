@@ -39,7 +39,24 @@ namespace WmcSoft.Business.Calendars.Specifications
     {
         public static readonly AnnualDateSpecification NewYearDay = DateSpecification.Fixed(1, 1);
 
+        /// <summary>
+        /// Berchtold's Day commemorates Duke Berchtold V of Zähringen (d. 1218), who founded Bern, the capital of Switzerland, in the twelfth-century. 
+        /// </summary>
+        public static readonly AnnualDateSpecification HollyBerchtoldDay = DateSpecification.Fixed(1, 2);
+
+        public static readonly AnnualDateSpecification EpiphanyDay = DateSpecification.Fixed(1, 2);
+
         public static readonly AnnualDateSpecification LabourDay = DateSpecification.Fixed(5, 1);
+
+        public static readonly AnnualDateSpecification GermanUnityDay = DateSpecification.Fixed(10, 3);
+
+        public static readonly AnnualDateSpecification SwissNationalDay = DateSpecification.Fixed(8, 1);
+
+        public static readonly AnnualDateSpecification JuhannusDay = DateSpecification.Fixed(6, 24);
+
+        public static readonly AnnualDateSpecification AllSaintsDay = DateSpecification.Fixed(11, 1);
+
+        public static readonly AnnualDateSpecification ItsenaisyyspaivaDay = DateSpecification.Fixed(12, 6);
 
         public static readonly AnnualDateSpecification ChristmasEve = DateSpecification.Fixed(12, 24);
 
@@ -51,15 +68,36 @@ namespace WmcSoft.Business.Calendars.Specifications
 
         public static readonly AnnualDateSpecification MemorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
 
+        public static readonly AnnualDateSpecification MartinLutherKingJrDay = DateSpecification.NthOccurenceOfWeekdayInMonth(1, DayOfWeek.Monday, 3);
+
+        public static readonly AnnualDateSpecification WashingtonBirthday = DateSpecification.NthOccurenceOfWeekdayInMonth(2, DayOfWeek.Monday, 3);
+
+        public static readonly AnnualDateSpecification LaborDay = DateSpecification.NthOccurenceOfWeekdayInMonth(9, DayOfWeek.Monday, 1);
+
+        public static readonly AnnualDateSpecification Thanksgiving = DateSpecification.NthOccurenceOfWeekdayInMonth(11, DayOfWeek.Thursday, 4);
+
+        public static readonly AnnualDateSpecification IndependenceDay = DateSpecification.Fixed(7, 4);
+
         public static readonly GregorianEasterSpecification GregorianEaster = new GregorianEasterSpecification();
 
         public static readonly ShiftedAnnualDateSpecification GregorianEasterFriday = new ShiftedAnnualDateSpecification(GregorianEaster, -2);
 
         public static readonly ShiftedAnnualDateSpecification GregorianEasterMonday = new ShiftedAnnualDateSpecification(GregorianEaster, +1);
 
+        public static readonly ShiftedAnnualDateSpecification AscensionThursday = new ShiftedAnnualDateSpecification(GregorianEaster, +40);
+
+        public static readonly ShiftedAnnualDateSpecification PentecostMonday = new ShiftedAnnualDateSpecification(GregorianEaster, +50);
+
+        public static readonly AnnualDateSpecification WhitMonday = PentecostMonday;
+
         public static AdjustedAnnualDateSpecification Adjust(this AnnualDateSpecification specification, DayOfWeek dayOfWeek, int shift)
         {
             return new AdjustedAnnualDateSpecification(specification, dayOfWeek, shift);
+        }
+
+        public static ObservedAnnualDateSpecification Observed(this AnnualDateSpecification specification, DayOfWeek before, DayOfWeek after)
+        {
+            return new ObservedAnnualDateSpecification(specification, before, after);
         }
     }
 }
