@@ -135,11 +135,7 @@ namespace WmcSoft.Text
         /// </summary>
         /// <param name="c">The char.</param>
         /// <returns>The index.</returns>
-        public int this[char c] {
-            get {
-                return ToIndex(c);
-            }
-        }
+        public int this[char c] => ToIndex(c);
 
         /// <summary>
         /// Converts c to an index between 0 and <see cref="Radix"/> - 1.
@@ -158,9 +154,7 @@ namespace WmcSoft.Text
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The char.</returns>
-        public char this[int index] {
-            get { return ToChar(index); }
-        }
+        public char this[int index] => ToChar(index);
 
         /// <summary>
         /// Converts an index to the corresponding char in the alphabet.
