@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Business
 {
-    public interface IExtended<I>
+    public interface IExtendable<I>
     {
         /// <summary>
         /// Gets the extensions.

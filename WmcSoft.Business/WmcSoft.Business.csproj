@@ -83,6 +83,7 @@
     <Compile Include="Business\IAuditable.cs" />
     <Compile Include="Business\IAuthorizable.cs" />
     <Compile Include="Business\IdentityMap.cs" />
+    <Compile Include="Business\IExtendable.cs" />
     <Compile Include="Business\IFilter.cs" />
     <Compile Include="Business\IIdentityMap.cs" />
     <Compile Include="Business\INavigable.cs" />
@@ -212,7 +213,6 @@
     <Compile Include="OperationResult.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Business\OrderModel\OrderEvent.cs" />
-    <Compile Include="Business\IExtended.cs" />
     <Compile Include="Business\ManyToMany.cs" />
     <Compile Include="Proration.cs" />
     <Compile Include="Security\AutorizedLevelPermission.cs" />

@@ -5,14 +5,14 @@ using Xunit;
 
 namespace WmcSoft.Business
 {
-    public class ExtendedTests
+    public class ExtendableTests
     {
         public interface IKernelExtension
         {
             void Configure(IServiceProvider provider);
         }
 
-        public class Kernel : IExtended<IKernelExtension>
+        public class Kernel : IExtendable<IKernelExtension>
         {
             private readonly IKernelExtension[] _extensions;
 
