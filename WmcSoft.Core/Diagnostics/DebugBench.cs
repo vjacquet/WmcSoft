@@ -32,7 +32,7 @@ namespace WmcSoft.Diagnostics
     /// <summary>
     /// Utility class to bench a portion of code only in Debug mode.
     /// </summary>
-    /// <remarks>The duration is printed to to the trace listeners in the <see cref="Debug.Listeners"/> collection.</remarks>
+    /// <remarks>The duration is printed to the trace listeners in the <see cref="Debug.Listeners"/> collection.</remarks>
     public struct DebugBench : IDisposable
     {
         private readonly string _scopeName;

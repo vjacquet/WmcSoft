@@ -28,6 +28,10 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Business
 {
+    /// <summary>
+    /// Defines a contract to identify extensions on a component.
+    /// </summary>
+    /// <typeparam name="I">The interface the extensions must implement.</typeparam>
     public interface IExtendable<I>
     {
         /// <summary>
@@ -36,10 +40,10 @@ namespace WmcSoft.Business
         IEnumerable<I> Extensions { get; }
 
         /// <summary>
-        /// Gets the extension of the specified type. Returns null if no extension of the specified type is configured.
+        /// Gets the extension of the specified type. Returns <c>null</c> if no extension of the specified type is configured.
         /// </summary>
-        /// <typeparam name="TExtension">The type of the extensions</typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TExtension">The type of the extension.</typeparam>
+        /// <returns>The extension of the given type, or <c>null</c>.</returns>
         TExtension FindExtension<TExtension>() where TExtension : class, I;
     }
 }
