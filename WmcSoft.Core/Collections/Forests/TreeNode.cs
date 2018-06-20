@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -105,5 +106,50 @@ namespace WmcSoft.Collections.Generic.Forests
             return null;
         }
         public int Count => _children.Count;
+    }
+
+    public static class TreeNodeExtensions
+    {
+        struct Replicator<T, U>
+        {
+            public TreeNode<T> Source;
+            public TreeNode<U> Target;
+        }
+
+        public static void CopyDescendantsTo<T>(this TreeNode<T> source, TreeNode<T> target)
+        {
+            var q = new Queue<Replicator<T, T>>();
+            q.Enqueue(new Replicator<T, T> { Source = source, Target = target });
+            while (q.Count > 0) {
+                var top = q.Dequeue();
+                foreach (var child in top.Source.Children) {
+                    q.Enqueue(new Replicator<T, T> { Source = child, Target = top.Target.Add(child.Value) });
+                }
+            }
+        }
+
+        public static TreeNode<T> Prune<T>(this TreeNode<T> tree, Func<T, bool> preserve)
+        {
+            if (preserve(tree.Value)) {
+                var result = new TreeNode<T>(tree.Value);
+                tree.CopyDescendantsTo(result);
+                return result;
+            } else if (tree.Enumerate(DepthFirst.PreOrder).Any(preserve)) {
+                var result = new TreeNode<T>(tree.Value);
+                var q = new Queue<Replicator<T, T>>();
+                q.Enqueue(new Replicator<T, T> { Source = tree, Target = result });
+                while (q.Count > 0) {
+                    var top = q.Dequeue();
+                    foreach (var child in top.Source.Children) {
+                        if (preserve(child.Value))
+                            CopyDescendantsTo(child, top.Target.Add(child.Value));
+                        else if (child.Enumerate(DepthFirst.PreOrder).Any(preserve))
+                            q.Enqueue(new Replicator<T, T> { Source = child, Target = top.Target.Add(child.Value) });
+                    }
+                }
+                return result;
+            }
+            return null;
+        }
     }
 }

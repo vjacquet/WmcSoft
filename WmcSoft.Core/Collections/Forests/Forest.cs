@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Forests
@@ -74,5 +75,17 @@ namespace WmcSoft.Collections.Generic.Forests
                 return _trees[found];
             return null;
         }
+
+        public Forest<T> Prune(Func<T, bool> preserve)
+        {
+            var result = new Forest<T>();
+            foreach (var tree in Trees) {
+                var branch = tree.Prune(preserve);
+                if (branch != null)
+                    result.Add(branch);
+            }
+            return result;
+        }
+
     }
 }

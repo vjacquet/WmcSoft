@@ -64,8 +64,7 @@ namespace WmcSoft.Collections.Generic.Forests
             var forest = new Forest<T>();
             var sorted = items.OrderBy(x => GetPath(x)).ToList();
 
-            foreach (var item in sorted)
-            {
+            foreach (var item in sorted) {
                 if (IsRoot(item))
                     index.Add(GetPath(item), forest.Add(item));
                 else if (index.TryGetValue(GetParentPath(item), out TreeNode<T> node))
@@ -75,56 +74,6 @@ namespace WmcSoft.Collections.Generic.Forests
             }
 
             return forest;
-        }
-
-        public Forest<T> Prune(Forest<T> forest, Func<T, bool> preserve)
-        {
-            var trees = forest.Trees;
-            var result = new Forest<T>();
-            var q = new Queue<Replicator>();
-            foreach (var tree in trees)
-            {
-                if (preserve(tree.Value))
-                {
-                    CopyDescendants(tree, result.Add(tree.Value));
-                }
-                else if (tree.Enumerate(DepthFirst.PreOrder).Any(preserve))
-                {
-                    q.Enqueue(new Replicator { Source = tree, Target = result.Add(tree.Value) });
-                    while (q.Count > 0)
-                    {
-                        var top = q.Dequeue();
-                        foreach (var child in top.Source.Children)
-                        {
-                            if (preserve(child.Value))
-                                CopyDescendants(child, top.Target.Add(child.Value));
-                            else if (child.Enumerate(DepthFirst.PreOrder).Any(preserve))
-                                q.Enqueue(new Replicator { Source = child, Target = top.Target.Add(child.Value) });
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        void CopyDescendants(TreeNode<T> source, TreeNode<T> target)
-        {
-            Queue<Replicator> q = new Queue<Replicator>();
-            q.Enqueue(new Replicator { Source = source, Target = target });
-            while (q.Count > 0)
-            {
-                var top = q.Dequeue();
-                foreach (var child in top.Source.Children)
-                {
-                    q.Enqueue(new Replicator { Source = child, Target = top.Target.Add(child.Value) });
-                }
-            }
-        }
-
-        struct Replicator
-        {
-            public TreeNode<T> Source;
-            public TreeNode<T> Target;
         }
     }
 }
