@@ -37,6 +37,8 @@ namespace WmcSoft.Diagnostics
     [DebuggerDisplay("{ToString(),nq}")]
     public sealed class Counter : IComparable<Counter>
     {
+        static readonly Comparer<int> comparer = Comparer<int>.Default;
+
         int _count;
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace WmcSoft.Diagnostics
         /// <param name="name">The name of the counter.</param>
         public Counter(string name)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
             Name = name;
@@ -119,7 +122,7 @@ namespace WmcSoft.Diagnostics
             if (other == null)
                 return 1;
 
-            var result = Comparer<int>.Default.Compare(_count, other._count);
+            var result = comparer.Compare(_count, other._count);
             if (result == 0)
                 return StringComparer.InvariantCulture.Compare(Name, other.Name);
             return result;
@@ -137,8 +140,8 @@ namespace WmcSoft.Diagnostics
 
         public static bool operator ==(Counter left, Counter right)
         {
-            if (ReferenceEquals(left, null)) {
-                return ReferenceEquals(right, null);
+            if (left is null) {
+                return right is null;
             }
 
             return left.Equals(right);
@@ -151,22 +154,22 @@ namespace WmcSoft.Diagnostics
 
         public static bool operator <(Counter left, Counter right)
         {
-            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+            return left is null ? !(right is null) : left.CompareTo(right) < 0;
         }
 
         public static bool operator <=(Counter left, Counter right)
         {
-            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+            return left is null || left.CompareTo(right) <= 0;
         }
 
         public static bool operator >(Counter left, Counter right)
         {
-            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+            return !(left is null) && left.CompareTo(right) > 0;
         }
 
         public static bool operator >=(Counter left, Counter right)
         {
-            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
+            return left is null ? right is null : left.CompareTo(right) >= 0;
         }
     }
 }
