@@ -28,13 +28,24 @@ using System;
 
 namespace WmcSoft.Collections.Generic.Forests
 {
-    // Represents a tree.
+    /// <summary>
+    /// Represents a tree.
+    /// </summary>
+    /// <typeparam name="T">The type of element in the nodes.</typeparam>
     public class Tree<T>
     {
         public Tree()
         {
         }
 
+        public Tree(T value, params TreeNode<T>[] children)
+        {
+            Root = new TreeNode<T>(value, children);
+        }
+
+        /// <summary>
+        /// The root of the tree.
+        /// </summary>
         public TreeNode<T> Root { get; set; }
 
         public T Value {

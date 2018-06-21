@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -34,7 +35,7 @@ using static System.Math;
 namespace WmcSoft.Collections.Generic.Forests
 {
     [DebuggerDisplay("{Value,nq}")]
-    public class TreeNode<T>
+    public class TreeNode<T> : IEnumerable<TreeNode<T>>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly List<TreeNode<T>> _children = new List<TreeNode<T>>();
@@ -70,11 +71,11 @@ namespace WmcSoft.Collections.Generic.Forests
             return Add(new TreeNode<T>(value));
         }
 
-        public TreeNode<T> Add(TreeNode<T> tree)
+        public TreeNode<T> Add(TreeNode<T> node)
         {
-            _children.Add(tree);
-            tree.Parent = this;
-            return tree;
+            _children.Add(node);
+            node.Parent = this;
+            return node;
         }
 
         public bool Remove(T value)
@@ -89,10 +90,10 @@ namespace WmcSoft.Collections.Generic.Forests
             return false;
         }
 
-        public bool Remove(TreeNode<T> tree)
+        public bool Remove(TreeNode<T> node)
         {
-            if (_children.Remove(tree)) {
-                tree.Parent = null;
+            if (_children.Remove(node)) {
+                node.Parent = null;
                 return true;
             }
             return false;
@@ -106,6 +107,20 @@ namespace WmcSoft.Collections.Generic.Forests
             return null;
         }
         public int Count => _children.Count;
+
+        #region IEnumerable members
+
+        public IEnumerator<TreeNode<T>> GetEnumerator()
+        {
+            return _children.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 
     public static class TreeNodeExtensions

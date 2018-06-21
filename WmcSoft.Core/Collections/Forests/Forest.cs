@@ -25,15 +25,16 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Generic.Forests
 {
     /// <summary>
-    /// Represents a collection of <see cref="Tree{T}"/>.
+    /// Represents a collection of <see cref="TreeNode{T}"/> that can be seen as trees.
     /// </summary>
-    /// <typeparam name="T">The type of element in the tree.</typeparam>
-    public class Forest<T>
+    /// <typeparam name="T">The type of element in the nodes.</typeparam>
+    public class Forest<T> : IEnumerable<TreeNode<T>>
     {
         private readonly List<TreeNode<T>> _trees = new List<TreeNode<T>>();
 
@@ -87,5 +88,18 @@ namespace WmcSoft.Collections.Generic.Forests
             return result;
         }
 
+        #region IEnumerable members
+
+        public IEnumerator<TreeNode<T>> GetEnumerator()
+        {
+            return _trees.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }
