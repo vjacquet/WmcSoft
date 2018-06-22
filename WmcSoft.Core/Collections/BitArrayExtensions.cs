@@ -28,6 +28,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using WmcSoft.Collections.Generic;
 
 using static WmcSoft.BitArithmetics;
@@ -67,14 +68,10 @@ namespace WmcSoft.Collections
         static IReadOnlyList<TSource> ReadOnly<TSource>(IEnumerable<TSource> x)
         {
             switch (x) {
-            case ReadOnlyCollection<TSource> list:
-                return list;
-            case IList<TSource> list:
-                if (list is IReadOnlyList<TSource> ro && list is IList legacy && legacy.IsReadOnly)
-                    return ro;
-                return list.AsReadOnly();
             case IReadOnlyList<TSource> list:
                 return list;
+            case IList<TSource> list:
+                return list.AsReadOnly();
             default:
                 return null;
             }
