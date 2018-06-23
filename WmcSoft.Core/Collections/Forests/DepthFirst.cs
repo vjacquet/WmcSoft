@@ -32,62 +32,59 @@ namespace WmcSoft.Collections.Generic.Forests
 {
     public static class DepthFirst
     {
+        #region Algorithms
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public struct PreOrderAlgorithm
         {
             public IEnumerable<TreeNode<T>> Traverse<T>(TreeNode<T> node)
             {
-                if (node != null)
-                {
+                if (node != null) {
                     var stack = new Stack<TreeNode<T>>();
                     stack.Push(node);
-                    while (stack.Count > 0)
-                    {
+                    while (stack.Count > 0) {
                         var top = stack.Pop();
                         yield return top;
 
                         var length = top.Count;
-                        for (int i = length - 1; i >= 0; i--)
-                        {
+                        for (int i = length - 1; i >= 0; i--) {
                             stack.Push(top._children[i]);
                         }
                     }
                 }
             }
         };
-
-        public static PreOrderAlgorithm PreOrder;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public struct PostOrderAlgorithm
         {
             public IEnumerable<TreeNode<T>> Traverse<T>(TreeNode<T> node)
             {
-                if (node != null)
-                {
+                if (node != null) {
                     var stack = new Stack<TreeNode<T>>();
                     var result = new Stack<TreeNode<T>>();
                     stack.Push(node);
 
-                    while (stack.Count > 0)
-                    {
+                    while (stack.Count > 0) {
                         var top = stack.Pop();
                         result.Push(top);
 
                         var length = top.Count;
-                        for (int i = 0; i < length; i++)
-                        {
+                        for (int i = 0; i < length; i++) {
                             stack.Push(top._children[i]);
                         }
                     }
 
-                    while (result.Count > 0)
-                    {
+                    while (result.Count > 0) {
                         yield return result.Pop();
                     }
                 }
             }
         };
+
+        #endregion
+
+        public static PreOrderAlgorithm PreOrder;
 
         public static PostOrderAlgorithm PostOrder;
     }

@@ -143,6 +143,20 @@ namespace WmcSoft.Collections.Generic.Forests
             }
         }
 
+        public static TreeNode<U> Map<T, U>(this TreeNode<T> node, Converter<T, U> converter)
+        {
+            var q = new Queue<Replicator<T, U>>();
+            var result = new TreeNode<U>(converter(node.Value));
+            q.Enqueue(new Replicator<T, U> { Source = node, Target = result });
+            while (q.Count > 0) {
+                var top = q.Dequeue();
+                foreach (var child in top.Source.Children) {
+                    q.Enqueue(new Replicator<T, U> { Source = child, Target = top.Target.Add(converter(child.Value)) });
+                }
+            }
+            return result;
+        }
+
         public static TreeNode<T> Prune<T>(this TreeNode<T> tree, Func<T, bool> preserve)
         {
             if (preserve(tree.Value)) {
