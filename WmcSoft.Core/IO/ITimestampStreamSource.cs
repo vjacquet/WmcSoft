@@ -33,8 +33,15 @@ namespace WmcSoft.IO
     /// </summary>
     public interface ITimestampStreamSource : IStreamSource
     {
+        /// <summary>
+        /// Returns <c>true</c> only when the <see cref="Timestamp"/> property may return a non null value.
+        /// </summary>
         bool SupportTimestamp { get; }
 
+        /// <summary>
+        /// The UTC datetime at which the stream source was last written.
+        /// </summary>
+        /// <remarks>Returns <c>null</c> if the stream is not available.</remarks>
         DateTime? Timestamp { get;  }
     }
 }
