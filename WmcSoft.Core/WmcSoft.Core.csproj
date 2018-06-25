@@ -241,6 +241,7 @@
     <Compile Include="IO\IBatch.cs" />
     <Compile Include="IO\IQuotedString.cs" />
     <Compile Include="IO\IReadOnlyCsvWriterSettings.cs" />
+    <Compile Include="IO\ITimestampStreamSource.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="IO\QuotedString.cs" />
