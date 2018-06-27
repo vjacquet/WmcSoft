@@ -46,7 +46,6 @@ namespace WmcSoft.Arithmetics
 
     class Multiplies : IGroupLike<double>
     {
-
         #region IGroupLike<double> Members
 
         public double Identity {
