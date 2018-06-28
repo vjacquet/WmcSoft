@@ -102,7 +102,7 @@
     <Compile Include="Collections\Specialized\IndexedPriorityQueueTests.cs" />
     <Compile Include="Collections\Specialized\SparseArrayTests.cs" />
     <Compile Include="Collections\Specialized\GapListTests.cs" />
-    <Compile Include="Collections\Specialized\GraphTests.cs" />
+    <Compile Include="Collections\Graphs\GraphTests.cs" />
     <Compile Include="ConvertibleExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
