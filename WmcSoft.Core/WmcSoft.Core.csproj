@@ -71,6 +71,7 @@
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\Forests\DepthFirst.cs" />
     <Compile Include="Collections\Forests\ForestBuilder.cs" />
+    <Compile Include="Collections\Forests\ITraversalAlgorithm.cs" />
     <Compile Include="Collections\Generic\Accumulators\DecimalAdder.cs" />
     <Compile Include="Collections\Generic\Accumulators\KahanAdder.cs" />
     <Compile Include="Collections\Generic\Accumulators\DoubleAdder.cs" />

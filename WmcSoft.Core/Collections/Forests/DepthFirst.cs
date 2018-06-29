@@ -89,11 +89,6 @@ namespace WmcSoft.Collections.Generic.Forests
         public static PostOrderAlgorithm PostOrder;
     }
 
-    public interface ITraversalAlgorithm
-    {
-        IEnumerable<TreeNode<T>> Traverse<T>(TreeNode<T> node);
-    }
-
     public static class DepthFirstExtensions
     {
         #region Traverse
