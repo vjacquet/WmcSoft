@@ -24,13 +24,12 @@
 
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
 {
-    public class IntervalsList<T> : IReadOnlyList<ValueTuple<T, T>>
+    public class IntervalsList<T> : IReadOnlyList<(T lowerBound, T upperBound)>
     {
         private List<T> _storage;
         private IComparer<T> _comparer;
@@ -95,21 +94,21 @@ namespace WmcSoft.Collections.Specialized
             _storage.RemoveRange(lo, hi - lo);
         }
 
-        public void Add(ValueTuple<T, T> range)
+        public void Add((T, T) range)
         {
             Add(range.Item1, range.Item2);
         }
 
         public int Count => (_storage.Count - 2) / 2;
 
-        public ValueTuple<T, T> this[int index] {
+        public (T lowerBound, T upperBound) this[int index] {
             get {
                 var i = 1 + index * 2;
                 return (_storage[i], _storage[i + 1]);
             }
         }
 
-        public IEnumerator<ValueTuple<T, T>> GetEnumerator()
+        public IEnumerator<(T lowerBound, T upperBound)> GetEnumerator()
         {
             var length = _storage.Count - 2;
             for (int i = 1; i < length; i += 2) {
