@@ -35,7 +35,7 @@ namespace WmcSoft.Collections.Generic.Forests
         #region Algorithms
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public struct PreOrderAlgorithm
+        public struct PreOrderAlgorithm : ITraversalAlgorithm
         {
             public IEnumerable<TreeNode<T>> Traverse<T>(TreeNode<T> node)
             {
@@ -56,7 +56,7 @@ namespace WmcSoft.Collections.Generic.Forests
         };
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public struct PostOrderAlgorithm
+        public struct PostOrderAlgorithm : ITraversalAlgorithm
         {
             public IEnumerable<TreeNode<T>> Traverse<T>(TreeNode<T> node)
             {
@@ -89,38 +89,57 @@ namespace WmcSoft.Collections.Generic.Forests
         public static PostOrderAlgorithm PostOrder;
     }
 
+    public interface ITraversalAlgorithm
+    {
+        IEnumerable<TreeNode<T>> Traverse<T>(TreeNode<T> node);
+    }
+
     public static class DepthFirstExtensions
     {
-        public static IEnumerable<T> Enumerate<T>(this Forest<T> forest, DepthFirst.PreOrderAlgorithm traversal)
+        #region Traverse
+
+        public static IEnumerable<TreeNode<T>> Traverse<T, TTraversal>(this Forest<T> forest, TTraversal traversal)
+            where TTraversal : struct, ITraversalAlgorithm
         {
-            return forest.Trees.SelectMany(t => traversal.Traverse(t)).Select(n => n.Value);
+            return forest.Trees.SelectMany(t => traversal.Traverse(t));
         }
 
-        public static IEnumerable<T> Enumerate<T>(this Forest<T> forest, DepthFirst.PostOrderAlgorithm traversal)
+        public static IEnumerable<TreeNode<T>> Traverse<T, TTraversal>(this Tree<T> tree, TTraversal traversal)
+            where TTraversal : struct, ITraversalAlgorithm
         {
-            return forest.Trees.SelectMany(t => traversal.Traverse(t)).Select(n => n.Value);
+            return traversal.Traverse(tree.Root);
         }
 
-        public static IEnumerable<T> Enumerate<T>(this Tree<T> tree, DepthFirst.PreOrderAlgorithm traversal)
-        {
-            return traversal.Traverse(tree.Root).Select(n => n.Value);
-        }
-
-        public static IEnumerable<T> Enumerate<T>(this Tree<T> tree, DepthFirst.PostOrderAlgorithm traversal)
-        {
-            return tree.Root != null ? traversal.Traverse(tree.Root).Select(n => n.Value) : Enumerable.Empty<T>();
-        }
-
-        public static IEnumerable<T> Enumerate<T>(this TreeNode<T> node, DepthFirst.PreOrderAlgorithm traversal)
+        public static IEnumerable<TreeNode<T>> Traverse<T, TTraversal>(this TreeNode<T> node, TTraversal traversal)
+            where TTraversal : struct, ITraversalAlgorithm
         {
             if (node == null) node.GetHashCode(); // throws NullReferenceException
-            return traversal.Traverse(node).Select(n => n.Value);
+            return traversal.Traverse(node);
         }
 
-        public static IEnumerable<T> Enumerate<T>(this TreeNode<T> node, DepthFirst.PostOrderAlgorithm traversal)
+        #endregion
+
+        #region Enumerate
+
+        public static IEnumerable<T> Enumerate<T, TTraversal>(this Forest<T> forest, TTraversal traversal)
+            where TTraversal : struct, ITraversalAlgorithm
+        {
+            return Traverse(forest, traversal).Select(n => n.Value);
+        }
+
+        public static IEnumerable<T> Enumerate<T, TTraversal>(this Tree<T> tree, TTraversal traversal)
+            where TTraversal : struct, ITraversalAlgorithm
+        {
+            return tree.Root != null ? Traverse(tree.Root, traversal).Select(n => n.Value) : Enumerable.Empty<T>();
+        }
+
+        public static IEnumerable<T> Enumerate<T, TTraversal>(this TreeNode<T> node, TTraversal traversal)
+            where TTraversal : struct, ITraversalAlgorithm
         {
             if (node == null) node.GetHashCode(); // throws NullReferenceException
-            return traversal.Traverse(node).Select(n => n.Value);
+            return Traverse(node, traversal).Select(n => n.Value);
         }
+
+        #endregion
     }
 }
