@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Associates a name and a status for which changes can be observed.

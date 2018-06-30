@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     public class AggregatedSentyTests
     {

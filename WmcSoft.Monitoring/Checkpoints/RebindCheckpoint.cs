@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     /// <summary>
     /// Decorates a checkpoint to change its level, so that the user can override the implementer settings.

@@ -28,7 +28,7 @@ using System;
 using System.Linq;
 using System.Threading;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Represents a sentry that observe and aggregate the status of other sentries.

@@ -24,7 +24,7 @@
 
 #endregion
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Specifies what status <see cref="ISentry"/> may report.

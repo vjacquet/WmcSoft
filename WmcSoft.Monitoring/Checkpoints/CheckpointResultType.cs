@@ -24,7 +24,7 @@
 
 #endregion
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     public enum CheckpointResultType
     {

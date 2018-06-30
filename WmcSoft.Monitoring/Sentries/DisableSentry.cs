@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Decorates a sentry to support enable and disable state.

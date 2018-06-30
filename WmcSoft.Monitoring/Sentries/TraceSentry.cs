@@ -27,7 +27,7 @@
 using System;
 using System.Diagnostics;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Decorates a <see cref="ISentry"/> to trace observed status while others are observing it.

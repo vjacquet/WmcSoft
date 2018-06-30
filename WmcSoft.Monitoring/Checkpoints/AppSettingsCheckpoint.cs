@@ -30,7 +30,7 @@ using System.Configuration;
 using System.Linq;
 using WmcSoft.Properties;
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     /// <summary>
     /// Checks that an app settings is set in the configuration file.

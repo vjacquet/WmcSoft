@@ -25,7 +25,7 @@
 #endregion
 
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Represents a sentry that observes and returns the worst status of other sentries.

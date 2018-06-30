@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="WmcSoft.Diagnostics.Checkpoints.CheckpointBase" Collapsed="true">
+  <Class Name="WmcSoft.Monitoring.Checkpoints.CheckpointBase" Collapsed="true">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgQAAAAAAQAAAAAAAAQAAgAAAAEAABAAAEAAAAA=</HashCode>
@@ -8,35 +8,35 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="WmcSoft.Diagnostics.Checkpoints.ActionCheckpoint" Collapsed="true">
+  <Class Name="WmcSoft.Monitoring.Checkpoints.ActionCheckpoint" Collapsed="true">
     <Position X="3.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgQAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Diagnostics\Checkpoints\ActionCheckpoint.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Diagnostics.Checkpoints.AppSettingsCheckpoint" Collapsed="true">
+  <Class Name="WmcSoft.Monitoring.Checkpoints.AppSettingsCheckpoint" Collapsed="true">
     <Position X="5.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAgAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Diagnostics\Checkpoints\AppSettingsCheckpoint.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Diagnostics.Checkpoints.ConfigurationCheckpoint" Collapsed="true">
+  <Class Name="WmcSoft.Monitoring.Checkpoints.ConfigurationCheckpoint" Collapsed="true">
     <Position X="8" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>Diagnostics\Checkpoints\ConfigurationCheckpoint.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Diagnostics.Checkpoints.PredicateCheckpoint" Collapsed="true">
+  <Class Name="WmcSoft.Monitoring.Checkpoints.PredicateCheckpoint" Collapsed="true">
     <Position X="10.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgQAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Diagnostics\Checkpoints\PredicateCheckpoint.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WmcSoft.Diagnostics.Checkpoints.CheckpointResult">
+  <Class Name="WmcSoft.Monitoring.Checkpoints.CheckpointResult">
     <Position X="1.25" Y="3.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -49,14 +49,14 @@
       <Property Name="ResultType" />
     </ShowAsAssociation>
   </Class>
-  <Interface Name="WmcSoft.Diagnostics.Checkpoints.ICheckpoint" Collapsed="true">
+  <Interface Name="WmcSoft.Monitoring.Checkpoints.ICheckpoint" Collapsed="true">
     <Position X="12.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Diagnostics\Checkpoints\ICheckpoint.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="WmcSoft.Diagnostics.Checkpoints.CheckpointResultType" Collapsed="true">
+  <Enum Name="WmcSoft.Monitoring.Checkpoints.CheckpointResultType" Collapsed="true">
     <Position X="4.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAgAAAAEAABAAAEAAAAA=</HashCode>

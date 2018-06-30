@@ -27,7 +27,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     /// <summary>
     /// Checkpoint's result builder.

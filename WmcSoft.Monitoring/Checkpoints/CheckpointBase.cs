@@ -27,7 +27,7 @@
 using System;
 using System.ComponentModel;
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     /// <summary>
     /// Base implementation of a <see cref="Checkpoint"/>.

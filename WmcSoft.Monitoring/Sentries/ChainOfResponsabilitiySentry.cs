@@ -27,7 +27,7 @@
 using System;
 using System.Threading;
 
-namespace WmcSoft.Diagnostics.Sentries
+namespace WmcSoft.Monitoring.Sentries
 {
     /// <summary>
     /// Represents a sentry observing an observable and evaluating its status through a chain of responsability.

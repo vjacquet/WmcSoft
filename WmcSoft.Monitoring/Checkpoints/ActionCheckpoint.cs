@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     /// <summary>
     /// Checkpoint based on an Action. 

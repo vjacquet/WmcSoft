@@ -27,7 +27,7 @@
 using System.Configuration;
 using WmcSoft.Properties;
 
-namespace WmcSoft.Diagnostics.Checkpoints
+namespace WmcSoft.Monitoring.Checkpoints
 {
     /// <summary>
     /// Checks that a section is correctly configured in the configuration file, and can be opened.

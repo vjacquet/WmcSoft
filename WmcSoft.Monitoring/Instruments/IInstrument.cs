@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Instruments
+namespace WmcSoft.Monitoring.Instruments
 {
     /// <summary>
     /// Represents a named instrument for which you can observe decimal samples.

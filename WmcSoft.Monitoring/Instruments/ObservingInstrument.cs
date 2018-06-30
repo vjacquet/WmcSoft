@@ -27,7 +27,7 @@
 using System;
 using System.Threading;
 
-namespace WmcSoft.Diagnostics.Instruments
+namespace WmcSoft.Monitoring.Instruments
 {
     /// <summary>
     /// Represents an instrument observing an observable and computing a metric from it.

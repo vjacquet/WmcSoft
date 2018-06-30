@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Instruments
+namespace WmcSoft.Monitoring.Instruments
 {
     /// <summary>
     /// Represents an instrument observing an observable and computing using a custom function.

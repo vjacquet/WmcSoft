@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.Diagnostics.Instruments
+namespace WmcSoft.Monitoring.Instruments
 {
     /// <summary>
     /// Decorates an instrument to support enable and disable state.

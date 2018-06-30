@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace WmcSoft.Diagnostics.Instruments
+namespace WmcSoft.Monitoring.Instruments
 {
     /// <summary>
     /// Represents an instrument.
