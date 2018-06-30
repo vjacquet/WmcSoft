@@ -50,12 +50,14 @@ namespace WmcSoft.Diagnostics.Sentries
                 return enabled;
             }
             set {
-                if (enabled != value) {
-                    if (enabled) {
-                        OnNext(underlyingStatus);
-                    } else {
-                        OnNext(SentryStatus.None);
-                    }
+                if (enabled == value) {
+                    // nothing to do
+                } else if (value) {
+                    enabled = true;
+                    OnNext(underlyingStatus);
+                } else {
+                    enabled = false;
+                    OnNext(SentryStatus.None);
                 }
             }
         }
