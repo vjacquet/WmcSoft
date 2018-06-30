@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.IO;
 using Xunit;
-using WmcSoft.Diagnostics.Checkpoints;
 
 namespace WmcSoft.Configuration
 {
@@ -57,27 +56,5 @@ namespace WmcSoft.Configuration
             Assert.Throws<ConfigurationErrorsException>(() => checkpoint3.Level);
             Assert.Throws<ConfigurationErrorsException>(() => checkpoint3.Type);
         }
-    }
-
-    public class CheckpointA : CheckpointBase
-    {
-        public CheckpointA(string name) : base(name)
-        {
-        }
-
-        protected override CheckpointResult DoVerify(int level)
-        {
-            return Success();
-        }
-    }
-
-    public class CheckpointB
-    {
-        public CheckpointB(string name)
-        {
-            Name = name;
-        }
-
-        public string Name { get; }
     }
 }

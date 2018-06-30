@@ -91,7 +91,7 @@ namespace WmcSoft.Diagnostics.Sentries
                 }
             }
             var unsubscriber = _decorated.Subscribe(observer);
-            return new Disposer(() => {
+            return new Unsubscriber(() => {
                 unsubscriber.Dispose();
 
                 var dispose = false;
@@ -131,7 +131,7 @@ namespace WmcSoft.Diagnostics.Sentries
 
         protected virtual void TraceError(Exception error)
         {
-            _traceSource.TraceError(0, $"Sentry {Name} failed: {error}.");
+            _traceSource.TraceEvent(TraceEventType.Error, 0, $"Sentry {Name} failed: {error}.");
         }
 
         public override string ToString()

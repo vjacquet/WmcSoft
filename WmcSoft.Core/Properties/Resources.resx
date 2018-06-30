@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppSettingsCheckpointKeyIsMissingError" xml:space="preserve">
-    <value>The key '{0}' is missing from the appSettings section.</value>
-  </data>
   <data name="ArgumentEmpty" xml:space="preserve">
     <value>Argument can not have an empty value.</value>
   </data>
@@ -143,9 +140,6 @@
   </data>
   <data name="ComponentNull" xml:space="preserve">
     <value>The component can not be null.</value>
-  </data>
-  <data name="ConfigurationCheckpointCannotLoadSection" xml:space="preserve">
-    <value>Cannot load the configuration section '{0}'.</value>
   </data>
   <data name="DispatcherDoesntSuppportCancellation" xml:space="preserve">
     <value>The dispatcher does not support cancellation.</value>
