@@ -6,55 +6,6 @@ namespace WmcSoft.Monitoring.Sentries
 {
     public class AggregatedSentyTests
     {
-        class StubSentry : SentryBase
-        {
-            public StubSentry(string name, SentryStatus status) : base(name)
-            {
-                OnNext(status);
-            }
-
-            public void Reset(SentryStatus value)
-            {
-                OnNext(value);
-            }
-        }
-
-        class InstrumentedSentry : SentryBase
-        {
-            public InstrumentedSentry(string name) : base(name)
-            {
-            }
-
-            public bool Subscribed { get; private set; }
-            public bool Unsubscribed { get; private set; }
-
-            protected override void OnObserving()
-            {
-                base.OnObserving();
-                Subscribed = true;
-            }
-            protected override void OnObserved()
-            {
-                base.OnObserved();
-                Unsubscribed = true;
-            }
-        }
-
-        class BasicObserver : IObserver<SentryStatus>
-        {
-            public void OnCompleted()
-            {
-            }
-
-            public void OnError(Exception error)
-            {
-            }
-
-            public void OnNext(SentryStatus value)
-            {
-            }
-        }
-
         [Fact]
         public void CheckSubscriptionCycle()
         {
