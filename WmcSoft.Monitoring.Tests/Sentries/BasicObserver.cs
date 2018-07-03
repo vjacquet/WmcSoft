@@ -16,5 +16,4 @@ namespace WmcSoft.Monitoring.Sentries
         {
         }
     }
-
 }
