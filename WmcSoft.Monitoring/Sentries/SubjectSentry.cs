@@ -34,6 +34,7 @@ namespace WmcSoft.Monitoring.Sentries
         public SubjectSentry(string name, SentryStatus status = SentryStatus.None)
             : base(name)
         {
+            OnNext(status);
         }
 
         public new SentryStatus Status {
