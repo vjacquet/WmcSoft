@@ -65,7 +65,7 @@ namespace WmcSoft.Monitoring.Instruments
         void IObserver<T>.OnNext(T value)
         {
             var measure = Measure(value);
-            OnNext(measure);
+            OnNext(new Timestamped<decimal>(measure, DateTime.UtcNow));
         }
 
         void IObserver<T>.OnError(Exception error)

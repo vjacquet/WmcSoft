@@ -31,7 +31,7 @@ namespace WmcSoft.Monitoring.Instruments
     /// <summary>
     /// Decorates an instrument to support enable and disable state.
     /// </summary>
-    public sealed class DisableInstrument : InstrumentBase, IObserver<decimal>
+    public sealed class DisableInstrument : InstrumentBase, IObserver<Timestamped<decimal>>
     {
         private readonly IInstrument underlying;
         private IDisposable subscription;
@@ -45,21 +45,21 @@ namespace WmcSoft.Monitoring.Instruments
 
         public bool Enabled { get; set; }
 
-        #region IObserver<SentryStatus> members
+        #region IObserver<Timestamped<decimal>> members
 
-        void IObserver<decimal>.OnCompleted()
+        void IObserver<Timestamped<decimal>>.OnCompleted()
         {
             OnCompleted();
             subscription = null;
         }
 
-        void IObserver<decimal>.OnError(Exception error)
+        void IObserver<Timestamped<decimal>>.OnError(Exception error)
         {
             OnError(error);
             subscription = null;
         }
 
-        void IObserver<decimal>.OnNext(decimal value)
+        void IObserver<Timestamped<decimal>>.OnNext(Timestamped<decimal> value)
         {
             if (Enabled)
                 OnNext(value);

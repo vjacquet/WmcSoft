@@ -31,7 +31,7 @@ namespace WmcSoft.Monitoring.Instruments
     /// <summary>
     /// Represents a named instrument for which you can observe decimal samples.
     /// </summary>
-    public interface IInstrument : IObservable<decimal>
+    public interface IInstrument : IObservable<Timestamped<decimal>>
     {
         string Name { get; }
     }

@@ -41,9 +41,9 @@ namespace WmcSoft.Monitoring.Instruments
         class Unsubscriber : IDisposable
         {
             private readonly InstrumentBase instrument;
-            private readonly IObserver<decimal> observer;
+            private readonly IObserver<Timestamped<decimal>> observer;
 
-            public Unsubscriber(InstrumentBase instrument, IObserver<decimal> observer)
+            public Unsubscriber(InstrumentBase instrument, IObserver<Timestamped<decimal>> observer)
             {
                 this.instrument = instrument;
                 this.observer = observer;
@@ -69,7 +69,7 @@ namespace WmcSoft.Monitoring.Instruments
 
         #endregion
 
-        private readonly List<IObserver<decimal>> observers = new List<IObserver<decimal>>();
+        private readonly List<IObserver<Timestamped<decimal>>> observers = new List<IObserver<Timestamped<decimal>>>();
 
         protected InstrumentBase(string name)
         {
@@ -87,7 +87,7 @@ namespace WmcSoft.Monitoring.Instruments
         /// <param name="observer">The observer</param>
         /// <returns>An <see cref="IDisposable"/> that unregisters the observer upon dispose.</returns>
         /// <remarks>Subscription and unscribscription are idempotent operations.</remarks>
-        public IDisposable Subscribe(IObserver<decimal> observer)
+        public IDisposable Subscribe(IObserver<Timestamped<decimal>> observer)
         {
             lock (observers) {
                 if (Subscribing(observer)) {
@@ -99,7 +99,7 @@ namespace WmcSoft.Monitoring.Instruments
             return new Unsubscriber(this, observer);
         }
 
-        private bool Subscribing(IObserver<decimal> observer)
+        private bool Subscribing(IObserver<Timestamped<decimal>> observer)
         {
             if (observers.Count == 0) {
                 OnObserving();
@@ -114,7 +114,7 @@ namespace WmcSoft.Monitoring.Instruments
         /// Called before the <paramref name="observer"/> is added to the list of observers.
         /// </summary>
         /// <param name="observer">The observer.</param>
-        protected virtual void OnSubscribe(IObserver<decimal> observer)
+        protected virtual void OnSubscribe(IObserver<Timestamped<decimal>> observer)
         {
         }
 
@@ -122,7 +122,7 @@ namespace WmcSoft.Monitoring.Instruments
         /// Called after the <paramref name="observer"/> is removed from the list of observers.
         /// </summary>
         /// <param name="observer">The observer.</param>
-        protected virtual void OnUnsubscribe(IObserver<decimal> observer)
+        protected virtual void OnUnsubscribe(IObserver<Timestamped<decimal>> observer)
         {
         }
 
@@ -144,7 +144,7 @@ namespace WmcSoft.Monitoring.Instruments
 
         #region Observer support
 
-        protected void OnNext(decimal value)
+        protected void OnNext(Timestamped<decimal> value)
         {
             lock (observers) {
                 observers.ForEach(o => o.OnNext(value));
