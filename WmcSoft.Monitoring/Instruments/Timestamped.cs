@@ -43,6 +43,12 @@ namespace WmcSoft.Monitoring.Instruments
             Timestamp = timestamp;
         }
 
+        public void Deconstruct(out T value, out DateTime timestamp)
+        {
+            value = Value;
+            timestamp = Timestamp;
+        }
+
         public T Value { get; }
         public DateTime Timestamp { get; }
 
