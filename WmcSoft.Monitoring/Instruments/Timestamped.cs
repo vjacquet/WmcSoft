@@ -49,7 +49,14 @@ namespace WmcSoft.Monitoring.Instruments
             timestamp = Timestamp;
         }
 
+        /// <summary>
+        /// The value.
+        /// </summary>
         public T Value { get; }
+
+        /// <summary>
+        /// The date and time when the value was produced.
+        /// </summary>
         public DateTime Timestamp { get; }
 
         #region operators
