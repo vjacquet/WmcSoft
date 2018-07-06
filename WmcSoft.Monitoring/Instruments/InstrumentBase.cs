@@ -76,7 +76,7 @@ namespace WmcSoft.Monitoring.Instruments
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
-            Name = name.Trim();
+            Name = name;
         }
 
         public string Name { get; }
@@ -140,6 +140,15 @@ namespace WmcSoft.Monitoring.Instruments
         {
         }
 
+        protected void Remove(List<IObserver<Timestamped<decimal>>> observers)
+        {
+            observers.ForEach(OnUnsubscribe);
+            observers.Clear();
+
+            if (this.observers.Count == 0)
+                OnObserved();
+        }
+
         #endregion
 
         #region Observer support
@@ -155,7 +164,7 @@ namespace WmcSoft.Monitoring.Instruments
         {
             lock (observers) {
                 observers.ForEach(o => o.OnError(error));
-                observers.Clear();
+                Remove(observers);
             }
         }
 
@@ -163,7 +172,7 @@ namespace WmcSoft.Monitoring.Instruments
         {
             lock (observers) {
                 observers.ForEach(o => o.OnCompleted());
-                observers.Clear();
+                Remove(observers);
             }
         }
 

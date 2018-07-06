@@ -69,7 +69,7 @@ namespace WmcSoft.Monitoring.Sentries
 
         #endregion
 
-        private readonly List<IObserver<SentryStatus>> observers;
+        private readonly List<IObserver<SentryStatus>> observers = new List<IObserver<SentryStatus>>();
         private volatile SentryStatus status;
 
         protected SentryBase(string name)
@@ -77,8 +77,7 @@ namespace WmcSoft.Monitoring.Sentries
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
-            Name = name.Trim();
-            observers = new List<IObserver<SentryStatus>>();
+            Name = name;
         }
 
         public string Name { get; }
