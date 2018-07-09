@@ -10,9 +10,19 @@ namespace WmcSoft.Monitoring.Sentries
             OnNext(status);
         }
 
-        public void SetStatus(SentryStatus status)
+        public void SetNext(SentryStatus status)
         {
             OnNext(status);
+        }
+
+        public void NotifiyCompleted()
+        {
+            OnCompleted();
+        }
+
+        public void NotifyError(Exception error)
+        {
+            OnError(error);
         }
 
         protected override void OnObserving()
