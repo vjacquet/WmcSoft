@@ -51,19 +51,7 @@ namespace WmcSoft.Monitoring.Instruments
 
             public void Dispose()
             {
-                var observers = instrument.observers;
-                bool removed = false;
-                lock (observers) {
-                    if (observers.Remove(observer)) {
-                        removed = true;
-                        if (observers.Count == 0) {
-                            instrument.OnObserved();
-                        }
-                    }
-                }
-                if (removed) {
-                    instrument.OnUnsubscribe(observer);
-                }
+                instrument.Unsubscribe(observer);
             }
         }
 
@@ -97,6 +85,22 @@ namespace WmcSoft.Monitoring.Instruments
                 }
             }
             return new Unsubscriber(this, observer);
+        }
+
+        private void Unsubscribe(IObserver<Timestamped<decimal>> observer)
+        {
+            bool removed = false;
+            lock (observers) {
+                if (observers.Remove(observer)) {
+                    removed = true;
+                    if (observers.Count == 0) {
+                        OnObserved();
+                    }
+                }
+            }
+            if (removed) {
+                OnUnsubscribe(observer);
+            }
         }
 
         private bool Subscribing(IObserver<Timestamped<decimal>> observer)

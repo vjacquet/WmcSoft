@@ -51,19 +51,7 @@ namespace WmcSoft.Monitoring.Sentries
 
             public void Dispose()
             {
-                var observers = sentry.observers;
-                bool removed = false;
-                lock (observers) {
-                    if (observers.Remove(observer)) {
-                        removed = true;
-                        if (observers.Count == 0) {
-                            sentry.OnObserved();
-                        }
-                    }
-                }
-                if (removed) {
-                    sentry.OnUnsubscribe(observer);
-                }
+                sentry.Unsubscribe(observer);
             }
         }
 
@@ -100,6 +88,22 @@ namespace WmcSoft.Monitoring.Sentries
                 }
             }
             return new Unsubscriber(this, observer);
+        }
+
+        private void Unsubscribe(IObserver<SentryStatus> observer)
+        {
+            bool removed = false;
+            lock (observers) {
+                if (observers.Remove(observer)) {
+                    removed = true;
+                    if (observers.Count == 0) {
+                        OnObserved();
+                    }
+                }
+            }
+            if (removed) {
+                OnUnsubscribe(observer);
+            }
         }
 
         private bool Subscribing(IObserver<SentryStatus> observer)
@@ -146,7 +150,6 @@ namespace WmcSoft.Monitoring.Sentries
         /// </summary>
         protected virtual void OnObserved()
         {
-            status = SentryStatus.None;
         }
 
         protected void Remove(List<IObserver<SentryStatus>> observers)
