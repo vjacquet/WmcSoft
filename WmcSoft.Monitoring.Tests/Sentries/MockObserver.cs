@@ -25,5 +25,4 @@ namespace WmcSoft.Monitoring.Sentries
         public SentryStatus LatestValue { get; set; }
         public int ObservedValues { get; set; }
     }
-
 }

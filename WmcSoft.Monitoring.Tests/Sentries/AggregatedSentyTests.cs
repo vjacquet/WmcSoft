@@ -17,7 +17,7 @@ namespace WmcSoft.Monitoring.Sentries
             Assert.False(sentries[0].Unsubscribed);
             Assert.False(sentries[1].Unsubscribed);
 
-            using (aggregated.Subscribe(new BasicObserver())) {
+            using (aggregated.Subscribe(new NullObserver())) {
                 Assert.True(sentries[0].Subscribed);
                 Assert.True(sentries[1].Subscribed);
                 Assert.False(sentries[0].Unsubscribed);
@@ -44,7 +44,7 @@ namespace WmcSoft.Monitoring.Sentries
             var sentries = sequence.Split(' ').Select((s, i) => new StubSentry("#" + i, (SentryStatus)Enum.Parse(typeof(SentryStatus), s))).ToArray();
             var aggregated = new AggregateSentry("a", sentries);
 
-            using (aggregated.Subscribe(new BasicObserver())) {
+            using (aggregated.Subscribe(new NullObserver())) {
                 Assert.Equal(expected, aggregated.Status);
             }
         }
@@ -63,7 +63,7 @@ namespace WmcSoft.Monitoring.Sentries
             var sentries = sequence.Split(' ').Select((s, i) => new StubSentry("#" + i, (SentryStatus)Enum.Parse(typeof(SentryStatus), s))).ToArray();
             var aggregated = new WorstStatusAggregateSentry("w", sentries);
 
-            using (aggregated.Subscribe(new BasicObserver())) {
+            using (aggregated.Subscribe(new NullObserver())) {
                 Assert.Equal(expected, aggregated.Status);
             }
         }
@@ -82,7 +82,7 @@ namespace WmcSoft.Monitoring.Sentries
             var sentries = sequence.Split(' ').Select((s, i) => new StubSentry("#" + i, (SentryStatus)Enum.Parse(typeof(SentryStatus), s))).ToArray();
             var aggregated = new BestStatusAggregateSentry("b", sentries);
 
-            using (aggregated.Subscribe(new BasicObserver())) {
+            using (aggregated.Subscribe(new NullObserver())) {
                 Assert.Equal(expected, aggregated.Status);
             }
         }

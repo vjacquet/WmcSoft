@@ -14,5 +14,22 @@ namespace WmcSoft.Monitoring.Sentries
                 Assert.Equal(mock.LatestValue, subject.Status);
             }
         }
+
+        [Fact]
+        public void OnObservingIsCalledOnceOnMultipleSubscription()
+        {
+            var sentry = new MockSentry("mock");
+            var o1 = new MockObserver();
+            var o2 = new MockObserver();
+
+            using (sentry.Subscribe(o1))
+            using (sentry.Subscribe(o2)) {
+                Assert.Equal(1, sentry.OnObservingCalls);
+                Assert.Equal(0, sentry.OnObservedCalls);
+            }
+
+            Assert.Equal(1, sentry.OnObservingCalls);
+            Assert.Equal(1, sentry.OnObservedCalls);
+        }
     }
 }

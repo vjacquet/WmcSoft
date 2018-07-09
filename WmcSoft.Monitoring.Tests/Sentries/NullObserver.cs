@@ -2,7 +2,7 @@
 
 namespace WmcSoft.Monitoring.Sentries
 {
-    class BasicObserver : IObserver<SentryStatus>
+    class NullObserver : IObserver<SentryStatus>
     {
         public void OnCompleted()
         {
