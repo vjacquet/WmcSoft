@@ -9,25 +9,25 @@ namespace WmcSoft.Monitoring.Sentries
         [Fact]
         public void CheckSubscriptionCycle()
         {
-            var sentries = new InstrumentedSentry[] { new InstrumentedSentry("a"), new InstrumentedSentry("b") };
+            var sentries = new [] { new MockSentry("a"), new MockSentry("b") };
             var aggregated = new AggregateSentry("ab", sentries);
 
-            Assert.False(sentries[0].Subscribed);
-            Assert.False(sentries[1].Subscribed);
-            Assert.False(sentries[0].Unsubscribed);
-            Assert.False(sentries[1].Unsubscribed);
+            Assert.Equal(0, sentries[0].OnObservingCalls);
+            Assert.Equal(0, sentries[1].OnObservingCalls);
+            Assert.Equal(0, sentries[0].OnObservedCalls);
+            Assert.Equal(0, sentries[1].OnObservedCalls);
 
             using (aggregated.Subscribe(new NullObserver())) {
-                Assert.True(sentries[0].Subscribed);
-                Assert.True(sentries[1].Subscribed);
-                Assert.False(sentries[0].Unsubscribed);
-                Assert.False(sentries[1].Unsubscribed);
+                Assert.Equal(1, sentries[0].OnObservingCalls);
+                Assert.Equal(1, sentries[1].OnObservingCalls);
+                Assert.Equal(0,sentries[0].OnObservedCalls);
+                Assert.Equal(0, sentries[1].OnObservedCalls);
             }
 
-            Assert.True(sentries[0].Subscribed);
-            Assert.True(sentries[1].Subscribed);
-            Assert.True(sentries[0].Unsubscribed);
-            Assert.True(sentries[1].Unsubscribed);
+            Assert.Equal(1, sentries[0].OnObservingCalls);
+            Assert.Equal(1, sentries[1].OnObservingCalls);
+            Assert.Equal(1, sentries[0].OnObservedCalls);
+            Assert.Equal(1, sentries[1].OnObservedCalls);
         }
 
         [Theory]
