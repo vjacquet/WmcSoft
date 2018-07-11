@@ -34,12 +34,17 @@ namespace WmcSoft
     {
         #region Iota
 
-        public static IEnumerable<int> Iota(int value = 0)
+        /// <summary>
+        /// Generates an increasing sequence of value.
+        /// </summary>
+        /// <param name="seed">The starting value.</param>
+        /// <returns>A sequence of consecutive values.</returns>
+        public static IEnumerable<int> Iota(int seed = 0)
         {
             checked {
                 while (true) {
-                    yield return value;
-                    ++value;
+                    yield return seed;
+                    ++seed;
                 }
             }
         }
@@ -48,6 +53,10 @@ namespace WmcSoft
 
         #region Factorial
 
+        /// <summary>
+        /// Generates a sequence of factorial values.
+        /// </summary>
+        /// <returns>The factorial sequence.</returns>
         public static IEnumerable<BigInteger> Factorial()
         {
             yield return BigInteger.One;
@@ -66,6 +75,10 @@ namespace WmcSoft
 
         #region Fibonacci
 
+        /// <summary>
+        /// Generates a fibonacci sequence.
+        /// </summary>
+        /// <returns>The fibonacci sequence.</returns>
         public static IEnumerable<BigInteger> Fibonacci()
         {
             BigInteger Fn = 0;
