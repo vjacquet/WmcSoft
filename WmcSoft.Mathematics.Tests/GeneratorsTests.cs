@@ -42,6 +42,7 @@ namespace WmcSoft.Tests
             foreach (var p in permutations) {
                 var s = new string(p.ToArray());
                 Assert.True(expected.Add(s));
+                Assert.Equal(s.Length, s.Distinct().Count());
                 sequence.Add(s);
             }
 

@@ -30,7 +30,7 @@ using System.Numerics;
 
 namespace WmcSoft
 {
-    public static class Generators
+    public static partial class Generators
     {
         #region Iota
 
@@ -354,11 +354,18 @@ namespace WmcSoft
             return (i & 1) == 0;
         }
 
+        /// <summary>
+        /// Generates all the permutations of the array of values.
+        /// </summary>
+        /// <typeparam name="T">The type of the valeurs</typeparam>
+        /// <param name="values">The arrary of values</param>
+        /// <returns>An enumerations of all the permutations.</returns>
+        /// <remarks>The permutation are lazy computed but a yielded permutation is defined only until the next permutation.</remarks>
         public static IEnumerable<IReadOnlyList<T>> Permutations<T>(params T[] values)
         {
             // Adapted from Knuth, TAoCP, Vol 4A, Page 329, Algorithm G
             var n = values.Length;
-            var c = new int[n + 1];//(int[])Array.CreateInstance(typeof(int), new int[] { n }, new int[] { 1 });
+            var c = new int[n + 1];
             var a = Algorithms.Iota(n);
             var list = new SourceReadOnlyList<T>(values, a);
             int k;
@@ -374,10 +381,7 @@ namespace WmcSoft
                 }
                 c[k] = c[k] + 1;
 
-                if (IsOdd(k))
-                    a.SwapItems(k, 0);
-                else
-                    a.SwapItems(k, c[k] - 1);
+                a.SwapItems(k, IsOdd(k) ? 0 : c[k] - 1);
             }
         }
 
