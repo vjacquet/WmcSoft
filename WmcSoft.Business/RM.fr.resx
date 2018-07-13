@@ -132,4 +132,10 @@
   <data name="ModerationStatus.Scheduled.Description" xml:space="preserve">
     <value>Planifié</value>
   </data>
+  <data name="RegistrationPolicy.Mandatory" xml:space="preserve">
+    <value>Obligatoire</value>
+  </data>
+  <data name="RegistrationPolicy.Optional" xml:space="preserve">
+    <value>Optionnel</value>
+  </data>
 </root>
