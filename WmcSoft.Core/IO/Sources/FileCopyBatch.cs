@@ -27,7 +27,7 @@
 using System;
 using System.IO;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
     /// Implements a <see cref="Batch"/> to copy files to a target directory.

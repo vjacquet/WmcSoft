@@ -2,7 +2,7 @@
 using System.IO;
 using Xunit;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     public class StreamSourceTests
     {

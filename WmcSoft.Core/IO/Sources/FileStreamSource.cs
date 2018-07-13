@@ -26,19 +26,29 @@
 
 using System.IO;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Defines a generalized method of returning a stream.
+    /// Returns a <see cref="Stream"/> from the specified <see cref="Path"/>.
     /// </summary>
-    /// <remarks>Types implementing this interface should favor composition over inheritance.</remarks>
-    public interface IStreamSource
+    /// <remarks>The base implementaion returns a read-only stream.</remarks>
+    public class FileStreamSource : IStreamSource
     {
+        public FileStreamSource(string path)
+        {
+            // let FileInfo check the argument
+            var info = new FileInfo(path);
+            Path = info.FullName;
+        }
+
         /// <summary>
-        /// Gets the stream from the source.
+        /// The full path to the file.
         /// </summary>
-        /// <returns>A stream.</returns>
-        /// <remarks>The caller owns the stream and, therefore, should dispose it.</remarks>
-        Stream GetStream();
+        public string Path { get; }
+
+        public virtual Stream GetStream()
+        {
+            return File.OpenRead(Path);
+        }
     }
 }

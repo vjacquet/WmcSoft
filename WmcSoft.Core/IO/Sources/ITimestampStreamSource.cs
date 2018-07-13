@@ -26,7 +26,7 @@
 
 using System;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
     /// Adds a <see cref="Timestamp"/> property to indicate the UTC datetime at which the stream source was last written.

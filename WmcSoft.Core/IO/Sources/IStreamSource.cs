@@ -24,45 +24,21 @@
 
 #endregion
 
-using System;
-using System.Globalization;
 using System.IO;
-using System.Resources;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Returns <see cref="Stream"/> from the specified resource, using the specified culture.
+    /// Defines a generalized method of returning a stream.
     /// </summary>
-    public sealed class ResourceStreamSource : IStreamSource
+    /// <remarks>Types implementing this interface should favor composition over inheritance.</remarks>
+    public interface IStreamSource
     {
-        public ResourceStreamSource(Type resourceSource, string name, CultureInfo culture = null)
-        {
-            ResourceSource = resourceSource;
-            Name = name;
-            Culture = culture;
-        }
-
         /// <summary>
-        /// The type from which the resource manager derives all information for finding .resources files. 
+        /// Gets the stream from the source.
         /// </summary>
-        public Type ResourceSource { get; }
-
-        /// <summary>
-        /// The name of the resource.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// An object that specifies the culture to use for the resource lookup.
-        /// If <see cref="Culture"/> is null, the culture for the current thread is used.
-        /// </summary>
-        public CultureInfo Culture { get; }
-
-        public Stream GetStream()
-        {
-            var rm = new ResourceManager(ResourceSource);
-            return rm.GetStream(Name, Culture);
-        }
+        /// <returns>A stream.</returns>
+        /// <remarks>The caller owns the stream and, therefore, should dispose it.</remarks>
+        Stream GetStream();
     }
 }

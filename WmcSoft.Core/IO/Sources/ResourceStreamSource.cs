@@ -25,25 +25,44 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.IO;
+using System.Resources;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Returns a <see cref="Stream"/> produced on demand by a function.
+    /// Returns <see cref="Stream"/> from the specified resource, using the specified culture.
     /// </summary>
-    public sealed class FuncStreamSource : IStreamSource
+    public sealed class ResourceStreamSource : IStreamSource
     {
-        readonly Func<Stream> _func;
-
-        public FuncStreamSource(Func<Stream> func)
+        public ResourceStreamSource(Type resourceSource, string name, CultureInfo culture = null)
         {
-            _func = func;
+            ResourceSource = resourceSource;
+            Name = name;
+            Culture = culture;
         }
+
+        /// <summary>
+        /// The type from which the resource manager derives all information for finding .resources files. 
+        /// </summary>
+        public Type ResourceSource { get; }
+
+        /// <summary>
+        /// The name of the resource.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// An object that specifies the culture to use for the resource lookup.
+        /// If <see cref="Culture"/> is null, the culture for the current thread is used.
+        /// </summary>
+        public CultureInfo Culture { get; }
 
         public Stream GetStream()
         {
-            return _func();
+            var rm = new ResourceManager(ResourceSource);
+            return rm.GetStream(Name, Culture);
         }
     }
 }

@@ -25,24 +25,25 @@
 #endregion
 
 using System;
+using System.IO;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Represents the registration of stream sources to be included in a batch but defers the actual processing to the commit phase.
+    /// Returns a <see cref="Stream"/> produced on demand by a function.
     /// </summary>
-    public interface IBatch : IDisposable
+    public sealed class FuncStreamSource : IStreamSource
     {
-        /// <summary>
-        /// Adds the specified data source.
-        /// </summary>
-        /// <param name="soure">The data source.</param>
-        /// <param name="name">Name of the entry.</param>
-        void Add(string name, IStreamSource source);
+        readonly Func<Stream> _func;
 
-        /// <summary>
-        /// Commits this batch.
-        /// </summary>
-        void Commit();
+        public FuncStreamSource(Func<Stream> func)
+        {
+            _func = func;
+        }
+
+        public Stream GetStream()
+        {
+            return _func();
+        }
     }
 }

@@ -25,30 +25,34 @@
 #endregion
 
 using System.IO;
+using System.Reflection;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Returns a <see cref="Stream"/> from the specified <see cref="Path"/>.
+    /// Returns a <see cref="Stream"/> from the specified manifest resource from the specified assembly.
     /// </summary>
-    /// <remarks>The base implementaion returns a read-only stream.</remarks>
-    public class FileStreamSource : IStreamSource
+    public sealed class AssemblyManifestResourceStreamSource : IStreamSource
     {
-        public FileStreamSource(string path)
+        public AssemblyManifestResourceStreamSource(Assembly assembly, string name)
         {
-            // let FileInfo check the argument
-            var info = new FileInfo(path);
-            Path = info.FullName;
+            Assembly = assembly;
+            Name = name;
         }
 
         /// <summary>
-        /// The full path to the file.
+        /// The assembly containing the resource.
         /// </summary>
-        public string Path { get; }
+        public Assembly Assembly { get; }
 
-        public virtual Stream GetStream()
+        /// <summary>
+        /// The case-sensitive name of the manifest resource being requested. 
+        /// </summary>
+        public string Name { get; }
+
+        public Stream GetStream()
         {
-            return File.OpenRead(Path);
+            return Assembly.GetManifestResourceStream(Name);
         }
     }
 }

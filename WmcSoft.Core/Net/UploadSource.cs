@@ -27,7 +27,7 @@
 using System;
 using System.IO;
 using System.Net;
-using WmcSoft.IO;
+using WmcSoft.IO.Sources;
 
 namespace WmcSoft.Net
 {

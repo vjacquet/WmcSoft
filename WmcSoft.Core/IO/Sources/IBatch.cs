@@ -24,35 +24,25 @@
 
 #endregion
 
-using System.IO;
-using System.Reflection;
+using System;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Returns a <see cref="Stream"/> from the specified manifest resource from the specified assembly.
+    /// Represents the registration of stream sources to be included in a batch but defers the actual processing to the commit phase.
     /// </summary>
-    public sealed class AssemblyManifestResourceStreamSource : IStreamSource
+    public interface IBatch : IDisposable
     {
-        public AssemblyManifestResourceStreamSource(Assembly assembly, string name)
-        {
-            Assembly = assembly;
-            Name = name;
-        }
+        /// <summary>
+        /// Adds the specified data source.
+        /// </summary>
+        /// <param name="soure">The data source.</param>
+        /// <param name="name">Name of the entry.</param>
+        void Add(string name, IStreamSource source);
 
         /// <summary>
-        /// The assembly containing the resource.
+        /// Commits this batch.
         /// </summary>
-        public Assembly Assembly { get; }
-
-        /// <summary>
-        /// The case-sensitive name of the manifest resource being requested. 
-        /// </summary>
-        public string Name { get; }
-
-        public Stream GetStream()
-        {
-            return Assembly.GetManifestResourceStream(Name);
-        }
+        void Commit();
     }
 }

@@ -27,7 +27,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace WmcSoft.IO
+namespace WmcSoft.IO.Sources
 {
     /// <summary>
     /// Registers stream sources to be included in a batch but defers the actual processing to the commit phase.

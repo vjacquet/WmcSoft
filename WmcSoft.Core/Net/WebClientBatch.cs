@@ -28,6 +28,7 @@ using System;
 using System.Net;
 using System.Security;
 using WmcSoft.IO;
+using WmcSoft.IO.Sources;
 
 namespace WmcSoft.Net
 {
