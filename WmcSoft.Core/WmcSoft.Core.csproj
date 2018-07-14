@@ -215,6 +215,7 @@
     <Compile Include="IO\Sources\AssemblyManifestResourceStreamSource.cs" />
     <Compile Include="IO\CsvWriter.cs" />
     <Compile Include="IO\CsvWriterSettings.cs" />
+    <Compile Include="IO\Sources\FailStreamSource.cs" />
     <Compile Include="IO\Sources\FuncStreamSource.cs" />
     <Compile Include="IO\Sources\IBatch.cs" />
     <Compile Include="IO\IQuotedString.cs" />
