@@ -51,7 +51,7 @@ namespace WmcSoft.IO.Sources
                 underlying = factory();
             } catch (Exception e) {
                 Error = e;
-                Trace.TraceError("Failed to initialized the underlying source. {0}: {1}.", e.GetType().FullName, e.Message);
+                Trace.TraceError("Failed to initialized the underlying source. {0}", e);
             }
         }
 
@@ -66,7 +66,7 @@ namespace WmcSoft.IO.Sources
                 return func(underlying);
             } catch (Exception e) {
                 Error = e;
-                Trace.TraceError("Failed to run `{2}` underlying source. {0}: {1}.", e.GetType().FullName, e.Message, methodName);
+                Trace.TraceError("Failed to run `{1}` underlying source. {0}", e, methodName);
                 return defaultResult;
             }
         }
