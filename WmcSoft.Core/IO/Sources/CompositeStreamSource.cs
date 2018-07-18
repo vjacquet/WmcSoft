@@ -25,33 +25,39 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.IO;
 
 namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Implements a <see cref="IStreamSource"/> that throws instead of returning a stream.
+    /// Implements a <see cref="IStreamSource"/> that returns the first non null stream from a sequence of <see cref="IStreamSource"/>.
     /// </summary>
-    /// <remarks>This source is usefull as a terminator of a chain of responsability.</remarks>
-    public class FailStreamSource : ITimestampStreamSource
+    /// <remarks>This class implements the chain of responsability pattern.</remarks>
+    public class CompositeStreamSource : IStreamSource
     {
-        private readonly Func<Exception> _factory;
+        private readonly List<IStreamSource> sources;
 
-        public FailStreamSource(Func<Exception> factory = null)
+        public CompositeStreamSource(params IStreamSource[] sources)
         {
-            _factory = factory ?? (() => null);
+            if (sources == null) throw new ArgumentNullException(nameof(sources));
+            if (sources.Length == 0 || sources.Any(s => s == null)) throw new ArgumentException(nameof(sources));
+
+            this.sources = new List<IStreamSource>(sources);
         }
 
-        /// <inheritdoc/>
-        public bool SupportTimestamp => false;
-
-        /// <inheritdoc/>
-        public DateTime? Timestamp => null;
-
-        /// <inheritdoc/>
         public Stream GetStream()
         {
-            throw _factory() ?? new InvalidOperationException("Stream source not found.");
+            foreach (var source in sources) {
+                var stream = source.GetStream();
+                if (stream != null) {
+                    Trace.TraceInformation("Selecting source {0}.", source);
+                    return stream;
+                }
+            }
+            return null;
         }
     }
 }

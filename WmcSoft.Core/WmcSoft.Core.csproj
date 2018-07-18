@@ -215,6 +215,7 @@
     <Compile Include="IO\Sources\AssemblyManifestResourceStreamSource.cs" />
     <Compile Include="IO\CsvWriter.cs" />
     <Compile Include="IO\CsvWriterSettings.cs" />
+    <Compile Include="IO\Sources\CompositeStreamSource.cs" />
     <Compile Include="IO\Sources\FailStreamSource.cs" />
     <Compile Include="IO\Sources\FuncStreamSource.cs" />
     <Compile Include="IO\Sources\IBatch.cs" />
@@ -225,7 +226,10 @@
     <Compile Include="IO\PathInfo.cs" />
     <Compile Include="IO\QuotedString.cs" />
     <Compile Include="IO\ReportProgressStream.cs" />
+    <Compile Include="IO\Sources\MostRecentStreamSource.cs" />
     <Compile Include="IO\Sources\ResourceStreamSource.cs" />
+    <Compile Include="IO\Sources\ShieldingStreamSource.cs" />
+    <Compile Include="IO\Sources\TimestampShieldingStreamSource.cs" />
     <Compile Include="IO\StreamComparer.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
