@@ -229,6 +229,8 @@
     <Compile Include="IO\Sources\MostRecentStreamSource.cs" />
     <Compile Include="IO\Sources\ResourceStreamSource.cs" />
     <Compile Include="IO\Sources\ShieldingStreamSource.cs" />
+    <Compile Include="IO\Sources\StorageEntry.cs" />
+    <Compile Include="IO\Sources\StreamStore.cs" />
     <Compile Include="IO\Sources\TimestampShieldingStreamSource.cs" />
     <Compile Include="IO\StreamComparer.cs" />
     <Compile Include="ITransformation.cs" />
