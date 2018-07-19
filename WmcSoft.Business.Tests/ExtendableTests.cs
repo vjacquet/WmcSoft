@@ -14,24 +14,24 @@ namespace WmcSoft.Business
 
         public class Kernel : IExtendable<IKernelExtension>
         {
-            private readonly IKernelExtension[] _extensions;
+            private readonly IKernelExtension[] extensions;
 
             public Kernel(params IKernelExtension[] extensions)
             {
                 if (extensions == null) {
-                    _extensions = new IKernelExtension[0];
+                    this.extensions = new IKernelExtension[0];
                 } else {
                     var types = new HashSet<Type>();
                     foreach (var extension in extensions) {
                         if (extension == null) throw new ArgumentException();
                         if (!types.Add(extension.GetType())) throw new ArgumentException();
                     }
-                    _extensions = extensions;
+                    this.extensions = extensions;
                 }
             }
 
             public IEnumerable<IKernelExtension> Extensions {
-                get { return _extensions; }
+                get { return extensions; }
             }
 
             public TExtension FindExtension<TExtension>()

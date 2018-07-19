@@ -7,16 +7,16 @@ namespace WmcSoft.Business
     {
         class AddItemFilter<T> : IFilter<List<T>>
         {
-            private readonly T _item;
+            private readonly T item;
 
             public AddItemFilter(T item)
             {
-                _item = item;
+                this.item = item;
             }
 
             public void OnExecuting(List<T> context)
             {
-                context.Add(_item);
+                context.Add(item);
             }
 
             public void OnExecuted(List<T> context)
