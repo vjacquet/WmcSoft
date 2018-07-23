@@ -35,11 +35,77 @@ namespace WmcSoft.IO.Sources
     /// </summary>
     public class TraceStreamSource : IStreamSource
     {
+        #region Tracing strategies
+
+        interface ITracingStrategy
+        {
+            void TraceInformation(string format, params object[] args);
+            void TraceWarning(string format, params object[] args);
+            void TraceError(string format, params object[] args);
+        }
+
+        class TraceStrategy : ITracingStrategy
+        {
+            public void TraceError(string format, params object[] args)
+            {
+                Trace.TraceError(format, args);
+            }
+
+            public void TraceInformation(string format, params object[] args)
+            {
+                Trace.TraceInformation(format, args);
+            }
+
+            public void TraceWarning(string format, params object[] args)
+            {
+                Trace.TraceWarning(format, args);
+            }
+        }
+
+        class TraceSourceStrategy : ITracingStrategy
+        {
+            private readonly TraceSource traceSource;
+
+            public TraceSourceStrategy(TraceSource traceSource)
+            {
+                this.traceSource = traceSource;
+            }
+
+            public void TraceError(string format, params object[] args)
+            {
+                traceSource.TraceEvent(TraceEventType.Error, 0, format, args);
+            }
+
+            public void TraceInformation(string format, params object[] args)
+            {
+                traceSource.TraceEvent(TraceEventType.Information, 0, format, args);
+            }
+
+            public void TraceWarning(string format, params object[] args)
+            {
+                traceSource.TraceEvent(TraceEventType.Warning, 0, format, args);
+            }
+        }
+
+        #endregion
+
+        private readonly ITracingStrategy strategy;
         private readonly IStreamSource underlying;
         private readonly string preambule;
 
         public TraceStreamSource(IStreamSource underlying, string preambule = null)
+            : this(new TraceStrategy(), underlying, preambule)
         {
+        }
+
+        public TraceStreamSource(TraceSource traceSource, IStreamSource underlying, string preambule = null)
+            : this(new TraceSourceStrategy(traceSource), underlying, preambule)
+        {
+        }
+
+        private TraceStreamSource(ITracingStrategy strategy, IStreamSource underlying, string preambule = null)
+        {
+            this.strategy = strategy;
             this.underlying = underlying;
             this.preambule = preambule == null ? "" : (preambule + ": ");
         }
@@ -55,13 +121,13 @@ namespace WmcSoft.IO.Sources
                 var result = underlying.GetStream();
 
                 if (result != null) {
-                    Trace.TraceInformation(preambule + "Open stream from source {0}.", underlying);
+                    strategy.TraceInformation(preambule + "Open stream from source {0}.", underlying);
                 } else {
-                    Trace.TraceWarning(preambule + "Did not open stream from source {0}.", underlying);
+                    strategy.TraceWarning(preambule + "Did not open stream from source {0}.", underlying);
                 }
                 return result;
             } catch (Exception e) {
-                Trace.TraceError(preambule + "Failed to open stream from source {0}: {1}", underlying, e);
+                strategy.TraceError(preambule + "Failed to open stream from source {0}: {1}", underlying, e);
                 throw;
             }
         }
