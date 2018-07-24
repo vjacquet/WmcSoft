@@ -35,28 +35,27 @@ namespace WmcSoft.Diagnostics
     /// <remarks>The duration is printed to the trace listeners in the <see cref="Debug.Listeners"/> collection.</remarks>
     public struct DebugBench : IDisposable
     {
-        private readonly string _scopeName;
-        private Stopwatch _stopwatch;
+        private readonly string scopeName;
+        private Stopwatch stopwatch;
 
         public DebugBench(string scopeName)
         {
-            _scopeName = scopeName;
-            _stopwatch = null;
+            this.scopeName = scopeName;
+            stopwatch = null;
             Start();
         }
 
         [Conditional("DEBUG")]
         private void Start()
         {
-            _stopwatch = new Stopwatch();
-            _stopwatch.Start();
+            stopwatch = Stopwatch.StartNew();
         }
 
         [Conditional("DEBUG")]
         private void Stop()
         {
-            _stopwatch.Stop();
-            Debug.WriteLine("{0} took {1}ms", _scopeName, _stopwatch.Elapsed.TotalMilliseconds);
+            stopwatch.Stop();
+            Debug.WriteLine("{0} took {1}ms", scopeName, stopwatch.Elapsed.TotalMilliseconds);
         }
 
         public void Dispose()

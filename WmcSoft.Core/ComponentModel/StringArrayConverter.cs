@@ -52,9 +52,7 @@ namespace WmcSoft.ComponentModel
             if (converted == null)
                 return null;
 
-            if (culture == null)
-                culture = CultureInfo.CurrentCulture;
-            var separator = culture.TextInfo.ListSeparator;
+            var separator = GetListSeparator(culture);
             return converted.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
         }
 
@@ -68,14 +66,17 @@ namespace WmcSoft.ComponentModel
             if (destinationType == typeof(string)) {
                 var array = value as string[];
                 if (array != null) {
-                    if (culture == null)
-                        culture = CultureInfo.CurrentCulture;
-                    var separator = culture.TextInfo.ListSeparator;
+                    var separator = GetListSeparator(culture);
                     value = string.Join(separator, array);
                 }
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
+        }
+
+        static string GetListSeparator(CultureInfo culture)
+        {
+            return (culture ?? CultureInfo.CurrentCulture).TextInfo.ListSeparator;
         }
     }
 }

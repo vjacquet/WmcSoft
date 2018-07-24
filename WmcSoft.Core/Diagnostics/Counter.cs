@@ -39,7 +39,7 @@ namespace WmcSoft.Diagnostics
     {
         static readonly Comparer<int> comparer = Comparer<int>.Default;
 
-        int _count;
+        int count;
 
         /// <summary>
         /// Construct a new counter.
@@ -63,13 +63,13 @@ namespace WmcSoft.Diagnostics
         /// </summary>
         public void Increment()
         {
-            Interlocked.Increment(ref _count);
+            Interlocked.Increment(ref count);
         }
 
         /// <summary>
         /// Number of increments since creation.
         /// </summary>
-        public int Tally => _count;
+        public int Tally => count;
 
         /// <summary>
         /// Resets the counter.
@@ -77,7 +77,7 @@ namespace WmcSoft.Diagnostics
         /// <returns>Returns the tally before the reset.</returns>
         public int Reset()
         {
-            return Interlocked.Exchange(ref _count, 0);
+            return Interlocked.Exchange(ref count, 0);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace WmcSoft.Diagnostics
         /// <returns>A string that represents the current counter.</returns>
         public override string ToString()
         {
-            return _count + " (" + Name + ')';
+            return count + " (" + Name + ')';
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace WmcSoft.Diagnostics
             if (other == null)
                 return 1;
 
-            var result = comparer.Compare(_count, other._count);
+            var result = comparer.Compare(count, other.count);
             if (result == 0)
                 return StringComparer.InvariantCulture.Compare(Name, other.Name);
             return result;
