@@ -183,7 +183,8 @@ namespace WmcSoft
         /// <remarks>Found at <http://stackoverflow.com/questions/1004698/how-to-truncate-milliseconds-off-of-a-net-datetime>.</remarks>
         public static DateTime Truncate(this DateTime date, long resolution)
         {
-            return new DateTime(date.Ticks - (date.Ticks % resolution), date.Kind);
+            var ticks = date.Ticks;
+            return new DateTime(ticks - (ticks % resolution), date.Kind);
         }
     }
 }

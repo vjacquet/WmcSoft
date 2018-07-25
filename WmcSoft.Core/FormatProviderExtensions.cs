@@ -59,7 +59,7 @@ namespace WmcSoft
                 var cultureProvider = formatProvider as CultureInfo ?? CultureInfo.CurrentCulture;
                 return (T)(object)cultureProvider.Calendar;
             }
-            return default(T);
+            return default;
         }
     }
 }

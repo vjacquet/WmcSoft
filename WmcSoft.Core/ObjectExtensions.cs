@@ -34,16 +34,44 @@ namespace WmcSoft
     {
         #region ConvertTo
 
+        /// <summary>
+        /// Converts the given value object to the specified type, using the arguments.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> to convert the value parameter to.</typeparam>
+        /// <param name="value">The <see cref="object"/> to convert.</param>
+        /// <returns>An <see cref="object"/> that represents the converted value.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> is <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
+        /// <remarks>This method eagerly tries to convert the value.</remarks>
         public static T ConvertTo<T>(this object value)
         {
             return (T)ConvertTo(value, typeof(T));
         }
 
+        /// <summary>
+        /// Converts the given value object to the specified type, using the arguments.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> to convert the value parameter to.</typeparam>
+        /// <param name="value">The <see cref="object"/> to convert.</param>
+        /// <param name="culture">A <see cref="CultureInfo"/>. If <c>null</c> is passed, the current culture is assumed.</param>
+        /// <returns>An <see cref="object"/> that represents the converted value.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> is <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
+        /// <remarks>This method eagerly tries to convert the value.</remarks>
         public static T ConvertTo<T>(this object value, CultureInfo culture)
         {
             return (T)ConvertTo(value, typeof(T), culture);
         }
 
+        /// <summary>
+        /// Converts the given value object to the specified type, using the arguments.
+        /// </summary>
+        /// <param name="value">The <see cref="object"/> to convert.</param>
+        /// <param name="destinationType">The <see cref="Type"/> to convert the value parameter to.</param>
+        /// <returns>An <see cref="object"/> that represents the converted value.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="destinationType"/> is <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
+        /// <remarks>This method eagerly tries to convert the value.</remarks>
         public static object ConvertTo(this object value, Type destinationType)
         {
             return ConvertTo(value, destinationType, CultureInfo.CurrentCulture);

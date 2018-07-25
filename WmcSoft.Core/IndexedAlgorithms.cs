@@ -574,8 +574,8 @@ namespace WmcSoft
 
         #region KeyIndexCountingSort
 
-        static void UnguardedKeyIndexCountingSort<T, TCounter>(IList<T> source, Func<T, int> keySelector, TCounter counters)
-            where TCounter : IList<int>
+        static void UnguardedKeyIndexCountingSort<T, TCounters>(IList<T> source, Func<T, int> keySelector, TCounters counters)
+            where TCounters : IList<int>
         {
             var length = source.Count;
             var aux = new T[length];
