@@ -119,8 +119,6 @@ namespace WmcSoft.Collections.Specialized
         private const int DefaultCapacity = 4;
 
         private T[] _storage;
-        //private int _count;
-        //private int _gapIndex;
 
         private int _gapStartIndex;
         private int _gapEndIndex;
@@ -315,7 +313,7 @@ namespace WmcSoft.Collections.Specialized
         public void RemoveAt(int index) {
             Seek(index + 1); // seek increment the version
             _gapStartIndex--;
-            _storage[_gapStartIndex] = default(T); // no loitering
+            _storage[_gapStartIndex] = default; // no loitering
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

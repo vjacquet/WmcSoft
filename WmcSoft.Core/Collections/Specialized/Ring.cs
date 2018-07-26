@@ -163,7 +163,7 @@ namespace WmcSoft.Collections.Specialized
             if (_count == 0) throw new InvalidOperationException();
 
             var result = _array[_head];
-            _array[_head] = default(T);
+            _array[_head] = default;
             _head = (_head + 1) % _array.Length;
             _count--;
             _version++;

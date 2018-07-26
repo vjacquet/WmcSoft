@@ -74,7 +74,7 @@ namespace WmcSoft.Collections.Specialized
             try {
                 _reverse.Add(value, key);
             } catch (Exception) {
-                _index.Remove(key);
+                _index.Remove(key); // rollback insertion
                 throw;
             }
         }
@@ -256,7 +256,7 @@ namespace WmcSoft.Collections.Specialized
             try {
                 _reverse.Add(value, key);
             } catch (Exception) {
-                _index.Remove(key);
+                _index.Remove(key); // rollback insertion
                 throw;
             }
         }
