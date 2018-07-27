@@ -31,8 +31,17 @@ namespace WmcSoft.Collections
     /// </summary>
     public enum DuplicatePolicy
     {
+        /// <summary>
+        /// Throws an exception when attempting to add a duplicate.
+        /// </summary>
         ThrowException = 0,
+        /// <summary>
+        /// Preserve the first inserted element.
+        /// </summary>
         KeepFirst,
+        /// <summary>
+        /// Each insertion of duplicate value override the previous one.
+        /// </summary>
         KeepLast,
     }
 }

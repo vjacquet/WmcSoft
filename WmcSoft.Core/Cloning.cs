@@ -33,6 +33,10 @@ using Cloner = System.Runtime.Serialization.Formatters.Binary.BinaryFormatter;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Defines markers and extensions to help cloing items.
+    /// This is a static class.
+    /// </summary>
     public static class Cloning
     {
         #region Markers

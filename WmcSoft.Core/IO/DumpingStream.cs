@@ -29,7 +29,6 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
-
     /// <summary>
     /// Dumps the data read into another stream.
     /// </summary>
