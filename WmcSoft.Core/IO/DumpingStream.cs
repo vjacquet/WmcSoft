@@ -34,61 +34,49 @@ namespace WmcSoft.IO
     /// </summary>
     public class DumpingStream : Stream
     {
-        readonly Stream _stream;
-        readonly Stream _dump;
+        private readonly Stream underlying;
+        private readonly Stream dump;
 
         public DumpingStream(Stream stream, Stream dump)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             if (dump == null) throw new ArgumentNullException(nameof(dump));
 
-            _stream = stream;
-            _dump = dump;
+            underlying = stream;
+            this.dump = dump;
         }
 
         public override void Close()
         {
-            _dump.Close();
-            _stream.Close();
+            dump.Close();
+            underlying.Close();
             base.Close();
         }
 
-        public override bool CanRead {
-            get { return _stream.CanRead; }
-        }
+        public override bool CanRead => underlying.CanRead;
 
-        public override bool CanSeek {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
-        public override bool CanWrite {
-            get { return false; }
-        }
+        public override bool CanWrite => false;
 
         public override void Flush()
         {
-            _dump.Flush();
+            dump.Flush();
         }
 
         public override long Length {
-            get {
-                throw new NotSupportedException();
-            }
+            get { throw new NotSupportedException(); }
         }
 
         public override long Position {
-            get {
-                throw new NotSupportedException();
-            }
-            set {
-                throw new NotSupportedException();
-            }
+            get { throw new NotSupportedException(); }
+            set { throw new NotSupportedException(); }
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int readCount = _stream.Read(buffer, offset, count);
-            _dump.Write(buffer, offset, readCount);
+            int readCount = underlying.Read(buffer, offset, count);
+            dump.Write(buffer, offset, readCount);
             return readCount;
         }
 
