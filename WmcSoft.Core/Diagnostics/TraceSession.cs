@@ -45,9 +45,9 @@ namespace WmcSoft.Diagnostics
 
         #region Private fields
 
-        readonly Stopwatch _stopwatch = new Stopwatch();
-        Action _onDispose;
-        Action<string> _tracer;
+        private readonly Stopwatch stopwatch = new Stopwatch();
+        private Action disposer;
+        private Action<string> tracer;
 
         #endregion
 
@@ -58,19 +58,19 @@ namespace WmcSoft.Diagnostics
             Trace.CorrelationManager.ActivityId = Guid.NewGuid();
             Trace.CorrelationManager.StartLogicalOperation();
 
-            _onDispose = () => {
-                _tracer(String.Format(Conclusion, _stopwatch.ElapsedMilliseconds));
+            disposer = () => {
+                tracer(string.Format(Conclusion, stopwatch.ElapsedMilliseconds));
                 Trace.CorrelationManager.StopLogicalOperation();
             };
 
             if (traceSource == null)
-                _tracer = (s) => Trace.WriteLine(s);
+                tracer = (s) => Trace.WriteLine(s);
             else
-                _tracer = (s) => traceSource.TraceInformation(s);
+                tracer = (s) => traceSource.TraceInformation(s);
 
-            _tracer(String.Format(Preambule, name, version));
+            tracer(String.Format(Preambule, name, version));
 
-            _stopwatch.Start();
+            stopwatch.Start();
         }
 
         public TraceSession(TraceSource traceSource, Type type)
@@ -101,7 +101,6 @@ namespace WmcSoft.Diagnostics
         {
         }
 
-
         public TraceSession(Type type)
             : this(null, type)
         {
@@ -113,10 +112,10 @@ namespace WmcSoft.Diagnostics
 
         public void Dispose()
         {
-            var action = Interlocked.Exchange(ref _onDispose, null);
+            var action = Interlocked.Exchange(ref disposer, null);
             Debug.Assert(action != null, "Dispose must be called once.");
             action();
-            _tracer = null;
+            tracer = null;
             GC.SuppressFinalize(this);
         }
 
