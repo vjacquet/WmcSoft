@@ -6,5 +6,4 @@
         int MinimumLevel { get; }
         bool Verify(int level);
     }
-
 }

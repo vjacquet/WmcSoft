@@ -31,6 +31,10 @@ using System.Globalization;
 
 namespace WmcSoft.Configuration
 {
+    /// <summary>
+    /// Converts between a string and the standard infinite or integer value.
+    /// <c>null</c> or empty strings converts to <c>null</c>.
+    /// </summary>
     public sealed class InfiniteNullableIntConverter : ConfigurationConverterBase
     {
         private readonly InfiniteIntConverter _converter;
