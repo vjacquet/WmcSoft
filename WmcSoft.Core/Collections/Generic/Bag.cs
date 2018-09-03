@@ -67,7 +67,7 @@ namespace WmcSoft.Collections.Generic
                 _storage = storage;
                 _index = _bag.Count; // enumerates downward.
                 _version = bag._version;
-                _current = default(T);
+                _current = default;
             }
 
             public void Dispose()
@@ -88,17 +88,17 @@ namespace WmcSoft.Collections.Generic
                 if (_version != _bag._version)
                     throw new InvalidOperationException();
                 _index = -1;
-                _current = default(T);
+                _current = default;
                 return false;
             }
 
-            public T Current { get { return _current; } }
+            public T Current => _current;
 
             object IEnumerator.Current {
                 get {
                     if (_index < 0 | _index >= _bag.Count)
                         throw new InvalidOperationException();
-                    return Current;
+                    return _current;
                 }
             }
 
@@ -107,7 +107,7 @@ namespace WmcSoft.Collections.Generic
                 if (_version != _bag._version)
                     throw new InvalidOperationException();
                 _index = 0;
-                _current = default(T);
+                _current = default;
             }
         }
 
