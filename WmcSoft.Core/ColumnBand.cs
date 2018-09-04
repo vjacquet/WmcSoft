@@ -97,7 +97,7 @@ namespace WmcSoft
 
         public T this[int index] {
             get => storage[index, n];
-            set => storage[index, n] = value;
+            //set => storage[index, n] = value;
         }
 
         public int Count => storage.GetLength(0);
