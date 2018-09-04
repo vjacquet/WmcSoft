@@ -198,6 +198,7 @@
     <Compile Include="Collections\Graphs\TopologicalAlgorithm.cs" />
     <Compile Include="Collections\Graphs\WeightedDigraph.cs" />
     <Compile Include="Collections\Graphs\WeightedGraph.cs" />
+    <Compile Include="ColumnBand.cs" />
     <Compile Include="ComponentModel\Design\Serialization\InstanceDescriptorExtensions.cs" />
     <Compile Include="ComponentModel\StringArrayConverter.cs" />
     <Compile Include="ConvertibleExtensions.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="IO\Sources\StorageEntry.cs" />
     <Compile Include="IO\Sources\StreamStore.cs" />
     <Compile Include="IO\Sources\TimestampShieldingStreamSource.cs" />
+    <Compile Include="IO\Sources\TraceStreamSource.cs" />
     <Compile Include="IO\StreamComparer.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
@@ -242,6 +244,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="OrdinalSet.cs" />
+    <Compile Include="RowBand.cs" />
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Security\Cryptography\CRC32.cs" />
     <Compile Include="Security\Cryptography\CRC32Managed.cs" />

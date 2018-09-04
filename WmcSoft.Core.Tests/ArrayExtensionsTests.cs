@@ -30,6 +30,21 @@ namespace WmcSoft
         }
 
         [Fact]
+        public void CanEnumerateColumn()
+        {
+            var array = new[,] {
+               { 1, 2, 3},
+               { 4, 5, 6},
+            };
+            var expected = new[] { 2, 5 };
+            var column = new ColumnBand<int>(array, 1);
+            Assert.Equal(2, column.Count);
+            Assert.Equal(5, column[1]);
+            var actual = column.ToArray();
+            Assert.True(expected.SequenceEqual(actual));
+        }
+
+        [Fact]
         public void CanGetRow()
         {
             var array = new[,] {
@@ -38,6 +53,21 @@ namespace WmcSoft
             };
             var expected = new[] { 4, 5, 6 };
             var actual = array.GetRow(1).ToArray();
+            Assert.True(expected.SequenceEqual(actual));
+        }
+
+        [Fact]
+        public void CanEnumerateRow()
+        {
+            var array = new[,] {
+               { 1, 2, 3},
+               { 4, 5, 6},
+            };
+            var expected = new[] { 4, 5, 6 };
+            var row = new RowBand<int>(array, 1);
+            Assert.Equal(3, row.Count);
+            Assert.Equal(5, row[1]);
+            var actual = row.ToArray();
             Assert.True(expected.SequenceEqual(actual));
         }
 
