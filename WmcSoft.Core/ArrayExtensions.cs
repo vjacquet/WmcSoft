@@ -237,14 +237,11 @@ namespace WmcSoft
         /// </summary>
         /// <typeparam name="T">The type of elements.</typeparam>
         /// <param name="array">The two-dimensional array.</param>
-        /// <param name="column">The column.</param>
+        /// <param name="column">The column index.</param>
         /// <returns>The values in the <paramref name="column"/> of the <paramref name="array"/>.</returns>
-        public static IEnumerable<T> GetColumn<T>(this T[,] array, int column)
+        public static ColumnBand<T> GetColumn<T>(this T[,] array, int column)
         {
-            var rows = array.GetLength(0);
-            for (var i = 0; i < rows; i++) {
-                yield return array[i, column];
-            }
+            return new ColumnBand<T>(array, column);
         }
 
         /// <summary>
@@ -252,14 +249,11 @@ namespace WmcSoft
         /// </summary>
         /// <typeparam name="T">The type of elements.</typeparam>
         /// <param name="array">The two-dimensional array.</param>
-        /// <param name=""">The ".</param>
+        /// <param name="row">The row index.</param>
         /// <returns>The values in the <paramref name="""/> of the <paramref name="array"/>.</returns>
-        public static IEnumerable<T> GetRow<T>(this T[,] array, int row)
+        public static RowBand<T> GetRow<T>(this T[,] array, int row)
         {
-            var columns = array.GetLength(1);
-            for (var j = 0; j < columns; j++) {
-                yield return array[row, j];
-            }
+            return new RowBand<T>(array, row);
         }
 
         /// <summary>
