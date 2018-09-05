@@ -222,6 +222,7 @@
     <Compile Include="IO\Sources\IBatch.cs" />
     <Compile Include="IO\IQuotedString.cs" />
     <Compile Include="IO\IReadOnlyCsvWriterSettings.cs" />
+    <Compile Include="IO\Sources\InMemoryStreamStore.cs" />
     <Compile Include="IO\Sources\ITimestampStreamSource.cs" />
     <Compile Include="IO\NativeMethods.cs" />
     <Compile Include="IO\PathInfo.cs" />
