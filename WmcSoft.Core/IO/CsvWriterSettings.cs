@@ -75,14 +75,9 @@ namespace WmcSoft.IO
         public string NewLineChars { get; set; }
         public IFormatProvider FormatProvider { get; set; }
 
-        public CsvWriterSettings Clone()
-        {
-            return (CsvWriterSettings)MemberwiseClone();
-        }
-
         object ICloneable.Clone()
         {
-            return Clone();
+            return MemberwiseClone();
         }
     }
 }
