@@ -36,8 +36,8 @@ namespace WmcSoft.IO
     {
         #region Fields
 
-        private Stream _master;
-        private Stream _mirror;
+        private readonly Stream _master;
+        private readonly Stream _mirror;
 
         #endregion
 
@@ -63,30 +63,20 @@ namespace WmcSoft.IO
 
         #region Info class Methods & Properties
 
-        public override bool CanRead {
-            get { return _master.CanRead; }
-        }
+        public override bool CanRead => _master.CanRead;
 
-        public override bool CanSeek {
-            get { return _master.CanSeek; }
-        }
+        public override bool CanSeek => _master.CanSeek;
 
-        public override bool CanWrite {
-            get { return _master.CanWrite; }
-        }
+        public override bool CanWrite => _master.CanWrite;
 
-        public override long Length {
-            get { return _master.Length; }
-        }
+        public override long Length => _master.Length;
 
         public override long Position {
-            get { return _master.Position; }
-            set { _master.Position = value; }
+            get => _master.Position;
+            set => _master.Position = value;
         }
 
-        public override bool CanTimeout {
-            get { return _master.CanTimeout; }
-        }
+        public override bool CanTimeout => _master.CanTimeout;
 
         #endregion
 
@@ -137,16 +127,17 @@ namespace WmcSoft.IO
         }
 
         public override int ReadTimeout {
-            get { return _master.ReadTimeout; }
-            set { _master.ReadTimeout = value; }
+            get => _master.ReadTimeout;
+            set => _master.ReadTimeout = value;
         }
+
         #endregion
 
         #region Write Methods & Properties
 
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
-            IAsyncResult retVal = _master.BeginWrite(buffer, offset, count, callback, state);
+            var retVal = _master.BeginWrite(buffer, offset, count, callback, state);
 
             _mirror.Write(buffer, offset, count);
             _mirror.Flush();
@@ -179,12 +170,8 @@ namespace WmcSoft.IO
         }
 
         public override int WriteTimeout {
-            get {
-                return _master.WriteTimeout;
-            }
-            set {
-                _master.WriteTimeout = value;
-            }
+            get => _master.WriteTimeout;
+            set => _master.WriteTimeout = value;
         }
 
         #endregion
