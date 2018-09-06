@@ -95,10 +95,8 @@ namespace WmcSoft.IO
 
             if (_mirror.CanSeek)
                 _mirror.Seek(read, SeekOrigin.Current);
-            else {
-                byte[] temporaryBuffer = new byte[read];
-                _mirror.Read(temporaryBuffer, 0, read);
-            }
+            else
+                _mirror.Read(new byte[read], 0, read);
 
             return read;
         }
@@ -109,10 +107,8 @@ namespace WmcSoft.IO
 
             if (_mirror.CanSeek)
                 _mirror.Seek(read, SeekOrigin.Current);
-            else {
-                byte[] temporaryBuffer = new byte[read];
-                _mirror.Read(temporaryBuffer, 0, read);
-            }
+            else
+                _mirror.Read(new byte[read], 0, read);
 
             return read;
         }
