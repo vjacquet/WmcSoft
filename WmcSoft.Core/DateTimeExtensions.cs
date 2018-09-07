@@ -81,7 +81,7 @@ namespace WmcSoft
         public static int WeekOfMonth(this DateTime date)
         {
             int day = date.Day;
-            int dayOfWeek = (int)(new DateTime(date.Year, date.Month, 1)).DayOfWeek;
+            int dayOfWeek = (int)FirstDayOfMonth(date).DayOfWeek;
             return Math.DivRem(6 + day + dayOfWeek, 7, out int reminder);
         }
 
@@ -92,7 +92,7 @@ namespace WmcSoft
         /// <returns>The first day of the month</returns>
         public static DateTime FirstDayOfMonth(this DateTime date)
         {
-            return new DateTime(date.Year, date.Month, 1);
+            return new DateTime(date.Year, date.Month, 1, 0, 0, 0, date.Kind);
         }
 
         /// <summary>
@@ -120,9 +120,7 @@ namespace WmcSoft
         static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider)
         {
             var dateTimeFormatInfo = formatProvider.GetFormat<DateTimeFormatInfo>();
-            var firstDayOfWeek = dateTimeFormatInfo.FirstDayOfWeek;
-            var dayOfWeek = date.DayOfWeek;
-            var delta = firstDayOfWeek - dayOfWeek;
+            var delta = dateTimeFormatInfo.FirstDayOfWeek - date.DayOfWeek;
             if (delta > 0)
                 delta -= 7;
             return date.Date.AddDays(delta);
@@ -164,10 +162,9 @@ namespace WmcSoft
             // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll
             // be the same week# as whatever Thursday, Friday or Saturday are,
             // and we always get those right
-            DayOfWeek day = cal.GetDayOfWeek(date);
-            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday) {
+            var day = cal.GetDayOfWeek(date);
+            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
                 date = date.AddDays(3);
-            }
 
             // Return the week of our adjusted day
             return cal.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
