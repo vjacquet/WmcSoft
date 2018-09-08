@@ -127,7 +127,7 @@ namespace WmcSoft
             var year = date.Year;
             var month = date.Month;
             var firstDayOfMonth = new DateTime(year, month, 1, 0, 0, 0, date.Kind);
-            var lastDayOfMonth = new DateTime(year, month, DateTime.DaysInMonth(year, month), 0, 0, 0, date.Kind);
+            var lastDayOfMonth = firstDayOfMonth.AddDays(DateTime.DaysInMonth(year, month) - 1);
             return (firstDayOfMonth, lastDayOfMonth);
         }
 
