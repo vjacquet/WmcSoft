@@ -114,7 +114,21 @@ namespace WmcSoft
         {
             var year = date.Year;
             var month = date.Month;
-            return new DateTime(year, month, DateTime.DaysInMonth(year, month));
+            return new DateTime(year, month, DateTime.DaysInMonth(year, month), 0, 0, 0, date.Kind);
+        }
+
+        /// <summary>
+        /// Gets the first and last day of the month of the date represented by this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>The first and last day of the month</returns>
+        public static (DateTime firstDayOfMonth, DateTime lastDayOfMonth) GetMonth(this DateTime date)
+        {
+            var year = date.Year;
+            var month = date.Month;
+            var firstDayOfMonth = new DateTime(year, month, 1, 0, 0, 0, date.Kind);
+            var lastDayOfMonth = new DateTime(year, month, DateTime.DaysInMonth(year, month), 0, 0, 0, date.Kind);
+            return (firstDayOfMonth, lastDayOfMonth);
         }
 
         static DateTime UnguardedFirstDayOfWeek(DateTime date, IFormatProvider formatProvider)
@@ -147,6 +161,39 @@ namespace WmcSoft
         {
             return UnguardedFirstDayOfWeek(date, formatProvider ?? CultureInfo.CurrentCulture)
                 .AddDays(6);
+        }
+
+        /// <summary>
+        /// Gets the nth day of the month of this instance.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <param name="n">the nth day</param>
+        /// <param name="dayOfWeek">the day of the week</param>
+        /// <returns>Returns the nth day of the week.</returns>
+        /// <remarks>If <paramref name="n"/> is less than zero, then the count starts from then end of the month.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="n"/> is either zero or too big to have a result in the same month.</exception>
+        public static DateTime NthDayOfMonth(this DateTime date, int n, DayOfWeek dayOfWeek)
+        {
+            if (n > 0) {
+                var (f, l) = date.GetMonth();
+                var days = dayOfWeek - f.DayOfWeek;
+                if (days < 0)
+                    days += 7;
+                days += 7 * (n - 1);
+                var result = f.AddDays(days);
+                if (result <= l)
+                    return result;
+            } else if (n < 0) {
+                var (f, l) = date.GetMonth();
+                var days = dayOfWeek - l.DayOfWeek;
+                if (days > 0)
+                    days -= 7;
+                days += 7 * (n + 1);
+                var result = l.AddDays(days);
+                if (result >= f)
+                    return result;
+            }
+            throw new ArgumentOutOfRangeException(nameof(n));
         }
 
         /// <summary>
