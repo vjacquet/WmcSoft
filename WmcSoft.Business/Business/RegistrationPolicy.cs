@@ -25,14 +25,23 @@
 #endregion
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WmcSoft.Business
 {
     public enum RegistrationPolicy
     {
         [RM.Description("RegistrationPolicy.Optional")]
+        [Display(ResourceType = typeof(RegistrationPolicyResources), Name = nameof(RegistrationPolicyResources.Optional))]
         Optional,
         [RM.Description("RegistrationPolicy.Mandatory")]
+        [Display(ResourceType = typeof(RegistrationPolicyResources), Name = nameof(RegistrationPolicyResources.Mandatory))]
         Mandatory
+    }
+
+    public static class RegistrationPolicyResources
+    {
+        public static string Optional => RM.GetString("RegistrationPolicy.Optional");
+        public static string Mandatory => RM.GetString("RegistrationPolicy.Mandatory");
     }
 }
