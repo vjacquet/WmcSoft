@@ -59,13 +59,15 @@ namespace WmcSoft
         /// <returns>The factorial sequence.</returns>
         public static IEnumerable<BigInteger> Factorial()
         {
-            var i = 1;
-            var result = BigInteger.One;
+            yield return BigInteger.One;
+            yield return BigInteger.One;
 
-            yield return result; // 0!
+            var i = 2;
+            var result = BigInteger.One;
             while (true) {
+                result *= i;
                 yield return result;
-                result *= ++i;
+                i++;
             }
         }
 

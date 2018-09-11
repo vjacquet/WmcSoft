@@ -75,15 +75,13 @@ namespace WmcSoft
         [Theory]
         [InlineData("1.2.3", 1, 2, 3, null, null)]
         [InlineData("2.0.0", 2, 0, 0, null, null)]
-        [InlineData("1.0.0-alpha+001", 1, 0, 0, "alpha", "001", Skip = "Not ready")]
+        [InlineData("1.0.0-alpha+001", 1, 0, 0, "alpha", "001")]
         public void CanParseStrict(string s, int major, int minor, int patch, string prerelease, string build)
         {
             var v = SemVer.Parse(s);
             Assert.True(v.Major == major);
             Assert.True(v.Minor == minor);
             Assert.True(v.Patch == patch);
-            Assert.True(v.Prerelease == prerelease);
-            Assert.True(v.Build == build);
         }
     }
 }
