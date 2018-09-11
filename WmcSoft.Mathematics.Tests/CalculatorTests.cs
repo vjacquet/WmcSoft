@@ -56,6 +56,19 @@ namespace WmcSoft.Tests
                 }
             }
 
+            protected override Expression VisitUnary(UnaryExpression node)
+            {
+                switch(node.NodeType) {
+                case ExpressionType.Negate:
+                    _sb.Append('-');
+                    break;
+                case ExpressionType.UnaryPlus:
+                    break;
+                }
+                Decorate(node.Operand);
+                return node;
+            }
+
             protected override Expression VisitBinary(BinaryExpression node)
             {
                 Decorate(node.Left);
@@ -92,6 +105,20 @@ namespace WmcSoft.Tests
                         Visit(node.Arguments[0]);
                         _sb.Append(')');
                         return node;
+                    case nameof(Pow):
+                        if (node.Arguments[1].NodeType == ExpressionType.Constant && IsInteger((ConstantExpression)node.Arguments[1])) {
+                            Visit(node.Arguments[0]);
+                            _sb.Append('^');
+                            Visit(node.Arguments[1]);
+                        } else {
+                            _sb.Append(node.Method.Name.ToLowerInvariant());
+                            _sb.Append('(');
+                            Visit(node.Arguments[0]);
+                            _sb.Append(',');
+                            Visit(node.Arguments[1]);
+                            _sb.Append(')');
+                        }
+                        return node;
                     }
                 }
                 return base.VisitMethodCall(node);
@@ -101,6 +128,20 @@ namespace WmcSoft.Tests
             {
                 _sb.Append(node.Name);
                 return base.VisitParameter(node);
+            }
+
+            bool IsInteger(ConstantExpression constant)
+            {
+                switch (constant.Value) {
+                case int x:
+                    return true;
+                case float x:
+                    return Abs(x % 1) <= (float.Epsilon * 100);
+                case double x:
+                    return Abs(x % 1) <= (double.Epsilon * 100);
+                default:
+                    return false;
+                }
             }
         }
 
@@ -176,7 +217,6 @@ namespace WmcSoft.Tests
                 case ExpressionType.Subtract:
                     return base.VisitBinary(node);
                 case ExpressionType.Multiply:
-                case ExpressionType.Divide:
                     if (node.Left.NodeType == ExpressionType.Constant) {
                         if (IsOne((ConstantExpression)node.Left))
                             return Visit(node.Right);
@@ -185,8 +225,21 @@ namespace WmcSoft.Tests
                         if (IsOne((ConstantExpression)node.Right))
                             return Visit(node.Left);
                         return Expression.MakeBinary(node.NodeType, node.Right, Visit(node.Left));
+                    } else {
+                        var left = Expression.Multiply(Visit(node.Left), node.Right);
+                        var right = Expression.Multiply(node.Left, Visit(node.Right));
+                        return Expression.Add(left, right);
                     }
-                    break;
+                case ExpressionType.Divide:
+                    if (node.Right.NodeType == ExpressionType.Constant) {
+                        if (IsOne((ConstantExpression)node.Right))
+                            return Visit(node.Left);
+                        return Expression.MakeBinary(node.NodeType, node.Right, Visit(node.Left));
+                    } else {
+                        var left = Expression.Multiply(Visit(node.Left), node.Right);
+                        var right = Expression.Multiply(node.Left, Visit(node.Right));
+                        return Expression.Divide(Expression.Subtract(left, right), Expression.Call(typeof(Math).GetMethod(nameof(Math.Pow)), node.Right, Expression.Constant(2d)));
+                    }
                 }
                 throw new InvalidOperationException();
             }
@@ -226,10 +279,20 @@ namespace WmcSoft.Tests
                         return Expression.Add(left, ((UnaryExpression)right).Operand);
                     return Expression.Subtract(left, right);
                 case ExpressionType.Multiply:
-                    if (left.NodeType == ExpressionType.Constant && IsOne((ConstantExpression)left))
-                        return right;
-                    if (right.NodeType == ExpressionType.Constant && IsOne((ConstantExpression)right))
-                        return left;
+                    if (left.NodeType == ExpressionType.Constant) {
+                        var c = (ConstantExpression)left;
+                        if (IsOne(c))
+                            return right;
+                        if (IsZero(c))
+                            return Expression.Constant(0d);
+                    }
+                    if (right.NodeType == ExpressionType.Constant) {
+                        var c = (ConstantExpression)right;
+                        if (IsOne(c))
+                            return left;
+                        if (IsZero(c))
+                            return Expression.Constant(0d);
+                    }
                     return Expression.Multiply(left, right);
                 case ExpressionType.Divide:
                     if (right.NodeType == ExpressionType.Constant && IsOne((ConstantExpression)right))
@@ -315,6 +378,21 @@ namespace WmcSoft.Tests
         }
 
         [Fact]
+        public void CanDeriveInverseOfLinearExpression()
+        {
+            Expression<Func<double, double>> eq = x => 2 / x;
+            var deriver = new DerivativeVisitor();
+            var simplifier = new SimplifierVisitor();
+
+            var derivative = deriver.Accept(eq);
+            var simplified = simplifier.Visit(derivative.Body);
+
+            var stringifier = new StringifierVisitor();
+            var actual = stringifier.Accept(simplified);
+            Assert.Equal("-2 / x^2", actual);
+        }
+
+        [Fact]
         public void CanDeriveTrigonometricExpression()
         {
             Expression<Func<double, double>> eq = x => Cos(x) + Sin(x);
@@ -327,6 +405,21 @@ namespace WmcSoft.Tests
             var stringifier = new StringifierVisitor();
             var actual = stringifier.Accept(simplified);
             Assert.Equal("sin(x) - cos(x)", actual);
+        }
+
+        [Fact]
+        public void CanDeriveComposedLinearTrigonometricExpression()
+        {
+            Expression<Func<double, double>> eq = x => Cos(2 * x);
+            var deriver = new DerivativeVisitor();
+            var simplifier = new SimplifierVisitor();
+
+            var derivative = deriver.Accept(eq);
+            var simplified = simplifier.Visit(derivative.Body);
+
+            var stringifier = new StringifierVisitor();
+            var actual = stringifier.Accept(simplified);
+            Assert.Equal("2 * sin(2 * x)", actual);
         }
     }
 }

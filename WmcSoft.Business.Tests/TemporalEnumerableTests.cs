@@ -57,6 +57,41 @@ namespace WmcSoft.Business
             new Person { Id=3, Name="Alicia JACQUET", ValidSince = new DateTime(2017, 06, 01)},
         };
 
+        private readonly List<Address> Addresses = new List<Address> {
+            new PostalAddress {
+                Id = 1,
+                Lines = new [] { "221b Baker street"},
+                City = "London",
+            },
+            new PostalAddress {
+                Id = 2,
+                Lines = new [] { "Eiffel tower"},
+                City = "Paris",
+            },
+            new EmailAddress {
+                Id = 3,
+                 Email = "vjacquet@example.com"
+            }
+        };
+
+        static (int Id, string City) Flatten(PostalAddress address)
+        {
+            return (address.Id, address.City);
+        }
+
+        private readonly List<PersonAddress> PersonAddresses = new List<PersonAddress> {
+            new PersonAddress {
+                PersonId = 1,
+                AddressId=1,
+                ValidUntil = new DateTime(2017, 1, 20)
+            },
+            new PersonAddress {
+                PersonId = 1,
+                AddressId=2,
+                ValidSince = new DateTime(2017, 1,20),
+            }
+        };
+
         [Fact]
         public void CanEnumerateTemporalAsOf()
         {
@@ -69,6 +104,49 @@ namespace WmcSoft.Business
             Assert.Equal(new[] { "Sandrine JACQUET", "Vincent JACQUET" }, v3);
         }
 
+        [Fact]
+        public void CanUseLinqSugarWithAsOf()
+        {
+            var query = from p in Persons.AsOf(new DateTime(2017, 02, 15))
+                        where p.Name.StartsWith("Vincent")
+                        select p.Name;
+
+            Assert.Equal(new[] { "Vincent JAQUET" }, query);
+        }
+
+        [Fact]
+        public void CanJoinUsingLinqSugarWithAsOf()
+        {
+            var query = from p in Persons.AsOf(new DateTime(2017, 02, 15))
+                        join pa in PersonAddresses on p.Id equals pa.PersonId
+                        join a in Addresses on pa.AddressId equals a.Id
+                        where p.Name.StartsWith("Vincent")
+                        select p.Name;
+
+            Assert.Equal(new[] { "Vincent JAQUET" }, query);
+        }
+
+        [Fact]
+        public void CanJoinUsingLinqSugarWithAsOfOnAddress()
+        {
+            var query = from p in Persons.AsOf(new DateTime(2017, 02, 15))
+                        join pa in PersonAddresses on p.Id equals pa.PersonId
+                        join a in Addresses.OfType<PostalAddress>() on pa.AddressId equals a.Id
+                        select a.City;
+
+            Assert.Equal(new[] { "Paris" }, query);
+        }
+
+        [Fact]
+        public void CanJoinUsingLinqSugarWithAsOfOnFlattenAddress()
+        {
+            var query = from p in Persons.AsOf(new DateTime(2017, 01, 15))
+                        join pa in PersonAddresses on p.Id equals pa.PersonId
+                        join a in Addresses.OfType<PostalAddress>().Select(Flatten) on pa.AddressId equals a.Id
+                        select a.City;
+
+            Assert.Equal(new[] { "London" }, query);
+        }
 
         [Fact]
         public void CanEnumerateTemporalBetween()
@@ -77,6 +155,5 @@ namespace WmcSoft.Business
 
             Assert.Equal(new[] { "Vincent JAQUET", "Sandrine JACQUET", "Vincent JACQUET" }, actual);
         }
-
     }
 }
