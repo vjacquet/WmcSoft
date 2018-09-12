@@ -131,5 +131,23 @@ namespace WmcSoft.Text
             var s = new Strip(data, 3, 3);
             Assert.Equal(1, s.IndexOf('b'));
         }
+
+        [Theory]
+        [InlineData("abcdef", 'a')]
+        [InlineData("abcdef", 'f')]
+        [InlineData("abcdef", 'c')]
+        [InlineData("abcdef", '>')]
+        public void LastIndexOfBehavesLikeString(string text, char c, int startIndex = -1, int length = -1)
+        {
+            var data = "-->" + text + "<--";
+            var strip = new Strip(data, 3, text.Length);
+            if (startIndex == -1) {
+                Assert.Equal(text.LastIndexOf(c), strip.LastIndexOf(c));
+            } else if (length == -1) {
+
+            } else {
+
+            }
+        }
     }
 }

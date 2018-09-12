@@ -185,22 +185,22 @@ namespace WmcSoft.Text
 
         public int LastIndexOf(char value)
         {
-            return RebaseIndex(_s.LastIndexOf(value, _start, Length));
+            return RebaseIndex(_s.LastIndexOf(value, _end - 1, Length));
         }
 
         public int LastIndexOf(string value)
         {
-            return RebaseIndex(_s.IndexOf(value, _start, Length));
+            return RebaseIndex(_s.IndexOf(value, _end - 1, Length));
         }
 
         public int LastIndexOf(string value, StringComparison comparisonType)
         {
-            return RebaseIndex(_s.IndexOf(value, _start, Length, comparisonType));
+            return RebaseIndex(_s.IndexOf(value, _end - 1, Length, comparisonType));
         }
 
         public int LastIndexOfAny(params char[] anyOf)
         {
-            return RebaseIndex(_s.LastIndexOfAny(anyOf, _start, Length));
+            return RebaseIndex(_s.LastIndexOfAny(anyOf, _end - 1, Length));
         }
 
         public Strip Trim()
@@ -669,9 +669,7 @@ namespace WmcSoft.Text
 
         int RebaseIndex(int index)
         {
-            if (index != -1)
-                return index - _start;
-            return -1;
+            return (index != -1) ? index - _start : -1;
         }
 
         // The following are internal because, for convenience, they are exposed as extensions on StringBuilder
