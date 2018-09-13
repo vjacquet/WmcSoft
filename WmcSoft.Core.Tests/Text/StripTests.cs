@@ -137,6 +137,14 @@ namespace WmcSoft.Text
         [InlineData("abcdef", 'f')]
         [InlineData("abcdef", 'c')]
         [InlineData("abcdef", '>')]
+        [InlineData("abcdef", 'a', 4)]
+        [InlineData("abcdef", 'f', 4)]
+        [InlineData("abcdef", 'c', 4)]
+        [InlineData("abcdef", '>', 4)]
+        [InlineData("abcdef", 'a', 4, 2)]
+        [InlineData("abcdef", 'f', 4, 2)]
+        [InlineData("abcdef", 'c', 4, 2)]
+        [InlineData("abcdef", '>', 4, 2)]
         public void LastIndexOfBehavesLikeString(string text, char c, int startIndex = -1, int length = -1)
         {
             var data = "-->" + text + "<--";
@@ -144,9 +152,9 @@ namespace WmcSoft.Text
             if (startIndex == -1) {
                 Assert.Equal(text.LastIndexOf(c), strip.LastIndexOf(c));
             } else if (length == -1) {
-
+                Assert.Equal(text.LastIndexOf(c, startIndex), strip.LastIndexOf(c, startIndex));
             } else {
-
+                Assert.Equal(text.LastIndexOf(c, startIndex, length), strip.LastIndexOf(c, startIndex, length));
             }
         }
     }
