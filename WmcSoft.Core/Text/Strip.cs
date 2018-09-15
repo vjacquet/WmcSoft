@@ -36,7 +36,7 @@ namespace WmcSoft.Text
     /// <summary>
     /// Represents a lazy substring of a string.
     /// </summary>
-    public sealed class Strip : IEquatable<string>, IComparable<string>, IReadOnlyList<char>, IList<char>, ICloneable
+    public sealed class Strip : IEquatable<string>, IComparable<string>, IReadOnlyList<char>, ICloneable
     {
         #region Public fields
 
@@ -343,7 +343,7 @@ namespace WmcSoft.Text
 
         public bool StartsWith(Strip value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -353,7 +353,7 @@ namespace WmcSoft.Text
 
         public bool StartsWith(Strip value, bool ignoreCase, CultureInfo culture)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -364,7 +364,7 @@ namespace WmcSoft.Text
 
         public bool StartsWith(Strip value, StringComparison comparisonType)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -374,7 +374,7 @@ namespace WmcSoft.Text
 
         public bool StartsWith(string value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -384,7 +384,7 @@ namespace WmcSoft.Text
 
         public bool StartsWith(string value, bool ignoreCase, CultureInfo culture)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -395,7 +395,7 @@ namespace WmcSoft.Text
 
         public bool StartsWith(string value, StringComparison comparisonType)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -405,7 +405,7 @@ namespace WmcSoft.Text
 
         public bool EndsWith(Strip value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -415,7 +415,7 @@ namespace WmcSoft.Text
 
         public bool EndsWith(Strip value, bool ignoreCase, CultureInfo culture)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -426,7 +426,7 @@ namespace WmcSoft.Text
 
         public bool EndsWith(Strip value, StringComparison comparisonType)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -436,7 +436,7 @@ namespace WmcSoft.Text
 
         public bool EndsWith(string value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -446,7 +446,7 @@ namespace WmcSoft.Text
 
         public bool EndsWith(string value, bool ignoreCase, CultureInfo culture)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -457,7 +457,7 @@ namespace WmcSoft.Text
 
         public bool EndsWith(string value, StringComparison comparisonType)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var length = value.Length;
             if (Length < length)
@@ -626,9 +626,7 @@ namespace WmcSoft.Text
 
         #region IReadOnlyList<char> Members
 
-        int IReadOnlyCollection<char>.Count {
-            get { return Length; }
-        }
+        int IReadOnlyCollection<char>.Count => Length;
 
         public char this[int index] {
             get { return s[start + index]; }
@@ -644,62 +642,6 @@ namespace WmcSoft.Text
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        #endregion
-
-        #region IList<char> Members
-
-        int ICollection<char>.Count {
-            get { return Length; }
-        }
-
-        public bool IsReadOnly {
-            get { return true; }
-        }
-
-        char IList<char>.this[int index] {
-            get { return s[start + index]; }
-            set { throw new NotSupportedException(); }
-        }
-
-        public void Insert(int index, char item)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void Add(char item)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void Clear()
-        {
-            throw new NotSupportedException();
-        }
-
-        public bool Contains(char item)
-        {
-            return IndexOf(item) >= 0;
-        }
-
-        public void CopyTo(char[] array, int arrayIndex)
-        {
-            if (array == null) throw new ArgumentNullException("array");
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException("arrayIndex");
-            if ((array.Length - arrayIndex) < Length) throw new ArgumentException("array");
-
-            s.CopyTo(start, array, arrayIndex, Length);
-        }
-
-        public bool Remove(char item)
-        {
-            throw new NotSupportedException();
         }
 
         #endregion
@@ -725,14 +667,14 @@ namespace WmcSoft.Text
 
         internal StringBuilder PrependTo(StringBuilder sb)
         {
-            if (String.IsNullOrEmpty(s) || Length == 0)
+            if (string.IsNullOrEmpty(s) || Length == 0)
                 return sb;
             return sb.Insert(0, s.Substring(start, Length));
         }
 
         internal StringBuilder InsertInto(StringBuilder sb, int index)
         {
-            if (String.IsNullOrEmpty(s) || Length == 0)
+            if (string.IsNullOrEmpty(s) || Length == 0)
                 return sb;
             return sb.Insert(index, s.Substring(start, Length));
         }
