@@ -86,5 +86,18 @@ namespace WmcSoft.Collections.Specialized
             clone.Enqueue(1, "one");
             Assert.Equal(pq, clone);
         }
+
+        [Fact]
+        public void CanChangePriority()
+        {
+            var pq = new IndexedPriorityQueue<decimal>(4);
+            pq.Enqueue(1, 1m);
+            pq.Enqueue(3, 3m);
+            pq.Enqueue(2, 2m);
+            Assert.Equal(3, pq.Count);
+            Assert.Equal(3, pq.Peek());
+            pq.ChangeValue(3, -3m);
+            Assert.Equal(2, pq.Peek());
+        }
     }
 }
