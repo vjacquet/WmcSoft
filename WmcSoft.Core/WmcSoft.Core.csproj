@@ -217,11 +217,13 @@
     <Compile Include="IO\CsvWriter.cs" />
     <Compile Include="IO\CsvWriterSettings.cs" />
     <Compile Include="IO\Sources\CompositeStreamSource.cs" />
+    <Compile Include="IO\Sources\DateTimeSources.cs" />
     <Compile Include="IO\Sources\FailStreamSource.cs" />
     <Compile Include="IO\Sources\FuncStreamSource.cs" />
     <Compile Include="IO\Sources\IBatch.cs" />
     <Compile Include="IO\IQuotedString.cs" />
     <Compile Include="IO\IReadOnlyCsvWriterSettings.cs" />
+    <Compile Include="IO\Sources\IDateTimeSource.cs" />
     <Compile Include="IO\Sources\InMemoryStreamStore.cs" />
     <Compile Include="IO\Sources\ITimestampStreamSource.cs" />
     <Compile Include="IO\NativeMethods.cs" />
