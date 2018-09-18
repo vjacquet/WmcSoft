@@ -137,7 +137,7 @@ namespace WmcSoft.IO.Sources
         /// <remarks>If the stream is not seekable, it is read only once. The stream is not closed.</remarks>
         public virtual bool Store(string name, Stream stream)
         {
-            var capacity = stream.CanSeek ? (int)stream.Length : BufferSize;
+            var capacity = stream.CanSeek ? (int)stream.Length : 4096;
 
             using (var ms = new MemoryStream(capacity))
             using (var algorithm = CreateHashAlgorithm())

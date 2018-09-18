@@ -129,8 +129,6 @@
     <Compile Include="IO\CsvWriterTests.cs" />
     <Compile Include="IO\MockConstrainedStream.cs" />
     <Compile Include="IO\PathInfoTests.cs" />
-    <Compile Include="IO\Sources\InMemoryStreamStoreTests.cs" />
-    <Compile Include="IO\Sources\StreamStoreTests.cs" />
     <Compile Include="IO\StreamComparerTests.cs" />
     <Compile Include="IO\Sources\StreamSourceTests.cs" />
     <Compile Include="IO\SubstringReaderTests.cs" />

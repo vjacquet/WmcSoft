@@ -3,27 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using WmcSoft.Collections.Generic;
-using System.Numerics;
 
 namespace WmcSoft.Tests
 {
     public class GeneratorsTests
     {
-        [Theory]
-        [InlineData(0, "1")]
-        [InlineData(1, "1")]
-        [InlineData(2, "2")]
-        [InlineData(3, "6")]
-        [InlineData(4, "24")]
-        [InlineData(5, "120")]
-        [InlineData(10, "3628800")]
-        [InlineData(15, "1307674368000")]
-        [InlineData(20, "2432902008176640000")]
-        public void CheckFactorial(int n, string factorial)
+        [Fact]
+        public void CheckFactorial()
         {
-            var actual = Generators.Factorial().ElementAt(n);
-            var expected = BigInteger.Parse(factorial);
-            Assert.Equal(expected, actual);
+            var actual = Generators.Factorial().ElementAt(5);
+            Assert.Equal(120, actual);
         }
 
         [Fact]

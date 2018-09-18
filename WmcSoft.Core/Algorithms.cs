@@ -36,6 +36,20 @@ namespace WmcSoft
         #region Primitives
 
         /// <summary>
+        /// Assigns a new value to an element and returns the old one.
+        /// </summary>
+        /// <typeparam name="T">The type of element to assign.</typeparam>
+        /// <param name="obj">The element.</param>
+        /// <param name="value">The new value.</param>
+        /// <returns>The old value.</returns>
+        public static T Exchange<T>(ref T obj, T value)
+        {
+            var t = obj;
+            obj = value;
+            return t;
+        }
+
+        /// <summary>
         /// Returns the value of an element and clears it.
         /// </summary>
         /// <typeparam name="T">The type of element to assign.</typeparam>
@@ -43,12 +57,36 @@ namespace WmcSoft
         /// <returns>The value.</returns>
         public static T Move<T>(ref T obj)
         {
-            // TODO: Remove when all algorithms are moved.
             var moved = obj;
             obj = default;
             return moved;
         }
 
+        /// <summary>
+        /// Swaps two elements.
+        /// </summary>
+        /// <typeparam name="T">The type of element to swap.</typeparam>
+        /// <param name="x">The first parameter.</param>
+        /// <param name="y">The second parameter.</param>
+        public static void Swap<T>(ref T x, ref T y)
+        {
+            var t = x;
+            x = y;
+            y = t;
+        }
+
+        /// <summary>
+        /// Sorts two elements.
+        /// <typeparam name="T">The type of element to sort.</typeparam>
+        /// <param name="x">The first parameter.</param>
+        /// <param name="y">The second parameter.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> implementation to use when comparing elements, or <c>null</c> to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
+        public static void Sort<T>(ref T x, ref T y, IComparer<T> comparer = null)
+        {
+            if ((comparer ?? Comparer<T>.Default).Compare(x, y) > 0) {
+                Swap(ref x, ref y);
+            }
+        }
 
         #endregion
 
