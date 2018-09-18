@@ -32,6 +32,9 @@
 
 namespace WmcSoft.Time
 {
+    /// <summary>
+    /// Represents a source returning the current <see cref="Timepoint"/>.>
+    /// </summary>
     public interface ITimeSource
     {
         Timepoint Now();

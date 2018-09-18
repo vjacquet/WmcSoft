@@ -28,6 +28,9 @@ using System;
 
 namespace WmcSoft.IO.Sources
 {
+    /// <summary>
+    /// Represents a source returning the current <see cref="DateTime"/>.
+    /// </summary>
     public interface IDateTimeSource
     {
         DateTime Now();
