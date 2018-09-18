@@ -51,7 +51,6 @@ namespace WmcSoft.IO.Sources
         {
         }
 
-
         public override IEnumerable<StorageEntry> GetHistory(string name)
         {
             List<InMemoryStorageEntry> entries;

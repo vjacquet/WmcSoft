@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -84,9 +85,15 @@ namespace WmcSoft.Collections.Generic.Forests
 
         #endregion
 
-        public static PreOrderAlgorithm PreOrder;
+        /// <summary>
+        /// Pre-order strategy to traverse a <see cref="TreeNode{T}."/>
+        /// </summary>
+        public static PreOrderAlgorithm PreOrder { get; }
 
-        public static PostOrderAlgorithm PostOrder;
+        /// <summary>
+        /// Post-order strategy to traverse a <see cref="TreeNode{T}."/>
+        /// </summary>
+        public static PostOrderAlgorithm PostOrder { get; }
     }
 
     public static class DepthFirstExtensions
@@ -108,7 +115,8 @@ namespace WmcSoft.Collections.Generic.Forests
         public static IEnumerable<TreeNode<T>> Traverse<T, TTraversal>(this TreeNode<T> node, TTraversal traversal)
             where TTraversal : struct, ITraversalAlgorithm
         {
-            if (node == null) node.GetHashCode(); // throws NullReferenceException
+            if (node == null) throw new NullReferenceException();
+
             return traversal.Traverse(node);
         }
 
@@ -131,7 +139,8 @@ namespace WmcSoft.Collections.Generic.Forests
         public static IEnumerable<T> Enumerate<T, TTraversal>(this TreeNode<T> node, TTraversal traversal)
             where TTraversal : struct, ITraversalAlgorithm
         {
-            if (node == null) node.GetHashCode(); // throws NullReferenceException
+            if (node == null) throw new NullReferenceException();
+
             return Traverse(node, traversal).Select(n => n.Value);
         }
 
