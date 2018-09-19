@@ -42,5 +42,26 @@ namespace WmcSoft.IO
             closable.Close();
             Assert.Equal(1, count);
         }
+
+        [Fact]
+        public void ClosingStreamWhenNoEventsAreRegistered()
+        {
+            var ms = new MemoryStream();
+            var closable = new ClosableStream(ms);
+
+            closable.Close();
+            Assert.True(closable.IsClosed);
+        }
+
+        [Fact]
+        public void IsClosedReflectsStreamState()
+        {
+            var ms = new MemoryStream();
+            var closable = new ClosableStream(ms);
+
+            Assert.False(closable.IsClosed);
+            closable.Close();
+            Assert.True(closable.IsClosed);
+        }
     }
 }
