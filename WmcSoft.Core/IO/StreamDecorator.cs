@@ -37,7 +37,7 @@ namespace WmcSoft.IO
     {
         #region Fields
 
-        private readonly Stream _underlying;
+        private readonly Stream underlying;
 
         #endregion
 
@@ -51,32 +51,32 @@ namespace WmcSoft.IO
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
-            _underlying = stream;
+            underlying = stream;
         }
 
         public override void Close()
         {
-            _underlying.Close();
+            underlying.Close();
         }
 
         #endregion
 
         #region Info class Methods & Properties
 
-        public override bool CanRead => _underlying.CanRead;
+        public override bool CanRead => underlying.CanRead;
 
-        public override bool CanSeek => _underlying.CanSeek;
+        public override bool CanSeek => underlying.CanSeek;
 
-        public override bool CanWrite => _underlying.CanWrite;
+        public override bool CanWrite => underlying.CanWrite;
 
-        public override long Length => _underlying.Length;
+        public override long Length => underlying.Length;
 
         public override long Position {
-            get { return _underlying.Position; }
-            set { _underlying.Position = value; }
+            get { return underlying.Position; }
+            set { underlying.Position = value; }
         }
 
-        public override bool CanTimeout => _underlying.CanTimeout;
+        public override bool CanTimeout => underlying.CanTimeout;
 
         #endregion
 
@@ -84,27 +84,27 @@ namespace WmcSoft.IO
 
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
-            return _underlying.BeginRead(buffer, offset, count, callback, state);
+            return underlying.BeginRead(buffer, offset, count, callback, state);
         }
 
         public override int EndRead(IAsyncResult asyncResult)
         {
-            return _underlying.EndRead(asyncResult);
+            return underlying.EndRead(asyncResult);
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return _underlying.Read(buffer, offset, count);
+            return underlying.Read(buffer, offset, count);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return _underlying.Seek(offset, origin);
+            return underlying.Seek(offset, origin);
         }
 
         public override int ReadTimeout {
-            get { return _underlying.ReadTimeout; }
-            set { _underlying.ReadTimeout = value; }
+            get { return underlying.ReadTimeout; }
+            set { underlying.ReadTimeout = value; }
         }
 
         #endregion
@@ -113,32 +113,32 @@ namespace WmcSoft.IO
 
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
-            return _underlying.BeginWrite(buffer, offset, count, callback, state);
+            return underlying.BeginWrite(buffer, offset, count, callback, state);
         }
 
         public override void EndWrite(IAsyncResult asyncResult)
         {
-            _underlying.EndWrite(asyncResult);
+            underlying.EndWrite(asyncResult);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _underlying.Write(buffer, offset, count);
+            underlying.Write(buffer, offset, count);
         }
 
         public override void Flush()
         {
-            _underlying.Flush();
+            underlying.Flush();
         }
 
         public override void SetLength(long value)
         {
-            _underlying.SetLength(value);
+            underlying.SetLength(value);
         }
 
         public override int WriteTimeout {
-            get { return _underlying.WriteTimeout; }
-            set { _underlying.WriteTimeout = value; }
+            get { return underlying.WriteTimeout; }
+            set { underlying.WriteTimeout = value; }
         }
 
         #endregion

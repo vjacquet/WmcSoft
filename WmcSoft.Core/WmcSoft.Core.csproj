@@ -213,6 +213,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IConverter.cs" />
     <Compile Include="IDisposableBin.cs" />
+    <Compile Include="IO\ClosableStream.cs" />
     <Compile Include="IO\Sources\AssemblyManifestResourceStreamSource.cs" />
     <Compile Include="IO\CsvWriter.cs" />
     <Compile Include="IO\CsvWriterSettings.cs" />
