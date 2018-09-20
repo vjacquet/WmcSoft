@@ -304,5 +304,25 @@ namespace WmcSoft.Collections.Generic
             _version++;
             return item;
         }
+
+        /// <summary>
+        /// Picks a random element.
+        /// </summary>
+        /// <param name="random">The pseudo-random generator to use.</param>
+        /// <returns>A random element taken out of the bag.</returns>
+        public T Pick(Random random)
+        {
+            var last = Count;
+            return PopAt(random.Next(last));
+        }
+
+        /// <summary>
+        /// Rearranges the items randomly in the bag.
+        /// </summary>
+        /// <param name="random">The pseudo-random generator to use.</param>
+        public void Shake(Random random)
+        {
+            CollectionExtensions.UnguardedShuffle(_storage, 0, Count, random);
+        }
     }
 }
