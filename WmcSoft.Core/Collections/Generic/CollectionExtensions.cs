@@ -892,7 +892,7 @@ namespace WmcSoft.Collections.Generic
 
         #region Shuffle methods
 
-        static void UnguardedShuffle<T>(IList<T> list, int index, int count, Random random)
+        internal static void UnguardedShuffle<T>(IList<T> list, int index, int count, Random random)
         {
             var end = index + count;
             int j;

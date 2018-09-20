@@ -60,6 +60,21 @@ namespace WmcSoft.Collections.Generic
         }
 
         [Fact]
+        public void EnumerationFailsWhenClearingTheBag()
+        {
+            var bag = new Bag<int>() { 1, 2, 3, 4, 5, 6 };
+            using (var enumerator = bag.GetEnumerator()) {
+                enumerator.MoveNext();
+
+                bag.Clear();
+
+                Assert.Throws<InvalidOperationException>(() => {
+                    enumerator.MoveNext();
+                });
+            }
+        }
+
+        [Fact]
         public void CanAddNullItemsToBag()
         {
             var bag = new Bag<string> { "a", "b", null, "d", "e" };

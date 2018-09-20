@@ -153,16 +153,12 @@ namespace WmcSoft.Collections.Generic
         /// <summary>
         /// Gets the number of elements contained in the <see cref="Bag{T}"/>.
         /// </summary>
-        public int Count {
-            get { return _count; }
-        }
+        public int Count => _count;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Bag{T}"/> is read-only.
         /// </summary>
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
         object ICollection.SyncRoot {
@@ -176,9 +172,7 @@ namespace WmcSoft.Collections.Generic
         private object _syncRoot;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
-        bool ICollection.IsSynchronized {
-            get { return false; }
-        }
+        bool ICollection.IsSynchronized => false;
 
         /// <summary>
         /// Adds an item to the <see cref="Bag{T}"/>.
@@ -186,10 +180,10 @@ namespace WmcSoft.Collections.Generic
         /// <param name="item">The item to add to the <see cref="Bag{T}"/>.</param>
         public void Add(T item)
         {
+            _version++;
             if (_count == _storage.Length)
                 ContiguousStorage<T>.Reserve(ref _storage, 1);
             _storage[_count++] = item;
-            _version++;
         }
 
         /// <summary>
@@ -198,8 +192,9 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>This method is an O(n) when n is <see cref="Count"/>.</remarks>
         public void Clear()
         {
+            _version++;
             for (int i = 0; i < _count; i++) {
-                _storage[i] = default(T);
+                _storage[i] = default;
             }
             _count = 0;
         }
@@ -240,12 +235,12 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Remove(T item)
         {
+            _version++;
             var index = Array.IndexOf(_storage, item, 0, _count);
             if (index < 0)
                 return false;
             _storage[index] = _storage[--_count];
-            _storage[_count] = default(T);
-            _version++;
+            _storage[_count] = default;
             return true;
         }
 
@@ -258,6 +253,8 @@ namespace WmcSoft.Collections.Generic
         {
             int removed = 0;
             int i = _count;
+
+            _version++;
 
             // quick remove at the end
             while (i > 0 && match(_storage[--i])) {
@@ -273,8 +270,6 @@ namespace WmcSoft.Collections.Generic
                     _storage[_count] = default(T);
                 }
             }
-            if (removed > 0)
-                _version++;
             return removed;
         }
 
