@@ -109,9 +109,9 @@ namespace WmcSoft.TestTools.UnitTesting
             collection.Clear();
             Assert.Equal(0, collection.Count);
 
-            Enumerator(collection, () => collection.Add(1));
-            Enumerator(collection, () => collection.Clear());
-            Enumerator(collection, () => collection.Remove(1));
+            //Enumerator(collection, () => collection.Add(1));
+            //Enumerator(collection, () => collection.Clear());
+            //Enumerator(collection, () => collection.Remove(1));
         }
 
         public static void Enumerator<TEnumerable>(TEnumerable enumerable, Action mutator)
