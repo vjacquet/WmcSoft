@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Xunit;
 using WmcSoft.TestTools.UnitTesting;
+using System;
 
 namespace WmcSoft.Collections.Specialized
 {
@@ -15,17 +16,7 @@ namespace WmcSoft.Collections.Specialized
         [Fact]
         public void CanInsert()
         {
-            var list = new GapList<int>(10);
-            list.Add(1);
-            list.Add(2);
-            list.Add(3);
-            list.Add(4);
-            list.Add(5);
-            list.Add(6);
-            list.Insert(4, 9);
-            list.Add(10);
-            list.Insert(7, 7);
-            list.Add(8);
+            var list = CreateListWithGap();
             var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
             var actual = list.ToArray();
             Assert.Equal(expected, actual);
@@ -67,17 +58,7 @@ namespace WmcSoft.Collections.Specialized
         [Fact]
         public void CanRemove()
         {
-            var list = new GapList<int>(5);
-            list.Add(1);
-            list.Add(2);
-            list.Add(3);
-            list.Add(4);
-            list.Add(5);
-            list.Add(6);
-            list.Insert(4, 9);
-            list.Add(10);
-            list.Insert(7, 7);
-            list.Add(8);
+            var list = CreateListWithGap();
             list.Remove(3);
             list.Remove(10);
 
@@ -89,17 +70,7 @@ namespace WmcSoft.Collections.Specialized
         [Fact]
         public void CanCopyToArrayWithGap()
         {
-            var list = new GapList<int>(16);
-            list.Add(1);
-            list.Add(2);
-            list.Add(3);
-            list.Add(4);
-            list.Add(5);
-            list.Add(6);
-            list.Insert(4, 9);
-            list.Add(10);
-            list.Insert(7, 7);
-            list.Add(8);
+            var list = CreateListWithGap();
             var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
             var actual = list.ToArray();
             Assert.Equal(expected, actual);
@@ -107,6 +78,15 @@ namespace WmcSoft.Collections.Specialized
 
         [Fact]
         public void CanEnumerateWithGap()
+        {
+            var list = CreateListWithGap();
+            var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
+            var actual = list.Select(i => i).ToArray();
+            Assert.Equal(expected, actual);
+        }
+
+
+        static GapList<int> CreateListWithGap()
         {
             var list = new GapList<int>(16);
             list.Add(1);
@@ -119,9 +99,23 @@ namespace WmcSoft.Collections.Specialized
             list.Add(10);
             list.Insert(7, 7);
             list.Add(8);
-            var expected = new[] { 1, 2, 3, 4, 9, 10, 5, 7, 8, 6 };
-            var actual = list.Select(i => i).ToArray();
-            Assert.Equal(expected, actual);
+            return list;
         }
+
+        [Fact]
+        public void EnumerationFailsWhenClearingTheGapList()
+        {
+            var list = new GapList<int>() { 1, 2, 3, 4, 5, 6 };
+            using (var enumerator = list.GetEnumerator()) {
+                enumerator.MoveNext();
+
+                list.Clear();
+
+                Assert.Throws<InvalidOperationException>(() => {
+                    enumerator.MoveNext();
+                });
+            }
+        }
+
     }
 }

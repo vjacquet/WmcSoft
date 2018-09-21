@@ -59,7 +59,8 @@ namespace WmcSoft.Collections.Specialized
             private int _count;
             private T _current;
 
-            internal Enumerator(GapList<T> list) {
+            internal Enumerator(GapList<T> list)
+            {
                 Debug.Assert(list != null);
 
                 _list = list;
@@ -70,10 +71,12 @@ namespace WmcSoft.Collections.Specialized
                 _current = default(T);
             }
 
-            public void Dispose() {
+            public void Dispose()
+            {
             }
 
-            public bool MoveNext() {
+            public bool MoveNext()
+            {
                 if (_version == _list._version && _index < _count) {
                     _current = _storage[_index++];
                     return true;
@@ -86,7 +89,8 @@ namespace WmcSoft.Collections.Specialized
                 return MoveNextRare();
             }
 
-            private bool MoveNextRare() {
+            private bool MoveNextRare()
+            {
                 if (_version != _list._version)
                     throw new InvalidOperationException();
                 _index = 0;
@@ -104,7 +108,8 @@ namespace WmcSoft.Collections.Specialized
                 }
             }
 
-            void IEnumerator.Reset() {
+            void IEnumerator.Reset()
+            {
                 if (_version != _list._version)
                     throw new InvalidOperationException();
                 _index = -1;
@@ -124,17 +129,20 @@ namespace WmcSoft.Collections.Specialized
         private int _gapEndIndex;
         private int _version;
 
-        public GapList() {
+        public GapList()
+        {
             _storage = Empty;
         }
 
-        public GapList(int capacity) {
+        public GapList(int capacity)
+        {
             if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
             _storage = capacity == 0 ? Empty : new T[capacity];
             _gapEndIndex = capacity;
         }
 
-        public GapList(IEnumerable<T> collection) {
+        public GapList(IEnumerable<T> collection)
+        {
             if (collection == null) throw new ArgumentOutOfRangeException(nameof(collection));
 
             var c = collection as ICollection<T>;
@@ -158,13 +166,15 @@ namespace WmcSoft.Collections.Specialized
             }
         }
 
-        private int Slide(int index) {
+        private int Slide(int index)
+        {
             if (index < _gapStartIndex)
                 return index;
             return index - _gapStartIndex + _gapEndIndex;
         }
 
-        void Reserve(int grow) {
+        void Reserve(int grow)
+        {
             var gap = _gapEndIndex - _gapStartIndex;
             if (gap < grow) {
                 Capacity = Math.Max(Count + gap, _storage.Length == 0 ? DefaultCapacity : _storage.Length * 2);
@@ -176,19 +186,19 @@ namespace WmcSoft.Collections.Specialized
             set { Seek(value, SeekOrigin.Begin); }
         }
 
-        public int Seek(int offset, SeekOrigin origin) {
+        public int Seek(int offset, SeekOrigin origin)
+        {
             var count = Count;
             switch (origin) {
             case SeekOrigin.Begin:
                 break;
-            case SeekOrigin.Current:
-                offset = _gapStartIndex + offset;
-                break;
             case SeekOrigin.End:
                 offset = count - offset;
                 break;
+            case SeekOrigin.Current:
             default:
-                goto case SeekOrigin.Current;
+                offset = _gapStartIndex + offset;
+                break;
             }
             if (offset < 0)
                 offset = 0;
@@ -198,7 +208,9 @@ namespace WmcSoft.Collections.Specialized
             return _gapStartIndex;
         }
 
-        void Seek(int position) {
+        void Seek(int position)
+        {
+            _version++; // alsways increment the version
             if (position < _gapStartIndex) {
                 // *****-----.....*****
                 //      ^
@@ -206,8 +218,6 @@ namespace WmcSoft.Collections.Specialized
                 var n = _gapStartIndex - position;
                 _gapEndIndex = _storage.Rotate(-n, position, _gapEndIndex - position);
                 _gapStartIndex = position;
-
-                _version++;
             } else if (position > _gapStartIndex) {
                 // ***********.....******
                 //                    ^
@@ -216,8 +226,6 @@ namespace WmcSoft.Collections.Specialized
                 var gap = _gapEndIndex - _gapStartIndex;
                 _gapEndIndex = _storage.Rotate(n, _gapStartIndex, n + gap) + gap;
                 _gapStartIndex = position;
-
-                _version++;
             }
         }
 
@@ -252,44 +260,47 @@ namespace WmcSoft.Collections.Specialized
             set { _storage[Slide(index)] = value; }
         }
 
-        public int Count {
-            get { return _gapStartIndex + _storage.Length - _gapEndIndex; }
-        }
+        public int Count => _gapStartIndex + _storage.Length - _gapEndIndex;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
-        public void Add(T item) {
+        public void Add(T item)
+        {
             Reserve(1);
-            _storage[_gapStartIndex++] = item;
             _version++;
+            _storage[_gapStartIndex++] = item;
         }
 
-        public void Clear() {
+        public void Clear()
+        {
+            _version++;
             _gapStartIndex = 0;
             _gapEndIndex = _storage.Length;
-            _version++;
         }
 
-        public bool Contains(T item) {
+        public bool Contains(T item)
+        {
             return IndexOf(item) >= 0;
         }
 
-        public void CopyTo(T[] array, int arrayIndex) {
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             Array.Copy(_storage, 0, array, arrayIndex, _gapStartIndex);
             Array.Copy(_storage, _gapEndIndex, array, arrayIndex + _gapStartIndex, _storage.Length - _gapEndIndex);
         }
 
-        public Enumerator GetEnumerator() {
+        public Enumerator GetEnumerator()
+        {
             return new Enumerator(this);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             var found = Array.IndexOf(_storage, item, 0, _gapStartIndex);
             if (found >= 0)
                 return found;
@@ -297,12 +308,14 @@ namespace WmcSoft.Collections.Specialized
             return Array.IndexOf(_storage, item, _gapEndIndex, _storage.Length - _gapEndIndex) - gap;
         }
 
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             Seek(index);
             Add(item);
         }
 
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             var found = IndexOf(item);
             if (found < 0)
                 return false;
@@ -310,13 +323,15 @@ namespace WmcSoft.Collections.Specialized
             return true;
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             Seek(index + 1); // seek increment the version
             _gapStartIndex--;
             _storage[_gapStartIndex] = default; // no loitering
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }
