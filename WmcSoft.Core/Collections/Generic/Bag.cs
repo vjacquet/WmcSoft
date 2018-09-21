@@ -28,7 +28,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using WmcSoft.Collections.Generic.Internals;
@@ -49,13 +48,13 @@ namespace WmcSoft.Collections.Generic
         [Serializable]
         public struct Enumerator : IEnumerator<T>
         {
-            private readonly Bag<T> _bag;
-            private readonly T[] _storage;
-            private readonly int _version;
-            private int _index;
-            private T _current;
+            private readonly Bag<T> bag;
+            private readonly T[] storage;
+            private readonly int version;
+            private int index;
+            private T current;
 
-            internal Enumerator(Bag<T> bag) : this(bag, bag._storage)
+            internal Enumerator(Bag<T> bag) : this(bag, bag.storage)
             {
             }
 
@@ -63,11 +62,11 @@ namespace WmcSoft.Collections.Generic
             {
                 Debug.Assert(bag != null && storage != null && bag.Count <= storage.Length);
 
-                _bag = bag;
-                _storage = storage;
-                _index = _bag.Count; // enumerates downward.
-                _version = bag._version;
-                _current = default;
+                this.bag = bag;
+                this.storage = storage;
+                index = this.bag.Count; // enumerates downward.
+                version = bag.version;
+                current = default;
             }
 
             public void Dispose()
@@ -76,8 +75,8 @@ namespace WmcSoft.Collections.Generic
 
             public bool MoveNext()
             {
-                if (_version == _bag._version && _index > 0) {
-                    _current = _storage[--_index];
+                if (version == bag.version && index > 0) {
+                    current = storage[--index];
                     return true;
                 }
                 return MoveNextRare();
@@ -85,37 +84,37 @@ namespace WmcSoft.Collections.Generic
 
             private bool MoveNextRare()
             {
-                if (_version != _bag._version)
+                if (version != bag.version)
                     throw new InvalidOperationException();
-                _index = -1;
-                _current = default;
+                index = -1;
+                current = default;
                 return false;
             }
 
-            public T Current => _current;
+            public T Current => current;
 
             object IEnumerator.Current {
                 get {
-                    if (_index < 0 | _index >= _bag.Count)
+                    if (index < 0 | index >= bag.Count)
                         throw new InvalidOperationException();
-                    return _current;
+                    return current;
                 }
             }
 
             void IEnumerator.Reset()
             {
-                if (_version != _bag._version)
+                if (version != bag.version)
                     throw new InvalidOperationException();
-                _index = 0;
-                _current = default;
+                index = 0;
+                current = default;
             }
         }
 
         #endregion
 
-        private T[] _storage;
-        private int _count;
-        private int _version;
+        private T[] storage;
+        private int count;
+        private int version;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Bag{T}"/> class that is empty and 
@@ -123,7 +122,7 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         public Bag()
         {
-            _storage = ContiguousStorage<T>.Empty;
+            storage = ContiguousStorage<T>.Empty;
         }
 
         /// <summary>
@@ -135,7 +134,7 @@ namespace WmcSoft.Collections.Generic
         {
             if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
-            _storage = (capacity != 0) ? new T[capacity] : ContiguousStorage<T>.Empty;
+            storage = (capacity != 0) ? new T[capacity] : ContiguousStorage<T>.Empty;
         }
 
         /// <summary>
@@ -146,14 +145,14 @@ namespace WmcSoft.Collections.Generic
         /// <param name="collection">The collection whose elements are copied to the new bag.</param>
         public Bag(IEnumerable<T> collection)
         {
-            _storage = collection.ToArray();
-            _count = _storage.Length;
+            storage = collection.ToArray();
+            count = storage.Length;
         }
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="Bag{T}"/>.
         /// </summary>
-        public int Count => _count;
+        public int Count => count;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Bag{T}"/> is read-only.
@@ -180,10 +179,10 @@ namespace WmcSoft.Collections.Generic
         /// <param name="item">The item to add to the <see cref="Bag{T}"/>.</param>
         public void Add(T item)
         {
-            _version++;
-            if (_count == _storage.Length)
-                ContiguousStorage<T>.Reserve(ref _storage, 1);
-            _storage[_count++] = item;
+            version++;
+            if (count == storage.Length)
+                ContiguousStorage<T>.Reserve(ref storage, 1);
+            storage[count++] = item;
         }
 
         /// <summary>
@@ -192,11 +191,11 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>This method is an O(n) when n is <see cref="Count"/>.</remarks>
         public void Clear()
         {
-            _version++;
-            for (int i = 0; i < _count; i++) {
-                _storage[i] = default;
+            version++;
+            for (int i = 0; i < count; i++) {
+                storage[i] = default;
             }
-            _count = 0;
+            count = 0;
         }
 
         /// <summary>
@@ -207,7 +206,7 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Contains(T item)
         {
-            return Array.IndexOf(_storage, item, 0, _count) >= 0;
+            return Array.IndexOf(storage, item, 0, count) >= 0;
         }
 
         /// <summary>
@@ -219,12 +218,12 @@ namespace WmcSoft.Collections.Generic
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _storage.CopyTo(array, arrayIndex, _count);
+            storage.CopyTo(array, arrayIndex, count);
         }
 
         void ICollection.CopyTo(Array array, int index)
         {
-            _storage.CopyTo(array, index);
+            Array.Copy(storage, 0, array, index, count);
         }
 
         /// <summary>
@@ -235,12 +234,12 @@ namespace WmcSoft.Collections.Generic
         /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Remove(T item)
         {
-            _version++;
-            var index = Array.IndexOf(_storage, item, 0, _count);
+            var index = Array.IndexOf(storage, item, 0, count);
+            version++;
             if (index < 0)
                 return false;
-            _storage[index] = _storage[--_count];
-            _storage[_count] = default;
+            storage[index] = storage[--count];
+            storage[count] = default;
             return true;
         }
 
@@ -252,22 +251,22 @@ namespace WmcSoft.Collections.Generic
         public int RemoveAll(Predicate<T> match)
         {
             int removed = 0;
-            int i = _count;
+            int i = count;
 
-            _version++;
+            version++;
 
             // quick remove at the end
-            while (i > 0 && match(_storage[--i])) {
-                _storage[--_count] = default(T);
+            while (i > 0 && match(storage[--i])) {
+                storage[--count] = default;
                 removed++;
             }
 
             // move and remove
             while (i-- > 0) {
-                if (match(_storage[i])) {
+                if (match(storage[i])) {
                     removed++;
-                    _storage[i] = _storage[--_count];
-                    _storage[_count] = default(T);
+                    storage[i] = storage[--count];
+                    storage[count] = default;
                 }
             }
             return removed;
@@ -296,12 +295,12 @@ namespace WmcSoft.Collections.Generic
         /// <exception cref="IndexOutOfRangeException">Thrown when the index is not in the range [0, Count).</exception>
         protected T PopAt(int index)
         {
-            Debug.Assert(index < _count);
+            Debug.Assert(index < count);
 
-            var item = _storage.Exchange(default(T), _count - 1, index);
+            var item = storage.Exchange(default(T), count - 1, index);
             // strong guarantee when the index is not valid
-            _count--;
-            _version++;
+            count--;
+            version++;
             return item;
         }
 
@@ -322,7 +321,7 @@ namespace WmcSoft.Collections.Generic
         /// <param name="random">The pseudo-random generator to use.</param>
         public void Shake(Random random)
         {
-            CollectionExtensions.UnguardedShuffle(_storage, 0, Count, random);
+            CollectionExtensions.UnguardedShuffle(storage, 0, Count, random);
         }
     }
 }

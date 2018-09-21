@@ -108,6 +108,24 @@ namespace WmcSoft.TestTools.UnitTesting
 
             collection.Clear();
             Assert.Equal(0, collection.Count);
+
+            Enumerator(collection, () => collection.Add(1));
+            Enumerator(collection, () => collection.Clear());
+            Enumerator(collection, () => collection.Remove(1));
+        }
+
+        public static void Enumerator<TEnumerable>(TEnumerable enumerable, Action mutator)
+            where TEnumerable : IEnumerable<int>
+        {
+            using (var enumerator = enumerable.GetEnumerator()) {
+                enumerator.MoveNext();
+
+                mutator();
+
+                Assert.Throws<InvalidOperationException>(() => {
+                    enumerator.MoveNext();
+                });
+            }
         }
 
         public static void Set<TSet>(TSet set)
@@ -133,7 +151,7 @@ namespace WmcSoft.TestTools.UnitTesting
             Assert.True(adapter.Equivalent(new[] { 1, 2, 3, 4, 5 }));
 
             set.IntersectWith(new[] { 2, 4, 6 });
-            Assert.Equal(new int[] { 2, 4 }, adapter);
+            Assert.True(adapter.Equivalent(new int[] { 2, 4 }));
 
             Assert.False(set.Overlaps(new[] { 3, 5 }));
             Assert.True(set.Overlaps(new[] { 3, 4 }));

@@ -25,9 +25,11 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using WmcSoft.Collections.Generic.Internals;
 
 namespace WmcSoft.Collections.Generic
 {
@@ -35,35 +37,100 @@ namespace WmcSoft.Collections.Generic
     /// Represents a set in which the items are not ordered.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the bag.</typeparam>
-    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerDisplay("Count = {Count,nq}")]
     [Serializable]
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     public class BagSet<T> : ISet<T>
     {
-        #region Fields
+        #region Enumerator
 
-        private List<T> _storage;
-        private readonly IEqualityComparer<T> _comparer;
+        [Serializable]
+        public struct Enumerator : IEnumerator<T>
+        {
+            private readonly BagSet<T> bag;
+            private readonly T[] storage;
+            private readonly int version;
+            private int index;
+            private T current;
+
+            internal Enumerator(BagSet<T> bag) : this(bag, bag.storage)
+            {
+            }
+
+            internal Enumerator(BagSet<T> bag, T[] storage)
+            {
+                Debug.Assert(bag != null && storage != null && bag.Count <= storage.Length);
+
+                this.bag = bag;
+                this.storage = storage;
+                index = this.bag.Count; // enumerates downward.
+                version = bag.version;
+                current = default;
+            }
+
+            public void Dispose()
+            {
+            }
+
+            public bool MoveNext()
+            {
+                if (version == bag.version && index > 0) {
+                    current = storage[--index];
+                    return true;
+                }
+                return MoveNextRare();
+            }
+
+            private bool MoveNextRare()
+            {
+                if (version != bag.version)
+                    throw new InvalidOperationException();
+                index = -1;
+                current = default;
+                return false;
+            }
+
+            public T Current => current;
+
+            object IEnumerator.Current {
+                get {
+                    if (index < 0 | index >= bag.Count)
+                        throw new InvalidOperationException();
+                    return current;
+                }
+            }
+
+            void IEnumerator.Reset()
+            {
+                if (version != bag.version)
+                    throw new InvalidOperationException();
+                index = 0;
+                current = default;
+            }
+        }
 
         #endregion
 
-        #region Lifecycle
-
-        public BagSet(IEqualityComparer<T> comparer)
-        {
-            _storage = new List<T>();
-            _comparer = comparer;
-        }
+        private T[] storage;
+        private int count;
+        private int version;
 
         public BagSet()
             : this(EqualityComparer<T>.Default)
         {
         }
 
+        public BagSet(IEqualityComparer<T> comparer)
+        {
+            storage = ContiguousStorage<T>.Empty;
+            Comparer = comparer;
+        }
+
         public BagSet(IEnumerable<T> enumerable, IEqualityComparer<T> comparer)
             : this(comparer)
         {
-            _storage.AddRange(enumerable.Distinct(comparer));
+            storage = enumerable.Distinct(comparer).ToArray();
+            count = storage.Length;
         }
 
         public BagSet(IEnumerable<T> enumerable)
@@ -71,17 +138,7 @@ namespace WmcSoft.Collections.Generic
         {
         }
 
-        #endregion
-
-        #region Properties
-
-        public IEqualityComparer<T> Comparer {
-            get { return _comparer; }
-        }
-
-        #endregion
-
-        #region Methods
+        public IEqualityComparer<T> Comparer { get; }
 
         /// <summary>
         /// Removes all elements that match the conditions defined by the specified predicate from a set.
@@ -90,7 +147,26 @@ namespace WmcSoft.Collections.Generic
         /// <returns>The number of elements that were removed from the set.</returns>
         public int RemoveWhere(Predicate<T> match)
         {
-            return _storage.RemoveAll(match);
+            int removed = 0;
+            int i = count;
+
+            version++;
+
+            // quick remove at the end
+            while (i > 0 && match(storage[--i])) {
+                storage[--count] = default;
+                removed++;
+            }
+
+            // move and remove
+            while (i-- > 0) {
+                if (match(storage[i])) {
+                    removed++;
+                    storage[i] = storage[--count];
+                    storage[count] = default;
+                }
+            }
+            return removed;
         }
 
         /// <summary>
@@ -99,12 +175,15 @@ namespace WmcSoft.Collections.Generic
         /// <returns>An enumerator that iterates over the Set in reverse order.</returns>
         public IEnumerable<T> Reverse()
         {
-            return _storage.Backwards();
+            return storage.Backwards();
         }
 
-        #endregion
-
         #region ISet<T> Membres
+
+        int FindIndex(T item)
+        {
+            return Array.FindIndex(storage, 0, count, x => Comparer.Equals(x, item));
+        }
 
         /// <summary>
         /// Adds an element to the set and returns a value that indicates if it was successfully added.
@@ -113,10 +192,14 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if item is added to the set; otherwise, false. </returns>
         public bool Add(T item)
         {
-            int index = _storage.FindIndex(x => _comparer.Equals(x, item));
-            if (index >= 0)
+            if (FindIndex(item) >= 0) {
+                version++;
                 return false;
-            _storage.Add(item);
+            }
+            if (count == storage.Length)
+                ContiguousStorage<T>.Reserve(ref storage, 1);
+            storage[count++] = item;
+            version++;
             return true;
         }
 
@@ -141,8 +224,10 @@ namespace WmcSoft.Collections.Generic
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
 
+            version++;
+
             // handle empty cases
-            if (_storage.Count == 0)
+            if (storage.Length == 0)
                 return;
 
             var tmp = new BagSet<T>(Comparer);
@@ -150,7 +235,8 @@ namespace WmcSoft.Collections.Generic
                 if (Contains(item))
                     tmp.Add(item);
             }
-            _storage = tmp._storage;
+            storage = tmp.storage;
+            count = tmp.count;
         }
 
         /// <summary>
@@ -223,7 +309,7 @@ namespace WmcSoft.Collections.Generic
             if (other == null) throw new ArgumentNullException(nameof(other));
 
             // handle empty cases
-            if (_storage.Count == 0)
+            if (storage.Length == 0)
                 return false;
             var traits = new EnumerableTraits<T>(other);
             if (traits.HasCount && traits.Count == 0)
@@ -292,7 +378,11 @@ namespace WmcSoft.Collections.Generic
         /// </summary>
         public virtual void Clear()
         {
-            _storage.Clear();
+            version++;
+            for (int i = 0; i < count; i++) {
+                storage[i] = default;
+            }
+            count = 0;
         }
 
         /// <summary>
@@ -302,7 +392,7 @@ namespace WmcSoft.Collections.Generic
         /// <returns>true if the set contains item; otherwise, false.</returns>
         public virtual bool Contains(T item)
         {
-            return _storage.FindIndex(x => _comparer.Equals(x, item)) >= 0;
+            return FindIndex(item) >= 0;
         }
 
         /// <summary>
@@ -312,25 +402,21 @@ namespace WmcSoft.Collections.Generic
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _storage.CopyTo(array, arrayIndex);
+            storage.CopyTo(array, arrayIndex, count);
         }
 
-        public int Count {
-            get { return _storage.Count; }
-        }
+        public int Count => count;
 
-        public bool IsReadOnly {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(T item)
         {
-            int index = _storage.FindIndex(x => _comparer.Equals(x, item));
+            var index = FindIndex(item);
+            version++;
             if (index < 0)
                 return false;
-            var last = _storage.Count - 1;
-            _storage[index] = _storage[last];
-            _storage.RemoveAt(last);
+            storage[index] = storage[--count];
+            storage[count] = default;
             return true;
         }
 
@@ -338,16 +424,17 @@ namespace WmcSoft.Collections.Generic
 
         #region IEnumerable<T> Membres
 
-        public IEnumerator<T> GetEnumerator()
+        public Enumerator GetEnumerator()
         {
-            return _storage.GetEnumerator();
+            return new Enumerator(this);
         }
 
-        #endregion
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-        #region IEnumerable Membres
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

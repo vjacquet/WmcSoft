@@ -172,7 +172,7 @@ namespace WmcSoft.Collections.Generic
             if (items == null)
                 return source;
 
-            switch ((ICollection<T>)source) {
+            switch (source) {
             case List<T> list:
                 list.AddRange(items);
                 break;
