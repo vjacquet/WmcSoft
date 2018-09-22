@@ -55,8 +55,11 @@ namespace WmcSoft.IO.Sources
             }
         }
 
-        protected StreamStore()
+        private readonly IDateTimeSource source;
+
+        protected StreamStore(IDateTimeSource source = null)
         {
+            this.source = source ?? DateTimeSources.Universal;
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace WmcSoft.IO.Sources
         /// <param name="name">The name of the stream.</param>
         public StorageEntry Find(string name)
         {
-            return Find(name, DateTime.UtcNow);
+            return Find(name, UtcNow());
         }
 
         protected virtual DateTime MaxDate => DateTime.MaxValue;
@@ -137,7 +140,7 @@ namespace WmcSoft.IO.Sources
         /// <remarks>If the stream is not seekable, it is read only once. The stream is not closed.</remarks>
         public virtual bool Store(string name, Stream stream)
         {
-            var capacity = stream.CanSeek ? (int)stream.Length : 4096;
+            var capacity = stream.CanSeek ? (int)stream.Length : BufferSize;
 
             using (var ms = new MemoryStream(capacity))
             using (var algorithm = CreateHashAlgorithm())
@@ -152,7 +155,7 @@ namespace WmcSoft.IO.Sources
                 if (found != null && found.Hash.SequenceEqual(hash))
                     return false;
 
-                var entry = new NewStorageEntry(name, read, hash, Now());
+                var entry = new NewStorageEntry(name, read, hash, UtcNow());
                 Store(found, entry, ms);
 
                 return true;
@@ -207,7 +210,7 @@ namespace WmcSoft.IO.Sources
         /// <returns><c>true</c> if the file was uploaded, false otherwise.</returns>
         public bool Download(string name, ITimestampStreamSource writable)
         {
-            return Download(name, DateTime.UtcNow, writable);
+            return Download(name, UtcNow(), writable);
         }
 
         #region Helpers 
@@ -243,9 +246,9 @@ namespace WmcSoft.IO.Sources
             return size;
         }
 
-        protected DateTime Now()
+        protected DateTime UtcNow()
         {
-            return DateTime.UtcNow;
+            return source.Now().ToUniversalTime();
         }
 
         #endregion

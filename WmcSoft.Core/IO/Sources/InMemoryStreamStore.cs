@@ -47,10 +47,9 @@ namespace WmcSoft.IO.Sources
 
         private readonly Dictionary<string, List<InMemoryStorageEntry>> _store = new Dictionary<string, List<InMemoryStorageEntry>>();
 
-        public InMemoryStreamStore() : base()
+        public InMemoryStreamStore(IDateTimeSource source) : base(source)
         {
         }
-
 
         public override IEnumerable<StorageEntry> GetHistory(string name)
         {
