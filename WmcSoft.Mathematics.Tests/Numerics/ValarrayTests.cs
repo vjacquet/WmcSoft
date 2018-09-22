@@ -1,10 +1,78 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Xunit;
 
-namespace WmcSoft.Numerics.Tests
+namespace WmcSoft.Numerics
 {
     public class ValarrayTests
     {
+        [Fact]
+        public void CanDeconstructDimensions1()
+        {
+            var d = new Dimensions(1);
+            var n = (int)d;
+            Assert.Equal(1, n);
+        }
+
+        [Fact]
+        public void CanDeconstructDimensions2()
+        {
+            var d = new Dimensions(1, 2);
+            var (m, n) = d;
+            Assert.Equal(1, m);
+            Assert.Equal(2, n);
+        }
+
+        [Fact]
+        public void CanDeconstructDimensions3()
+        {
+            var d = new Dimensions(1, 2, 3);
+            var (m, n, o) = d;
+            Assert.Equal(1, m);
+            Assert.Equal(2, n);
+            Assert.Equal(3, o);
+        }
+
+        [Fact]
+        public void CanDeconstructDimensions4()
+        {
+            var d = new Dimensions(1, 2, 3, 4);
+            var (m, n, o, p) = d;
+            Assert.Equal(1, m);
+            Assert.Equal(2, n);
+            Assert.Equal(3, o);
+            Assert.Equal(4, p);
+        }
+
+        [Fact]
+        public void CanDeconstructDimensions5()
+        {
+            var d = new Dimensions(1, 2, 3, 4, 5);
+            var (m, n, o, p, q) = d;
+            Assert.Equal(1, m);
+            Assert.Equal(2, n);
+            Assert.Equal(3, o);
+            Assert.Equal(4, p);
+            Assert.Equal(5, q);
+        }
+
+        [Fact]
+        public void CanDeconstructHomogenousDimensionsAsScalar()
+        {
+            var d = new Dimensions(3, 3, 3);
+            var n = (int)d;
+            Assert.Equal(3, n);
+        }
+
+        [Fact]
+        public void CannotDeconstructHeteogenousDimensionsAsScalar()
+        {
+            var d = new Dimensions(3, 3, 1);
+            Assert.Throws<InvalidCastException>(() => {
+                var n = (int)d;
+            });
+        }
+
         [Fact]
         public void CheckRange()
         {

@@ -37,22 +37,81 @@ namespace WmcSoft.Numerics
     {
         public static readonly Dimensions Empty;
 
-        private readonly int[] _dimensions;
+        private readonly int[] dimensions;
 
         public Dimensions(params int[] dimensions)
         {
-            _dimensions = (int[])dimensions.Clone();
+            this.dimensions = (int[])dimensions.Clone();
         }
 
         internal Dimensions(Dimensions min, Dimensions max)
         {
             var length = max.Count;
-            _dimensions = new int[length];
+            dimensions = new int[length];
             for (var i = min.Count - 1; i >= 0; i--) {
                 length--;
-                _dimensions[length] = Math.Max(min[i], max[length]);
+                dimensions[length] = Math.Max(min[i], max[length]);
             }
-            Array.Copy(max._dimensions, _dimensions, length);
+            Array.Copy(max.dimensions, dimensions, length);
+        }
+
+        public static explicit operator int(Dimensions d)
+        {
+            var count = d.Count;
+            switch (count) {
+            case 0:
+                throw new InvalidCastException();
+            case 1:
+                return d[0];
+            default:
+                for (int i = 1; i < count; i++) {
+                    if (d[i] != d[0])
+                        throw new InvalidCastException();
+                }
+                return d[0];
+            }
+        }
+
+        public void Deconstruct(out int m, out int n)
+        {
+            if (Count != 2)
+                throw new InvalidCastException();
+
+            m = dimensions[0];
+            n = dimensions[1];
+        }
+
+        public void Deconstruct(out int m, out int n, out int o)
+        {
+            if (Count != 3)
+                throw new InvalidCastException();
+
+            m = dimensions[0];
+            n = dimensions[1];
+            o = dimensions[2];
+        }
+
+        public void Deconstruct(out int m, out int n, out int o, out int p)
+        {
+            if (Count != 4)
+                throw new InvalidCastException();
+
+            m = dimensions[0];
+            n = dimensions[1];
+            o = dimensions[2];
+            p = dimensions[3];
+        }
+
+        public void Deconstruct(out int m, out int n, out int o, out int p, out int q)
+        {
+            if (Count != 5)
+                throw new InvalidCastException();
+
+            m = dimensions[0];
+            n = dimensions[1];
+            o = dimensions[2];
+            p = dimensions[3];
+            q = dimensions[4];
         }
 
         public static implicit operator Dimensions(int n)
@@ -78,13 +137,15 @@ namespace WmcSoft.Numerics
 
         public int GetCardinality()
         {
-            return _dimensions.Aggregate(1, (x, y) => x * y);
+            if (dimensions == null)
+                return 0;
+            return dimensions.Aggregate(1, (x, y) => x * y);
         }
 
         public int GetDimension(int i)
         {
-            if (_dimensions != null)
-                return _dimensions[Mod(i, _dimensions.Length)];
+            if (dimensions != null)
+                return dimensions[Mod(i, dimensions.Length)];
             return 0;
         }
 
@@ -103,9 +164,9 @@ namespace WmcSoft.Numerics
             if (length != Count || length == 0)
                 throw new ArgumentOutOfRangeException(nameof(indices));
 
-            int index = Mod(indices[0], _dimensions[0]);
+            int index = Mod(indices[0], dimensions[0]);
             for (int i = 1; i < length; i++) {
-                index = index * _dimensions[i] + Mod(indices[i], _dimensions[i]);
+                index = index * dimensions[i] + Mod(indices[i], dimensions[i]);
             }
             return index;
         }
@@ -115,16 +176,14 @@ namespace WmcSoft.Numerics
         #region IReadOnlyList<int> Membres
 
         public int this[int index] {
-            get { return _dimensions[index]; }
+            get { return dimensions[index]; }
         }
 
         #endregion
 
         #region IReadOnlyCollection<int> Membres
 
-        public int Count {
-            get { return _dimensions == null ? 0 : _dimensions.Length; }
-        }
+        public int Count => dimensions != null ? dimensions.Length : 0;
 
         #endregion
 
@@ -139,7 +198,7 @@ namespace WmcSoft.Numerics
 
         public IEnumerator<int> GetEnumerator()
         {
-            var dimensions = _dimensions ?? new int[0];
+            var dimensions = this.dimensions ?? new int[0];
             return dimensions.AsEnumerable<int>().GetEnumerator();
         }
 
@@ -149,7 +208,7 @@ namespace WmcSoft.Numerics
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            var dimensions = _dimensions ?? new int[0];
+            var dimensions = this.dimensions ?? new int[0];
             return dimensions.GetEnumerator();
         }
 
@@ -163,7 +222,7 @@ namespace WmcSoft.Numerics
             if (length != other.Count)
                 return false;
             for (int i = 0; i < length; i++) {
-                if (_dimensions[i] != other._dimensions[i])
+                if (dimensions[i] != other.dimensions[i])
                     return false;
             }
             return true;
@@ -178,13 +237,13 @@ namespace WmcSoft.Numerics
 
         public override int GetHashCode()
         {
-            if (_dimensions == null)
+            if (dimensions == null)
                 return 0;
 
-            int length = _dimensions.Length;
+            int length = dimensions.Length;
             int hash = length;
             for (int i = 0; i < length; i++) {
-                hash = (hash << 4) ^ (hash >> 28) ^ _dimensions[i];
+                hash = (hash << 4) ^ (hash >> 28) ^ dimensions[i];
             }
             return hash;
         }
@@ -195,7 +254,7 @@ namespace WmcSoft.Numerics
 
         public override string ToString()
         {
-            return string.Join(" x ", _dimensions);
+            return string.Join(" x ", dimensions);
         }
         #endregion
     }

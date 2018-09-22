@@ -157,6 +157,7 @@ namespace WmcSoft.Numerics
             _dimensions = dimensions;
             _data = data;
         }
+
         private Valarray(Dimensions dimensions)
             : this(dimensions, new double[dimensions.GetCardinality()])
         {
@@ -190,6 +191,126 @@ namespace WmcSoft.Numerics
             _data = new double[n];
             for (int i = 0; i < n; i++) {
                 _data[i] = generator(i);
+            }
+        }
+
+        public Valarray(int n, Func<int, int, double> generator)
+        {
+            _dimensions = new Dimensions(n, n);
+            _data = new double[_dimensions.GetCardinality()];
+            var index = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    _data[index++] = generator(i, j);
+                }
+            }
+        }
+
+        public Valarray(int m, int n, Func<int, int, double> generator)
+        {
+            _dimensions = new Dimensions(m, n);
+            _data = new double[_dimensions.GetCardinality()];
+            var index = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    _data[index++] = generator(i, j);
+                }
+            }
+        }
+
+        public Valarray(int n, Func<int, int, int, double> generator)
+        {
+            _dimensions = new Dimensions(n, n, n);
+            _data = new double[_dimensions.GetCardinality()];
+            var index = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        _data[index++] = generator(i, j, k);
+                    }
+                }
+            }
+        }
+
+        public Valarray(int m, int n, int o, Func<int, int, int, double> generator)
+        {
+            _dimensions = new Dimensions(m, n, o);
+            _data = new double[_dimensions.GetCardinality()];
+            var index = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < o; k++) {
+                        _data[index++] = generator(i, j, k);
+                    }
+                }
+            }
+        }
+
+        public Valarray(int n, Func<int, int, int, int, double> generator)
+        {
+            _dimensions = new Dimensions(n, n, n, n);
+            _data = new double[_dimensions.GetCardinality()];
+            var index = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        for (int l = 0; l < n; l++) {
+                            _data[index++] = generator(i, j, k, l);
+                        }
+                    }
+                }
+            }
+        }
+
+        public Valarray(int m, int n, int o, int p, Func<int, int, int, int, double> generator)
+        {
+            _dimensions = new Dimensions(m, n, o, p);
+            _data = new double[_dimensions.GetCardinality()];
+            var index = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < o; k++) {
+                        for (int l = 0; l < p; l++) {
+                            _data[index++] = generator(i, j, k, l);
+                        }
+                    }
+                }
+            }
+        }
+
+        public Valarray(int n, Func<int, int, int, int, int, double> generator)
+        {
+            _dimensions = new Dimensions(n, n, n, n, n);
+            _data = new double[n];
+            var index = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        for (int l = 0; l < n; l++) {
+                            for (int h = 0; h < n; h++) {
+                                _data[index++] = generator(i, j, k, l, h);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public Valarray(int m, int n, int o, int p, int q, Func<int, int, int, int, int, double> generator)
+        {
+            _dimensions = new Dimensions(m, n, o, p, q);
+            _data = new double[n];
+            var index = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < o; k++) {
+                        for (int l = 0; l < p; l++) {
+                            for (int h = 0; h < q; h++) {
+                                _data[index++] = generator(i, j, k, l, h);
+                            }
+                        }
+                    }
+                }
             }
         }
 
