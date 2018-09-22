@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace WmcSoft.Statistics.Tests
+namespace WmcSoft.Statistics
 {
     public class QuantilesTests
     {

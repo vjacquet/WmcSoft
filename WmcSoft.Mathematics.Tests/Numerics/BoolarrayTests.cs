@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace WmcSoft.Numerics.Tests
+namespace WmcSoft.Numerics
 {
     public class BoolarrayTests
     {

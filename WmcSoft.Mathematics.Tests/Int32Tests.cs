@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace WmcSoft.Tests
+namespace WmcSoft
 {
     public class Int32Tests
     {

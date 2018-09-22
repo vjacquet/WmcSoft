@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Xunit;
 
-namespace WmcSoft.Algebra.Tests
+namespace WmcSoft.Algebra
 {
     public class AlgebraTests
     {

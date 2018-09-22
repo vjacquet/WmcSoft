@@ -2,7 +2,7 @@
 
 using Vect = WmcSoft.Numerics.Generic.Vector<int, WmcSoft.Arithmetics.Int32Arithmetics>;
 
-namespace WmcSoft.Numerics.Generic.Tests
+namespace WmcSoft.Numerics.Generic
 {
     public class VectorTests
     {

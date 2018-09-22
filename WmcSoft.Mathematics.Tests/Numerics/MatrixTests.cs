@@ -2,7 +2,7 @@
 using Xunit;
 using WmcSoft.Collections.Generic;
 
-namespace WmcSoft.Numerics.Tests
+namespace WmcSoft.Numerics
 {
     public class MatrixTests
     {
