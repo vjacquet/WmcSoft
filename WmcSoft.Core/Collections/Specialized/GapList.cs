@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using WmcSoft.Collections.Generic;
 
 namespace WmcSoft.Collections.Specialized
@@ -38,9 +39,9 @@ namespace WmcSoft.Collections.Specialized
     /// </summary>
     /// <typeparam name="T">The type of the elements in the list.</typeparam>
     [Serializable]
-    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerDisplay("Count = {Count,nq}")]
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    public sealed class GapList<T> : IList<T>
+    public sealed class GapList<T> : IList<T>, IReadOnlyList<T>, ICollection
     {
         // *************........................*******
         // ^            ^                       ^      ^
@@ -64,10 +65,10 @@ namespace WmcSoft.Collections.Specialized
                 Debug.Assert(list != null);
 
                 _list = list;
-                _storage = list._storage;
+                _storage = list.storage;
                 _index = 0;
-                _count = list._gapStartIndex;
-                _version = list._version;
+                _count = list.gapStartIndex;
+                _version = list.version;
                 _current = default(T);
             }
 
@@ -77,11 +78,11 @@ namespace WmcSoft.Collections.Specialized
 
             public bool MoveNext()
             {
-                if (_version == _list._version && _index < _count) {
+                if (_version == _list.version && _index < _count) {
                     _current = _storage[_index++];
                     return true;
-                } else if (_version == _list._version && _index < _list._gapEndIndex && _list._gapEndIndex != _storage.Length) {
-                    _index = _list._gapEndIndex;
+                } else if (_version == _list.version && _index < _list.gapEndIndex && _list.gapEndIndex != _storage.Length) {
+                    _index = _list.gapEndIndex;
                     _count = _storage.Length;
                     _current = _storage[_index++];
                     return true;
@@ -91,7 +92,7 @@ namespace WmcSoft.Collections.Specialized
 
             private bool MoveNextRare()
             {
-                if (_version != _list._version)
+                if (_version != _list.version)
                     throw new InvalidOperationException();
                 _index = 0;
                 _current = default(T);
@@ -110,10 +111,10 @@ namespace WmcSoft.Collections.Specialized
 
             void IEnumerator.Reset()
             {
-                if (_version != _list._version)
+                if (_version != _list.version)
                     throw new InvalidOperationException();
                 _index = -1;
-                _count = _list._gapStartIndex;
+                _count = _list.gapStartIndex;
                 _current = default(T);
             }
         }
@@ -123,22 +124,22 @@ namespace WmcSoft.Collections.Specialized
         private static readonly T[] Empty = new T[0];
         private const int DefaultCapacity = 4;
 
-        private T[] _storage;
+        private T[] storage;
 
-        private int _gapStartIndex;
-        private int _gapEndIndex;
-        private int _version;
+        private int gapStartIndex;
+        private int gapEndIndex;
+        private int version;
 
         public GapList()
         {
-            _storage = Empty;
+            storage = Empty;
         }
 
         public GapList(int capacity)
         {
             if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
-            _storage = capacity == 0 ? Empty : new T[capacity];
-            _gapEndIndex = capacity;
+            storage = capacity == 0 ? Empty : new T[capacity];
+            gapEndIndex = capacity;
         }
 
         public GapList(IEnumerable<T> collection)
@@ -149,15 +150,15 @@ namespace WmcSoft.Collections.Specialized
             if (c != null) {
                 var count = c.Count;
                 if (count == 0) {
-                    _storage = Empty;
+                    storage = Empty;
                 } else {
-                    _storage = new T[count];
-                    c.CopyTo(_storage, 0);
-                    _gapStartIndex = count;
-                    _gapEndIndex = count;
+                    storage = new T[count];
+                    c.CopyTo(storage, 0);
+                    gapStartIndex = count;
+                    gapEndIndex = count;
                 }
             } else {
-                _storage = Empty;
+                storage = Empty;
                 using (IEnumerator<T> enumerator = collection.GetEnumerator()) {
                     while (enumerator.MoveNext()) {
                         Add(enumerator.Current);
@@ -168,21 +169,21 @@ namespace WmcSoft.Collections.Specialized
 
         private int Slide(int index)
         {
-            if (index < _gapStartIndex)
+            if (index < gapStartIndex)
                 return index;
-            return index - _gapStartIndex + _gapEndIndex;
+            return index - gapStartIndex + gapEndIndex;
         }
 
         void Reserve(int grow)
         {
-            var gap = _gapEndIndex - _gapStartIndex;
+            var gap = gapEndIndex - gapStartIndex;
             if (gap < grow) {
-                Capacity = Math.Max(Count + gap, _storage.Length == 0 ? DefaultCapacity : _storage.Length * 2);
+                Capacity = Math.Max(Count + gap, storage.Length == 0 ? DefaultCapacity : storage.Length * 2);
             }
         }
 
         public int Position {
-            get { return _gapStartIndex; }
+            get { return gapStartIndex; }
             set { Seek(value, SeekOrigin.Begin); }
         }
 
@@ -197,7 +198,7 @@ namespace WmcSoft.Collections.Specialized
                 break;
             case SeekOrigin.Current:
             default:
-                offset = _gapStartIndex + offset;
+                offset = gapStartIndex + offset;
                 break;
             }
             if (offset < 0)
@@ -205,107 +206,138 @@ namespace WmcSoft.Collections.Specialized
             else if (offset > Count)
                 offset = count;
             Seek(offset);
-            return _gapStartIndex;
+            return gapStartIndex;
         }
 
         void Seek(int position)
         {
-            _version++; // alsways increment the version
-            if (position < _gapStartIndex) {
+            version++; // alsways increment the version
+            if (position < gapStartIndex) {
                 // *****-----.....*****
                 //      ^
                 // *****.....-----*****
-                var n = _gapStartIndex - position;
-                _gapEndIndex = _storage.Rotate(-n, position, _gapEndIndex - position);
-                _gapStartIndex = position;
-            } else if (position > _gapStartIndex) {
+                var n = gapStartIndex - position;
+                gapEndIndex = storage.Rotate(-n, position, gapEndIndex - position);
+                gapStartIndex = position;
+            } else if (position > gapStartIndex) {
                 // ***********.....******
                 //                    ^
                 // **************.....***
-                var n = position - _gapStartIndex;
-                var gap = _gapEndIndex - _gapStartIndex;
-                _gapEndIndex = _storage.Rotate(n, _gapStartIndex, n + gap) + gap;
-                _gapStartIndex = position;
+                var n = position - gapStartIndex;
+                var gap = gapEndIndex - gapStartIndex;
+                gapEndIndex = storage.Rotate(n, gapStartIndex, n + gap) + gap;
+                gapStartIndex = position;
             }
         }
 
         public int Capacity {
             get {
-                return _storage.Length;
+                return storage.Length;
             }
             set {
                 var count = Count;
                 if (value < count) throw new ArgumentOutOfRangeException(nameof(value));
 
-                if (value != _storage.Length) {
+                if (value != storage.Length) {
                     if (value > 0) {
                         T[] storage = new T[value];
                         if (count > 0) {
-                            Array.Copy(_storage, 0, storage, 0, _gapStartIndex);
-                            var n = _storage.Length - _gapEndIndex;
-                            Array.Copy(_storage, _gapEndIndex, storage, storage.Length - n, n);
-                            _gapEndIndex = storage.Length - n;
+                            Array.Copy(this.storage, 0, storage, 0, gapStartIndex);
+                            var n = this.storage.Length - gapEndIndex;
+                            Array.Copy(this.storage, gapEndIndex, storage, storage.Length - n, n);
+                            gapEndIndex = storage.Length - n;
                         }
-                        _storage = storage;
+                        this.storage = storage;
                     } else {
-                        _storage = Empty;
-                        _gapEndIndex = 0;
+                        storage = Empty;
+                        gapEndIndex = 0;
                     }
                 }
             }
         }
 
         public T this[int index] {
-            get { return _storage[Slide(index)]; }
-            set { _storage[Slide(index)] = value; }
+            get { return storage[Slide(index)]; }
+            set { storage[Slide(index)] = value; }
         }
 
-        public int Count => _gapStartIndex + _storage.Length - _gapEndIndex;
+        public int Count => gapStartIndex + storage.Length - gapEndIndex;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
+        object ICollection.SyncRoot {
+            get {
+                if (_syncRoot == null)
+                    Interlocked.CompareExchange<object>(ref _syncRoot, new object(), null);
+                return _syncRoot;
+            }
+        }
+        [NonSerialized]
+        private object _syncRoot;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1033", Justification = "Provided only for legacy.")]
+        bool ICollection.IsSynchronized => false;
 
         public bool IsReadOnly => false;
 
+        /// <summary>
+        /// Adds an item to the <see cref="Bag{T}"/>.
+        /// </summary>
+        /// <param name="item">The item to add to the <see cref="GapList{T}"/>.</param>
         public void Add(T item)
         {
             Reserve(1);
-            _version++;
-            _storage[_gapStartIndex++] = item;
+            version++;
+            storage[gapStartIndex++] = item;
         }
 
+        /// <summary>
+        /// Removes all elements from the <see cref="Bag{T}"/>.
+        /// </summary> 
+        /// <remarks>This method is an O(n) when n is <see cref="Count"/>.</remarks>
         public void Clear()
         {
-            _version++;
-            _gapStartIndex = 0;
-            _gapEndIndex = _storage.Length;
+            version++;
+            gapStartIndex = 0;
+            gapEndIndex = storage.Length;
         }
 
+        /// <summary>
+        /// Determines whether an element is in the <see cref="Bag{T}"/>.
+        /// </summary>
+        /// <param name="item">The item to locate in the <see cref="Bag{T}"/>. The value can be <c>null</c> for reference types.</param>
+        /// <returns><c>true</c> if <paramref name="item"/> is found in the <see cref="Bag{T}"/>; otherwise <c>false</c>.</returns>
+        /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Contains(T item)
         {
             return IndexOf(item) >= 0;
         }
 
+        /// <summary>
+        /// Copies the <see cref="Bag{T}"/> to a compatible one-dimensional array, 
+        /// starting at the specified index of the target array.
+        /// </summary>
+        /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Bag{T}"/>. 
+        /// The <see cref="Array"/> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            Array.Copy(_storage, 0, array, arrayIndex, _gapStartIndex);
-            Array.Copy(_storage, _gapEndIndex, array, arrayIndex + _gapStartIndex, _storage.Length - _gapEndIndex);
+            Array.Copy(storage, 0, array, arrayIndex, gapStartIndex);
+            Array.Copy(storage, gapEndIndex, array, arrayIndex + gapStartIndex, storage.Length - gapEndIndex);
         }
 
-        public Enumerator GetEnumerator()
+        void ICollection.CopyTo(Array array, int index)
         {
-            return new Enumerator(this);
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return GetEnumerator();
+            Array.Copy(storage, 0, array, index, gapStartIndex);
+            Array.Copy(storage, gapEndIndex, array, index + gapStartIndex, storage.Length - gapEndIndex);
         }
 
         public int IndexOf(T item)
         {
-            var found = Array.IndexOf(_storage, item, 0, _gapStartIndex);
+            var found = Array.IndexOf(storage, item, 0, gapStartIndex);
             if (found >= 0)
                 return found;
-            var gap = _gapEndIndex - _gapStartIndex;
-            return Array.IndexOf(_storage, item, _gapEndIndex, _storage.Length - _gapEndIndex) - gap;
+            var gap = gapEndIndex - gapStartIndex;
+            return Array.IndexOf(storage, item, gapEndIndex, storage.Length - gapEndIndex) - gap;
         }
 
         public void Insert(int index, T item)
@@ -314,6 +346,12 @@ namespace WmcSoft.Collections.Specialized
             Add(item);
         }
 
+        /// <summary>
+        /// Removes the first occurrence of a specific item from the <see cref="Bag{T}"/>.
+        /// </summary>
+        /// <param name="item">The item to remove from the <see cref="Bag{T}"/>. The value can be <c>null</c> for reference types.</param>
+        /// <returns><c>true</c> if <paramref name="item"/> is successfully removed; otherwise <c>false</c>.</returns>
+        /// <remarks>The same comparer as <see cref="Array.IndexOf"/> to locate the item.</remarks>
         public bool Remove(T item)
         {
             var found = IndexOf(item);
@@ -326,8 +364,18 @@ namespace WmcSoft.Collections.Specialized
         public void RemoveAt(int index)
         {
             Seek(index + 1); // seek increment the version
-            _gapStartIndex--;
-            _storage[_gapStartIndex] = default; // no loitering
+            gapStartIndex--;
+            storage[gapStartIndex] = default; // no loitering
+        }
+
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
