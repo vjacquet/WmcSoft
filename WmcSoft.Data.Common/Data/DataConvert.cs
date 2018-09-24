@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft.Data
 {
+    /// <summary>
+    /// Defines methods to change the type of objects.
+    /// This is a static class.
+    /// </summary>
     public static class DataConvert
     {
         /// <summary>
@@ -41,7 +45,7 @@ namespace WmcSoft.Data
             var underlyingType = Nullable.GetUnderlyingType(typeof(T));
             if (value == DBNull.Value) {
                 if (underlyingType != null || !typeof(T).IsValueType)
-                    return default(T);
+                    return default;
                 throw new InvalidCastException();
             }
             return (T)Convert.ChangeType(value, underlyingType ?? typeof(T));
@@ -54,7 +58,7 @@ namespace WmcSoft.Data
         /// <param name="value">An object that implements the <see cref="IConvertible"/> interface.</param>
         /// <param name="defaultValue">The default value if the value is null or DBNull</param>
         /// <returns>An object whose type is <typeparamref name="T"/> and whose value is equivalent to value or default, if value is null or DBNull and <typeparamref name="T"/> is not a value type. </returns>
-        public static T ChangeTypeOrDefault<T>(object value, T defaultValue = default(T))
+        public static T ChangeTypeOrDefault<T>(object value, T defaultValue = default)
         {
             if (value == DBNull.Value)
                 return defaultValue;
