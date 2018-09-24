@@ -38,7 +38,7 @@ namespace WmcSoft.Messaging
     {
         #region State
 
-        readonly MessageQueue _messageQueue;
+        private readonly MessageQueue messageQueue;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace WmcSoft.Messaging
         /// <param name="messageQueue">The message queue.</param>
         public MessageQueueMessageService(MessageQueue messageQueue)
         {
-            _messageQueue = messageQueue;
+            this.messageQueue = messageQueue;
         }
 
         #endregion
@@ -58,16 +58,15 @@ namespace WmcSoft.Messaging
         #region IMessageService Membres
 
         [ThreadStatic]
-        static MessageQueueTransaction transaction;
+        private static MessageQueueTransaction transaction;
 
         /// <summary>
         /// Starts a transaction.
         /// </summary>
         public void BeginTransaction()
         {
-            if (transaction != null) {
-                throw new InvalidOperationException();
-            }
+            if (transaction != null) throw new InvalidOperationException();
+
             transaction = new MessageQueueTransaction();
             transaction.Begin();
         }
@@ -77,9 +76,8 @@ namespace WmcSoft.Messaging
         /// </summary>
         public void CommitTransaction()
         {
-            if (transaction == null) {
-                throw new InvalidOperationException();
-            }
+            if (transaction == null) throw new InvalidOperationException();
+
             transaction.Commit();
             transaction = null;
         }
@@ -89,9 +87,8 @@ namespace WmcSoft.Messaging
         /// </summary>
         public void RollbackTransaction()
         {
-            if (transaction == null) {
-                throw new InvalidOperationException();
-            }
+            if (transaction == null) throw new InvalidOperationException();
+
             transaction.Abort();
             transaction = null;
         }
@@ -103,9 +100,9 @@ namespace WmcSoft.Messaging
         public void Send(IJob message)
         {
             if (transaction != null) {
-                _messageQueue.Send(message, transaction);
+                messageQueue.Send(message, transaction);
             } else {
-                _messageQueue.Send(message, MessageQueueTransactionType.Single);
+                messageQueue.Send(message, MessageQueueTransactionType.Single);
             }
         }
 
@@ -116,14 +113,10 @@ namespace WmcSoft.Messaging
         /// <exception cref="InvalidCastException">The message body does not implement <see cref="IJob"/>.</exception>
         public IJob Receive()
         {
-            Message message;
-            if (transaction != null) {
-                message = _messageQueue.Receive(transaction);
-            } else {
-                message = _messageQueue.Receive(MessageQueueTransactionType.Single);
-            }
-            var job = (IJob)message.Body;
-            return job;
+            var message = transaction != null
+                ? messageQueue.Receive(transaction)
+                : messageQueue.Receive(MessageQueueTransactionType.Single);
+            return (IJob)message.Body;
         }
 
         /// <summary>
@@ -135,14 +128,10 @@ namespace WmcSoft.Messaging
         public IJob Receive(TimeSpan timeout)
         {
             try {
-                Message message;
-                if (transaction != null) {
-                    message = _messageQueue.Receive(timeout, transaction);
-                } else {
-                    message = _messageQueue.Receive(timeout, MessageQueueTransactionType.Single);
-                }
-                IJob job = (IJob)message.Body;
-                return job;
+                var message = transaction != null
+                    ? messageQueue.Receive(timeout, transaction)
+                    : messageQueue.Receive(timeout, MessageQueueTransactionType.Single);
+                return (IJob)message.Body;
             } catch (MessageQueueException exception) {
                 if (exception.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout) {
                     return null;

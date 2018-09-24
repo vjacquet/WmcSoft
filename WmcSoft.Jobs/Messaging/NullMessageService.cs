@@ -42,12 +42,14 @@ namespace WmcSoft.Messaging
         public void BeginTransaction()
         {
         }
+
         /// <summary>
         /// Commits the transaction.
         /// </summary>
         public void CommitTransaction()
         {
         }
+
         /// <summary>
         /// Rolls back the transaction.
         /// </summary>

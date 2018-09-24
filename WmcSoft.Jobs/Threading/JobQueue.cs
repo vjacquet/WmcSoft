@@ -34,7 +34,7 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        private readonly Queue<IJob> _queue = new Queue<IJob>();
+        private readonly Queue<IJob> queue = new Queue<IJob>();
 
         #endregion
 
@@ -42,9 +42,9 @@ namespace WmcSoft.Threading
 
         public void Enqueue(IJob item)
         {
-            lock (_queue) {
-                _queue.Enqueue(item);
-                Monitor.Pulse(_queue);
+            lock (queue) {
+                queue.Enqueue(item);
+                Monitor.Pulse(queue);
                 //Monitor.Wait(m_queue);
             }
         }
@@ -52,43 +52,41 @@ namespace WmcSoft.Threading
         public IJob Dequeue()
         {
             IJob item;
-            lock (_queue) {
-                while (_queue.Count == 0)
-                    Monitor.Wait(_queue);
-                item = _queue.Dequeue();
-                Monitor.Pulse(_queue);
+            lock (queue) {
+                while (queue.Count == 0)
+                    Monitor.Wait(queue);
+                item = queue.Dequeue();
+                Monitor.Pulse(queue);
             }
             return item;
         }
 
         public bool TryDequeue(out IJob item, TimeSpan timeout)
         {
-            lock (_queue) {
-                if (_queue.Count == 0) {
-                    if (!Monitor.Wait(_queue, timeout) || _queue.Count == 0) {
+            lock (queue) {
+                if (queue.Count == 0) {
+                    if (!Monitor.Wait(queue, timeout) || queue.Count == 0) {
                         item = null;
                         return false;
                     }
                 }
-                item = _queue.Dequeue();
-                Monitor.Pulse(_queue);
+                item = queue.Dequeue();
+                Monitor.Pulse(queue);
             }
             return true;
         }
 
-        public bool IsEmpty {
-            get { return _queue.Count == 0; }
-        }
+        public bool IsEmpty => queue.Count == 0;
 
         public void Clear(Action<IJob> action)
         {
-            lock (_queue) {
-                while (_queue.Count > 0) {
-                    IJob job = _queue.Dequeue();
+            lock (queue) {
+                while (queue.Count > 0) {
+                    var job = queue.Dequeue();
                     action(job);
                 }
 
-                Monitor.PulseAll(_queue);
+                Monitor.PulseAll(queue);
             }
         }
 

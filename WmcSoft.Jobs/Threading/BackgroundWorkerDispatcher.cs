@@ -64,8 +64,8 @@ namespace WmcSoft.Threading
     {
         #region Private Fields
 
-        readonly Queue<IJob> _queue;
-        readonly BackgroundWorker _backgroundWorker;
+        readonly Queue<IJob> queue;
+        readonly BackgroundWorker backgroundWorker;
 
         #endregion
 
@@ -73,20 +73,20 @@ namespace WmcSoft.Threading
 
         public BackgroundWorkerDispatcher(BackgroundWorker backgroundWorker)
         {
-            _queue = new Queue<IJob>();
-            _backgroundWorker = backgroundWorker;
-            _backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+            queue = new Queue<IJob>();
+            this.backgroundWorker = backgroundWorker;
+            this.backgroundWorker.DoWork += OnDoWork;
         }
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void OnDoWork(object sender, DoWorkEventArgs e)
         {
-            while (_queue.Count > 0) {
-                if (_backgroundWorker.CancellationPending) {
-                    _queue.Clear();
+            while (queue.Count > 0) {
+                if (backgroundWorker.CancellationPending) {
+                    queue.Clear();
                     return;
                 }
 
-                var job = _queue.Dequeue();
+                var job = queue.Dequeue();
                 try {
                     job.Execute(this);
                 } catch (Exception exception) {
@@ -101,21 +101,18 @@ namespace WmcSoft.Threading
 
         public override void Dispatch(IJob job)
         {
-            _queue.Enqueue(job);
+            queue.Enqueue(job);
         }
 
-        public override bool SupportsCancellation {
-            get { return _backgroundWorker.WorkerSupportsCancellation; }
-        }
+        public override bool SupportsCancellation => backgroundWorker.WorkerSupportsCancellation;
 
         public override void CancelAsync()
         {
-            _backgroundWorker.CancelAsync();
+            backgroundWorker.CancelAsync();
         }
 
-        public override bool CancellationPending {
-            get { return _backgroundWorker.CancellationPending; }
-        }
+        public override bool CancellationPending => backgroundWorker.CancellationPending;
+
         #endregion
     }
 }

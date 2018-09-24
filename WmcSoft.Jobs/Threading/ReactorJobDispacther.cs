@@ -43,17 +43,15 @@ namespace WmcSoft.Threading
                 throw new ArgumentNullException("job");
             }
 
-            Interlocked.Increment(ref _workingJobs);
-            _onIdle.Reset();
+            Interlocked.Increment(ref workingJobs);
+            onIdle.Reset();
             ThreadPool.QueueUserWorkItem(DoJob, job);
         }
 
         /// <summary>
         /// Returns <c>true</c> when the <see cref="JobDispatcher"/> is busy.
         /// </summary>
-        public bool IsBusy {
-            get { return _workingJobs > 0; }
-        }
+        public bool IsBusy => workingJobs > 0;
 
         /// <summary>
         /// Blocks the current thread while the dispatcher is busy, using a 32-bit signed 
@@ -65,7 +63,7 @@ namespace WmcSoft.Threading
         {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
-                return _onIdle.WaitOne(millisecondsTimeout, false);
+                return onIdle.WaitOne(millisecondsTimeout, false);
             }
             return !isBusy;
         }
@@ -74,18 +72,17 @@ namespace WmcSoft.Threading
 
         #region Private
 
-        private int _workingJobs;
-        private readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
+        private int workingJobs;
+        private readonly ManualResetEvent onIdle = new ManualResetEvent(false);
 
         private void DoJob(object obj)
         {
-            IJob job = null;
+            var job = (IJob)obj;
             try {
-                job = (IJob)obj;
                 job.Execute(this);
             } finally {
-                if (0 == Interlocked.Decrement(ref _workingJobs))
-                    _onIdle.Set();
+                if (0 == Interlocked.Decrement(ref workingJobs))
+                    onIdle.Set();
                 Dispose(job);
             }
         }

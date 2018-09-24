@@ -48,21 +48,20 @@ namespace WmcSoft.Threading
 
         struct ThreadStartJob : IJob
         {
-            ThreadStart _start;
+            ThreadStart start;
 
             internal ThreadStartJob(ThreadStart start)
             {
-                if (start == null)
-                    throw new ArgumentNullException("start");
+                if (start == null) throw new ArgumentNullException(nameof(start));
 
-                _start = start;
+                this.start = start;
             }
 
             #region IJob Membres
 
             void IJob.Execute(IServiceProvider serviceProvider)
             {
-                _start();
+                start();
             }
 
             #endregion
@@ -70,23 +69,22 @@ namespace WmcSoft.Threading
 
         struct ActionJob<T> : IJob
         {
-            Action<T> _action;
+            Action<T> action;
 
             internal ActionJob(Action<T> action)
             {
-                if (action == null)
-                    throw new ArgumentNullException("action");
+                if (action == null) throw new ArgumentNullException(nameof(action));
 
-                _action = action;
+                this.action = action;
             }
 
             #region IJob Membres
 
             void IJob.Execute(IServiceProvider serviceProvider)
             {
-                object service = serviceProvider.GetService(typeof(T));
-                T t = service == null ? default(T) : (T)service;
-                _action(t);
+                var service = serviceProvider.GetService(typeof(T));
+                var t = service == null ? default : (T)service;
+                action(t);
             }
 
             #endregion
@@ -98,12 +96,12 @@ namespace WmcSoft.Threading
 
         protected JobDispatcher()
         {
-            _serviceContainer = new ServiceContainer();
+            serviceContainer = new ServiceContainer();
         }
 
         protected JobDispatcher(IServiceProvider parentProvider)
         {
-            _serviceContainer = new ServiceContainer(parentProvider);
+            serviceContainer = new ServiceContainer(parentProvider);
         }
 
         #endregion
@@ -116,7 +114,7 @@ namespace WmcSoft.Threading
 
         #region Fields
 
-        readonly IServiceProvider _serviceContainer;
+        readonly IServiceProvider serviceContainer;
 
         #endregion
 
@@ -183,16 +181,12 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Trait property to indicate if the JobDispatcher supports cancellation.
         /// </summary>
-        public virtual bool SupportsCancellation {
-            get { return false; }
-        }
+        public virtual bool SupportsCancellation => false;
 
         /// <summary>
         /// Returns <c>true</c> if the job dispatcher has been cancelled.
         /// </summary>
-        public virtual bool CancellationPending {
-            get { return false; }
-        }
+        public virtual bool CancellationPending => false;
 
         /// <summary>
         /// Requests to cancel the job dispatcher.
@@ -213,10 +207,9 @@ namespace WmcSoft.Threading
         /// <returns></returns>
         public virtual object GetService(Type serviceType)
         {
-            if ((serviceType == typeof(IServiceProvider))
-                || (serviceType == typeof(JobDispatcher)))
+            if (serviceType == typeof(IServiceProvider) || serviceType == typeof(JobDispatcher))
                 return this;
-            return _serviceContainer.GetService(serviceType);
+            return serviceContainer.GetService(serviceType);
         }
 
         #endregion

@@ -37,9 +37,9 @@ namespace WmcSoft.Messaging
     {
         #region Fields
 
-        readonly IMessageService _messageService;
-        readonly TraceSource _traceSource;
-        readonly int _id;
+        private readonly IMessageService messageService;
+        private readonly TraceSource traceSource;
+        private readonly int id;
 
         #endregion
 
@@ -50,9 +50,9 @@ namespace WmcSoft.Messaging
         /// </summary>
         public TraceMessageService(IMessageService messageService, TraceSource source, int id = 0)
         {
-            _messageService = messageService;
-            _traceSource = source;
-            _id = id;
+            this.messageService = messageService;
+            traceSource = source;
+            this.id = id;
         }
 
         #endregion
@@ -63,11 +63,11 @@ namespace WmcSoft.Messaging
         {
             try {
                 var stopwatch = Stopwatch.StartNew();
-                _traceSource.TraceInformation(">> " + message);
-                action(_messageService);
-                _traceSource.TraceInformation("<< " + message + " - " + stopwatch);
+                traceSource.TraceInformation(">> " + message);
+                action(messageService);
+                traceSource.TraceInformation("<< " + message + " - " + stopwatch);
             } catch (Exception e) {
-                _traceSource.TraceEvent(TraceEventType.Error, _id, "<< " + message + ": " + e.Message + "\r\n" + e.StackTrace);
+                traceSource.TraceEvent(TraceEventType.Error, id, "<< " + message + ": " + e.Message + "\r\n" + e.StackTrace);
                 throw;
             }
         }
@@ -76,12 +76,12 @@ namespace WmcSoft.Messaging
         {
             try {
                 var stopwatch = Stopwatch.StartNew();
-                _traceSource.TraceInformation(">> " + message);
-                var result = action(_messageService);
-                _traceSource.TraceInformation("<< " + message + " - " + stopwatch);
+                traceSource.TraceInformation(">> " + message);
+                var result = action(messageService);
+                traceSource.TraceInformation("<< " + message + " - " + stopwatch);
                 return result;
             } catch (Exception e) {
-                _traceSource.TraceEvent(TraceEventType.Error, _id, "<< " + message + ": " + e.Message + "\r\n" + e.StackTrace);
+                traceSource.TraceEvent(TraceEventType.Error, id, "<< " + message + ": " + e.Message + "\r\n" + e.StackTrace);
                 throw;
             }
         }
@@ -97,6 +97,7 @@ namespace WmcSoft.Messaging
         {
             Eval("BeginTransaction", ms => ms.BeginTransaction());
         }
+
         /// <summary>
         /// Commits the transaction.
         /// </summary>
@@ -104,6 +105,7 @@ namespace WmcSoft.Messaging
         {
             Eval("CommitTransaction", ms => ms.CommitTransaction());
         }
+
         /// <summary>
         /// Rolls back the transaction.
         /// </summary>

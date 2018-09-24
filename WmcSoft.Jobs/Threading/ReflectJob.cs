@@ -38,7 +38,7 @@ namespace WmcSoft.Threading
     [Serializable]
     public class ReflectJob : JobBase
     {
-        static IDictionary<string, ConstructorInfo> constructors;
+        static Dictionary<string, ConstructorInfo> constructors;
         static object syncRoot;
 
         static ReflectJob()
@@ -50,8 +50,7 @@ namespace WmcSoft.Threading
         static ConstructorInfo GetConstructor(string typeName, Type[] parameters)
         {
             lock (syncRoot) {
-                ConstructorInfo ctor;
-                if (!constructors.TryGetValue(typeName, out ctor)) {
+                if (!constructors.TryGetValue(typeName, out var ctor)) {
                     var type = Type.GetType(typeName, true);
                     ctor = type.GetConstructor(parameters);
                     if (ctor == null) {
@@ -88,11 +87,12 @@ namespace WmcSoft.Threading
         /// <value>
         /// The name of the type.
         /// </value>
-        public string TypeName { get; private set; }
+        public string TypeName { get; }
+
         /// <summary>
         /// Gets the parameters.
         /// </summary>
-        public object[] Parameters { get; private set; }
+        public object[] Parameters { get; }
 
         /// <summary>
         /// Instanciates the job of the specified type and parameters and executes it.

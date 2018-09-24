@@ -62,27 +62,27 @@ namespace WmcSoft.Threading
 
             #endregion
 
-            int _jobCount;
-            readonly BatchJob _batch;
+            int jobCount;
+            readonly BatchJob batch;
 
             public BatchJobDispatcher(BatchJob batch, JobDispatcher dispatcher)
                 : base(dispatcher)
             {
-                _batch = batch;
-                _jobCount = 0;
+                this.batch = batch;
+                jobCount = 0;
             }
 
             public override void Dispatch(IJob job)
             {
-                Interlocked.Increment(ref _jobCount);
+                Interlocked.Increment(ref jobCount);
                 Inner.Dispatch(new WrapJob(this, job));
             }
 
             protected void JobExecuted(IJob job)
             {
-                Interlocked.Decrement(ref _jobCount);
-                if (_jobCount == 0)
-                    _batch.OnBatchComplete(EventArgs.Empty);
+                Interlocked.Decrement(ref jobCount);
+                if (jobCount == 0)
+                    batch.OnBatchComplete(EventArgs.Empty);
             }
 
         }
