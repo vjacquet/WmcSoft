@@ -24,6 +24,7 @@
 
 #endregion
 
+using System;
 using System.IO;
 
 namespace WmcSoft.IO.Sources
@@ -32,7 +33,7 @@ namespace WmcSoft.IO.Sources
     /// Returns a <see cref="Stream"/> from the specified <see cref="Path"/>.
     /// </summary>
     /// <remarks>The base implementaion returns a read-only stream.</remarks>
-    public class FileStreamSource : IStreamSource
+    public class FileStreamSource : ITimestampStreamSource
     {
         public FileStreamSource(string path)
         {
@@ -40,6 +41,17 @@ namespace WmcSoft.IO.Sources
             var info = new FileInfo(path);
             Path = info.FullName;
         }
+
+        /// <summary>
+        /// Returns <c>true</c> only when the <see cref="Timestamp"/> property may return a non null value.
+        /// </summary>
+        public bool SupportTimestamp => true;
+
+        /// <summary>
+        /// The UTC datetime at which the stream source was last written.
+        /// </summary>
+        /// <remarks>Returns <c>null</c> if the stream is not available.</remarks>
+        public DateTime? Timestamp => File.GetLastWriteTimeUtc(Path);
 
         /// <summary>
         /// The full path to the file.
