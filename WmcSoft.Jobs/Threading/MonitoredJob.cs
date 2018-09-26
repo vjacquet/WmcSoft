@@ -33,9 +33,9 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        private readonly Stopwatch _stopWatch;
-        private long _delayBeforeExecute;
-        private long _totalTime;
+        private readonly Stopwatch stopWatch;
+        private long delayBeforeExecute;
+        private long totalTime;
 
         private readonly IJob _decorated;
 
@@ -46,10 +46,10 @@ namespace WmcSoft.Threading
         public MonitoredJob(IJob decorated)
         {
             _decorated = decorated;
-            _delayBeforeExecute = -1;
-            _totalTime = -1;
+            delayBeforeExecute = -1;
+            totalTime = -1;
 
-            _stopWatch = Stopwatch.StartNew();
+            stopWatch = Stopwatch.StartNew();
         }
 
         #endregion
@@ -60,29 +60,21 @@ namespace WmcSoft.Threading
         /// Gets the time to begin execution.
         /// </summary>
         /// <value>The time to begin execution.</value>
-        public TimeSpan DelayBeforeExecute {
-            get { return TimeSpan.FromTicks(_delayBeforeExecute); }
-        }
+        public TimeSpan DelayBeforeExecute => TimeSpan.FromTicks(delayBeforeExecute);
 
-        public TimeSpan ExecuteTime {
-            get { return TimeSpan.FromTicks(_totalTime - _delayBeforeExecute); }
-        }
+        public TimeSpan ExecuteTime => TimeSpan.FromTicks(totalTime - delayBeforeExecute);
 
         /// <summary>
         /// Gets the total time.
         /// </summary>
         /// <value>The total time.</value>
-        public TimeSpan TotalTime {
-            get { return TimeSpan.FromTicks(_totalTime); }
-        }
+        public TimeSpan TotalTime => TimeSpan.FromTicks(totalTime);
 
         /// <summary>
         /// Gets the total time  in ticks.
         /// </summary>
         /// <value>The total time in ticks.</value>
-        public long TotalTicks {
-            get { return _totalTime; }
-        }
+        public long TotalTicks => totalTime;
 
         #endregion
 
@@ -97,19 +89,17 @@ namespace WmcSoft.Threading
 
         protected sealed override void DoExecute(IServiceProvider serviceProvider)
         {
-            _delayBeforeExecute = _stopWatch.ElapsedTicks;
-            JobMonitoringEventArgs e = new JobMonitoringEventArgs(_decorated);
-            JobMonitoringEventHandler handler;
-
-            handler = Executing;
+            delayBeforeExecute = stopWatch.ElapsedTicks;
+            var e = new JobMonitoringEventArgs(_decorated);
+            var handler = Executing;
             if (handler != null)
                 handler(this, e);
 
             try {
                 _decorated.Execute(serviceProvider);
             } finally {
-                _stopWatch.Stop();
-                _totalTime = _stopWatch.ElapsedTicks;
+                stopWatch.Stop();
+                totalTime = stopWatch.ElapsedTicks;
 
                 handler = Executed;
                 if (handler != null)
@@ -125,11 +115,9 @@ namespace WmcSoft.Threading
 
     public class JobMonitoringEventArgs : EventArgs
     {
-        private readonly IJob _job;
-
         public JobMonitoringEventArgs(IJob job)
         {
-            _job = job;
+            Job = job;
         }
 
         public IJob Job { get; }

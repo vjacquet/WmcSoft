@@ -45,9 +45,7 @@ namespace WmcSoft.Threading
         /// <summary>
         /// Gets the attempt.
         /// </summary>
-        public static int Attempt {
-            get { return attempt; }
-        }
+        public static int Attempt => attempt;
 
         /// <summary>
         /// Receives a job using <see cref="IMessageService.Receive()"/> and executes it.
@@ -66,10 +64,10 @@ namespace WmcSoft.Threading
             }
 
             try {
-                TimeSpan timeout = TimeSpan.FromMilliseconds(1000);
+                var timeout = TimeSpan.FromMilliseconds(1000);
 
                 messageService.BeginTransaction();
-                IJob job = messageService.Receive(timeout);
+                var job = messageService.Receive(timeout);
                 if (job != null) {
                     job.Execute(serviceProvider);
 

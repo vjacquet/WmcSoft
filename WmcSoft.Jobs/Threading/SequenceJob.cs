@@ -69,11 +69,11 @@ namespace WmcSoft.Threading
         protected override void DoExecute(IServiceProvider serviceProvider)
         {
             if (queue.Count > 0) {
-                IJob job = queue.Dequeue();
+                var job = queue.Dequeue();
                 job.Execute(serviceProvider);
 
                 if (queue.Count > 0) {
-                    JobDispatcher dispatcher = serviceProvider.GetService<JobDispatcher>();
+                    var dispatcher = serviceProvider.GetService<JobDispatcher>();
                     dispatcher.Dispatch(this);
                 }
             }

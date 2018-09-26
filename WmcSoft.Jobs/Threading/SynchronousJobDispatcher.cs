@@ -33,7 +33,7 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        int _refCount;
+        private int refCount;
 
         #endregion
 
@@ -45,13 +45,11 @@ namespace WmcSoft.Threading
         /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
         public override void Dispatch(IJob job)
         {
-            if (job == null) {
-                throw new ArgumentNullException("job");
-            }
+            if (job == null) throw new ArgumentNullException(nameof(job));
 
-            Interlocked.Increment(ref _refCount);
+            Interlocked.Increment(ref refCount);
             job.Execute(this);
-            Interlocked.Decrement(ref _refCount);
+            Interlocked.Decrement(ref refCount);
         }
 
         #endregion

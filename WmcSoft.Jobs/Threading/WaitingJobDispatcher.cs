@@ -34,8 +34,8 @@ namespace WmcSoft.Threading
 
         class WaitingDecorator : JobDispatcherDecorator, IWaitableJobDispatcher
         {
-            private int _workingJobs;
-            private readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
+            private int workingJobs;
+            private readonly ManualResetEvent onIdle = new ManualResetEvent(false);
 
             public WaitingDecorator(JobDispatcher jobDispatcher)
                 : base(jobDispatcher)
@@ -46,35 +46,33 @@ namespace WmcSoft.Threading
             public override void Dispatch(IJob job)
             {
                 var monitored = new MonitoredJob(job);
-                monitored.Executed += monitored_Executed;
+                monitored.Executed += OnExecuted;
 
-                Interlocked.Increment(ref _workingJobs);
-                _onIdle.Reset();
+                Interlocked.Increment(ref workingJobs);
+                onIdle.Reset();
 
                 base.Dispatch(monitored);
             }
 
-            void monitored_Executed(object sender, JobMonitoringEventArgs e)
+            void OnExecuted(object sender, JobMonitoringEventArgs e)
             {
                 // unregister to prevent being called twice if dispatched again.
                 var monitored = (MonitoredJob)sender;
-                monitored.Executed -= monitored_Executed;
+                monitored.Executed -= OnExecuted;
 
-                if (0 == Interlocked.Decrement(ref _workingJobs))
-                    _onIdle.Set();
+                if (0 == Interlocked.Decrement(ref workingJobs))
+                    onIdle.Set();
             }
 
             #region IWaitingJobDispatcher Membres
 
-            public bool IsBusy {
-                get { return _workingJobs > 0; }
-            }
+            public bool IsBusy => workingJobs > 0;
 
             public bool WaitAll(int millisecondsTimeout)
             {
                 bool isBusy = IsBusy;
                 if (isBusy && millisecondsTimeout != 0) {
-                    return _onIdle.WaitOne(millisecondsTimeout, false);
+                    return onIdle.WaitOne(millisecondsTimeout, false);
                 }
                 return !isBusy;
             }
@@ -84,7 +82,7 @@ namespace WmcSoft.Threading
 
         #endregion
 
-        IWaitableJobDispatcher _jobDispatcher;
+        private IWaitableJobDispatcher jobDispatcher;
 
         #region Lifecycle
 
@@ -99,7 +97,7 @@ namespace WmcSoft.Threading
         public WaitingJobDispatcher(JobDispatcher jobDispatcher)
             : base(Decorate(jobDispatcher))
         {
-            _jobDispatcher = Inner as IWaitableJobDispatcher;
+            this.jobDispatcher = Inner as IWaitableJobDispatcher;
         }
 
         #endregion
@@ -108,12 +106,10 @@ namespace WmcSoft.Threading
 
         public bool WaitAll(int millisecondsTimeout)
         {
-            return _jobDispatcher.WaitAll(millisecondsTimeout);
+            return jobDispatcher.WaitAll(millisecondsTimeout);
         }
 
-        public bool IsBusy {
-            get { return _jobDispatcher.IsBusy; }
-        }
+        public bool IsBusy => jobDispatcher.IsBusy;
 
         #endregion
     }

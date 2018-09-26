@@ -33,12 +33,12 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        readonly Thread[] _threads;
-        readonly ManualResetEvent _onIdle = new ManualResetEvent(false);
-        readonly IJobQueue _jobs;
+        readonly Thread[] threads;
+        readonly ManualResetEvent onIdle = new ManualResetEvent(false);
+        readonly IJobQueue jobs;
 
-        private int _workingJobs;
-        long continuationTicks;
+        private int workingJobs;
+        private long continuationTicks;
 
         #endregion
 
@@ -67,17 +67,17 @@ namespace WmcSoft.Threading
             if (threadCount < 1)
                 throw new ArgumentOutOfRangeException("threadCount");
 
-            _jobs = this.GetService<IJobQueue>() ?? new JobQueue();
+            jobs = this.GetService<IJobQueue>() ?? new JobQueue();
 
-            _threads = new Thread[threadCount];
+            threads = new Thread[threadCount];
             for (int i = 0; i < threadCount; i++) {
-                Thread thread = new Thread(Worker);
+                var thread = new Thread(Worker);
                 thread.Priority = ThreadPriority.Normal;
-                thread.Name = String.Format("QueuedJobDispatcher #{0}", i);
+                thread.Name = string.Format("QueuedJobDispatcher #{0}", i);
                 thread.IsBackground = true;
                 if (initializer != null)
                     initializer(thread);
-                _threads[i] = thread;
+                threads[i] = thread;
                 thread.Start();
             }
         }
@@ -95,13 +95,9 @@ namespace WmcSoft.Threading
 
         #region Overrides
 
-        public override bool SupportsCancellation {
-            get { return true; }
-        }
+        public override bool SupportsCancellation => true;
 
-        public override bool CancellationPending {
-            get { return cancellationPending; }
-        }
+        public override bool CancellationPending => cancellationPending;
         bool cancellationPending;
 
         public override void CancelAsync()
@@ -109,42 +105,40 @@ namespace WmcSoft.Threading
             if (!cancellationPending) {
                 base.CancelAsync();
                 cancellationPending = true;
-                _jobs.Clear(Dispose);
+                jobs.Clear(Dispose);
             }
         }
 
         public override void Dispatch(IJob job)
         {
             if (!CancellationPending) {
-                Interlocked.Increment(ref _workingJobs);
-                _jobs.Enqueue(job);
-                _onIdle.Reset();
+                Interlocked.Increment(ref workingJobs);
+                jobs.Enqueue(job);
+                onIdle.Reset();
             }
         }
 
-        public bool IsBusy {
-            get { return _workingJobs != 0; }
-        }
+        public bool IsBusy => workingJobs != 0;
 
         public bool WaitAll(int millisecondsTimeout)
         {
             bool isBusy = IsBusy;
             if (isBusy && millisecondsTimeout != 0) {
-                return _onIdle.WaitOne(millisecondsTimeout, false);
+                return onIdle.WaitOne(millisecondsTimeout, false);
             }
             return !isBusy;
         }
 
         protected override void Dispose(bool disposing)
         {
-            for (int i = 0; i < _threads.Length; i++) {
-                if (_threads[i] != null) {
-                    if (!_threads[i].Join(0))
-                        _threads[i].Abort();
-                    _threads[i] = null;
+            for (int i = 0; i < threads.Length; i++) {
+                if (threads[i] != null) {
+                    if (!threads[i].Join(0))
+                        threads[i].Abort();
+                    threads[i] = null;
                 }
             }
-            _onIdle.Close();
+            onIdle.Close();
             base.Dispose(disposing);
         }
 
@@ -154,18 +148,16 @@ namespace WmcSoft.Threading
 
         void Worker()
         {
-            IJob job;
-
             while (!CancellationPending) {
-                TimeSpan timeout = TimeSpan.FromTicks(Interlocked.Read(ref continuationTicks));
-                if (_jobs.TryDequeue(out job, timeout)) {
+                var timeout = TimeSpan.FromTicks(Interlocked.Read(ref continuationTicks));
+                if (jobs.TryDequeue(out var job, timeout)) {
                     try {
                         job.Execute(this);
                     } finally {
                         Dispose(job);
 
-                        if (0 == Interlocked.Decrement(ref _workingJobs))
-                            _onIdle.Set();
+                        if (0 == Interlocked.Decrement(ref workingJobs))
+                            onIdle.Set();
                     }
                 }
             }

@@ -35,8 +35,8 @@ namespace WmcSoft.Threading
     {
         #region Private fields
 
-        JobDispatcher _jobDispatcher;
-        protected JobDispatcher Inner => _jobDispatcher;
+        JobDispatcher jobDispatcher;
+        protected JobDispatcher Inner => jobDispatcher;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace WmcSoft.Threading
         /// <param name="jobDispatcher">The job dispatcher.</param>
         protected JobDispatcherDecorator(JobDispatcher jobDispatcher)
         {
-            _jobDispatcher = jobDispatcher;
+            this.jobDispatcher = jobDispatcher;
         }
 
         #endregion
@@ -60,7 +60,7 @@ namespace WmcSoft.Threading
         /// </summary>
         public override void CancelAsync()
         {
-            _jobDispatcher.CancelAsync();
+            jobDispatcher.CancelAsync();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace WmcSoft.Threading
         /// <value>
         /// 	<c>true</c> if a cancellation is pending; otherwise, <c>false</c>.
         /// </value>
-        public override bool CancellationPending => _jobDispatcher.CancellationPending;
+        public override bool CancellationPending => jobDispatcher.CancellationPending;
 
         /// <summary>
         /// Gets a value indicating whether the dispatcher supports cancellation.
@@ -77,7 +77,7 @@ namespace WmcSoft.Threading
         /// <value>
         /// 	<c>true</c> if the dispatcher supports cancellation; otherwise, <c>false</c>.
         /// </value>
-        public override bool SupportsCancellation => _jobDispatcher.SupportsCancellation;
+        public override bool SupportsCancellation => jobDispatcher.SupportsCancellation;
 
         /// <summary>
         /// Dispatches the specified job.
@@ -85,7 +85,7 @@ namespace WmcSoft.Threading
         /// <param name="job">An <see cref="System.Object"/> that implements <see cref="IJob"/>.</param>
         public override void Dispatch(IJob job)
         {
-            _jobDispatcher.Dispatch(job);
+            jobDispatcher.Dispatch(job);
         }
 
         /// <summary>
@@ -95,9 +95,9 @@ namespace WmcSoft.Threading
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (_jobDispatcher != null) {
-                _jobDispatcher.Dispose();
-                _jobDispatcher = null;
+            if (jobDispatcher != null) {
+                jobDispatcher.Dispose();
+                jobDispatcher = null;
             }
             base.Dispose(disposing);
         }
@@ -117,7 +117,7 @@ namespace WmcSoft.Threading
                 return this;
             object instance = base.GetService(serviceType);
             if (instance == null)
-                instance = _jobDispatcher.GetService(serviceType);
+                instance = jobDispatcher.GetService(serviceType);
             return instance;
         }
 
