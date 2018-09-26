@@ -238,6 +238,7 @@
     <Compile Include="IO\Sources\StreamStore.cs" />
     <Compile Include="IO\Sources\TimestampShieldingStreamSource.cs" />
     <Compile Include="IO\Sources\TraceStreamSource.cs" />
+    <Compile Include="IO\Sources\UpgradingFileStreamSource.cs" />
     <Compile Include="IO\StreamComparer.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
