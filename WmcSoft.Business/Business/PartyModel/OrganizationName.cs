@@ -44,6 +44,9 @@ namespace WmcSoft.Business.PartyModel
 
         public OrganizationName(string name, OrganizationNameUse use = OrganizationNameUse.LegalName)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (name == "") throw new ArgumentException(nameof(name));
+
             Name = name;
             Use = use;
         }

@@ -45,11 +45,17 @@ namespace WmcSoft.Business.PartyModel
 
         public PersonName(string preferredName)
         {
+            if (preferredName == null) throw new ArgumentNullException(nameof(preferredName));
+            if (preferredName == "") throw new ArgumentException(nameof(preferredName));
+
             PreferredName = preferredName;
         }
 
         public PersonName(string prefix = null, string givenNames = null, string famillyName = null, string suffix = null, string preferredName = null)
         {
+            if (string.IsNullOrEmpty(preferredName) && string.IsNullOrEmpty(famillyName)) throw new ArgumentException();
+
+
             Prefix = prefix;
             GivenNames = givenNames;
             FamilyName = famillyName;
