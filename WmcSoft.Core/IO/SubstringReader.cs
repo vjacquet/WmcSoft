@@ -49,7 +49,7 @@ namespace WmcSoft.IO
         /// <param name="length">The number of characters in the substring. </param>
         public SubstringReader(string s, int startIndex, int length)
         {
-            if (s == null) throw new ArgumentNullException("s");
+            if (s == null) throw new ArgumentNullException(nameof(s));
             if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (length < 0 || startIndex > (s.Length - length)) throw new ArgumentOutOfRangeException(nameof(length));
 
