@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -99,14 +100,9 @@ namespace WmcSoft
         public string Prerelease => _prerelease;
         public string Build => _build;
 
-        public SemVer Clone()
-        {
-            return (SemVer)MemberwiseClone();
-        }
-
         object ICloneable.Clone()
         {
-            return Clone();
+            return MemberwiseClone();
         }
 
         public override int GetHashCode()
@@ -137,7 +133,7 @@ namespace WmcSoft
 
         public int CompareTo(SemVer other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
                 return 1;
             var result = _major.CompareTo(other._major);
             if (result != 0)
@@ -168,7 +164,7 @@ namespace WmcSoft
 
         public bool Equals(SemVer other)
         {
-            if (ReferenceEquals(other, null))
+            if (other is null)
                 return false;
             return _major == other._major
                 && _minor == other._minor
@@ -216,36 +212,36 @@ namespace WmcSoft
 
         public static bool operator <(SemVer x, SemVer y)
         {
-            if (ReferenceEquals(y, null))
+            if (y is null)
                 return false;
             return y.CompareTo(x) > 0;
         }
 
         public static bool operator >=(SemVer x, SemVer y)
         {
-            if (ReferenceEquals(x, null))
-                return ReferenceEquals(y, null);
+            if (x is null)
+                return y is null;
             return x.CompareTo(y) >= 0;
         }
 
         public static bool operator >(SemVer x, SemVer y)
         {
-            if (ReferenceEquals(x, null))
+            if (x is null)
                 return false;
             return x.CompareTo(y) > 0;
         }
 
         public static bool operator <=(SemVer x, SemVer y)
         {
-            if (ReferenceEquals(x, null))
-                return ReferenceEquals(y, null);
+            if (x is null)
+                return y is null;
             return x.CompareTo(y) <= 0;
         }
 
         public static bool operator ==(SemVer x, SemVer y)
         {
-            if (ReferenceEquals(x, null))
-                return ReferenceEquals(y, null);
+            if (x is null)
+                return y is null;
             return x.Equals(y);
         }
 
@@ -411,7 +407,7 @@ namespace WmcSoft
                     return true;
                 }
             }
-            result = default(SemVer);
+            result = default;
             return false;
         }
     }
