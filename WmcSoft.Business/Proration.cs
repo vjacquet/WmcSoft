@@ -97,6 +97,8 @@ namespace WmcSoft
         /// <returns>The shares.</returns>
         public static decimal[] DividedEvenlyIntoParts(decimal total, int n, decimal minimumIncrement)
         {
+            if (n <= 0) throw new ArgumentOutOfRangeException(nameof(n));
+
             var lowResult = total / n;
             var lowResults = new decimal[n];
             for (int i = 0; i < n; i++)
