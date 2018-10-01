@@ -34,11 +34,11 @@ namespace WmcSoft.Data
     /// </summary>
     public abstract class DataReaderDecorator : IDataReader
     {
-        private readonly IDataReader _underlying;
+        private readonly IDataReader underlying;
 
         protected DataReaderDecorator(IDataReader dataReader)
         {
-            _underlying = dataReader;
+            underlying = dataReader;
         }
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace WmcSoft.Data
         /// </summary>
         public virtual void Close()
         {
-            _underlying.Close();
+            underlying.Close();
         }
 
         /// <summary>
         /// Gets a value indicating the depth of nesting for the current row.
         /// </summary>
         public virtual int Depth {
-            get { return _underlying.Depth; }
+            get { return underlying.Depth; }
         }
 
         /// <summary>
@@ -63,14 +63,14 @@ namespace WmcSoft.Data
         /// <exception cref="InvalidOperationException">The <see cref="IDataReader"/> is closed.</exception>
         public virtual DataTable GetSchemaTable()
         {
-            return _underlying.GetSchemaTable();
+            return underlying.GetSchemaTable();
         }
 
         /// <summary>
         /// Gets a value indicating whether the data reader is closed.
         /// </summary>
         public virtual bool IsClosed {
-            get { return _underlying.IsClosed; }
+            get { return underlying.IsClosed; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace WmcSoft.Data
         /// <returns>true if there are more rows; otherwise, false.</returns>
         public virtual bool NextResult()
         {
-            return _underlying.NextResult();
+            return underlying.NextResult();
         }
 
         /// <summary>
@@ -88,14 +88,14 @@ namespace WmcSoft.Data
         /// <returns>true if there are more rows; otherwise, false.</returns>
         public virtual bool Read()
         {
-            return _underlying.Read();
+            return underlying.Read();
         }
 
         /// <summary>
         /// Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
         /// </summary>
         public virtual int RecordsAffected {
-            get { return _underlying.RecordsAffected; }
+            get { return underlying.RecordsAffected; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace WmcSoft.Data
         protected virtual void Dispose(bool disposing)
         {
             if (disposing) {
-                _underlying.Dispose();
+                underlying.Dispose();
             }
         }
 
@@ -118,7 +118,7 @@ namespace WmcSoft.Data
         /// </summary>
         /// <value>When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.</value>
         public virtual int FieldCount {
-            get { return _underlying.FieldCount; }
+            get { return underlying.FieldCount; }
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual bool GetBoolean(int i)
         {
-            return _underlying.GetBoolean(i);
+            return underlying.GetBoolean(i);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual byte GetByte(int i)
         {
-            return _underlying.GetByte(i);
+            return underlying.GetByte(i);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
         {
-            return _underlying.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
+            return underlying.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual char GetChar(int i)
         {
-            return _underlying.GetChar(i);
+            return underlying.GetChar(i);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
         {
-            return _underlying.GetChars(i, fieldoffset, buffer, bufferoffset, length);
+            return underlying.GetChars(i, fieldoffset, buffer, bufferoffset, length);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual IDataReader GetData(int i)
         {
-            return _underlying.GetData(i);
+            return underlying.GetData(i);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual string GetDataTypeName(int i)
         {
-            return _underlying.GetDataTypeName(i);
+            return underlying.GetDataTypeName(i);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual DateTime GetDateTime(int i)
         {
-            return _underlying.GetDateTime(i);
+            return underlying.GetDateTime(i);
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual decimal GetDecimal(int i)
         {
-            return _underlying.GetDecimal(i);
+            return underlying.GetDecimal(i);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual double GetDouble(int i)
         {
-            return _underlying.GetDouble(i);
+            return underlying.GetDouble(i);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual Type GetFieldType(int i)
         {
-            return _underlying.GetFieldType(i);
+            return underlying.GetFieldType(i);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual float GetFloat(int i)
         {
-            return _underlying.GetFloat(i);
+            return underlying.GetFloat(i);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual Guid GetGuid(int i)
         {
-            return _underlying.GetGuid(i);
+            return underlying.GetGuid(i);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual short GetInt16(int i)
         {
-            return _underlying.GetInt16(i);
+            return underlying.GetInt16(i);
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual int GetInt32(int i)
         {
-            return _underlying.GetInt32(i);
+            return underlying.GetInt32(i);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual long GetInt64(int i)
         {
-            return _underlying.GetInt64(i);
+            return underlying.GetInt64(i);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual string GetName(int i)
         {
-            return _underlying.GetName(i);
+            return underlying.GetName(i);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace WmcSoft.Data
         /// <returns>The index of the named field.</returns>
         public virtual int GetOrdinal(string name)
         {
-            return _underlying.GetOrdinal(name);
+            return underlying.GetOrdinal(name);
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual string GetString(int i)
         {
-            return _underlying.GetString(i);
+            return underlying.GetString(i);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual object GetValue(int i)
         {
-            return _underlying.GetValue(i);
+            return underlying.GetValue(i);
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace WmcSoft.Data
         /// <returns>The number of instances of <see cref="System.Object"/> in the array.</returns>
         public virtual int GetValues(object[] values)
         {
-            return _underlying.GetValues(values);
+            return underlying.GetValues(values);
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual bool IsDBNull(int i)
         {
-            return _underlying.IsDBNull(i);
+            return underlying.IsDBNull(i);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace WmcSoft.Data
         /// <returns>The column with the specified name as an <see cref="System.Object"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">No column with the specified name was found.</exception>
         public virtual object this[string name] {
-            get { return _underlying[name]; }
+            get { return underlying[name]; }
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace WmcSoft.Data
         /// <returns>The column with the specified name as an <see cref="System.Object"/>.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual object this[int i] {
-            get { return _underlying[i]; }
+            get { return underlying[i]; }
         }
     }
 }

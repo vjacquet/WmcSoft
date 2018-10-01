@@ -35,8 +35,8 @@ namespace WmcSoft.Data
     /// <typeparam name="T"></typeparam>
     public sealed class FuncBulkAdapter<T> : BulkAdapter<T>
     {
-        private readonly int _fieldCount;
-        private readonly Func<T, int, object> _interpreter;
+        private readonly int fieldCount;
+        private readonly Func<T, int, object> interpreter;
 
         /// <summary>
         /// Creates a new instance of the <see cref="FuncBulkAdapter{T}"/>.
@@ -52,14 +52,14 @@ namespace WmcSoft.Data
             if (interpreter == null) throw new ArgumentNullException(nameof(interpreter));
             if (fieldCount < 1) throw new ArgumentOutOfRangeException(nameof(fieldCount));
 
-            _interpreter = interpreter;
-            _fieldCount = fieldCount;
+            this.interpreter = interpreter;
+            this.fieldCount = fieldCount;
         }
 
         /// <inheritdoc/>
-        public override object GetValue(int i) => _interpreter(Current, i);
+        public override object GetValue(int i) => interpreter(Current, i);
 
         /// <inheritdoc/>
-        public override int FieldCount => _fieldCount;
+        public override int FieldCount => fieldCount;
     }
 }

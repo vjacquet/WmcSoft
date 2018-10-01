@@ -40,9 +40,9 @@ namespace WmcSoft.Data
     {
         #region Fields
 
-        private readonly IEnumerable<T> _data;
-        private readonly PropertyDescriptorCollection _properties;
-        private IEnumerator<T> _enumerator;
+        private readonly IEnumerable<T> data;
+        private readonly PropertyDescriptorCollection properties;
+        private IEnumerator<T> enumerator;
 
         #endregion
 
@@ -60,9 +60,9 @@ namespace WmcSoft.Data
 
         public TypeDescriptorDataReader(IEnumerable<T> data, PropertyDescriptorCollection properties)
         {
-            _properties = properties;
-            _data = data;
-            _enumerator = _data.GetEnumerator();
+            this.properties = properties;
+            this.data = data;
+            enumerator = this.data.GetEnumerator();
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace WmcSoft.Data
 
         private PropertyDescriptor GetProperty(string name)
         {
-            var property = _properties.Find(name, true);
+            var property = properties.Find(name, true);
             if (property == null)
                 throw new IndexOutOfRangeException();
             return property;
@@ -83,7 +83,7 @@ namespace WmcSoft.Data
 
         protected override object GetValue(string name)
         {
-            return GetProperty(name).GetValue(_enumerator.Current);
+            return GetProperty(name).GetValue(enumerator.Current);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace WmcSoft.Data
         /// <returns>A <see cref="DataRow"/> that describes one column.</returns>
         protected override DataRow GetSchemaRow(DataTable dataTable, int i)
         {
-            var property = _properties[i];
+            var property = properties[i];
             var dr = base.GetSchemaRow(dataTable, i);
             if (property.IsReadOnly)
                 dr[SchemaTableOptionalColumn.IsReadOnly] = true;
@@ -107,7 +107,7 @@ namespace WmcSoft.Data
         /// <returns>true if there are more rows; otherwise, false.</returns>
         public override bool Read()
         {
-            return _enumerator.MoveNext();
+            return enumerator.MoveNext();
         }
 
         #endregion
@@ -116,10 +116,10 @@ namespace WmcSoft.Data
 
         protected override void Dispose(bool disposing)
         {
-            var disposable = _enumerator as IDisposable;
+            var disposable = enumerator as IDisposable;
             if (disposable != null) {
                 disposable.Dispose();
-                _enumerator = null;
+                enumerator = null;
             }
         }
 
@@ -131,9 +131,7 @@ namespace WmcSoft.Data
         /// Gets the number of columns in the current row.
         /// </summary>
         /// <value>When not positioned in a valid recordset, 0; otherwise, the number of columns in the current record. The default is -1.</value>
-        public override int FieldCount {
-            get { return _properties.Count; }
-        }
+        public override int FieldCount => properties.Count;
 
         /// <summary>
         /// Gets the data type information for the specified field.
@@ -143,7 +141,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public override Type GetFieldType(int i)
         {
-            return _properties[i].PropertyType;
+            return properties[i].PropertyType;
         }
 
         /// <summary>
@@ -154,7 +152,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public override string GetName(int i)
         {
-            return _properties[i].Name;
+            return properties[i].Name;
         }
 
         /// <summary>
@@ -165,7 +163,7 @@ namespace WmcSoft.Data
         public override int GetOrdinal(string name)
         {
             var property = GetProperty(name);
-            return _properties.IndexOf(property);
+            return properties.IndexOf(property);
         }
 
         /// <summary>
@@ -176,7 +174,7 @@ namespace WmcSoft.Data
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public override object GetValue(int i)
         {
-            return _properties[i].GetValue(_enumerator.Current);
+            return properties[i].GetValue(enumerator.Current);
         }
 
         #endregion

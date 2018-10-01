@@ -48,9 +48,7 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets a value indicating the depth of nesting for the current row.
         /// </summary>
-        public int Depth {
-            get { return 0; }
-        }
+        public int Depth => 0;
 
         static DataColumn AddColumn<T>(DataTable table, string columnName)
         {
@@ -114,9 +112,7 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets a value indicating whether the data reader is closed.
         /// </summary>
-        public bool IsClosed {
-            get { return _disposed; }
-        }
+        public bool IsClosed => disposed;
 
         /// <summary>
         /// Advances the data reader to the next result, when reading the results of SQL statements.
@@ -136,26 +132,24 @@ namespace WmcSoft.Data
         /// <summary>
         /// Gets the number of rows changed, inserted, or deleted by execution of the SQL statement.
         /// </summary>
-        public int RecordsAffected {
-            get { return -1; }
-        }
+        public int RecordsAffected => -1;
 
         #endregion
 
         #region IDisposable Membres
 
-        bool _disposed;
+        bool disposed;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            if (_disposed)
+            if (disposed)
                 return;
 
             Dispose(true);
-            _disposed = true;
+            disposed = true;
             GC.SuppressFinalize(this);
         }
 

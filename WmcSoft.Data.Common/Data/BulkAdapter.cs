@@ -38,8 +38,8 @@ namespace WmcSoft.Data
     {
         #region Fields
 
-        private readonly IEnumerator<T> _enumerator;
-        private int _cursor;
+        private readonly IEnumerator<T> enumerator;
+        private int cursor;
 
         #endregion
 
@@ -54,8 +54,8 @@ namespace WmcSoft.Data
         {
             if (values == null) throw new ArgumentNullException(nameof(values));
 
-            _enumerator = values.GetEnumerator();
-            _cursor = -1;
+            enumerator = values.GetEnumerator();
+            cursor = -1;
         }
 
         #endregion
@@ -65,12 +65,12 @@ namespace WmcSoft.Data
         /// <summary>
         /// Returns the current element in the enumeration.
         /// </summary>
-        protected T Current => _enumerator.Current;
+        protected T Current => enumerator.Current;
 
         /// <summary>
         /// Returns the index of the current element in the enumeration.
         /// </summary>
-        protected int Cursor => _cursor;
+        protected int Cursor => cursor;
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace WmcSoft.Data
         /// </summary>
         public void Close()
         {
-            _cursor = -2;
+            cursor = -2;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace WmcSoft.Data
         /// <returns>
         /// true if the data reader is closed; otherwise, false.
         /// </returns>
-        public bool IsClosed => _cursor == -2;
+        public bool IsClosed => cursor == -2;
 
         /// <summary>
         /// Advances the data reader to the next result, when reading the results of batch SQL statements.
@@ -119,8 +119,8 @@ namespace WmcSoft.Data
         /// </returns>
         public virtual bool Read()
         {
-            if (_enumerator.MoveNext()) {
-                _cursor++;
+            if (enumerator.MoveNext()) {
+                cursor++;
                 return true;
             }
             return false;
@@ -136,7 +136,7 @@ namespace WmcSoft.Data
             get {
                 // this reader is for bulk insert, therefore it can be considered as inserted statements
                 // and, as such, could modify the Records affected...
-                return _cursor + 1;
+                return cursor + 1;
             }
         }
 

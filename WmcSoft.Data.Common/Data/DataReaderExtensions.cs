@@ -77,8 +77,7 @@ namespace WmcSoft.Data
 
         static IEnumerable<T> UnguardedReadAll<T>(IDataReader reader, Func<IDataRecord, T> materializer)
         {
-            T entity;
-            while (reader.ReadNext(materializer, out entity))
+            while (reader.ReadNext(materializer, out var entity))
                 yield return entity;
         }
 
