@@ -46,6 +46,8 @@ namespace WmcSoft.Business.PartyModel
         public Person(PersonName name)
             : this()
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
             PersonName = name;
         }
 

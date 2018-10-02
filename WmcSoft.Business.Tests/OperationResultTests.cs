@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Xunit;
 using WmcSoft.IO;
 using WmcSoft.Runtime.Serialization;
@@ -20,6 +21,16 @@ namespace WmcSoft.Business
             Assert.Empty(undefined.Errors);
             Assert.False(failed.Succeeded);
             Assert.Single(failed.Errors);
+        }
+
+        [Fact]
+        public void DefaultOperationResultIsUndefined()
+        {
+            OperationResult result = default;
+
+            Assert.False(result.Succeeded);
+            Assert.NotNull(result.Errors);
+            Assert.Empty(result.Errors);
         }
 
         [Fact]
@@ -113,5 +124,21 @@ namespace WmcSoft.Business
             Assert.NotEmpty(result.Errors);
             Assert.Equal("Error", result.Errors[0].Code);
         }
+
+
+        [Fact]
+        public void DefaultOperationResultWithValueIsUndefined()
+        {
+            OperationResult<int> result = default;
+
+            Assert.False(result.Succeeded);
+            Assert.NotNull(result.Errors);
+            Assert.Empty(result.Errors);
+            Assert.False(result.HasValue);
+            Assert.Throws<InvalidOperationException>(() => {
+                int value = result.Value;
+            });
+        }
+
     }
 }

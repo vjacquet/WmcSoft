@@ -72,7 +72,7 @@ namespace WmcSoft
             try {
                 return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
             } catch (FormatException e) {
-                throw new FormatException(string.Format(Resources.InvalidFormatMessage, format), e);
+                throw new FormatException(string.Format(Resources.InvalidFormatMessage, format));
             }
         }
 
@@ -157,7 +157,7 @@ namespace WmcSoft
             if (format == null || format == "G")
                 return DoFormat("X", 4, arg);
 
-            if (regex.TryMatch(format, out Match match)) {
+            if (regex.TryMatch(format, out var match)) {
                 return DoFormat(match.GetGroupValue("format"), match.GetNullableGroupValue<int>("group"), arg);
             }
 

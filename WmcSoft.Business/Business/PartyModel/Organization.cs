@@ -43,14 +43,16 @@ namespace WmcSoft.Business.PartyModel
             OtherOrganizationNames = new List<OrganizationName>();
         }
 
-        public Organization(OrganizationName organizationName)
+        public Organization(OrganizationName name)
             : this()
         {
-            OrganizationName = organizationName;
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
+            OrganizationName = name;
         }
 
-        public Organization(string organizationName)
-            : this(new OrganizationName(organizationName))
+        public Organization(string name)
+            : this(new OrganizationName(name))
         {
         }
 

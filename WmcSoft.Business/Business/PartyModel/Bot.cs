@@ -43,10 +43,12 @@ namespace WmcSoft.Business.PartyModel
             OtherBotNames = new List<BotName>();
         }
 
-        public Bot(BotName organizationName)
+        public Bot(BotName name)
             : this()
         {
-            BotName = organizationName;
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
+            BotName = name;
         }
 
         public Bot(string organizationName)

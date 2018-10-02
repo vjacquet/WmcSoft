@@ -45,8 +45,8 @@ namespace WmcSoft
     {
         #region Fields
 
-        readonly T _value;
-        readonly Exception _exception;
+        readonly T value;
+        readonly Exception exception;
 
         #endregion
 
@@ -58,8 +58,8 @@ namespace WmcSoft
         /// <param name="value">The value</param>
         public Expected(T value)
         {
-            _value = value;
-            _exception = null;
+            this.value = value;
+            exception = null;
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace WmcSoft
         /// <param name="exception">The exception.</param>
         public Expected(Exception exception)
         {
-            _value = default(T);
-            _exception = exception;
+            value = default(T);
+            this.exception = exception;
         }
 
         #endregion
@@ -127,7 +127,7 @@ namespace WmcSoft
 
         public static implicit operator Fault(Expected<T> x)
         {
-            return new Fault(x._exception);
+            return new Fault(x.exception);
         }
 
         #endregion
@@ -137,11 +137,11 @@ namespace WmcSoft
         /// <summary>
         /// True is the Expected contains a value; otherwise, false.
         /// </summary>
-        public bool HasValue => _exception == null;
+        public bool HasValue => exception == null;
         /// <summary>
         /// True is the Expected does not contain a value; otherwise, false.
         /// </summary>
-        public bool IsFaulted => _exception != null;
+        public bool IsFaulted => exception != null;
 
         /// <summary>
         /// The value.
@@ -150,9 +150,9 @@ namespace WmcSoft
         public T Value {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get {
-                if (_exception != null)
-                    throw _exception;
-                return _value;
+                if (exception != null)
+                    throw exception;
+                return value;
             }
         }
 
@@ -165,7 +165,7 @@ namespace WmcSoft
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetValueOrDefault()
         {
-            return _value;
+            return value;
         }
 
         /// <summary>
@@ -176,20 +176,20 @@ namespace WmcSoft
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetValueOrDefault(T defaultValue)
         {
-            return HasValue ? _value : defaultValue;
+            return HasValue ? value : defaultValue;
         }
 
         /// <summary>
         /// The exception or <c>null</c>.
         /// </summary>
-        public Exception Exception => _exception;
+        public Exception Exception => exception;
 
         public IEnumerable<Exception> GetExceptions()
         {
             if (IsFaulted) {
-                if (_exception is AggregateException aggregated)
+                if (exception is AggregateException aggregated)
                     return aggregated.InnerExceptions;
-                return new SingleItemReadOnlyList<Exception>(_exception);
+                return new SingleItemReadOnlyList<Exception>(exception);
             }
             return Enumerable.Empty<Exception>();
         }
@@ -214,10 +214,10 @@ namespace WmcSoft
         public Expected<TResult> Apply<TResult>(Func<T, TResult> func, Func<Exception, Exception> translate)
         {
             if (IsFaulted)
-                return PassThrough(_exception, translate);
+                return PassThrough(exception, translate);
 
             try {
-                return func(_value);
+                return func(value);
             } catch (Exception e) {
                 return PassThrough(e, translate);
             }
@@ -226,10 +226,10 @@ namespace WmcSoft
         public Expected<TResult> Apply<TResult>(Func<T, TResult> func)
         {
             if (IsFaulted)
-                return _exception;
+                return exception;
 
             try {
-                return func(_value);
+                return func(value);
             } catch (Exception e) {
                 return e;
             }
@@ -246,33 +246,33 @@ namespace WmcSoft
             if (other.GetType() == GetType()) {
                 return Equals((Expected<T>)other);
             }
-            if (_exception != null && _exception.Equals(other))
+            if (exception != null && exception.Equals(other))
                 return true;
-            if (other.Equals(_value))
+            if (other.Equals(value))
                 return true;
             return false;
         }
 
         public bool Equals(Expected<T> other)
         {
-            if (_exception != null)
-                return _exception.Equals(other._exception);
-            return Object.Equals(_value, other._value);
+            if (exception != null)
+                return exception.Equals(other.exception);
+            return Equals(value, other.value);
         }
 
 
         public override int GetHashCode()
         {
-            if (_exception != null)
-                return _exception.GetHashCode();
-            if (ReferenceEquals(_value, null))
+            if (exception != null)
+                return exception.GetHashCode();
+            if (ReferenceEquals(value, null))
                 return 0;
-            return _value.GetHashCode();
+            return value.GetHashCode();
         }
 
         public override string ToString()
         {
-            return HasValue ? _value.ToString() : (@"/!\ " + _exception.Message);
+            return HasValue ? value.ToString() : (@"/!\ " + exception.Message);
         }
 
         #endregion
@@ -324,8 +324,8 @@ namespace WmcSoft
 
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault());
-            } catch (Exception exception) {
-                return exception;
+            } catch (Exception e) {
+                return e;
             }
         }
 
@@ -337,8 +337,8 @@ namespace WmcSoft
 
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault());
-            } catch (Exception exception) {
-                return exception;
+            } catch (Exception e) {
+                return e;
             }
         }
 
@@ -350,8 +350,8 @@ namespace WmcSoft
 
             try {
                 return func(first.GetValueOrDefault(), second.GetValueOrDefault(), third.GetValueOrDefault(), fourth.GetValueOrDefault());
-            } catch (Exception exception) {
-                return exception;
+            } catch (Exception e) {
+                return e;
             }
         }
 

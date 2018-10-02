@@ -40,13 +40,13 @@ namespace WmcSoft
     public struct OperationResult : ISerializable
     {
         internal static OperationError[] None = new OperationError[0];
-        internal static OperationError[] Undefined = new OperationError[0];
+        internal static OperationError[] Undefined = null;
 
-        internal readonly OperationError[] _errors;
+        internal readonly OperationError[] errors;
 
         private OperationResult(OperationError[] errors)
         {
-            _errors = errors;
+            this.errors = errors;
         }
 
         /// <summary>
@@ -57,9 +57,7 @@ namespace WmcSoft
         /// <summary>
         /// Indicates whether the operation succeeded or not.
         /// </summary>
-        public bool Succeeded {
-            get { return ReferenceEquals(_errors, None); }
-        }
+        public bool Succeeded => ReferenceEquals(errors, None);
 
         /// <summary>
         /// Returns an <see cref="OperationResult{T}"/> indicating a successful operation.
@@ -80,21 +78,19 @@ namespace WmcSoft
         {
             if (Succeeded)
                 return;
-            if (ReferenceEquals(_errors, null))
+            if (ReferenceEquals(errors, Undefined))
                 throw new InvalidOperationException();
 
-            var message = string.Join("\r\n", Array.ConvertAll(_errors, e => e.Description ?? e.Code));
+            var message = string.Join("\r\n", Array.ConvertAll(errors, e => e.Description ?? e.Code));
             var exception = new InvalidOperationException(message);
-            exception.Data.Add("Errors", _errors);
+            exception.Data.Add("Errors", errors);
             throw exception;
         }
 
         /// <summary>
         /// Errors that occured during the operation.
         /// </summary>
-        public ReadOnlyCollection<OperationError> Errors {
-            get { return new ReadOnlyCollection<OperationError>(_errors); }
-        }
+        public ReadOnlyCollection<OperationError> Errors => new ReadOnlyCollection<OperationError>(errors ?? None);
 
         /// <summary>
         /// Creates a failed <see cref="OperationResult"/> with a list of errors.
@@ -104,7 +100,7 @@ namespace WmcSoft
         public static OperationResult Failed(params OperationError[] errors)
         {
             if (errors == null || errors.Length == 0)
-                return new OperationResult(Undefined);
+                return new OperationResult(null);
             return new OperationResult((OperationError[])errors.Clone());
         }
 
@@ -112,9 +108,9 @@ namespace WmcSoft
         {
             if (Succeeded)
                 return "Succeeded";
-            if (_errors.Length == 0)
+            if (ReferenceEquals(errors, Undefined))
                 return "Failed";
-            return "Failed: " + string.Join(", ", Array.ConvertAll(_errors, e => e.Code));
+            return "Failed: " + string.Join(", ", Array.ConvertAll(errors, e => e.Code));
         }
 
         #region Serialization
@@ -122,7 +118,7 @@ namespace WmcSoft
         private OperationResult(SerializationInfo info, StreamingContext context)
         {
             var succeeded = info.GetBoolean("Succeeded");
-            _errors = succeeded ? None : info.GetValue<OperationError[]>("Errors");
+            errors = succeeded ? None : info.GetValue<OperationError[]>("Errors");
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
@@ -131,7 +127,7 @@ namespace WmcSoft
                 info.AddValue("Succeeded", true);
             } else {
                 info.AddValue("Succeeded", false);
-                info.AddValue("Errors", _errors);
+                info.AddValue("Errors", errors);
             }
         }
 
@@ -145,19 +141,19 @@ namespace WmcSoft
     [Serializable]
     public struct OperationResult<T> : ISerializable
     {
-        private OperationResult _result;
-        private readonly T _value;
+        private OperationResult result;
+        private readonly T value;
 
         public OperationResult(T value)
         {
-            _result = OperationResult.Success;
-            _value = value;
+            result = OperationResult.Success;
+            this.value = value;
         }
 
         private OperationResult(OperationError[] errors)
         {
-            _result = OperationResult.Failed(errors);
-            _value = default(T);
+            result = OperationResult.Failed(errors);
+            value = default;
         }
 
         /// <summary>
@@ -171,7 +167,7 @@ namespace WmcSoft
         /// (unlike the <see cref="Value"/> property, which throws an exception).</remarks>
         public T GetValueOrDefault()
         {
-            return _value;
+            return value;
         }
 
         /// <summary>
@@ -185,7 +181,7 @@ namespace WmcSoft
         /// (unlike the <see cref="Value"/> property, which throws an exception).</remarks>
         public T GetValueOrDefault(T defaultValue)
         {
-            return HasValue ? _value : defaultValue;
+            return HasValue ? value : defaultValue;
         }
 
         /// <summary>
@@ -201,17 +197,15 @@ namespace WmcSoft
         /// <exception cref="InvalidOperationException">The <see cref="HasValue"/> property is <c>false</c>.</exception>
         public T Value {
             get {
-                _result.ThrowIfFailed();
-                return _value;
+                result.ThrowIfFailed();
+                return value;
             }
         }
 
         /// <summary>
         /// Indicates whether the operation succeeded or not.
         /// </summary>
-        public bool Succeeded {
-            get { return _result.Succeeded; }
-        }
+        public bool Succeeded => result.Succeeded;
 
         public static explicit operator T(OperationResult<T> result)
         {
@@ -231,7 +225,7 @@ namespace WmcSoft
         /// <remarks>This conversion is useful to convert failed results.</remarks>
         public static implicit operator OperationResult<T>(OperationResult result)
         {
-            return new OperationResult<T>(result._errors);
+            return new OperationResult<T>(result.errors);
         }
 
         /// <summary>
@@ -241,13 +235,13 @@ namespace WmcSoft
 
         public void ThrowIfFailed()
         {
-            _result.ThrowIfFailed();
+            result.ThrowIfFailed();
         }
 
         /// <summary>
         /// Errors that occured during the operation.
         /// </summary>
-        public ReadOnlyCollection<OperationError> Errors => _result.Errors;
+        public ReadOnlyCollection<OperationError> Errors => result.Errors;
 
         /// <summary>
         /// Creates a failed <see cref="OperationResult"/> with a list of errors.
@@ -264,8 +258,8 @@ namespace WmcSoft
         public override string ToString()
         {
             if (Succeeded)
-                return _value.ToString();
-            return _result.ToString();
+                return value.ToString();
+            return result.ToString();
         }
 
         #region Serialization
@@ -274,11 +268,11 @@ namespace WmcSoft
         {
             var succeeded = info.GetBoolean("Succeeded");
             if (succeeded) {
-                _value = info.GetValue<T>("Value");
-                _result = OperationResult.Success;
+                value = info.GetValue<T>("Value");
+                result = OperationResult.Success;
             } else {
-                _result = OperationResult.Failed(info.GetValue<OperationError[]>("Errors"));
-                _value = default;
+                result = OperationResult.Failed(info.GetValue<OperationError[]>("Errors"));
+                value = default;
             }
         }
 
@@ -286,9 +280,9 @@ namespace WmcSoft
         {
             if (Succeeded) {
                 info.AddValue("Succeeded", true);
-                info.AddValue("Value", _value);
+                info.AddValue("Value", value);
             } else {
-                ((ISerializable)_result).GetObjectData(info, context);
+                ((ISerializable)result).GetObjectData(info, context);
             }
         }
 
