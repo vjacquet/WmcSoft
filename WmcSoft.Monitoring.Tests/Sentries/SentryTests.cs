@@ -100,5 +100,18 @@ namespace WmcSoft.Monitoring.Sentries
             Assert.Equal(2, sentry.OnUnsubscribeCalls);
             Assert.Equal(1, sentry.OnObservedCalls);
         }
+
+        [Fact]
+        public void CanUnsubscribeOnError()
+        {
+            var sentry = new MockSentry("mock");
+
+            var subscription = sentry.Subscribe(new MockObserver());
+            using (sentry.Subscribe(new GarbageCollectorObserver(subscription))) {
+                sentry.NotifyError(new InvalidOperationException());
+            }
+
+            Assert.Equal(SentryStatus.Error, sentry.Status);
+        }
     }
 }

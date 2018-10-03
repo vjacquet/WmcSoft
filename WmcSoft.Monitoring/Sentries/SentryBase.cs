@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace WmcSoft.Monitoring.Sentries
 {
@@ -161,13 +162,21 @@ namespace WmcSoft.Monitoring.Sentries
                 OnObserved();
         }
 
-        List<IObserver<SentryStatus>> Guarded {
-            get { return new List<IObserver<SentryStatus>>(observers); }
-        }
-
         #endregion
 
         #region Observer support
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        void FastForEach(Action<IObserver<SentryStatus>> action)
+        {
+            observers.ForEach(o => action(o));
+        }
+
+        void SafeForEach(Action<IObserver<SentryStatus>> action)
+        {
+            var copy = new List<IObserver<SentryStatus>>(observers);
+            copy.ForEach(o => action(o));
+        }
 
         protected void OnNext(SentryStatus value)
         {
@@ -175,7 +184,7 @@ namespace WmcSoft.Monitoring.Sentries
                 lock (observers) {
                     if (status != value) {
                         status = value;
-                        observers.ForEach(o => o.OnNext(value));
+                        FastForEach(o => o.OnNext(value));
                     }
                 }
             }
@@ -185,7 +194,7 @@ namespace WmcSoft.Monitoring.Sentries
         {
             lock (observers) {
                 OnNext(SentryStatus.Error);
-                observers.ForEach(o => o.OnError(error));
+                SafeForEach(o => o.OnError(error));
                 Remove(observers);
             }
         }
@@ -194,7 +203,7 @@ namespace WmcSoft.Monitoring.Sentries
         {
             lock (observers) {
                 OnNext(SentryStatus.None);
-                observers.ForEach(o => o.OnCompleted());
+                SafeForEach(o => o.OnCompleted());
                 Remove(observers);
             }
         }
