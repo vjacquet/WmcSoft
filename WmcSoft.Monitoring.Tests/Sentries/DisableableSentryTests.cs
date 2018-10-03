@@ -2,13 +2,13 @@
 
 namespace WmcSoft.Monitoring.Sentries
 {
-    public class DisableSentryTests
+    public class DisableableSentryTests
     {
         [Fact]
         public void DisabledSentriesReturnsNoneStatus()
         {
             var subject = new SubjectSentry("subject");
-            var sentry = new DisableSentry(subject, enabled: false);
+            var sentry = new DisableableSentry(subject, enabled: false);
 
             subject.Status = SentryStatus.Success;
             Assert.Equal(SentryStatus.None, sentry.Status);
@@ -30,7 +30,7 @@ namespace WmcSoft.Monitoring.Sentries
         public void DisablingSentriesStopsObservation()
         {
             var subject = new SubjectSentry("subject", SentryStatus.Success);
-            var sentry = new DisableSentry(subject, enabled: true);
+            var sentry = new DisableableSentry(subject, enabled: true);
             var mock = new MockObserver();
             using (sentry.Subscribe(mock)) {
                 Assert.Equal(subject.Status, sentry.Status);
@@ -62,7 +62,7 @@ namespace WmcSoft.Monitoring.Sentries
         public void ObserveNoneWhenSubscribingToDisabledSentry()
         {
             var subject = new SubjectSentry("subject", SentryStatus.Success);
-            var sentry = new DisableSentry(subject, enabled: false);
+            var sentry = new DisableableSentry(subject, enabled: false);
             var mock = new MockObserver();
             using (sentry.Subscribe(mock)) {
                 Assert.NotEqual(subject.Status, sentry.Status);

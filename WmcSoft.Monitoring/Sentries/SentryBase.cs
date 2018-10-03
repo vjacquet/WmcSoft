@@ -161,6 +161,10 @@ namespace WmcSoft.Monitoring.Sentries
                 OnObserved();
         }
 
+        List<IObserver<SentryStatus>> Guarded {
+            get { return new List<IObserver<SentryStatus>>(observers); }
+        }
+
         #endregion
 
         #region Observer support
@@ -170,8 +174,8 @@ namespace WmcSoft.Monitoring.Sentries
             if (status != value) {
                 lock (observers) {
                     if (status != value) {
-                        observers.ForEach(o => o.OnNext(value));
                         status = value;
+                        observers.ForEach(o => o.OnNext(value));
                     }
                 }
             }
@@ -180,6 +184,7 @@ namespace WmcSoft.Monitoring.Sentries
         protected void OnError(Exception error)
         {
             lock (observers) {
+                OnNext(SentryStatus.Error);
                 observers.ForEach(o => o.OnError(error));
                 Remove(observers);
             }
@@ -188,6 +193,7 @@ namespace WmcSoft.Monitoring.Sentries
         protected void OnCompleted()
         {
             lock (observers) {
+                OnNext(SentryStatus.None);
                 observers.ForEach(o => o.OnCompleted());
                 Remove(observers);
             }

@@ -31,14 +31,15 @@ namespace WmcSoft.Monitoring.Sentries
     /// <summary>
     /// Decorates a sentry to support enable and disable state.
     /// </summary>
-    public sealed class DisableSentry : SentryBase, IObserver<SentryStatus>
+    public sealed class DisableableSentry : SentryBase, IObserver<SentryStatus>
     {
         private readonly ISentry underlying;
         private IDisposable subscription;
         private SentryStatus underlyingStatus;
         private bool enabled;
 
-        public DisableSentry(ISentry sentry, bool enabled = false) : base(sentry.Name)
+        public DisableableSentry(ISentry sentry, bool enabled = false)
+            : base(sentry.Name)
         {
             this.enabled = enabled;
             underlying = sentry;

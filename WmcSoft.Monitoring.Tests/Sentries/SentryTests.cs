@@ -55,10 +55,12 @@ namespace WmcSoft.Monitoring.Sentries
                 sentry.NotifiyCompleted();
                 Assert.Equal(2, sentry.OnUnsubscribeCalls);
                 Assert.Equal(1, sentry.OnObservedCalls);
+                Assert.Equal(SentryStatus.None, o1.LatestValue);
+                Assert.Equal(SentryStatus.None, o2.LatestValue);
 
                 sentry.SetNext(SentryStatus.Error);
-                Assert.Equal(SentryStatus.Success, o1.LatestValue);
-                Assert.Equal(SentryStatus.Success, o2.LatestValue);
+                Assert.Equal(SentryStatus.None, o1.LatestValue);
+                Assert.Equal(SentryStatus.None, o2.LatestValue);
 
                 Assert.True(o1.IsCompleted);
                 Assert.True(o2.IsCompleted);
@@ -85,10 +87,12 @@ namespace WmcSoft.Monitoring.Sentries
                 sentry.NotifyError(error);
                 Assert.Equal(2, sentry.OnUnsubscribeCalls);
                 Assert.Equal(1, sentry.OnObservedCalls);
+                Assert.Equal(SentryStatus.Error, o1.LatestValue);
+                Assert.Equal(SentryStatus.Error, o2.LatestValue);
 
-                sentry.SetNext(SentryStatus.Error);
-                Assert.Equal(SentryStatus.Success, o1.LatestValue);
-                Assert.Equal(SentryStatus.Success, o2.LatestValue);
+                sentry.SetNext(SentryStatus.Success);
+                Assert.Equal(SentryStatus.Error, o1.LatestValue);
+                Assert.Equal(SentryStatus.Error, o2.LatestValue);
 
                 Assert.Equal(error, o1.Error);
                 Assert.Equal(error, o2.Error);
