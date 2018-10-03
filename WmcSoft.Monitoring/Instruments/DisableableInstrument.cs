@@ -31,12 +31,13 @@ namespace WmcSoft.Monitoring.Instruments
     /// <summary>
     /// Decorates an instrument to support enable and disable state.
     /// </summary>
-    public sealed class DisableInstrument : InstrumentBase, IObserver<Timestamped<decimal>>
+    public sealed class DisableableInstrument : InstrumentBase, IObserver<Timestamped<decimal>>
     {
         private readonly IInstrument underlying;
         private IDisposable subscription;
 
-        public DisableInstrument(IInstrument instrument, bool enabled = false) : base(instrument.Name)
+        public DisableableInstrument(IInstrument instrument, bool enabled = false)
+            : base(instrument.Name)
         {
             Enabled = enabled;
             underlying = instrument;

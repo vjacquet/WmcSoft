@@ -1,30 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="WmcSoft.Monitoring.Sentries.SentryBase" Collapsed="true">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAKAIEAACQAAIAABAAAAQAAAACAAAAAAAAAAQAAQA=</HashCode>
-      <FileName>Diagnostics\Sentries\SentryBase.cs</FileName>
+      <HashCode>AEQICAKEAACQAAIEABAABAQACAACAAAAQAAAAAAAAQA=</HashCode>
+      <FileName>Sentries\SentryBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WmcSoft.Monitoring.Sentries.AggregateSentry" Collapsed="true">
-    <Position X="0.5" Y="3.5" Width="1.5" />
-    <NestedTypes>
-      <Class Name="WmcSoft.Monitoring.Sentries.AggregateSentry.SentryStatusAggregator" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Diagnostics\Sentries\AggregateSentry.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-    </NestedTypes>
+    <Position X="1.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAIAAGARAAAAgAAAAAAAAAAAAAAAgAAQAAAAAAA=</HashCode>
-      <FileName>Diagnostics\Sentries\AggregateSentry.cs</FileName>
+      <HashCode>AAAAEAIAAGARAAAAgAAAAAAAQAAAAAAAgAAQAAAAAAA=</HashCode>
+      <FileName>Sentries\AggregateSentry.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="WmcSoft.Monitoring.Sentries.TraceSentry" BaseTypeListCollapsed="true">
-    <Position X="5.25" Y="1.75" Width="1.5" />
+  <Class Name="WmcSoft.Monitoring.Sentries.TraceSentry" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="0.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -37,23 +30,60 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAggAAAEAAAAAIBAAAAAAAQABAAKAAAAAABAAAAAAQA=</HashCode>
-      <FileName>Diagnostics\Sentries\TraceSentry.cs</FileName>
+      <HashCode>AAggAAAEAAAAAIBEEAAAAAQCBAAKAAAAAABAAAAAAQA=</HashCode>
+      <FileName>Sentries\TraceSentry.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
+  <Class Name="WmcSoft.Monitoring.Sentries.BestStatusAggregateSentry" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sentries\BestStatusAggregateSentry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Monitoring.Sentries.WorstStatusAggregateSentry" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sentries\WorstStatusAggregateSentry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Monitoring.Sentries.SubjectSentry" Collapsed="true">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sentries\SubjectSentry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WmcSoft.Monitoring.Sentries.ChainOfResponsabilitySentry&lt;T&gt;" Collapsed="true">
+    <Position X="5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAIAAAIQgAAAAAAAIAAAAgAAIAAAQAAAAAAAAAg=</HashCode>
+      <FileName>Sentries\ChainOfResponsabilitiySentry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WmcSoft.Monitoring.Sentries.DisableableSentry" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAmAAAAAAAAIAAgACAAAAAAAAAAAAAgBAAAAAAAAA=</HashCode>
+      <FileName>Sentries\DisableableSentry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="WmcSoft.Monitoring.Sentries.ISentry" Collapsed="true">
-    <Position X="3" Y="3" Width="1.5" />
+    <Position X="12" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Diagnostics\Sentries\ISentry.cs</FileName>
+      <FileName>Sentries\ISentry.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="WmcSoft.Monitoring.Sentries.SentryStatus" Collapsed="true">
-    <Position X="3" Y="4" Width="1.5" />
+    <Position X="12" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAABAAAgAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>Diagnostics\Sentries\SentryStatus.cs</FileName>
+      <FileName>Sentries\SentryStatus.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
