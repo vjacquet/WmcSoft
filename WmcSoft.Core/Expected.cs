@@ -137,11 +137,22 @@ namespace WmcSoft
         /// <summary>
         /// True is the Expected contains a value; otherwise, false.
         /// </summary>
-        public bool HasValue => exception == null;
+        public bool HasValue {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get {
+                return exception == null;
+            }
+        }
+
         /// <summary>
         /// True is the Expected does not contain a value; otherwise, false.
         /// </summary>
-        public bool IsFaulted => exception != null;
+        public bool IsFaulted {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get {
+                return exception != null;
+            }
+        }
 
         /// <summary>
         /// The value.
@@ -182,7 +193,12 @@ namespace WmcSoft
         /// <summary>
         /// The exception or <c>null</c>.
         /// </summary>
-        public Exception Exception => exception;
+        public Exception Exception {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get {
+                return exception;
+            }
+        }
 
         public IEnumerable<Exception> GetExceptions()
         {
