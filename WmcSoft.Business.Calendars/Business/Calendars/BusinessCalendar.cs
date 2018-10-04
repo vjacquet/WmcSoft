@@ -100,52 +100,5 @@ namespace WmcSoft.Business.Calendars
         {
             return !holidays[date.DaysSince(epoch)];
         }
-
-        #region Obsoletes
-
-        [Obsolete("Use the specifications instead.", false)]
-        public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
-            : this("{Obsolete}", since, 1 + since.DaysUntil(until))
-        {
-            var length = this.holidays.Length;
-            for (int i = 0; i < length; i++) {
-                if (holidays.Any(p => p(since)))
-                    this.holidays.Set(i, true);
-                since = since.AddDays(1);
-            }
-        }
-
-        [Obsolete("Use the specifications instead.", false)]
-        public static bool Saturdays(Date date)
-        {
-            return date.DayOfWeek == DayOfWeek.Saturday;
-        }
-
-        [Obsolete("Use the specifications instead.", false)]
-        public static bool Sundays(Date date)
-        {
-            return date.DayOfWeek == DayOfWeek.Sunday;
-        }
-
-        [Obsolete("Use the specifications instead.", false)]
-        public static bool WeekEnds(Date date)
-        {
-            var dow = date.DayOfWeek;
-            return dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday;
-        }
-
-        [Obsolete("Use the specifications instead.", false)]
-        public static bool Christmas(Date date)
-        {
-            return date.Month == 12 && date.Day == 25;
-        }
-
-        [Obsolete("Use the specifications instead.", false)]
-        public static bool NewYear(Date date)
-        {
-            return date.Month == 1 && date.Day == 1;
-        }
-
-        #endregion
     }
 }
