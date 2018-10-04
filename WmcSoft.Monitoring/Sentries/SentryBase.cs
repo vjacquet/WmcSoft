@@ -169,13 +169,13 @@ namespace WmcSoft.Monitoring.Sentries
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void FastForEach(Action<IObserver<SentryStatus>> action)
         {
-            observers.ForEach(o => action(o));
+            observers.ForEach(action);
         }
 
         void SafeForEach(Action<IObserver<SentryStatus>> action)
         {
             var copy = new List<IObserver<SentryStatus>>(observers);
-            copy.ForEach(o => action(o));
+            copy.ForEach(action);
         }
 
         protected void OnNext(SentryStatus value)

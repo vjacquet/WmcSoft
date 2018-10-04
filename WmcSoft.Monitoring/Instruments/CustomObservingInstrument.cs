@@ -38,7 +38,7 @@ namespace WmcSoft.Monitoring.Instruments
 
         static decimal Convert(T value)
         {
-            return System.Convert.ToDecimal((object)value);
+            return System.Convert.ToDecimal(value);
         }
 
         public CustomObservingInstrument(string name, IObservable<T> observable, Func<T, decimal> measure)

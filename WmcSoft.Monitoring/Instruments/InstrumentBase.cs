@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace WmcSoft.Monitoring.Instruments
 {
@@ -157,17 +158,29 @@ namespace WmcSoft.Monitoring.Instruments
 
         #region Observer support
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        void FastForEach(Action<IObserver<Timestamped<decimal>>> action)
+        {
+            observers.ForEach(action);
+        }
+
+        void SafeForEach(Action<IObserver<Timestamped<decimal>>> action)
+        {
+            var copy = new List<IObserver<Timestamped<decimal>>>(observers);
+            copy.ForEach(action);
+        }
+
         protected void OnNext(Timestamped<decimal> value)
         {
             lock (observers) {
-                observers.ForEach(o => o.OnNext(value));
+                FastForEach(o => o.OnNext(value));
             }
         }
 
         protected void OnError(Exception error)
         {
             lock (observers) {
-                observers.ForEach(o => o.OnError(error));
+                SafeForEach(o => o.OnError(error));
                 Remove(observers);
             }
         }
@@ -175,7 +188,7 @@ namespace WmcSoft.Monitoring.Instruments
         protected void OnCompleted()
         {
             lock (observers) {
-                observers.ForEach(o => o.OnCompleted());
+                SafeForEach(o => o.OnCompleted());
                 Remove(observers);
             }
         }
