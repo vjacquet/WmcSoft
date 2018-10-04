@@ -1,6 +1,6 @@
 # Cloning
 Framework Design Guidelines advise against implementing `ICloneable` or even using it in public APIs mostly because this interface
-does not specify whether the opy is deep or shallow. Instead, they suggest to define a `Clone` method on types that need a cloning 
+does not specify whether the copy is deep or shallow. Instead, they suggest to define a `Clone` method on types that need a cloning 
 mecanism and to ensure the documentation clearly states whether it is a deep or shallow copy.
 
 As a **user**, I am only concerned by the fact that changing properties of copy are not reflected on the original, unless they are meant to.
@@ -35,11 +35,11 @@ So, instead, I'd rather call an extension method to the rescue
             return (T)obj.Clone();
         }
 
-This extension works best when `ICloneable` is explicitly implemented. If not, you have to specicy `Clone<T>()` to disambiguate
+This extension works best when `ICloneable` is explicitly implemented. If not, you have to specify `Clone<T>()` to disambiguate
 the method call.
 
 Not being able to make the method virtual is not really a problem as we can kill two birds with on stone by delegating the implementation
-with a virtual method having an extra parameter that will be indicating to **inheritors** whether the copy should be deep or shallow.
+to a virtual method having an extra parameter that will be indicating to **inheritors** whether the copy should be deep or shallow.
 
         protected virtual object Clone(Cloning.Deep strategy)
         {
@@ -51,7 +51,7 @@ with a virtual method having an extra parameter that will be indicating to **inh
             return Clone(Cloning.SuggestDeep);
         }
 
-The strategy can simply be defined as type markers, so the intent is clearly state in the signature of the method.
+The strategy can implemeted with type markers, so the intent is clearly state in the signature of the method.
 
     public static class Cloning
     {
