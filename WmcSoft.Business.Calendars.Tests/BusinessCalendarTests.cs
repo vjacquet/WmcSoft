@@ -88,11 +88,33 @@ namespace WmcSoft.Business.Calendars
         }
 
         [Fact]
+        public void CanCreateBespokeCalendar()
+        {
+            var reference = new BusinessCalendar(new Date(2000, 1, 1), new Date(2002, 1, 1)
+                , Weekends.Every(DayOfWeek.Saturday, DayOfWeek.Sunday)
+            );
+            var newYear = new Date(2001, 01, 01);
+            var xmas = new Date(2001, 12, 25);
+
+            var calendar1 = new BespokeCalendar<BusinessCalendar>("xmas", reference);
+            calendar1.Add(KnownHolidays.Christmas);
+            Assert.False(calendar1.IsHoliday(newYear));
+            Assert.True(calendar1.IsHoliday(xmas));
+
+            var calendar2 = new BespokeCalendar<BusinessCalendar>("new year", reference);
+            calendar2.Add(KnownHolidays.NewYearDay);
+            Assert.True(calendar2.IsHoliday(newYear));
+            Assert.False(calendar2.IsHoliday(xmas));
+        }
+
+        [Fact]
         public void CanJoinHolidays()
         {
             var reference = new BusinessCalendar(new Date(2000, 1, 1), new Date(2002, 1, 1)
                 , Weekends.Every(DayOfWeek.Saturday, DayOfWeek.Sunday)
             );
+            var newYear = new Date(2001, 01, 01);
+            var xmas = new Date(2001, 12, 25);
 
             var calendar1 = new BespokeCalendar<BusinessCalendar>("xmas", reference);
             calendar1.Add(KnownHolidays.Christmas);
@@ -101,15 +123,8 @@ namespace WmcSoft.Business.Calendars
             calendar2.Add(KnownHolidays.NewYearDay);
 
             var calendar = new JoinHolidaysCalendar(calendar1, calendar2);
-
-            Assert.True(calendar1.IsBusinessDay(new Date(2001, 01, 01)));
-            Assert.False(calendar1.IsBusinessDay(new Date(2001, 12, 25)));
-
-            Assert.False(calendar2.IsBusinessDay(new Date(2001, 01, 01)));
-            Assert.True(calendar2.IsBusinessDay(new Date(2001, 12, 25)));
-
-            Assert.False(calendar.IsBusinessDay(new Date(2001, 01, 01)));
-            Assert.False(calendar.IsBusinessDay(new Date(2001, 12, 25)));
+            Assert.True(calendar.IsHoliday(newYear));
+            Assert.True(calendar.IsHoliday(xmas));
         }
 
         [Fact]
@@ -125,16 +140,40 @@ namespace WmcSoft.Business.Calendars
             var calendar2 = new BespokeCalendar<BusinessCalendar>("new year", reference);
             calendar2.Add(KnownHolidays.NewYearDay);
 
+            var newYear = new Date(2001, 01, 01);
+            var xmas = new Date(2001, 12, 25);
+
             var calendar = new JoinBusinessDaysCalendar(calendar1, calendar2);
+            Assert.False(calendar.IsHoliday(newYear));
+            Assert.False(calendar.IsHoliday(xmas));
+        }
 
-            Assert.True(calendar1.IsBusinessDay(new Date(2001, 01, 01)));
-            Assert.False(calendar1.IsBusinessDay(new Date(2001, 12, 25)));
+        [Fact]
+        public void CanJoinQuorumBusinessDays()
+        {
+            var reference = new BusinessCalendar(new Date(2000, 1, 1), new Date(2002, 1, 1)
+                , Weekends.Every(DayOfWeek.Saturday, DayOfWeek.Sunday)
+            );
+            var newYear = new Date(2001, 01, 01);
+            var labour = new Date(2001, 05, 01);
+            var xmas = new Date(2001, 12, 25);
 
-            Assert.False(calendar2.IsBusinessDay(new Date(2001, 01, 01)));
-            Assert.True(calendar2.IsBusinessDay(new Date(2001, 12, 25)));
+            var calendar1 = new BespokeCalendar<BusinessCalendar>("xmas", reference);
+            calendar1.Add(KnownHolidays.Christmas);
 
-            Assert.True(calendar.IsBusinessDay(new Date(2001, 01, 01)));
-            Assert.True(calendar.IsBusinessDay(new Date(2001, 12, 25)));
+            var calendar2 = new BespokeCalendar<BusinessCalendar>("new year", reference);
+            calendar2.Add(KnownHolidays.NewYearDay);
+
+            var calendar3 = new BespokeCalendar<BusinessCalendar>("all", reference);
+            calendar3.Add(KnownHolidays.Christmas);
+            calendar3.Add(KnownHolidays.NewYearDay);
+            calendar3.Add(KnownHolidays.LabourDay);
+
+            var calendar = new JoinQuorumBusinessDaysCalendar(2, calendar1, calendar2, calendar3);
+
+            Assert.True(calendar.IsHoliday(newYear));
+            Assert.False(calendar.IsHoliday(labour));
+            Assert.True(calendar.IsHoliday(xmas));
         }
     }
 }

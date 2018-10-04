@@ -33,32 +33,62 @@ namespace WmcSoft.Business.Calendars
 {
     public static class BusinessCalendarExtensions
     {
+        #region Adapters
+
         [DebuggerDisplay("{Name} [{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
         [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
         class AliasBusinessCalendar : IBusinessCalendar
         {
-            private readonly IBusinessCalendar _calendar;
-            private readonly string _name;
+            private readonly IBusinessCalendar calendar;
 
             public AliasBusinessCalendar(IBusinessCalendar calendar, string name)
             {
                 if (calendar == null) throw new NullReferenceException(); // because the class can only be instanciated by the extension method.
                 if (name == null) throw new ArgumentNullException(nameof(name));
 
-                _calendar = calendar;
-                _name = name;
+                this.calendar = calendar;
+                Name = name;
             }
 
-            public string Name => _name;
+            public string Name { get; }
 
-            public Date MinDate => _calendar.MinDate;
-            public Date MaxDate => _calendar.MaxDate;
+            public Date MinDate => calendar.MinDate;
+            public Date MaxDate => calendar.MaxDate;
 
             public bool IsBusinessDay(Date date)
             {
-                return _calendar.IsBusinessDay(date);
+                return calendar.IsBusinessDay(date);
             }
         }
+
+        [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
+        [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
+        class TruncatedBusinessCalendar : IBusinessCalendar
+        {
+            private readonly IBusinessCalendar calendar;
+
+            public TruncatedBusinessCalendar(IBusinessCalendar calendar, Date since, Date until)
+            {
+                if (since < calendar.MinDate) throw new ArgumentOutOfRangeException(nameof(since));
+                if (until > calendar.MaxDate) throw new ArgumentOutOfRangeException(nameof(until));
+
+                this.calendar = calendar;
+                MinDate = since;
+                MaxDate = until;
+            }
+
+            public string Name => calendar.Name;
+
+            public Date MinDate { get; }
+            public Date MaxDate { get; }
+
+            public bool IsBusinessDay(Date date)
+            {
+                return calendar.IsBusinessDay(date);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Creates a view on a business calendar by giving it a new name.
@@ -72,35 +102,6 @@ namespace WmcSoft.Business.Calendars
             where TCalendar : IBusinessCalendar
         {
             return new AliasBusinessCalendar(calendar, name);
-        }
-
-        [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
-        [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
-        class TruncatedBusinessCalendar : IBusinessCalendar
-        {
-            private readonly IBusinessCalendar _calendar;
-            private readonly Date _since;
-            private readonly Date _until;
-
-            public TruncatedBusinessCalendar(IBusinessCalendar calendar, Date since, Date until)
-            {
-                if (since < calendar.MinDate) throw new ArgumentOutOfRangeException(nameof(since));
-                if (until > calendar.MaxDate) throw new ArgumentOutOfRangeException(nameof(until));
-
-                _calendar = calendar;
-                _since = since;
-                _until = until;
-            }
-
-            public string Name => _calendar.Name;
-
-            public Date MinDate => _since;
-            public Date MaxDate => _until;
-
-            public bool IsBusinessDay(Date date)
-            {
-                return _calendar.IsBusinessDay(date);
-            }
         }
 
         /// <summary>
@@ -118,6 +119,17 @@ namespace WmcSoft.Business.Calendars
             where TCalendar : IBusinessCalendar
         {
             return new TruncatedBusinessCalendar(calendar, since, until);
+        }
+
+        /// <summary>
+        /// Returns wether the day is a holiday or not.
+        /// </summary>
+        /// <param name="date">The day</param>
+        /// <returns><c>true</c> if the <paramref name="date"/> is a holiday; otherwise, <c>false</c>.</returns>
+        public static bool IsHoliday<TCalendar>(this TCalendar calendar, Date date)
+            where TCalendar : IBusinessCalendar
+        {
+            return !calendar.IsBusinessDay(date);
         }
 
         public static Date AddBusinessDays<TCalendar>(this TCalendar calendar, Date date, int days)
