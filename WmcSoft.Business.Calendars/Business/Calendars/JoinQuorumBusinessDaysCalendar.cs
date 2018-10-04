@@ -40,41 +40,46 @@ namespace WmcSoft.Business.Calendars
     /// </summary>
     [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
     [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
-    public class JoinQuorumBusinessDayCalendars : IBusinessCalendar, IEnumerable<IBusinessCalendar>
+    public class JoinQuorumBusinessDaysCalendar : IBusinessCalendar, IEnumerable<IBusinessCalendar>
     {
-        private readonly List<IBusinessCalendar> _calendars;
-        private readonly int _quorum;
+        private readonly List<IBusinessCalendar> calendars;
+        private readonly int quorum;
 
-        public JoinQuorumBusinessDayCalendars(int quorum, params IBusinessCalendar[] calendars)
+        public JoinQuorumBusinessDaysCalendar(int quorum, params IBusinessCalendar[] calendars)
             : this($"Business day in at least {quorum} of {HumanizeList(calendars)} calendars", quorum, calendars)
         {
         }
 
-        public JoinQuorumBusinessDayCalendars(string name, int quorum, params IBusinessCalendar[] calendars)
+        public JoinQuorumBusinessDaysCalendar(string name, int quorum, params IBusinessCalendar[] calendars)
         {
+            if (calendars == null) throw new ArgumentNullException(nameof(calendars));
+            if (name == null) throw new ArgumentNullException(nameof(calendars));
+            if (quorum > calendars.Length) throw new ArgumentOutOfRangeException(nameof(quorum));
+
+            var min = calendars.Max(c => c.MinDate);
+            var max = calendars.Min(c => c.MaxDate);
+            if (min > max) throw new ArgumentException();
+
             Name = name;
-            _calendars = new List<IBusinessCalendar>(calendars);
-            _quorum = 2;
+            this.calendars = new List<IBusinessCalendar>(calendars);
+            MinDate = min;
+            MaxDate = max;
+            this.quorum = quorum;
         }
 
         public string Name { get; }
 
-        public Date MinDate => _calendars.Min(c => c.MinDate);
-        public Date MaxDate => _calendars.Max(c => c.MaxDate);
+        public Date MinDate { get; }
+        public Date MaxDate { get; }
 
         public bool IsBusinessDay(Date date)
         {
-            return _calendars.Count(c => c.IsBusinessDay(date)) >= _quorum;
-        }
-
-        public void Add(IBusinessCalendar calendar)
-        {
-            _calendars.Add(calendar);
+            return calendars.Count(c => c.IsBusinessDay(date)) >= quorum;
         }
 
         public IEnumerator<IBusinessCalendar> GetEnumerator()
         {
-            return _calendars.GetEnumerator();
+            return calendars.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

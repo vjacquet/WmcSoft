@@ -34,17 +34,17 @@ using static WmcSoft.Time.Algorithms;
 namespace WmcSoft.Business.Calendars
 {
     /// <summary>
-    /// Decorates an existing calendar Business calendar with no predefined set of business days.
+    /// Decorates an existing Business calendar with no predefined set of business days.
     /// </summary>
     [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
     [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public class BespokeCalendar<TCalendar> : IBusinessCalendar
         where TCalendar : IBusinessCalendar
     {
-        private readonly TCalendar _calendar;
-        private readonly DayOfWeek[] _weekends;
-        private readonly HashSet<Date> _addedHolidays = new HashSet<Date>();
-        private readonly HashSet<Date> _removedHolidays = new HashSet<Date>();
+        private readonly TCalendar calendar;
+        private readonly DayOfWeek[] weekends;
+        private readonly HashSet<Date> addedHolidays = new HashSet<Date>();
+        private readonly HashSet<Date> removedHolidays = new HashSet<Date>();
 
         public BespokeCalendar(TCalendar calendar, Date since, Date until, params DayOfWeek[] weekends)
             : this($"Bespoke of {calendar.Name}", calendar, since, until, weekends)
@@ -65,8 +65,8 @@ namespace WmcSoft.Business.Calendars
             Name = name;
             MinDate = Max(calendar.MinDate, since);
             MaxDate = Min(calendar.MaxDate, until);
-            _calendar = calendar;
-            _weekends = weekends ?? new DayOfWeek[0];
+            this.calendar = calendar;
+            this.weekends = weekends ?? new DayOfWeek[0];
         }
 
         public BespokeCalendar(string name, TCalendar calendar, params DayOfWeek[] weekends)
@@ -74,8 +74,8 @@ namespace WmcSoft.Business.Calendars
             Name = name;
             MinDate = calendar.MinDate;
             MaxDate = calendar.MaxDate;
-            _calendar = calendar;
-            _weekends = weekends ?? new DayOfWeek[0];
+            this.calendar = calendar;
+            this.weekends = weekends ?? new DayOfWeek[0];
         }
 
         public string Name { get; }
@@ -85,16 +85,16 @@ namespace WmcSoft.Business.Calendars
 
         public void Add(Date holiday)
         {
-            _removedHolidays.Remove(holiday);
-            if (_calendar.IsBusinessDay(holiday))
-                _addedHolidays.Add(holiday);
+            removedHolidays.Remove(holiday);
+            if (calendar.IsBusinessDay(holiday))
+                addedHolidays.Add(holiday);
         }
 
         public void Remove(Date holiday)
         {
-            _addedHolidays.Remove(holiday);
-            if (!_calendar.IsBusinessDay(holiday))
-                _removedHolidays.Add(holiday);
+            addedHolidays.Remove(holiday);
+            if (!calendar.IsBusinessDay(holiday))
+                removedHolidays.Add(holiday);
         }
 
         public bool IsBusinessDay(Date date)
@@ -104,16 +104,16 @@ namespace WmcSoft.Business.Calendars
 
         bool IsHoliday(Date date)
         {
-            if (_addedHolidays.Contains(date))
+            if (addedHolidays.Contains(date))
                 return true;
-            if (_removedHolidays.Contains(date))
+            if (removedHolidays.Contains(date))
                 return false;
-            return !_calendar.IsBusinessDay(date);
+            return !calendar.IsBusinessDay(date);
         }
 
         bool IsWeekend(DayOfWeek day)
         {
-            return Array.IndexOf(_weekends, day) >= 0;
+            return Array.IndexOf(weekends, day) >= 0;
         }
     }
 

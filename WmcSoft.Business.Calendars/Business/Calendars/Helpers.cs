@@ -24,7 +24,6 @@
 
 #endregion
 
-using System;
 using System.Text;
 
 namespace WmcSoft.Business.Calendars
@@ -33,7 +32,8 @@ namespace WmcSoft.Business.Calendars
     {
         public static string HumanizeList(params IBusinessCalendar[] calendars)
         {
-            if (calendars == null) throw new ArgumentNullException(nameof(calendars));
+            if (calendars == null)
+                return "";
 
             var sb = new StringBuilder();
             var length = calendars.Length;

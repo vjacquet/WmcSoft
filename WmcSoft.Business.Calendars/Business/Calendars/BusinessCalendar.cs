@@ -37,15 +37,15 @@ namespace WmcSoft.Business.Calendars
     [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public sealed class BusinessCalendar : IBusinessCalendar
     {
-        readonly Date _epoch;
-        readonly BitArray _holidays;
+        private readonly Date epoch;
+        private readonly BitArray holidays;
 
         private BusinessCalendar(string name, Date epoch, BitArray holidays)
         {
             Name = name;
 
-            _epoch = epoch;
-            _holidays = holidays;
+            this.epoch = epoch;
+            this.holidays = holidays;
 
             // The 7 week patterns.
             // 1100 0001 1000 0011 0000 0110 0000 1100
@@ -61,8 +61,8 @@ namespace WmcSoft.Business.Calendars
         {
             Name = name;
 
-            _epoch = since;
-            _holidays = new BitArray(count, false);
+            epoch = since;
+            holidays = new BitArray(count, false);
         }
 
         public BusinessCalendar(string name, Date since, Date until, params IDateSpecification[] specifications)
@@ -76,7 +76,7 @@ namespace WmcSoft.Business.Calendars
             var interval = Interval.Closed(since, until);
             foreach (var specification in specifications) {
                 foreach (var day in specification.EnumerateOver(interval)) {
-                    _holidays.Set(day.DaysSince(since), true);
+                    holidays.Set(day.DaysSince(since), true);
                 }
             }
         }
@@ -93,12 +93,12 @@ namespace WmcSoft.Business.Calendars
 
         public string Name { get; }
 
-        public Date MinDate => _epoch;
-        public Date MaxDate => _epoch.AddDays(_holidays.Length - 1);
+        public Date MinDate => epoch;
+        public Date MaxDate => epoch.AddDays(holidays.Length - 1);
 
         public bool IsBusinessDay(Date date)
         {
-            return !_holidays[date.DaysSince(_epoch)];
+            return !holidays[date.DaysSince(epoch)];
         }
 
         #region Obsoletes
@@ -107,10 +107,10 @@ namespace WmcSoft.Business.Calendars
         public BusinessCalendar(Date since, Date until, params Predicate<Date>[] holidays)
             : this("{Obsolete}", since, 1 + since.DaysUntil(until))
         {
-            var length = _holidays.Length;
+            var length = this.holidays.Length;
             for (int i = 0; i < length; i++) {
                 if (holidays.Any(p => p(since)))
-                    _holidays.Set(i, true);
+                    this.holidays.Set(i, true);
                 since = since.AddDays(1);
             }
         }
@@ -147,46 +147,5 @@ namespace WmcSoft.Business.Calendars
         }
 
         #endregion
-    }
-
-    class BusinessCalendarDebugView
-    {
-        [DebuggerDisplay("{Date.ToString(\"ddd yyyy-MM-dd\"),nq}", Name = "{Index,nq}")]
-        public class Holiday
-        {
-            public int Index { get; set; }
-            public Date Date { get; set; }
-        }
-
-        [DebuggerDisplay("#{Holidays.Length,nq}", Name = "{Name,nq}")]
-        public class Year
-        {
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            public int Name { get; set; }
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public Holiday[] Holidays { get; set; }
-        }
-
-        public BusinessCalendarDebugView(IBusinessCalendar calendar)
-        {
-            var result = new List<Holiday>();
-            var since = calendar.MinDate;
-            var until = calendar.MaxDate;
-            var index = 0;
-
-            while (since <= until) {
-                if (!calendar.IsBusinessDay(since))
-                    result.Add(new Holiday { Index = index, Date = since });
-                since = since.AddDays(1);
-                index++;
-            }
-            var query = from h in result
-                        group h by h.Date.Year into g
-                        select new Year { Name = g.Key, Holidays = g.ToArray() };
-            Years = query.ToArray();
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public Year[] Years { get; }
     }
 }

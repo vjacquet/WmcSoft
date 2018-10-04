@@ -50,6 +50,9 @@ namespace WmcSoft.Business.Calendars.Specifications
 
         public static readonly AnnualDateSpecification EpiphanyDay = DateSpecification.Fixed(1, 2);
 
+        /// <summary>
+        /// May 1rst
+        /// </summary>
         public static readonly AnnualDateSpecification LabourDay = DateSpecification.Fixed(5, 1);
 
         public static readonly AnnualDateSpecification GermanUnityDay = DateSpecification.Fixed(10, 3);

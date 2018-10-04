@@ -33,7 +33,6 @@ namespace WmcSoft.Business.Calendars
     /// Represents an empty business calendar for which every day is a business day.
     /// </summary>
     [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
-    [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public struct EmptyCalendar : IBusinessCalendar
     {
         public string Name => "{Empty}";

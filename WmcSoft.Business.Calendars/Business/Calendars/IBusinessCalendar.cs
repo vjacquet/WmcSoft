@@ -24,20 +24,35 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars
 {
+    /// <summary>
+    /// Represents a business calendar
+    /// </summary>
     public interface IBusinessCalendar
     {
+        /// <summary>
+        /// The name fo the calendar.
+        /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// The minimal date supported by the calendar, inclusive.
+        /// </summary>
         Date MinDate { get; }
+
+        /// <summary>
+        /// The maximal date supported by the calendar, inclusive.
+        /// </summary>
         Date MaxDate { get; }
 
+        /// <summary>
+        /// Returns wether the day is a business day or not.
+        /// </summary>
+        /// <param name="date">The day</param>
+        /// <returns><c>true</c> if the <paramref name="date"/> is a business day; otherwise, <c>false</c>.</returns>
         bool IsBusinessDay(Date date);
     }
 }

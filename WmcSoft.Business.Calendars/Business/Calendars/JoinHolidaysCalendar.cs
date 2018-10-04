@@ -31,7 +31,6 @@ using System.Diagnostics;
 using System.Linq;
 using WmcSoft.Time;
 
-using static WmcSoft.Time.Algorithms;
 using static WmcSoft.Business.Calendars.Helpers;
 
 namespace WmcSoft.Business.Calendars
@@ -43,7 +42,7 @@ namespace WmcSoft.Business.Calendars
     [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public class JoinHolidaysCalendar : IBusinessCalendar, IEnumerable<IBusinessCalendar>
     {
-        private readonly List<IBusinessCalendar> _calendars;
+        private readonly List<IBusinessCalendar> calendars;
 
         public JoinHolidaysCalendar(params IBusinessCalendar[] calendars)
             : this($"Holiday in any of {HumanizeList(calendars)} calendars", calendars)
@@ -52,12 +51,17 @@ namespace WmcSoft.Business.Calendars
 
         public JoinHolidaysCalendar(string name, params IBusinessCalendar[] calendars)
         {
-            _calendars = new List<IBusinessCalendar>(calendars);
-            Name = name;
-            MinDate = _calendars.Max(c => c.MinDate);
-            MaxDate = _calendars.Min(c => c.MaxDate);
+            if (calendars == null) throw new ArgumentNullException(nameof(calendars));
+            if (name == null) throw new ArgumentNullException(nameof(calendars));
 
-            if (MinDate > MaxDate) throw new ArgumentException();
+            var min = calendars.Max(c => c.MinDate);
+            var max = calendars.Min(c => c.MaxDate);
+            if (min > max) throw new ArgumentException();
+
+            Name = name;
+            this.calendars = new List<IBusinessCalendar>(calendars);
+            MinDate = min;
+            MaxDate = max;
         }
 
         public string Name { get; }
@@ -65,23 +69,11 @@ namespace WmcSoft.Business.Calendars
         public Date MinDate { get; }
         public Date MaxDate { get; }
 
-        public bool IsBusinessDay(Date date) => _calendars.All(c => c.IsBusinessDay(date));
-
-        public void Add(IBusinessCalendar calendar)
-        {
-            if (calendar == null)
-                return;
-
-            var min = Max(calendar.MinDate, MinDate);
-            var max = Min(calendar.MaxDate, MaxDate);
-            if (min > max) throw new ArgumentOutOfRangeException(nameof(calendar));
-
-            _calendars.Add(calendar);
-        }
+        public bool IsBusinessDay(Date date) => calendars.All(c => c.IsBusinessDay(date));
 
         public IEnumerator<IBusinessCalendar> GetEnumerator()
         {
-            return _calendars.GetEnumerator();
+            return calendars.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
