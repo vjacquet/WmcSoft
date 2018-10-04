@@ -110,9 +110,7 @@ namespace WmcSoft.Business.Calendars
         [Fact]
         public void CanJoinHolidays()
         {
-            var reference = new BusinessCalendar(new Date(2000, 1, 1), new Date(2002, 1, 1)
-                , Weekends.Every(DayOfWeek.Saturday, DayOfWeek.Sunday)
-            );
+            var reference = BusinessCalendar.Create(new Date(2000, 1, 1), new Date(2002, 1, 1));
             var newYear = new Date(2001, 01, 01);
             var xmas = new Date(2001, 12, 25);
 
@@ -130,18 +128,15 @@ namespace WmcSoft.Business.Calendars
         [Fact]
         public void CanJoinBusinessDay()
         {
-            var reference = new BusinessCalendar(new Date(2000, 1, 1), new Date(2002, 1, 1)
-                , Weekends.Every(DayOfWeek.Saturday, DayOfWeek.Sunday)
-            );
+            var reference = BusinessCalendar.Create(new Date(2000, 1, 1), new Date(2002, 1, 1));
+            var newYear = new Date(2001, 01, 01);
+            var xmas = new Date(2001, 12, 25);
 
             var calendar1 = new BespokeCalendar<BusinessCalendar>("xmas", reference);
             calendar1.Add(KnownHolidays.Christmas);
 
             var calendar2 = new BespokeCalendar<BusinessCalendar>("new year", reference);
             calendar2.Add(KnownHolidays.NewYearDay);
-
-            var newYear = new Date(2001, 01, 01);
-            var xmas = new Date(2001, 12, 25);
 
             var calendar = new JoinBusinessDaysCalendar(calendar1, calendar2);
             Assert.False(calendar.IsHoliday(newYear));
@@ -151,9 +146,7 @@ namespace WmcSoft.Business.Calendars
         [Fact]
         public void CanJoinQuorumBusinessDays()
         {
-            var reference = new BusinessCalendar(new Date(2000, 1, 1), new Date(2002, 1, 1)
-                , Weekends.Every(DayOfWeek.Saturday, DayOfWeek.Sunday)
-            );
+            var reference = BusinessCalendar.Create(new Date(2000, 1, 1), new Date(2002, 1, 1));
             var newYear = new Date(2001, 01, 01);
             var labour = new Date(2001, 05, 01);
             var xmas = new Date(2001, 12, 25);

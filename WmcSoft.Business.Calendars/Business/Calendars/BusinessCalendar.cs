@@ -91,6 +91,29 @@ namespace WmcSoft.Business.Calendars
         {
         }
 
+        /// <summary>
+        /// Creates a standard business calendar with weekend on saturdays and sundays.
+        /// </summary>
+        /// <param name="since">The minimum date of the calendar.</param>
+        /// <param name="until">The maximaum date of the calendar.</param>
+        /// <returns>The business calendar</returns>
+        public static BusinessCalendar Create(Date since, Date until)
+        {
+            return Create(since, until, DayOfWeek.Saturday, DayOfWeek.Sunday);
+        }
+
+        /// <summary>
+        /// Creates a standard business calendar with the specified <paramref name="weekend"/>.
+        /// </summary>
+        /// <param name="since">The minimum date of the calendar.</param>
+        /// <param name="until">The maximaum date of the calendar.</param>
+        /// <param name="weekend">The weekend days.</param>
+        /// <returns>The business calendar</returns>
+        public static BusinessCalendar Create(Date since, Date until, params DayOfWeek[] weekend)
+        {
+            return new BusinessCalendar(since, until, Specifications.Weekends.Every(weekend));
+        }
+
         public string Name { get; }
 
         public Date MinDate => epoch;
