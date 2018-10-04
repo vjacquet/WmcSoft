@@ -16,7 +16,7 @@ namespace WmcSoft.IO.Sources
             return now;
         }
 
-        public void Advance(TimeSpan timeSpan)
+        public void Wait(TimeSpan timeSpan)
         {
             now += timeSpan;
         }

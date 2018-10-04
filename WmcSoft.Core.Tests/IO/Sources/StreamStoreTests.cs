@@ -61,7 +61,7 @@ namespace WmcSoft.IO.Sources
         {
             var clock = new DateTimeSourceStub(2018, 01, 22);
             var store = CreateEmptyStore(clock);
-            clock.Advance(TimeSpan.FromHours(1));
+            clock.Wait(TimeSpan.FromHours(1));
             Assert.Empty(store.GetInventory(clock.Now()).ToList());
         }
 
@@ -85,7 +85,7 @@ namespace WmcSoft.IO.Sources
                 Assert.True(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromHours(1));
+            clock.Wait(TimeSpan.FromHours(1));
             var inventory = store.GetInventory(clock.Now()).ToList();
             Assert.NotEmpty(inventory);
             var entry = inventory.Single();
@@ -108,12 +108,12 @@ namespace WmcSoft.IO.Sources
                 Assert.True(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromHours(1));
+            clock.Wait(TimeSpan.FromHours(1));
             using (var ms = new MemoryStream(data)) {
                 Assert.False(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromHours(1));
+            clock.Wait(TimeSpan.FromHours(1));
             var inventory = store.GetInventory(clock.Now()).ToList();
             Assert.NotEmpty(inventory);
             var entry = inventory.Single();
@@ -136,13 +136,13 @@ namespace WmcSoft.IO.Sources
                 Assert.True(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromHours(1));
+            clock.Wait(TimeSpan.FromHours(1));
             var asOf2 = clock.Now();
             using (var ms = new MemoryStream(data, 100, 100)) {
                 Assert.True(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromHours(1));
+            clock.Wait(TimeSpan.FromHours(1));
             var inventory = store.GetInventory(clock.Now()).ToList();
             Assert.NotEmpty(inventory);
             var entry = inventory.Single();
@@ -167,7 +167,7 @@ namespace WmcSoft.IO.Sources
                 Assert.True(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromMinutes(5));
+            clock.Wait(TimeSpan.FromMinutes(5));
             var asOf = clock.Now();
             var writable = new WritableMemoryStream(clock);
             Assert.True(store.Download("file.ext", writable));
@@ -186,7 +186,7 @@ namespace WmcSoft.IO.Sources
                 Assert.True(store.Store("file.ext", ms));
             }
 
-            clock.Advance(TimeSpan.FromMinutes(5));
+            clock.Wait(TimeSpan.FromMinutes(5));
             var asOf = clock.Now();
             var writable = new WritableMemoryStream(clock, new byte[0]);
             Assert.False(store.Download("file.ext", writable));
