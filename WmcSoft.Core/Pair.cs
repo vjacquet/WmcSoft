@@ -170,7 +170,8 @@ namespace WmcSoft
 
             var that = (Pair<T>)other;
             var result = comparer.Compare(Item1, that.Item1);
-            if (result != 0) return result;
+            if (result != 0)
+                return result;
             return comparer.Compare(Item2, that.Item2);
         }
 
@@ -181,8 +182,6 @@ namespace WmcSoft
 
         public bool Equals(Pair<T> other)
         {
-            if (ReferenceEquals(this, other)) return true;
-
             var comparer = EqualityComparer<T>.Default;
             return comparer.Equals(Item1, other.Item1) && comparer.Equals(Item2, other.Item2);
         }
@@ -191,7 +190,8 @@ namespace WmcSoft
         {
             var comparer = Comparer<T>.Default;
             var result = comparer.Compare(Item1, other.Item1);
-            if (result != 0) return result;
+            if (result != 0)
+                return result;
             return comparer.Compare(Item2, other.Item2);
         }
     }
