@@ -35,12 +35,12 @@ namespace WmcSoft
     /// <remarks>An <see cref="IDisposable"/> is added only once.</remarks>
     public class DisposableSet : DisposableStack
     {
-        readonly HashSet<IDisposable> _set;
+        readonly HashSet<IDisposable> set;
 
         public DisposableSet()
         {
-            _set = new HashSet<IDisposable>();
-            _set.Add(null); // so null cannot be push onto the base stack.
+            set = new HashSet<IDisposable>();
+            set.Add(null); // so null cannot be push onto the base stack.
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace WmcSoft
         /// <returns><code>true</code> if the disposable is not already in the set.</returns>
         public override bool Add(IDisposable disposable)
         {
-            if (_set.Add(disposable)) {
+            if (set.Add(disposable)) {
                 Push(disposable);
                 return true;
             }
@@ -59,7 +59,7 @@ namespace WmcSoft
 
         protected override void Dispose(bool disposing)
         {
-            _set.Clear();
+            set.Clear();
             base.Dispose(disposing);
         }
     }

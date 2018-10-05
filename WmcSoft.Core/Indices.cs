@@ -4,8 +4,8 @@ namespace WmcSoft
 {
     internal class Indices
     {
-        readonly int[] _dimensions;
-        readonly int[] _indices;
+        readonly int[] dimensions;
+        readonly int[] indices;
 
         public Indices(Array array) : this(array.GetDimensions())
         {
@@ -13,8 +13,8 @@ namespace WmcSoft
 
         public Indices(params int[] dimensions)
         {
-            _dimensions = dimensions;
-            _indices = new int[_dimensions.Length];
+            this.dimensions = dimensions;
+            indices = new int[this.dimensions.Length];
         }
 
         /// <summary>
@@ -23,17 +23,17 @@ namespace WmcSoft
         /// <returns>Returns <c>true</c> if the indices were incremented to point to a new cell; otherwise, <c>false</c>.</returns>
         public bool Increment()
         {
-            var rank = _dimensions.Length;
+            var rank = dimensions.Length;
             for (int i = rank - 1; i >= 0; i--) {
-                if (++_indices[i] != _dimensions[i])
+                if (++indices[i] != dimensions[i])
                     return true;
-                _indices[i] = 0;
+                indices[i] = 0;
             }
             return false;
         }
 
         public int this[int index] {
-            get { return _indices[index]; }
+            get { return indices[index]; }
         }
     }
 }

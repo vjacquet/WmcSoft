@@ -35,11 +35,11 @@ namespace WmcSoft
     /// </summary>
     public class DisposableStack : IDisposableBin
     {
-        readonly Stack<IDisposable> _stack;
+        readonly Stack<IDisposable> stack;
 
         public DisposableStack()
         {
-            _stack = new Stack<IDisposable>();
+            stack = new Stack<IDisposable>();
         }
 
         // ~DisposableStack() { } // no unmanaged resources so no need to implement the finalizer.
@@ -66,19 +66,19 @@ namespace WmcSoft
 
         protected void Push(IDisposable disposable)
         {
-            _stack.Push(disposable);
+            stack.Push(disposable);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            while (_stack.Count != 0) {
-                _stack.Pop().Dispose();
+            while (stack.Count != 0) {
+                stack.Pop().Dispose();
             }
         }
 
         public IEnumerator<IDisposable> GetEnumerator()
         {
-            return _stack.GetEnumerator();
+            return stack.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

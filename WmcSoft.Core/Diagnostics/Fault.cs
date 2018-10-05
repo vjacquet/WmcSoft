@@ -38,7 +38,7 @@ namespace WmcSoft.Diagnostics
 
         public static readonly Fault Empty = default;
 
-        readonly Exception _exception;
+        readonly Exception exception;
 
         #endregion
 
@@ -46,24 +46,24 @@ namespace WmcSoft.Diagnostics
 
         public Fault(Exception exception)
         {
-            _exception = exception;
+            this.exception = exception;
         }
 
         public Fault(Exception exception1, Exception exception2)
         {
-            _exception = new AggregateException(exception1, exception2);
+            exception = new AggregateException(exception1, exception2);
         }
 
         public Fault(params Exception[] exceptions)
         {
-            _exception = new AggregateException(exceptions);
+            exception = new AggregateException(exceptions);
         }
 
         #endregion
 
         #region Properties
 
-        public Exception Exception => _exception;
+        public Exception Exception => exception;
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace WmcSoft.Diagnostics
 
         public static bool operator !(Fault x)
         {
-            return x._exception == null;
+            return x.exception == null;
         }
 
         public static bool operator true(Fault x)
@@ -101,24 +101,24 @@ namespace WmcSoft.Diagnostics
 
         public static bool IsTrue(Fault x)
         {
-            return x._exception != null;
+            return x.exception != null;
         }
 
         public static Fault operator &(Fault x, Fault y)
         {
-            if (x._exception != null && y._exception != null)
-                return new Fault(x._exception, y._exception);
+            if (x.exception != null && y.exception != null)
+                return new Fault(x.exception, y.exception);
             return default;
         }
 
         public static Fault operator |(Fault x, Fault y)
         {
-            if (x._exception != null) {
-                if (y._exception != null)
-                    return new Fault(x._exception, y._exception);
+            if (x.exception != null) {
+                if (y.exception != null)
+                    return new Fault(x.exception, y.exception);
                 return x;
             }
-            if (y._exception != null)
+            if (y.exception != null)
                 return y;
             return default;
         }
@@ -133,15 +133,15 @@ namespace WmcSoft.Diagnostics
                 return false;
 
             if (obj is Exception exception)
-                return exception.Equals(_exception);
+                return exception.Equals(this.exception);
 
             return obj is Fault && Equals((Fault)obj);
         }
 
         public override int GetHashCode()
         {
-            if (_exception != null)
-                return _exception.GetHashCode();
+            if (exception != null)
+                return exception.GetHashCode();
             return 0;
         }
 
@@ -151,7 +151,7 @@ namespace WmcSoft.Diagnostics
 
         public bool Equals(Fault other)
         {
-            return Equals(_exception, other._exception);
+            return Equals(exception, other.exception);
         }
 
         #endregion
