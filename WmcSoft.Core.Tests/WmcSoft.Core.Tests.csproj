@@ -180,6 +180,7 @@
     <Compile Include="FuncExtensionsTests.cs" />
     <Compile Include="Text\TrieTests.cs" />
     <Compile Include="Threading\ThreadStaticServiceContainerTests.cs" />
+    <Compile Include="UriExtensionsTests.cs" />
     <Compile Include="WeakReferenceTests.cs" />
     <Compile Include="Xml\Linq\XDocumentExtensionsTests.cs" />
     <Compile Include="Xml\XmlNodeWriterTests.cs" />

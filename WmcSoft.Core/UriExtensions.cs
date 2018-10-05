@@ -37,7 +37,7 @@ namespace WmcSoft
     public static class UriExtensions
     {
         public static UriBuilder AppendToQuery(this UriBuilder builder, string name, string value) {
-            return AppendToQuery(builder, Uri.EscapeUriString(name) + "=" + Uri.EscapeUriString(value));
+            return AppendToQuery(builder, Uri.EscapeUriString(name) + '=' + Uri.EscapeUriString(value));
         }
 
         public static UriBuilder AppendToQuery(this UriBuilder builder, NameValueCollection parameters) {
@@ -57,7 +57,7 @@ namespace WmcSoft
 
         public static UriBuilder AppendToQuery(this UriBuilder builder, string queryToAppend) {
             if (builder.Query != null && builder.Query.Length > 1) {
-                builder.Query = builder.Query.Substring(1) + "&" + queryToAppend;
+                builder.Query = builder.Query.Substring(1) + '&' + queryToAppend;
             } else {
                 builder.Query = queryToAppend;
             }
