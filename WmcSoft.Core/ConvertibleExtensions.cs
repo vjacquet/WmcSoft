@@ -39,7 +39,7 @@ namespace WmcSoft
             var underlyingType = Nullable.GetUnderlyingType(typeof(T));
             if (value == DBNull.Value) {
                 if (underlyingType != null || !typeof(T).IsValueType)
-                    return default(T);
+                    return default;
                 throw new InvalidCastException();
             }
             return (T)Convert.ChangeType(value, underlyingType ?? typeof(T));

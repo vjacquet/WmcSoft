@@ -35,7 +35,7 @@ namespace WmcSoft
     /// <remarks>Dispose must be called. The action is not executed in the finalizer.</remarks>
     public sealed class Disposer : IDisposable
     {
-        private Action _action;
+        private Action onDispose;
 
         /// <summary>
         /// Creates a new instance of <see cref="Disposer"/>.
@@ -44,14 +44,14 @@ namespace WmcSoft
         /// <remarks><paramref name="action"/> may be <c>null</c>.</remarks>
         public Disposer(Action action)
         {
-            _action = action;
+            onDispose = action;
         }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
 
-            var action = Interlocked.Exchange(ref _action, null);
+            var action = Interlocked.Exchange(ref onDispose, null);
             if (action != null)
                 action();
         }

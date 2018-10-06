@@ -30,11 +30,11 @@ namespace WmcSoft
 {
     public class AnonymousTransformation<TSource, TTarget> : ITransformation<TSource, TTarget>
     {
-        private readonly Func<TSource, TTarget> _converter;
+        private readonly Func<TSource, TTarget> converter;
 
         public AnonymousTransformation(Func<TSource, TTarget> converter)
         {
-            _converter = converter;
+            this.converter = converter;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace WmcSoft
         /// <returns>The target instance.</returns>
         public TTarget Apply(TSource source)
         {
-            return _converter(source);
+            return converter(source);
         }
     }
 }

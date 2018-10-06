@@ -41,37 +41,37 @@ namespace WmcSoft
         const int MonthsInYear = 12;
         const int DaysInWeek = 7;
 
-        readonly int _days;
-        readonly int _months;
+        readonly int days;
+        readonly int months;
 
-        private DateSpan(int days, int month, PiecewiseConstruct tag)
+        private DateSpan(int days, int months, PiecewiseConstruct tag)
         {
-            _days = days;
-            _months = month;
+            this.days = days;
+            this.months = months;
         }
 
         public DateSpan(int years = 0, int months = 0, int weeks = 0, int days = 0)
         {
-            _days = DaysInWeek * weeks + days;
-            _months = MonthsInYear * years + months;
+            this.days = DaysInWeek * weeks + days;
+            this.months = MonthsInYear * years + months;
         }
 
         public void Deconstruct(out int years, out int months, out int weeks, out int days)
         {
-            years = _months / MonthsInYear;
-            months = _months % MonthsInYear;
-            weeks = _days / DaysInWeek;
-            days = _days % DaysInWeek;
+            years = this.months / MonthsInYear;
+            months = this.months % MonthsInYear;
+            weeks = this.days / DaysInWeek;
+            days = this.days % DaysInWeek;
         }
 
         #endregion
 
         #region Properties
 
-        public int Days => _days % DaysInWeek;
-        public int Weeks => _days / DaysInWeek;
-        public int Months => _months % MonthsInYear;
-        public int Years => _months / MonthsInYear;
+        public int Days => days % DaysInWeek;
+        public int Weeks => days / DaysInWeek;
+        public int Months => months % MonthsInYear;
+        public int Years => months / MonthsInYear;
 
         #endregion
 
@@ -155,7 +155,7 @@ namespace WmcSoft
 
         public int CompareTo(DateSpan other)
         {
-            return (_months * DaysInMonth + _days).CompareTo(other._months * DaysInMonth + other._days);
+            return (months * DaysInMonth + days).CompareTo(other.months * DaysInMonth + other.days);
         }
 
         public int CompareTo(object obj)
@@ -188,7 +188,7 @@ namespace WmcSoft
         public override int GetHashCode()
         {
             unchecked {
-                return (_months * DaysInMonth + _days).GetHashCode();
+                return (months * DaysInMonth + days).GetHashCode();
             }
         }
 

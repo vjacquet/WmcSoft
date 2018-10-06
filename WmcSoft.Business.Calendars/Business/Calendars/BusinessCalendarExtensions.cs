@@ -84,6 +84,9 @@ namespace WmcSoft.Business.Calendars
 
             public bool IsBusinessDay(Date date)
             {
+                if (date < MinDate | date > MaxDate)
+                    throw new IndexOutOfRangeException();
+
                 return calendar.IsBusinessDay(date);
             }
         }
@@ -115,10 +118,40 @@ namespace WmcSoft.Business.Calendars
         /// <remarks>Changes on the original calendar will be reflected in the created calendar.</remarks>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="since"/> is sooner than <paramref name="calendar"/>'s min date
         /// or <paramref name="until"/> is latter than <paramref name="calendar"/>'s max date.</exception>
-        public static IBusinessCalendar Truncate<TCalendar>(this TCalendar calendar, Date since, Date until)
+        public static IBusinessCalendar Between<TCalendar>(this TCalendar calendar, Date since, Date until)
             where TCalendar : IBusinessCalendar
         {
             return new TruncatedBusinessCalendar(calendar, since, until);
+        }
+
+        /// <summary>
+        /// Creates a view on a business calendar starting latter.
+        /// </summary>
+        /// <typeparam name="TCalendar">The type of calendar</typeparam>
+        /// <param name="calendar">The business calendar to create a view on.</param>
+        /// <param name="date">The new starting date of the business calendar.</param>
+        /// <returns>A view on the business calendar.</returns>
+        /// <remarks>Changes on the original calendar will be reflected in the created calendar.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="date"/> is sooner than <paramref name="calendar"/>'s min date.</exception>
+        public static IBusinessCalendar Since<TCalendar>(this TCalendar calendar, Date date)
+            where TCalendar : IBusinessCalendar
+        {
+            return new TruncatedBusinessCalendar(calendar, date, calendar.MaxDate);
+        }
+
+        /// <summary>
+        /// Creates a view on a business calendar ending sooner.
+        /// </summary>
+        /// <typeparam name="TCalendar">The type of calendar</typeparam>
+        /// <param name="calendar">The business calendar to create a view on.</param>
+        /// <param name="date">The new ending date of the business calendar.</param>
+        /// <returns>A view on the business calendar.</returns>
+        /// <remarks>Changes on the original calendar will be reflected in the created calendar.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException"> <paramref name="date"/> is latter than <paramref name="calendar"/>'s max date.</exception>
+        public static IBusinessCalendar Until<TCalendar>(this TCalendar calendar, Date date)
+            where TCalendar : IBusinessCalendar
+        {
+            return new TruncatedBusinessCalendar(calendar, calendar.MinDate, date);
         }
 
         /// <summary>

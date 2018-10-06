@@ -44,7 +44,7 @@ namespace WmcSoft
         /// <typeparam name="T">The type of the components of the triple.</typeparam>
         /// <param name="item">The value of the three component of the triple.</param>
         /// <returns>A triple whose value is (<paramref name="item"/>, <paramref name="item"/>, <paramref name="item"/>).</returns>
-        public static Triple<T> Create<T>(T item = default(T))
+        public static Triple<T> Create<T>(T item = default)
         {
             return new Triple<T>(item, item, item);
         }
@@ -176,9 +176,11 @@ namespace WmcSoft
 
             var that = (Triple<T>)other;
             var result = comparer.Compare(Item1, that.Item1);
-            if (result != 0) return result;
+            if (result != 0)
+                return result;
             result = comparer.Compare(Item2, that.Item2);
-            if (result != 0) return result;
+            if (result != 0)
+                return result;
             return comparer.Compare(Item3, that.Item3);
         }
 
@@ -199,9 +201,11 @@ namespace WmcSoft
         {
             var comparer = Comparer<T>.Default;
             var result = comparer.Compare(Item1, other.Item1);
-            if (result != 0) return result;
+            if (result != 0)
+                return result;
             result = comparer.Compare(Item2, other.Item2);
-            if (result != 0) return result;
+            if (result != 0)
+                return result;
             return comparer.Compare(Item3, other.Item3);
         }
     }
