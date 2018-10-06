@@ -100,6 +100,7 @@
     <Compile Include="Business\InventoryModel\ProductInventoryEntry.cs" />
     <Compile Include="Business\InventoryModel\RestockPolicy.cs" />
     <Compile Include="Business\IPublishable.cs" />
+    <Compile Include="Business\Journal.cs" />
     <Compile Include="Business\PartyModel\Bot.cs" />
     <Compile Include="Business\PartyModel\BotName.cs" />
     <Compile Include="Business\Temporal.Enumerable.cs" />

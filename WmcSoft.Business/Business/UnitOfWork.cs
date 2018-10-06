@@ -42,10 +42,10 @@ namespace WmcSoft.Business
     {
         #region Private fields
 
-        protected readonly IList<TEntity> _newInstances;
-        protected readonly IList<TEntity> _dirtyInstances;
-        protected readonly IList<TEntity> _removeInstances;
-        protected readonly IdentityMap _identityMap;
+        protected readonly IdentityMap identityMap;
+        protected readonly List<TEntity> newInstances;
+        protected readonly List<TEntity> dirtyInstances;
+        protected readonly List<TEntity> removeInstances;
 
         #endregion
 
@@ -53,21 +53,17 @@ namespace WmcSoft.Business
 
         protected UnitOfWork()
         {
-            _identityMap = new IdentityMap();
-            _newInstances = new List<TEntity>();
-            _dirtyInstances = new List<TEntity>();
-            _removeInstances = new List<TEntity>();
+            identityMap = new IdentityMap();
+            newInstances = new List<TEntity>();
+            dirtyInstances = new List<TEntity>();
+            removeInstances = new List<TEntity>();
         }
 
         #endregion
 
         #region Properties
 
-        public int Count {
-            get {
-                return _newInstances.Count + _dirtyInstances.Count + _removeInstances.Count;
-            }
-        }
+        public int Count => newInstances.Count + dirtyInstances.Count + removeInstances.Count;
 
         #endregion
 
@@ -77,19 +73,19 @@ namespace WmcSoft.Business
         {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            Trace.Assert(!_dirtyInstances.Contains(instance), "Domain object should not be dirty");
-            Trace.Assert(!_removeInstances.Contains(instance), "Domain object should not be removed");
-            Trace.Assert(!_newInstances.Contains(instance), "Domain object should not already be registered as new");
-            _newInstances.Add(instance);
+            Trace.Assert(!dirtyInstances.Contains(instance), "Domain object should not be dirty");
+            Trace.Assert(!removeInstances.Contains(instance), "Domain object should not be removed");
+            Trace.Assert(!newInstances.Contains(instance), "Domain object should not already be registered as new");
+            newInstances.Add(instance);
         }
 
         public void RegisterDirty(TEntity instance)
         {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            Trace.Assert(!_removeInstances.Contains(instance), "Domain object should not be removed");
-            if (!_dirtyInstances.Contains(instance) && !_newInstances.Contains(instance)) {
-                _dirtyInstances.Add(instance);
+            Trace.Assert(!removeInstances.Contains(instance), "Domain object should not be removed");
+            if (!dirtyInstances.Contains(instance) && !newInstances.Contains(instance)) {
+                dirtyInstances.Add(instance);
             }
         }
 
@@ -97,17 +93,17 @@ namespace WmcSoft.Business
         {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            _identityMap.Register(instance);
+            identityMap.Register(instance);
         }
 
         public void RegisterRemoved(TEntity instance)
         {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            if (!_newInstances.Remove(instance)) {
-                _dirtyInstances.Remove(instance);
-                if (!_removeInstances.Contains(instance)) {
-                    _removeInstances.Add(instance);
+            if (!newInstances.Remove(instance)) {
+                dirtyInstances.Remove(instance);
+                if (!removeInstances.Contains(instance)) {
+                    removeInstances.Add(instance);
                 }
             }
         }
@@ -138,11 +134,7 @@ namespace WmcSoft.Business
             Commit();
         }
 
-        bool IChangeTracking.IsChanged {
-            get {
-                return _newInstances.Count > 0 | _dirtyInstances.Count > 0 | _removeInstances.Count > 0;
-            }
-        }
+        bool IChangeTracking.IsChanged => newInstances.Count > 0 | dirtyInstances.Count > 0 | removeInstances.Count > 0;
 
         #endregion
 
@@ -150,9 +142,9 @@ namespace WmcSoft.Business
 
         void IRevertibleChangeTracking.RejectChanges()
         {
-            _newInstances.Clear();
-            _dirtyInstances.Clear();
-            _removeInstances.Clear();
+            newInstances.Clear();
+            dirtyInstances.Clear();
+            removeInstances.Clear();
         }
 
         #endregion

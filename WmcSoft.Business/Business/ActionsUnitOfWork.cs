@@ -32,30 +32,30 @@ namespace WmcSoft.Business
     public class ActionsUnitOfWork<TEntity> : UnitOfWork<TEntity>
         where TEntity : class
     {
-        private readonly Action<IList<TEntity>> _create;
-        private readonly Action<IList<TEntity>> _update;
-        private readonly Action<IList<TEntity>> _delete;
+        private readonly Action<IList<TEntity>> create;
+        private readonly Action<IList<TEntity>> update;
+        private readonly Action<IList<TEntity>> delete;
 
         public ActionsUnitOfWork(Action<IList<TEntity>> create, Action<IList<TEntity>> update, Action<IList<TEntity>> delete)
         {
-            _create = create;
-            _update = update;
-            _delete = delete;
+            this.create = create;
+            this.update = update;
+            this.delete = delete;
         }
 
         protected override void DeleteRemoved()
         {
-            _delete(_removeInstances);
+            delete(removeInstances);
         }
 
         protected override void InsertNew()
         {
-            _create(_newInstances);
+            create(newInstances);
         }
 
         protected override void UpdateDirty()
         {
-            _update(_dirtyInstances);
+            update(dirtyInstances);
         }
     }
 }
