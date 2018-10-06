@@ -71,7 +71,7 @@ namespace WmcSoft
         {
             try {
                 return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
-            } catch (FormatException e) {
+            } catch (FormatException) {
                 throw new FormatException(string.Format(Resources.InvalidFormatMessage, format));
             }
         }
