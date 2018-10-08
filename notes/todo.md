@@ -9,11 +9,11 @@
 
 - [ ] Implement `BusinessCalendar.Enumerator` to enumerate the business days of a Business calendar.
 - [ ] Change the signature of `IBusinessCalendar` to specialize `IEnumerable<Date>`. 
-- [ ] Implement `Until`, `Since` and `Between` extensions to truncate a business calendar.
+- [x] Implement `Until`, `Since` and `Between` extensions to truncate a business calendar.
 
 ## Refactoring
 
-- [ ] Rename `UpgradingFileStreamSource` to `CachedFileStreamSource`.
+- [x] Rename `UpgradingFileStreamSource` to `CachedFileStreamSource`.
 
 
 ## Tools

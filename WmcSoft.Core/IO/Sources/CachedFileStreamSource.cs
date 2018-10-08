@@ -31,15 +31,15 @@ using System.IO;
 namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Implements a <see cref="ITimestampStreamSource"/> that only updates a local cache when a <see cref="ITimestampStreamSource"/> is more recent, but never returns the stream.
+    /// Implements a <see cref="ITimestampStreamSource"/> that updates a local cache when a <see cref="ITimestampStreamSource"/> is more recent,
+    /// then returns the stream from the local cache.
     /// </summary>
-    /// <remarks>The cache is updated but the stream is never returned, to allow chaining of sources.</remarks>
-    public class UpgradingFileStreamSource : ITimestampStreamSource
+    public class CachedFileStreamSource : ITimestampStreamSource
     {
         private readonly FileStreamSource cache;
         private readonly ITimestampStreamSource underlying;
 
-        public UpgradingFileStreamSource(ITimestampStreamSource source, string cachePath)
+        public CachedFileStreamSource(ITimestampStreamSource source, string cachePath)
         {
             underlying = source;
             cache = new FileStreamSource(cachePath);
@@ -75,7 +75,7 @@ namespace WmcSoft.IO.Sources
             var local = cache.Timestamp;
             var result = Nullable.Compare(remote, local);
             if (result > 0) {
-                Trace.TraceInformation($"Upgrading `{cache.Path}` with {underlying}.");
+                Trace.TraceInformation($"Upgrading cache `{cache.Path}` with {underlying}.");
 
                 var path = cache.Path;
                 var temp = Path.ChangeExtension(path, ".tmp");
@@ -93,7 +93,7 @@ namespace WmcSoft.IO.Sources
                 else
                     File.Replace(temp, path, Path.ChangeExtension(path, ".bak"));
             }
-            return null;
+            return cache.GetStream();
         }
     }
 }
