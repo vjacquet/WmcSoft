@@ -217,6 +217,7 @@
     <Compile Include="IO\Sources\AssemblyManifestResourceStreamSource.cs" />
     <Compile Include="IO\CsvWriter.cs" />
     <Compile Include="IO\CsvWriterSettings.cs" />
+    <Compile Include="IO\Sources\CachedFileStreamSource.cs" />
     <Compile Include="IO\Sources\CompositeStreamSource.cs" />
     <Compile Include="IO\Sources\DateTimeSources.cs" />
     <Compile Include="IO\Sources\FailStreamSource.cs" />
@@ -238,7 +239,6 @@
     <Compile Include="IO\Sources\StreamStore.cs" />
     <Compile Include="IO\Sources\TimestampShieldingStreamSource.cs" />
     <Compile Include="IO\Sources\TraceStreamSource.cs" />
-    <Compile Include="IO\Sources\UpgradingFileStreamSource.cs" />
     <Compile Include="IO\StreamComparer.cs" />
     <Compile Include="ITransformation.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensions.cs" />
