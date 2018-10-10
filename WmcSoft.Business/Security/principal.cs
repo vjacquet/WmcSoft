@@ -53,6 +53,7 @@ namespace WmcSoft.Security
         {
             return Name;
         }
+
         public override int GetHashCode()
         {
             return Name.GetHashCode();

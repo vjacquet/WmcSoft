@@ -28,6 +28,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Security
 {
+    /// <summary>
+    /// Represents the hability to be secured through access control and supported permissions.
+    /// </summary>
     public interface ISecurable
     {
         AccessControl AccessControl { get; }
@@ -37,17 +40,22 @@ namespace WmcSoft.Security
     public static class SecurableExtensions
     {
         public static TSecurable Grant<TSecurable>(this TSecurable securable, IEnumerable<Permission> permissions, params Principal[] principals)
-            where TSecurable : ISecurable {
+            where TSecurable : ISecurable
+        {
             securable.AccessControl.Grant(permissions, principals);
             return securable;
         }
+
         public static TSecurable Deny<TSecurable>(this TSecurable securable, IEnumerable<Permission> permissions, params Principal[] principals)
-            where TSecurable : ISecurable {
+            where TSecurable : ISecurable
+        {
             securable.AccessControl.Deny(permissions, principals);
             return securable;
         }
+
         public static TSecurable Revoke<TSecurable>(this TSecurable securable, IEnumerable<Permission> permissions, params Principal[] principals)
-            where TSecurable : ISecurable {
+            where TSecurable : ISecurable
+        {
             securable.AccessControl.Revoke(permissions, principals);
             return securable;
         }
