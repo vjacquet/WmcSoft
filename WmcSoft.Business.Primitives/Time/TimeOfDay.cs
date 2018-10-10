@@ -43,7 +43,7 @@ namespace WmcSoft.Time
     public partial struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly TimeSpan _storage;
+        private readonly TimeSpan storage;
 
         public static readonly TimeOfDay MinValue = new TimeOfDay(0);
         public static readonly TimeOfDay MaxValue = new TimeOfDay(23, 59);
@@ -67,7 +67,7 @@ namespace WmcSoft.Time
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
             if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));
 
-            _storage = new TimeSpan(hour, minute, 0);
+            storage = new TimeSpan(hour, minute, 0);
         }
 
         /// <summary>
@@ -81,31 +81,31 @@ namespace WmcSoft.Time
         {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
 
-            _storage = new TimeSpan(hour, 0, 0);
+            storage = new TimeSpan(hour, 0, 0);
         }
 
         public void Deconstruct(out int hour, out int minute)
         {
-            hour = _storage.Hours;
-            minute = _storage.Minutes;
+            hour = storage.Hours;
+            minute = storage.Minutes;
         }
 
         public HourOfDay Hour {
-            get { return new HourOfDay(_storage.Hours); }
+            get { return new HourOfDay(storage.Hours); }
         }
 
         public MinuteOfHour Minutes {
-            get { return new MinuteOfHour(_storage.Minutes); }
+            get { return new MinuteOfHour(storage.Minutes); }
         }
 
         public override string ToString()
         {
-            return _storage.Hours.ToString("00") + ':' + _storage.Minutes.ToString("00");
+            return storage.Hours.ToString("00") + ':' + storage.Minutes.ToString("00");
         }
 
         public override int GetHashCode()
         {
-            return _storage.GetHashCode();
+            return storage.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -117,12 +117,12 @@ namespace WmcSoft.Time
 
         public bool Equals(TimeOfDay other)
         {
-            return _storage.Equals(other._storage);
+            return storage.Equals(other.storage);
         }
 
         public int CompareTo(TimeOfDay other)
         {
-            return _storage.CompareTo(other._storage);
+            return storage.CompareTo(other.storage);
         }
 
         public bool IsAfter(TimeOfDay other)
@@ -138,7 +138,7 @@ namespace WmcSoft.Time
         public DateTime On(Date date)
         {
             DateTime dateTime = date;
-            return dateTime.Add(_storage);
+            return dateTime.Add(storage);
         }
 
         public DateTimeOffset On(Date date, TimeZoneInfo timeZone)
@@ -149,7 +149,7 @@ namespace WmcSoft.Time
 
         public TimeSpan ToTimeSpan()
         {
-            return _storage;
+            return storage;
         }
 
         #region Operators
@@ -183,7 +183,7 @@ namespace WmcSoft.Time
 
         public static implicit operator TimeSpan(TimeOfDay x)
         {
-            return x._storage;
+            return x.storage;
         }
 
         #endregion

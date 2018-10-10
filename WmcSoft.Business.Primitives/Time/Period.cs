@@ -89,9 +89,7 @@ namespace WmcSoft.Time
 
         public int Length { get; }
         public TimeUnit Units { get; }
-        public Frequency Frequency {
-            get { return Units.ToFrequency(Length); }
-        }
+        public Frequency Frequency => Units.ToFrequency(Length);
 
         public double Years => throw new NotImplementedException();
         public double Months => throw new NotImplementedException();
