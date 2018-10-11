@@ -33,10 +33,10 @@ namespace WmcSoft
     {
         public static int Clamp(this long x)
         {
-            if (x < Int32.MinValue)
-                return Int32.MinValue;
-            if (x > Int32.MaxValue)
-                return Int32.MaxValue;
+            if (x < int.MinValue)
+                return int.MinValue;
+            if (x > int.MaxValue)
+                return int.MaxValue;
             return (int)x;
         }
 
