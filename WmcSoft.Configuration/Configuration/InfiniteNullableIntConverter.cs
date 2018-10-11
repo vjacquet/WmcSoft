@@ -37,25 +37,25 @@ namespace WmcSoft.Configuration
     /// </summary>
     public sealed class InfiniteNullableIntConverter : ConfigurationConverterBase
     {
-        private readonly InfiniteIntConverter _converter;
+        private readonly InfiniteIntConverter converter;
 
         public InfiniteNullableIntConverter()
         {
-            _converter = new InfiniteIntConverter();
+            converter = new InfiniteIntConverter();
         }
 
         public override object ConvertFrom(ITypeDescriptorContext ctx, CultureInfo ci, object data)
         {
             if (string.IsNullOrEmpty((string)data))
                 return null;
-            return _converter.ConvertFrom(ctx, ci, data);
+            return converter.ConvertFrom(ctx, ci, data);
         }
 
         public override object ConvertTo(ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
         {
             if (value == null)
                 return "";
-            return _converter.ConvertTo(ctx, ci, value, type);
+            return converter.ConvertTo(ctx, ci, value, type);
         }
     }
 }

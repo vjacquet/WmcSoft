@@ -34,7 +34,7 @@ namespace WmcSoft.Configuration
     [DebuggerDisplay("{Name,nq} => {Type,nq}")]
     public abstract class FactoryElement<T> : ConfigurationElement
     {
-        private readonly NameValueCollection _parameters = new NameValueCollection(StringComparer.Ordinal);
+        private readonly NameValueCollection parameters = new NameValueCollection(StringComparer.Ordinal);
 
         protected override ConfigurationPropertyCollection Properties {
             get {
@@ -57,9 +57,7 @@ namespace WmcSoft.Configuration
             set { this["type"] = value; }
         }
 
-        public NameValueCollection Parameters {
-            get { return _parameters; }
-        }
+        public NameValueCollection Parameters => parameters;
 
         protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
         {
