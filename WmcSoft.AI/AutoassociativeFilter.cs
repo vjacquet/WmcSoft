@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+
 using static System.Math;
 
 namespace WmcSoft.AI
@@ -32,14 +33,14 @@ namespace WmcSoft.AI
     // TODO: consider using Stream or IObservable instead of arrays.
     public class AutoassociativeFilter
     {
-        private readonly double[] _work;
-        private readonly Action<double[], int, double[]> _evaluate;
+        private readonly double[] work;
+        private readonly Action<double[], int, double[]> evaluate;
 
         public AutoassociativeFilter(Action<double[], int, double[]> evaluate, int length)
         {
             if (evaluate == null) throw new ArgumentNullException(nameof(evaluate));
-            _evaluate = evaluate;
-            _work = new double[length];
+            this.evaluate = evaluate;
+            work = new double[length];
         }
 
         public void Execute(double[] input, double[] output)
@@ -47,7 +48,7 @@ namespace WmcSoft.AI
             if (input == null) throw new ArgumentNullException(nameof(input));
             if (output == null) throw new ArgumentNullException(nameof(output));
             if (output.Length != input.Length) throw new InvalidOperationException();
-            if (output.Length < _work.Length) throw new InvalidOperationException();
+            if (output.Length < work.Length) throw new InvalidOperationException();
 
             // zero
             var m = output.Length;
@@ -56,12 +57,12 @@ namespace WmcSoft.AI
             }
 
             // then cumulate the output
-            var n = _work.Length;
+            var n = work.Length;
             var count = m - n + 1;
             for (var i = 0; i < count; i++) {
-                _evaluate(input, i, _work);
+                evaluate(input, i, work);
                 for (var j = 0; j < n; j++) {
-                    output[i + j] += _work[j];
+                    output[i + j] += work[j];
                 }
             }
 
