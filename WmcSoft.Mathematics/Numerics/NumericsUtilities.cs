@@ -9,12 +9,13 @@ namespace WmcSoft.Numerics
         #region Tags
 
         public struct UninitializedTag { }
-        public static readonly UninitializedTag Uninitialized = default(UninitializedTag);
+        public static readonly UninitializedTag Uninitialized = default;
 
         #endregion
 
         public static string FormatVector<T>(T[] v, string format, IFormatProvider formatProvider)
-             where T : IFormattable {
+             where T : IFormattable
+        {
             var length = v.Length;
             var values = Array.ConvertAll(v, x => x.ToString(format, formatProvider));
             var capacity = values.Sum(x => x.Length + 2);

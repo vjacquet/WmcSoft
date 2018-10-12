@@ -42,8 +42,8 @@ namespace WmcSoft
 
         static int CheckDigit(int value)
         {
-            if (value < 0 || value > 9)
-                throw new ArgumentOutOfRangeException("value");
+            if (value < 0 | value > 9)
+                throw new ArgumentOutOfRangeException(nameof(value));
             return value;
         }
 
