@@ -170,5 +170,14 @@ namespace WmcSoft.Numerics
             var actual = valarray.ToArray();
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void CanCreateEmptyValarray()
+        {
+            var valarray = new Valarray();
+            Assert.NotNull(valarray);
+            Assert.Equal(0, valarray.Cardinality);
+            Assert.NotSame(Valarray.Empty, valarray);
+        }
     }
 }

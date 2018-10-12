@@ -42,27 +42,27 @@ namespace WmcSoft.Numerics
 
         sealed class Writer
         {
-            int _i;
-            double[] _data;
-            Func<double, double, double> _op;
+            int i;
+            double[] data;
+            Func<double, double, double> op;
 
             public Writer(double[] data, Func<double, double, double> op)
             {
-                _data = data;
-                _op = op;
+                this.data = data;
+                this.op = op;
             }
 
             public void Write(double value, IEnumerator<double> enumerator)
             {
                 while (enumerator.MoveNext()) {
-                    _data[_i++] = _op(value, enumerator.Current);
+                    data[i++] = op(value, enumerator.Current);
                 }
             }
 
             public void Write(IEnumerator<double> enumerator, double value)
             {
                 while (enumerator.MoveNext()) {
-                    _data[_i++] = _op(enumerator.Current, value);
+                    data[i++] = op(enumerator.Current, value);
                 }
             }
 
@@ -71,13 +71,13 @@ namespace WmcSoft.Numerics
                 while (x.MoveNext()) {
                     if (!y.MoveNext()) {
                         do {
-                            _data[_i++] = _op(x.Current, 0d);
+                            data[i++] = op(x.Current, 0d);
                         }
                         while (x.MoveNext());
                         break;
                     }
 
-                    _data[_i++] = _op(x.Current, y.Current);
+                    data[i++] = op(x.Current, y.Current);
                 }
                 Write(0d, y);
             }
@@ -85,49 +85,46 @@ namespace WmcSoft.Numerics
 
         sealed class SegmentEnumerator : IEnumerator<double>
         {
-            int _length;
-            double[] _data;
+            readonly int length;
+            readonly double[] data;
 
-            int _begin;
-            int _end;
+            int begin;
+            int end;
 
             public SegmentEnumerator(Valarray valarray)
-                : this(valarray._dimensions.GetDimension(-1), valarray._data)
+                : this(valarray.dimensions.GetDimension(-1), valarray.data)
             {
             }
+
             public SegmentEnumerator(int length, double[] data)
             {
-                _length = length;
-                _data = data;
+                this.length = length;
+                this.data = data;
             }
 
             public bool NextSegment()
             {
-                _begin = _end - 1;
-                _end += _length;
-                return _end <= _data.Length;
+                begin = end - 1;
+                end += length;
+                return end <= data.Length;
             }
 
             #region IEnumerator Membres
 
-            public double Current {
-                get { return _data[_begin]; }
-            }
+            public double Current => data[begin];
 
             public bool MoveNext()
             {
-                _begin++;
-                return _begin < _end;
+                begin++;
+                return begin < end;
             }
 
-            object System.Collections.IEnumerator.Current {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             public void Reset()
             {
-                _begin = 0;
-                _end = 0;
+                begin = 0;
+                end = 0;
             }
 
             #endregion
@@ -145,8 +142,8 @@ namespace WmcSoft.Numerics
 
         #region Fields
 
-        private Dimensions _dimensions;
-        internal double[] _data;
+        private Dimensions dimensions;
+        internal double[] data;
 
         #endregion
 
@@ -154,8 +151,8 @@ namespace WmcSoft.Numerics
 
         private Valarray(Dimensions dimensions, double[] data)
         {
-            _dimensions = dimensions;
-            _data = data;
+            this.dimensions = dimensions;
+            this.data = data;
         }
 
         private Valarray(Dimensions dimensions)
@@ -171,9 +168,9 @@ namespace WmcSoft.Numerics
         private Valarray(double value, int[] dimensions)
             : this(new Dimensions(dimensions))
         {
-            var length = _data.Length;
+            var length = data.Length;
             for (int i = 0; i < length; i++) {
-                _data[i] = value;
+                data[i] = value;
             }
         }
 
@@ -181,52 +178,52 @@ namespace WmcSoft.Numerics
         {
             if (n < 0) throw new ArgumentNullException("n");
 
-            _dimensions = new Dimensions(n);
-            _data = new double[n];
+            dimensions = new Dimensions(n);
+            data = new double[n];
         }
 
         public Valarray(int n, Func<int, double> generator)
         {
-            _dimensions = new Dimensions(n);
-            _data = new double[n];
+            dimensions = new Dimensions(n);
+            data = new double[n];
             for (int i = 0; i < n; i++) {
-                _data[i] = generator(i);
+                data[i] = generator(i);
             }
         }
 
         public Valarray(int n, Func<int, int, double> generator)
         {
-            _dimensions = new Dimensions(n, n);
-            _data = new double[_dimensions.GetCardinality()];
+            dimensions = new Dimensions(n, n);
+            data = new double[dimensions.GetCardinality()];
             var index = 0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    _data[index++] = generator(i, j);
+                    data[index++] = generator(i, j);
                 }
             }
         }
 
         public Valarray(int m, int n, Func<int, int, double> generator)
         {
-            _dimensions = new Dimensions(m, n);
-            _data = new double[_dimensions.GetCardinality()];
+            dimensions = new Dimensions(m, n);
+            data = new double[dimensions.GetCardinality()];
             var index = 0;
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
-                    _data[index++] = generator(i, j);
+                    data[index++] = generator(i, j);
                 }
             }
         }
 
         public Valarray(int n, Func<int, int, int, double> generator)
         {
-            _dimensions = new Dimensions(n, n, n);
-            _data = new double[_dimensions.GetCardinality()];
+            dimensions = new Dimensions(n, n, n);
+            data = new double[dimensions.GetCardinality()];
             var index = 0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < n; k++) {
-                        _data[index++] = generator(i, j, k);
+                        data[index++] = generator(i, j, k);
                     }
                 }
             }
@@ -234,13 +231,13 @@ namespace WmcSoft.Numerics
 
         public Valarray(int m, int n, int o, Func<int, int, int, double> generator)
         {
-            _dimensions = new Dimensions(m, n, o);
-            _data = new double[_dimensions.GetCardinality()];
+            dimensions = new Dimensions(m, n, o);
+            data = new double[dimensions.GetCardinality()];
             var index = 0;
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < o; k++) {
-                        _data[index++] = generator(i, j, k);
+                        data[index++] = generator(i, j, k);
                     }
                 }
             }
@@ -248,14 +245,14 @@ namespace WmcSoft.Numerics
 
         public Valarray(int n, Func<int, int, int, int, double> generator)
         {
-            _dimensions = new Dimensions(n, n, n, n);
-            _data = new double[_dimensions.GetCardinality()];
+            dimensions = new Dimensions(n, n, n, n);
+            data = new double[dimensions.GetCardinality()];
             var index = 0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < n; k++) {
                         for (int l = 0; l < n; l++) {
-                            _data[index++] = generator(i, j, k, l);
+                            data[index++] = generator(i, j, k, l);
                         }
                     }
                 }
@@ -264,14 +261,14 @@ namespace WmcSoft.Numerics
 
         public Valarray(int m, int n, int o, int p, Func<int, int, int, int, double> generator)
         {
-            _dimensions = new Dimensions(m, n, o, p);
-            _data = new double[_dimensions.GetCardinality()];
+            dimensions = new Dimensions(m, n, o, p);
+            data = new double[dimensions.GetCardinality()];
             var index = 0;
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < o; k++) {
                         for (int l = 0; l < p; l++) {
-                            _data[index++] = generator(i, j, k, l);
+                            data[index++] = generator(i, j, k, l);
                         }
                     }
                 }
@@ -280,15 +277,15 @@ namespace WmcSoft.Numerics
 
         public Valarray(int n, Func<int, int, int, int, int, double> generator)
         {
-            _dimensions = new Dimensions(n, n, n, n, n);
-            _data = new double[n];
+            dimensions = new Dimensions(n, n, n, n, n);
+            data = new double[n];
             var index = 0;
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < n; k++) {
                         for (int l = 0; l < n; l++) {
                             for (int h = 0; h < n; h++) {
-                                _data[index++] = generator(i, j, k, l, h);
+                                data[index++] = generator(i, j, k, l, h);
                             }
                         }
                     }
@@ -298,20 +295,29 @@ namespace WmcSoft.Numerics
 
         public Valarray(int m, int n, int o, int p, int q, Func<int, int, int, int, int, double> generator)
         {
-            _dimensions = new Dimensions(m, n, o, p, q);
-            _data = new double[n];
+            dimensions = new Dimensions(m, n, o, p, q);
+            data = new double[n];
             var index = 0;
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < o; k++) {
                         for (int l = 0; l < p; l++) {
                             for (int h = 0; h < q; h++) {
-                                _data[index++] = generator(i, j, k, l, h);
+                                data[index++] = generator(i, j, k, l, h);
                             }
                         }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates an empty <see cref="Valarray"/>.
+        /// </summary>
+        public Valarray()
+        {
+            dimensions = Empty.dimensions;
+            data = Empty.data;
         }
 
         /// <summary>
@@ -324,11 +330,11 @@ namespace WmcSoft.Numerics
             if (values == null) throw new ArgumentNullException(nameof(values));
 
             if (values.Length == 0) {
-                _dimensions = Empty._dimensions;
-                _data = Empty._data;
+                dimensions = Empty.dimensions;
+                data = Empty.data;
             } else {
-                _dimensions = new Dimensions(values.Length);
-                _data = values;
+                dimensions = new Dimensions(values.Length);
+                data = values;
             }
         }
 
@@ -359,7 +365,7 @@ namespace WmcSoft.Numerics
             var result = new Valarray(length);
             double value = start;
             for (int i = 0; i < length; i++) {
-                result._data[i] = value;
+                result.data[i] = value;
                 value += step;
             }
             return result;
@@ -372,17 +378,17 @@ namespace WmcSoft.Numerics
         /// <summary>
         /// The number of dimensions of the <see cref="Valarray"/>.
         /// </summary>
-        public int Rank { get { return _dimensions.Count; } }
+        public int Rank => dimensions.Count;
 
         /// <summary>
         /// The dimensions of the <see cref="Valarray"/>.
         /// </summary>
-        public Dimensions Size { get { return _dimensions; } }
+        public Dimensions Size => dimensions;
 
         /// <summary>
         /// The number of values in the <see cref="Valarray"/>.
         /// </summary>
-        public int Cardinality { get { return _data == null ? 0 : _data.Length; } }
+        public int Cardinality => data == null ? 0 : data.Length;
 
         /// <summary>
         /// The value at the specified coordinates.
@@ -393,41 +399,41 @@ namespace WmcSoft.Numerics
         /// <remarks>Negative and out of range indices are handled throw modulo arithmetics.</remarks>
         public double this[params int[] indices] {
             get {
-                var index = _dimensions.GetIndex(indices);
-                return _data[index];
+                var index = dimensions.GetIndex(indices);
+                return data[index];
             }
             set {
-                var index = _dimensions.GetIndex(indices);
-                _data[index] = value;
+                var index = dimensions.GetIndex(indices);
+                data[index] = value;
             }
         }
 
         public IEnumerable<double> this[Boolarray mask] {
             get {
-                var length = Math.Min(mask._data.Length, _data.Length);
+                var length = Math.Min(mask.data.Length, data.Length);
                 for (int i = 0; i < length; i++) {
-                    if (mask._data[i])
-                        yield return _data[i];
+                    if (mask.data[i])
+                        yield return data[i];
                 }
             }
             set {
                 if (value == null)
                     return;
                 using (var enumerator = value.GetEnumerator()) {
-                    var length = Math.Min(mask._data.Length, _data.Length);
+                    var length = Math.Min(mask.data.Length, data.Length);
                     var i = 0;
                     for (i = 0; i < length; i++) {
-                        if (mask._data[i]) {
+                        if (mask.data[i]) {
                             if (enumerator.MoveNext()) {
-                                _data[i] = enumerator.Current;
+                                data[i] = enumerator.Current;
                             } else {
                                 break;
                             }
                         }
                     }
                     for (; i < length; i++) {
-                        if (mask._data[i]) {
-                            _data[i] = 0d;
+                        if (mask.data[i]) {
+                            data[i] = 0d;
                         }
                     }
                 }
@@ -447,8 +453,8 @@ namespace WmcSoft.Numerics
         public Valarray Reshape(params int[] dimensions)
         {
             int length = dimensions.Aggregate(1, (x, y) => x * y);
-            Array.Resize(ref _data, length);
-            _dimensions = new Dimensions(dimensions);
+            Array.Resize(ref data, length);
+            this.dimensions = new Dimensions(dimensions);
             return this;
         }
 
@@ -459,13 +465,13 @@ namespace WmcSoft.Numerics
         /// <remarks>The internal storage is preserved.</remarks>
         public Valarray Ravel()
         {
-            if (_data != null) {
-                _dimensions = new Dimensions(_data.Length);
+            if (data != null) {
+                dimensions = new Dimensions(data.Length);
             }
             return this;
         }
 
-        static void Combine(SegmentEnumerator x, SegmentEnumerator y, Writer writer)
+        static void UnguardedCombine(SegmentEnumerator x, SegmentEnumerator y, Writer writer)
         {
             while (x.NextSegment()) {
                 if (!y.NextSegment()) {
@@ -473,7 +479,7 @@ namespace WmcSoft.Numerics
                         writer.Write(x, 0d);
                     }
                     while (x.NextSegment());
-                    break;
+                    return;
                 }
 
                 writer.Write(x, y);
@@ -490,11 +496,24 @@ namespace WmcSoft.Numerics
             if (y.Rank == 0)
                 return x.Clone();
 
-            var dimensions = Dimensions.Combine(x._dimensions, y._dimensions);
+            var dimensions = Dimensions.Combine(x.dimensions, y.dimensions);
             var result = new Valarray(dimensions);
-            var writer = new Writer(result._data, op);
-            Combine(new SegmentEnumerator(x), new SegmentEnumerator(y), writer);
+            var writer = new Writer(result.data, op);
+            UnguardedCombine(new SegmentEnumerator(x), new SegmentEnumerator(y), writer);
             return result;
+        }
+
+        private Valarray UnguardedMap(Func<double, double> op)
+        {
+            if (Rank == 0)
+                return new Valarray();
+
+            var length = data.Length;
+            var a = new double[length];
+            for (int i = 0; i < length; i++) {
+                a[i] = op(data[i]);
+            }
+            return new Valarray(dimensions, a);
         }
 
         /// <summary>
@@ -505,15 +524,9 @@ namespace WmcSoft.Numerics
         /// <returns>A new <see cref="Valarray"/>.</returns>
         public Valarray Map(Func<double, double> op)
         {
-            if (Rank == 0)
-                return new Valarray();
+            if (op == null) throw new ArgumentNullException(nameof(op));
 
-            var length = _data.Length;
-            var data = new double[_data.Length];
-            for (int i = 0; i < length; i++) {
-                data[i] = op(_data[i]);
-            }
-            return new Valarray(_dimensions, data);
+            return UnguardedMap(op);
         }
 
         /// <summary>
@@ -524,9 +537,8 @@ namespace WmcSoft.Numerics
         public Valarray Transform(Func<double, double> op)
         {
             if (Rank > 0) {
-                var length = _data.Length;
-                for (int i = 0; i < length; i++) {
-                    _data[i] = op(_data[i]);
+                for (int i = 0; i < data.Length; i++) {
+                    data[i] = op(data[i]);
                 }
             }
             return this;
@@ -574,7 +586,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator +(double scalar, Valarray valarray)
         {
-            return valarray.Map(x => scalar + x);
+            return valarray.UnguardedMap(x => scalar + x);
         }
         public static Valarray Add(double scalar, Valarray valarray)
         {
@@ -583,7 +595,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator +(Valarray valarray, double scalar)
         {
-            return valarray.Map(x => x + scalar);
+            return valarray.UnguardedMap(x => x + scalar);
         }
         public static Valarray Add(Valarray valarray, double scalar)
         {
@@ -601,7 +613,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator -(Valarray valarray, double scalar)
         {
-            return valarray.Map(x => x - scalar);
+            return valarray.UnguardedMap(x => x - scalar);
         }
         public static Valarray Subtract(Valarray valarray, double scalar)
         {
@@ -610,7 +622,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator *(double scalar, Valarray valarray)
         {
-            return valarray.Map(x => scalar * x);
+            return valarray.UnguardedMap(x => scalar * x);
         }
         public static Valarray Multiply(double scalar, Valarray valarray)
         {
@@ -619,7 +631,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator *(Valarray valarray, double scalar)
         {
-            return valarray.Map(x => x * scalar);
+            return valarray.UnguardedMap(x => x * scalar);
         }
         public static Valarray Multiply(Valarray valarray, double scalar)
         {
@@ -628,7 +640,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator /(double scalar, Valarray valarray)
         {
-            return valarray.Map(x => scalar / x);
+            return valarray.UnguardedMap(x => scalar / x);
         }
         public static Valarray Divide(double scalar, Valarray valarray)
         {
@@ -637,7 +649,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator /(Valarray valarray, double scalar)
         {
-            return valarray.Map(x => x / scalar);
+            return valarray.UnguardedMap(x => x / scalar);
         }
         public static Valarray Divide(Valarray valarray, double scalar)
         {
@@ -646,7 +658,7 @@ namespace WmcSoft.Numerics
 
         public static Valarray operator -(Valarray x)
         {
-            return x.Map(v => -v);
+            return x.UnguardedMap(v => -v);
         }
         public static Valarray Negate(Valarray x)
         {
@@ -664,41 +676,41 @@ namespace WmcSoft.Numerics
 
         public static Boolarray operator <(Valarray valarray, double value)
         {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x < value));
+            return new Boolarray(valarray.dimensions, Array.ConvertAll(valarray.data, x => x < value));
         }
         public static Boolarray operator <=(Valarray valarray, double value)
         {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x <= value));
+            return new Boolarray(valarray.dimensions, Array.ConvertAll(valarray.data, x => x <= value));
         }
         public static Boolarray operator >(Valarray valarray, double value)
         {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x > value));
+            return new Boolarray(valarray.dimensions, Array.ConvertAll(valarray.data, x => x > value));
         }
         public static Boolarray operator >=(Valarray valarray, double value)
         {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x >= value));
+            return new Boolarray(valarray.dimensions, Array.ConvertAll(valarray.data, x => x >= value));
         }
 
         public static Boolarray operator ==(Valarray valarray, double value)
         {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => x.Equals(value)));
+            return new Boolarray(valarray.dimensions, Array.ConvertAll(valarray.data, x => x.Equals(value)));
         }
         public static Boolarray operator !=(Valarray valarray, double value)
         {
-            return new Boolarray(valarray._dimensions, Array.ConvertAll(valarray._data, x => !x.Equals(value)));
+            return new Boolarray(valarray.dimensions, Array.ConvertAll(valarray.data, x => !x.Equals(value)));
         }
 
         public Boolarray Match(Predicate<double> predicate)
         {
-            return new Boolarray(_dimensions, Array.ConvertAll(_data, x => predicate(x)));
+            return new Boolarray(dimensions, Array.ConvertAll(data, x => predicate(x)));
         }
 
-        private void UnguardedAssign(Boolarray mask, double value = 0d)
+        private void UnguardedAssign(Boolarray mask, double value)
         {
-            var length = Math.Min(_data.Length, mask._data.Length);
+            var length = Math.Min(data.Length, mask.data.Length);
             for (int i = 0; i < length; i++) {
-                if (mask._data[i])
-                    _data[i] = value;
+                if (mask.data[i])
+                    data[i] = value;
             }
         }
 
@@ -721,19 +733,19 @@ namespace WmcSoft.Numerics
             where TValues : IEnumerable<double>
         {
             using (var enumerator = values.GetEnumerator()) {
-                var length = Math.Min(mask._data.Length, _data.Length);
+                var length = Math.Min(mask.data.Length, data.Length);
                 var i = 0;
                 for (i = 0; i < length; i++) {
                     if (enumerator.MoveNext()) {
-                        if (mask._data[i])
-                            _data[i] = enumerator.Current;
+                        if (mask.data[i])
+                            data[i] = enumerator.Current;
                     } else {
                         break;
                     }
                 }
                 for (; i < length; i++) {
-                    if (mask._data[i]) {
-                        _data[i] = 0d;
+                    if (mask.data[i]) {
+                        data[i] = 0d;
                     }
                 }
             }
@@ -746,7 +758,7 @@ namespace WmcSoft.Numerics
 
         public IEnumerator<double> GetEnumerator()
         {
-            var data = _data ?? Empty._data;
+            var data = this.data ?? Empty.data;
             return data.AsEnumerable().GetEnumerator();
         }
 
@@ -756,7 +768,7 @@ namespace WmcSoft.Numerics
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            var data = _data ?? Empty._data;
+            var data = this.data ?? Empty.data;
             return data.GetEnumerator();
         }
 
@@ -766,7 +778,7 @@ namespace WmcSoft.Numerics
 
         object ICloneable.Clone()
         {
-            return new Valarray(_dimensions, (double[])_data.Clone());
+            return new Valarray(dimensions, (double[])data.Clone());
         }
 
         #endregion
@@ -775,11 +787,11 @@ namespace WmcSoft.Numerics
 
         public bool Equals(Valarray other)
         {
-            if (_dimensions != other._dimensions)
+            if (dimensions != other.dimensions)
                 return false;
-            var length = _data.Length;
+            var length = data.Length;
             for (int i = 0; i < length; i++) {
-                if (!_data[i].Equals(other._data[i]))
+                if (!data[i].Equals(other.data[i]))
                     return false;
             }
             return true;
@@ -794,9 +806,9 @@ namespace WmcSoft.Numerics
 
         public override int GetHashCode()
         {
-            if (_data == null)
+            if (data == null)
                 return 0;
-            return _data.GetHashCode();
+            return data.GetHashCode();
         }
 
         #endregion
