@@ -35,32 +35,28 @@ namespace WmcSoft.ComponentModel
     /// <remarks>The calling sequence of the delegate is changed.</remarks>
     public class EventBarrier : IDisposable
     {
-        EventHandlerList _sourceList;
-        EventHandlerList _restorationList = new EventHandlerList();
+        EventHandlerList sourceList;
+        EventHandlerList restorationList = new EventHandlerList();
 
         public EventBarrier(EventHandlerList eventHandlerList, object target, params object[] events)
         {
-            _sourceList = eventHandlerList;
+            sourceList = eventHandlerList;
 
             foreach (object @event in events) {
-                var sentinel = _sourceList[@event];
+                var sentinel = sourceList[@event];
                 if (sentinel == null)
                     continue;
 
                 foreach (var handler in sentinel.GetInvocationList(d => d.Target == target)) {
-                    _sourceList.RemoveHandler(@event, handler);
-                    _restorationList.AddHandler(@event, handler);
+                    sourceList.RemoveHandler(@event, handler);
+                    restorationList.AddHandler(@event, handler);
                 }
             }
         }
 
-        #region IDisposable Membres
-
         public void Dispose()
         {
-            _sourceList.AddHandlers(_restorationList);
+            sourceList.AddHandlers(restorationList);
         }
-
-        #endregion
     }
 }

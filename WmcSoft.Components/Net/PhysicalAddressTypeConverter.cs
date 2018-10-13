@@ -33,6 +33,9 @@ using WmcSoft.ComponentModel.Design.Serialization;
 
 namespace WmcSoft.Net
 {
+    /// <summary>
+    /// Converts to and from <see cref="PhysicalAddress"/>.
+    /// </summary>
     public class PhysicalAddressTypeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
@@ -74,8 +77,7 @@ namespace WmcSoft.Net
             if (value == null)
                 return null;
 
-            var address = value as PhysicalAddress;
-            if (address != null) {
+            if (value is PhysicalAddress address) {
                 if (destinationType == typeof(string)) {
                     var bytes = address.GetAddressBytes();
                     if (bytes == null || bytes.Length == 0)

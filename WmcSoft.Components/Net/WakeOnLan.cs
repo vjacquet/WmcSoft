@@ -36,7 +36,7 @@ using WmcSoft.ComponentModel.Design;
 namespace WmcSoft.Net
 {
     [ToolboxBitmap(typeof(WakeOnLan))]
-    [DefaultProperty("MacAddress")]
+    [DefaultProperty(nameof(MacAddress))]
     [Designer(typeof(WakeOnLanDesigner))]
     public partial class WakeOnLan : IComponent
     {
@@ -44,10 +44,6 @@ namespace WmcSoft.Net
 
         public WakeOnLan()
         {
-            ResetMacAddress();
-            ResetAddress();
-            ResetSubnetMask();
-            Port = 7;
         }
 
         public WakeOnLan(IContainer container)
@@ -61,7 +57,7 @@ namespace WmcSoft.Net
         #region Properties
 
         [TypeConverter(typeof(PhysicalAddressTypeConverter))]
-        public PhysicalAddress MacAddress { get; set; }
+        public PhysicalAddress MacAddress { get; set; } = PhysicalAddress.None;
 
         bool ShouldSerializeMacAddress()
         {
@@ -73,34 +69,33 @@ namespace WmcSoft.Net
         }
 
         [TypeConverter(typeof(IPAddressTypeConverter))]
-        public IPAddress Address { get; set; }
+        public IPAddress Address { get; set; } = IPAddress.Any;
 
         bool ShouldSerializeAddress()
         {
-            return Address.ToString() != "0.0.0.0";
+            return Address != IPAddress.Any;
         }
         void ResetAddress()
         {
-            Address = IPAddress.Parse("0.0.0.0");
+            Address = IPAddress.Any;
         }
 
         [TypeConverter(typeof(IPAddressTypeConverter))]
-        public IPAddress SubnetMask { get; set; }
+        public IPAddress SubnetMask { get; set; } = IPAddress.Broadcast;
 
         bool ShouldSerializeSubnetMask()
         {
-            return SubnetMask.ToString() != "255.255.255.255";
+            return SubnetMask != IPAddress.Broadcast;
         }
         void ResetSubnetMask()
         {
-            SubnetMask = IPAddress.Parse("255.255.255.255");
+            SubnetMask = IPAddress.Broadcast;
         }
-
 
         /// <remarks>The "standard" default values are 7 or 9.</remarks>
         [DefaultValue(7)]
         [Localizable(false)]
-        public int Port { get; set; }
+        public int Port { get; set; } = 7;
 
         #endregion
 
@@ -111,11 +106,8 @@ namespace WmcSoft.Net
         /// </summary>
         public void WakeUp()
         {
-            PhysicalAddress macAddress = MacAddress;
-            IPAddress address = Address;
-            IPAddress subnetMask = SubnetMask;
-
-            WakeUp(macAddress, new IPEndPoint(MakeBroadcastIPAddress(address, subnetMask), Port));
+            var ip = new IPEndPoint(MakeBroadcastIPAddress(Address, SubnetMask), Port);
+            WakeUp(MacAddress, ip);
         }
 
         #endregion
@@ -150,7 +142,7 @@ namespace WmcSoft.Net
         /// <param name="endPoint"></param>
         public static void WakeUp(PhysicalAddress macAddress, IPEndPoint endPoint)
         {
-            UdpClient udpClient = new UdpClient();
+            var udpClient = new UdpClient();
             byte[] magicPacket = new byte[102];
             int offset = 0;
 
@@ -178,11 +170,7 @@ namespace WmcSoft.Net
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Browsable(false)]
-        public virtual ISite Site {
-            get { return _site; }
-            set { _site = value; }
-        }
-        ISite _site;
+        public virtual ISite Site { get; set; }
 
         #endregion
 
@@ -190,7 +178,7 @@ namespace WmcSoft.Net
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -198,11 +186,9 @@ namespace WmcSoft.Net
         {
             if (disposing) {
                 lock (this) {
-                    if ((_site != null) && (_site.Container != null)) {
-                        _site.Container.Remove(this);
-                    }
+                    Site?.Container?.Remove(this);
 
-                    EventHandler handler = Disposed;
+                    var handler = Disposed;
                     if (handler != null) {
                         handler(this, EventArgs.Empty);
                     }

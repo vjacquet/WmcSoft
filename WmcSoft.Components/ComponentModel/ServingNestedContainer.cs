@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace WmcSoft.ComponentModel
 {
@@ -37,43 +38,28 @@ namespace WmcSoft.ComponentModel
 
         class OwnerServiceProvider : IServiceProvider
         {
-            #region Private fields
-
-            readonly IComponent _component;
-
-            #endregion
-
-            #region Lifecycle
+            readonly IComponent component;
 
             public OwnerServiceProvider(IComponent component)
             {
-                _component = component;
+                this.component = component;
             }
-
-            #endregion
-
-            #region IServiceProvider Membres
 
             public object GetService(Type serviceType)
             {
-                if (serviceType.IsAssignableFrom(_component.GetType())) {
-                    return _component;
-                }
-                if (_component.Site != null) {
-                    return _component.Site.GetService(serviceType);
-                }
+                if (serviceType.IsAssignableFrom(component.GetType()))
+                    return component;
+                if (component.Site != null)
+                    return component.Site.GetService(serviceType);
                 return null;
             }
-
-            #endregion
         }
 
         #endregion
 
         #region Private Fields
 
-        readonly IServiceContainer _serviceContainer;
-        readonly List<IServiceProvider> _serviceProviders;
+        private readonly List<IServiceProvider> serviceProviders;
 
         #endregion
 
@@ -82,17 +68,15 @@ namespace WmcSoft.ComponentModel
         public NestedContainerWithServiceContainer(IComponent owner)
             : base(owner)
         {
-            _serviceContainer = new ServiceContainer(new OwnerServiceProvider(owner));
-            _serviceProviders = new List<IServiceProvider>();
+            ServiceContainer = new ServiceContainer(new OwnerServiceProvider(owner));
+            serviceProviders = new List<IServiceProvider>();
         }
 
         #endregion
 
         #region ServiceContainer Property
 
-        public IServiceContainer ServiceContainer {
-            get { return _serviceContainer; }
-        }
+        public IServiceContainer ServiceContainer { get; }
 
         #endregion
 
@@ -112,9 +96,8 @@ namespace WmcSoft.ComponentModel
 
         private void RegisterServiceProvider(IComponent component)
         {
-            var serviceProvider = component as IServiceProvider;
-            if (serviceProvider != null) {
-                _serviceProviders.Add(serviceProvider);
+            if (component is IServiceProvider serviceProvider) {
+                serviceProviders.Add(serviceProvider);
             }
         }
 
@@ -122,9 +105,8 @@ namespace WmcSoft.ComponentModel
         {
             base.Remove(component);
 
-            var serviceProvider = component as IServiceProvider;
-            if (serviceProvider != null) {
-                _serviceProviders.Remove(serviceProvider);
+            if (component is IServiceProvider serviceProvider) {
+                serviceProviders.Remove(serviceProvider);
             }
         }
 
@@ -134,18 +116,9 @@ namespace WmcSoft.ComponentModel
 
         protected override object GetService(Type service)
         {
-            var serviceInstance = base.GetService(service);
-            if (serviceInstance != null)
-                return serviceInstance;
-
-            foreach (var serviceProvider in _serviceProviders) {
-                serviceInstance = serviceProvider.GetService(service);
-                if (serviceInstance != null)
-                    return serviceInstance;
-            }
-
-            serviceInstance = _serviceContainer.GetService(service);
-            return serviceInstance;
+            return base.GetService(service)
+                ?? serviceProviders.Select(sp => sp.GetService(service)).FirstOrDefault(s => s != null)
+                ?? ServiceContainer.GetService(service);
         }
 
         object IServiceProvider.GetService(Type serviceType)

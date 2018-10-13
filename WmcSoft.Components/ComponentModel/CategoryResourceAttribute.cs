@@ -26,25 +26,23 @@
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Resources;
 
 namespace WmcSoft.ComponentModel
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public sealed class CategoryResourceAttribute : CategoryAttribute
     {
-        private readonly Type _resourceBase;
+        private readonly Type resourceBase;
 
         public CategoryResourceAttribute(Type resourceBase, string resourceName)
             : base(resourceName)
         {
-            _resourceBase = resourceBase;
+            this.resourceBase = resourceBase;
         }
 
         protected override string GetLocalizedString(string value)
         {
-            return ResourceHelpers.GetString(_resourceBase, value);
+            return ResourceHelpers.GetString(resourceBase, value);
         }
     }
 }

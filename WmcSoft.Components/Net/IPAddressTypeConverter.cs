@@ -33,6 +33,9 @@ using WmcSoft.ComponentModel.Design.Serialization;
 
 namespace WmcSoft.Net
 {
+    /// <summary>
+    /// Converts to and from <see cref="IPAddress"/>.
+    /// </summary>
     public class IPAddressTypeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
@@ -56,8 +59,7 @@ namespace WmcSoft.Net
                 if (text == "")
                     return null;
 
-                IPAddress address;
-                if (IPAddress.TryParse(text, out address))
+                if (IPAddress.TryParse(text, out var address))
                     return address;
             }
 
@@ -76,8 +78,7 @@ namespace WmcSoft.Net
             if (value == null)
                 return null;
 
-            var address = value as IPAddress;
-            if (address != null) {
+            if (value is IPAddress address) {
                 if (destinationType == typeof(string))
                     return address.ToString();
 

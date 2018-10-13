@@ -8,7 +8,7 @@ namespace WmcSoft.ComponentModel
     {
         #region Private fields
 
-        private readonly ITypeResolutionService _resolutionService;
+        private readonly ITypeResolutionService resolutionService;
 
         #endregion
 
@@ -16,13 +16,18 @@ namespace WmcSoft.ComponentModel
 
         public TypeResolver(ITypeResolutionService resolutionService)
         {
-            _resolutionService = resolutionService;
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(OnAssemblyResolve);
+            this.resolutionService = resolutionService;
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+        }
+
+        ~TypeResolver()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
         }
 
         public void Dispose()
         {
-            AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(OnAssemblyResolve);
+            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
             GC.SuppressFinalize(this);
         }
 
@@ -32,15 +37,13 @@ namespace WmcSoft.ComponentModel
 
         private Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
         {
-            Assembly assembly;
-            AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(this.OnAssemblyResolve);
+            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
             try {
                 var name = new AssemblyName(args.Name);
-                assembly = _resolutionService.GetAssembly(name, false);
+                return resolutionService.GetAssembly(name, false);
             } finally {
-                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(this.OnAssemblyResolve);
+                AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
             }
-            return assembly;
         }
 
         #endregion

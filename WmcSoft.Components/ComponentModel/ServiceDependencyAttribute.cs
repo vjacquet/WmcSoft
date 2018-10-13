@@ -31,15 +31,11 @@ namespace WmcSoft.ComponentModel
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class ServiceDependencyAttribute : Attribute
     {
-        private readonly Type _service;
-
         public ServiceDependencyAttribute(Type serviceType)
         {
-            _service = serviceType;
+            ServiceType = serviceType;
         }
 
-        public Type ServiceType {
-            get { return _service; }
-        }
+        public Type ServiceType { get; }
     }
 }

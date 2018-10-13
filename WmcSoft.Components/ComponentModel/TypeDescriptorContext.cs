@@ -37,9 +37,7 @@ namespace WmcSoft.ComponentModel
     {
         #region Fields
 
-        readonly IServiceProvider _serviceProvider;
-        readonly object _instance;
-        readonly PropertyDescriptor _descriptor;
+        private readonly IServiceProvider serviceProvider;
 
         #endregion
 
@@ -47,39 +45,33 @@ namespace WmcSoft.ComponentModel
 
         public TypeDescriptorContext(IServiceProvider serviceProvider, PropertyDescriptor descriptor, object instance)
         {
-            _serviceProvider = serviceProvider;
-            _descriptor = descriptor;
-            _instance = instance;
+            this.serviceProvider = serviceProvider;
+            PropertyDescriptor = descriptor;
+            Instance = instance;
         }
 
         #endregion
 
         #region ITypeDescriptorContext Members
 
-        public IContainer Container {
-            get {
-                return GetService(typeof(IContainer)) as IContainer;
-            }
-        }
+        public IContainer Container => GetService(typeof(IContainer)) as IContainer;
 
-        public object Instance {
-            get { return _instance; }
-        }
+        public object Instance { get; }
 
         void ITypeDescriptorContext.OnComponentChanged()
         {
-            IComponentChangeService service = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+            var service = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
             if (service != null) {
-                service.OnComponentChanged(_instance, _descriptor, null, null);
+                service.OnComponentChanged(Instance, PropertyDescriptor, null, null);
             }
         }
 
         bool ITypeDescriptorContext.OnComponentChanging()
         {
-            IComponentChangeService service = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+            var service = GetService(typeof(IComponentChangeService)) as IComponentChangeService;
             if (service != null) {
                 try {
-                    service.OnComponentChanging(_instance, _descriptor);
+                    service.OnComponentChanging(Instance, PropertyDescriptor);
                 } catch (CheckoutException exception) {
                     if (CheckoutException.Canceled != exception) {
                         throw;
@@ -90,9 +82,7 @@ namespace WmcSoft.ComponentModel
             return true;
         }
 
-        public PropertyDescriptor PropertyDescriptor {
-            get { return _descriptor; }
-        }
+        public PropertyDescriptor PropertyDescriptor { get; }
 
         #endregion
 
@@ -100,12 +90,9 @@ namespace WmcSoft.ComponentModel
 
         public object GetService(Type serviceType)
         {
-            if (_serviceProvider == null)
-                return null;
-            return _serviceProvider.GetService(serviceType);
+            return serviceProvider?.GetService(serviceType);
         }
 
         #endregion
     }
-
 }

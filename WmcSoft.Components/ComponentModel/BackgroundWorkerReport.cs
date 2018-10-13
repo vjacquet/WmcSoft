@@ -31,18 +31,18 @@ namespace WmcSoft.ComponentModel
 {
     public class BackgroundWorkerProgress : IProgress<int>
     {
-        private readonly BackgroundWorker _backgroundWorker;
+        private readonly BackgroundWorker worker;
 
         public BackgroundWorkerProgress(BackgroundWorker backgroundWorker)
         {
             if (backgroundWorker == null) throw new ArgumentNullException(nameof(backgroundWorker));
 
-            _backgroundWorker = backgroundWorker;
+            worker = backgroundWorker;
         }
 
         public void Report(int value)
         {
-            _backgroundWorker.ReportProgress(value);
+            worker.ReportProgress(value);
         }
     }
 }
