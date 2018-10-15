@@ -253,10 +253,10 @@ namespace WmcSoft.Data
         }
 
         /// <summary>
-        /// Returns an <see cref="System.Data.IDataReader"/> for the specified column ordinal.
+        /// Returns an <see cref="IDataReader"/> for the specified column ordinal.
         /// </summary>
         /// <param name="i">The zero-based column ordinal.</param>
-        /// <returns>The <see cref="System.Data.IDataReader"/> for the specified column ordinal.</returns>
+        /// <returns>The <see cref="IDataReader"/> for the specified column ordinal.</returns>
         /// <exception cref="IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="IDataRecord.FieldCount"/>.</exception>
         public virtual IDataReader GetData(int i)
         {
