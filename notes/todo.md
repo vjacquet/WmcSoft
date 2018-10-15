@@ -15,8 +15,8 @@
 
 - [x] Rename `UpgradingFileStreamSource` to `CachedFileStreamSource`.
 
-
 ## Tools
 
-- [ ] Consolidate nuget packages
-- [ ] Upgrade nuget packages
+- [x] Consolidate nuget packages
+- [x] Upgrade nuget packages
+- [ ] Upgrade nuget packages for WmcSoft.VisualStudio

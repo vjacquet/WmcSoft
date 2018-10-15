@@ -111,6 +111,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notes", "notes", "{B5F15274-45DF-48CB-B3B7-2A695253359F}"
 	ProjectSection(SolutionItems) = preProject
 		notes\cloning.md = notes\cloning.md
+		notes\todo.md = notes\todo.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Memory", "WmcSoft.Memory\WmcSoft.Memory.csproj", "{F2FC0F43-B960-49A4-B554-856A5B33098D}"
@@ -124,9 +125,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Algorithms", "WmcSoft.Algorithms\WmcSoft.Algorithms.csproj", "{34E8F3A9-CA08-410C-BAAA-048F8A579954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Monitoring", "WmcSoft.Monitoring\WmcSoft.Monitoring.csproj", "{56E7251A-AD1A-4A0B-BB78-040D1B732D26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Monitoring", "WmcSoft.Monitoring\WmcSoft.Monitoring.csproj", "{56E7251A-AD1A-4A0B-BB78-040D1B732D26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmcSoft.Monitoring.Tests", "WmcSoft.Monitoring.Tests\WmcSoft.Monitoring.Tests.csproj", "{8A9D9603-4727-4AFE-AE95-A47D618B3496}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WmcSoft.Monitoring.Tests", "WmcSoft.Monitoring.Tests\WmcSoft.Monitoring.Tests.csproj", "{8A9D9603-4727-4AFE-AE95-A47D618B3496}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
