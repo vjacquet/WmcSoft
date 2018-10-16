@@ -1,4 +1,30 @@
-﻿using System;
+﻿#region Licence
+
+/****************************************************************************
+          Copyright 1999-2018 Vincent J. Jacquet.  All rights reserved.
+
+    Permission is granted to anyone to use this software for any purpose on
+    any computer system, and to alter it and redistribute it, subject
+    to the following restrictions:
+
+    1. The author is not responsible for the consequences of use of this
+       software, no matter how awful, even if they arise from flaws in it.
+
+    2. The origin of this software must not be misrepresented, either by
+       explicit claim or by omission.  Since few users ever read sources,
+       credits must appear in the documentation.
+
+    3. Altered versions must be plainly marked as such, and must not be
+       misrepresented as being the original software.  Since few users
+       ever read sources, credits must appear in the documentation.
+
+    4. This notice may not be removed or altered.
+
+ ****************************************************************************/
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +33,18 @@ namespace WmcSoft.IO.Sources
 {
     public class InMemoryStreamStore : StreamStore
     {
+        #region Helper classes
+
+        class ValidSinceUtcComparer : IComparer<InMemoryStorageEntry>
+        {
+            public static readonly ValidSinceUtcComparer Default = new ValidSinceUtcComparer();
+
+            public int Compare(InMemoryStorageEntry x, InMemoryStorageEntry y)
+            {
+                return x.ValidSinceUtc.CompareTo(y.ValidSinceUtc);
+            }
+        }
+
         class InMemoryStorageEntry : StorageEntry
         {
             private readonly byte[] _data;
@@ -28,22 +66,15 @@ namespace WmcSoft.IO.Sources
             }
         }
 
-        class ValidSinceUtcComparer : IComparer<InMemoryStorageEntry>
-        {
-            public static readonly ValidSinceUtcComparer Default = new ValidSinceUtcComparer();
-
-            public int Compare(InMemoryStorageEntry x, InMemoryStorageEntry y)
-            {
-                return x.ValidSinceUtc.CompareTo(y.ValidSinceUtc);
-            }
-        }
-
         class InMemoryStorageEntryFinder : InMemoryStorageEntry
         {
-            public InMemoryStorageEntryFinder(DateTime since) : base(null, null, 0, null, since, null)
+            public InMemoryStorageEntryFinder(DateTime since)
+                : base(null, null, 0, null, since, null)
             {
             }
         }
+
+        #endregion
 
         private readonly Dictionary<string, List<InMemoryStorageEntry>> _store = new Dictionary<string, List<InMemoryStorageEntry>>();
 
@@ -53,8 +84,7 @@ namespace WmcSoft.IO.Sources
 
         public override IEnumerable<StorageEntry> GetHistory(string name)
         {
-            List<InMemoryStorageEntry> entries;
-            if (_store.TryGetValue(name, out entries))
+            if (_store.TryGetValue(name, out var entries))
                 return UnguardedBackwards(entries);
             return Enumerable.Empty<StorageEntry>();
         }

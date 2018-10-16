@@ -29,7 +29,8 @@ using System;
 namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Represents the registration of stream sources to be included in a batch but defers the actual processing to the commit phase.
+    /// Represents the registration of stream sources to be included in a batch
+    /// but defers the actual processing to the commit phase.
     /// </summary>
     public interface IBatch : IDisposable
     {
