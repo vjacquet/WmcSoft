@@ -15,6 +15,9 @@
 
 - [x] Rename `UpgradingFileStreamSource` to `CachedFileStreamSource`.
 
+## Optimizations
+
+- [ ] Optimize `HeaderedTextWriter` by overriding more method to give a chance of specialized methods on the udnerlying `TextWriter`.
 
 ## Tools
 
