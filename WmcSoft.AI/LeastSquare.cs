@@ -53,7 +53,7 @@ namespace WmcSoft.AI
             var xx = 0d;
             var xy = 0d;
             for (int i = 0; i < input.Length; i++) {
-                var x = (double)i - xmean;
+                var x = i - xmean;
                 var y = input[i] - ymean;
                 xx += x * x;
                 xy += x * y;

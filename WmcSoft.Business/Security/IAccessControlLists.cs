@@ -28,6 +28,9 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Security
 {
+    /// <summary>
+    /// Represents an access control list.
+    /// </summary>
     public interface IAccessControlLists
     {
         ISet<AccessControlEntry> GrantedPermissions { get; }

@@ -5,7 +5,7 @@ namespace WmcSoft.Numerics
     public class BoolarrayTests
     {
         [Fact]
-        public void CheckBoolarray()
+        public void CheckBoolarrayTruthOperators()
         {
             var x = new Boolarray(true, true, true, true);
             var y = new Boolarray(true, true, false, true);
@@ -24,6 +24,15 @@ namespace WmcSoft.Numerics
             if (x || y) { } else { Assert.True(false, "x || y"); }
 
             if (x && !y) { } else { Assert.True(false, "x && !y"); }
+        }
+
+        [Fact]
+        public void CanCreateEmptyBoolarray()
+        {
+            var boolarray = new Boolarray();
+            Assert.NotNull(boolarray);
+            Assert.Equal(0, boolarray.Cardinality);
+            Assert.NotSame(Valarray.Empty, boolarray);
         }
     }
 }

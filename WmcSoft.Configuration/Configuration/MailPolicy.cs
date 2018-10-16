@@ -113,9 +113,9 @@ namespace WmcSoft.Configuration
         /// (i.e. an email address in <see cref="MailMessage.To"/> will be removed from <see cref="MailMessage.CC"/> and <see cref="MailMessage.Bcc"/></remarks>
         public MailMessage CreateMessage(Func<MailAddress, IEnumerable<MailAddress>> interpreter)
         {
-            var m = new MailMessage();
-
-            m.Subject = Subject ?? "";
+            var m = new MailMessage {
+                Subject = Subject ?? ""
+            };
 
             var to = To ?? new MailAddressCollection();
             var cc = Cc ?? new MailAddressCollection();

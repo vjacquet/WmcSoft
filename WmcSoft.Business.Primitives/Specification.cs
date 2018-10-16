@@ -31,6 +31,11 @@ using System.Linq;
 
 namespace WmcSoft
 {
+    /// <summary>
+    /// Light wrapper on a specification implementing operators.
+    /// </summary>
+    /// <remarks>This type erase the type of the underlying specification.</remarks>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct Specification<T> : ISpecification<T>
     {
         private readonly ISpecification<T> _spec;
@@ -84,12 +89,12 @@ namespace WmcSoft
     {
         public static AlwaysSpecification<T> Always<T>()
         {
-            return default(AlwaysSpecification<T>);
+            return default;
         }
 
         public static NeverSpecification<T> Never<T>()
         {
-            return default(NeverSpecification<T>);
+            return default;
         }
 
         public static PredicateSpecification<T> Create<T>(Predicate<T> predicate)
@@ -124,6 +129,10 @@ namespace WmcSoft
 
     #region Specialized specifications
 
+    /// <summary>
+    /// Implements a specification that is never satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct NeverSpecification<T> : ISpecification<T>
     {
         public bool IsSatisfiedBy(T candidate)
@@ -132,6 +141,10 @@ namespace WmcSoft
         }
     }
 
+    /// <summary>
+    /// Implements a specification that is always satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct AlwaysSpecification<T> : ISpecification<T>
     {
         public bool IsSatisfiedBy(T candidate)
@@ -140,127 +153,156 @@ namespace WmcSoft
         }
     }
 
+    /// <summary>
+    /// Implements a specification based on a <see cref="Predicate{T}"/> or a <see cref="Func{T, bool}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct PredicateSpecification<T> : ISpecification<T>
     {
-        private readonly Func<T, bool> _predicate;
+        private readonly Func<T, bool> predicate;
 
         public PredicateSpecification(Predicate<T> predicate)
         {
             if (predicate != null)
-                _predicate = x => predicate(x);
+                this.predicate = x => predicate(x);
             else
-                _predicate = default(AlwaysSpecification<T>).IsSatisfiedBy;
+                this.predicate = default(AlwaysSpecification<T>).IsSatisfiedBy;
         }
+
         public PredicateSpecification(Func<T, bool> predicate)
         {
-            _predicate = (predicate != null)
+            this.predicate = (predicate != null)
                 ? predicate
                 : default(AlwaysSpecification<T>).IsSatisfiedBy;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return _predicate(candidate);
+            return predicate(candidate);
         }
     }
 
+    /// <summary>
+    /// Implements a specification that is satisfied if all of the given specifications are satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct AllSpecification<T> : ISpecification<T>
     {
-        private readonly ISpecification<T>[] _spec;
+        private readonly ISpecification<T>[] specifications;
 
-        public AllSpecification(params ISpecification<T>[] spec)
+        public AllSpecification(params ISpecification<T>[] specifications)
         {
-            if (spec == null)
-                _spec = new ISpecification<T>[0];
-            _spec = spec;
+            if (specifications == null)
+                this.specifications = new ISpecification<T>[0];
+            this.specifications = specifications;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return _spec.All(s => s.IsSatisfiedBy(candidate));
+            return specifications.All(s => s.IsSatisfiedBy(candidate));
         }
     }
 
+    /// <summary>
+    /// Implements a specification that is satisfied if any of the given specifications are satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct AnySpecification<T> : ISpecification<T>
     {
-        private readonly ISpecification<T>[] _spec;
+        private readonly ISpecification<T>[] specifications;
 
-        public AnySpecification(params ISpecification<T>[] spec)
+        public AnySpecification(params ISpecification<T>[] specifications)
         {
-            if (spec == null)
-                _spec = new ISpecification<T>[0];
-            _spec = spec;
+            if (specifications == null)
+                this.specifications = new ISpecification<T>[0];
+            this.specifications = specifications;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return _spec.Any(s => s.IsSatisfiedBy(candidate));
+            return specifications.Any(s => s.IsSatisfiedBy(candidate));
         }
     }
 
+    /// <summary>
+    /// Implements a specification that is satisfied if none of the given specifications are satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct NoneSpecification<T> : ISpecification<T>
     {
-        private readonly ISpecification<T>[] _spec;
+        private readonly ISpecification<T>[] specifications;
 
         public NoneSpecification(params ISpecification<T>[] spec)
         {
             if (spec == null)
-                _spec = new ISpecification<T>[0];
-            _spec = spec;
+                specifications = new ISpecification<T>[0];
+            specifications = spec;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return _spec.All(s => !s.IsSatisfiedBy(candidate));
+            return specifications.All(s => !s.IsSatisfiedBy(candidate));
         }
     }
 
+    /// <summary>
+    /// Implements a specification that is satisfied if both of the given specifications are satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct AndSpecification<T> : ISpecification<T>
     {
-        private readonly ISpecification<T> _x;
-        private readonly ISpecification<T> _y;
+        private readonly ISpecification<T> x;
+        private readonly ISpecification<T> y;
 
         public AndSpecification(ISpecification<T> x, ISpecification<T> y)
         {
-            _x = x;
-            _y = y;
+            this.x = x;
+            this.y = y;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return _x.IsSatisfiedBy(candidate) && _y.IsSatisfiedBy(candidate);
+            return x.IsSatisfiedBy(candidate) && y.IsSatisfiedBy(candidate);
         }
     }
 
+    /// <summary>
+    /// Implements a specification that is satisfied if any of the given specifications are satisfied.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct OrSpecification<T> : ISpecification<T>
     {
-        private readonly ISpecification<T> _x;
-        private readonly ISpecification<T> _y;
+        private readonly ISpecification<T> x;
+        private readonly ISpecification<T> y;
 
         public OrSpecification(ISpecification<T> x, ISpecification<T> y)
         {
-            _x = x;
-            _y = y;
+            this.x = x;
+            this.y = y;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return _x.IsSatisfiedBy(candidate) || _y.IsSatisfiedBy(candidate);
+            return x.IsSatisfiedBy(candidate) || y.IsSatisfiedBy(candidate);
         }
     }
 
+    /// <summary>
+    /// Implements a specification inverted the given specificatio.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to apply the predicate on.</typeparam>
     public struct NotSpecification<T> : ISpecification<T>
     {
-        private readonly ISpecification<T> _x;
+        private readonly ISpecification<T> x;
 
         public NotSpecification(ISpecification<T> x)
         {
-            _x = x;
+            this.x = x;
         }
 
         public bool IsSatisfiedBy(T candidate)
         {
-            return !_x.IsSatisfiedBy(candidate);
+            return !x.IsSatisfiedBy(candidate);
         }
     }
 

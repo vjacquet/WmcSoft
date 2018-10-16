@@ -36,6 +36,7 @@ namespace WmcSoft.Business.Calendars
     /// <summary>
     /// Decorates an existing Business calendar with no predefined set of business days.
     /// </summary>
+    /// <typeparam name="TCalendar">The type of calendar.</typeparam>
     [DebuggerDisplay("[{MinDate.ToString(\"yyyy-MM-dd\"),nq} .. {MaxDate.ToString(\"yyyy-MM-dd\"),nq}]")]
     [DebuggerTypeProxy(typeof(BusinessCalendarDebugView))]
     public class BespokeCalendar<TCalendar> : IBusinessCalendar
@@ -125,22 +126,34 @@ namespace WmcSoft.Business.Calendars
             return new BespokeCalendar<TCalendar>(name, calendar, since, until, weekends);
         }
 
-        public static void Add<TCalendar>(this BespokeCalendar<TCalendar> calendar, params IDateSpecification[] specifications)
+        /// <summary>
+        /// Adds <paramref name="holidays"/> to a given <paramref name="calendar"/>.
+        /// </summary>
+        /// <typeparam name="TCalendar">The type of calendar.</typeparam>
+        /// <param name="calendar">The calendar.</param>
+        /// <param name="holidays">The specifications of the holidays to add.</param>
+        public static void Add<TCalendar>(this BespokeCalendar<TCalendar> calendar, params IDateSpecification[] holidays)
             where TCalendar : IBusinessCalendar
         {
             var interval = Interval.Closed(calendar.MinDate, calendar.MaxDate);
-            foreach (var specification in specifications) {
+            foreach (var specification in holidays) {
                 foreach (var day in specification.EnumerateOver(interval)) {
                     calendar.Add(day);
                 }
             }
         }
 
-        public static void Remove<TCalendar>(this BespokeCalendar<TCalendar> calendar, params IDateSpecification[] specifications)
+        /// <summary>
+        /// Removes <paramref name="holidays"/> from a given <paramref name="calendar"/>.
+        /// </summary>
+        /// <typeparam name="TCalendar">The type of calendar.</typeparam>
+        /// <param name="calendar">The calendar.</param>
+        /// <param name="holidays">The specifications of the holidays to remove.</param>
+        public static void Remove<TCalendar>(this BespokeCalendar<TCalendar> calendar, params IDateSpecification[] holidays)
             where TCalendar : IBusinessCalendar
         {
             var interval = Interval.Closed(calendar.MinDate, calendar.MaxDate);
-            foreach (var specification in specifications) {
+            foreach (var specification in holidays) {
                 foreach (var day in specification.EnumerateOver(interval)) {
                     calendar.Remove(day);
                 }

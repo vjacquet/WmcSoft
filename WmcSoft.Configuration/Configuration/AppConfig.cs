@@ -34,38 +34,41 @@ namespace WmcSoft.Configuration
 {
     public static class AppConfig
     {
-        static Dictionary<Type, string> _knownConfigurationSections;
+        static Dictionary<Type, string> knownConfigurationSections;
 
         static AppConfig()
         {
-            _knownConfigurationSections = new Dictionary<Type, string>();
+            knownConfigurationSections = new Dictionary<Type, string>();
         }
 
-        public static void RegisterSectionName<T>(string sectionName) where T : ConfigurationSection
+        public static void RegisterSectionName<T>(string sectionName)
+            where T : ConfigurationSection
         {
-            _knownConfigurationSections.Add(typeof(T), sectionName);
+            knownConfigurationSections.Add(typeof(T), sectionName);
         }
 
-        public static T GetSection<T>() where T : ConfigurationSection
+        public static T GetSection<T>()
+            where T : ConfigurationSection
         {
-            var sectionName = _knownConfigurationSections[typeof(T)];
+            var sectionName = knownConfigurationSections[typeof(T)];
             return GetSection<T>(sectionName);
         }
 
-        public static T GetSection<T>(string sectionName) where T : ConfigurationSection
+        public static T GetSection<T>(string sectionName)
+            where T : ConfigurationSection
         {
             var section = ConfigurationManager.GetSection(sectionName);
             return (T)section;
         }
 
-        public static T GetAppSetting<T>(string name, T defaultValue = default(T))
+        public static T GetAppSetting<T>(string name, T defaultValue = default)
         {
-            return ConfigurationManager.AppSettings.GetValue<T>(name, defaultValue);
+            return ConfigurationManager.AppSettings.GetValue(name, defaultValue);
         }
 
-        public static T GetAppSetting<T>(string name, TypeConverter converter, T defaultValue = default(T))
+        public static T GetAppSetting<T>(string name, TypeConverter converter, T defaultValue = default)
         {
-            return ConfigurationManager.AppSettings.GetValue<T>(name, converter, defaultValue);
+            return ConfigurationManager.AppSettings.GetValue(name, converter, defaultValue);
         }
 
         public static IEnumerable<T> GetAppSettings<T>(string name)

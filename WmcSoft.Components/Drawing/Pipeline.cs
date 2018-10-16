@@ -54,7 +54,7 @@ namespace WmcSoft.Drawing
 
         public override Image Apply(Image image)
         {
-            Image result = image;
+            var result = image;
             if (_transformations.Any()) {
                 var properties = image.PropertyItems;
                 foreach (var transform in _transformations) {

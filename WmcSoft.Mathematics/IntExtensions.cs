@@ -33,17 +33,17 @@ namespace WmcSoft
     {
         public static int Clamp(this long x)
         {
-            if (x < Int32.MinValue)
-                return Int32.MinValue;
-            if (x > Int32.MaxValue)
-                return Int32.MaxValue;
+            if (x < int.MinValue)
+                return int.MinValue;
+            if (x > int.MaxValue)
+                return int.MaxValue;
             return (int)x;
         }
 
         static int CheckDigit(int value)
         {
-            if (value < 0 || value > 9)
-                throw new ArgumentOutOfRangeException("value");
+            if (value < 0 | value > 9)
+                throw new ArgumentOutOfRangeException(nameof(value));
             return value;
         }
 

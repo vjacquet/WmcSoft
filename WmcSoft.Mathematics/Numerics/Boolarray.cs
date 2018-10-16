@@ -31,7 +31,7 @@ using System.Linq;
 namespace WmcSoft.Numerics
 {
     /// <summary>
-    /// Represents an array of bool.
+    /// Represents an array of <see cref="bool"/>.
     /// </summary>
     [Serializable]
     public sealed class Boolarray : IEnumerable<bool>, IEquatable<Boolarray>, ICloneable
@@ -85,49 +85,45 @@ namespace WmcSoft.Numerics
 
         sealed class SegmentEnumerator : IEnumerator<bool>
         {
-            int _length;
-            bool[] _data;
+            int length;
+            bool[] data;
 
-            int _begin;
-            int _end;
+            int begin;
+            int end;
 
             public SegmentEnumerator(Boolarray valarray)
-                : this(valarray._dimensions.GetDimension(-1), valarray._data)
+                : this(valarray.dimensions.GetDimension(-1), valarray.data)
             {
             }
             public SegmentEnumerator(int length, bool[] data)
             {
-                _length = length;
-                _data = data;
+                this.length = length;
+                this.data = data;
             }
 
             public bool NextSegment()
             {
-                _begin = _end - 1;
-                _end += _length;
-                return _end <= _data.Length;
+                begin = end - 1;
+                end += length;
+                return end <= data.Length;
             }
 
             #region IEnumerator Membres
 
-            public bool Current {
-                get { return _data[_begin]; }
-            }
+            public bool Current => data[begin];
 
             public bool MoveNext()
             {
-                _begin++;
-                return _begin < _end;
+                begin++;
+                return begin < end;
             }
 
-            object System.Collections.IEnumerator.Current {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             public void Reset()
             {
-                _begin = 0;
-                _end = 0;
+                begin = 0;
+                end = 0;
             }
 
             #endregion
@@ -145,8 +141,8 @@ namespace WmcSoft.Numerics
 
         #region Fields
 
-        private Dimensions _dimensions;
-        internal bool[] _data;
+        private Dimensions dimensions;
+        internal bool[] data;
 
         #endregion
 
@@ -154,8 +150,8 @@ namespace WmcSoft.Numerics
 
         internal Boolarray(Dimensions dimensions, bool[] data)
         {
-            _dimensions = dimensions;
-            _data = data;
+            this.dimensions = dimensions;
+            this.data = data;
         }
         private Boolarray(Dimensions dimensions)
             : this(dimensions, new bool[dimensions.GetCardinality()])
@@ -175,26 +171,35 @@ namespace WmcSoft.Numerics
         private Boolarray(bool value, Dimensions dimensions)
             : this(dimensions)
         {
-            var length = _data.Length;
+            var length = data.Length;
             for (int i = 0; i < length; i++) {
-                _data[i] = value;
+                data[i] = value;
             }
         }
         public Boolarray(int n)
         {
             if (n < 0) throw new ArgumentNullException("n");
 
-            _dimensions = new Dimensions(n);
-            _data = new bool[n];
+            dimensions = new Dimensions(n);
+            data = new bool[n];
         }
 
         public Boolarray(int n, Func<int, bool> generator)
         {
-            _dimensions = new Dimensions(n);
-            _data = new bool[n];
+            dimensions = new Dimensions(n);
+            data = new bool[n];
             for (int i = 0; i < n; i++) {
-                _data[i] = generator(i);
+                data[i] = generator(i);
             }
+        }
+
+        /// <summary>
+        /// Creates an empty <see cref="Boolarray"/>.
+        /// </summary>
+        public Boolarray()
+        {
+            dimensions = Empty.dimensions;
+            data = Empty.data;
         }
 
         /// <summary>
@@ -207,11 +212,11 @@ namespace WmcSoft.Numerics
             if (values == null) throw new ArgumentNullException(nameof(values));
 
             if (values.Length == 0) {
-                _dimensions = Empty._dimensions;
-                _data = Empty._data;
+                dimensions = Empty.dimensions;
+                data = Empty.data;
             } else {
-                _dimensions = new Dimensions(values.Length);
-                _data = values;
+                dimensions = new Dimensions(values.Length);
+                data = values;
             }
         }
 
@@ -258,17 +263,17 @@ namespace WmcSoft.Numerics
         /// <summary>
         /// The number of dimensions of the <see cref="Boolarray"/>.
         /// </summary>
-        public int Rank { get { return _dimensions.Count; } }
+        public int Rank => dimensions.Count;
 
         /// <summary>
         /// The dimensions of the <see cref="Boolarray"/>.
         /// </summary>
-        public Dimensions Size { get { return _dimensions; } }
+        public Dimensions Size => dimensions;
 
         /// <summary>
         /// The number of values in the <see cref="Boolarray"/>.
         /// </summary>
-        public int Cardinality { get { return _data == null ? 0 : _data.Length; } }
+        public int Cardinality => data == null ? 0 : data.Length;
 
         /// <summary>
         /// The value at the specified coordinates.
@@ -279,41 +284,41 @@ namespace WmcSoft.Numerics
         /// <remarks>Negative and out of range indices are handled throw modulo arithmetics.</remarks>
         public bool this[params int[] indices] {
             get {
-                var index = _dimensions.GetIndex(indices);
-                return _data[index];
+                var index = dimensions.GetIndex(indices);
+                return data[index];
             }
             set {
-                var index = _dimensions.GetIndex(indices);
-                _data[index] = value;
+                var index = dimensions.GetIndex(indices);
+                data[index] = value;
             }
         }
 
         public IEnumerable<bool> this[Boolarray mask] {
             get {
-                var length = Math.Min(mask._data.Length, _data.Length);
+                var length = Math.Min(mask.data.Length, data.Length);
                 for (int i = 0; i < length; i++) {
-                    if (mask._data[i])
-                        yield return _data[i];
+                    if (mask.data[i])
+                        yield return data[i];
                 }
             }
             set {
                 if (value == null)
                     return;
                 using (var enumerator = value.GetEnumerator()) {
-                    var length = Math.Min(mask._data.Length, _data.Length);
+                    var length = Math.Min(mask.data.Length, data.Length);
                     var i = 0;
                     for (i = 0; i < length; i++) {
-                        if (mask._data[i]) {
+                        if (mask.data[i]) {
                             if (enumerator.MoveNext()) {
-                                _data[i] = enumerator.Current;
+                                data[i] = enumerator.Current;
                             } else {
                                 return;
                             }
                         }
                     }
                     for (; i < length; i++) {
-                        if (mask._data[i]) {
-                            _data[i] = false;
+                        if (mask.data[i]) {
+                            data[i] = false;
                         }
                     }
                 }
@@ -333,8 +338,8 @@ namespace WmcSoft.Numerics
         public Boolarray Reshape(params int[] dimensions)
         {
             int length = dimensions.Aggregate(1, (x, y) => x * y);
-            Array.Resize(ref _data, length);
-            _dimensions = new Dimensions(dimensions);
+            Array.Resize(ref data, length);
+            this.dimensions = new Dimensions(dimensions);
             return this;
         }
 
@@ -345,13 +350,13 @@ namespace WmcSoft.Numerics
         /// <remarks>The internal storage is preserved.</remarks>
         public Boolarray Ravel()
         {
-            if (_data != null) {
-                _dimensions = new Dimensions(_data.Length);
+            if (data != null) {
+                dimensions = new Dimensions(data.Length);
             }
             return this;
         }
 
-        static void Combine(SegmentEnumerator x, SegmentEnumerator y, Writer writer)
+        static void UnguardedCombine(SegmentEnumerator x, SegmentEnumerator y, Writer writer)
         {
             while (x.NextSegment()) {
                 if (!y.NextSegment()) {
@@ -376,11 +381,24 @@ namespace WmcSoft.Numerics
             if (y.Rank == 0)
                 return x.Clone();
 
-            var dimensions = Dimensions.Combine(x._dimensions, y._dimensions);
+            var dimensions = Dimensions.Combine(x.dimensions, y.dimensions);
             var result = new Boolarray(dimensions);
-            var writer = new Writer(result._data, op);
-            Combine(new SegmentEnumerator(x), new SegmentEnumerator(y), writer);
+            var writer = new Writer(result.data, op);
+            UnguardedCombine(new SegmentEnumerator(x), new SegmentEnumerator(y), writer);
             return result;
+        }
+
+        private Boolarray UnguardedMap(Func<bool, bool> op)
+        {
+            if (Rank == 0)
+                return new Boolarray();
+
+            var length = data.Length;
+            var a = new bool[length];
+            for (int i = 0; i < length; i++) {
+                a[i] = op(data[i]);
+            }
+            return new Boolarray(dimensions, a);
         }
 
         /// <summary>
@@ -391,15 +409,9 @@ namespace WmcSoft.Numerics
         /// <returns>A new <see cref="Boolarray"/>.</returns>
         public Boolarray Map(Func<bool, bool> op)
         {
-            if (Rank == 0)
-                return new Boolarray();
+            if (op == null) throw new ArgumentNullException(nameof(op));
 
-            var result = new Boolarray(_dimensions);
-            var length = result._data.Length;
-            for (int i = 0; i < length; i++) {
-                result._data[i] = op(_data[i]);
-            }
-            return result;
+            return UnguardedMap(op);
         }
 
         /// <summary>
@@ -410,9 +422,9 @@ namespace WmcSoft.Numerics
         public Boolarray Transform(Func<bool, bool> op)
         {
             if (Rank > 0) {
-                var length = _data.Length;
+                var length = data.Length;
                 for (int i = 0; i < length; i++) {
-                    _data[i] = op(_data[i]);
+                    data[i] = op(data[i]);
                 }
             }
             return this;
@@ -451,7 +463,7 @@ namespace WmcSoft.Numerics
 
         public static Boolarray operator ~(Boolarray x)
         {
-            return x.Map(v => !v);
+            return x.UnguardedMap(v => !v);
         }
         public static Boolarray Not(Boolarray x)
         {
@@ -471,8 +483,8 @@ namespace WmcSoft.Numerics
         public static Boolarray operator !(Boolarray x)
         {
             return x.All(v => v)
-                ? Falsities(x._dimensions)
-                : Truths(x._dimensions);
+                ? Falsities(x.dimensions)
+                : Truths(x.dimensions);
         }
 
         public static bool operator true(Boolarray x)
@@ -491,7 +503,7 @@ namespace WmcSoft.Numerics
 
         public IEnumerator<bool> GetEnumerator()
         {
-            var data = _data ?? Empty._data;
+            var data = this.data ?? Empty.data;
             return data.AsEnumerable().GetEnumerator();
         }
 
@@ -501,7 +513,7 @@ namespace WmcSoft.Numerics
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            var data = _data ?? Empty._data;
+            var data = this.data ?? Empty.data;
             return data.GetEnumerator();
         }
 
@@ -511,7 +523,7 @@ namespace WmcSoft.Numerics
 
         object ICloneable.Clone()
         {
-            return new Boolarray(_dimensions, (bool[])_data.Clone());
+            return new Boolarray(dimensions, (bool[])data.Clone());
         }
 
         #endregion
@@ -520,11 +532,11 @@ namespace WmcSoft.Numerics
 
         public bool Equals(Boolarray other)
         {
-            if (_dimensions != other._dimensions)
+            if (dimensions != other.dimensions)
                 return false;
-            var length = _data.Length;
+            var length = data.Length;
             for (int i = 0; i < length; i++) {
-                if (!_data[i].Equals(other._data[i]))
+                if (!data[i].Equals(other.data[i]))
                     return false;
             }
             return true;
@@ -539,9 +551,9 @@ namespace WmcSoft.Numerics
 
         public override int GetHashCode()
         {
-            if (_data == null)
+            if (data == null)
                 return 0;
-            return _data.GetHashCode();
+            return data.GetHashCode();
         }
 
         #endregion

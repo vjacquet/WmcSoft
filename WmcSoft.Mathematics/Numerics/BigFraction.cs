@@ -29,6 +29,9 @@ using System.Numerics;
 
 namespace WmcSoft.Numerics
 {
+    /// <summary>
+    /// Represents a fraction of <see cref="BigInteger"/>, where the numerator and denominator are prime to each other.
+    /// </summary>
     [Serializable]
     public struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>, IFormattable
     {
@@ -40,8 +43,8 @@ namespace WmcSoft.Numerics
 
         #region Fields
 
-        private readonly BigInteger _numerator;
-        private readonly BigInteger _denominator;
+        private readonly BigInteger numerator;
+        private readonly BigInteger denominator;
 
         #endregion
 
@@ -49,14 +52,14 @@ namespace WmcSoft.Numerics
 
         internal BigFraction(NumericsUtilities.UninitializedTag tag, BigInteger numerator)
         {
-            _numerator = numerator;
-            _denominator = BigInteger.One;
+            this.numerator = numerator;
+            denominator = BigInteger.One;
         }
 
         internal BigFraction(NumericsUtilities.UninitializedTag tag, BigInteger numerator, BigInteger denominator)
         {
-            _numerator = numerator;
-            _denominator = denominator;
+            this.numerator = numerator;
+            this.denominator = denominator;
         }
 
         public BigFraction(BigInteger numerator, BigInteger denominator)
@@ -65,32 +68,32 @@ namespace WmcSoft.Numerics
                 throw new DivideByZeroException();
             else if (denominator > 0) {
                 var gcd = BigInteger.GreatestCommonDivisor(numerator, denominator);
-                _numerator = numerator / gcd;
-                _denominator = denominator / gcd;
+                this.numerator = numerator / gcd;
+                this.denominator = denominator / gcd;
             } else {
                 var gcd = BigInteger.GreatestCommonDivisor(numerator, denominator);
-                _numerator = -numerator;
-                _denominator = -denominator;
+                this.numerator = -numerator;
+                this.denominator = -denominator;
             }
         }
 
         public void Deconstruct(out BigInteger numerator, out BigInteger denominator)
         {
-            numerator = _numerator;
-            denominator = _denominator;
+            numerator = this.numerator;
+            denominator = this.denominator;
         }
 
         #endregion
 
         #region Properties
 
-        public BigInteger Numerator => _numerator;
-        public BigInteger Denominator => _denominator;
+        public BigInteger Numerator => numerator;
+        public BigInteger Denominator => denominator;
 
-        public int Sign => _numerator.Sign;
+        public int Sign => numerator.Sign;
 
-        public bool IsInteger => _denominator == BigInteger.One;
-        public bool IsProper => _numerator < _denominator;
+        public bool IsInteger => denominator == BigInteger.One;
+        public bool IsProper => numerator < denominator;
         public bool IsImproper => !IsProper;
 
         #endregion
@@ -117,10 +120,10 @@ namespace WmcSoft.Numerics
 
         public static explicit operator BigInteger(BigFraction q)
         {
-            if (q._denominator == 1)
-                return q._numerator;
-            if (q._numerator % q._denominator == 0)
-                return q._numerator / q._denominator;
+            if (q.denominator == 1)
+                return q.numerator;
+            if (q.numerator % q.denominator == 0)
+                return q.numerator / q.denominator;
 
             throw new InvalidCastException();
         }
@@ -131,9 +134,9 @@ namespace WmcSoft.Numerics
 
         public static BigFraction operator +(BigFraction x, BigFraction y)
         {
-            if (x._denominator == y._denominator)
-                return new BigFraction(x._numerator + y._numerator, x._denominator);
-            return new BigFraction(x._numerator * y._denominator + y._numerator * x._denominator, x._denominator * y._denominator);
+            if (x.denominator == y.denominator)
+                return new BigFraction(x.numerator + y.numerator, x.denominator);
+            return new BigFraction(x.numerator * y.denominator + y.numerator * x.denominator, x.denominator * y.denominator);
         }
         public static BigFraction Add(BigFraction x, BigFraction y)
         {
@@ -142,9 +145,9 @@ namespace WmcSoft.Numerics
 
         public static BigFraction operator -(BigFraction x, BigFraction y)
         {
-            if (x._denominator == y._denominator)
-                return new BigFraction(x._numerator + y._numerator, x._denominator);
-            return new BigFraction(x._numerator * y._denominator - y._numerator * x._denominator, x._denominator * y._denominator);
+            if (x.denominator == y.denominator)
+                return new BigFraction(x.numerator + y.numerator, x.denominator);
+            return new BigFraction(x.numerator * y.denominator - y.numerator * x.denominator, x.denominator * y.denominator);
         }
         public static BigFraction Subtract(BigFraction x, BigFraction y)
         {
@@ -153,7 +156,7 @@ namespace WmcSoft.Numerics
 
         public static BigFraction operator *(BigFraction x, BigFraction y)
         {
-            return new BigFraction(x._numerator * y._numerator, x._denominator * y._denominator);
+            return new BigFraction(x.numerator * y.numerator, x.denominator * y.denominator);
         }
         public static BigFraction Multiply(BigFraction x, BigFraction y)
         {
@@ -162,7 +165,7 @@ namespace WmcSoft.Numerics
 
         public static BigFraction operator /(BigFraction x, BigFraction y)
         {
-            return new BigFraction(x._numerator * y._denominator, x._denominator * y._numerator);
+            return new BigFraction(x.numerator * y.denominator, x.denominator * y.numerator);
         }
         public static BigFraction Divide(BigFraction x, BigFraction y)
         {
@@ -171,7 +174,7 @@ namespace WmcSoft.Numerics
 
         public static BigFraction operator -(BigFraction x)
         {
-            return new BigFraction(-x._numerator, x._denominator);
+            return new BigFraction(-x.numerator, x.denominator);
         }
         public static BigFraction Negate(BigFraction x)
         {
@@ -189,10 +192,10 @@ namespace WmcSoft.Numerics
 
         public BigFraction Reciprocal()
         {
-            if (_numerator > 0)
-                return new BigFraction(NumericsUtilities.Uninitialized, _denominator, _numerator);
-            if (_numerator < 0)
-                return new BigFraction(NumericsUtilities.Uninitialized, -_denominator, -_numerator);
+            if (numerator > 0)
+                return new BigFraction(NumericsUtilities.Uninitialized, denominator, numerator);
+            if (numerator < 0)
+                return new BigFraction(NumericsUtilities.Uninitialized, -denominator, -numerator);
             throw new DivideByZeroException();
         }
         public static BigFraction Reciprocal(BigFraction x)
@@ -252,7 +255,7 @@ namespace WmcSoft.Numerics
 
         public override int GetHashCode()
         {
-            return _numerator.GetHashCode() ^ _denominator.GetHashCode();
+            return numerator.GetHashCode() ^ denominator.GetHashCode();
         }
 
         #endregion
@@ -274,9 +277,9 @@ namespace WmcSoft.Numerics
             var config = 4 * (Sign + 1) + (other.Sign + 1);
             switch (config) {
             case 0b0000: // -1 | -1
-                return ComparePositives(-other._numerator, other._denominator, -_numerator, _denominator);
+                return ComparePositives(-other.numerator, other.denominator, -numerator, denominator);
             case 0b1010: //  1 |  1
-                return ComparePositives(_numerator, _denominator, other._numerator, other._denominator);
+                return ComparePositives(numerator, denominator, other.numerator, other.denominator);
             case 0b0100: //  0 | -1
             case 0b1000: //  1 | -1
             case 0b1001: //  1 |  0
@@ -305,11 +308,11 @@ namespace WmcSoft.Numerics
         }
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            if (_denominator == 1 || _numerator == 0)
-                return _numerator.ToString(format, formatProvider);
-            return _numerator.ToString(format, formatProvider)
+            if (denominator == 1 || numerator == 0)
+                return numerator.ToString(format, formatProvider);
+            return numerator.ToString(format, formatProvider)
                 + '/'
-                + _denominator.ToString(format, formatProvider);
+                + denominator.ToString(format, formatProvider);
         }
 
         #endregion

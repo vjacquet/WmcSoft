@@ -37,9 +37,9 @@ namespace WmcSoft.Drawing
         private const int HSLMax = 240;
         private const int RGBMax = 255;
 
-        private readonly int _hue;
-        private readonly int _saturation;
-        private readonly int _luminosity;
+        private readonly int hue;
+        private readonly int saturation;
+        private readonly int luminosity;
 
         #endregion
 
@@ -47,9 +47,9 @@ namespace WmcSoft.Drawing
 
         public HSLColor(int hue, int saturation, int luminosity)
         {
-            _hue = hue;
-            _saturation = saturation;
-            _luminosity = luminosity;
+            this.hue = hue;
+            this.saturation = saturation;
+            this.luminosity = luminosity;
         }
 
         public HSLColor(Color color)
@@ -60,44 +60,45 @@ namespace WmcSoft.Drawing
             int max = Algorithms.Max(r, g, b);
             int min = Algorithms.Min(r, g, b);
             int sum = max + min;
-            _luminosity = (sum * HSLMax) / (RGBMax * 2);
+            luminosity = (sum * HSLMax) / (RGBMax * 2);
             int delta = max - min;
             if (delta == 0) {
-                _saturation = _hue = 0;
+                saturation = hue = 0;
             } else {
-                if (_luminosity <= HSLMax / 2) {
-                    _saturation = ((delta * HSLMax) + (sum / 2)) / sum;
+                if (luminosity <= HSLMax / 2) {
+                    saturation = ((delta * HSLMax) + (sum / 2)) / sum;
                 } else {
-                    _saturation = ((delta * HSLMax) + ((RGBMax * 2 - sum) / 2)) / (RGBMax * 2 - sum);
+                    saturation = ((delta * HSLMax) + ((RGBMax * 2 - sum) / 2)) / (RGBMax * 2 - sum);
                 }
 
                 int R = (((max - r) * HSLMax / 6) + (delta / 2)) / delta;
                 int G = (((max - g) * HSLMax / 6) + (delta / 2)) / delta;
                 int B = (((max - b) * HSLMax / 6) + (delta / 2)) / delta;
                 if (r == max)
-                    _hue = Mod(B - G);
+                    hue = Mod(B - G);
                 else if (g == max)
-                    _hue = Mod((HSLMax / 3 + R) - B);
+                    hue = Mod((HSLMax / 3 + R) - B);
                 else
-                    _hue = Mod((2 * HSLMax / 3 + G) - R);
+                    hue = Mod((2 * HSLMax / 3 + G) - R);
             }
+        }
+
+        public void Deconstruct(out int hue, out int saturation, out int luminosity)
+        {
+            hue = this.hue;
+            saturation = this.saturation;
+            luminosity = this.luminosity;
         }
 
         #endregion
 
         #region Properties
 
-        public int Hue {
-            get { return _hue; }
-        }
+        public int Hue => hue;
 
-        public int Luminosity {
-            get { return _luminosity; }
-        }
+        public int Luminosity => luminosity;
 
-        public int Saturation {
-            get { return _saturation; }
-        }
+        public int Saturation => saturation;
 
         #endregion
 
@@ -115,21 +116,20 @@ namespace WmcSoft.Drawing
 
         public override bool Equals(object o)
         {
-            if (o is HSLColor) {
-                HSLColor color = (HSLColor)o;
-                return (_hue == color._hue) && (_saturation == color._saturation) && (_luminosity == color._luminosity);
+            if (o is HSLColor color) {
+                return (hue == color.hue) && (saturation == color.saturation) && (luminosity == color.luminosity);
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return (_hue << 6) | (_saturation << 2) | _luminosity;
+            return (hue << 6) | (saturation << 2) | luminosity;
         }
 
         public static implicit operator Color(HSLColor hsl)
         {
-            return ToColor(hsl._hue, hsl._saturation, hsl._luminosity);
+            return ToColor(hsl.hue, hsl.saturation, hsl.luminosity);
         }
         public static Color ToColor(HSLColor hsl)
         {
@@ -198,7 +198,7 @@ namespace WmcSoft.Drawing
 
         public override string ToString()
         {
-            return string.Concat(new object[] { _hue, ", ", _luminosity, ", ", _saturation });
+            return hue + ", " + luminosity + ", " + saturation;
         }
     }
 }

@@ -35,7 +35,8 @@ namespace WmcSoft.Security
         private readonly HashSet<Role> _roles;
 
         public User(string name)
-            : base(name) {
+            : base(name)
+        {
             _roles = new HashSet<Role>();
         }
 

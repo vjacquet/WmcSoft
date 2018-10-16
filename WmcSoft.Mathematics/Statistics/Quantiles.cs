@@ -35,14 +35,14 @@ namespace WmcSoft.Statistics
     /// <typeparam name="T">The type of values.</typeparam>
     public struct Quantiles<T> : IEnumerable<T>
     {
-        readonly List<T> _values;
+        readonly List<T> values;
 
         #region Lifecycle
 
         private Quantiles(List<T> values, IComparer<T> comparer)
         {
-            _values = values;
-            _values.Sort(comparer ?? Comparer<T>.Default);
+            this.values = values;
+            this.values.Sort(comparer ?? Comparer<T>.Default);
         }
 
         public Quantiles(IEnumerable<T> values)
@@ -73,14 +73,14 @@ namespace WmcSoft.Statistics
             get {
                 if (quantile < 0d || quantile >= 1d) throw new ArgumentOutOfRangeException(nameof(quantile));
 
-                var n = _values.Count;
+                var n = values.Count;
                 // nearest policy
                 var q = quantile * (n - 1) + 1d;
                 var j = (int)Math.Floor(q);
                 var g = q - j;
                 if (g > 0.5d)
-                    return _values[j];
-                return _values[j - 1];
+                    return values[j];
+                return values[j - 1];
             }
         }
 
@@ -172,7 +172,7 @@ namespace WmcSoft.Statistics
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _values.GetEnumerator();
+            return values.GetEnumerator();
         }
 
         #endregion
@@ -181,7 +181,7 @@ namespace WmcSoft.Statistics
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _values.GetEnumerator();
+            return values.GetEnumerator();
         }
 
         #endregion

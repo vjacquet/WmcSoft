@@ -25,6 +25,7 @@
 #endregion
 
 using System;
+
 using static WmcSoft.BitArithmetics;
 
 namespace WmcSoft.AI
@@ -34,11 +35,11 @@ namespace WmcSoft.AI
     /// </summary>
     public struct Gray8
     {
-        byte _value;
+        byte value;
 
         public Gray8(byte n)
         {
-            _value = ToGray(n);
+            value = ToGray(n);
         }
 
         public static implicit operator Gray8(int n)
@@ -53,13 +54,13 @@ namespace WmcSoft.AI
 
         public Gray8 Increment()
         {
-            var x = FromGray(_value);
+            var x = FromGray(value);
             return new Gray8(ToGray(++x));
         }
 
         public Gray8 Decrement()
         {
-            var x = FromGray(_value);
+            var x = FromGray(value);
             return new Gray8(ToGray(--x));
         }
 
@@ -75,7 +76,7 @@ namespace WmcSoft.AI
 
         public override string ToString()
         {
-            return Convert.ToString(_value, 2).PadLeft(8, '0');
+            return Convert.ToString(value, 2).PadLeft(8, '0');
         }
 
         static byte ToGray(byte x)
