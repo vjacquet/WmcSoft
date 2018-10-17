@@ -36,7 +36,8 @@ namespace WmcSoft.Data
     {
         #region Cast
 
-        public static IEnumerable<R> Cast<R>(this DataView view) where R : DataRow
+        public static IEnumerable<R> Cast<R>(this DataView view)
+            where R : DataRow
         {
             Debug.Assert(view != null);
 
@@ -45,7 +46,8 @@ namespace WmcSoft.Data
             }
         }
 
-        public static IEnumerable<R> Cast<R>(this DataView view, DataRowVersion rowVersion) where R : DataRow
+        public static IEnumerable<R> Cast<R>(this DataView view, DataRowVersion rowVersion)
+            where R : DataRow
         {
             Debug.Assert(view != null);
 
@@ -130,11 +132,11 @@ namespace WmcSoft.Data
         {
             Debug.Assert(collection != null);
 
-            if (rows == null) throw new ArgumentNullException(nameof(rows));
-
-            var bin = rows.ToList(); // copy to prevent modifying the underlying collection
-            foreach (var row in bin)
-                collection.Remove(row);
+            if (rows != null) {
+                var bin = rows.ToList(); // copy to prevent modifying the underlying collection if produced by Linq
+                foreach (var row in bin)
+                    collection.Remove(row);
+            }
         }
 
         #endregion

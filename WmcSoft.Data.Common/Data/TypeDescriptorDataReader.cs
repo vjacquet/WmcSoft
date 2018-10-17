@@ -71,10 +71,7 @@ namespace WmcSoft.Data
 
         private PropertyDescriptor GetProperty(string name)
         {
-            var property = properties.Find(name, true);
-            if (property == null)
-                throw new IndexOutOfRangeException();
-            return property;
+            return properties.Find(name, true) ?? throw new IndexOutOfRangeException();
         }
 
         #endregion
@@ -116,8 +113,7 @@ namespace WmcSoft.Data
 
         protected override void Dispose(bool disposing)
         {
-            var disposable = enumerator as IDisposable;
-            if (disposable != null) {
+            if (enumerator is IDisposable disposable) {
                 disposable.Dispose();
                 enumerator = null;
             }
