@@ -26,6 +26,7 @@
 
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WmcSoft.IO
 {
@@ -63,13 +64,162 @@ namespace WmcSoft.IO
             _wrapped.Flush();
         }
 
-        public override void Write(char value)
+        protected void WriteHeaderIfNecessary()
         {
             if (!_wroteHeader) {
                 _wrapped.WriteLine(_header);
                 _wroteHeader = true;
             }
+        }
+
+        public override void Write(char value)
+        {
+            WriteHeaderIfNecessary();
             _wrapped.Write(value);
+        }
+
+        public override void Write(char[] buffer)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(buffer);
+        }
+
+        public override void Write(char[] buffer, int index, int count)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(buffer, index, count);
+        }
+
+        public override void Write(string value)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(value);
+        }
+
+        public override void Write(object value)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(value);
+        }
+
+        public override void Write(string format, object arg0)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(format, arg0);
+        }
+
+        public override void Write(string format, object arg0, object arg1)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(format, arg0, arg1);
+        }
+
+        public override void Write(string format, object arg0, object arg1, object arg2)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(format, arg0, arg1, arg2);
+        }
+
+        public override void Write(string format, params object[] arg)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.Write(format, arg);
+        }
+
+        public override Task WriteAsync(char value)
+        {
+            WriteHeaderIfNecessary();
+            return _wrapped.WriteAsync(value);
+        }
+
+        public override Task WriteAsync(char[] buffer, int index, int count)
+        {
+            WriteHeaderIfNecessary();
+            return _wrapped.WriteAsync(buffer, index, count);
+        }
+
+        public override Task WriteAsync(string value)
+        {
+            WriteHeaderIfNecessary();
+            return _wrapped.WriteAsync(value);
+        }
+
+        public override void WriteLine()
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine();
+        }
+
+        public override void WriteLine(char value)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(value);
+        }
+
+        public override void WriteLine(char[] buffer)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(buffer);
+        }
+
+        public override void WriteLine(char[] buffer, int index, int count)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(buffer, index, count);
+        }
+
+        public override void WriteLine(string value)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(value);
+        }
+
+        public override void WriteLine(object value)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(value);
+        }
+
+        public override void WriteLine(string format, object arg0)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(format, arg0);
+        }
+
+        public override void WriteLine(string format, object arg0, object arg1)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(format, arg0, arg1);
+        }
+
+        public override void WriteLine(string format, object arg0, object arg1, object arg2)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(format, arg0, arg1, arg2);
+        }
+
+        public override void WriteLine(string format, params object[] arg)
+        {
+            WriteHeaderIfNecessary();
+            _wrapped.WriteLine(format, arg);
+        }
+
+        public override Task WriteLineAsync(char value)
+        {
+            WriteHeaderIfNecessary();
+            return _wrapped.WriteLineAsync(value);
+        }
+
+        public override Task WriteLineAsync(char[] buffer, int index, int count)
+        {
+            WriteHeaderIfNecessary();
+            return _wrapped.WriteLineAsync(buffer, index, count);
+        }
+
+        public override Task WriteLineAsync(string value)
+        {
+            WriteHeaderIfNecessary();
+            return _wrapped.WriteLineAsync(value);
         }
     }
 }
