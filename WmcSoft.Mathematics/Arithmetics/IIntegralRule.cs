@@ -26,6 +26,10 @@
 
 namespace WmcSoft.Arithmetics
 {
+    /// <summary>
+    /// Represents an algorithm to implement the integration of a function between two points.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IIntegralRule<T>
     {
         T Integrate<TFunction>(TFunction f, T a, T b) where TFunction : IFunction<T>;

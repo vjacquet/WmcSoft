@@ -28,6 +28,10 @@ using System;
 
 namespace WmcSoft.Arithmetics
 {
+    /// <summary>
+    /// Represents a function .
+    /// </summary>
+    /// <typeparam name="T">The domain and the codomain.</typeparam>
     public interface IFunction<T> : IEquatable<IFunction<T>>
     {
         T Eval(T x);
@@ -56,18 +60,17 @@ namespace WmcSoft.Arithmetics
             _func = func;
         }
 
-        public bool Equals(IFunction<T> other)
-        {
-            if (other is GenericFunction<T>) {
-                var that = (GenericFunction<T>)other;
-                return _func.Equals(that._func);
-            }
-            return false;
-        }
-
         public T Eval(T x)
         {
             return _func(x);
+        }
+
+        public bool Equals(IFunction<T> other)
+        {
+            if (other is GenericFunction<T> that) {
+                return _func.Equals(that._func);
+            }
+            return false;
         }
     }
 }

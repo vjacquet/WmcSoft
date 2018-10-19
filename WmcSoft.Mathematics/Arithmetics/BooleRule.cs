@@ -24,8 +24,6 @@
 
 #endregion
 
-using System;
-
 namespace WmcSoft.Arithmetics
 {
     public struct BooleRule : IIntegralRule<double>
