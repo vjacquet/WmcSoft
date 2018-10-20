@@ -33,24 +33,27 @@ using static WmcSoft.IO.QuotedString;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Represents a writer that provides a fast, non-cached, forward-only way to generate streams or files that contain CSV data.
+    /// </summary>
     public class CsvWriter : IDisposable
     {
-        private readonly TextWriter _writer;
-        private readonly IReadOnlyCsvWriterSettings _settings;
-        private readonly char _delimiter;
-        private readonly char[] _specialChars;
+        private readonly TextWriter writer;
+        private readonly IReadOnlyCsvWriterSettings settings;
+        private readonly char delimiter;
+        private readonly char[] specialChars;
 
         protected CsvWriter(TextWriter writer, CsvWriterSettings settings)
         {
-            _writer = writer;
-            _settings = settings.AsReadOnly();
-            _delimiter = settings.Delimiter;
+            this.writer = writer;
+            this.settings = settings.AsReadOnly();
+            delimiter = settings.Delimiter;
 
             var specialChars = new List<char> {
-                _delimiter
+                delimiter
             };
-            specialChars.AddRange(_settings.NewLineChars.ToCharArray());
-            _specialChars = specialChars.ToArray();
+            specialChars.AddRange(this.settings.NewLineChars.ToCharArray());
+            this.specialChars = specialChars.ToArray();
         }
 
         #region Factory methods
@@ -121,12 +124,12 @@ namespace WmcSoft.IO
 
         #endregion
 
-        public IReadOnlyCsvWriterSettings Settings => _settings;
+        public IReadOnlyCsvWriterSettings Settings => settings;
 
         protected virtual void WriteUnescaped(string text)
         {
             if (string.IsNullOrEmpty(text)) {
-            } else if (!UnguardedIsQuoted(text) && text.IndexOfAny(_specialChars) >= 0) {
+            } else if (!UnguardedIsQuoted(text) && text.IndexOfAny(specialChars) >= 0) {
                 WriteEscaped(UnguardedQuote(text));
             } else {
                 WriteEscaped(text);
@@ -135,12 +138,12 @@ namespace WmcSoft.IO
 
         protected virtual void WriteEscaped(string text)
         {
-            _writer.Write(text);
+            writer.Write(text);
         }
 
         protected virtual void WriteEscaped(char[] buffer, int index, int count)
         {
-            _writer.Write(buffer, index, count);
+            writer.Write(buffer, index, count);
         }
 
         public virtual void WriteName(string name)
@@ -182,7 +185,7 @@ namespace WmcSoft.IO
                 return;
             switch (value) {
             case IFormattable formattable:
-                WriteUnescaped(formattable.ToString(null, _settings.FormatProvider));
+                WriteUnescaped(formattable.ToString(null, settings.FormatProvider));
                 break;
             case IQuotedString quotedString:
                 WriteEscaped(quotedString.ToQuotedString());
@@ -200,12 +203,12 @@ namespace WmcSoft.IO
 
         public virtual void WriteDelimiter()
         {
-            _writer.Write(_settings.Delimiter);
+            writer.Write(settings.Delimiter);
         }
 
         public virtual void WriteEndOfLine()
         {
-            _writer.Write(_settings.NewLineChars);
+            writer.Write(settings.NewLineChars);
         }
 
         public virtual void WriteRaw(string text)
@@ -225,7 +228,7 @@ namespace WmcSoft.IO
 
         public void Flush()
         {
-            _writer.Flush();
+            writer.Flush();
         }
 
         public void Dispose()
@@ -236,8 +239,8 @@ namespace WmcSoft.IO
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_settings.CloseOutput)
-                _writer.Dispose();
+            if (settings.CloseOutput)
+                writer.Dispose();
         }
     }
 }

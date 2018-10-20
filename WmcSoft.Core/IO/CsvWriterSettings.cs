@@ -39,18 +39,18 @@ namespace WmcSoft.IO
 
         class ReadOnlyCsvWriterSettings : IReadOnlyCsvWriterSettings
         {
-            private readonly CsvWriterSettings _underlying;
+            private readonly CsvWriterSettings underlying;
 
             public ReadOnlyCsvWriterSettings(CsvWriterSettings underlying)
             {
-                _underlying = underlying;
+                this.underlying = underlying;
             }
 
-            public bool CloseOutput => _underlying.CloseOutput;
-            public Encoding Encoding => _underlying.Encoding;
-            public char Delimiter => _underlying.Delimiter;
-            public string NewLineChars => _underlying.NewLineChars;
-            public IFormatProvider FormatProvider => _underlying.FormatProvider;
+            public bool CloseOutput => underlying.CloseOutput;
+            public Encoding Encoding => underlying.Encoding;
+            public char Delimiter => underlying.Delimiter;
+            public string NewLineChars => underlying.NewLineChars;
+            public IFormatProvider FormatProvider => underlying.FormatProvider;
         }
 
         public IReadOnlyCsvWriterSettings AsReadOnly()
