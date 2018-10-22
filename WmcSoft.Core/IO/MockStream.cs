@@ -9,7 +9,7 @@ namespace WmcSoft.IO
     /// </summary>
     public class MockStream : Stream
     {
-        long _length;
+        long length;
 
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -22,27 +22,19 @@ namespace WmcSoft.IO
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _length += count;
+            length += count;
         }
 
-        public override bool CanRead {
-            get { return true; }
-        }
+        public override bool CanRead => true;
 
-        public override bool CanSeek {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
-        public override bool CanWrite {
-            get { return true; }
-        }
+        public override bool CanWrite => true;
 
-        public override long Length {
-            get { return _length; }
-        }
+        public override long Length => length;
 
         public override long Position {
-            get { return _length; }
+            get { return length; }
             set { throw new NotImplementedException(); }
         }
 

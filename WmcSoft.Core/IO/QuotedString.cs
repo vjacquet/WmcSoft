@@ -34,7 +34,7 @@ namespace WmcSoft.IO
     /// </summary>
     public class QuotedString : IQuotedString
     {
-        private readonly string _storage;
+        private readonly string storage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuotedString"/> class.
@@ -42,7 +42,7 @@ namespace WmcSoft.IO
         /// <param name="value">A quoted string that should not be escaped again.</param>
         public QuotedString(string value)
         {
-            _storage = value ?? "";
+            storage = value ?? "";
         }
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace WmcSoft.IO
         /// <returns>A quoted string.</returns>
         public string ToQuotedString()
         {
-            return _storage;
+            return storage;
         }
 
         public override string ToString()
         {
-            return _storage;
+            return storage;
         }
 
         /// <summary>
