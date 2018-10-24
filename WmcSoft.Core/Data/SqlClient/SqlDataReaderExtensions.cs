@@ -19,7 +19,7 @@ namespace WmcSoft.Data.SqlClient
         public static T GetObjectFromXml<T>(this SqlDataReader reader, int i, IDataContractSurrogate surrogate)
             where T : class
         {
-            return GetObjectFromXml<T>(reader, i, new DataContractSerializer(typeof(T), Type.EmptyTypes, Int16.MaxValue, false, true, surrogate));
+            return GetObjectFromXml<T>(reader, i, new DataContractSerializer(typeof(T), Type.EmptyTypes, short.MaxValue, false, true, surrogate));
         }
 
         public static T GetObjectFromXml<T>(this SqlDataReader reader, int i, XmlObjectSerializer serializer)

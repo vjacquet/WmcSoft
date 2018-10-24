@@ -41,7 +41,7 @@ namespace WmcSoft.IO
 
         #region Fields
 
-        private readonly string _path;
+        private readonly string path;
 
         #endregion
 
@@ -49,13 +49,13 @@ namespace WmcSoft.IO
 
         private PathInfo(UninitializedTag tag, string value)
         {
-            _path = value;
+            path = value;
         }
 
         public PathInfo(string path)
         {
             CheckInvalidPathChars(path);
-            _path = path;
+            this.path = path;
         }
 
         public PathInfo(string path1, string path2)
@@ -89,18 +89,18 @@ namespace WmcSoft.IO
 
         public static explicit operator string(PathInfo value)
         {
-            if (value._path == null) throw new InvalidCastException();
-            return value._path;
+            if (value.path == null) throw new InvalidCastException();
+            return value.path;
         }
 
         public static PathInfo operator /(PathInfo path1, string path2)
         {
-            return new PathInfo(Uninitialized, Path.Combine(path1._path, path2));
+            return new PathInfo(Uninitialized, Path.Combine(path1.path, path2));
         }
 
         public static PathInfo operator /(PathInfo path1, PathInfo path2)
         {
-            return new PathInfo(Uninitialized, Path.Combine(path1._path, path2._path));
+            return new PathInfo(Uninitialized, Path.Combine(path1.path, path2.path));
         }
 
         #endregion
@@ -109,7 +109,7 @@ namespace WmcSoft.IO
 
         public PathInfo? Root {
             get {
-                var root = Path.GetPathRoot(_path);
+                var root = Path.GetPathRoot(path);
                 if (string.IsNullOrEmpty(root))
                     return null;
                 return new PathInfo(Uninitialized, root);
@@ -117,20 +117,20 @@ namespace WmcSoft.IO
         }
 
         public string DirectoryName {
-            get { return Path.GetDirectoryName(_path); }
+            get { return Path.GetDirectoryName(path); }
         }
 
         public string FileName {
-            get { return Path.GetFileName(_path); }
+            get { return Path.GetFileName(path); }
         }
 
         public string FileNameWithoutExtension {
-            get { return Path.GetFileNameWithoutExtension(_path); }
+            get { return Path.GetFileNameWithoutExtension(path); }
         }
 
         public string Extension {
             get {
-                var extension = Path.GetExtension(_path);
+                var extension = Path.GetExtension(path);
                 if (extension == "")
                     return null;
                 return extension;
@@ -146,12 +146,12 @@ namespace WmcSoft.IO
             if (string.IsNullOrEmpty(suffix))
                 return this;
             var extension = Extension;
-            return new PathInfo(Uninitialized, Path.ChangeExtension(_path, null) + suffix + extension);
+            return new PathInfo(Uninitialized, Path.ChangeExtension(path, null) + suffix + extension);
         }
 
         public PathInfo ChangeExtension(string extension)
         {
-            return new PathInfo(Uninitialized, Path.ChangeExtension(_path, extension));
+            return new PathInfo(Uninitialized, Path.ChangeExtension(path, extension));
         }
 
         public PathInfo ReplaceExtension(string oldExtension, string newExtension, StringComparer comparer = null)
@@ -164,13 +164,13 @@ namespace WmcSoft.IO
 
         public PathInfo GetFullPath()
         {
-            var path = Path.GetFullPath(_path);
+            var path = Path.GetFullPath(this.path);
             return new PathInfo(Uninitialized, path);
         }
 
         public override string ToString()
         {
-            return _path;
+            return path;
         }
 
         public string ToString(string format)
@@ -186,7 +186,7 @@ namespace WmcSoft.IO
                 return FileName;
             case "p":
             case "P":
-                return Path.GetFullPath(_path);
+                return Path.GetFullPath(path);
             case "x":
             case "X":
                 return Extension;
@@ -196,9 +196,9 @@ namespace WmcSoft.IO
             case "u":
             case "U":
                 // TODO: uses plateform specific values.
-                return _path.Replace('\\', '/');
+                return path.Replace('\\', '/');
             default:
-                return _path;
+                return path;
             }
         }
 
@@ -209,6 +209,7 @@ namespace WmcSoft.IO
         static void CheckInvalidPathChars(string path, string name = null)
         {
             if (path == null) throw new ArgumentNullException(name ?? nameof(path));
+
             if (path.IndexOfAny(InvalidPathChars) >= 0)
                 throw new ArgumentException(name ?? nameof(path));
         }

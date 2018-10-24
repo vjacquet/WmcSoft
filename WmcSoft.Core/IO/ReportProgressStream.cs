@@ -36,9 +36,9 @@ namespace WmcSoft.IO
     {
         #region Fields
 
-        private readonly IProgress<int> _progress;
-        private readonly long _length;
-        private long _read;
+        private readonly IProgress<int> progress;
+        private readonly long length;
+        private long read;
 
         #endregion
 
@@ -73,11 +73,11 @@ namespace WmcSoft.IO
         public ReportProgressStream(Stream stream, long length, IProgress<int> progress)
             : base(stream)
         {
-            if (!GuardAgainstNull(stream).CanRead) throw new NotSupportedException();
+            if (!stream.CanRead) throw new NotSupportedException();
             if (progress == null) throw new ArgumentNullException(nameof(progress));
 
-            _progress = progress;
-            _length = length;
+            this.progress = progress;
+            this.length = length;
         }
 
         #endregion
@@ -88,10 +88,15 @@ namespace WmcSoft.IO
         {
             var read = base.Read(buffer, offset, count);
 
-            _read += read;
-            _progress.Report((int)((100 * _read) / _length));
+            Report(read);
 
             return read;
+        }
+
+        private void Report(int n)
+        {
+            read += n;
+            progress.Report((int)((100 * read) / length));
         }
 
         #endregion

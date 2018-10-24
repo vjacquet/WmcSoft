@@ -28,62 +28,50 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.InteropServices;
+
+using static System.Runtime.InteropServices.Marshal;
+using static WmcSoft.IO.NativeMethods;
 
 namespace WmcSoft.IO
 {
     public static class FileInfoExtensions
     {
-        [StructLayout(LayoutKind.Sequential)]
-        struct Win32StreamID
-        {
-            public int dwStreamId;
-            public int dwStreamAttributes;
-            public long Size;
-            public int dwStreamNameSize;
-        }
-
         public static IEnumerable<FileStreamInfo> EnumerateFileStreamsInfo(this FileInfo file)
         {
             const int bufferSize = 4096;
-            using (FileStream fs = file.OpenRead()) {
-                IntPtr context = IntPtr.Zero;
-                IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+
+            using (var fs = file.OpenRead()) {
+                var context = IntPtr.Zero;
+                var streamID = new Win32StreamID();
+                var buffer = AllocHGlobal(bufferSize);
+
                 try {
                     while (true) {
                         uint numRead;
-                        if (!NativeMethods.BackupRead(fs.SafeFileHandle, buffer,
-                           (uint)Marshal.SizeOf(typeof(Win32StreamID)), out numRead,
-                           false, true, ref context))
+                        if (!BackupRead(fs.SafeFileHandle, ref streamID, (uint)SizeOf(typeof(Win32StreamID)), out numRead, false, false, ref context))
                             throw new Win32Exception();
 
                         if (numRead > 0) {
-                            Win32StreamID streamID = (Win32StreamID)
-                              Marshal.PtrToStructure(buffer, typeof(Win32StreamID));
                             string name = null;
                             if (streamID.dwStreamNameSize > 0) {
-                                if (!NativeMethods.BackupRead(fs.SafeFileHandle, buffer,
-                                     (uint)System.Math.Min(bufferSize, streamID.dwStreamNameSize),
-                                     out numRead, false, true, ref context))
+                                if (!BackupRead(fs.SafeFileHandle, buffer, Math.Min(bufferSize, streamID.dwStreamNameSize), out numRead, false, false, ref context))
                                     throw new Win32Exception();
-                                name = Marshal.PtrToStringUni(buffer, (int)numRead / 2);
+                                name = PtrToStringUni(buffer, (int)numRead / 2);
                             }
 
                             yield return new FileStreamInfo(name, (FileStreamType)streamID.dwStreamId, streamID.Size);
 
-                            if (streamID.Size > 0) {
-                                uint lo, hi;
-                                NativeMethods.BackupSeek(fs.SafeFileHandle, uint.MaxValue,
-                                  int.MaxValue, out lo, out hi, ref context);
+                            if (streamID.Size > 0L) {
+                                BackupSeek(fs.SafeFileHandle, uint.MaxValue, int.MaxValue, out _, out _, ref context);
                             }
-                        } else
+                        } else {
                             break;
+                        }
                     }
                 } finally {
-                    Marshal.FreeHGlobal(buffer);
-                    uint numRead;
-                    if (!NativeMethods.BackupRead(fs.SafeFileHandle, IntPtr.Zero, 0, out numRead,
-                         true, false, ref context))
+                    FreeHGlobal(buffer);
+                    // last call to cleanup and free the context.
+                    if (!BackupRead(fs.SafeFileHandle, IntPtr.Zero, 0, out _, true, false, ref context))
                         throw new Win32Exception();
                 }
             }
@@ -116,5 +104,4 @@ namespace WmcSoft.IO
         public FileStreamType StreamType { get; private set; }
         public long Size { get; private set; }
     }
-
 }
