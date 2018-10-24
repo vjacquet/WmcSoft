@@ -29,6 +29,10 @@ using System.IO;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Defines the extension methods to <see cref="TextReader"/> objects.
+    /// This is a static class.
+    /// </summary>
     public static class TextReaderExtensions
     {
         public static IEnumerable<string> ReadLines(this TextReader self)
