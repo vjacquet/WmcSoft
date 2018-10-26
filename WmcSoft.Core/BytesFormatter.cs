@@ -42,8 +42,6 @@ namespace WmcSoft
     {
         static BytesFormatter() { } // for lazyness.
 
-        static readonly Regex regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
         /// <summary>
         /// Returns an object that provides formatting services for the specified type.
         /// </summary>
@@ -73,6 +71,35 @@ namespace WmcSoft
                 return DoFormat(format, arg) ?? FormatProviderHelper.HandleOtherFormats(format, arg);
             } catch (FormatException) {
                 throw new FormatException(string.Format(Resources.InvalidFormatMessage, format));
+            }
+        }
+
+        private static readonly Regex regex = new Regex(@"^(?<format>[xBOX])(?<group>\d+)?", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+        private static string DoFormat(string format, object arg)
+        {
+            if (format == null || format == "G")
+                return DoFormat("X", 4, arg);
+
+            if (regex.TryMatch(format, out var match))
+                return DoFormat(match.GetGroupValue("format"), match.GetNullableGroupValue<int>("group"), arg);
+
+            return null;
+        }
+
+        private static string DoFormat(string format, int? group, object arg)
+        {
+            var bytes = ToBytes(arg);
+
+            switch (format) {
+            case "B":
+                return Format(bytes, b => Convert.ToString(b, 2), 8, group ?? 1);
+            case "O":
+                return Format(bytes, b => Convert.ToString(b, 8), 4, group ?? 4);
+            case "x":
+            case "X":
+            default:
+                return Format(bytes, b => b.ToString(format), 2, group ?? 4);
             }
         }
 
@@ -111,11 +138,7 @@ namespace WmcSoft
         {
             var sb = new StringBuilder();
 
-            if (groupSize == 0) {
-                for (int i = hi; i >= lo; i--) {
-                    sb.Prepend(reader(i));
-                }
-            } else {
+            if (groupSize != 0) {
                 var count = 0;
                 for (int i = hi; i > lo; i--) {
                     sb.Prepend(reader(i));
@@ -124,6 +147,10 @@ namespace WmcSoft
                         sb.Prepend(' ');
                 }
                 sb.Prepend(reader(lo));
+            } else {
+                for (int i = hi; i >= lo; i--) {
+                    sb.Prepend(reader(i));
+                }
             }
 
             return sb.ToString();
@@ -134,34 +161,6 @@ namespace WmcSoft
             var lo = bytes.GetLowerBound(0);
             var hi = bytes.GetUpperBound(0);
             return Format(i => converter(bytes[i]).PadLeft(padding, '0'), lo, hi, groupSize);
-        }
-
-        private string DoFormat(string format, int? group, object arg)
-        {
-            var bytes = ToBytes(arg);
-
-            switch (format) {
-            case "B":
-                return Format(bytes, b => Convert.ToString(b, 2), 8, group ?? 1);
-            case "O":
-                return Format(bytes, b => Convert.ToString(b, 8), 4, group ?? 4);
-            case "x":
-            case "X":
-            default:
-                return Format(bytes, b => b.ToString(format), 2, group ?? 4);
-            }
-        }
-
-        private string DoFormat(string format, object arg)
-        {
-            if (format == null || format == "G")
-                return DoFormat("X", 4, arg);
-
-            if (regex.TryMatch(format, out var match)) {
-                return DoFormat(match.GetGroupValue("format"), match.GetNullableGroupValue<int>("group"), arg);
-            }
-
-            return null;
         }
     }
 }

@@ -16,7 +16,23 @@ namespace WmcSoft
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void GenericFormatIsX4()
+        {
+            var formatter = new BytesFormatter();
+
+            var b = new byte[16];
+            for (int i = 0; i < b.Length; i++) {
+                b[i] = (byte)i;
+            }
+
+            var expected = string.Format(formatter, "{0:X4}", b);
+            var actual = string.Format(formatter, "{0}", b);
+            Assert.Equal(expected, actual);
+        }
+
         [Theory]
+        [InlineData("G", "0A0B0C0D")]
         [InlineData("X0", "0A0B0C0D")]
         [InlineData("X2", "0A0B 0C0D")]
         [InlineData("B0", "00001010000010110000110000001101")]
