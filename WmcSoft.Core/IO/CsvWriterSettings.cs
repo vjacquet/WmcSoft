@@ -53,6 +53,10 @@ namespace WmcSoft.IO
             public IFormatProvider FormatProvider => underlying.FormatProvider;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>A read-only facade on these settings.</returns>
         public IReadOnlyCsvWriterSettings AsReadOnly()
         {
             return new ReadOnlyCsvWriterSettings(this);
@@ -61,6 +65,14 @@ namespace WmcSoft.IO
         #endregion
 
         public CsvWriterSettings()
+        {
+            Reset();
+        }
+
+        /// <summary>
+        /// Resets the members of the settings class to their default values.
+        /// </summary>
+        public void Reset()
         {
             Encoding = Encoding.UTF8;
             NewLineChars = Environment.NewLine;

@@ -46,7 +46,7 @@ namespace WmcSoft.IO
         protected CsvWriter(TextWriter writer, CsvWriterSettings settings)
         {
             this.writer = writer;
-            this.settings = settings.AsReadOnly();
+            this.settings = settings.Clone();
             delimiter = settings.Delimiter;
 
             var specialChars = new List<char> {
