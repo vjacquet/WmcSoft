@@ -36,7 +36,7 @@ using WmcSoft.Text;
 namespace WmcSoft
 {
     /// <summary>
-    /// Provides a set of static methods to extend the <see cref="String"/> class. This is a static class.
+    /// Provides a set of static methods to extend the <see cref="string"/> class. This is a static class.
     /// </summary>
     public static class StringExtensions
     {
@@ -46,12 +46,12 @@ namespace WmcSoft
         /// Check if the char is any of the candidates chars.
         /// </summary>
         /// <param name="self">The char to test</param>
-        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <param name="anyOf">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool Any(this char self, params char[] candidates)
+        public static bool Any(this char self, params char[] anyOf)
         {
-            for (var i = 0; i < candidates.Length; i++) {
-                if (self == candidates[i])
+            for (var i = 0; i < anyOf.Length; i++) {
+                if (self == anyOf[i])
                     return true;
             }
             return false;
@@ -62,29 +62,35 @@ namespace WmcSoft
         /// </summary>
         /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
         /// <param name="self">The char to test</param>
-        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <param name="anyOf">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryAny(this char self, char[] candidates)
+        public static bool BinaryAny(this char self, char[] anyOf)
         {
-            return Array.BinarySearch(candidates, self) >= 0;
+            return Array.BinarySearch(anyOf, self) >= 0;
         }
 
-        public static bool ContainsAny(this string self, params char[] candidates)
+        /// <summary>
+        /// Returns a value indicating whether any character in a specified array of Unicode characters occurs within this string.
+        /// </summary>
+        /// <param name="self">The string to test</param>
+        /// <param name="anyOf">A Unicode character array containing one or more characters to seek.</param>
+        /// <returns><c>true</c> if any character in <paramref name="anyOf"/> was found; otherwise, <c>false</c>.</returns>
+        public static bool ContainsAny(this string self, params char[] anyOf)
         {
-            return self.IndexOfAny(candidates) >= 0;
+            return self.IndexOfAny(anyOf) >= 0;
         }
 
         /// <summary>
         /// Check if the string contains any of the candidates chars.
         /// </summary>
         /// <remarks>This optimized version relies on the fact that candidates is sorted.</remarks>
-        /// <param name="self">The char to test</param>
-        /// <param name="candidates">Candidates char to test against the char</param>
+        /// <param name="self">The string to test</param>
+        /// <param name="anyOf">Candidates char to test against the char</param>
         /// <returns>true if the char is any of the candidates, otherwise false.</returns>
-        public static bool BinaryContainsAny(this string self, params char[] candidates)
+        public static bool BinaryContainsAny(this string self, params char[] anyOf)
         {
             foreach (var c in self) {
-                if (Array.BinarySearch(candidates, c) >= 0)
+                if (Array.BinarySearch(anyOf, c) >= 0)
                     return true;
             }
             return false;
