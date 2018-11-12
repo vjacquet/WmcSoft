@@ -27,9 +27,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace WmcSoft
+namespace WmcSoft.Internals
 {
-    public class IdentifierComparer : IComparer<string>
+    internal class IdentifierComparer : IComparer<string>
     {
         public static readonly IdentifierComparer Default = new IdentifierComparer();
 
@@ -50,11 +50,11 @@ namespace WmcSoft
             if (result != 0)
                 return 100_000 * c;
             switch (c) {
-            case 0:
+            case 0: // empty
                 return 0;
             case 1: // alphabetical
                 return StringComparer.Ordinal.Compare(x, y);
-            case 2:
+            case 2: // numeric
                 if (x.Length != y.Length)
                     return x.Length - y.Length;
                 return StringComparer.Ordinal.Compare(x, y);
