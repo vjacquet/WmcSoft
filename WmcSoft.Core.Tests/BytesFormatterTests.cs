@@ -6,7 +6,8 @@ namespace WmcSoft
     public class BytesFormatterTests
     {
         [Fact]
-        public void CanFormatByteWithX2() {
+        public void CanFormatByteWithX2()
+        {
             var formatter = new BytesFormatter();
 
             var expected = "A0";
@@ -44,7 +45,7 @@ namespace WmcSoft
             var formatter = new BytesFormatter();
 
             var b = new byte[] { 0x0A, 0x0B, 0x0C, 0x0D, };
-            var actual = string.Format(formatter, "{0:"+format+"}", b);
+            var actual = string.Format(formatter, "{0:" + format + "}", b);
 
             Assert.Equal(expected, actual);
         }
