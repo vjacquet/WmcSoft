@@ -61,12 +61,13 @@ namespace WmcSoft.Monitoring.Sentries
         private readonly List<IObserver<SentryStatus>> observers = new List<IObserver<SentryStatus>>();
         private volatile SentryStatus status;
 
-        protected SentryBase(string name)
+        protected SentryBase(string name, SentryStatus initialStatus = SentryStatus.None)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException(nameof(name));
 
             Name = name;
+            status = initialStatus;
         }
 
         public string Name { get; }
