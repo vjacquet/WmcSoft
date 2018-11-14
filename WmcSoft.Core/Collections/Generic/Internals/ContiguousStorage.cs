@@ -188,7 +188,7 @@ namespace WmcSoft.Collections.Generic.Internals
             }
         }
 
-        public static void Fill(T[] items, int startIndex, int count, T value = default(T))
+        public static void Fill(T[] items, int startIndex, int count, T value = default)
         {
             var endIndex = startIndex + count;
             while (startIndex < endIndex)
