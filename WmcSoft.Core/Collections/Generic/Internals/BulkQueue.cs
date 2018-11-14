@@ -69,17 +69,17 @@ namespace WmcSoft.Collections.Generic.Internals
             _count++;
         }
 
-        /// <summary>
-        /// Enqueues <paramref name="count"/> items in place.
-        /// </summary>
-        /// <param name="count">The count of items</param>
-        /// <param name="action">The action taking as parameters the buffer to copy to and the index where to start copying.</param>
         public void Enqueue(IEnumerable<T> items)
         {
             var list = new List<T>(items);
             BulkEnqueue(list.Count, list.CopyTo);
         }
 
+        /// <summary>
+        /// Enqueues <paramref name="count"/> items in place.
+        /// </summary>
+        /// <param name="count">The count of items</param>
+        /// <param name="action">The action taking as parameters the buffer to copy to and the index where to start copying.</param>
         public void BulkEnqueue(int count, Action<T[], int> action)
         {
             Ensure(count);
@@ -97,7 +97,7 @@ namespace WmcSoft.Collections.Generic.Internals
         public T Dequeue()
         {
             var head = Peek();
-            _storage[_head] = default(T);
+            _storage[_head] = default;
             _head = (_head + 1) % _storage.Length;
             _count--;
             return head;

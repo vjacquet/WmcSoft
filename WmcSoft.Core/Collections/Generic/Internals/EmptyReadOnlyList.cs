@@ -40,13 +40,9 @@ namespace WmcSoft.Collections.Generic.Internals
             set { throw new NotSupportedException(); }
         }
 
-        public int Count {
-            get { return 0; }
-        }
+        public int Count => 0;
 
-        public bool IsReadOnly {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         public void Add(T item)
         {
