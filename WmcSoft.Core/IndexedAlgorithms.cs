@@ -402,6 +402,16 @@ namespace WmcSoft
             UnguardedFill(source, value);
         }
 
+        public static void Fill<TList, T>(this TList source, T value, int startIndex, int count)
+            where TList : IList<T>
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (startIndex < 0 || startIndex > source.Count) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0 || startIndex > (source.Count - count)) throw new ArgumentOutOfRangeException(nameof(count));
+
+            UnguardedFill(source, value, startIndex, startIndex + count);
+        }
+
         #endregion
 
         #region FindXXX
