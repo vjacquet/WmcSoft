@@ -1350,14 +1350,14 @@ namespace WmcSoft
             var normalized = target;
             if (target.Length < source.Length)
                 normalized += new string('\0', source.Length - target.Length);
-            var mapping = source.Zip(normalized, (s, t) => new KeyValuePair<char, char>(s, t))
+            var mapping = source.Zip(normalized, (s, t) => (Key: s, Value: t))
                 .OrderBy((t) => t.Key)
                 .ToArray();
 
-            var comparer = Comparer<KeyValuePair<char, char>>.Create((x, y) => x.Key.CompareTo(y.Key));
+            var comparer = Comparer<(char, char)>.Create((x, y) => x.Item1.CompareTo(y.Item1));
             int j = 0;
             for (int i = 0; i < self.Length; i++) {
-                int found = Array.BinarySearch(mapping, new KeyValuePair<char, char>(self[i], '\0'), comparer);
+                int found = Array.BinarySearch(mapping, (self[i], '\0'), comparer);
                 if (found < 0)
                     self[j++] = self[i];
                 else if (mapping[found].Value != '\0')

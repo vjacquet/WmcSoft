@@ -35,7 +35,7 @@ namespace WmcSoft.IO.Sources
     public abstract class Batch<TScope> : IBatch
         where TScope : IDisposable
     {
-        private readonly List<KeyValuePair<string, IStreamSource>> _entries = new List<KeyValuePair<string, IStreamSource>>();
+        private readonly List<(string, IStreamSource)> _entries = new List<(string, IStreamSource)>();
 
         /// <summary>
         /// Adds the specified data source.
@@ -44,7 +44,7 @@ namespace WmcSoft.IO.Sources
         /// <param name="name">Name of the entry.</param>
         public void Add(string name, IStreamSource source)
         {
-            _entries.Add(new KeyValuePair<string, IStreamSource>(name, source));
+            _entries.Add((name, source));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace WmcSoft.IO.Sources
             if (_entries.Count > 0) {
                 using (var scope = CreateCommitScope()) {
                     foreach (var entry in _entries) {
-                        Process(scope, entry.Key, entry.Value);
+                        Process(scope, entry.Item1, entry.Item2);
                     }
                 }
                 _entries.Clear();
