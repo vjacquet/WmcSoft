@@ -71,9 +71,9 @@ namespace WmcSoft.IO.Sources
             }
         }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
-            return Run(nameof(GetStream), s => s.GetStream());
+            return Run(nameof(OpenSource), s => s.OpenSource());
         }
 
         public override string ToString()

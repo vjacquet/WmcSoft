@@ -115,10 +115,10 @@ namespace WmcSoft.IO.Sources
             return underlying.ToString();
         }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             try {
-                var result = underlying.GetStream();
+                var result = underlying.OpenSource();
 
                 if (result != null) {
                     strategy.TraceInformation(preambule + "Open stream from source {0}.", underlying);

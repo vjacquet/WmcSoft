@@ -94,11 +94,11 @@ namespace WmcSoft.IO.Sources
             }
         }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             var index = IndexOfMostRecent();
             if (index >= 0)
-                return sources[index].GetStream();
+                return sources[index].OpenSource();
             return null;
         }
 

@@ -87,7 +87,7 @@ namespace WmcSoft.IO.Sources
             Directory.CreateDirectory(directoryName);
 
             using (var target = File.Create(fileName))
-            using (var stream = source.GetStream()) {
+            using (var stream = source.OpenSource()) {
                 stream.CopyTo(target);
             }
         }

@@ -67,7 +67,7 @@ namespace WmcSoft.Net
         protected override void Process(Scope scope, string name, IStreamSource source)
         {
             try {
-                using (var local = source.GetStream())
+                using (var local = source.OpenSource())
                 using (var remote = WebClient.OpenRead(new Uri(scope.BaseUri, name.Replace('\\', '/')))) {
                     remote.CopyTo(local);
                 }

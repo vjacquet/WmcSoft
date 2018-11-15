@@ -49,7 +49,7 @@ namespace WmcSoft.IO.Sources
             {
             }
 
-            public override Stream GetStream()
+            public override Stream OpenSource()
             {
                 throw new InvalidOperationException();
             }
@@ -79,7 +79,7 @@ namespace WmcSoft.IO.Sources
         /// <remarks>It can be any readable stream source.</remarks>
         public byte[] ComputeHash(IStreamSource readable)
         {
-            using (var stream = readable.GetStream())
+            using (var stream = readable.OpenSource())
             using (var algorithm = CreateHashAlgorithm()) {
                 return algorithm.ComputeHash(stream);
             }
@@ -127,7 +127,7 @@ namespace WmcSoft.IO.Sources
         {
             var found = Find(name, asOfUtc);
             if (found != null)
-                return found.GetStream();
+                return found.OpenSource();
             return null;
         }
 
@@ -172,7 +172,7 @@ namespace WmcSoft.IO.Sources
         /// <returns><c>true</c> if the file was uploaded, false otherwise.</returns>
         public bool Upload(string name, IStreamSource readable)
         {
-            using (var stream = readable.GetStream()) {
+            using (var stream = readable.OpenSource()) {
                 return Store(name, stream);
             }
         }
@@ -189,8 +189,8 @@ namespace WmcSoft.IO.Sources
             var now = asOf;
             var entry = Find(name, now);
             if (entry != null && entry.ValidSinceUtc > writable.Timestamp.GetValueOrDefault()) {
-                using (var input = entry.GetStream())
-                using (var output = writable.GetStream()) {
+                using (var input = entry.OpenSource())
+                using (var output = writable.OpenSource()) {
                     const int BufferSize = 4096;
                     var buffer = new byte[BufferSize];
                     var read = 0;
@@ -217,18 +217,18 @@ namespace WmcSoft.IO.Sources
 
         protected byte[] ReadAll(Stream stream)
         {
-            if (stream is MemoryStream) {
-                return ((MemoryStream)stream).ToArray();
+            if (stream is MemoryStream ms) {
+                return ms.ToArray();
             } else if (stream.CanSeek) {
                 var count = (int)stream.Length;
                 var buffer = new byte[count];
                 stream.Read(buffer, 0, count);
                 return buffer;
             } else {
-                var ms = new MemoryStream();
-                Copy(stream, ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                return ms.ToArray();
+                var buffer = new MemoryStream();
+                Copy(stream, buffer);
+                buffer.Seek(0, SeekOrigin.Begin);
+                return buffer.ToArray();
             }
         }
 

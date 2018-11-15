@@ -69,7 +69,7 @@ namespace WmcSoft.IO.Sources
         /// Gets the stream from the source.
         /// </summary>
         /// <returns>A stream.</returns>
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             var remote = underlying.Timestamp;
             var local = cache.Timestamp;
@@ -79,7 +79,7 @@ namespace WmcSoft.IO.Sources
 
                 var path = cache.Path;
                 var temp = Path.ChangeExtension(path, ".tmp");
-                using (var source = underlying.GetStream())
+                using (var source = underlying.OpenSource())
                 using (var target = File.Create(temp)) {
                     byte[] array = new byte[80 * 1024];
                     int count;
@@ -93,7 +93,7 @@ namespace WmcSoft.IO.Sources
                 else
                     File.Replace(temp, path, Path.ChangeExtension(path, ".bak"));
             }
-            return cache.GetStream();
+            return cache.OpenSource();
         }
     }
 }

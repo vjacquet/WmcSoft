@@ -48,10 +48,10 @@ namespace WmcSoft.IO.Sources
             this.sources = new List<IStreamSource>(sources);
         }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             foreach (var source in sources) {
-                var stream = source.GetStream();
+                var stream = source.OpenSource();
                 if (stream != null) {
                     Trace.TraceInformation("Selecting source {0}.", source);
                     return stream;

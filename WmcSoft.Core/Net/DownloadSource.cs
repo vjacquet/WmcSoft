@@ -60,7 +60,7 @@ namespace WmcSoft.Net
         /// <returns>A <see cref="Stream"/> used to read data from a resource.</returns>
         /// <exception cref="WebException">The URI formed by combining <see cref="WebClient.BaseAddress"/>, address is invalid.-or-
         ///    An error occurred while downloading data.</exception>
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             return GetStream(Uri);
         }

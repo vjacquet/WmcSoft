@@ -69,7 +69,7 @@ namespace WmcSoft.IO.Sources
         /// </summary>
         /// <returns>A stream.</returns>
         /// <remarks>The caller owns the stream and, therefore, should dispose it.</remarks>
-        public abstract Stream GetStream();
+        public abstract Stream OpenSource();
 
         /// <summary>
         /// Sets the ValidUntilUtc date.
