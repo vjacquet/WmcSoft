@@ -136,6 +136,7 @@
     <Compile Include="IO\PathInfoTests.cs" />
     <Compile Include="IO\Sources\DateTimeSourceStub.cs" />
     <Compile Include="IO\Sources\InMemoryStreamStoreTests.cs" />
+    <Compile Include="IO\Sources\MostRecentStreamSourceTests.cs" />
     <Compile Include="IO\Sources\StreamStoreTests.cs" />
     <Compile Include="IO\StreamComparerTests.cs" />
     <Compile Include="IO\Sources\StreamSourceTests.cs" />
