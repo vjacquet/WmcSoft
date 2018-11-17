@@ -82,22 +82,41 @@ namespace WmcSoft.IO
 
         #region Operators
 
-        public static implicit operator PathInfo(string value)
+        /// <summary>
+        /// Creates a path.
+        /// </summary>
+        /// <param name="path">The path to create the path info to.</param>
+        public static implicit operator PathInfo(string path)
         {
-            return new PathInfo(value);
+            return new PathInfo(path);
         }
 
-        public static explicit operator string(PathInfo value)
+        /// <summary>
+        /// Converts a <see cref="path"/> to a string.
+        /// </summary>
+        /// <param name="path">The path info.</param>
+        public static explicit operator string(PathInfo path)
         {
-            if (value.path == null) throw new InvalidCastException();
-            return value.path;
+            return path.ToString();
         }
 
+        /// <summary>
+        /// Combines the two paths.
+        /// </summary>
+        /// <param name="path1">The first path.</param>
+        /// <param name="path2">The second path.</param>
+        /// <returns>The combined path.</returns>
         public static PathInfo operator /(PathInfo path1, string path2)
         {
             return new PathInfo(Uninitialized, Path.Combine(path1.path, path2));
         }
 
+        /// <summary>
+        /// Combines the two paths.
+        /// </summary>
+        /// <param name="path1">The first path.</param>
+        /// <param name="path2">The second path.</param>
+        /// <returns>The combined path.</returns>
         public static PathInfo operator /(PathInfo path1, PathInfo path2)
         {
             return new PathInfo(Uninitialized, Path.Combine(path1.path, path2.path));
@@ -107,35 +126,15 @@ namespace WmcSoft.IO
 
         #region Properties
 
-        public PathInfo? Root {
-            get {
-                var root = Path.GetPathRoot(path);
-                if (string.IsNullOrEmpty(root))
-                    return null;
-                return new PathInfo(Uninitialized, root);
-            }
-        }
+        public PathInfo? Root => Maybe(Path.GetPathRoot(path));
 
-        public string DirectoryName {
-            get { return Path.GetDirectoryName(path); }
-        }
+        public string DirectoryName => Path.GetDirectoryName(path);
 
-        public string FileName {
-            get { return Path.GetFileName(path); }
-        }
+        public string FileName => Path.GetFileName(path);
 
-        public string FileNameWithoutExtension {
-            get { return Path.GetFileNameWithoutExtension(path); }
-        }
+        public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(path);
 
-        public string Extension {
-            get {
-                var extension = Path.GetExtension(path);
-                if (extension == "")
-                    return null;
-                return extension;
-            }
-        }
+        public string Extension => NullifyEmpty(Path.GetExtension(path));
 
         #endregion
 
@@ -205,6 +204,16 @@ namespace WmcSoft.IO
         #endregion
 
         #region Helpers
+
+        static PathInfo? Maybe(string value)
+        {
+            return !string.IsNullOrEmpty(value) ? new PathInfo(Uninitialized, value) : default(PathInfo?);
+        }
+
+        static string NullifyEmpty(string s)
+        {
+            return !string.IsNullOrEmpty(s) ? s : null;
+        }
 
         static void CheckInvalidPathChars(string path, string name = null)
         {
