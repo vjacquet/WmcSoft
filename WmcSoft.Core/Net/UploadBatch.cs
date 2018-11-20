@@ -26,7 +26,8 @@
 
 using System;
 using System.Net;
-using WmcSoft.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using WmcSoft.IO.Sources;
 
 namespace WmcSoft.Net
@@ -65,12 +66,12 @@ namespace WmcSoft.Net
         /// </summary>
         /// <param name="name">Name of the entry.</param>
         /// <param name="streamSource">The data source.</param>
-        protected override void Process(Scope scope, string name, IStreamSource source)
+        protected override async Task ProcessAsync(Scope scope, string name, IStreamSource source, CancellationToken cancellationToken)
         {
             try {
                 using (var local = source.OpenSource())
                 using (var remote = WebClient.OpenWrite(new Uri(scope.BaseUri, name.Replace('\\', '/')), scope.Method)) {
-                    local.CopyTo(remote);
+                    await local.CopyToAsync(remote, 81920, cancellationToken);
                 }
             } catch (Exception exception) {
                 if (exception.InnerException != null)

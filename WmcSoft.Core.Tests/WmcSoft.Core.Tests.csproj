@@ -128,6 +128,7 @@
     <Compile Include="AlgorithmsTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="Diagnostics\FaultTests.cs" />
+    <Compile Include="IO\Sources\BatchTest.cs" />
     <Compile Include="IO\ClosableStreamTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="IO\CsvWriterTests.cs" />
