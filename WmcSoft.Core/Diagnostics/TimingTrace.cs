@@ -42,39 +42,31 @@ namespace WmcSoft.Diagnostics
     {
         #region Private fields
 
-        readonly Stopwatch _stopwatch;
-        Action _onDispose;
+        private readonly Stopwatch stopwatch = Stopwatch.StartNew();
+        private Action onDispose;
 
         #endregion
 
         #region LifeCycle
 
-        private TimingTrace()
+        public TimingTrace(string message)
         {
-            _stopwatch = Stopwatch.StartNew();
+            onDispose = () => Trace.WriteLine(Format(message));
         }
 
-        public TimingTrace(string message)
-            : this()
-        {
-            _onDispose = () => Trace.WriteLine(Format(message));
-        }
         public TimingTrace(string category, string message)
-            : this()
         {
-            _onDispose = () => Trace.WriteLine(category, Format(message));
+            onDispose = () => Trace.WriteLine(category, Format(message));
         }
 
         public TimingTrace(TraceSource traceSource, string message)
-            : this()
         {
-            _onDispose = () => traceSource.TraceInformation(Format(message));
+            onDispose = () => traceSource.TraceInformation(Format(message));
         }
 
         public TimingTrace(TraceSource traceSource, Func<string> message)
-            : this()
         {
-            _onDispose = () => traceSource.TraceInformation(Format(message()));
+            onDispose = () => traceSource.TraceInformation(Format(message()));
         }
 
         #endregion
@@ -83,7 +75,7 @@ namespace WmcSoft.Diagnostics
 
         string Format(string message)
         {
-            return String.Format("{0}ms\t{1}", _stopwatch.ElapsedMilliseconds, message);
+            return string.Format("{0}ms\t{1}", stopwatch.ElapsedMilliseconds, message);
         }
 
         #endregion
@@ -92,7 +84,7 @@ namespace WmcSoft.Diagnostics
 
         public void Dispose()
         {
-            var action = Interlocked.Exchange(ref _onDispose, null);
+            var action = Interlocked.Exchange(ref onDispose, null);
             Debug.Assert(action != null, "Dispose must be called once.");
             action();
             GC.SuppressFinalize(this);

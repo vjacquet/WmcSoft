@@ -112,6 +112,7 @@
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
     <Compile Include="Diagnostics\CounterTests.cs" />
+    <Compile Include="Diagnostics\TimingTraceTests.cs" />
     <Compile Include="Diagnostics\TraceIndentTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="ExceptionsExtensionsTests.cs" />
