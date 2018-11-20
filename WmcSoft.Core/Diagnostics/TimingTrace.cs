@@ -69,6 +69,16 @@ namespace WmcSoft.Diagnostics
             onDispose = () => traceSource.TraceInformation(Format(message()));
         }
 
+        public TimingTrace(TraceSource traceSource, TraceEventType eventType, int id, string message)
+        {
+            onDispose = () => traceSource.TraceEvent(eventType, id, Format(message));
+        }
+
+        public TimingTrace(TraceSource traceSource, TraceEventType eventType, int id, Func<string> message)
+        {
+            onDispose = () => traceSource.TraceEvent(eventType, id, Format(message()));
+        }
+
         #endregion
 
         #region Helpers
