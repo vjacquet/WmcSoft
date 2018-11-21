@@ -114,6 +114,7 @@
     <Compile Include="Diagnostics\CounterTests.cs" />
     <Compile Include="Diagnostics\TimingTraceTests.cs" />
     <Compile Include="Diagnostics\TraceIndentTests.cs" />
+    <Compile Include="Diagnostics\TraceSessionTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="ExceptionsExtensionsTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />

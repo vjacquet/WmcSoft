@@ -38,7 +38,7 @@ namespace WmcSoft.Diagnostics
     {
         #region Private fields
 
-        int _disposed;
+        int disposed;
 
         #endregion
 
@@ -63,12 +63,12 @@ namespace WmcSoft.Diagnostics
 
         public void Dispose()
         {
-            if (Interlocked.Increment(ref _disposed) == 1) {
+            if (Interlocked.Increment(ref disposed) == 1) {
                 Trace.Unindent();
                 GC.SuppressFinalize(this);
             }
 
-            Debug.Assert(_disposed == 1, "Dispose must be called once.");
+            Debug.Assert(disposed == 1, "Dispose must be called once.");
         }
 
         #endregion

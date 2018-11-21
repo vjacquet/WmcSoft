@@ -45,7 +45,7 @@ namespace WmcSoft.Diagnostics
 
         #region Private fields
 
-        private readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly Stopwatch stopwatch = Stopwatch.StartNew();
         private Action disposer;
         private Action<string> tracer;
 
@@ -68,7 +68,7 @@ namespace WmcSoft.Diagnostics
             else
                 tracer = (s) => traceSource.TraceInformation(s);
 
-            tracer(String.Format(Preambule, name, version));
+            tracer(string.Format(Preambule, name, version));
 
             stopwatch.Start();
         }
@@ -115,8 +115,8 @@ namespace WmcSoft.Diagnostics
             var action = Interlocked.Exchange(ref disposer, null);
             Debug.Assert(action != null, "Dispose must be called once.");
             action();
-            tracer = null;
             GC.SuppressFinalize(this);
+            tracer = null;
         }
 
         #endregion
