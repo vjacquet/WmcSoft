@@ -30,7 +30,7 @@ namespace WmcSoft.IO.Sources
             }
 
 
-            public Stream GetStream()
+            public Stream OpenSource()
             {
                 var ms = new MemoryStream();
                 return new ClosableStream(ms, onClosed: (sender, e) => {

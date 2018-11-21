@@ -39,6 +39,14 @@ namespace WmcSoft.Linq
     {
         #region Conversions
 
+        /// <summary>
+        /// Creates a list of converted items from the given <paramref name="query"/>.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the input</typeparam>
+        /// <typeparam name="TResult">The type of the result</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="convert">The converter function</param>
+        /// <returns>The list of converted items.</returns>
         public static IList<TResult> ToList<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert)
         {
             var list = new List<TResult>();
@@ -48,6 +56,14 @@ namespace WmcSoft.Linq
             return list;
         }
 
+        /// <summary>
+        /// Creates an array of converted items from the given <paramref name="query"/>.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the input</typeparam>
+        /// <typeparam name="TResult">The type of the result</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="convert">The converter function</param>
+        /// <returns>The array of converted items.</returns>
         public static TResult[] ToArray<TInput, TResult>(this IQueryable<TInput> query, Converter<TInput, TResult> convert)
         {
             return query.ToList(convert).ToArray();

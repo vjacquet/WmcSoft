@@ -25,6 +25,8 @@
 #endregion
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WmcSoft.IO.Sources
 {
@@ -44,6 +46,7 @@ namespace WmcSoft.IO.Sources
         /// <summary>
         /// Commits this batch.
         /// </summary>
-        void Commit();
+        /// <param name="cancellationToken">The cancellation token.</param>
+        Task CommitAsync(CancellationToken cancellationToken);
     }
 }

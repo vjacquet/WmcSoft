@@ -113,7 +113,9 @@
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />
     <Compile Include="Diagnostics\CounterTests.cs" />
+    <Compile Include="Diagnostics\TimingTraceTests.cs" />
     <Compile Include="Diagnostics\TraceIndentTests.cs" />
+    <Compile Include="Diagnostics\TraceSessionTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="ExceptionsExtensionsTests.cs" />
     <Compile Include="FormatProviderExtensionsTests.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="AlgorithmsTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="Diagnostics\FaultTests.cs" />
+    <Compile Include="IO\Sources\BatchTest.cs" />
     <Compile Include="IO\ClosableStreamTests.cs" />
     <Compile Include="IO\ConstrainedStreamDecoratorTests.cs" />
     <Compile Include="IO\CsvWriterTests.cs" />
@@ -137,6 +140,7 @@
     <Compile Include="IO\PathInfoTests.cs" />
     <Compile Include="IO\Sources\DateTimeSourceStub.cs" />
     <Compile Include="IO\Sources\InMemoryStreamStoreTests.cs" />
+    <Compile Include="IO\Sources\MostRecentStreamSourceTests.cs" />
     <Compile Include="IO\Sources\StreamStoreTests.cs" />
     <Compile Include="IO\StreamComparerTests.cs" />
     <Compile Include="IO\Sources\StreamSourceTests.cs" />

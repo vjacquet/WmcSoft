@@ -51,14 +51,20 @@ namespace WmcSoft.IO.Sources
         /// The UTC datetime at which the stream source was last written.
         /// </summary>
         /// <remarks>Returns <c>null</c> if the stream is not available.</remarks>
-        public DateTime? Timestamp => File.GetLastWriteTimeUtc(Path);
+        public DateTime? Timestamp {
+            get {
+                if (File.Exists(Path))
+                    return File.GetLastWriteTimeUtc(Path);
+                return null;
+            }
+        }
 
         /// <summary>
         /// The full path to the file.
         /// </summary>
         public string Path { get; }
 
-        public virtual Stream GetStream()
+        public virtual Stream OpenSource()
         {
             return File.OpenRead(Path);
         }

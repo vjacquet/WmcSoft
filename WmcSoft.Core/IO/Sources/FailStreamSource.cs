@@ -49,7 +49,7 @@ namespace WmcSoft.IO.Sources
         public DateTime? Timestamp => null;
 
         /// <inheritdoc/>
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             throw _factory() ?? new InvalidOperationException("Stream source not found.");
         }

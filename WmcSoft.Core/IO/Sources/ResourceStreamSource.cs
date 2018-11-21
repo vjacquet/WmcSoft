@@ -59,7 +59,7 @@ namespace WmcSoft.IO.Sources
         /// </summary>
         public CultureInfo Culture { get; }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             var rm = new ResourceManager(ResourceSource);
             return rm.GetStream(Name, Culture);

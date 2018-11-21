@@ -50,7 +50,7 @@ namespace WmcSoft.IO.Sources
         /// </summary>
         public string Name { get; }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             return Assembly.GetManifestResourceStream(Name);
         }

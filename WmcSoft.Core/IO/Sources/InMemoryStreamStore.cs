@@ -55,7 +55,7 @@ namespace WmcSoft.IO.Sources
                 _data = data;
             }
 
-            public override Stream GetStream()
+            public override Stream OpenSource()
             {
                 return new MemoryStream(_data, false);
             }

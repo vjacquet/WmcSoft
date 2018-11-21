@@ -25,52 +25,27 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
+using System.IO;
 
-namespace WmcSoft.Diagnostics
+namespace WmcSoft.IO
 {
     /// <summary>
-    /// Creates an Indent/Unindent scope.
+    /// Rewinds a stream instead of closing it.
     /// </summary>
-    public sealed class TraceIndent : IDisposable
+    [Serializable]
+    public sealed class RewindOnCloseStream : StreamDecorator
     {
-        #region Private fields
-
-        int disposed;
-
-        #endregion
-
-        #region Lifecycle
-
-        public TraceIndent()
+        public RewindOnCloseStream(Stream stream)
+            : base(stream)
         {
-            Trace.Indent();
+            if (!stream.CanSeek)
+                throw new ArgumentException(nameof(stream));
         }
 
-        #endregion
-
-        #region IDisposable Membres
-
-#if TRACE
-        [SuppressMessage("Microsoft.Performance", "CA1821", Justification = "The #if block invalidate this warning.")]
-        ~TraceIndent()
+        public override void Close()
         {
-            Trace.TraceError("TraceIndent.Dispose should have been called.");
+            Seek(0, SeekOrigin.Begin);
+            GC.SuppressFinalize(this);
         }
-#endif
-
-        public void Dispose()
-        {
-            if (Interlocked.Increment(ref disposed) == 1) {
-                Trace.Unindent();
-                GC.SuppressFinalize(this);
-            }
-
-            Debug.Assert(disposed == 1, "Dispose must be called once.");
-        }
-
-        #endregion
     }
 }

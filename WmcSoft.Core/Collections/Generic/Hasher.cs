@@ -64,9 +64,9 @@ namespace WmcSoft.Collections.Generic
 
         public static Hasher operator ^(Hasher x, string hash)
         {
-            return hash == null
-                ? x
-                : (Hasher)EqualityComparer.CombineHashCodes(x._hash, hash.GetHashCode());
+            return hash != null
+                ? (Hasher)EqualityComparer.CombineHashCodes(x._hash, hash.GetHashCode())
+                : x;
         }
 
         public static Hasher operator ^(Hasher x, int hash)

@@ -90,7 +90,7 @@ namespace WmcSoft.Text.RegularExpressions
         /// <param name="groupName">The group's name.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information. </param>
         /// <returns>The value of the group if successful; otherwise, <c>null</c>.</returns>
-        public static T GetGroupValueOrDefault<T>(this Match match, string groupName, T defaultValue = default(T), IFormatProvider provider = null)
+        public static T GetGroupValueOrDefault<T>(this Match match, string groupName, T defaultValue = default, IFormatProvider provider = null)
         {
             var value = match.Groups[groupName];
             if (value.Success)

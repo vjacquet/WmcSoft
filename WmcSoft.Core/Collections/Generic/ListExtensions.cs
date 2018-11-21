@@ -92,6 +92,21 @@ namespace WmcSoft.Collections.Generic
 
         #endregion
 
+        #region Erase
+
+        /// <summary>
+        /// Erases the of the list contents without changing the size.
+        /// </summary>
+        /// <typeparam name="TList">The list</typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        public static void Erase<T>(this IList<T> list)
+        {
+            IndexedAlgorithms.UnguardedFill(list, default(T));
+        }
+
+        #endregion
+
         #region IndexOf
 
         static int UnguardedIndexOf<T>(IReadOnlyList<T> list, T value, int startIndex, int endIndex, IEqualityComparer<T> comparer)
@@ -131,12 +146,12 @@ namespace WmcSoft.Collections.Generic
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
-                case 0:
-                    return -1;
-                case 1:
-                    return UnguardedIndexOf(list.AsReadOnly(), value[0], startIndex, startIndex + count, EqualityComparer<T>.Default);
-                default:
-                    return UnguardedIndexOf(list.AsReadOnly(), value, startIndex, startIndex + count, EqualityComparer<T>.Default);
+            case 0:
+                return -1;
+            case 1:
+                return UnguardedIndexOf(list.AsReadOnly(), value[0], startIndex, startIndex + count, EqualityComparer<T>.Default);
+            default:
+                return UnguardedIndexOf(list.AsReadOnly(), value, startIndex, startIndex + count, EqualityComparer<T>.Default);
             }
         }
 
@@ -145,12 +160,12 @@ namespace WmcSoft.Collections.Generic
             if (value == null) throw new ArgumentNullException(nameof(value));
 
             switch (value.Count) {
-                case 0:
-                    return -1;
-                case 1:
-                    return UnguardedIndexOf(list.AsReadOnly(), value[0], 0, list.Count, EqualityComparer<T>.Default);
-                default:
-                    return UnguardedIndexOf(list.AsReadOnly(), value, 0, list.Count, EqualityComparer<T>.Default);
+            case 0:
+                return -1;
+            case 1:
+                return UnguardedIndexOf(list.AsReadOnly(), value[0], 0, list.Count, EqualityComparer<T>.Default);
+            default:
+                return UnguardedIndexOf(list.AsReadOnly(), value, 0, list.Count, EqualityComparer<T>.Default);
             }
         }
 
@@ -262,12 +277,31 @@ namespace WmcSoft.Collections.Generic
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             switch (count) {
-                case 0:
-                    return new T[0];
-                case 1:
-                    return list;
-                default:
-                    return new RepeatedList<T>(list, count);
+            case 0:
+                return new T[0];
+            case 1:
+                return list;
+            default:
+                return new RepeatedList<T>(list, count);
+            }
+        }
+
+        #endregion
+
+        #region Resize
+
+        public static void Resize<T>(this List<T> list, int size, T defaultValue = default)
+        {
+            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size));
+
+            int count = list.Count;
+            if (size < count) {
+                list.RemoveRange(size, count - size);
+            } else if (size > count) {
+                if (size > list.Capacity)
+                    list.Capacity = size;
+
+                list.AddRange(Enumerable.Repeat(defaultValue, size - count));
             }
         }
 

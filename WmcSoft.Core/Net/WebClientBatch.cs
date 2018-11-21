@@ -27,6 +27,8 @@
 using System;
 using System.Net;
 using System.Security;
+using System.Threading;
+using System.Threading.Tasks;
 using WmcSoft.IO;
 using WmcSoft.IO.Sources;
 
@@ -109,7 +111,12 @@ namespace WmcSoft.Net
         /// <returns>
         /// An <see cref="IDisposable"/> instance to release resources once the commit is complete.
         /// </returns>
-        protected override Scope CreateCommitScope()
+        protected override Task<Scope> CreateCommitScopeAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(CreateCommitScope());
+        }
+
+        private Scope CreateCommitScope()
         {
             var uri = new Uri(WebClient.BaseAddress);
             return new Scope(uri, Method ?? GetMethod(uri));

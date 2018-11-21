@@ -41,7 +41,7 @@ namespace WmcSoft.IO.Sources
             this.func = func;
         }
 
-        public Stream GetStream()
+        public Stream OpenSource()
         {
             return func();
         }

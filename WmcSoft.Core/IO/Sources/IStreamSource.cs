@@ -29,16 +29,16 @@ using System.IO;
 namespace WmcSoft.IO.Sources
 {
     /// <summary>
-    /// Defines a generalized method of returning a stream.
+    /// Defines a generalized method of returning a readable stream.
     /// </summary>
     /// <remarks>Types implementing this interface should favor composition over inheritance.</remarks>
     public interface IStreamSource
     {
         /// <summary>
-        /// Gets the stream from the source.
+        /// Opens the stream from the source for reading.
         /// </summary>
         /// <returns>A stream.</returns>
         /// <remarks>The caller owns the stream and, therefore, should dispose it.</remarks>
-        Stream GetStream();
+        Stream OpenSource();
     }
 }

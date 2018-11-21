@@ -41,29 +41,17 @@ namespace WmcSoft.Collections.Generic.Internals
             set { throw new NotSupportedException(); }
         }
 
-        public int Count {
-            get { return 0; }
-        }
+        public int Count => 0;
 
-        public bool IsReadOnly {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
-        public ICollection<TKey> Keys {
-            get { return EmptyKeys; }
-        }
+        public ICollection<TKey> Keys => EmptyKeys;
 
-        public ICollection<TValue> Values {
-            get { return EmptyValues; }
-        }
+        public ICollection<TValue> Values => EmptyValues;
 
-        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys {
-            get { return Keys; }
-        }
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
 
-        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values {
-            get { return Values; }
-        }
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
@@ -111,7 +99,7 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = default(TValue);
+            value = default;
             return false;
         }
 

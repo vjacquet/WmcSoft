@@ -3,6 +3,9 @@ using System.Text;
 
 namespace WmcSoft.IO
 {
+    /// <summary>
+    /// Represents the settings for the <see cref="CsvWriter"/>.
+    /// </summary>
     public interface IReadOnlyCsvWriterSettings
     {
         bool CloseOutput { get; }

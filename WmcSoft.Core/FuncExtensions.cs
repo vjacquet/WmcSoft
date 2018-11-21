@@ -34,6 +34,7 @@ namespace WmcSoft
     /// <summary>
     /// Defines the extension methods to the <see cref="Func{TResult}"/> delegate.
     /// This is a static class.
+    /// </summary>
     public static class FuncExtensions
     {
         #region ApplyEach & TryEach

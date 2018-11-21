@@ -26,6 +26,8 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WmcSoft.IO.Sources
 {
@@ -66,7 +68,12 @@ namespace WmcSoft.IO.Sources
         /// <returns>
         /// An <see cref="IDisposable"/> instance to release resources once the commit is complete.
         /// </returns>
-        protected override IDisposable CreateCommitScope()
+        protected override Task<IDisposable> CreateCommitScopeAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(CreateCommitScope());
+        }
+
+        private IDisposable CreateCommitScope()
         {
             if (_impersonator != null) {
                 return _impersonator();
@@ -79,7 +86,7 @@ namespace WmcSoft.IO.Sources
         /// </summary>
         /// <param name="name">Name of the entry.</param>
         /// <param name="source">The data source.</param>
-        protected override void Process(IDisposable scope, string name, IStreamSource source)
+        protected override async Task ProcessAsync(IDisposable scope, string name, IStreamSource source, CancellationToken cancellationToken)
         {
             var fileName = Path.Combine(_path, name);
             var directoryName = Path.GetDirectoryName(fileName);
@@ -87,8 +94,8 @@ namespace WmcSoft.IO.Sources
             Directory.CreateDirectory(directoryName);
 
             using (var target = File.Create(fileName))
-            using (var stream = source.GetStream()) {
-                stream.CopyTo(target);
+            using (var stream = source.OpenSource()) {
+                await stream.CopyToAsync(target, 81920, cancellationToken);
             }
         }
     }

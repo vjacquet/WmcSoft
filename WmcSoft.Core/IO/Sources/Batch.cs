@@ -26,6 +26,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WmcSoft.IO.Sources
 {
@@ -35,7 +37,7 @@ namespace WmcSoft.IO.Sources
     public abstract class Batch<TScope> : IBatch
         where TScope : IDisposable
     {
-        private readonly List<KeyValuePair<string, IStreamSource>> _entries = new List<KeyValuePair<string, IStreamSource>>();
+        private readonly List<(string, IStreamSource)> _entries = new List<(string, IStreamSource)>();
 
         /// <summary>
         /// Adds the specified data source.
@@ -44,18 +46,27 @@ namespace WmcSoft.IO.Sources
         /// <param name="name">Name of the entry.</param>
         public void Add(string name, IStreamSource source)
         {
-            _entries.Add(new KeyValuePair<string, IStreamSource>(name, source));
+            _entries.Add((name, source));
         }
 
         /// <summary>
         /// Commits this batch.
         /// </summary>
-        public void Commit()
+        public Task CommitAsync()
+        {
+            return CommitAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Commits this batch.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        public async Task CommitAsync(CancellationToken cancellationToken)
         {
             if (_entries.Count > 0) {
-                using (var scope = CreateCommitScope()) {
+                using (var scope = await CreateCommitScopeAsync(cancellationToken)) {
                     foreach (var entry in _entries) {
-                        Process(scope, entry.Key, entry.Value);
+                        await ProcessAsync(scope, entry.Item1, entry.Item2, cancellationToken);
                     }
                 }
                 _entries.Clear();
@@ -66,7 +77,7 @@ namespace WmcSoft.IO.Sources
         /// Creates the commit scope.
         /// </summary>
         /// <returns>An <see cref="IDisposable"/> instance to release resources once the commit is complete.</returns>
-        protected abstract TScope CreateCommitScope();
+        protected abstract Task<TScope> CreateCommitScopeAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Override this method to actually process the specified entry name.
@@ -74,7 +85,8 @@ namespace WmcSoft.IO.Sources
         /// <param name="scope">The scope</param>
         /// <param name="name">Name of the entry.</param>
         /// <param name="source">The data source.</param>
-        protected abstract void Process(TScope scope, string name, IStreamSource source);
+        /// <param name="cancellationToken">The cancellation token.</param>
+        protected abstract Task ProcessAsync(TScope scope, string name, IStreamSource source, CancellationToken cancellationToken);
 
         /// <summary>
         /// Releases the unmanaged resources, and optionally releases the managed resources.

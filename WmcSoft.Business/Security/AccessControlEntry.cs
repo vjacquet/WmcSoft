@@ -63,13 +63,9 @@ namespace WmcSoft.Security
 
         #region Properties
 
-        public Permission Permission {
-            get { return _permission; }
-        }
+        public Permission Permission => _permission;
 
-        public Principal Principal {
-            get { return _principal; }
-        }
+        public Principal Principal => _principal;
 
         #endregion
 
