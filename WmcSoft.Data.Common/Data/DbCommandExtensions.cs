@@ -39,14 +39,19 @@ namespace WmcSoft.Data
     /// <summary>
     /// Defines extension methods to the <see cref="IDbCommand"/> interface. This is a static class. 
     /// </summary>
-    public static class DbCommandExtensions
+    public static partial class DbCommandExtensions
     {
         #region NameGenerators
 
         static Func<int, string> _defaultNameGenerator;
         public static Func<int, string> ParameterNameGenerator {
             get { return _defaultNameGenerator; }
-            set { Interlocked.Exchange(ref _defaultNameGenerator, value); }
+            set { ExchangeParameterNameGenerator(value); }
+        }
+
+        public static Func<int, string> ExchangeParameterNameGenerator(Func<int, string> generator)
+        {
+            return Interlocked.Exchange(ref _defaultNameGenerator, generator);
         }
 
         public static readonly Func<int, string> DefaultParameterNameGenerator = null;
