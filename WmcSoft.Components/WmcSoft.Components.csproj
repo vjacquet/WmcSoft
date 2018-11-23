@@ -127,6 +127,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\WmcSoft.CodeDom\WmcSoft.CodeDom.csproj">
+      <Project>{1fda619a-f14d-4052-9ff2-44f2412b1bb3}</Project>
+      <Name>WmcSoft.CodeDom</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WmcSoft.Core\WmcSoft.Core.csproj">
       <Project>{3e5c5ea0-2911-4c9e-9179-391e66320761}</Project>
       <Name>WmcSoft.Core</Name>
