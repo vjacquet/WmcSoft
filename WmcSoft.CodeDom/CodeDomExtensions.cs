@@ -52,8 +52,7 @@ namespace WmcSoft.CodeDom
         {
             foreach (CodeStatement statement in statements) {
                 var expression = statement as T;
-                var expressionStatement = statement as CodeExpressionStatement;
-                if (expression == null && expressionStatement != null) {
+                if (expression == null && statement is CodeExpressionStatement expressionStatement) {
                     expression = expressionStatement.Expression as T;
                 }
                 if (expression != null && predicate(expression)) {
@@ -75,8 +74,7 @@ namespace WmcSoft.CodeDom
         {
             foreach (CodeStatement statement in statements) {
                 var expression = statement as T;
-                var expressionStatement = statement as CodeExpressionStatement;
-                if (expression == null && expressionStatement != null) {
+                if (expression == null && statement is CodeExpressionStatement expressionStatement) {
                     expression = expressionStatement.Expression as T;
                 }
                 if (expression != null && predicate(expression)) {
@@ -90,8 +88,7 @@ namespace WmcSoft.CodeDom
             where T : CodeObject
         {
             foreach (CodeTypeMember member in declaration.Members) {
-                var local = member as T;
-                if (local != null && member.Name == memberName) {
+                if (member is T local && member.Name == memberName) {
                     return local;
                 }
             }
@@ -105,19 +102,18 @@ namespace WmcSoft.CodeDom
         public static void RemoveFromStatements<T>(this CodeStatementCollection statements, Predicate<T> shouldRemove)
             where T : CodeObject
         {
-            var list = new List<CodeStatement>();
+            var bin = new Stack<CodeStatement>();
             foreach (CodeStatement statement in statements) {
                 var expression = statement as T;
-                var expressionStatement = statement as CodeExpressionStatement;
-                if (expression == null && expressionStatement != null) {
+                if (expression == null && statement is CodeExpressionStatement expressionStatement) {
                     expression = expressionStatement.Expression as T;
                 }
                 if (expression != null && shouldRemove(expression)) {
-                    list.Add(statement);
+                    bin.Push(statement);
                 }
             }
-            foreach (CodeStatement statement in list) {
-                statements.Remove(statement);
+            while (bin.Count > 0) {
+                statements.Remove(bin.Pop());
             }
         }
 
@@ -149,7 +145,7 @@ namespace WmcSoft.CodeDom
         public static T Comment<T>(this T member, params string[] comments)
             where T : CodeTypeMember
         {
-            member.Comments.AddRange(Array.ConvertAll(comments, c => new CodeCommentStatement(c)));
+            member.Comments.AddRange(Array.ConvertAll(comments, c => new CodeCommentStatement(c, docComment: false)));
             return member;
         }
 
@@ -163,7 +159,7 @@ namespace WmcSoft.CodeDom
         public static T Document<T>(this T member, params string[] comments)
             where T : CodeTypeMember
         {
-            member.Comments.AddRange(Array.ConvertAll(comments, c => new CodeCommentStatement(c, true)));
+            member.Comments.AddRange(Array.ConvertAll(comments, c => new CodeCommentStatement(c, docComment: true)));
             return member;
         }
 
