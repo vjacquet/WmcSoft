@@ -35,7 +35,15 @@ namespace WmcSoft.Monitoring.Sentries
     /// therefore the current status must be observed upon subscription.</remarks>
     public interface ISentry : IObservable<SentryStatus>
     {
+        /// <summary>
+        /// The name of the sentry.
+        /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// The lastest observed status.
+        /// </summary>
+        /// <remarks>The status is set before notifying OnNext.</remarks>
         SentryStatus Status { get; }
     }
 }
