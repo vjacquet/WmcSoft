@@ -208,3 +208,4 @@ FakesAssemblies/
 /PartyRoleModel.png
 /PartyModel.png
 /WmcSoft.Core/.vs/WmcSoft.Core
+/WmcSoft.Core/IO/Sources/IStreamSink.cs
