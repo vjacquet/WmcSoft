@@ -285,7 +285,7 @@ namespace WmcSoft
         {
             culture = culture ?? CultureInfo.CurrentCulture;
             var textinfo = culture.TextInfo;
-            return self.ToArray(textinfo.ToTitleCase);
+            return Array.ConvertAll(self, textinfo.ToTitleCase);
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace WmcSoft
         public static string[] ToTitleCase(this string[] self)
         {
             var textinfo = CultureInfo.CurrentCulture.TextInfo;
-            return self.ToArray(textinfo.ToTitleCase);
+            return Array.ConvertAll(self, textinfo.ToTitleCase);
         }
 
         /// <summary>
