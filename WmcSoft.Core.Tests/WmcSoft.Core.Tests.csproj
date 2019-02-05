@@ -108,6 +108,7 @@
     <Compile Include="Collections\Specialized\SparseArrayTests.cs" />
     <Compile Include="Collections\Specialized\GapListTests.cs" />
     <Compile Include="Collections\Graphs\GraphTests.cs" />
+    <Compile Include="ComponentModel\StringArrayConverterTests.cs" />
     <Compile Include="ConvertibleExtensionsTests.cs" />
     <Compile Include="Data\DataRowCollectionExtensionsTests.cs" />
     <Compile Include="DateSpanTests.cs" />

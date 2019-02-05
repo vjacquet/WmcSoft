@@ -39,14 +39,19 @@ namespace WmcSoft.Data
     /// <summary>
     /// Defines extension methods to the <see cref="IDbCommand"/> interface. This is a static class. 
     /// </summary>
-    public static class DbCommandExtensions
+    public static partial class DbCommandExtensions
     {
         #region NameGenerators
 
         static Func<int, string> _defaultNameGenerator;
         public static Func<int, string> ParameterNameGenerator {
             get { return _defaultNameGenerator; }
-            set { Interlocked.Exchange(ref _defaultNameGenerator, value); }
+            set { ExchangeParameterNameGenerator(value); }
+        }
+
+        public static Func<int, string> ExchangeParameterNameGenerator(Func<int, string> generator)
+        {
+            return Interlocked.Exchange(ref _defaultNameGenerator, generator);
         }
 
         public static readonly Func<int, string> DefaultParameterNameGenerator = null;
@@ -343,6 +348,14 @@ namespace WmcSoft.Data
 
         #region ReadXXX
 
+        /// <summary>
+        /// Reads and materializes all records.
+        /// </summary>
+        /// <typeparam name="T">The type of object to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
+        /// <param name="materializer">The materializer.</param>
+        /// <returns>The entities.</returns>
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, CommandBehavior behavior, Func<IDataRecord, T> materializer)
         {
             using (var reader = command.ExecuteReader(behavior)) {
@@ -352,11 +365,33 @@ namespace WmcSoft.Data
             }
         }
 
+        /// <summary>
+        /// Reads and materializes all records.
+        /// </summary>
+        /// <typeparam name="T">The type of object to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="materializer">The materializer.</param>
+        /// <returns>The entities.</returns>
         public static IEnumerable<T> ReadAll<T>(this IDbCommand command, Func<IDataRecord, T> materializer)
         {
             using (var reader = command.ExecuteReader()) {
                 while (reader.Read()) {
                     yield return materializer(reader);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads all records.
+        /// </summary>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>The records.</returns>
+        /// <remarks>The records must be processed before moving to the next one as they are mutated.</remarks>
+        public static IEnumerable<IDataRecord> ReadAll(this IDbCommand command)
+        {
+            using (var reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    yield return reader;
                 }
             }
         }

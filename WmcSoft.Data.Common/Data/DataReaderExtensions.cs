@@ -53,6 +53,17 @@ namespace WmcSoft.Data
 
         #region ReadXxx
 
+        static bool UnguardedReadNext<T>(IDataReader reader, Func<IDataRecord, T> materializer, out T entity)
+        {
+            if (reader.Read()) {
+                entity = materializer(reader);
+                return true;
+            }
+
+            entity = default;
+            return false;
+        }
+
         /// <summary>
         /// Reads and materializes the next record.
         /// </summary>
@@ -66,18 +77,12 @@ namespace WmcSoft.Data
             Debug.Assert(reader != null);
             if (materializer == null) throw new ArgumentNullException(nameof(materializer));
 
-            if (reader.Read()) {
-                entity = materializer(reader);
-                return true;
-            }
-
-            entity = default(T);
-            return false;
+            return UnguardedReadNext(reader, materializer, out entity);
         }
 
         static IEnumerable<T> UnguardedReadAll<T>(IDataReader reader, Func<IDataRecord, T> materializer)
         {
-            while (reader.ReadNext(materializer, out var entity))
+            while (UnguardedReadNext(reader, materializer, out var entity))
                 yield return entity;
         }
 

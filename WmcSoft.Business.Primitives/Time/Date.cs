@@ -71,6 +71,11 @@ namespace WmcSoft.Time
         {
         }
 
+        /// <summary>
+        /// Gets the current date.
+        /// </summary>
+        public static Date Today => DateTime.Today;
+
         public bool IsAfter(Date other)
         {
             return CompareTo(other) > 0;

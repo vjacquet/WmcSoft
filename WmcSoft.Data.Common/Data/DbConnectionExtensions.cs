@@ -158,6 +158,17 @@ namespace WmcSoft.Data
 
         #region ReadAll
 
+        /// <summary>
+        /// Reads all records.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="transaction">The transaction within which the Command object of a .NET Framework data provider executes. The default value is a null reference.</param>
+        /// <param name="parameters">The parameters of the SQL statement or stored procedure.</param>
+        /// <returns>The records.</returns>
+        /// <remarks>The records must be processed before moving to the next one as they are mutated.</remarks>
         public static IEnumerable<IDataRecord> ReadAll(this IDbConnection connection, string commandText, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, TimeSpan? timeout = null, IDbTransaction transaction = null, object parameters = null)
         {
             using (var command = connection.CreateCommand(commandText, commandType, timeout, transaction, parameters))

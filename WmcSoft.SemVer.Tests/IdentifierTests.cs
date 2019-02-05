@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using WmcSoft.Internals;
+using Xunit;
 
 namespace WmcSoft
 {

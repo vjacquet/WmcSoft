@@ -25,11 +25,15 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 
 namespace WmcSoft.ComponentModel
 {
+    /// <summary>
+    /// Provides a type converter to convert an array of string objects to and from other representations.
+    /// </summary>
     public class StringArrayConverter : StringConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
@@ -64,10 +68,14 @@ namespace WmcSoft.ComponentModel
                 return null;
 
             if (destinationType == typeof(string)) {
-                var array = value as string[];
-                if (array != null) {
-                    var separator = GetListSeparator(culture);
+                var separator = GetListSeparator(culture);
+                switch (value) {
+                case string[] array:
                     value = string.Join(separator, array);
+                    break;
+                case IEnumerable<string> enumerable:
+                    value = string.Join(separator, enumerable);
+                    break;
                 }
             }
 

@@ -109,14 +109,19 @@ namespace WmcSoft.Data
 
         #region ReadAll
 
+        /// <summary>
+        /// Reads all records.
+        /// </summary>
+        /// <param name="transaction">The transaction.</param>
+        /// <param name="commandText">The text command to execute.</param>
+        /// <param name="commandType">One of the <see cref="CommandType"/> values. The default is <c>Text</c>.</param>
+        /// <param name="timeout">The time to wait for the command to execute.</param>
+        /// <param name="parameters">The parameters of the SQL statement or stored procedure.</param>
+        /// <returns>The records.</returns>
+        /// <remarks>The records must be processed before moving to the next one as they are mutated.</remarks>
         public static IEnumerable<IDataRecord> ReadAll(this IDbTransaction transaction, string commandText, CommandType commandType = CommandType.Text, CommandBehavior behavior = CommandBehavior.Default, TimeSpan? timeout = null, object parameters = null)
         {
-            using (var command = transaction.Connection.CreateCommand(commandText, commandType, timeout, transaction, parameters))
-            using (var reader = command.ExecuteReader(behavior)) {
-                while (reader.Read()) {
-                    yield return reader;
-                }
-            }
+            return transaction.Connection.ReadAll(commandText, commandType, behavior, timeout, transaction, parameters);
         }
 
         #endregion
