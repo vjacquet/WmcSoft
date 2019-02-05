@@ -61,12 +61,6 @@
     <Compile Include="BitArithmetics.cs" />
     <Compile Include="CloneableExtensions.cs" />
     <Compile Include="Cloning.cs" />
-    <Compile Include="CodeDom\CodeGuardArgumentNotNulllStatement.cs" />
-    <Compile Include="CodeDom\CodeDomExtensions.cs" />
-    <Compile Include="CodeDom\CodeDomTypeBuilder.cs" />
-    <Compile Include="CodeDom\CodeNullEqualityExpression.cs" />
-    <Compile Include="CodeDom\CodeNullInequalityExpression.cs" />
-    <Compile Include="CodeDom\CodeThrowNewExceptionStatement.cs" />
     <Compile Include="Collections\BitArrayExtensions.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\Forests\DepthFirst.cs" />
@@ -446,6 +440,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.fr.resx">
       <SubType>Designer</SubType>
+      <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
