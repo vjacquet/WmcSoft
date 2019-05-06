@@ -91,6 +91,38 @@ namespace WmcSoft
 
         #endregion
 
+        #region Fill
+
+        public static void UnguardedFill<T>(this T[] source, T value, int first, int last)
+        {
+            while (first != last) {
+                source[first++] = value;
+            }
+        }
+
+        public static void UnguardedFill<T>(this T[] source, T value)
+        {
+            UnguardedFill(source, value, 0, source.Length);
+        }
+
+        public static void Fill<T>(this T[] source, T value)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            UnguardedFill(source, value);
+        }
+
+        public static void Fill<T>(this T[] source, T value, int startIndex, int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (startIndex < 0 || startIndex > source.Length) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0 || startIndex > (source.Length - count)) throw new ArgumentOutOfRangeException(nameof(count));
+
+            UnguardedFill(source, value, startIndex, startIndex + count);
+        }
+
+        #endregion
+
         #region Flatten
 
         /// <summary>
@@ -474,7 +506,7 @@ namespace WmcSoft
 
         #region Rotate
 
-        public static int UngardedRotate<T>(this T[] source, int n, int startIndex, int length)
+        public static int UnguardedRotate<T>(this T[] source, int n, int startIndex, int length)
         {
             if (n == 0)
                 return startIndex;
@@ -515,7 +547,7 @@ namespace WmcSoft
             if (source.Length < (startIndex + length)) throw new ArgumentException(nameof(source));
             if (n > length || -n > length) throw new ArgumentException(nameof(n));
 
-            return UngardedRotate(source, n, startIndex, length);
+            return UnguardedRotate(source, n, startIndex, length);
         }
 
         /// <summary>
@@ -532,7 +564,7 @@ namespace WmcSoft
             var length = source.Length;
             if (n > length || -n > length) throw new ArgumentException(nameof(n));
 
-            return UngardedRotate(source, n, 0, length);
+            return UnguardedRotate(source, n, 0, length);
         }
 
         #endregion
