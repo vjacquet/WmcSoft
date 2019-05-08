@@ -41,13 +41,13 @@ namespace WmcSoft.Collections.Generic.Internals
 
         public bool IsEmpty()
         {
-            return _count == 0;
+            return count == 0;
         }
 
         public void Push(T item)
         {
             EnsureOne();
-            _storage[_count++] = item;
+            storage[count++] = item;
         }
 
         public void Push(IEnumerable<T> items)
@@ -64,22 +64,22 @@ namespace WmcSoft.Collections.Generic.Internals
         public void BulkPush(int count, Action<T[], int> action)
         {
             Ensure(count);
-            action(_storage, _count);
-            _count += count;
+            action(storage, base.count);
+            base.count += count;
         }
 
         public T Peek()
         {
             if (IsEmpty()) throw new InvalidOperationException();
 
-            return _storage[_count - 1];
+            return storage[count - 1];
         }
 
         public T Pop()
         {
             var top = Peek();
-            --_count;
-            _storage[_count] = default(T);
+            --count;
+            storage[count] = default(T);
             return top;
         }
     }

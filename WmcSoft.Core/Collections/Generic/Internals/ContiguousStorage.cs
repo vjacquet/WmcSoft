@@ -27,6 +27,8 @@
 using System;
 using System.Diagnostics;
 
+using static System.Math;
+
 namespace WmcSoft.Collections.Generic.Internals
 {
     /// <summary>
@@ -39,24 +41,25 @@ namespace WmcSoft.Collections.Generic.Internals
     {
         class DebugView
         {
-            private readonly ContiguousStorage<T> _storage;
+            private readonly ContiguousStorage<T> storage;
 
             DebugView(ContiguousStorage<T> storage)
             {
-                _storage = storage;
+                this.storage = storage;
             }
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public T[] Items {
                 get {
-                    var array = new T[_storage._count];
-                    _storage._storage.CopyTo(array, 0);
+                    var array = new T[storage.count];
+                    storage.storage.CopyTo(array, 0);
                     return array;
                 }
             }
         }
 
         public const int MaxArrayLength = 0X7FEFFFFF; // taken from http://referencesource.microsoft.com/#mscorlib/system/array.cs,2d2b551eabe74985
+        const int HalfOfMaxArrayLength = MaxArrayLength / 2;
         const int DefaultCapacity = 4;
         const int QuarterOfDefaultCapacity = 1;
 
@@ -64,31 +67,31 @@ namespace WmcSoft.Collections.Generic.Internals
 
         #region Base implementation
 
-        protected T[] _storage;
-        protected int _count;
+        protected T[] storage;
+        protected int count;
 
         protected ContiguousStorage()
         {
-            _storage = Empty;
+            storage = Empty;
         }
 
         protected ContiguousStorage(int capacity)
         {
-            _storage = (capacity > 0)
+            storage = (capacity > 0)
                 ? new T[capacity]
                 : Empty;
         }
 
         protected void EnsureOne()
         {
-            if (_count == _storage.Length)
-                Reserve(ref _storage, 1, Copy);
+            if (count == storage.Length)
+                Reserve(ref storage, 1, Copy);
         }
         protected void Ensure(int count)
         {
-            var requires = _storage.Length - _count - count;
+            var requires = storage.Length - this.count - count;
             if (requires < 0)
-                Reserve(ref _storage, -requires, Copy);
+                Reserve(ref storage, -requires, Copy);
         }
 
         protected virtual void Copy(T[] source, T[] destination, int length)
@@ -167,11 +170,18 @@ namespace WmcSoft.Collections.Generic.Internals
             var length = items.Length;
             n += length;
 
-            var capacity = length == 0 ? DefaultCapacity : length * 2;
-            if ((uint)capacity > MaxArrayLength) capacity = MaxArrayLength;
-            if (capacity < n) capacity = n;
-
+            var capacity = Max(n,RequiredCapacity(length));
             Resize(ref items, capacity, length, copy);
+        }
+
+        static int RequiredCapacity(int n)
+        {
+            if (n == 0)
+                return DefaultCapacity;
+            else if (n > HalfOfMaxArrayLength)
+                return MaxArrayLength;
+            else
+                return n * 2;
         }
 
         /// <summary>
@@ -182,17 +192,17 @@ namespace WmcSoft.Collections.Generic.Internals
         public static void Shrink(ref T[] items, int count)
         {
             var length = items.Length;
-            if (length > QuarterOfDefaultCapacity) {
-                if (count <= length / 4)
-                    Resize(ref items, Math.Min(length / 2, count * 2), count);
+            if (length > QuarterOfDefaultCapacity && count <= length / 4) {
+                Resize(ref items, Math.Min(length / 2, count * 2), count);
             }
         }
 
         public static void Fill(T[] items, int startIndex, int count, T value = default)
         {
             var endIndex = startIndex + count;
-            while (startIndex < endIndex)
+            while (startIndex < endIndex) {
                 items[startIndex++] = value;
+            }
         }
 
         #endregion
