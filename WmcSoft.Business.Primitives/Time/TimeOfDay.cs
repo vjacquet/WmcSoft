@@ -40,10 +40,10 @@ namespace WmcSoft.Time
     /// </summary>
     [DebuggerDisplay("{ToString(),nq}")]
     [DebuggerStepThrough]
-    public partial struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>
+    public partial struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>, IComparable, IFormattable
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly TimeSpan storage;
+        private readonly TimeSpan _storage;
 
         public static readonly TimeOfDay MinValue = new TimeOfDay(0);
         public static readonly TimeOfDay MaxValue = new TimeOfDay(23, 59);
@@ -67,7 +67,7 @@ namespace WmcSoft.Time
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
             if (minute < 0 | minute > 59) throw new ArgumentOutOfRangeException(nameof(minute));
 
-            storage = new TimeSpan(hour, minute, 0);
+            _storage = new TimeSpan(hour, minute, 0);
         }
 
         /// <summary>
@@ -81,48 +81,21 @@ namespace WmcSoft.Time
         {
             if (hour < 0 | hour > 23) throw new ArgumentOutOfRangeException(nameof(hour));
 
-            storage = new TimeSpan(hour, 0, 0);
+            _storage = new TimeSpan(hour, 0, 0);
         }
 
         public void Deconstruct(out int hour, out int minute)
         {
-            hour = storage.Hours;
-            minute = storage.Minutes;
+            hour = _storage.Hours;
+            minute = _storage.Minutes;
         }
 
         public HourOfDay Hour {
-            get { return new HourOfDay(storage.Hours); }
+            get { return new HourOfDay(_storage.Hours); }
         }
 
         public MinuteOfHour Minutes {
-            get { return new MinuteOfHour(storage.Minutes); }
-        }
-
-        public override string ToString()
-        {
-            return storage.Hours.ToString("00") + ':' + storage.Minutes.ToString("00");
-        }
-
-        public override int GetHashCode()
-        {
-            return storage.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || obj.GetType() != typeof(TimeOfDay))
-                return false;
-            return Equals((TimeOfDay)obj);
-        }
-
-        public bool Equals(TimeOfDay other)
-        {
-            return storage.Equals(other.storage);
-        }
-
-        public int CompareTo(TimeOfDay other)
-        {
-            return storage.CompareTo(other.storage);
+            get { return new MinuteOfHour(_storage.Minutes); }
         }
 
         public bool IsAfter(TimeOfDay other)
@@ -138,7 +111,7 @@ namespace WmcSoft.Time
         public DateTime On(Date date)
         {
             DateTime dateTime = date;
-            return dateTime.Add(storage);
+            return dateTime.Add(_storage);
         }
 
         public DateTimeOffset On(Date date, TimeZoneInfo timeZone)
@@ -149,7 +122,7 @@ namespace WmcSoft.Time
 
         public TimeSpan ToTimeSpan()
         {
-            return storage;
+            return _storage;
         }
 
         #region Operators
@@ -183,7 +156,75 @@ namespace WmcSoft.Time
 
         public static implicit operator TimeSpan(TimeOfDay x)
         {
-            return x.storage;
+            return x._storage;
+        }
+
+        #endregion
+
+        #region IComparable<TimeOfDay> members
+
+        public int CompareTo(TimeOfDay other)
+        {
+            return _storage.CompareTo(other._storage);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null || obj.GetType() != GetType())
+                return 1;
+            return CompareTo((Date)obj);
+        }
+
+        #endregion
+
+        #region IEquatable<TimeOfDay> members
+
+        public bool Equals(TimeOfDay other)
+        {
+            return _storage.Equals(other._storage);
+        }
+
+        #endregion
+
+        #region IFormattable members
+
+        public string ToString(string format)
+        {
+            var date = On(Date.MinValue);
+            return date.ToString(format);
+        }
+
+        public string ToString(IFormatProvider formatProvider)
+        {
+            var date = On(Date.MinValue);
+            return date.ToString("d", formatProvider);
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            var date = On(Date.MinValue);
+            return date.ToString(format, formatProvider);
+        }
+
+        #endregion
+
+        #region Overrides
+
+        public override int GetHashCode()
+        {
+            return _storage.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(TimeOfDay))
+                return false;
+            return Equals((TimeOfDay)obj);
+        }
+
+        public override string ToString()
+        {
+            return _storage.Hours.ToString("00") + ':' + _storage.Minutes.ToString("00");
         }
 
         #endregion

@@ -69,7 +69,7 @@ namespace WmcSoft.Time
 
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            writer.WriteString(storage.ToString(@"hh\:mm", CultureInfo.InvariantCulture));
+            writer.WriteString(_storage.ToString(@"hh\:mm", CultureInfo.InvariantCulture));
         }
     }
 }
