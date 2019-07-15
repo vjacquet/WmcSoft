@@ -7,7 +7,7 @@ using WmcSoft.Text;
 
 namespace WmcSoft.Collections.Generic
 {
-    public class EnumerableExtensionsTests
+    public partial class EnumerableExtensionsTests
     {
         [Fact]
         public void CheckToString()

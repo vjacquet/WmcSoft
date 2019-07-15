@@ -74,6 +74,7 @@
     <Compile Include="Collections\BitArrayExtensionsTests.cs" />
     <Compile Include="Collections\Generic\Algorithms\FinderTests.cs" />
     <Compile Include="Collections\Generic\BagSetTests.cs" />
+    <Compile Include="Collections\Generic\EnumerableExtensionsTests.MinMax.cs" />
     <Compile Include="Collections\Generic\FieldwiseEqualityComparerTests.cs" />
     <Compile Include="Collections\Generic\OrderedCollectionTests.cs" />
     <Compile Include="Collections\Generic\OrderedDictionaryTests.cs" />
