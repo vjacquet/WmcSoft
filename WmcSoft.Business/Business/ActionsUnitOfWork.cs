@@ -29,33 +29,37 @@ using System.Collections.Generic;
 
 namespace WmcSoft.Business
 {
+    /// <summary>
+    /// Implementation of unit of work that delagates the operations to <see cref="Action{T}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity managed by the unit of work.</typeparam>
     public class ActionsUnitOfWork<TEntity> : UnitOfWork<TEntity>
         where TEntity : class
     {
-        private readonly Action<IList<TEntity>> create;
-        private readonly Action<IList<TEntity>> update;
-        private readonly Action<IList<TEntity>> delete;
+        private readonly Action<IList<TEntity>> _create;
+        private readonly Action<IList<TEntity>> _update;
+        private readonly Action<IList<TEntity>> _delete;
 
         public ActionsUnitOfWork(Action<IList<TEntity>> create, Action<IList<TEntity>> update, Action<IList<TEntity>> delete)
         {
-            this.create = create;
-            this.update = update;
-            this.delete = delete;
+            _create = create;
+            _update = update;
+            _delete = delete;
         }
 
         protected override void DeleteRemoved()
         {
-            delete(removeInstances);
+            _delete(removeInstances);
         }
 
         protected override void InsertNew()
         {
-            create(newInstances);
+            _create(newInstances);
         }
 
         protected override void UpdateDirty()
         {
-            update(dirtyInstances);
+            _update(dirtyInstances);
         }
     }
 }
