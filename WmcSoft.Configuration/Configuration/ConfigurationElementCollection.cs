@@ -35,23 +35,23 @@ namespace WmcSoft.Configuration
     public abstract class ConfigurationElementCollection<T> : ConfigurationElementCollection, ICollection<T>
         where T : ConfigurationElement, new()
     {
-        readonly ConfigurationElementCollectionType collectionType;
+        private readonly ConfigurationElementCollectionType _collectionType;
 
         protected ConfigurationElementCollection()
         {
             var attr = GetType().GetCustomAttributes<ConfigurationCollectionAttribute>(true).FirstOrDefault();
             if (attr != null) {
-                collectionType = attr.CollectionType;
+                _collectionType = attr.CollectionType;
                 if (!attr.AddItemName.Contains(','))
                     AddElementName = attr.AddItemName;
                 RemoveElementName = attr.RemoveItemName;
                 ClearElementName = attr.ClearItemsName;
             } else {
-                collectionType = base.CollectionType;
+                _collectionType = base.CollectionType;
             }
         }
 
-        public override ConfigurationElementCollectionType CollectionType => collectionType;
+        public override ConfigurationElementCollectionType CollectionType => _collectionType;
 
         protected override ConfigurationElement CreateNewElement()
         {
