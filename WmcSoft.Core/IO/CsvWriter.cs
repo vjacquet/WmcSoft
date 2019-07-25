@@ -58,7 +58,7 @@ namespace WmcSoft.IO
 
         #region Factory methods
 
-        public static CsvWriter Create(string outputFileName, CsvWriterSettings settings)
+        public static CsvWriter Create(string outputFileName, CsvWriterSettings settings = null)
         {
             if (outputFileName == null) throw new ArgumentNullException(nameof(outputFileName));
 
