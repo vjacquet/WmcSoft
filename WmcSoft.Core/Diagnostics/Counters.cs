@@ -42,14 +42,19 @@ namespace WmcSoft.Diagnostics
             _occurences = new Dictionary<TName, int>();
         }
 
+        public void Seed(TName name, int seed = 0)
+        {
+            _occurences[name] = seed;
+        }
+
         public int Increment(TName name)
         {
-            if (!_occurences.TryGetValue(name, out int count)) {
-                count = 1;
-                _occurences.Add(name, count);
-            } else {
+            if (_occurences.TryGetValue(name, out int count)) {
                 count++;
                 _occurences[name] = count;
+            } else {
+                count = 1;
+                _occurences.Add(name, count);
             }
             return count;
         }
