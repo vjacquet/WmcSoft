@@ -42,25 +42,15 @@ namespace WmcSoft.Arithmetics
 
             #region IGroupLikeTraits Membres
 
-            public bool SupportIdentity {
-                get { return true; }
-            }
+            public bool SupportIdentity => true;
 
-            public bool SupportInverse {
-                get { return true; }
-            }
+            public bool SupportInverse => true;
 
-            public bool IsAssociative {
-                get { return true; }
-            }
+            public bool IsAssociative => true;
 
-            public bool IsCommutative {
-                get { return true; }
-            }
+            public bool IsCommutative => true;
 
-            public bool IsIdempotent {
-                get { return false; }
-            }
+            public bool IsIdempotent => false;
 
             #endregion
         }
@@ -76,25 +66,15 @@ namespace WmcSoft.Arithmetics
 
             #region IGroupLikeTraits Membres
 
-            public bool SupportIdentity {
-                get { return true; }
-            }
+            public bool SupportIdentity => true;
 
-            public bool SupportInverse {
-                get { return _arithmetics.SupportReciprocal; }
-            }
+            public bool SupportInverse => _arithmetics.SupportReciprocal;
 
-            public bool IsAssociative {
-                get { return true; }
-            }
+            public bool IsAssociative => true;
 
-            public bool IsCommutative {
-                get { return true; }
-            }
+            public bool IsCommutative => true;
 
-            public bool IsIdempotent {
-                get { return false; }
-            }
+            public bool IsIdempotent => false;
 
             #endregion
         }
@@ -118,9 +98,7 @@ namespace WmcSoft.Arithmetics
             return _arithmetics.Negate(x);
         }
 
-        public T Zero {
-            get { return _arithmetics.Zero; }
-        }
+        public T Zero => _arithmetics.Zero;
 
         public T Multiply(T x, T y)
         {
@@ -132,21 +110,15 @@ namespace WmcSoft.Arithmetics
             return _arithmetics.Reciprocal(x);
         }
 
-        public T One {
-            get { return _arithmetics.One; }
-        }
+        public T One => _arithmetics.One;
 
         #endregion
 
         #region IRingLikeTraits Membres
 
-        public IGroupLikeTraits Addition {
-            get { return new AdditiveTraits(_arithmetics); }
-        }
+        public IGroupLikeTraits Addition => new AdditiveTraits(_arithmetics);
 
-        public IGroupLikeTraits Multiplication {
-            get { return new MultiplicativeTraits(_arithmetics); }
-        }
+        public IGroupLikeTraits Multiplication => new MultiplicativeTraits(_arithmetics);
 
         #endregion
     }
