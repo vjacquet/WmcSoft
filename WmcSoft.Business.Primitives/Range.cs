@@ -102,9 +102,7 @@ namespace WmcSoft
 
         #region Properties
 
-        public bool IsEmpty {
-            get { return Upper.CompareTo(Lower) == 0; }
-        }
+        public bool IsEmpty => Upper.CompareTo(Lower) == 0;
 
         #endregion
 
@@ -327,6 +325,11 @@ namespace WmcSoft
         public static bool operator !=(Range<T> x, Range<T> y)
         {
             return !x.Equals(y);
+        }
+
+        public static implicit operator Range<T>((T, T) value)
+        {
+            return new Range<T>(value.Item1, value.Item2);
         }
 
         #endregion

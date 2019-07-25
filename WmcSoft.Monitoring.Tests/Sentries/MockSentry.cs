@@ -53,6 +53,5 @@ namespace WmcSoft.Monitoring.Sentries
         public int OnObservedCalls { get; set; }
         public int OnSubscribeCalls { get; set; }
         public int OnUnsubscribeCalls { get; set; }
-
     }
 }

@@ -32,16 +32,443 @@ namespace WmcSoft.Collections.Generic
 {
     public static partial class EnumerableExtensions
     {
+        #region Max
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="comparer">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The maximum value in the sequence.</returns>
+        public static TSource Max<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (comparer == null)
+                return source.Max();
+
+            return UnguardedMax(source, comparer.Compare);
+        }
+
+        public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (comparison == null)
+                return source.Max();
+
+            return UnguardedMax(source, comparison);
+        }
+
+        static TSource UnguardedMax<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
+            using (var enumerator = source.GetEnumerator()) {
+                if (!enumerator.MoveNext())
+                    throw new InvalidOperationException();
+
+                var max = enumerator.Current;
+                while (enumerator.MoveNext()) {
+                    if (comparison(enumerator.Current, max) >= 0)
+                        max = enumerator.Current;
+                }
+                return max;
+            }
+        }
+
+        #endregion
+
+        #region MaxBy
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (value == null && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && x.GetValueOrDefault() >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (value == null && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && x.GetValueOrDefault() >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (double.IsNaN(value) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (!double.IsNaN(x) && x >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while ((!value.HasValue || double.IsNaN(value.GetValueOrDefault())) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && !double.IsNaN(x.GetValueOrDefault()) && x.GetValueOrDefault() >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (float.IsNaN(value) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (!float.IsNaN(x) && x >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while ((!value.HasValue || float.IsNaN(value.GetValueOrDefault())) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && !float.IsNaN(x.GetValueOrDefault()) && x.GetValueOrDefault() >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the maximum value.</returns>
+        public static TSource MaxBy<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (value == null && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && x.GetValueOrDefault() >= value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        #endregion
+
+        #region Min
+
         public static TSource Min<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
         {
-            Comparison<TSource> comparison = comparer.Compare;
-            return Min(source, comparison);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (comparer == null)
+                return source.Min();
+
+            return UnguardedMin(source, comparer.Compare);
         }
 
         public static TSource Min<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            if (comparison == null)
+                return source.Max();
 
+            return UnguardedMin(source, comparison);
+        }
+
+        static TSource UnguardedMin<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        {
             using (var enumerator = source.GetEnumerator()) {
                 if (!enumerator.MoveNext())
                     throw new InvalidOperationException();
@@ -55,28 +482,378 @@ namespace WmcSoft.Collections.Generic
             }
         }
 
-        public static TSource Max<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
-        {
-            Comparison<TSource> comparison = comparer.Compare;
-            return Max(source, comparison);
-        }
+        #endregion
 
-        public static TSource Max<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparison)
+        #region MinBy
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             using (var enumerator = source.GetEnumerator()) {
-                if (!enumerator.MoveNext())
-                    throw new InvalidOperationException();
-
-                var max = enumerator.Current;
-                while (enumerator.MoveNext()) {
-                    if (comparison(enumerator.Current, max) >= 0)
-                        max = enumerator.Current;
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
                 }
-                return max;
             }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
         }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (value == null && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && x.GetValueOrDefault() < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (value == null && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && x.GetValueOrDefault() < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (double.IsNaN(value) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (!double.IsNaN(x) && x < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while ((!value.HasValue || double.IsNaN(value.GetValueOrDefault())) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && !double.IsNaN(x.GetValueOrDefault()) && x.GetValueOrDefault() < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (float.IsNaN(value) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (!float.IsNaN(x) && x < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while ((!value.HasValue || float.IsNaN(value.GetValueOrDefault())) && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && !float.IsNaN(x.GetValueOrDefault()) && x.GetValueOrDefault() < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the element that have minimum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The input sequence is empty.</exception>
+        /// <returns>The element in the sequence for which <paramref name="selector"/> returned the minimum value.</returns>
+        public static TSource MinBy<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            using (var enumerator = source.GetEnumerator()) {
+                if (enumerator.MoveNext()) {
+                    var element = enumerator.Current;
+                    var value = selector(element);
+                    while (value == null && enumerator.MoveNext()) {
+                        element = enumerator.Current;
+                        value = selector(element);
+                    }
+
+                    while (enumerator.MoveNext()) {
+                        var e = enumerator.Current;
+                        var x = selector(e);
+                        if (x.HasValue && x.GetValueOrDefault() < value) {
+                            element = e;
+                            value = x;
+                        }
+                    }
+                    return element;
+                }
+            }
+
+            return Enumerable.Empty<TSource>().Single(); // forces throw of exception.
+        }
+
+        #endregion
+
+        #region MinMax
 
         static (T? min, T? max) ValueTypeMinMax<T>(this IEnumerable<T?> source)
             where T : struct, IComparable<T>
@@ -285,5 +1062,7 @@ namespace WmcSoft.Collections.Generic
                 return UnguardedMinMaxMaybeNull(source, comparison);
             return UnguardedMinMaxNeverNull(source, comparison);
         }
+
+        #endregion
     }
 }

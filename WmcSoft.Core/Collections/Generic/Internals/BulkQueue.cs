@@ -44,29 +44,29 @@ namespace WmcSoft.Collections.Generic.Internals
 
         protected override void Copy(T[] source, T[] destination, int length)
         {
-            if (_count > 0) {
+            if (count > 0) {
                 if (_head < _tail) {
-                    Array.Copy(source, _head, destination, 0, _count);
+                    Array.Copy(source, _head, destination, 0, count);
                 } else {
                     Array.Copy(source, _head, destination, 0, source.Length - _head);
                     Array.Copy(source, 0, destination, source.Length - _head, _tail);
                 }
             }
             _head = 0;
-            _tail = (_count == destination.Length) ? 0 : _count;
+            _tail = (count == destination.Length) ? 0 : count;
         }
         public bool IsEmpty()
         {
-            return _count == 0;
+            return count == 0;
         }
 
         public void Enqueue(T item)
         {
             EnsureOne();
 
-            _storage[_tail] = item;
-            _tail = (_tail + 1) % _storage.Length;
-            _count++;
+            storage[_tail] = item;
+            _tail = (_tail + 1) % storage.Length;
+            count++;
         }
 
         public void Enqueue(IEnumerable<T> items)
@@ -83,23 +83,23 @@ namespace WmcSoft.Collections.Generic.Internals
         public void BulkEnqueue(int count, Action<T[], int> action)
         {
             Ensure(count);
-            action(_storage, _count);
-            _count += count;
+            action(storage, base.count);
+            base.count += count;
         }
 
         public T Peek()
         {
             if (IsEmpty()) throw new InvalidOperationException();
 
-            return _storage[_head];
+            return storage[_head];
         }
 
         public T Dequeue()
         {
             var head = Peek();
-            _storage[_head] = default;
-            _head = (_head + 1) % _storage.Length;
-            _count--;
+            storage[_head] = default;
+            _head = (_head + 1) % storage.Length;
+            count--;
             return head;
         }
     }

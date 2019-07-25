@@ -1,4 +1,4 @@
-#region Licence
+﻿#region Licence
 
 /****************************************************************************
           Copyright 1999-2015 Vincent J. Jacquet.  All rights reserved.
@@ -291,7 +291,7 @@ namespace WmcSoft
         {
             culture = culture ?? CultureInfo.CurrentCulture;
             var textinfo = culture.TextInfo;
-            return self.ToArray(textinfo.ToTitleCase);
+            return Array.ConvertAll(self, textinfo.ToTitleCase);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace WmcSoft
         public static string[] ToTitleCase(this string[] self)
         {
             var textinfo = CultureInfo.CurrentCulture.TextInfo;
-            return self.ToArray(textinfo.ToTitleCase);
+            return Array.ConvertAll(self, textinfo.ToTitleCase);
         }
 
         /// <summary>
@@ -1288,8 +1288,6 @@ namespace WmcSoft
         public static IEnumerable<string> Tokenize<TTokenizer>(this string self, TTokenizer tokenizer)
             where TTokenizer : ITokenizer<string, string>
         {
-            if (self == null)
-                return null;
             return tokenizer.Tokenize(self);
         }
 
@@ -1313,7 +1311,7 @@ namespace WmcSoft
         public static IEnumerable<string> Tokenize(this string self, params char[] separators)
         {
             if (separators == null || separators.Length == 0)
-                return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
+                return Tokenize(self, new PredicateTokenizer(char.IsWhiteSpace));
             if (separators.Length == 1)
                 return Tokenize(self, new CharTokenizer(separators[0]));
             return Tokenize(self, new CharsTokenizer(separators));
@@ -1338,6 +1336,51 @@ namespace WmcSoft
         public static IEnumerable<string> Tokenize(this string self)
         {
             return Tokenize(self, new PredicateTokenizer(Char.IsWhiteSpace));
+        }
+
+        #endregion
+
+        #region ToSlug()
+
+        static readonly char[] Map = new char[] { 'ß', 'æ', 'ð', 'ø', 'þ', 'đ', 'ł', 'œ', 'ƒ' };
+        static readonly string[] Conversion = new string[] { "ss", "ae", "o", "o", "th", "d", "l", "oe", "f" };
+
+        public static string ToSlug(this string self)
+        {
+            // <https://stackoverflow.com/questions/25259/how-does-stack-overflow-generate-its-seo-friendly-urls>
+
+            var builder = new StringBuilder(self.Length);
+            bool printSpace = false;
+            var normalized = self.Normalize(NormalizationForm.FormD);
+            for (int i = 0; i < normalized.Length; i++) {
+                var c = normalized[i];
+
+                switch (CharUnicodeInfo.GetUnicodeCategory(c)) {
+                case UnicodeCategory.DecimalDigitNumber:
+                case UnicodeCategory.LowercaseLetter:
+                    if (printSpace) {
+                        builder.Append('-');
+                        printSpace = false;
+                    }
+                    var found = Array.BinarySearch(Map, c);
+                    if (found >= 0) {
+                        builder.Append(Conversion[found]);
+                    } else {
+                        builder.Append(c);
+                    }
+                    break;
+                case UnicodeCategory.SpaceSeparator:
+                case UnicodeCategory.ConnectorPunctuation:
+                case UnicodeCategory.DashPunctuation:
+                case UnicodeCategory.OtherPunctuation:
+                    printSpace = true;
+                    break;
+                case UnicodeCategory.UppercaseLetter:
+                    c = char.ToLowerInvariant(c);
+                    goto case UnicodeCategory.LowercaseLetter;
+                }
+            }
+            return builder.ToString();
         }
 
         #endregion

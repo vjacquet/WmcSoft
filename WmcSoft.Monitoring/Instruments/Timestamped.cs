@@ -34,7 +34,7 @@ namespace WmcSoft.Monitoring.Instruments
     /// Stores a value and the timestamp at which it was produced.
     /// </summary>
     /// <typeparam name="T">The type of value</typeparam>
-    [DebuggerDisplay("{Value,nq} at {Timestamp,nq}")]
+    [DebuggerDisplay("{Value,nq}@{Timestamp.ToString(\"HH:mm:ss.fff\"), nq}")]
     public struct Timestamped<T> : IEquatable<T>
     {
         public Timestamped(T value, DateTime timestamp)

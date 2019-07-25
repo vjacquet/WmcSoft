@@ -1,27 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Xunit;
 
 namespace WmcSoft.Text
 {
     public class EncoderBestFitFallbackTests
     {
-        [Fact]
-        public void CanFallbackAccents()
+        [Theory]
+        [InlineData("ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝŸ", "AAAAAACEEEEIIIINOOOOOUUUUYY")]
+        [InlineData("àáâãäåçèéêëìíîïñòóôõöùúûüýÿ", "aaaaaaceeeeiiiinooooouuuuyy")]
+        [InlineData("Šš", "Ss")]
+        [InlineData("ÆæðØøþŒœÐÞßƒ", "????????????")]
+        public void CanFallbackAccents(string text, string expected)
         {
-            var value = "àçéèêëïîôùû";
-            var expected = "aceeeeiiouu";
-            var actual = Encoding.ASCII.BestFitTranscode(value);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void CanFallbackUppercaseAccents()
-        {
-            var value = "ÀÇÉÈÊËÏÎÔÙÛ";
-            var expected = "ACEEEEIIOUU";
-            var actual = Encoding.ASCII.BestFitTranscode(value);
+            var actual = Encoding.ASCII.BestFitTranscode(text);
             Assert.Equal(expected, actual);
         }
 

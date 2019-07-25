@@ -44,21 +44,21 @@ namespace WmcSoft.Time
     public partial struct Date : IComparable<Date>, IEquatable<Date>, IFormattable
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly int storage;
+        private readonly int _storage;
 
         public static readonly Date MinValue = DateTime.MinValue;
         public static readonly Date MaxValue = DateTime.MaxValue;
 
         private Date(int dayNumber)
         {
-            if (dayNumber < MinValue.storage || dayNumber > MaxValue.storage) throw new ArgumentOutOfRangeException(nameof(dayNumber));
+            if (dayNumber < MinValue._storage || dayNumber > MaxValue._storage) throw new ArgumentOutOfRangeException(nameof(dayNumber));
 
-            storage = dayNumber;
+            _storage = dayNumber;
         }
 
         private Date(DateTime date)
         {
-            storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
+            _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
         }
 
         /// <summary>
@@ -96,12 +96,12 @@ namespace WmcSoft.Time
 
         public Date NextDay()
         {
-            return new Date(storage + 1);
+            return new Date(_storage + 1);
         }
 
         public Date PreviousDay()
         {
-            return new Date(storage - 1);
+            return new Date(_storage - 1);
         }
 
         public Timepoint AsTimepoint(TimeZoneInfo zone)
@@ -123,11 +123,11 @@ namespace WmcSoft.Time
         public int Year => AsDateTime.Year;
         public int Month => AsDateTime.Month;
         public int Day => AsDateTime.Day;
-        public DayOfWeek DayOfWeek => (DayOfWeek)((storage + 1) % 7);
+        public DayOfWeek DayOfWeek => (DayOfWeek)((_storage + 1) % 7);
 
         public Date AddDays(int value)
         {
-            return new Date(storage + value);
+            return new Date(_storage + value);
         }
 
         public Date AddMonths(int value)
@@ -147,12 +147,12 @@ namespace WmcSoft.Time
 
         public int DaysSince(Date date)
         {
-            return storage - date.storage;
+            return _storage - date._storage;
         }
 
         public int DaysUntil(Date date)
         {
-            return date.storage - storage;
+            return date._storage - _storage;
         }
 
         public DateTime ToDateTime()
@@ -162,7 +162,7 @@ namespace WmcSoft.Time
 
         #region Operators
 
-        DateTime AsDateTime => new DateTime(storage * TimeSpan.TicksPerDay);
+        DateTime AsDateTime => new DateTime(_storage * TimeSpan.TicksPerDay);
 
         public static implicit operator Date(DateTime date)
         {
@@ -225,7 +225,7 @@ namespace WmcSoft.Time
 
         public int CompareTo(Date other)
         {
-            return storage.CompareTo(other.storage);
+            return _storage.CompareTo(other._storage);
         }
 
         public int CompareTo(object obj)
@@ -276,7 +276,7 @@ namespace WmcSoft.Time
 
         public override int GetHashCode()
         {
-            return storage.GetHashCode();
+            return _storage.GetHashCode();
         }
 
         public override string ToString()

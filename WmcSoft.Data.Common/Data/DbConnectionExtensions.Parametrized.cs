@@ -64,7 +64,7 @@ namespace WmcSoft.Data
             for (int i = 0; i < length; i++) {
                 var p = (TParameter)command.CreateParameter();
                 p.ParameterName = "p" + i.ToString(CultureInfo.CurrentCulture);
-                p.Value = commandText.GetArgument(i);
+                p.Value = commandText.GetArgument(i) ?? DBNull.Value;
                 command.Parameters.Add(p);
                 args[i] = new FormatCapturingParameter(_ => capture(p, _));
             }

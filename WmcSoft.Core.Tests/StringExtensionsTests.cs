@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace WmcSoft
@@ -278,5 +279,20 @@ namespace WmcSoft
             var actual = value.Stuff(startIndex, length, replacement);
             Assert.Equal(expected, actual);
         }
+
+        [Theory]
+        [InlineData("þßæœ", "thssaeoe")]
+        [InlineData("ÞßÆŒ", "thssaeoe")]
+        [InlineData("ðøđłƒ", "oodlf")]
+        [InlineData("ÐØĐŁƑ", "oodlf")]
+        [InlineData("Crème brûlée aux œufs", "creme-brulee-aux-oeufs")]
+        [InlineData("L'apostrophe", "l-apostrophe")]
+        [InlineData("Une « citation » !", "une-citation")]
+        public void CanSlugify(string text, string expected)
+        {
+            var actual = text.ToSlug();
+            Assert.Equal(expected, actual);
+        }
     }
 }
+

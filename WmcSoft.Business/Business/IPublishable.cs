@@ -28,6 +28,9 @@ using System;
 
 namespace WmcSoft.Business
 {
+    /// <summary>
+    /// Provides properties to indicate a publication status of an entity.
+    /// </summary>
     public interface IPublishable
     {
         ModerationStatus ModerationStatus { get; set; }

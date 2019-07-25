@@ -42,13 +42,13 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk">
-      <Version>15.9.0</Version>
+      <Version>16.0.1</Version>
     </PackageReference>
     <PackageReference Include="xunit">
-      <Version>2.4.0</Version>
+      <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio">
-      <Version>2.4.0</Version>
+      <Version>2.4.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -74,6 +74,7 @@
     <Compile Include="Collections\BitArrayExtensionsTests.cs" />
     <Compile Include="Collections\Generic\Algorithms\FinderTests.cs" />
     <Compile Include="Collections\Generic\BagSetTests.cs" />
+    <Compile Include="Collections\Generic\EnumerableExtensionsTests.MinMax.cs" />
     <Compile Include="Collections\Generic\FieldwiseEqualityComparerTests.cs" />
     <Compile Include="Collections\Generic\OrderedCollectionTests.cs" />
     <Compile Include="Collections\Generic\OrderedDictionaryTests.cs" />

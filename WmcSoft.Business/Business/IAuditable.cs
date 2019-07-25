@@ -29,7 +29,7 @@ using System;
 namespace WmcSoft.Business
 {
     /// <summary>
-    /// Provides properties useful to audit changes in a Business entity.
+    /// Provides properties to audit changes in a Business entity.
     /// </summary>
     public interface IAuditable
     {
