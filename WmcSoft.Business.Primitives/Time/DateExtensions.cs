@@ -60,6 +60,16 @@ namespace WmcSoft.Time
         }
 
         /// <summary>
+        /// Returns <c>true</c> if the date is the first day of the month.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns><c>true</c> if the date is the first day of the month.</returns>
+        public static bool IsFirstDayOfMonth(this Date date)
+        {
+            return date.Day == 1;
+        }
+
+        /// <summary>
         /// Gets the first day of the next month of the date represented by this instance.
         /// </summary>
         /// <param name="date">The date</param>
@@ -79,6 +89,17 @@ namespace WmcSoft.Time
             var year = date.Year;
             var month = date.Month;
             return new Date(year, month, DateTime.DaysInMonth(year, month));
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if the date is the last day of the month.
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns><c>true</c> if the date is the last day of the month.</returns>
+        public static bool IsLastDayOfMonth(this Date date)
+        {
+            var (y, m, d) = date;
+            return d == DateTime.DaysInMonth(y, m);
         }
 
         static Date UnguardedFirstDayOfWeek(Date date, IFormatProvider formatProvider)

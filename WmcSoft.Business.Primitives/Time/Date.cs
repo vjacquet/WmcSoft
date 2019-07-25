@@ -71,6 +71,14 @@ namespace WmcSoft.Time
         {
         }
 
+        public void Deconstruct(out int year, out int month, out int day)
+        {
+            var date = AsDateTime;
+            year = date.Year;
+            month = date.Month;
+            day = date.Day;
+        }
+
         /// <summary>
         /// Gets the current date.
         /// </summary>
