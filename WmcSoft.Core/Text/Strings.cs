@@ -40,15 +40,15 @@ namespace WmcSoft.Text
         public struct Enumerator : IEnumerator<string>
         {
             readonly string[] _values;
-            int index;
+            int _index;
 
             internal Enumerator(string[] values)
             {
                 _values = values;
-                index = -1;
+                _index = -1;
             }
 
-            public string Current => _values[index];
+            public string Current => _values[_index];
 
             object IEnumerator.Current => Current;
 
@@ -58,16 +58,16 @@ namespace WmcSoft.Text
 
             public bool MoveNext()
             {
-                if (index < _values.Length) {
-                    ++index;
-                    return index < _values.Length;
+                if (_index < _values.Length) {
+                    ++_index;
+                    return _index < _values.Length;
                 }
                 return false;
             }
 
             public void Reset()
             {
-                index = -1;
+                _index = -1;
             }
         }
 
@@ -114,7 +114,7 @@ namespace WmcSoft.Text
         public override string ToString()
         {
             var values = Values;
-            switch (Values.Length) {
+            switch (values.Length) {
             case 0: return string.Empty;
             case 1: return Values[0];
             default: return string.Join(",", Values);
@@ -128,10 +128,11 @@ namespace WmcSoft.Text
 
         public int IndexOf(string item)
         {
-            if (_values == null)
+            var values = _values;
+            if (values == null)
                 return -1;
-            for (int i = 0; i < _values.Length; i++) {
-                if (string.Equals(_values[i], item, StringComparison.Ordinal)) {
+            for (int i = 0; i < values.Length; i++) {
+                if (string.Equals(values[i], item, StringComparison.Ordinal)) {
                     return i;
                 }
             }
@@ -145,9 +146,10 @@ namespace WmcSoft.Text
 
         public void CopyTo(string[] array, int arrayIndex)
         {
-            if (_values == null)
+            var values = _values;
+            if (values == null)
                 return;
-            Array.Copy(_values, 0, array, arrayIndex, _values.Length);
+            Array.Copy(values, 0, array, arrayIndex, _values.Length);
         }
 
         public Enumerator GetEnumerator()
