@@ -47,7 +47,7 @@ namespace WmcSoft.Units
         }
 
         public RoundingPolicy(int numberOfDigit, int roundingDigit)
-            : this(numberOfDigit, numberOfDigit, RoundingStrategy.Round)
+            : this(numberOfDigit, roundingDigit, RoundingStrategy.Round)
         {
         }
 
@@ -63,10 +63,10 @@ namespace WmcSoft.Units
 
         public RoundingPolicy(int numberOfDigit, int roundingDigit, RoundingStrategy roundingStrategy)
         {
-            _numberOfDigit = numberOfDigit;
-            _roundingDigit = roundingDigit;
-            _roundingStrategy = roundingStrategy;
-            _roundingStep = new decimal(Math.Pow(0.1, numberOfDigit));
+            NumberOfDigit = numberOfDigit;
+            RoundingDigit = roundingDigit;
+            RoundingStrategy = roundingStrategy;
+            RoundingStep = new decimal(Math.Pow(0.1, numberOfDigit));
         }
 
         public RoundingPolicy(decimal roundingStep)
@@ -81,47 +81,41 @@ namespace WmcSoft.Units
                 throw new ArgumentOutOfRangeException(nameof(roundingStrategy));
             if (roundingStep == Zero)
                 throw new DivideByZeroException();
-            _roundingStrategy = roundingStrategy;
-            _roundingStep = roundingStep;
+            RoundingStrategy = roundingStrategy;
+            RoundingStep = roundingStep;
         }
 
         public decimal Round(decimal value)
         {
-            var power = new decimal(Math.Pow(10, _numberOfDigit));
-            switch (_roundingStrategy) {
+            if (value == 0m)
+                return 0m;
+
+            var power = new decimal(Math.Pow(10, NumberOfDigit));
+            switch (RoundingStrategy) {
             case RoundingStrategy.RoundUp:
-                if (value >= 0)
-                    return Ceiling(power * value) / power;
-                else
-                    return Floor(power * value) / power;
+                return value >= 0m
+                    ? Ceiling(power * value) / power
+                    : Floor(power * value) / power;
             case RoundingStrategy.RoundDown:
-                if (value >= 0)
-                    return Floor(power * value) / power;
-                else
-                    return Ceiling(power * value) / power;
+                return value >= 0m
+                    ? Floor(power * value) / power
+                    : Ceiling(power * value) / power;
+            case RoundingStrategy.Round when RoundingDigit == 5:
+                return value >= 0m
+                    ? Floor(power * value + 0.5m) / power
+                    : Floor(power * value - 0.5m) / power;
             case RoundingStrategy.Round:
-                if (_roundingDigit == 5) {
-                    //return Math.Round(value, numberOfDigit);
-                    if (value >= 0)
-                        return Floor(power * value + 0.5m) / power;
-                    else
-                        return Floor(power * value - 0.5m) / power;
-                } else {
-                    if (value >= 0)
-                        return Floor(power * value + (1.0m - 0.1m * _roundingDigit)) / power;
-                    else
-                        return Floor(power * value + (0.1m * _roundingDigit)) / power;
-                }
+                return value >= 0m
+                    ? Floor(power * value + (1.0m - 0.1m * RoundingDigit)) / power
+                    : Floor(power * value + (0.1m * RoundingDigit)) / power;
             case RoundingStrategy.RoundUpByStep:
-                if (value >= 0)
-                    return Ceiling(value / _roundingStep) * _roundingStep;
-                else
-                    return Floor(value / _roundingStep) * _roundingStep;
+                return value >= 0m
+                    ? Ceiling(value / RoundingStep) * RoundingStep
+                    : Floor(value / RoundingStep) * RoundingStep;
             case RoundingStrategy.RoundDownByStep:
-                if (value >= 0)
-                    return Floor(value / _roundingStep) * _roundingStep;
-                else
-                    return Ceiling(value / _roundingStep) * _roundingStep;
+                return value >= 0m
+                    ? Floor(value / RoundingStep) * RoundingStep
+                    : Ceiling(value / RoundingStep) * RoundingStep;
             case RoundingStrategy.RoundTowardsPositive:
                 return Ceiling(power * value) / power;
             case RoundingStrategy.RoundTowardsNegative:
@@ -130,25 +124,13 @@ namespace WmcSoft.Units
             return value;
         }
 
-        public int NumberOfDigit {
-            get { return _numberOfDigit; }
-        }
-        readonly int _numberOfDigit;
+        public int NumberOfDigit { get; }
 
-        public int RoundingDigit {
-            get { return _roundingDigit; }
-        }
-        readonly int _roundingDigit;
+        public int RoundingDigit { get; }
 
-        public decimal RoundingStep {
-            get { return _roundingStep; }
-        }
-        readonly decimal _roundingStep;
+        public decimal RoundingStep { get; }
 
-        public RoundingStrategy RoundingStrategy {
-            get { return _roundingStrategy; }
-        }
-        readonly RoundingStrategy _roundingStrategy;
+        public RoundingStrategy RoundingStrategy { get; }
     }
 
     public enum RoundingStrategy

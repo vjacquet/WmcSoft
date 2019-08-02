@@ -55,21 +55,13 @@ namespace WmcSoft.Units
             return GetType().GetHashCode();
         }
 
-        public override SystemOfUnits SystemOfUnits {
-            get { return SystemOfUnits.International; }
-        }
+        public override SystemOfUnits SystemOfUnits => SystemOfUnits.International;
 
-        public override string Name {
-            get { return RM.GetName(GetType().Name); }
-        }
+        public override string Name => RM.GetName(GetType().Name);
 
-        public override string Symbol {
-            get { return _symbol; }
-        }
+        public override string Symbol => _symbol;
 
-        public override string Definition {
-            get { return RM.GetDefinition(GetType().Name); }
-        }
+        public override string Definition => RM.GetDefinition(GetType().Name);
 
         public virtual Unit WithPrefix(SIPrefix prefix)
         {

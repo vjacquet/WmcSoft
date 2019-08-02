@@ -51,7 +51,7 @@ namespace WmcSoft.Units
         public override int GetHashCode()
         {
             int hash = base.GetHashCode();
-            SystemOfUnits systemOfUnits = this.SystemOfUnits;
+            var systemOfUnits = SystemOfUnits;
             if (systemOfUnits != null)
                 return hash ^ systemOfUnits.GetHashCode() << 6;
             return hash;
