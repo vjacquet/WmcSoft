@@ -85,7 +85,7 @@ _Library of primitives types to build business applications._
   - `TimeUnit` should derive from WmcSoft's units.
   - `newOfSameType()` factory methods are not required for value types.
 
-QuantLib also defines some time related types. The current implementatio of `TimeUnit` is close to `Period`. The types might be merged.
+QuantLib also defines some time related types. The current implementation of `TimeUnit` is close to `Period`. The types might be merged.
 
 Finally, it looks like a [`Date`](https://github.com/dotnet/corefxlab/blob/master/src/System.Time/System/Date.cs) and 
 [`TimeOfDay`](https://github.com/dotnet/corefxlab/blob/master/src/System.Time/System/TimeOfDay.cs) types 

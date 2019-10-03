@@ -31,21 +31,65 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Security;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using WmcSoft.Serialization.Json;
 
 namespace WmcSoft.Time
 {
     [Serializable]
     [XmlSchemaProvider("GetSchema")]
-    [JsonConverter(typeof(DateConverter))]
+    [TypeConverter(typeof(DateTypeConverter))]
     public partial struct Date : IXmlSerializable
     {
-        public static XmlQualifiedName GetSchema(XmlSchemaSet xs)
+        class DateTypeConverter : TypeConverter
+        {
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            {
+                return sourceType == typeof(string);
+            }
+
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            {
+                return destinationType == typeof(InstanceDescriptor) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+            }
+
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            {
+                if (value == null) throw GetConvertFromException(value);
+
+                if (value is string text)
+                    return (Date)DateTime.ParseExact(text, GetFormat(culture), culture);
+                throw new ArgumentException(nameof(value));
+            }
+
+            [SecurityCritical]
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            {
+                if (destinationType != null && value is Date date) {
+                    if (destinationType == typeof(InstanceDescriptor)) {
+                        var method = GetType().GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int) });
+                        var (y, m, d) = date;
+                        return new InstanceDescriptor(method, new object[] { y, m, d });
+                    }
+                    if (destinationType == typeof(string)) {
+                        return date.ToString(GetFormat(culture), culture);
+                    }
+                }
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
+
+            static string GetFormat(CultureInfo culture)
+            {
+                return culture.TwoLetterISOLanguageName == "iv" ? "yyyy-MM-dd" : "d";
+            }
+        }
+
+        public static XmlQualifiedName GetSchema(XmlSchemaSet _)
         {
             return new XmlQualifiedName("date", "http://www.w3.org/2001/XMLSchema");
         }

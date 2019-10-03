@@ -25,20 +25,71 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
+using System.Globalization;
+using System.Security;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using WmcSoft.Serialization.Json;
 
 namespace WmcSoft
 {
     [Serializable]
     [XmlSchemaProvider("GetSchema")]
-    [JsonConverter(typeof(GeoCoordinateConverter))]
+    [TypeConverter(typeof(LatitudeConverter))]
     public partial struct Latitude : IXmlSerializable
     {
-        public static XmlQualifiedName GetSchema(XmlSchemaSet xs)
+        class LatitudeConverter : TypeConverter
+        {
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            {
+                return sourceType == typeof(string);
+            }
+
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            {
+                return destinationType == typeof(InstanceDescriptor) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+            }
+
+            static Latitude ParseInvariant(string input)
+            {
+                var d = decimal.Parse(input, CultureInfo.InvariantCulture);
+                return new Latitude(d);
+            }
+
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            {
+                if (value == null)
+                    throw GetConvertFromException(value);
+
+                if (value is string text)
+                    return ParseInvariant(text);
+
+                throw new ArgumentException(nameof(value));
+            }
+
+            [SecurityCritical]
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            {
+                if (value is Latitude l) {
+                    if (destinationType == typeof(InstanceDescriptor)) {
+                        var method = GetType().GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) });
+                        var (y, m, d, s) = l;
+                        return new InstanceDescriptor(method, new object[] { y, m, d, s });
+                    }
+                    if (destinationType == typeof(string)) {
+                        decimal degrees = l;
+                        return degrees >= 0
+                            ? string.Format(CultureInfo.InvariantCulture, "+{0:00.######}", degrees)
+                            : string.Format(CultureInfo.InvariantCulture, "-{0:00.######}", -degrees);
+                    }
+                }
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
+        }
+
+        public static XmlQualifiedName GetSchema(XmlSchemaSet _)
         {
             return new XmlQualifiedName("decimal", "http://www.w3.org/2001/XMLSchema");
         }

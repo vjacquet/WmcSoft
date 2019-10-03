@@ -49,16 +49,16 @@ namespace WmcSoft.Time
         public static readonly Date MinValue = DateTime.MinValue;
         public static readonly Date MaxValue = DateTime.MaxValue;
 
+        private Date(DateTime date)
+        {
+            _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
+        }
+
         private Date(int dayNumber)
         {
             if (dayNumber < MinValue._storage || dayNumber > MaxValue._storage) throw new ArgumentOutOfRangeException(nameof(dayNumber));
 
             _storage = dayNumber;
-        }
-
-        private Date(DateTime date)
-        {
-            _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
         }
 
         /// <summary>
@@ -69,6 +69,14 @@ namespace WmcSoft.Time
         /// <param name="day">The day (1 through the number of days in <paramref name="month"/>.</param>
         public Date(int year, int month, int day) : this(new DateTime(year, month, day))
         {
+        }
+
+        public void Deconstruct(out int year, out int month, out int day)
+        {
+            var date = AsDateTime;
+            year = date.Year;
+            month = date.Month;
+            day = date.Day;
         }
 
         /// <summary>
