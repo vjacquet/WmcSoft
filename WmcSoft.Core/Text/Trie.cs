@@ -146,7 +146,7 @@ namespace WmcSoft.Text
             if (x.HasValue) results.Enqueue(new KeyValuePair<IEnumerable<TLetter>, TValue>(prefix.ToArray(), x.Value));
 
             var last = prefix.Count;
-            prefix.Add(default(TLetter));
+            prefix.Add(default);
             foreach (var c in x) {
                 prefix[last] = c;
                 Collect(x[c], prefix, results);
@@ -160,7 +160,7 @@ namespace WmcSoft.Text
             if (x.HasValue) results.Enqueue(prefix.ToArray());
 
             var last = prefix.Count;
-            prefix.Add(default(TLetter));
+            prefix.Add(default);
             foreach (var c in x) {
                 prefix[last] = c;
                 Collect(x[c], prefix, results);
@@ -179,7 +179,7 @@ namespace WmcSoft.Text
             }
             var p = pattern[d];
             var last = prefix.Count;
-            prefix.Add(default(TLetter));
+            prefix.Add(default);
             if (!p.HasValue) {
                 foreach (var c in x) {
                     prefix[last] = c;
@@ -195,7 +195,7 @@ namespace WmcSoft.Text
 
         public TValue this[IEnumerable<TLetter> key] {
             get {
-                if (TryGetValue(key, out TValue value))
+                if (TryGetValue(key, out var value))
                     return value;
                 throw new KeyNotFoundException();
             }
@@ -204,9 +204,9 @@ namespace WmcSoft.Text
             }
         }
 
-        public int Count { get { return _count; } }
+        public int Count => _count;
 
-        public bool IsReadOnly { get { return false; } }
+        public bool IsReadOnly => false;
 
         public ICollection<IEnumerable<TLetter>> Keys {
             get {
@@ -240,14 +240,12 @@ namespace WmcSoft.Text
 
         public bool Contains(KeyValuePair<IEnumerable<TLetter>, TValue> item)
         {
-            TValue value;
-            return TryGetValue(item.Key, out value) == true && EqualityComparer<TValue>.Default.Equals(value, item.Value);
+            return TryGetValue(item.Key, out var value) && EqualityComparer<TValue>.Default.Equals(value, item.Value);
         }
 
         public bool ContainsKey(IEnumerable<TLetter> key)
         {
-            TValue value;
-            return TryGetValue(key, out value) == true;
+            return TryGetValue(key, out var value) ;
         }
 
         public void CopyTo(KeyValuePair<IEnumerable<TLetter>, TValue>[] array, int arrayIndex)
@@ -338,7 +336,7 @@ namespace WmcSoft.Text
                 value = x.Value;
                 return true;
             }
-            value = default(TValue);
+            value = default;
             return false;
         }
 
