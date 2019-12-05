@@ -91,11 +91,11 @@ namespace WmcSoft
         public void CanSerializeToJson()
         {
             var obj = new TestObject {
-                Latitude = new Latitude(1.2345m)
+                Latitude = new Latitude(48.858372m)
             };
 
             var json = JsonConvert.SerializeObject(obj);
-            Assert.Contains("1.2345", json);
+            Assert.Contains("\"+48.858372\"", json);
 
             var actual = JsonConvert.DeserializeObject<TestObject>(json);
             Assert.Equal(obj.Latitude, actual.Latitude);

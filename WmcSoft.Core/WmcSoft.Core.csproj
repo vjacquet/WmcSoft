@@ -322,7 +322,7 @@
     <Compile Include="Indices.cs" />
     <Compile Include="IOrdinal.cs" />
     <Compile Include="IO\Sources\Batch.cs" />
-    <Compile Include="IO\CloseBarrierStream.cs" />
+    <Compile Include="IO\IndisposableStream.cs" />
     <Compile Include="IO\ConstrainedStreamDecorator.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="Diagnostics\TraceSourceExtensions.cs" />

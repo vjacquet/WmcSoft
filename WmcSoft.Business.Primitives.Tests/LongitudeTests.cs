@@ -91,11 +91,11 @@ namespace WmcSoft
         public void CanSerializeToJson()
         {
             var obj = new TestObject {
-                Longitude = new Longitude(1.2345m)
+                Longitude = new Longitude(2.294481m)
             };
 
             var json = JsonConvert.SerializeObject(obj);
-            Assert.Contains("1.2345", json);
+            Assert.Contains("\"+002.294481\"", json);
 
             var actual = JsonConvert.DeserializeObject<TestObject>(json);
             Assert.Equal(obj.Longitude, actual.Longitude);

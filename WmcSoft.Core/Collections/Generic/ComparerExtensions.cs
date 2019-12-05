@@ -66,6 +66,8 @@ namespace WmcSoft.Collections.Generic
             return false;
         }
 
+        #endregion
+
         #region EqualsAll
 
         public static bool EqualsAll<T>(this IEqualityComparer<T> comparer, T reference, T value1, T value2)
@@ -81,8 +83,6 @@ namespace WmcSoft.Collections.Generic
             }
             return true;
         }
-
-        #endregion
 
         #endregion
 

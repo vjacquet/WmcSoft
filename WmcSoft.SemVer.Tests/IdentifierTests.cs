@@ -14,8 +14,8 @@ namespace WmcSoft
         [InlineData("12", "1", 1)]
         public void CanCompareParts(string x, string y, int expected)
         {
-            var result = IdentifierComparer.Default.Compare(x,y);
-            switch(expected) {
+            var result = IdentifierComparer.Default.Compare(x, y);
+            switch (expected) {
             case -1:
                 Assert.True(result < 0);
                 break;

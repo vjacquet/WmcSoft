@@ -90,13 +90,9 @@ namespace WmcSoft.Time
             minute = _storage.Minutes;
         }
 
-        public HourOfDay Hour {
-            get { return new HourOfDay(_storage.Hours); }
-        }
+        public HourOfDay Hour => new HourOfDay(_storage.Hours);
 
-        public MinuteOfHour Minutes {
-            get { return new MinuteOfHour(_storage.Minutes); }
-        }
+        public MinuteOfHour Minutes => new MinuteOfHour(_storage.Minutes);
 
         public bool IsAfter(TimeOfDay other)
         {

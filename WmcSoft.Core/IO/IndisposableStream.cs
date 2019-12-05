@@ -33,9 +33,9 @@ namespace WmcSoft.IO
     /// Prevents a stream to be closed on dispose.
     /// </summary>
     [Serializable]
-    public sealed class CloseBarrierStream : StreamDecorator
+    public sealed class IndisposableStream : StreamDecorator
     {
-        public CloseBarrierStream(Stream stream)
+        public IndisposableStream(Stream stream)
             : base(stream)
         {
         }

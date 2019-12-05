@@ -31,21 +31,69 @@
 #endregion
 
 using System;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Security;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using WmcSoft.Serialization.Json;
 
 namespace WmcSoft.Time
 {
     [Serializable]
     [XmlSchemaProvider("GetSchema")]
-    [JsonConverter(typeof(TimeOfDayConverter))]
+    [TypeConverter(typeof(TimeOfDayConverter))]
     public partial struct TimeOfDay : IXmlSerializable
     {
-        public static XmlQualifiedName GetSchema(XmlSchemaSet xs)
+        class TimeOfDayConverter : TypeConverter
+        {
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            {
+                return sourceType == typeof(string);
+            }
+
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            {
+                return destinationType == typeof(InstanceDescriptor) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+            }
+
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            {
+                if (value == null)
+                    throw GetConvertFromException(value);
+
+                if (value is string text) {
+                    var d = DateTime.ParseExact(text, GetFormat(culture), culture);
+                    return new TimeOfDay(d.Hour, d.Minute);
+                }
+
+                throw new ArgumentException(nameof(value));
+            }
+
+            [SecurityCritical]
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            {
+                if (destinationType != null && value is TimeOfDay time) {
+                    if (destinationType == typeof(InstanceDescriptor)) {
+                        var method = typeof(TimeOfDay).GetConstructor(new Type[] { typeof(int), typeof(int) });
+                        var (h, m) = time;
+                        return new InstanceDescriptor(method, new object[] { h, m });
+                    }
+                    if (destinationType == typeof(string)) {
+                        return time.ToString(GetFormat(culture), culture);
+                    }
+                }
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
+
+            static string GetFormat(CultureInfo culture)
+            {
+                return culture.TwoLetterISOLanguageName == "iv" ? @"HH\:mm" : "t";
+            }
+        }
+
+        public static XmlQualifiedName GetSchema(XmlSchemaSet _)
         {
             return new XmlQualifiedName("time", "http://www.w3.org/2001/XMLSchema");
         }

@@ -34,7 +34,7 @@ namespace WmcSoft.Collections.Generic
     /// two objects in descending order.
     /// </summary>
     /// <typeparam name="T">The type of objects to compare.</typeparam>
-    /// <remarks>With this decorator, null items are still less than anyting.</remarks>
+    /// <remarks>With this decorator, <c>null</c> items are less than anything.</remarks>
     [Serializable]
     public sealed class ConformingReverseComparer<T> : IComparer<T>
         where T : class

@@ -60,11 +60,7 @@ namespace WmcSoft.Units
             return _units[(int)unit];
         }
 
-        internal static bool IsInitialized {
-            get {
-                return (_units != null);
-            }
-        }
+        internal static bool IsInitialized => (_units != null);
 
         static void InitializeKnownUnits()
         {

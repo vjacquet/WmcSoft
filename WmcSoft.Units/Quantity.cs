@@ -45,29 +45,31 @@ namespace WmcSoft.Units
         #region Lifecycle
 
         public Quantity(Metric metric)
-            : this(Decimal.Zero, metric)
+            : this(decimal.Zero, metric)
         {
         }
 
         public Quantity(decimal amount, Metric metric)
         {
-            if (metric == null)
-                throw new ArgumentNullException("metric");
+            if (metric == null) throw new ArgumentNullException(nameof(metric));
+
             _amount = amount;
             _metric = metric;
+        }
+
+        public void Deconstruct(out decimal amount, out Metric metric)
+        {
+            amount = _amount;
+            metric = _metric;
         }
 
         #endregion
 
         #region Properties
 
-        public decimal Amount {
-            get { return _amount; }
-        }
+        public decimal Amount => _amount;
 
-        public Metric Metric {
-            get { return _metric; }
-        }
+        public Metric Metric => _metric;
 
         #endregion
 
@@ -274,7 +276,7 @@ namespace WmcSoft.Units
         public int CompareTo(Quantity other)
         {
             // TODO: attempt to convert before deciding...
-            if (this.Metric != other.Metric)
+            if (_metric != other._metric)
                 throw new IncompatibleMetricException();
             return _amount.CompareTo(other._amount);
         }
@@ -291,6 +293,8 @@ namespace WmcSoft.Units
     {
         #region Fields
 
+        private static readonly M _metric = new M();
+
         readonly decimal _amount;
 
         #endregion
@@ -301,6 +305,21 @@ namespace WmcSoft.Units
         {
             _amount = amount;
         }
+
+
+        public void Deconstruct(out decimal amount, out Metric metric)
+        {
+            amount = _amount;
+            metric = _metric;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public decimal Amount => _amount;
+
+        public Metric Metric => _metric;
 
         #endregion
 

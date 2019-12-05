@@ -374,10 +374,10 @@ namespace WmcSoft.Collections.Generic
             int i;
             for (i = 0; i < p; i++)
                 Assert.False(odd(data[i]));
-            data.IsSorted(0, p);
+            Assert.True(data.IsSorted(0, p));
             for (; i < data.Length; ++i)
                 Assert.True(odd(data[i]));
-            data.IsSorted(p, data.Length - p);
+            Assert.True(data.IsSorted(p, data.Length - p));
         }
 
         [Theory]

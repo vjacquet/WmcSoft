@@ -646,7 +646,7 @@ namespace WmcSoft.Collections.Generic
                     buffer[--last] = t;
             }
             buffer.CopyTo(list, start, first);
-            buffer.CopyBackwardsTo(last, list, start + first, length - last);
+            buffer.ReverseCopyTo(last, list, start + first, length - last);
             return start + first;
         }
 

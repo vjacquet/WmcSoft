@@ -49,16 +49,16 @@ namespace WmcSoft.Time
         public static readonly Date MinValue = DateTime.MinValue;
         public static readonly Date MaxValue = DateTime.MaxValue;
 
+        private Date(DateTime date)
+        {
+            _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
+        }
+
         private Date(int dayNumber)
         {
             if (dayNumber < MinValue._storage || dayNumber > MaxValue._storage) throw new ArgumentOutOfRangeException(nameof(dayNumber));
 
             _storage = dayNumber;
-        }
-
-        private Date(DateTime date)
-        {
-            _storage = (int)(date.Ticks / TimeSpan.TicksPerDay);
         }
 
         /// <summary>
