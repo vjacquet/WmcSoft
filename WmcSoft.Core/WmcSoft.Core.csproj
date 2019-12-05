@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WmcSoft</RootNamespace>
     <AssemblyName>WmcSoft.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -45,9 +45,6 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -434,6 +431,7 @@
     <Compile Include="Xml\XPath\ReflectNavigator.cs" />
     <Compile Include="Xml\XPath\RulesXPathNodeIterator.cs" />
     <Compile Include="Xml\XPath\XPathLocator.cs" />
+    <Compile Include="Xml\XPath\XPathNavigatorExtensions.cs" />
     <Compile Include="Xml\Xsl\XsltContextFunction.cs" />
     <Compile Include="Xml\Xsl\XsltContextVariable.cs" />
   </ItemGroup>
@@ -452,7 +450,6 @@
     <None Include="Collections\Graphs\Graph.cd" />
     <None Include="IO\Streams.cd" />
     <None Include="Linq\Expressions\DynamicDiagram.cd" />
-    <None Include="packages.config" />
     <None Include="Xml\XPath\ReflectNavigator.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +467,11 @@
       <Link>CustomDictionary.xml</Link>
       <SubType>Designer</SubType>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
