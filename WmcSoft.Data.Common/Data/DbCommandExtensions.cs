@@ -122,14 +122,10 @@ namespace WmcSoft.Data
             public object Value {
                 get {
                     var value = _base.Value;
-                    if (DBNull.Value.Equals(value))
-                        return null;
-                    return value;
+                    return !DBNull.Value.Equals(value) ? value : null;
                 }
                 set {
-                    if (value == null)
-                        _base.Value = DBNull.Value;
-                    _base.Value = value;
+                    _base.Value = value ?? DBNull.Value;
                 }
             }
 
@@ -253,14 +249,15 @@ namespace WmcSoft.Data
             return results;
         }
 
-        public static IDbDataParameter PrepareParameter<T>(this IDbCommand command, string name, T value = default(T))
+        public static IDbDataParameter PrepareParameter<T>(this IDbCommand command, string name, T value = default)
         {
             var parameter = command.CreateParameter();
             parameter.ParameterName = name;
             command.Parameters.Add(parameter);
 
-            var prepared = new PreparedParameter(parameter);
-            prepared.Value = value;
+            var prepared = new PreparedParameter(parameter) {
+                Value = value
+            };
             return prepared;
         }
 
@@ -292,7 +289,7 @@ namespace WmcSoft.Data
             return (T)Convert.ChangeType(result, typeof(T));
         }
 
-        public static T ExecuteScalarOrDefault<T>(this IDbCommand command, T defaultValue = default(T))
+        public static T ExecuteScalarOrDefault<T>(this IDbCommand command, T defaultValue = default)
         {
             var result = command.ExecuteScalar();
             if (result == null || DBNull.Value.Equals(result))
@@ -328,7 +325,7 @@ namespace WmcSoft.Data
             return (T)Convert.ChangeType(result, typeof(T));
         }
 
-        public static T ExecuteStoredProcedureOrDefault<T>(this IDbCommand command, T defaultValue = default(T))
+        public static T ExecuteStoredProcedureOrDefault<T>(this IDbCommand command, T defaultValue = default)
         {
             var result = command.ExecuteStoredProcedure();
             if (result == null || DBNull.Value.Equals(result))

@@ -112,7 +112,9 @@
     <Compile Include="Collections\Generic\OrderedCollection.cs" />
     <Compile Include="Collections\Generic\OrderedDictionary.cs" />
     <Compile Include="Collections\Generic\PipableCompareResult.cs" />
+    <Compile Include="Collections\Generic\QueueExtensions.cs" />
     <Compile Include="Collections\Generic\ReadOnlyCollectionDebugView.cs" />
+    <Compile Include="Collections\Generic\StackExtensions.cs" />
     <Compile Include="Collections\Generic\ZipFixedSizeDictionary.cs" />
     <Compile Include="Collections\Generic\ZipReadOnlyDictionary.cs" />
     <Compile Include="Collections\Forests\Forest.cs" />
