@@ -33,6 +33,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using static WmcSoft.Time.Algorithms;
+
 namespace WmcSoft.Time
 {
     public static class DateSpecificationExtensions
@@ -78,5 +80,85 @@ namespace WmcSoft.Time
         {
             return EnumerateOver(specification, interval).FirstOrDefault();
         }
+
+        /// <summary>
+        /// Creates a new specification applicable only since the given <paramref name="date"/>.
+        /// </summary>
+        /// <param name="specification">The specification to decorate.</param>
+        /// <param name="date">The date</param>
+        /// <returns>A new specification applicable only since the given <paramref name="date"/></returns>
+        public static IDateSpecification ApplicableSince(this IDateSpecification specification, Date date)
+        {
+            return new SinceDateSpecification(specification, date);
+        }
+
+        /// <summary>
+        /// Creates a new specification applicable only until the given <paramref name="date"/>.
+        /// </summary>
+        /// <param name="specification">The specification to decorate.</param>
+        /// <param name="date">The date</param>
+        /// <returns>A new specification applicable only until the given <paramref name="date"/></returns>
+        public static IDateSpecification ApplicableUntil(this IDateSpecification specification, Date date)
+        {
+            return new UntilDateSpecification(specification, date);
+        }
+
+        #region Decorators
+
+        class SinceDateSpecification : IDateSpecification
+        {
+            private readonly IDateSpecification _underlying;
+            private readonly Date _since;
+
+            public SinceDateSpecification(IDateSpecification underlying, Date since)
+            {
+                _underlying = underlying;
+                _since = since;
+            }
+
+            public IEnumerable<Date> EnumerateBetween(Date since, Date until)
+            {
+                since = Max(since, _since);
+                if (since > until)
+                    return Enumerable.Empty<Date>();
+                return _underlying.EnumerateBetween(since, until);
+            }
+
+            public bool IsSatisfiedBy(Date candidate)
+            {
+                if (_since <= candidate)
+                    return _underlying.IsSatisfiedBy(candidate);
+                return false;
+            }
+        }
+
+        class UntilDateSpecification : IDateSpecification
+        {
+            private readonly IDateSpecification _underlying;
+            private readonly Date _until;
+
+            public UntilDateSpecification(IDateSpecification underlying, Date until)
+            {
+                _underlying = underlying;
+                _until = until;
+            }
+
+            public IEnumerable<Date> EnumerateBetween(Date since, Date until)
+            {
+                until = Min(until, _until);
+                if (since > until)
+                    return Enumerable.Empty<Date>();
+                return _underlying.EnumerateBetween(since, until);
+            }
+
+            public bool IsSatisfiedBy(Date candidate)
+            {
+                if (candidate <= _until)
+                    return _underlying.IsSatisfiedBy(candidate);
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

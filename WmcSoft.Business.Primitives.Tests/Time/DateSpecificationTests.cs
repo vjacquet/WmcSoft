@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xunit;
 
 namespace WmcSoft.Time
@@ -48,6 +49,51 @@ namespace WmcSoft.Time
             var memorialDay = DateSpecification.NthOccurenceOfWeekdayInMonth(5, DayOfWeek.Monday, -1);
             var expected = new Date(year, month, day);
             Assert.Equal(expected, memorialDay.OfYear(year));
+        }
+
+        [Fact]
+        public void CanEnumerateDates()
+        {
+            var newYear = new Date(2000, 1, 1);
+            var newYearEve = new Date(2000, 12, 31);
+            var labourDay = new Date(2000, 5, 1);
+            var xmas = new Date(2000, 12, 25);
+
+            var specification = new DatesSpecification(new[] { newYear, labourDay, xmas, newYearEve });
+            Assert.Equal(4, specification.EnumerateBetween(newYear.AddYears(-1), newYear.AddYears(+1)).Count());
+            Assert.Equal(4, specification.EnumerateBetween(newYear, newYearEve).Count());
+            Assert.Equal(2, specification.EnumerateBetween(labourDay, xmas).Count());
+            Assert.Equal(2, specification.EnumerateBetween(new Date(2000, 2, 1), new Date(2000, 12, 30)).Count());
+        }
+
+        [Fact]
+        public void CanEnumerateDatesBetweenBounds()
+        {
+            var months = Enumerable.Range(1, 12).Select(m => new Date(2000, m, 01)).ToArray();
+            var dates = new DatesSpecification(months);
+            Assert.Equal(months, dates.EnumerateBetween(new Date(2000, 01, 01), new Date(2000, 12, 31)));
+        }
+
+        [Theory]
+        [InlineData(06, 15)]
+        [InlineData(07, 01)]
+        public void CanApplyASpecificationSinceAGivenDate(int month, int day)
+        {
+            var months = Enumerable.Range(1, 12).Select(m => new Date(2000, m, 01)).ToArray();
+            var dates = new DatesSpecification(months);
+            var decorated = dates.ApplicableSince(new Date(2000, month, day));
+            Assert.Equal(months.Skip(6), decorated.EnumerateBetween(new Date(2000, 01, 01), new Date(2000, 12, 31)));
+        }
+
+        [Theory]
+        [InlineData(06, 15)]
+        [InlineData(06, 01)]
+        public void CanApplyASpecificationUntilAGivenDate(int month, int day)
+        {
+            var months = Enumerable.Range(1, 12).Select(m => new Date(2000, m, 01)).ToArray();
+            var dates = new DatesSpecification(months);
+            var decorated = dates.ApplicableUntil(new Date(2000, month, day));
+            Assert.Equal(months.Take(6), decorated.EnumerateBetween(new Date(2000, 01, 01), new Date(2000, 12, 31)));
         }
     }
 }
