@@ -250,17 +250,42 @@ namespace WmcSoft.Time
 
         public string ToString(string format)
         {
-            return ((DateTime)this).ToString(format);
+            return ToString(format, null);
         }
 
         public string ToString(IFormatProvider formatProvider)
         {
-            return ((DateTime)this).ToString("d", formatProvider);
+            return AsDateTime.ToString("d", formatProvider);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return ((DateTime)this).ToString(format, formatProvider);
+            return AsDateTime.ToString(AdaptFormat(format), formatProvider);
+        }
+
+        static string AdaptFormat(string format)
+        {
+            switch (format) {
+            case "G":
+                return "D";
+            case null:
+            case "g":
+                return "d";
+            case "o":
+            case "O":
+            case "s":
+            case "u":
+                return "yyyy-MM-dd";
+            case "f":
+            case "F":
+            case "t":
+            case "T":
+            case "R":
+            case "U":
+                throw new FormatException();
+            default:
+                return format;
+            }
         }
 
         #endregion 
