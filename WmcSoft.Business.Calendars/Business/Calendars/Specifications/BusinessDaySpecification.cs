@@ -31,6 +31,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
@@ -51,6 +52,9 @@ namespace WmcSoft.Business.Calendars.Specifications
 
         public IEnumerable<Date> EnumerateBetween(Date since, Date until)
         {
+            if (since > until)
+                yield break;
+
             var date = since;
             while (!IsSatisfiedBy(date))
                 date = _calendar.NextBusinessDay(date);

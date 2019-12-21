@@ -30,8 +30,8 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WmcSoft.Time
 {
@@ -64,8 +64,8 @@ namespace WmcSoft.Time
         /// <inheritdoc/>
         public IEnumerable<Date> EnumerateBetween(Date since, Date until)
         {
-            if (since > until) throw new ArgumentException();
-
+            if (since > until)
+                return Enumerable.Empty<Date>();
             return UnguardedEnumerateOver(since, until);
         }
 

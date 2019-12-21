@@ -45,6 +45,7 @@ namespace WmcSoft.Time
         /// <param name="since">The date, inclusive, since when to start enumerating.</param>
         /// <param name="until">The date, inclusive, until when to end enumerating.</param>
         /// <returns>The <see cref="Date"/>s satisfying this specification.</returns>
+        /// <remarks>Returns an empty enumerable when <paramref name="since"/> is after <paramref name="until"/>.</remarks>
         IEnumerable<Date> EnumerateBetween(Date since, Date until);
     }
 }
