@@ -32,6 +32,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WmcSoft.Time;
 
 namespace WmcSoft.Business.Calendars.Specifications
@@ -52,7 +53,7 @@ namespace WmcSoft.Business.Calendars.Specifications
 
             // optimize EnumerateOver by precomputing the number of days until the next week end day.
             var twoWeeks = 0;
-            foreach (DayOfWeek day in days)
+            foreach (var day in days)
                 twoWeeks |= (0b0000001_0000001 << (int)day);
 
             _nextWeekendDay = new int[DaysOfWeek];
