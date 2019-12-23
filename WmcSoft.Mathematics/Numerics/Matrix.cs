@@ -199,6 +199,11 @@ namespace WmcSoft.Numerics
             }
         }
 
+        private Matrix(Matrix m)
+        {
+            _storage = new Storage(m._storage);
+        }
+
         public static Matrix Identity(int n)
         {
             var result = new Matrix(n);
@@ -226,7 +231,48 @@ namespace WmcSoft.Numerics
 
         public Matrix Inverse()
         {
-            throw new NotImplementedException();
+            var size = Size;
+            if (size[0] != size[1])
+                throw new ArgumentException(Resources.MatrixMustBeSquare);
+            var n = size[0];
+            var matrix = _storage;
+
+            var result = Identity(n);
+            var invert = result._storage;
+
+            // triangulate
+            for (int i = 0; i < n; i++) {
+                // Normalize
+                var norm = matrix[i, i];
+                for (int j = 0; j < (i + 1); j++)
+                    invert[i, j] /= norm;
+                for (int j = i; j < n; j++)
+                    matrix[i, j] /= norm;
+
+                // Pivot
+                for (int k = (i + 1); k < n; k++) {
+                    var pivot = matrix[k, i];
+                    for (int j = 0; j <= i; j++)
+                        invert[k, j] -= invert[i, j] * pivot;
+                    for (int j = i; j < n; j++)
+                        matrix[k, j] -= matrix[i, j] * pivot;
+                }
+            }
+
+            // diagonalize
+            for (int i = n - 1; i >= 0; i--) {
+                for (int k = (i - 1); k >= 0; k--) {
+                    var pivot = matrix[k, i];
+                    for (int j = n - 1; j > i; j--)
+                        invert[k, j] -= pivot * invert[i, j];
+                    for (int j = i; j >= 0; j--) {
+                        invert[k, j] -= pivot * invert[i, j];
+                        matrix[k, i] -= pivot * matrix[i, j];
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -382,7 +428,7 @@ namespace WmcSoft.Numerics
 
         #region Operators
 
-        public static explicit operator double[,] (Matrix x)
+        public static explicit operator double[,](Matrix x)
         {
             if (x._storage == null)
                 return new double[0, 0];
@@ -692,17 +738,17 @@ namespace WmcSoft.Numerics
                     var ip = indx[i];
                     var sum = x[ip];
                     x[ip] = x[i];
-                    if(ii !=0) {
-                        for (int j = ii-1; j < i; j++) {
+                    if (ii != 0) {
+                        for (int j = ii - 1; j < i; j++) {
                             sum -= lu[i, j] * x[j];
                         }
-                    } else if(Abs(sum) > double.Epsilon) {
-                        ii = i +1;
+                    } else if (Abs(sum) > double.Epsilon) {
+                        ii = i + 1;
                     }
                 }
                 for (int i = n - 1; i >= 0; i--) {
                     var sum = x[i];
-                    for (int j =i+1; j < n; j++) {
+                    for (int j = i + 1; j < n; j++) {
                         sum -= lu[i, j] * x[j];
                     }
                     x[i] = sum / lu[i, i];

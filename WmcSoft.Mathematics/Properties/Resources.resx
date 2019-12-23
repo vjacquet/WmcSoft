@@ -123,6 +123,9 @@
   <data name="MatricesMustHaveTheSameSizeError" xml:space="preserve">
     <value>The matrices must have the same size.</value>
   </data>
+  <data name="MatrixMustBeSquare" xml:space="preserve">
+    <value>The matrix must be a square matrix.</value>
+  </data>
   <data name="VectorsMustHaveSameSizeError" xml:space="preserve">
     <value>The vectors must have the same size.</value>
   </data>

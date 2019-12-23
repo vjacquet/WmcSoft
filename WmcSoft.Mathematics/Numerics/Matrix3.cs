@@ -129,8 +129,7 @@ namespace WmcSoft.Numerics
 
         public Matrix3 Inverse()
         {
-            Matrix3 result;
-            if (!TryInverse(out result))
+            if (!TryInverse(out var result))
                 throw new InvalidOperationException("Cannot inverse matrix");
             return result;
         }
