@@ -30,23 +30,23 @@ using System.Security.Cryptography;
 
 namespace WmcSoft.Security.Cryptography
 {
-    /// <summary>Converts a <see cref="CryptoStream"></see> using Uuencode.</summary>
+    /// <summary>Decodes a <see cref="CryptoStream"></see> using Uuencode.</summary>
     /// <remarks>See http://en.wikipedia.org/wiki/Uuencode for more details.</remarks>
     [ComVisible(true)]
     public class UUDecodeTransform : ICryptoTransform, IDisposable
     {
         #region Lifecycle
 
-        /// <summary>Initializes a new instance of the <see cref="ToBase64Transform"></see> class. </summary>
+        /// <summary>Initializes a new instance of the <see cref="UUDecodeTransform"></see> class. </summary>
         public UUDecodeTransform() {
         }
 
-        /// <summary>Releases the unmanaged resources used by the <see cref="ToBase64Transform"></see>.</summary>
+        /// <summary>Releases the unmanaged resources used by the <see cref="UUDecodeTransform"></see>.</summary>
         ~UUDecodeTransform() {
             Dispose(false);
         }
 
-        /// <summary>Releases the unmanaged resources used by the <see cref="ToBase64Transform"></see> and optionally releases the managed resources.</summary>
+        /// <summary>Releases the unmanaged resources used by the <see cref="UUDecodeTransform"></see> and optionally releases the managed resources.</summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
         protected virtual void Dispose(bool disposing) {
         }
@@ -62,27 +62,19 @@ namespace WmcSoft.Security.Cryptography
 
         /// <summary>Gets a value indicating whether the current transform can be reused.</summary>
         /// <returns>Always true.</returns>
-        public virtual bool CanReuseTransform {
-            get { return true; }
-        }
+        public virtual bool CanReuseTransform => true;
 
         /// <summary>Gets a value that indicates whether multiple blocks can be transformed.</summary>
         /// <returns>Always false.</returns>
-        public bool CanTransformMultipleBlocks {
-            get { return false; }
-        }
+        public bool CanTransformMultipleBlocks => false;
 
         /// <summary>Gets the input block size.</summary>
         /// <returns>The size of the input data blocks in bytes.</returns>
-        public int InputBlockSize {
-            get { return 4; }
-        }
+        public int InputBlockSize => 4;
 
         /// <summary>Gets the output block size.</summary>
         /// <returns>The size of the output data blocks in bytes.</returns>
-        public int OutputBlockSize {
-            get { return 3; }
-        }
+        public int OutputBlockSize => 3;
 
         #endregion
 
@@ -95,13 +87,13 @@ namespace WmcSoft.Security.Cryptography
         /// <param name="inputOffset">The offset into the input byte array from which to begin using data. </param>
         /// <param name="outputOffset">The offset into the output byte array from which to begin writing data. </param>
         /// <param name="inputCount">The number of bytes in the input byte array to use as data. </param>
-        /// <exception cref="T:System.Security.Cryptography.CryptographicException">The data size is not valid. </exception>
-        /// <exception cref="T:System.ObjectDisposedException">The current <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> has already been disposed. </exception>
+        /// <exception cref="CryptographicException">The data size is not valid. </exception>
+        /// <exception cref="ObjectDisposedException">The current transform has already been disposed. </exception>
         public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {
-            if (inputBuffer == null) throw new ArgumentNullException("inputBuffer");
-            if (inputOffset < 0) throw new ArgumentOutOfRangeException("inputOffset");
-            if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException("inputCount");
-            if ((inputBuffer.Length - inputCount) < inputOffset) throw new ArgumentOutOfRangeException("inputOffset");
+            if (inputBuffer == null) throw new ArgumentNullException(nameof(inputBuffer));
+            if (inputOffset < 0) throw new ArgumentOutOfRangeException(nameof(inputOffset));
+            if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException(nameof(inputCount));
+            if ((inputBuffer.Length - inputCount) < inputOffset) throw new ArgumentOutOfRangeException(nameof(inputOffset));
 
             if (inputCount < InputBlockSize) {
                 return 0;
@@ -123,13 +115,13 @@ namespace WmcSoft.Security.Cryptography
         /// <param name="inputBuffer">The input to convert to base 64. </param>
         /// <param name="inputOffset">The offset into the byte array from which to begin using data. </param>
         /// <param name="inputCount">The number of bytes in the byte array to use as data. </param>
-        /// <exception cref="T:System.ObjectDisposedException">The current <see cref="T:System.Security.Cryptography.ToBase64Transform"></see> has already been disposed. </exception>
+        /// <exception cref="ObjectDisposedException">The current transform has already been disposed. </exception>
         public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {
-            if (inputBuffer == null) throw new ArgumentNullException("inputBuffer");
-            if (inputOffset < 0) throw new ArgumentOutOfRangeException("inputOffset");
-            if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException("inputCount");
-            if ((inputBuffer.Length - inputCount) < inputOffset) throw new ArgumentOutOfRangeException("inputOffset");
-            if (inputCount == 1) throw new ArgumentOutOfRangeException("inputCount");
+            if (inputBuffer == null) throw new ArgumentNullException(nameof(inputBuffer));
+            if (inputOffset < 0) throw new ArgumentOutOfRangeException(nameof(inputOffset));
+            if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException(nameof(inputCount));
+            if ((inputBuffer.Length - inputCount) < inputOffset) throw new ArgumentOutOfRangeException(nameof(inputOffset));
+            if (inputCount == 1) throw new ArgumentOutOfRangeException(nameof(inputCount));
 
             // uudecode
             switch (inputCount) {
