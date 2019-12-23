@@ -183,6 +183,19 @@ namespace WmcSoft.Numerics
             }
         }
 
+        public Matrix(Dimensions dimensions, Func<int, int, double> generator)
+        {
+            var m = dimensions[0];
+            var n = dimensions[1];
+            _storage = new Storage(m, n);
+            var index = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    _storage.data[index++] = generator(i, j);
+                }
+            }
+        }
+
         public Matrix(int m, int n, double value)
             : this(m, n)
         {
@@ -271,7 +284,7 @@ namespace WmcSoft.Numerics
             for (int i = 0; i < n; ++i) {
                 lu[i] = new double[n];
                 for (int j = 0; j < n; ++j)
-                    lu[i][j] = m[i,j];
+                    lu[i][j] = m[i, j];
             }
 
             // make perm[]
@@ -743,19 +756,19 @@ namespace WmcSoft.Numerics
         {
             const double Tiny = 1.0e-40d;
 
-            int n;
-            Matrix a;
-            Storage lu;
-            int[] indx;
-            double d;
+            public int n;
+            public Matrix matrix;
+            readonly Storage lu;
+            public double sign;
+            public int[] permutations;
 
             public LUDecomposition(Matrix a)
             {
-                this.a = a;
+                matrix = a;
                 n = a.Rows;
                 lu = new Storage(a._storage);
-                indx = new int[n];
-                d = 1d;
+                permutations = new int[n];
+                sign = 1d;
 
                 try {
                     var scaling = new double[n];
@@ -767,10 +780,10 @@ namespace WmcSoft.Numerics
                         var (imax, _) = lu.Element(first, first + n, 1, (x, i) => scaling[i] * Abs(x), (x, y) => x < y);
                         if (k != imax) {
                             lu.SwapRows(k, imax);
-                            d = -d;
+                            sign = -sign;
                             scaling[imax] = scaling[k];
                         }
-                        indx[k] = imax;
+                        permutations[k] = imax;
                         var pivot = lu[k, k];
                         if (Abs(pivot) < double.Epsilon) lu[k, k] = pivot = Tiny;
                         for (int i = k + 1; i < n; i++) {
@@ -787,7 +800,7 @@ namespace WmcSoft.Numerics
 
             public double Det()
             {
-                var result = d;
+                var result = sign;
                 for (int i = 0; i < n; i++) {
                     result *= lu[i, i];
                 }
@@ -799,7 +812,7 @@ namespace WmcSoft.Numerics
                 var x = (double[])b.Clone();
                 var ii = 0;
                 for (int i = 0; i < n; i++) {
-                    var ip = indx[i];
+                    var ip = permutations[i];
                     var sum = x[ip];
                     x[ip] = x[i];
                     if (ii != 0) {

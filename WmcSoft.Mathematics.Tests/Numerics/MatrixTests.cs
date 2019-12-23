@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Xunit;
 using WmcSoft.Collections.Generic;
+using System;
 
 namespace WmcSoft.Numerics
 {
@@ -171,11 +172,12 @@ namespace WmcSoft.Numerics
                 {5, 6, 0},
             });
             var expected = new Matrix(new double[,] {
-                {-24,  18,  5},
-                { 20, -15, -4},
-                { -5,   4,  1},
+                {-24d,  18d,  5d},
+                { 20d, -15d, -4d},
+                { -5d,   4d,  1d},
             });
-            var actual = x.Inverse();
+            var inverse = x.Inverse();
+            var actual = new Matrix(inverse.Size, (i, j) => Math.Round(inverse[i, j], 8));
             Assert.Equal(expected, actual);
         }
 
