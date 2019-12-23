@@ -161,5 +161,41 @@ namespace WmcSoft.Numerics
             var expected = Matrix.Identity(4) * (2 << 4);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void CanInverse3x3()
+        {
+            var x = new Matrix(new double[,] {
+                {1, 2, 3},
+                {0, 1, 4},
+                {5, 6, 0},
+            });
+            var expected = new Matrix(new double[,] {
+                {-24,  18,  5},
+                { 20, -15, -4},
+                { -5,   4,  1},
+            });
+            var actual = x.Inverse();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanInverse4x4()
+        {
+            var x = new Matrix(new double[,] {
+                {-1,  0,  1,  1},
+                { 1, -2,  1, -1},
+                { 1,  0, -1,  1},
+                { 1,  0,  1, -1},
+            });
+            var expected = new Matrix(new double[,] {
+                { 0.0d,  0.0d,  0.5d,  0.5d},
+                { 0.0d, -0.5d,  0.0d,  0.5d},
+                { 0.5d,  0.0d,  0.0d,  0.5d},
+                { 0.5d,  0.0d,  0.5d,  0.0d},
+            });
+            var actual = x.Inverse();
+            Assert.Equal(expected, actual);
+        }
     }
 }

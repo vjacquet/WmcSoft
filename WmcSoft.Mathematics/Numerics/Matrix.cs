@@ -231,49 +231,113 @@ namespace WmcSoft.Numerics
 
         public Matrix Inverse()
         {
+            // Article: <https://docs.microsoft.com/en-us/archive/msdn-magazine/2016/july/test-run-matrix-inversion-using-csharp>
+            // Code: <http://quaetrix.com/Matrix/code.html>
             var size = Size;
             if (size[0] != size[1])
                 throw new ArgumentException(Resources.MatrixMustBeSquare);
             var n = size[0];
-            var matrix = _storage;
 
-            var result = Identity(n);
-            var invert = result._storage;
+            var result = new Matrix(this);
+            var matrix = result._storage;
+            Decompose(n, _storage, out var lu, out var permutations);
 
-            // triangulate
-            for (int i = 0; i < n; i++) {
-                // Normalize
-                var norm = matrix[i, i];
-                for (int j = 0; j < (i + 1); j++)
-                    invert[i, j] /= norm;
-                for (int j = i; j < n; j++)
-                    matrix[i, j] /= norm;
+            var b = new double[n];
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < n; ++j)
+                    b[j] = i == permutations[j] ? 1d : 0d;
 
-                // Pivot
-                for (int k = (i + 1); k < n; k++) {
-                    var pivot = matrix[k, i];
-                    for (int j = 0; j <= i; j++)
-                        invert[k, j] -= invert[i, j] * pivot;
-                    for (int j = i; j < n; j++)
-                        matrix[k, j] -= matrix[i, j] * pivot;
-                }
-            }
-
-            // diagonalize
-            for (int i = n - 1; i >= 0; i--) {
-                for (int k = (i - 1); k >= 0; k--) {
-                    var pivot = matrix[k, i];
-                    for (int j = n - 1; j > i; j--)
-                        invert[k, j] -= pivot * invert[i, j];
-                    for (int j = i; j >= 0; j--) {
-                        invert[k, j] -= pivot * invert[i, j];
-                        matrix[k, i] -= pivot * matrix[i, j];
-                    }
-                }
+                var x = Helper(n, lu, (double[])b.Clone());
+                for (int j = 0; j < n; ++j)
+                    matrix[j, i] = x[j];
             }
 
             return result;
         }
+
+        private static int Decompose(int n, Storage m, out double[][] lu, out int[] permutations)
+        {
+            // Crout's LU decomposition for matrix determinant and inverse
+            // stores combined lower & upper in lum[][]
+            // stores row permuations into perm[]
+            // returns +1 or -1 according to even or odd number of row permutations
+            // lower gets dummy 1.0s on diagonal (0.0s above)
+            // upper gets lum values on diagonal (0.0s below)
+
+            int toggle = +1; // even (+1) or odd (-1) row permutatuions
+
+            // make a copy of m[][] into result lu[][]
+            lu = new double[n][];
+            for (int i = 0; i < n; ++i) {
+                lu[i] = new double[n];
+                for (int j = 0; j < n; ++j)
+                    lu[i][j] = m[i,j];
+            }
+
+            // make perm[]
+            permutations = new int[n];
+            for (int i = 0; i < n; ++i)
+                permutations[i] = i;
+
+            for (int j = 0; j < n - 1; ++j) // process by column. note n-1 
+            {
+                double max = Abs(lu[j][j]);
+                int piv = j;
+
+                for (int i = j + 1; i < n; ++i) // find pivot index
+                {
+                    double xij = Abs(lu[i][j]);
+                    if (xij > max) {
+                        max = xij;
+                        piv = i;
+                    }
+                } // i
+
+                if (piv != j) {
+                    double[] tmp = lu[piv]; // swap rows j, piv
+                    lu[piv] = lu[j];
+                    lu[j] = tmp;
+
+                    int t = permutations[piv]; // swap perm elements
+                    permutations[piv] = permutations[j];
+                    permutations[j] = t;
+
+                    toggle = -toggle;
+                }
+
+                double xjj = lu[j][j];
+                if (xjj != 0.0) {
+                    for (int i = j + 1; i < n; ++i) {
+                        double xij = lu[i][j] / xjj;
+                        lu[i][j] = xij;
+                        for (int k = j + 1; k < n; ++k)
+                            lu[i][k] -= xij * lu[j][k];
+                    }
+                }
+            } // j
+
+            return toggle;
+        }
+
+        static double[] Helper(int n, double[][] lu, double[] x)
+        {
+            for (int i = 1; i < n; ++i) {
+                double sum = x[i];
+                for (int j = 0; j < i; ++j)
+                    sum -= lu[i][j] * x[j];
+                x[i] = sum;
+            }
+
+            x[n - 1] /= lu[n - 1][n - 1];
+            for (int i = n - 2; i >= 0; --i) {
+                double sum = x[i];
+                for (int j = i + 1; j < n; ++j)
+                    sum -= lu[i][j] * x[j];
+                x[i] = sum / lu[i][i];
+            }
+
+            return x;
+        } // Helper
 
         /// <summary>
         /// Creates a Vandermonde's matrix.
