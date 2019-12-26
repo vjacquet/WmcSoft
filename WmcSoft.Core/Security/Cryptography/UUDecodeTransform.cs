@@ -38,20 +38,24 @@ namespace WmcSoft.Security.Cryptography
         #region Lifecycle
 
         /// <summary>Initializes a new instance of the <see cref="UUDecodeTransform"></see> class. </summary>
-        public UUDecodeTransform() {
+        public UUDecodeTransform()
+        {
         }
 
         /// <summary>Releases the unmanaged resources used by the <see cref="UUDecodeTransform"></see>.</summary>
-        ~UUDecodeTransform() {
-            Dispose(false);
+        ~UUDecodeTransform()
+        {
+            Dispose(disposing: false);
         }
 
         /// <summary>Releases the unmanaged resources used by the <see cref="UUDecodeTransform"></see> and optionally releases the managed resources.</summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -89,7 +93,8 @@ namespace WmcSoft.Security.Cryptography
         /// <param name="inputCount">The number of bytes in the input byte array to use as data. </param>
         /// <exception cref="CryptographicException">The data size is not valid. </exception>
         /// <exception cref="ObjectDisposedException">The current transform has already been disposed. </exception>
-        public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {
+        public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+        {
             if (inputBuffer == null) throw new ArgumentNullException(nameof(inputBuffer));
             if (inputOffset < 0) throw new ArgumentOutOfRangeException(nameof(inputOffset));
             if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException(nameof(inputCount));
@@ -116,7 +121,8 @@ namespace WmcSoft.Security.Cryptography
         /// <param name="inputOffset">The offset into the byte array from which to begin using data. </param>
         /// <param name="inputCount">The number of bytes in the byte array to use as data. </param>
         /// <exception cref="ObjectDisposedException">The current transform has already been disposed. </exception>
-        public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {
+        public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+        {
             if (inputBuffer == null) throw new ArgumentNullException(nameof(inputBuffer));
             if (inputOffset < 0) throw new ArgumentOutOfRangeException(nameof(inputOffset));
             if (inputCount < 0 || inputCount > inputBuffer.Length) throw new ArgumentOutOfRangeException(nameof(inputCount));
@@ -145,8 +151,9 @@ namespace WmcSoft.Security.Cryptography
             }
         }
 
-        /// <summary>Releases all resources used by the <see cref="ToBase64Transform"></see>.</summary>
-        public void Clear() {
+        /// <summary>Releases all resources used by the <see cref="UUDecodeTransform"></see>.</summary>
+        public void Clear()
+        {
             Dispose();
         }
 

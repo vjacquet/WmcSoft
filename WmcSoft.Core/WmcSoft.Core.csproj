@@ -248,6 +248,8 @@
     <Compile Include="Runtime\Serialization\SerializationInfoExtensions.cs" />
     <Compile Include="Security\Cryptography\CRC32.cs" />
     <Compile Include="Security\Cryptography\CRC32Managed.cs" />
+    <Compile Include="Security\Cryptography\MealyDecodeTransform.cs" />
+    <Compile Include="Security\Cryptography\MealyEncodeTransform.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Text\Alphabet.cs" />

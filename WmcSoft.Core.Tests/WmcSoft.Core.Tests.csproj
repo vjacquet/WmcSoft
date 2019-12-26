@@ -154,6 +154,7 @@
     <Compile Include="OrdinalTests.cs" />
     <Compile Include="Runtime\Serialization\XmlSerializerTests.cs" />
     <Compile Include="Security\Cryptography\CRC32Tests.cs" />
+    <Compile Include="Security\Cryptography\MealyTests.cs" />
     <Compile Include="SubscriptionTests.cs" />
     <Compile Include="TestTools\UnitTesting\ContractAssert.Ordinal.cs" />
     <Compile Include="Text\RomanConverterTests.cs" />
