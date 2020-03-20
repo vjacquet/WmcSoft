@@ -82,18 +82,14 @@ namespace WmcSoft.Text
         /// <summary>
         /// Returns the count of suffixes.
         /// </summary>
-        public int Count {
-            get { return _suffixes.Length; }
-        }
+        public int Count => _suffixes.Length;
 
         /// <summary>
         /// Returns the suffix at the given <paramref name="index"/>.
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string this[int index] {
-            get { return _value.Substring(_suffixes[index]); }
-        }
+        public string this[int index] => _value.Substring(_suffixes[index]);
 
         /// <summary>
         /// Returns the length of the suffix at the given <paramref name="index"/>.
@@ -156,13 +152,12 @@ namespace WmcSoft.Text
         /// <returns>The number of suffixes less than the <paramref name="key"/>.</returns>
         public int Rank(string key)
         {
-            Func<int, int> finder = x => {
+
+            return _suffixes.BinaryRank(x => {
                 var suffixLength = _value.Length - x;
                 var length = Max(key.Length, suffixLength);
                 return string.Compare(_value, x, key, 0, length, _comparison);
-            };
-
-            return _suffixes.BinaryRank(finder);
+            });
         }
     }
 }

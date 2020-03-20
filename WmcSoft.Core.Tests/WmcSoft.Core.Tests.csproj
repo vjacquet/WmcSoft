@@ -149,6 +149,7 @@
     <Compile Include="Linq\Expressions\DynamicTests.cs" />
     <Compile Include="Linq\Expressions\ExpressionExtensionsTests.cs" />
     <Compile Include="MockRandom.cs" />
+    <Compile Include="Net\Mail\SmtpExtensionsTests.cs" />
     <Compile Include="NullableExtensionsTests.cs" />
     <Compile Include="OrdinalSetTests.cs" />
     <Compile Include="OrdinalTests.cs" />

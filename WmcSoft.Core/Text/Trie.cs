@@ -51,9 +51,7 @@ namespace WmcSoft.Text
                 _nodes = new SortedList<TLetter, Node>();
             }
 
-            public bool HasValue {
-                get { return _hasValue; }
-            }
+            public bool HasValue => _hasValue;
 
             public TValue Value {
                 get { return _value; }
@@ -67,7 +65,7 @@ namespace WmcSoft.Text
             {
                 if (_hasValue) {
                     _hasValue = false;
-                    _value = default(TValue);
+                    _value = default;
                     return true;
                 }
                 return false;
@@ -77,15 +75,13 @@ namespace WmcSoft.Text
             {
                 if (_hasValue && EqualityComparer<TValue>.Default.Equals(_value, value)) {
                     _hasValue = false;
-                    _value = default(TValue);
+                    _value = default;
                     return true;
                 }
                 return false;
             }
 
-            public bool IsEmpty {
-                get { return !_hasValue && _nodes.Count == 0; }
-            }
+            public bool IsEmpty => !_hasValue && _nodes.Count == 0;
 
             public Node this[TLetter index] {
                 get {
@@ -208,17 +204,9 @@ namespace WmcSoft.Text
 
         public bool IsReadOnly => false;
 
-        public ICollection<IEnumerable<TLetter>> Keys {
-            get {
-                return new ReadOnlyCollectionToCollectionAdapter<IEnumerable<TLetter>>(_count, this.Select(p => p.Key));
-            }
-        }
+        public ICollection<IEnumerable<TLetter>> Keys => new ReadOnlyCollectionToCollectionAdapter<IEnumerable<TLetter>>(_count, this.Select(p => p.Key));
 
-        public ICollection<TValue> Values {
-            get {
-                return new ReadOnlyCollectionToCollectionAdapter<TValue>(_count, this.Select(p => p.Value));
-            }
-        }
+        public ICollection<TValue> Values => new ReadOnlyCollectionToCollectionAdapter<TValue>(_count, this.Select(p => p.Value));
 
         public void Add(KeyValuePair<IEnumerable<TLetter>, TValue> item)
         {
@@ -245,7 +233,7 @@ namespace WmcSoft.Text
 
         public bool ContainsKey(IEnumerable<TLetter> key)
         {
-            return TryGetValue(key, out var value) ;
+            return TryGetValue(key, out _);
         }
 
         public void CopyTo(KeyValuePair<IEnumerable<TLetter>, TValue>[] array, int arrayIndex)

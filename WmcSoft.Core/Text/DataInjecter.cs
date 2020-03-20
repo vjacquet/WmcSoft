@@ -32,7 +32,7 @@ namespace WmcSoft.Text
 {
     public static class DataInjecter
     {
-        static readonly Regex regex = new Regex(@"{(?<name>\w+)(\:(?<format>.*))?}", RegexOptions.ExplicitCapture | RegexOptions.Multiline | RegexOptions.Compiled);
+        static readonly Regex Regex = new Regex(@"{(?<name>\w+)(\:(?<format>.*))?}", RegexOptions.ExplicitCapture | RegexOptions.Multiline | RegexOptions.Compiled);
 
         static string Format(IFormatProvider provider, Match m, object value)
         {
@@ -69,7 +69,7 @@ namespace WmcSoft.Text
 
         public static bool CanInject(string candidate, string format)
         {
-            var m = regex.Match(format);
+            var m = Regex.Match(format);
             while (m.Success) {
                 string name = m.Groups["name"].Value;
                 if (name == candidate)
@@ -81,7 +81,7 @@ namespace WmcSoft.Text
 
         public static string Inject(this IDictionary<string, object> values, IFormatProvider provider, string format)
         {
-            return regex.Replace(format, m => ReplaceValue(provider, m, values));
+            return Regex.Replace(format, m => ReplaceValue(provider, m, values));
         }
     }
 }

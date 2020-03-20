@@ -37,7 +37,7 @@ namespace WmcSoft.Security
     public static class SecurityExtensions
     {
         static bool InvalidIdentity(PrincipalPermissionAttribute attribute, IIdentity identity) {
-            return !String.IsNullOrWhiteSpace(attribute.Name) && !String.Equals(attribute.Name, identity.Name);
+            return !string.IsNullOrWhiteSpace(attribute.Name) && !string.Equals(attribute.Name, identity.Name);
         }
 
         static bool InvalidRole(PrincipalPermissionAttribute attribute, IPrincipal principal) {

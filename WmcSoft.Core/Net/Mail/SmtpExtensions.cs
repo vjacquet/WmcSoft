@@ -89,11 +89,29 @@ namespace WmcSoft.Net.Mail
         {
             comparer = comparer ?? MailAddressEqualityComparer.Default;
             var count = 0;
+
+            var indices = new List<int>();
             foreach (var address in addresses) {
-                if (self.Remove(address))
-                    count++;
+                var found = UnguardedIndexOf(self, address, comparer);
+                if (found >= 0 && !indices.Contains(found))
+                    indices.Add(found);
+            }
+            indices.Sort();
+            for (int i = indices.Count - 1; i >= 0; i--) {
+                self.RemoveAt(indices[i]);
             }
             return count;
+        }
+
+        static int UnguardedIndexOf(MailAddressCollection source, MailAddress item, IEqualityComparer<MailAddress> comparer)
+        {
+            int i = 0;
+            foreach (var mailAddress in source) {
+                if (comparer.Equals(mailAddress, item))
+                    return i;
+                ++i;
+            }
+            return -1;
         }
     }
 }

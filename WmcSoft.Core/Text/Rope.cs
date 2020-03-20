@@ -62,14 +62,14 @@ namespace WmcSoft.Text
         private void Adjust()
         {
             if (_value != null) {
-                if (_length > Rope.SPLIT_LENGTH) {
+                if (_length > SPLIT_LENGTH) {
                     int divide = _length / 2;
                     _left = new Rope(_value.Substring(0, divide));
                     _right = new Rope(_value.Substring(divide));
                     _value = null;
                 }
             } else {
-                if (_length < Rope.JOIN_LENGTH) {
+                if (_length < JOIN_LENGTH) {
                     UnguardedRebuild();
                 }
             }
@@ -170,7 +170,7 @@ namespace WmcSoft.Text
         public void Rebalance()
         {
             if (_value == null) {
-                if (_left.Length / _right.Length > Rope.REBALANCE_RATIO || _right.Length / _left.Length > Rope.REBALANCE_RATIO) {
+                if (_left.Length / _right.Length > REBALANCE_RATIO || _right.Length / _left.Length > Rope.REBALANCE_RATIO) {
                     UnguardedRebuild();
                 } else {
                     _left.Rebalance();

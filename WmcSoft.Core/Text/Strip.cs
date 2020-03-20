@@ -47,9 +47,9 @@ namespace WmcSoft.Text
 
         #region Fields
 
-        private readonly string s;
-        private readonly int start;
-        private readonly int end;
+        private readonly string _s;
+        private readonly int _start;
+        private readonly int _end;
 
         #endregion
 
@@ -57,9 +57,9 @@ namespace WmcSoft.Text
 
         private Strip(Strip s, int start, int end)
         {
-            this.s = s.s;
-            this.start = start;
-            this.end = end;
+            _s = s._s;
+            _start = start;
+            _end = end;
         }
 
         public Strip()
@@ -70,9 +70,9 @@ namespace WmcSoft.Text
         {
             if (s == null) throw new ArgumentNullException("s");
 
-            this.s = s;
-            start = 0;
-            end = s.Length;
+            _s = s;
+            _start = 0;
+            _end = s.Length;
         }
 
         public Strip(string s, int startIndex, int length)
@@ -81,9 +81,9 @@ namespace WmcSoft.Text
             if (startIndex < 0 || startIndex > s.Length) throw new ArgumentOutOfRangeException("startIndex");
             if (length < 0 || startIndex > (s.Length - length)) throw new ArgumentOutOfRangeException("length");
 
-            this.s = s;
-            start = startIndex;
-            end = startIndex + length;
+            _s = s;
+            _start = startIndex;
+            _end = startIndex + length;
         }
 
         public static implicit operator string(Strip s)
@@ -114,145 +114,145 @@ namespace WmcSoft.Text
 
         #region String-like properties & methods
 
-        public int Length => end - start;
+        public int Length => _end - _start;
 
         public Strip Substring(int startIndex, int length)
         {
-            var start = this.start + startIndex;
-            if (start == end || Length == 0)
+            var start = _start + startIndex;
+            if (start == _end || Length == 0)
                 return Empty;
-            return new Strip(s, start, start + length);
+            return new Strip(_s, start, start + length);
         }
 
         public Strip Substring(int startIndex)
         {
-            var start = this.start + startIndex;
-            if (start == end)
+            var start = _start + startIndex;
+            if (start == _end)
                 return Empty;
-            return new Strip(s, start, Length - startIndex);
+            return new Strip(_s, start, Length - startIndex);
         }
 
         public static bool IsNullOrEmpty(Strip value)
         {
-            return value == null || value.s == null || value.Length == 0;
+            return value == null || value._s == null || value.Length == 0;
         }
 
         public static bool IsNullOrWhiteSpace(Strip value)
         {
-            return value == null || value.s == null || value.All(char.IsWhiteSpace);
+            return value == null || value._s == null || value.All(char.IsWhiteSpace);
         }
 
         public bool Contains(string value)
         {
-            return s.IndexOf(value, start, Length) >= 0;
+            return _s.IndexOf(value, _start, Length) >= 0;
         }
 
         public int IndexOf(char value)
         {
-            return RebaseIndex(s.IndexOf(value, start, Length));
+            return RebaseIndex(_s.IndexOf(value, _start, Length));
         }
 
         public int IndexOf(string value)
         {
-            return RebaseIndex(s.IndexOf(value, start, Length));
+            return RebaseIndex(_s.IndexOf(value, _start, Length));
         }
 
         public int IndexOfAny(params char[] anyOf)
         {
-            return RebaseIndex(s.IndexOfAny(anyOf, start, Length));
+            return RebaseIndex(_s.IndexOfAny(anyOf, _start, Length));
         }
 
         public int IndexOfAny(char[] anyOf, int startIndex)
         {
-            return RebaseIndex(s.IndexOfAny(anyOf, start + startIndex, Length));
+            return RebaseIndex(_s.IndexOfAny(anyOf, _start + startIndex, Length));
         }
 
         public int IndexOfAny(char[] anyOf, int startIndex, int count)
         {
-            return RebaseIndex(s.IndexOfAny(anyOf, start + startIndex, count));
+            return RebaseIndex(_s.IndexOfAny(anyOf, _start + startIndex, count));
         }
 
         public int IndexOf(string value, StringComparison comparison)
         {
-            return RebaseIndex(s.IndexOf(value, start, Length, comparison));
+            return RebaseIndex(_s.IndexOf(value, _start, Length, comparison));
         }
 
         public int IndexOf(string value, int startIndex, StringComparison comparison)
         {
-            return RebaseIndex(s.IndexOf(value, start + startIndex, Length, comparison));
+            return RebaseIndex(_s.IndexOf(value, _start + startIndex, Length, comparison));
         }
 
         public int LastIndexOf(char value)
         {
-            return RebaseIndex(s.LastIndexOf(value, end - 1, Length));
+            return RebaseIndex(_s.LastIndexOf(value, _end - 1, Length));
         }
 
         public int LastIndexOf(string value)
         {
-            return RebaseIndex(s.LastIndexOf(value, end - 1, Length));
+            return RebaseIndex(_s.LastIndexOf(value, _end - 1, Length));
         }
 
         public int LastIndexOf(string value, StringComparison comparisonType)
         {
-            return RebaseIndex(s.LastIndexOf(value, end - 1, Length, comparisonType));
+            return RebaseIndex(_s.LastIndexOf(value, _end - 1, Length, comparisonType));
         }
 
         public int LastIndexOf(char value, int startIndex)
         {
-            return RebaseIndex(s.LastIndexOf(value, start + startIndex, Length));
+            return RebaseIndex(_s.LastIndexOf(value, _start + startIndex, Length));
         }
 
         public int LastIndexOf(string value, int startIndex)
         {
-            return RebaseIndex(s.LastIndexOf(value, start + startIndex, Length));
+            return RebaseIndex(_s.LastIndexOf(value, _start + startIndex, Length));
         }
 
         public int LastIndexOf(string value, int startIndex, StringComparison comparisonType)
         {
-            return RebaseIndex(s.LastIndexOf(value, start + startIndex, Length, comparisonType));
+            return RebaseIndex(_s.LastIndexOf(value, _start + startIndex, Length, comparisonType));
         }
 
         public int LastIndexOf(char value, int startIndex, int count)
         {
-            return RebaseIndex(s.LastIndexOf(value, start + startIndex, count));
+            return RebaseIndex(_s.LastIndexOf(value, _start + startIndex, count));
         }
 
         public int LastIndexOf(string value, int startIndex, int count)
         {
-            return RebaseIndex(s.LastIndexOf(value, start + startIndex, count));
+            return RebaseIndex(_s.LastIndexOf(value, _start + startIndex, count));
         }
 
         public int LastIndexOf(string value, int startIndex, int count, StringComparison comparisonType)
         {
-            return RebaseIndex(s.LastIndexOf(value, start + startIndex, count, comparisonType));
+            return RebaseIndex(_s.LastIndexOf(value, _start + startIndex, count, comparisonType));
         }
 
         public int LastIndexOfAny(params char[] anyOf)
         {
-            return RebaseIndex(s.LastIndexOfAny(anyOf, end - 1, Length));
+            return RebaseIndex(_s.LastIndexOfAny(anyOf, _end - 1, Length));
         }
 
         public int LastIndexOfAny(char[] anyOf, int startIndex)
         {
-            return RebaseIndex(s.LastIndexOfAny(anyOf, start + startIndex, Length));
+            return RebaseIndex(_s.LastIndexOfAny(anyOf, _start + startIndex, Length));
         }
 
         public int LastIndexOfAny(char[] anyOf, int startIndex, int count)
         {
-            return RebaseIndex(s.LastIndexOfAny(anyOf, start + startIndex, count));
+            return RebaseIndex(_s.LastIndexOfAny(anyOf, _start + startIndex, count));
         }
 
         public Strip Trim()
         {
-            var end = this.end - 1; ;
-            for (; end >= this.start; end--) {
-                if (!char.IsWhiteSpace(s[end]))
+            var end = _end - 1; ;
+            for (; end >= _start; end--) {
+                if (!char.IsWhiteSpace(_s[end]))
                     break;
             }
 
-            var start = this.start;
+            var start = _start;
             for (; start < end; start++) {
-                if (!char.IsWhiteSpace(s[start]))
+                if (!char.IsWhiteSpace(_s[start]))
                     break;
             }
 
@@ -264,28 +264,28 @@ namespace WmcSoft.Text
             if (trimChars == null || trimChars.Length == 0)
                 return Trim();
 
-            var end = this.end - 1;
-            var start = this.start;
+            var end = _end - 1;
+            var start = _start;
             if (trimChars.Length == 1) {
                 var ch = trimChars[0];
 
-                for (; end >= this.start; end--) {
-                    if (s[end] != ch)
+                for (; end >= _start; end--) {
+                    if (_s[end] != ch)
                         break;
                 }
 
-                for (; start < this.end; start++) {
-                    if (s[start] != ch)
+                for (; start < _end; start++) {
+                    if (_s[start] != ch)
                         break;
                 }
             } else {
-                for (; end >= this.start; end--) {
-                    if (Array.IndexOf(trimChars, s[end]) < 0)
+                for (; end >= _start; end--) {
+                    if (Array.IndexOf(trimChars, _s[end]) < 0)
                         break;
                 }
 
                 for (; start < end; start++) {
-                    if (Array.IndexOf(trimChars, s[start]) < 0)
+                    if (Array.IndexOf(trimChars, _s[start]) < 0)
                         break;
                 }
             }
@@ -295,50 +295,50 @@ namespace WmcSoft.Text
 
         public Strip TrimEnd(params char[] trimChars)
         {
-            var end = this.end - 1;
+            var end = _end - 1;
             if (trimChars == null || trimChars.Length == 0) {
-                for (; end >= start; end--) {
-                    if (!char.IsWhiteSpace(s[end]))
+                for (; end >= _start; end--) {
+                    if (!char.IsWhiteSpace(_s[end]))
                         break;
                 }
             } else if (trimChars.Length == 1) {
                 var ch = trimChars[0];
-                for (; end >= start; end--) {
-                    if (s[end] != ch)
+                for (; end >= _start; end--) {
+                    if (_s[end] != ch)
                         break;
                 }
             } else {
-                for (; end >= start; end--) {
-                    if (Array.IndexOf(trimChars, s[end]) < 0)
+                for (; end >= _start; end--) {
+                    if (Array.IndexOf(trimChars, _s[end]) < 0)
                         break;
                 }
             }
 
-            return new Strip(this, start, end + 1);
+            return new Strip(this, _start, end + 1);
         }
 
         public Strip TrimStart(params char[] trimChars)
         {
-            var start = this.start;
+            var start = _start;
             if (trimChars == null || trimChars.Length == 0) {
-                for (; start < end; start++) {
-                    if (!char.IsWhiteSpace(s[start]))
+                for (; start < _end; start++) {
+                    if (!char.IsWhiteSpace(_s[start]))
                         break;
                 }
             } else if (trimChars.Length == 1) {
                 var ch = trimChars[0];
-                for (; start < end; start++) {
-                    if (s[start] != ch)
+                for (; start < _end; start++) {
+                    if (_s[start] != ch)
                         break;
                 }
             } else {
-                for (; start < end; start++) {
-                    if (Array.IndexOf(trimChars, s[start]) < 0)
+                for (; start < _end; start++) {
+                    if (Array.IndexOf(trimChars, _s[start]) < 0)
                         break;
                 }
             }
 
-            return new Strip(this, start, end);
+            return new Strip(this, start, _end);
         }
 
         public bool StartsWith(Strip value)
@@ -348,7 +348,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, start, value.s, value.start, length, CultureInfo.CurrentCulture, CompareOptions.None);
+            return DoEqual(_s, _start, value._s, value._start, length, CultureInfo.CurrentCulture, CompareOptions.None);
         }
 
         public bool StartsWith(Strip value, bool ignoreCase, CultureInfo culture)
@@ -359,7 +359,7 @@ namespace WmcSoft.Text
             if (Length < length)
                 return false;
             var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
-            return DoEqual(s, start, value.s, value.start, length, culture ?? CultureInfo.CurrentCulture, options);
+            return DoEqual(_s, _start, value._s, value._start, length, culture ?? CultureInfo.CurrentCulture, options);
         }
 
         public bool StartsWith(Strip value, StringComparison comparisonType)
@@ -369,7 +369,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, start, value.s, value.start, length, comparisonType);
+            return DoEqual(_s, _start, value._s, value._start, length, comparisonType);
         }
 
         public bool StartsWith(string value)
@@ -379,7 +379,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, start, value, 0, length, CultureInfo.CurrentCulture, CompareOptions.None);
+            return DoEqual(_s, _start, value, 0, length, CultureInfo.CurrentCulture, CompareOptions.None);
         }
 
         public bool StartsWith(string value, bool ignoreCase, CultureInfo culture)
@@ -390,7 +390,7 @@ namespace WmcSoft.Text
             if (Length < length)
                 return false;
             var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
-            return DoEqual(s, start, value, 0, length, culture ?? CultureInfo.CurrentCulture, options);
+            return DoEqual(_s, _start, value, 0, length, culture ?? CultureInfo.CurrentCulture, options);
         }
 
         public bool StartsWith(string value, StringComparison comparisonType)
@@ -400,7 +400,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, start, value, 0, length, comparisonType);
+            return DoEqual(_s, _start, value, 0, length, comparisonType);
         }
 
         public bool EndsWith(Strip value)
@@ -410,7 +410,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, end - length, value.s, value.start, length, CultureInfo.CurrentCulture, CompareOptions.None);
+            return DoEqual(_s, _end - length, value._s, value._start, length, CultureInfo.CurrentCulture, CompareOptions.None);
         }
 
         public bool EndsWith(Strip value, bool ignoreCase, CultureInfo culture)
@@ -421,7 +421,7 @@ namespace WmcSoft.Text
             if (Length < length)
                 return false;
             var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
-            return DoEqual(s, end - length, value.s, value.start, length, culture ?? CultureInfo.CurrentCulture, options);
+            return DoEqual(_s, _end - length, value._s, value._start, length, culture ?? CultureInfo.CurrentCulture, options);
         }
 
         public bool EndsWith(Strip value, StringComparison comparisonType)
@@ -431,7 +431,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, end - length, value.s, value.start, length, comparisonType);
+            return DoEqual(_s, _end - length, value._s, value._start, length, comparisonType);
         }
 
         public bool EndsWith(string value)
@@ -441,7 +441,7 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, end - length, value, 0, length, CultureInfo.CurrentCulture, CompareOptions.None);
+            return DoEqual(_s, _end - length, value, 0, length, CultureInfo.CurrentCulture, CompareOptions.None);
         }
 
         public bool EndsWith(string value, bool ignoreCase, CultureInfo culture)
@@ -452,7 +452,7 @@ namespace WmcSoft.Text
             if (Length < length)
                 return false;
             var options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
-            return DoEqual(s, end - length, value, 0, length, culture ?? CultureInfo.CurrentCulture, options);
+            return DoEqual(_s, _end - length, value, 0, length, culture ?? CultureInfo.CurrentCulture, options);
         }
 
         public bool EndsWith(string value, StringComparison comparisonType)
@@ -462,12 +462,12 @@ namespace WmcSoft.Text
             var length = value.Length;
             if (Length < length)
                 return false;
-            return DoEqual(s, end - length, value, 0, length, comparisonType);
+            return DoEqual(_s, _end - length, value, 0, length, comparisonType);
         }
 
         public char[] ToCharArray()
         {
-            return s.ToCharArray(start, Length);
+            return _s.ToCharArray(_start, Length);
         }
 
         #endregion
@@ -476,15 +476,14 @@ namespace WmcSoft.Text
 
         public override string ToString()
         {
-            return s.Substring(start, Length);
+            return _s.Substring(_start, Length);
         }
 
         public override bool Equals(object obj)
         {
             var that = obj as Strip;
             if (that == null) {
-                var s = obj as string;
-                if (s == null)
+                if (!(obj is string s))
                     return false;
 
                 that = new Strip(s);
@@ -494,11 +493,11 @@ namespace WmcSoft.Text
 
         public override int GetHashCode()
         {
-            if (start == end)
+            if (_start == _end)
                 return 0;
-            var h = s.GetHashCode();
-            h = h * 65537 ^ start;
-            h = h * 65537 ^ end;
+            var h = _s.GetHashCode();
+            h = h * 65537 ^ _start;
+            h = h * 65537 ^ _end;
             return h;
         }
 
@@ -515,13 +514,13 @@ namespace WmcSoft.Text
         {
             if (other == null || Length != other.Length)
                 return false;
-            return DoEqual(s, start, other, 0, other.Length, comparisonType);
+            return DoEqual(_s, _start, other, 0, other.Length, comparisonType);
         }
 
         public int CompareTo(string other)
         {
             var culture = CultureInfo.CurrentCulture;
-            return culture.CompareInfo.Compare(s, start, Length, other, 0, other == null ? 0 : other.Length, CompareOptions.None);
+            return culture.CompareInfo.Compare(_s, _start, Length, other, 0, other == null ? 0 : other.Length, CompareOptions.None);
         }
 
         public static bool Equals(Strip a, Strip b)
@@ -585,7 +584,7 @@ namespace WmcSoft.Text
 
         static int DoCompare(Strip strA, Strip strB, CultureInfo culture, CompareOptions options)
         {
-            return culture.CompareInfo.Compare(strA.s, strA.start, strA.Length, strB.s, strB.start, strB.Length, options);
+            return culture.CompareInfo.Compare(strA._s, strA._start, strA.Length, strB._s, strB._start, strB.Length, options);
         }
 
         static bool DoEqual(string strA, int idxA, string strB, int idxB, int length, StringComparison comparisonType)
@@ -629,13 +628,13 @@ namespace WmcSoft.Text
         int IReadOnlyCollection<char>.Count => Length;
 
         public char this[int index] {
-            get { return s[start + index]; }
+            get { return _s[_start + index]; }
         }
 
         public IEnumerator<char> GetEnumerator()
         {
-            for (int i = start; i < end; i++) {
-                yield return s[i];
+            for (int i = _start; i < _end; i++) {
+                yield return _s[i];
             }
         }
 
@@ -650,38 +649,38 @@ namespace WmcSoft.Text
 
         int RebaseIndex(int index)
         {
-            return (index != -1) ? index - start : -1;
+            return (index != -1) ? index - _start : -1;
         }
 
         // The following are internal because, for convenience, they are exposed as extensions on StringBuilder
         // Making the private fields internal was not an option to protect the encapsulation of the type.
         internal StringBuilder AppendTo(StringBuilder sb)
         {
-            return sb.Append(s, start, Length);
+            return sb.Append(_s, _start, Length);
         }
 
         internal StringBuilder AppendTo(StringBuilder sb, int startIndex, int count)
         {
-            return sb.Append(s, start + startIndex, count);
+            return sb.Append(_s, _start + startIndex, count);
         }
 
         internal StringBuilder PrependTo(StringBuilder sb)
         {
-            if (string.IsNullOrEmpty(s) || Length == 0)
+            if (string.IsNullOrEmpty(_s) || Length == 0)
                 return sb;
-            return sb.Insert(0, s.Substring(start, Length));
+            return sb.Insert(0, _s.Substring(_start, Length));
         }
 
         internal StringBuilder InsertInto(StringBuilder sb, int index)
         {
-            if (string.IsNullOrEmpty(s) || Length == 0)
+            if (string.IsNullOrEmpty(_s) || Length == 0)
                 return sb;
-            return sb.Insert(index, s.Substring(start, Length));
+            return sb.Insert(index, _s.Substring(_start, Length));
         }
 
         internal StringBuilder ToStringBuilder(int capacity = 0)
         {
-            return new StringBuilder(s, start, Length, capacity);
+            return new StringBuilder(_s, _start, Length, capacity);
         }
 
         #endregion
