@@ -31,26 +31,29 @@ namespace WmcSoft.Arithmetics
 {
     public static class Arithmetics<T>
     {
-        static readonly Func<T, T, T> Add;
-        static readonly Func<T, T, T> Subtract;
-        static readonly Func<T, T, T> Multiply;
-        static readonly Func<T, T, T> Divide;
-        static readonly Func<T, T, T> Remainder;
+        private static readonly Func<T, T, T> Add;
+        private static readonly Func<T, T, T> Subtract;
+        private static readonly Func<T, T, T> Multiply;
+        private static readonly Func<T, T, T> Divide;
+        private static readonly Func<T, T, T> Remainder;
+        private static readonly Func<T, T> Negate;
+        private static readonly Func<T, T> Reciprocal;
+        private static readonly T Zero = default;
+        private static readonly T One = default;
 
-        static readonly Func<T, T> Negate;
-        static readonly Func<T, T> Reciprocal;
-
-        static readonly T Zero = default;
-        static readonly T One = default;
-
-        static Func<T, T> Compile(UnaryExpression op)
+        private static Func<T, T> Compile(UnaryExpression op)
         {
             return Expression.Lambda<Func<T, T>>(op, (ParameterExpression)op.Operand).Compile();
         }
 
-        static Func<T, T, T> Compile(BinaryExpression op)
+        private static Func<T, T, T> Compile(BinaryExpression op)
         {
             return Expression.Lambda<Func<T, T, T>>(op, (ParameterExpression)op.Left, (ParameterExpression)op.Right).Compile();
+        }
+
+        private static TDelegate Compile<TDelegate>(Expression body, params ParameterExpression[] parameters)
+        {
+            return Expression.Lambda<TDelegate>(body, parameters).Compile();
         }
 
         static Arithmetics()
@@ -64,6 +67,7 @@ namespace WmcSoft.Arithmetics
             Divide = Compile(Expression.Divide(x, y));
             Remainder = Compile(Expression.Modulo(x, y));
             Negate = Compile(Expression.Negate(x));
+            Reciprocal = Compile<Func<T, T>>(Expression.Divide(Expression.Constant(One, typeof(T)), x));
         }
 
         public struct Impl : IArithmetics<T>
