@@ -31,8 +31,8 @@ namespace WmcSoft.Text
 {
     public sealed class Tokenizer : ITokenizer<string, string>
     {
-        readonly Predicate<char> _isSeparator;
-        readonly bool _keepEmptyToken;
+        private readonly Predicate<char> _isSeparator;
+        private readonly bool _keepEmptyToken;
 
         public Tokenizer(StringSplitOptions options, params char[] separators)
         {

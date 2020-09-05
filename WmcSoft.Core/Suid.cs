@@ -31,18 +31,18 @@ using System.Text.RegularExpressions;
 namespace WmcSoft
 {
     /// <summary>
-    /// Represents the short form of an globally unique identifier.The string version takes 22 chars representable in urls.
+    /// Represents the short form of an globally unique identifier. The string version takes 22 chars representable in urls.
     /// </summary>
     /// <remarks>The string format is adapted from Base64, so 0 is encoded as '0' instead of 'A'</remarks>
     public struct Suid : IFormattable, IComparable, IComparable<Suid>, IEquatable<Suid>
     {
-        static readonly char[] _encoding = new char[]{
+        static readonly char[] Encoding = new char[]{
             '0','1','2','3','4','5','6','7', '8','9',
             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
             '-','_'
         };
-        static Regex _validator = new Regex("^[A-Za-z0-9_-]{21}[0GWm]$");
+        static readonly Regex Validator = new Regex("^[A-Za-z0-9_-]{21}[0GWm]$");
 
         public static readonly Suid Empty = new Suid(Guid.Empty);
 
@@ -63,7 +63,7 @@ namespace WmcSoft
         {
             if (g == null) throw new ArgumentNullException("g");
 
-            _storage = (g.Length == 22 && _validator.IsMatch(g))
+            _storage = (g.Length == 22 && Validator.IsMatch(g))
                 ? Decode(g)
                 : new Guid(g).ToByteArray();
         }
@@ -85,8 +85,8 @@ namespace WmcSoft
         /// <exception cref="ArgumentException"><paramref name="b"/> is not 16 bytes long.</exception>
         public Suid(params byte[] b)
         {
-            if (b == null) throw new ArgumentNullException("b");
-            if (b.Length != 16) throw new ArgumentException("b");
+            if (b == null) throw new ArgumentNullException(nameof(b));
+            if (b.Length != 16) throw new ArgumentException(nameof(b));
             _storage = new byte[16];
             Array.Copy(b, _storage, b.Length);
         }
@@ -160,7 +160,7 @@ namespace WmcSoft
         /// <exception cref="FormatException"><paramref name="input"/> is not in a recognized format.</exception>
         public static Suid Parse(string input)
         {
-            if (input == null) throw new ArgumentNullException("input");
+            if (input == null) throw new ArgumentNullException(nameof(input));
 
             Suid suid;
             if (!TryParse(input, out suid))
@@ -180,7 +180,7 @@ namespace WmcSoft
         /// <returns>true if the parse operation was successful; otherwise, false.</returns>
         public static bool TryParse(string input, out Suid result)
         {
-            if (input.Length != 22 || !_validator.IsMatch(input)) {
+            if (input.Length != 22 || !Validator.IsMatch(input)) {
                 Guid guid;
                 if (!Guid.TryParse(input, out guid)) {
                     result = Empty;
@@ -275,7 +275,7 @@ namespace WmcSoft
             return CompareTo(other) == 0;
         }
 
-#endregion
+        #endregion
 
         #region IComparable<Suid> members
 
@@ -304,7 +304,7 @@ namespace WmcSoft
             return result;
         }
 
-#endregion
+        #endregion
 
         #region IComparable members
 
@@ -379,7 +379,7 @@ namespace WmcSoft
 
         static bool IsValid(string input)
         {
-            return input != null && input.Length == 22 && _validator.IsMatch(input);
+            return input != null && input.Length == 22 && Validator.IsMatch(input);
         }
 
         static byte Decode(char c)
@@ -422,13 +422,13 @@ namespace WmcSoft
             var chars = new char[22];
 
             for (int i = 0, j = 0; i < 15; i += 3, j += 4) {
-                chars[j] = _encoding[(bytes[i] & 0xfc) >> 2];
-                chars[j + 1] = _encoding[((bytes[i] & 0x03) << 4) | ((bytes[i + 1] & 0xf0) >> 4)];
-                chars[j + 2] = _encoding[((bytes[i + 1] & 0x0f) << 2) | ((bytes[i + 2] & 0xc0) >> 6)];
-                chars[j + 3] = _encoding[(bytes[i + 2] & 0x3f)];
+                chars[j] = Encoding[(bytes[i] & 0xfc) >> 2];
+                chars[j + 1] = Encoding[((bytes[i] & 0x03) << 4) | ((bytes[i + 1] & 0xf0) >> 4)];
+                chars[j + 2] = Encoding[((bytes[i + 1] & 0x0f) << 2) | ((bytes[i + 2] & 0xc0) >> 6)];
+                chars[j + 3] = Encoding[(bytes[i + 2] & 0x3f)];
             }
-            chars[20] = _encoding[(bytes[15] & 0xfc) >> 2];
-            chars[21] = _encoding[(bytes[15] & 0x03) << 4];
+            chars[20] = Encoding[(bytes[15] & 0xfc) >> 2];
+            chars[21] = Encoding[(bytes[15] & 0x03) << 4];
             return new string(chars);
         }
 
