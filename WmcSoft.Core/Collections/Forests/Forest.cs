@@ -88,6 +88,24 @@ namespace WmcSoft.Collections.Generic.Forests
             return result;
         }
 
+        public IEnumerable<T> EnumerateDepthFirst()
+        {
+            var stack = new Stack<TreeNode<T>>();
+            var length = _trees.Count;
+            for (int i = length - 1; i >= 0; i--) {
+                stack.Push(_trees[i]);
+            }
+            while (stack.Count > 0) {
+                var top = stack.Pop();
+                yield return top.Value;
+
+                length = top.Count;
+                for (int i = length - 1; i >= 0; i--) {
+                    stack.Push(top._children[i]);
+                }
+            }
+        }
+
         #region IEnumerable members
 
         public IEnumerator<TreeNode<T>> GetEnumerator()
