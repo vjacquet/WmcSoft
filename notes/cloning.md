@@ -17,30 +17,32 @@ Not only the suggestion does not help with any of these but it prevent us to rel
 however, fix an issue they did not mention: `Clone` returns an object, so the return value should be cast before being used.
 
 At first, I thought of defining a new interface
-
+```csharp
     public interface ICloneable<out T> : ICloneable
     {
         new T Clone();
     }
+```
 
 but it does not cope well with inheritance, as it can only return the type on which the interface is implement. Unlike C++, the return type of 
 virtual function in C# is not covariant.
 
 
 So, instead, I'd rather call an extension method to the rescue
-
+```csharp
         public static T Clone<T>(this T obj)
             where T : ICloneable
         {
             return (T)obj.Clone();
         }
+```
 
 This extension works best when `ICloneable` is explicitly implemented. If not, you have to specify `Clone<T>()` to disambiguate
 the method call.
 
 Not being able to make the method virtual is not really a problem as we can kill two birds with on stone by delegating the implementation
 to a virtual method having an extra parameter that will be indicating to **inheritors** whether the copy should be deep or shallow.
-
+```csharp
         protected virtual object Clone(Cloning.Deep strategy)
         {
             return MemberwiseClone();
@@ -52,7 +54,7 @@ to a virtual method having an extra parameter that will be indicating to **inher
         }
 
 The strategy can implemeted with type markers, so the intent is clearly state in the signature of the method.
-
+```csharp
     public static class Cloning
     {
         #region Markers
@@ -81,3 +83,4 @@ The strategy can implemeted with type markers, so the intent is clearly state in
 
         ...
     }
+```
