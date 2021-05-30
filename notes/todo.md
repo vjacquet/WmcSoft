@@ -2,7 +2,10 @@
 
 ## Algorithms
 
-- [ ] Implement Peaks algorithm on an IEnumerable<T>
+- [ ] Implement Peaks algorithm on an IEnumerable<T> 
+  see https://stackoverflow.com/questions/5269000/finding-local-maxima-over-a-dynamic-range   
+  https://www.filipekberg.se/2014/02/10/understanding-peak-finding/  
+  https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjcsdns_7nwAhUj8-AKHdLmDcQQFjAAegQIBBAD&url=https%3A%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fdownload%3Fdoi%3D10.1.1.37.1110%26rep%3Drep1%26type%3Dpdf&usg=AOvVaw0vLSGtjpoB_b88qRKB9e9B  
 - [ ] Implement HaskPeak algorithm on an IEnumerable<T>
 
 ## Business
