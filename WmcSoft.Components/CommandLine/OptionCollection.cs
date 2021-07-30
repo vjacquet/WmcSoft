@@ -25,14 +25,12 @@
 #endregion
 
 using System;
-using System.ComponentModel;
-using System.Collections.Generic;
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.IO;
-using System.Text;
-using System.Collections;
 
 namespace WmcSoft.CommandLine
 {
@@ -50,7 +48,7 @@ namespace WmcSoft.CommandLine
         public void AddRange(Option[] options)
         {
             foreach (Option option in options) {
-                this.Add(option);
+                Add(option);
             }
         }
 
@@ -122,7 +120,7 @@ namespace WmcSoft.CommandLine
 
     #region Design
 
-    class OptionCollectionEditor : CollectionEditor
+    internal class OptionCollectionEditor : CollectionEditor
     {
         public OptionCollectionEditor()
             : base(typeof(OptionCollection))
@@ -131,9 +129,9 @@ namespace WmcSoft.CommandLine
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            this.editValue = value;
+            editValue = value;
             object result = base.EditValue(context, provider, value);
-            this.editValue = null;
+            editValue = null;
             return result;
         }
         private object editValue;
@@ -145,13 +143,13 @@ namespace WmcSoft.CommandLine
                 if (typeDiscoveryService != null) {
                     ICollection collection = typeDiscoveryService.GetTypes(typeof(Option), false);
                     if (collection.Count > 1) {
-                        ArrayList types = new ArrayList(collection.Count);
+                        var types = new ArrayList(collection.Count);
                         foreach (Type type in collection) {
                             if (!type.IsAbstract) {
                                 types.Add(type);
                             }
                         }
-                        Type[] result = new Type[types.Count];
+                        var result = new Type[types.Count];
                         types.CopyTo(result, 0);
                         return result;
                     }
@@ -170,7 +168,7 @@ namespace WmcSoft.CommandLine
                 name = service.CreateName(container, itemType);
             }
 
-            var host = (IDesignerHost)this.GetService(typeof(IDesignerHost));
+            var host = (IDesignerHost)GetService(typeof(IDesignerHost));
             object instance = null;
             if (typeof(IComponent).IsAssignableFrom(itemType) && (host != null)) {
                 if (host != null) {

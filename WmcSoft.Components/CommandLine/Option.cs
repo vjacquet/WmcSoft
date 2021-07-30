@@ -48,7 +48,7 @@ namespace WmcSoft.CommandLine
         protected static bool ValidateName(string name)
         {
             foreach (char c in name) {
-                if (!((c == '?') || Char.IsLetterOrDigit(c)))
+                if (!((c == '?') || char.IsLetterOrDigit(c)))
                     return false;
             }
             return true;
@@ -89,18 +89,18 @@ namespace WmcSoft.CommandLine
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string OptionName {
             get {
-                return this.name;
+                return name;
             }
             set {
                 if (_processed)
                     throw new InvalidOperationException();
-                if (this.name != value) {
-                    if (String.IsNullOrEmpty(value))
+                if (name != value) {
+                    if (string.IsNullOrEmpty(value))
                         throw new ArgumentNullException("value");
                     if (collection != null) {
                         collection.ChangeKey(this, value);
                     }
-                    this.name = value;
+                    name = value;
                 }
             }
         }
@@ -155,7 +155,8 @@ namespace WmcSoft.CommandLine
                 _value = value;
             }
         }
-        object _value;
+
+        private object _value;
 
         #endregion
 
@@ -206,7 +207,7 @@ namespace WmcSoft.CommandLine
 
     #region Design
 
-    class OptionDesigner : ComponentDesigner
+    internal class OptionDesigner : ComponentDesigner
     {
 
         protected override void PreFilterProperties(IDictionary properties)

@@ -42,7 +42,7 @@ namespace WmcSoft.CommandLine
 
             public Choice()
             {
-                Description = String.Empty;
+                Description = string.Empty;
             }
 
             public Choice(string name, string description)
@@ -96,7 +96,7 @@ namespace WmcSoft.CommandLine
         public ChoiceOption(string name, string description, string template)
             : base(name, description)
         {
-            _template = template;
+            Template = template;
         }
 
         #endregion
@@ -123,14 +123,14 @@ namespace WmcSoft.CommandLine
 
         public override void WriteTemplate(TextWriter writer)
         {
-            writer.WriteLine("{0}:{1}", OptionDelimiter + OptionName, _template);
+            writer.WriteLine("{0}:{1}", OptionDelimiter + OptionName, Template);
             using (var enumerator = choices.GetEnumerator()) {
                 if (enumerator.MoveNext()) {
-                    writer.Write(_template);
+                    writer.Write(Template);
                     writer.Write("  ");
                     enumerator.Current.WriteTemplate(writer);
 
-                    string indent = new string(' ', _template.Length + 2);
+                    string indent = new string(' ', Template.Length + 2);
                     while (enumerator.MoveNext()) {
                         writer.Write(indent);
                         enumerator.Current.WriteTemplate(writer);
@@ -151,7 +151,8 @@ namespace WmcSoft.CommandLine
                 return choices;
             }
         }
-        IList<Choice> choices = new List<Choice>();
+
+        private readonly IList<Choice> choices = new List<Choice>();
 
         public void AddChoice(string name, string description)
         {
@@ -171,22 +172,14 @@ namespace WmcSoft.CommandLine
             }
         }
 
-        public string Template {
-            get {
-                return _template;
-            }
-            set {
-                _template = value;
-            }
-        }
-        private string _template = "xxxx";
+        public string Template { get; set; } = "xxxx";
 
         #endregion
     }
 
     #region Design
 
-    class ChoiceCollectionEditor : CollectionEditor
+    internal class ChoiceCollectionEditor : CollectionEditor
     {
         public ChoiceCollectionEditor()
             : base(typeof(List<ChoiceOption.Choice>))
@@ -201,7 +194,7 @@ namespace WmcSoft.CommandLine
         protected override string GetDisplayText(object value)
         {
             var choice = value as ChoiceOption.Choice;
-            return String.IsNullOrEmpty(choice.Name)
+            return string.IsNullOrEmpty(choice.Name)
                 ? "Choice"
                 : choice.Name;
         }

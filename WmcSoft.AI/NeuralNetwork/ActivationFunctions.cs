@@ -52,6 +52,7 @@ namespace WmcSoft.AI.NeuralNetwork
             var count = values.Length - 1;
             return (i >= count) ? values[count] : (values[i] + derivated[i] * (xd - i));
         }
+
         public static Func<double, double> InterpolateSymmetric(Func<double, double> func, double maxValue, int count)
         {
             var factor = (count - 1) / maxValue;

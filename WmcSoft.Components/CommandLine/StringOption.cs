@@ -51,7 +51,7 @@ namespace WmcSoft.CommandLine
         public StringOption(string name, string description, string template)
             : base(name, description)
         {
-            _template = template;
+            Template = template;
         }
 
         #endregion
@@ -70,18 +70,14 @@ namespace WmcSoft.CommandLine
 
         public override void WriteTemplate(TextWriter writer)
         {
-            writer.WriteLine(OptionDelimiter + OptionName + ':' + _template);
+            writer.WriteLine(OptionDelimiter + OptionName + ':' + Template);
         }
 
         #endregion
 
         #region Properties
 
-        public string Template {
-            get { return _template; }
-            set { _template = value; }
-        }
-        private string _template = "xxxx";
+        public string Template { get; set; } = "xxxx";
 
         #endregion
     }

@@ -24,7 +24,6 @@
 
 #endregion
 
-using System;
 using System.ComponentModel;
 using System.IO;
 
@@ -55,7 +54,7 @@ namespace WmcSoft.CommandLine
 
         protected override bool ValidateArgument(string argument)
         {
-            return String.IsNullOrEmpty(argument);
+            return string.IsNullOrEmpty(argument);
         }
 
         protected override void DoParseArgument(string argument)

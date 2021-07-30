@@ -24,11 +24,9 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
 
 namespace WmcSoft.CommandLine
 {
@@ -54,7 +52,7 @@ namespace WmcSoft.CommandLine
         public ListOption(string name, string description, string template)
             : base(name, description)
         {
-            _template = template;
+            Template = template;
         }
 
         #endregion
@@ -67,29 +65,25 @@ namespace WmcSoft.CommandLine
 
         protected override bool ValidateArgument(string argument)
         {
-            return !String.IsNullOrEmpty(argument) && (argument[0] == ':');
+            return !string.IsNullOrEmpty(argument) && (argument[0] == ':');
         }
 
         protected override void DoParseArgument(string argument)
         {
-            List<string> values = new List<string>(argument.Substring(1).Split(new char[] { ',' }));
+            var values = new List<string>(argument.Substring(1).Split(new char[] { ',' }));
             base.Value = values.ToArray();
         }
 
         public override void WriteTemplate(TextWriter writer)
         {
-            writer.WriteLine("{0}:{1}[,{1},{1},...]", OptionDelimiter + OptionName, _template);
+            writer.WriteLine("{0}:{1}[,{1},{1},...]", OptionDelimiter + OptionName, Template);
         }
 
         #endregion
 
         #region Properties
 
-        public string Template {
-            get { return _template; }
-            set { _template = value; }
-        }
-        private string _template = "xxxx";
+        public string Template { get; set; } = "xxxx";
 
         #endregion
     }
