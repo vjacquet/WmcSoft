@@ -18,10 +18,10 @@ however, fix an issue they did not mention: `Clone` returns an object, so the re
 
 At first, I thought of defining a new interface
 ```csharp
-    public interface ICloneable<out T> : ICloneable
-    {
-        new T Clone();
-    }
+public interface ICloneable<out T> : ICloneable
+{
+    new T Clone();
+}
 ```
 
 but it does not cope well with inheritance, as it can only return the type on which the interface is implement. Unlike C++, the return type of 
@@ -30,11 +30,11 @@ virtual function in C# is not covariant.
 
 So, instead, I'd rather call an extension method to the rescue
 ```csharp
-        public static T Clone<T>(this T obj)
-            where T : ICloneable
-        {
-            return (T)obj.Clone();
-        }
+public static T Clone<T>(this T obj)
+    where T : ICloneable
+{
+    return (T)obj.Clone();
+}
 ```
 
 This extension works best when `ICloneable` is explicitly implemented. If not, you have to specify `Clone<T>()` to disambiguate
@@ -43,44 +43,46 @@ the method call.
 Not being able to make the method virtual is not really a problem as we can kill two birds with on stone by delegating the implementation
 to a virtual method having an extra parameter that will be indicating to **inheritors** whether the copy should be deep or shallow.
 ```csharp
-        protected virtual object Clone(Cloning.Deep strategy)
-        {
-            return MemberwiseClone();
-        }
+    protected virtual object Clone(Cloning.Deep strategy)
+    {
+        return MemberwiseClone();
+    }
 
-        object ICloneable.Clone()
-        {
-            return Clone(Cloning.SuggestDeep);
-        }
+    object ICloneable.Clone()
+    {
+        return Clone(Cloning.SuggestDeep);
+    }
+```
 
 The strategy can implemeted with type markers, so the intent is clearly state in the signature of the method.
+
 ```csharp
-    public static class Cloning
-    {
-        #region Markers
+public static class Cloning
+{
+    #region Markers
 
-        /// <summary>
-        /// Marker to indicate the cloning should be deep.
-        /// </summary>
-        public struct Deep { }
+    /// <summary>
+    /// Marker to indicate the cloning should be deep.
+    /// </summary>
+    public struct Deep { }
 
-        /// <summary>
-        /// Suggest the cloning should be deep.
-        /// </summary>
-        public static readonly Deep SuggestDeep;
+    /// <summary>
+    /// Suggest the cloning should be deep.
+    /// </summary>
+    public static readonly Deep SuggestDeep;
 
-        /// <summary>
-        /// Marker to indicate the cloning should be shallow.
-        /// </summary>
-        public struct Shallow { }
+    /// <summary>
+    /// Marker to indicate the cloning should be shallow.
+    /// </summary>
+    public struct Shallow { }
 
-        /// <summary>
-        /// Suggest the cloning should be shallow.
-        /// </summary>
-        public static readonly Shallow SuggestShallow;
+    /// <summary>
+    /// Suggest the cloning should be shallow.
+    /// </summary>
+    public static readonly Shallow SuggestShallow;
 
-        #endregion
+    #endregion
 
-        ...
-    }
+    ...
+}
 ```
