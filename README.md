@@ -49,7 +49,7 @@ To improve readability:
 
 - For readability, extensions methods should not accept a null `this`. If the method is defined when the first parameter is null, then the method should not be an extension method. `using static`.
 
-- Linq-like extensions methods should not mutate the enumerable, therefore `ForEach` on an enumerable is not recommended, as stated by Eric Lippert in [ìforeachî vs ìForEachî](https://blogs.msdn.microsoft.com/ericlippert/2009/05/18/foreach-vs-foreach/).
+- Linq-like extensions methods should not mutate the enumerable, therefore `ForEach` on an enumerable is not recommended, as stated by Eric Lippert in [‚Äúforeach‚Äù vs ‚ÄúForEach‚Äù](https://blogs.msdn.microsoft.com/ericlippert/2009/05/18/foreach-vs-foreach/).
 
 - Operator overloads should provide the equivalent with a named function. Apparently, the framework does not have 
 a clear policy on whether the function should be static or not. It is static for `Complex` but not for `TimeSpan`.
@@ -62,6 +62,12 @@ a clear policy on whether the function should be static or not. It is static for
         }
 
 ## Libraries
+
+```plantuml
+@startuml
+package WmcSoft.Core
+@enduml
+```
 
 ### WmcSoft.Core
 _Library of extensions and helpers._
