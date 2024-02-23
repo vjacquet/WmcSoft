@@ -94,7 +94,12 @@ are being added to the framework therefore the current design should be as close
 ### WmcSoft.Business.Calendars
 _Library of utilities to manage business calendar._
 
+```mermaid
+classDiagram
 
+    class BusinessCalendar {
+    }
+```
 ### WmcSoft.Business
 _Library of components to build business applications._
 
