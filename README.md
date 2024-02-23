@@ -63,12 +63,6 @@ a clear policy on whether the function should be static or not. It is static for
 
 ## Libraries
 
-```plantuml
-@startuml
-package WmcSoft.Core
-@enduml
-```
-
 ### WmcSoft.Core
 _Library of extensions and helpers._
 
